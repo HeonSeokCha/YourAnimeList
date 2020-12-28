@@ -1,6 +1,7 @@
 # YourAnimeList
 This app recommends an animation list.
 
+Anime API = "https://jikan.docs.apiary.io/#introduction/information"
 
   
 
