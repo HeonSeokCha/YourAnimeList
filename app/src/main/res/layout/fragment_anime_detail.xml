@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.chs.youranimelist.network.dto.AnimeDetailResponse" />
+            type="com.chs.youranimelist.network.dto.Anime" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,11 +14,11 @@
         tools:context=".SecondFragment">
 
         <ImageView
-            android:id="@+id/img_trailer_thumbnail"
+            android:id="@+id/img_bannerImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:foreground="@drawable/background_gradient"
-            app:imageSrc="@{model.trailer_url}"
+            app:imageSrc="@{model.bannerImage}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,21 +30,21 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:src="@drawable/ic_play"
-            app:trailerBtn="@{model.trailer_url}"
-            app:layout_constraintBottom_toBottomOf="@+id/img_trailer_thumbnail"
-            app:layout_constraintEnd_toEndOf="@+id/img_trailer_thumbnail"
-            app:layout_constraintStart_toStartOf="@+id/img_trailer_thumbnail"
+            app:trailerBtn="@{model.trailer}"
+            app:layout_constraintBottom_toBottomOf="@+id/img_bannerImage"
+            app:layout_constraintEnd_toEndOf="@+id/img_bannerImage"
+            app:layout_constraintStart_toStartOf="@+id/img_bannerImage"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/img_anime_cover"
+            android:id="@+id/img_cover_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            app:imageSrc="@{model.image_url}"
-            app:layout_constraintBottom_toBottomOf="@+id/img_trailer_thumbnail"
+            app:imageSrc="@{model.coverImage.extraLarge}"
+            app:layout_constraintBottom_toBottomOf="@+id/img_bannerImage"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_trailer_thumbnail"
+            app:layout_constraintTop_toBottomOf="@+id/img_bannerImage"
             tools:src="@tools:sample/avatars" />
 
         <TextView
@@ -53,21 +53,21 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:maxLines="1"
-            android:text="@{model.title}"
+            android:text="@{model.title.romaji}"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="@+id/img_anime_cover"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/img_anime_cover"
-            app:layout_constraintTop_toBottomOf="@+id/img_trailer_thumbnail"
+            app:layout_constraintTop_toBottomOf="@+id/img_bannerImage"
             tools:text="TextView" />
 
         <TextView
-            android:id="@+id/txt_synopsis"
+            android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@{model.synopsis}"
+            app:htmlTags="@{model.description}"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

@@ -3,7 +3,7 @@
     <data>
         <variable
             name="model"
-            type="com.chs.youranimelist.network.dto.AnimeDetailResponse" />
+            type="com.chs.youranimelist.network.dto.Anime" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"

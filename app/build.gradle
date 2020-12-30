@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id("com.apollographql.apollo").version("2.4.6")
 }
 
 android {
@@ -14,7 +15,6 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -31,11 +31,9 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
-    viewBinding {
-        enabled = true
-    }
     buildFeatures{
         dataBinding = true
+        viewBinding = true
     }
 }
 
@@ -53,9 +51,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.1'
 
-    //Retrofit2 + Gson
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    //Apollo
+    implementation("com.apollographql.apollo:apollo-runtime:2.4.6")
+    implementation("com.apollographql.apollo:apollo-coroutines-support:2.4.6")
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     //Paging
