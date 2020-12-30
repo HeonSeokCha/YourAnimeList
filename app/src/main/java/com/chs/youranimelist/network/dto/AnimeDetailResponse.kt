@@ -3,7 +3,7 @@ package com.chs.youranimelist.network.dto
 import com.google.gson.annotations.SerializedName
 import java.util.ArrayList
 
-data class AnimeDetail (
+data class AnimeDetailResponse (
     @SerializedName("mal_id")
     val mal_id: String,
     @SerializedName("image_url")
