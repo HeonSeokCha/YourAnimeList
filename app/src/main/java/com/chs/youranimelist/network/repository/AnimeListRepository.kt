@@ -3,15 +3,14 @@ package com.chs.youranimelist.network.repository
 import com.chs.youranimelist.network.api.AnimeService
 import com.chs.youranimelist.network.dto.Anime
 import com.chs.youranimelist.network.services.RetrofitInstance
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import retrofit2.Response
+import org.json.JSONObject
+import retrofit2.Call
 
-class AnimeListRepository {
+class AnimeListRepository(private val req: JSONObject) {
     private val api by lazy {
         RetrofitInstance.getRetrofitInstance().create(AnimeService::class.java)
     }
-    val getPagerAnime: Flow<Response<Anime>> = api
-        .getAnimeList()
+
+    suspend fun getAnimeList() = api.getAnimeListAsync(req)
 
 }

@@ -6,6 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.chs.youranimelist.databinding.FragmentFirstBinding
+import com.chs.youranimelist.network.api.AnimeService
+import com.chs.youranimelist.network.repository.AnimeListRepository
+import com.chs.youranimelist.network.services.RetrofitInstance
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class FirstFragment : Fragment() {
     private var binding: FragmentFirstBinding? = null
@@ -24,6 +30,12 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+    }
+
+    fun getPagerAnimeList() {
+        GlobalScope.launch(Dispatchers.IO) {
+
+        }
     }
 
     override fun onDestroy() {

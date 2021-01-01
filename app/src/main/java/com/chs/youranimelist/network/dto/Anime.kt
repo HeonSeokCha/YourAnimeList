@@ -31,6 +31,10 @@ data class Anime (
     val popularity: String,
     @SerializedName("favourites")
     val favourites: String,
+    @SerializedName("averageScore")
+    val averageScore: String,
+    @SerializedName("meanScore")
+    val meanScore: String,
     @SerializedName("studios")
     val studios: Studios,
     @SerializedName("source")
