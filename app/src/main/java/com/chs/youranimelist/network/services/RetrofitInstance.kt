@@ -5,7 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    private const val BASE_URL = "https://graphql.anilist.co/"
+    private const val BASE_URL = "https://graphql.anilist.co"
 
     fun getRetrofitInstance(): Retrofit {
         return Retrofit.Builder()

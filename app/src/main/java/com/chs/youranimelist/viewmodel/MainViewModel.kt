@@ -1,27 +1,25 @@
 package com.chs.youranimelist.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import androidx.lifecycle.*
+import com.chs.youranimelist.network.dto.AniList
+import com.chs.youranimelist.network.dto.Anime
+import com.chs.youranimelist.network.dto.Data
 import com.chs.youranimelist.network.querys.AnimeQuery
 import com.chs.youranimelist.network.repository.AnimeListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.json.JSONObject
 
-
-class MainViewModelFactory(private val repository:AnimeListRepository): ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            return MainViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel Class")
-    }
-}
-
-class MainViewModel(repository:AnimeListRepository):ViewModel() {
+class MainViewModel(private val repository:AnimeListRepository):ViewModel() {
     val netWorkState = MutableStateFlow<NetWorkState>(NetWorkState.Empty)
+    val responseLiveData: MutableLiveData<AniList> = MutableLiveData()
     private val query by lazy { AnimeQuery() }
     private lateinit var jsonObj: JSONObject
 
@@ -33,9 +31,18 @@ class MainViewModel(repository:AnimeListRepository):ViewModel() {
         object Empty: NetWorkState()
     }
 
-    fun getPagerAnimeList() = viewModelScope.launch(Dispatchers.IO) {
+    fun getPagerAnimeList(): LiveData<AniList> {
         netWorkState.value = NetWorkState.Loading
-        jsonObj = JSONObject().put("query",query.getAnimeList())
+        jsonObj = JSONObject().put("query", query.getAnimeList())
+        val req = RequestBody.create(MediaType.parse("application/json"),jsonObj.toString())
+        viewModelScope.launch {
+            repository.getAnimeList(req).catch { e->
+                Log.d("main","getPost: ${e.message}")
+            }.collect {
+                responseLiveData.value = it
+            }
+        }
+        return responseLiveData
     }
 
     fun getTopAnimeList() = viewModelScope.launch(Dispatchers.IO) {

@@ -7,22 +7,20 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.chs.youranimelist.FirstFragment"
+        android:name="com.chs.youranimelist.ui.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
-
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.chs.youranimelist.SecondFragment"
+        android:name="com.chs.youranimelist.ui.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_anime_detail">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+        <argument
+            android:name="anime"
+            app:argType="com.chs.youranimelist.network.dto.Anime" />
     </fragment>
 </navigation>

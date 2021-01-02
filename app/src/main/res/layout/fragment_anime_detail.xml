@@ -11,13 +11,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".SecondFragment">
+        tools:context=".ui.SecondFragment">
 
         <ImageView
             android:id="@+id/img_bannerImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:foreground="@drawable/background_gradient"
+            android:scaleType="fitXY"
+            app:imageSrc="@{model.bannerImage}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -29,6 +31,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:src="@drawable/ic_play"
+            app:trailerBtn="@{model.trailer}"
             app:layout_constraintBottom_toBottomOf="@+id/img_bannerImage"
             app:layout_constraintEnd_toEndOf="@+id/img_bannerImage"
             app:layout_constraintStart_toStartOf="@+id/img_bannerImage"
@@ -36,9 +39,10 @@
 
         <ImageView
             android:id="@+id/img_cover_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="125dp"
+            android:layout_height="175dp"
             android:layout_marginStart="8dp"
+            app:imageSrc="@{model.coverImage.extraLarge}"
             app:layout_constraintBottom_toBottomOf="@+id/img_bannerImage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/img_bannerImage"
@@ -51,6 +55,7 @@
             android:layout_marginStart="16dp"
             android:maxLines="1"
             app:layout_constrainedWidth="true"
+            android:text="@{model.title.romaji}"
             app:layout_constraintBottom_toBottomOf="@+id/img_cover_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -63,6 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:htmlTags="@{model.description}"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
