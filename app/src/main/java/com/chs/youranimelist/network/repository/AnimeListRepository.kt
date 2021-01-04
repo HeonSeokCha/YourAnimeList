@@ -10,7 +10,7 @@ import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.Call
 
-class AnimeListRepository() {
+class AnimeListRepository {
     private val api by lazy {
         RetrofitInstance.getRetrofitInstance().create(AnimeService::class.java)
     }
@@ -21,4 +21,9 @@ class AnimeListRepository() {
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun getAnimeInfo(req: RequestBody): Flow<AniList> {
+        return flow {
+            emit(api.getAnimeInfo(req))
+        }.flowOn(Dispatchers.IO)
+    }
 }

@@ -30,7 +30,7 @@ data class Anime(
     @SerializedName("title")
     val title: Title?,
     @SerializedName("description")
-    val description: String? = "",
+    val description: String? = "Test",
     @SerializedName("format")
     val format: String? = "",
     @SerializedName("trailer")

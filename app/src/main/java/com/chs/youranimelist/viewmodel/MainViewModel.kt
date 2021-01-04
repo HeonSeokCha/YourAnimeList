@@ -14,12 +14,15 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 
-class MainViewModel(private val repository:AnimeListRepository):ViewModel() {
+class MainViewModel(
+    private val repository:AnimeListRepository): ViewModel() {
     val netWorkState = MutableStateFlow<NetWorkState>(NetWorkState.Empty)
-    val responseLiveData: MutableLiveData<AniList> = MutableLiveData()
+    private val responseLiveData: MutableLiveData<AniList> = MutableLiveData()
     private val query by lazy { AnimeQuery() }
     private lateinit var jsonObj: JSONObject
 
@@ -32,14 +35,15 @@ class MainViewModel(private val repository:AnimeListRepository):ViewModel() {
     }
 
     fun getPagerAnimeList(): LiveData<AniList> {
-        netWorkState.value = NetWorkState.Loading
-        jsonObj = JSONObject().put("query", query.getAnimeList())
-        val req = RequestBody.create(MediaType.parse("application/json"),jsonObj.toString())
         viewModelScope.launch {
+            netWorkState.value = NetWorkState.Loading
+            jsonObj = JSONObject().put("query", query.getAnimeList())
+            val req = jsonObj.toString().toRequestBody("application/json".toMediaTypeOrNull())
             repository.getAnimeList(req).catch { e->
-                Log.d("main","getPost: ${e.message}")
+                netWorkState.value = NetWorkState.Error(e.toString())
             }.collect {
                 responseLiveData.value = it
+                netWorkState.value = NetWorkState.Success
             }
         }
         return responseLiveData
@@ -55,8 +59,18 @@ class MainViewModel(private val repository:AnimeListRepository):ViewModel() {
         jsonObj = JSONObject().put("query",query.getAnimeList("SCORE"))
     }
 
-    fun getAnimeInfo(animeId: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun getAnimeInfo(animeId: String):LiveData<AniList> {
         netWorkState.value = NetWorkState.Loading
         jsonObj = JSONObject().put("query", query.getAnimeInfo(animeId))
+        val req = RequestBody.create("application/json".toMediaTypeOrNull(),jsonObj.toString())
+        viewModelScope.launch {
+            repository.getAnimeInfo(req).catch { e->
+                netWorkState.value = NetWorkState.Error(e.toString())
+            }.collect {
+                responseLiveData.value = it
+                netWorkState.value = NetWorkState.Success
+            }
+        }
+        return responseLiveData
     }
 }

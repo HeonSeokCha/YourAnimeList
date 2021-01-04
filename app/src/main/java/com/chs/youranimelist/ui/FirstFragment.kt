@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.chs.youranimelist.R
@@ -17,6 +20,7 @@ import com.chs.youranimelist.network.services.RetrofitInstance
 import com.chs.youranimelist.viewmodel.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class FirstFragment : Fragment() {
@@ -31,8 +35,6 @@ class FirstFragment : Fragment() {
     ): View? {
         binding = FragmentFirstBinding.inflate(inflater, container, false)
         viewModel = MainViewModel(repository)
-        initRecyclerView()
-        getPagerAnimeList()
         return binding.root
     }
 
@@ -40,14 +42,15 @@ class FirstFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        initRecyclerView()
+        getPagerAnimeList()
     }
 
     private fun getPagerAnimeList() {
         viewModel.getPagerAnimeList().observe(viewLifecycleOwner,{
             viewPagerAdapter.submitList(it.data.page.media)
+            binding.mainProgressbar.isVisible = false
         })
-        binding.mainProgressbar.visibility = View.GONE
     }
 
     private fun initRecyclerView() {
