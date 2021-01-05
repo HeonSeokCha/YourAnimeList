@@ -1,0 +1,70 @@
+query animeList {
+    Trending : Page(page:1,perPage:6) {
+        media(sort:[TRENDING_DESC],type:ANIME) {
+            id
+            idMal
+            title {
+                romaji
+                native
+                english
+            }
+            coverImage {
+                extraLarge
+                color
+            }
+            bannerImage
+            genres
+        }
+    },
+    Popular : Page(page:1,perPage:6) {
+        media(sort:[POPULARITY_DESC],season:WINTER,seasonYear:2021,type:ANIME) {
+            id
+            idMal
+            title {
+                romaji
+                native
+                english
+            }
+            coverImage {
+                extraLarge
+                color
+            }
+            bannerImage
+            genres
+        }
+    },
+    Upcomming : Page(page:1,perPage:6) {
+        media(sort:[POPULARITY_DESC],season:SPRING,seasonYear:2021,type:ANIME) {
+            id
+            idMal
+            title {
+                romaji
+                native
+                english
+            }
+            coverImage {
+                extraLarge
+                color
+            }
+            bannerImage
+            genres
+        }
+    },
+    Alltime : Page(page:1,perPage:6) {
+        media(sort:[POPULARITY_DESC],type:ANIME) {
+            id
+            idMal
+            title {
+                romaji
+                native
+                english
+            }
+            coverImage {
+                extraLarge
+                color
+            }
+            bannerImage
+            genres
+        }
+    }
+}

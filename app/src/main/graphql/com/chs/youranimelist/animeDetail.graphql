@@ -1,0 +1,46 @@
+query animeDetail($id: Int) {
+    Media(id: $id) {
+        id
+        idMal
+        title {
+            romaji
+            native
+            english
+        }
+        description
+        format
+        trailer {
+            id
+            thumbnail
+        }
+        episodes
+        coverImage {
+            extraLarge
+            color
+        }
+        bannerImage
+        genres
+        status
+        seasonYear
+        averageScore
+        meanScore
+        popularity
+        favourites
+        source
+        recommendations {
+            nodes {
+                mediaRecommendation {
+                    id
+                    idMal
+                    title {
+                        romaji
+                        english
+                    }
+                    coverImage {
+                        extraLarge
+                    }
+                }
+            }
+        }
+    }
+}

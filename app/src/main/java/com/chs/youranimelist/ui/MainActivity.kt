@@ -3,6 +3,7 @@ package com.chs.youranimelist.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.R
 
 class MainActivity : AppCompatActivity() {

@@ -19,8 +19,9 @@
         android:name="com.chs.youranimelist.ui.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_anime_detail">
+
         <argument
-            android:name="anime"
-            app:argType="com.chs.youranimelist.network.dto.Anime" />
+            android:name="animeId"
+            app:argType="integer" />
     </fragment>
 </navigation>

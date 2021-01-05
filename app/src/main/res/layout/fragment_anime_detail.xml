@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.chs.youranimelist.network.dto.Anime" />
+            type="com.chs.youranimelist.AnimeDetailQuery.Media" />
     </data>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:src="@drawable/ic_play"
-                app:trailerBtn="@{model.trailer}"
+                app:trailerBtn="@{model.trailer.id}"
                 app:layout_constraintBottom_toBottomOf="@+id/img_bannerImage"
                 app:layout_constraintEnd_toEndOf="@+id/img_bannerImage"
                 app:layout_constraintStart_toStartOf="@+id/img_bannerImage"

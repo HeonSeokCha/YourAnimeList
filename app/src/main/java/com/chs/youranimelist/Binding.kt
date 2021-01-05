@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.chs.youranimelist.network.dto.Trailer
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 object Binding {
@@ -20,9 +19,9 @@ object Binding {
 
     @BindingAdapter("trailerBtn")
     @JvmStatic
-    fun trailerChk(floatingActionButton: FloatingActionButton, trailer: Trailer?) {
+    fun trailerChk(floatingActionButton: FloatingActionButton, trailer: String?) {
         Log.d("trailer","$trailer")
-        if(trailer?.id?.isNotEmpty() == true) floatingActionButton.visibility = View.GONE
+        if(trailer == null) floatingActionButton.visibility = View.GONE
     }
 
     @BindingAdapter("htmlTags")

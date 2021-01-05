@@ -1,17 +1,15 @@
 package com.chs.youranimelist.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.PagerAdapter
+import com.chs.youranimelist.ViewPagerQuery
 import com.chs.youranimelist.databinding.ItemViewPagerBinding
-import com.chs.youranimelist.network.dto.Anime
 
 class ViewPagerAdapter (
-    private val clickListener: (anime: Anime) -> Unit,
-    ): ListAdapter<Anime,ViewPagerAdapter.ViewPagerViewHolder>(ViewPagerDiffUtilCallBack()) {
+    private val clickListener: (anime: ViewPagerQuery.Medium) -> Unit,
+    ): ListAdapter<ViewPagerQuery.Medium,ViewPagerAdapter.ViewPagerViewHolder>(ViewPagerDiffUtilCallBack()) {
 
 
     inner class ViewPagerViewHolder(private val binding: ItemViewPagerBinding) :
@@ -21,10 +19,10 @@ class ViewPagerAdapter (
                 clickListener.invoke(getItem(bindingAdapterPosition))
             }
         }
-            fun bind() {
-                binding.model = getItem(bindingAdapterPosition)
-            }
+        fun bind() {
+            binding.model = getItem(bindingAdapterPosition)
         }
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerViewHolder {

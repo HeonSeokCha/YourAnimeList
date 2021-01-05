@@ -10,18 +10,11 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import androidx.viewpager2.widget.ViewPager2
-import com.chs.youranimelist.R
 import com.chs.youranimelist.adapter.ViewPagerAdapter
 import com.chs.youranimelist.databinding.FragmentFirstBinding
-import com.chs.youranimelist.network.api.AnimeService
 import com.chs.youranimelist.network.repository.AnimeListRepository
-import com.chs.youranimelist.network.services.RetrofitInstance
 import com.chs.youranimelist.viewmodel.MainViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class FirstFragment : Fragment() {
     private lateinit var binding: FragmentFirstBinding
@@ -52,7 +45,7 @@ class FirstFragment : Fragment() {
                 viewModel.netWorkState.collect { netWorkState ->
                     when (netWorkState) {
                         is MainViewModel.NetWorkState.Success -> {
-                            viewPagerAdapter.submitList(it.data.page.media)
+                            viewPagerAdapter.submitList(it.media)
                             binding.mainProgressbar.isVisible = false
                         }
                         is MainViewModel.NetWorkState.Error -> {
@@ -76,7 +69,7 @@ class FirstFragment : Fragment() {
 
         binding.viewPager2.apply {
             viewPagerAdapter = ViewPagerAdapter(clickListener = { anime ->
-                val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(anime)
+                val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(anime.id)
                 binding.root.findNavController().navigate(action)
             })
             this.adapter = viewPagerAdapter
