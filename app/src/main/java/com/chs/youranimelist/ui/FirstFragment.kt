@@ -47,9 +47,28 @@ class FirstFragment : Fragment() {
     }
 
     private fun getPagerAnimeList() {
-        viewModel.getPagerAnimeList().observe(viewLifecycleOwner,{
-            viewPagerAdapter.submitList(it.data.page.media)
-            binding.mainProgressbar.isVisible = false
+        viewModel.getPagerAnimeList().observe(viewLifecycleOwner, {
+            lifecycleScope.launchWhenStarted {
+                viewModel.netWorkState.collect { netWorkState ->
+                    when (netWorkState) {
+                        is MainViewModel.NetWorkState.Success -> {
+                            viewPagerAdapter.submitList(it.data.page.media)
+                            binding.mainProgressbar.isVisible = false
+                        }
+                        is MainViewModel.NetWorkState.Error -> {
+                            Toast.makeText(
+                                this@FirstFragment.context,
+                                netWorkState.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        is MainViewModel.NetWorkState.Loading -> {
+                            binding.mainProgressbar.isVisible = true
+                        }
+                        else -> Unit
+                    }
+                }
+            }
         })
     }
 

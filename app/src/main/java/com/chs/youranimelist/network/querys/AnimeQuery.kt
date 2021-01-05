@@ -1,13 +1,13 @@
 package com.chs.youranimelist.network.querys
 
-class AnimeQuery {
+object AnimeQuery {
     fun getAnimeList(
         sort: String = "TRENDING",
         page: Int = 1,perPage: Int = 6): String {
         return """
         query {
           Page(page:$page,perPage:$perPage) {
-            media(sort:${sort}_DESC) {
+            media(sort:${sort}_DESC,type:ANIME) {
               id
               idMal
               title {
