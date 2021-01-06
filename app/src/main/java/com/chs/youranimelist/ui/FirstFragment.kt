@@ -10,6 +10,10 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.chs.youranimelist.AnimeListQuery
+import com.chs.youranimelist.adapter.AnimeListAdapter
 import com.chs.youranimelist.adapter.ViewPagerAdapter
 import com.chs.youranimelist.databinding.FragmentFirstBinding
 import com.chs.youranimelist.network.repository.AnimeListRepository
@@ -20,6 +24,7 @@ class FirstFragment : Fragment() {
     private lateinit var binding: FragmentFirstBinding
     private lateinit var viewModel: MainViewModel
     private lateinit var viewPagerAdapter: ViewPagerAdapter
+    private lateinit var animeListAdapter: AnimeListAdapter
     private val repository by lazy { AnimeListRepository() }
 
     override fun onCreateView(
@@ -37,6 +42,7 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         getPagerAnimeList()
+        test()
     }
 
     private fun getPagerAnimeList() {
@@ -65,14 +71,50 @@ class FirstFragment : Fragment() {
         })
     }
 
-    private fun initRecyclerView() {
+    private fun test() {
+        viewModel.getAnimeList().observe(viewLifecycleOwner, {
+            lifecycleScope.launchWhenStarted {
+                viewModel.netWorkState.collect { netWorkState ->
+                    when (netWorkState) {
+                        is MainViewModel.NetWorkState.Success -> {
+                            animeListAdapter.submitList(it)
+                        }
+                        is MainViewModel.NetWorkState.Error -> {
+                            Toast.makeText(
+                                this@FirstFragment.context,
+                                netWorkState.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        is MainViewModel.NetWorkState.Loading -> {
+                            binding.mainProgressbar.isVisible = true
+                        }
+                        else -> Unit
+                    }
+                }
+            }
+        })
+    }
 
+    private fun initRecyclerView() {
         binding.viewPager2.apply {
             viewPagerAdapter = ViewPagerAdapter(clickListener = { anime ->
                 val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(anime.id)
                 binding.root.findNavController().navigate(action)
             })
             this.adapter = viewPagerAdapter
+        }
+
+        binding.rvAnimeList.apply {
+            animeListAdapter = AnimeListAdapter(this@FirstFragment.requireContext(),
+                clickListener = {
+
+            },animeclickListener = {
+                val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(it)
+                binding.root.findNavController().navigate(action)
+            })
+            this.layoutManager = LinearLayoutManager(this@FirstFragment.context)
+            this.adapter = animeListAdapter
         }
     }
 }

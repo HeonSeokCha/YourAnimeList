@@ -1,0 +1,57 @@
+package com.chs.youranimelist.adapter
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.chs.youranimelist.AnimeListQuery
+import com.chs.youranimelist.databinding.ItemAnimeBinding
+import java.lang.Exception
+
+class AnimeAdapter(
+    private val items: Any,
+    private val clickListener: (animeId: Int) -> Unit,
+): RecyclerView.Adapter<AnimeAdapter.AnimeViewHolder>() {
+
+    inner class AnimeViewHolder(
+        private val binding: ItemAnimeBinding
+    ):RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                castType((items as List<AnimeListQuery.Medium>)[layoutPosition])
+            }
+        }
+        fun bind() {
+            binding.model = (items as List<AnimeListQuery.Medium>)[layoutPosition]
+        }
+    }
+
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeViewHolder {
+        val view = ItemAnimeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return AnimeViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: AnimeViewHolder, position: Int) {
+        holder.bind()
+    }
+
+    override fun getItemCount(): Int = 6
+
+    fun castType(any: Any) {
+        when (any) {
+            is AnimeListQuery.Medium -> {
+                clickListener.invoke(any.id)
+            }
+            is AnimeListQuery.Medium1 -> {
+                clickListener.invoke(any.id)
+            }
+            is AnimeListQuery.Medium2 -> {
+                clickListener.invoke(any.id)
+            }
+            is AnimeListQuery.Medium3 -> {
+                clickListener.invoke(any.id)
+            }
+        }
+    }
+}

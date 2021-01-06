@@ -20,7 +20,6 @@ object Binding {
     @BindingAdapter("trailerBtn")
     @JvmStatic
     fun trailerChk(floatingActionButton: FloatingActionButton, trailer: String?) {
-        Log.d("trailer","$trailer")
         if(trailer == null) floatingActionButton.visibility = View.GONE
     }
 
@@ -29,5 +28,47 @@ object Binding {
     fun setHtmlTags(textView: TextView,string: String?) {
         if(string?.isNotEmpty() == true)
             textView.text = Html.fromHtml(string, Html.FROM_HTML_MODE_LEGACY).toString()
+    }
+
+    @BindingAdapter("imageGenericSrc")
+    @JvmStatic
+    fun loadGenericImg(imageView: ImageView,any: Any?) {
+        when(any) {
+            is AnimeListQuery.Medium -> {
+                Glide.with(imageView.context).load(any.coverImage?.extraLarge)
+                    .into(imageView)
+            }
+            is AnimeListQuery.Medium1 -> {
+                Glide.with(imageView.context).load(any.coverImage?.extraLarge)
+                    .into(imageView)
+            }
+            is AnimeListQuery.Medium2 -> {
+                Glide.with(imageView.context).load(any.coverImage?.extraLarge)
+                    .into(imageView)
+            }
+            is AnimeListQuery.Medium3 -> {
+                Glide.with(imageView.context).load(any.coverImage?.extraLarge)
+                    .into(imageView)
+            }
+        }
+    }
+
+    @BindingAdapter("textGeneric")
+    @JvmStatic
+    fun setGenericText(textView: TextView,any: Any?) {
+        when (any) {
+            is AnimeListQuery.Medium -> {
+                textView.text = any.title?.romaji
+            }
+            is AnimeListQuery.Medium1 -> {
+                textView.text = any.title?.romaji
+            }
+            is AnimeListQuery.Medium2 -> {
+                textView.text = any.title?.romaji
+            }
+            is AnimeListQuery.Medium3 -> {
+                textView.text = any.title?.romaji
+            }
+        }
     }
 }

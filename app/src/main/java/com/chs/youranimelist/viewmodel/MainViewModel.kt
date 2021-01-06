@@ -1,5 +1,6 @@
 package com.chs.youranimelist.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.AnimeDetailQuery
@@ -44,6 +45,25 @@ class MainViewModel(
                 _netWorkState.value = NetWorkState.Error(e.toString())
             }.collect{
                 responseLiveData.value = it.media
+                _netWorkState.value = NetWorkState.Success
+            }
+        }
+        return responseLiveData
+    }
+
+    fun getAnimeList():LiveData<List<Any>> {
+        val responseLiveData: MutableLiveData<List<Any>> = MutableLiveData()
+        _netWorkState.value = NetWorkState.Loading
+        viewModelScope.launch {
+            repository.getAnimeList().catch { e->
+                _netWorkState.value = NetWorkState.Error(e.toString())
+            }.collect {
+                responseLiveData.value = listOf (
+                    it.trending?.media as Any,
+                    it.popular?.media as Any,
+                    it.upcomming?.media as Any,
+                    it.alltime?.media as Any,
+                )
                 _netWorkState.value = NetWorkState.Success
             }
         }

@@ -1,6 +1,6 @@
 query viewPager {
     Page(page:1,perPage:6) {
-        media(sort:[TRENDING_DESC],type:ANIME){
+        media(sort:[SCORE_DESC],type:ANIME){
             id
             idMal
             title {
