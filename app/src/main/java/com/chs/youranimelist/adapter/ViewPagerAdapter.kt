@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.ViewPagerQuery
+import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.databinding.ItemViewPagerBinding
 
 class ViewPagerAdapter (
-    private val clickListener: (anime: ViewPagerQuery.Medium) -> Unit,
-    ): ListAdapter<ViewPagerQuery.Medium,ViewPagerAdapter.ViewPagerViewHolder>(ViewPagerDiffUtilCallBack()) {
+    private val clickListener: (anime: AnimeListQuery.Medium) -> Unit,
+    ): ListAdapter<AnimeListQuery.Medium,ViewPagerAdapter.ViewPagerViewHolder>(ViewPagerDiffUtilCallBack()) {
 
 
     inner class ViewPagerViewHolder(private val binding: ItemViewPagerBinding) :

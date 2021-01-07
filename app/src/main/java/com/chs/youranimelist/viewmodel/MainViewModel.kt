@@ -5,7 +5,6 @@ import androidx.lifecycle.*
 import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.AnimeListQuery
-import com.chs.youranimelist.ViewPagerQuery
 import com.chs.youranimelist.network.repository.AnimeListRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -23,14 +22,14 @@ class MainViewModel(
         object Empty: NetWorkState()
     }
 
-    fun getPagerAnimeList(): LiveData<ViewPagerQuery.Page> {
-        val responseLiveData: MutableLiveData<ViewPagerQuery.Page> = MutableLiveData()
+    fun getPagerAnimeList(): LiveData<AnimeListQuery.ViewPager> {
+        val responseLiveData: MutableLiveData<AnimeListQuery.ViewPager> = MutableLiveData()
         _netWorkState.value = NetWorkState.Loading
         viewModelScope.launch {
-            repository.getAnimeViewPager().catch { e->
+            repository.getAnimeList().catch { e->
                 _netWorkState.value = NetWorkState.Error(e.toString())
             }.collect{
-                responseLiveData.value = it.page
+                responseLiveData.value = it.viewPager
                 _netWorkState.value = NetWorkState.Success
             }
         }

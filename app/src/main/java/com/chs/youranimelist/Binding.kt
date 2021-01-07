@@ -34,10 +34,6 @@ object Binding {
     @JvmStatic
     fun loadGenericImg(imageView: ImageView,any: Any?) {
         when(any) {
-            is AnimeListQuery.Medium -> {
-                Glide.with(imageView.context).load(any.coverImage?.extraLarge)
-                    .into(imageView)
-            }
             is AnimeListQuery.Medium1 -> {
                 Glide.with(imageView.context).load(any.coverImage?.extraLarge)
                     .into(imageView)
@@ -47,6 +43,10 @@ object Binding {
                     .into(imageView)
             }
             is AnimeListQuery.Medium3 -> {
+                Glide.with(imageView.context).load(any.coverImage?.extraLarge)
+                    .into(imageView)
+            }
+            is AnimeListQuery.Medium4 -> {
                 Glide.with(imageView.context).load(any.coverImage?.extraLarge)
                     .into(imageView)
             }
@@ -57,9 +57,6 @@ object Binding {
     @JvmStatic
     fun setGenericText(textView: TextView,any: Any?) {
         when (any) {
-            is AnimeListQuery.Medium -> {
-                textView.text = any.title?.romaji
-            }
             is AnimeListQuery.Medium1 -> {
                 textView.text = any.title?.romaji
             }
@@ -67,6 +64,9 @@ object Binding {
                 textView.text = any.title?.romaji
             }
             is AnimeListQuery.Medium3 -> {
+                textView.text = any.title?.romaji
+            }
+            is AnimeListQuery.Medium4 -> {
                 textView.text = any.title?.romaji
             }
         }

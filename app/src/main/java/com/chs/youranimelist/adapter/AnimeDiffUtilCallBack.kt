@@ -2,7 +2,6 @@ package com.chs.youranimelist.adapter
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
-import com.chs.youranimelist.AnimeListQuery
 
 class AnimeDiffUtilCallBack:DiffUtil.ItemCallback<Any>() {
 

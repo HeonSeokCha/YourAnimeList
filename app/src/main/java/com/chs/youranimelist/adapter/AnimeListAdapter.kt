@@ -4,14 +4,10 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.AnimeListQuery
-import com.chs.youranimelist.ViewPagerQuery
 import com.chs.youranimelist.databinding.ItemAnimeListBinding
-import com.chs.youranimelist.databinding.ItemViewPagerBinding
 
 class AnimeListAdapter(
     private val mcontext: Context,

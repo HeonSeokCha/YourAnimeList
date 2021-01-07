@@ -17,7 +17,7 @@ class AnimeAdapter(
     ):RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                castType((items as List<AnimeListQuery.Medium>)[layoutPosition])
+                castTypeClickListener((items as List<AnimeListQuery.Medium>)[layoutPosition])
             }
         }
         fun bind() {
@@ -38,11 +38,8 @@ class AnimeAdapter(
 
     override fun getItemCount(): Int = 6
 
-    fun castType(any: Any) {
+    fun castTypeClickListener(any: Any) {
         when (any) {
-            is AnimeListQuery.Medium -> {
-                clickListener.invoke(any.id)
-            }
             is AnimeListQuery.Medium1 -> {
                 clickListener.invoke(any.id)
             }
@@ -50,6 +47,9 @@ class AnimeAdapter(
                 clickListener.invoke(any.id)
             }
             is AnimeListQuery.Medium3 -> {
+                clickListener.invoke(any.id)
+            }
+            is AnimeListQuery.Medium4 -> {
                 clickListener.invoke(any.id)
             }
         }

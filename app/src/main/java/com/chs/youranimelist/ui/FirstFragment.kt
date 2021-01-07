@@ -11,8 +11,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.adapter.AnimeListAdapter
 import com.chs.youranimelist.adapter.ViewPagerAdapter
 import com.chs.youranimelist.databinding.FragmentFirstBinding
