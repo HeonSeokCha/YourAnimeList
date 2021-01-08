@@ -13,6 +13,7 @@ class MainViewModel(
     private val repository:AnimeListRepository): ViewModel() {
     private val _netWorkState = MutableStateFlow<NetWorkState>(NetWorkState.Empty)
     val netWorkState: StateFlow<NetWorkState> = _netWorkState
+    private lateinit var viewPagerListQuery: AnimeListQuery.ViewPager
 
 
     sealed class NetWorkState {
@@ -24,12 +25,24 @@ class MainViewModel(
 
     fun getPagerAnimeList(): LiveData<AnimeListQuery.ViewPager> {
         val responseLiveData: MutableLiveData<AnimeListQuery.ViewPager> = MutableLiveData()
+        responseLiveData.value = viewPagerListQuery
+        return responseLiveData
+    }
+
+    fun getAnimeList():LiveData<List<Any>> {
+        val responseLiveData: MutableLiveData<List<Any>> = MutableLiveData()
         _netWorkState.value = NetWorkState.Loading
         viewModelScope.launch {
             repository.getAnimeList().catch { e->
                 _netWorkState.value = NetWorkState.Error(e.toString())
-            }.collect{
-                responseLiveData.value = it.viewPager
+            }.collect {
+                viewPagerListQuery = it.viewPager!!
+                responseLiveData.value = listOf (
+                    it.trending?.media as Any,
+                    it.popular?.media as Any,
+                    it.upcomming?.media as Any,
+                    it.alltime?.media as Any,
+                )
                 _netWorkState.value = NetWorkState.Success
             }
         }
@@ -44,25 +57,6 @@ class MainViewModel(
                 _netWorkState.value = NetWorkState.Error(e.toString())
             }.collect{
                 responseLiveData.value = it.media
-                _netWorkState.value = NetWorkState.Success
-            }
-        }
-        return responseLiveData
-    }
-
-    fun getAnimeList():LiveData<List<Any>> {
-        val responseLiveData: MutableLiveData<List<Any>> = MutableLiveData()
-        _netWorkState.value = NetWorkState.Loading
-        viewModelScope.launch {
-            repository.getAnimeList().catch { e->
-                _netWorkState.value = NetWorkState.Error(e.toString())
-            }.collect {
-                responseLiveData.value = listOf (
-                    it.trending?.media as Any,
-                    it.popular?.media as Any,
-                    it.upcomming?.media as Any,
-                    it.alltime?.media as Any,
-                )
                 _netWorkState.value = NetWorkState.Success
             }
         }
