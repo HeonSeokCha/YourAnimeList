@@ -15,15 +15,15 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.SecondFragment">
+            tools:context=".ui.AnimeDetailFragment">
 
             <ImageView
                 android:id="@+id/img_bannerImage"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
                 android:foreground="@drawable/background_gradient"
                 android:scaleType="fitXY"
-                app:imageSrc="@{model.bannerImage}"
+                app:imageGenericBannerSrc="@{model}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
                 android:layout_width="125dp"
                 android:layout_height="175dp"
                 android:layout_marginStart="8dp"
-                app:imageSrc="@{model.coverImage.extraLarge}"
+                app:imageGenericCoverSrc="@{model}"
                 app:layout_constraintBottom_toBottomOf="@+id/img_bannerImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/img_bannerImage"
@@ -58,8 +58,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:maxLines="1"
-                android:text="@{model.title.romaji}"
+                android:maxLines="2"
+                android:ellipsize="end"
+                app:textGeneric="@{model}"
                 android:textSize="18dp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="@+id/img_cover_image"

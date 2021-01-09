@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.AnimeListQuery
+import com.chs.youranimelist.AnimeRecListQuery
 import com.chs.youranimelist.databinding.ItemAnimeBinding
 import java.lang.Exception
 
@@ -40,16 +41,16 @@ class AnimeAdapter(
 
     fun castTypeClickListener(any: Any) {
         when (any) {
-            is AnimeListQuery.Medium1 -> {
+            is AnimeRecListQuery.Medium1 -> {
                 clickListener.invoke(any.id)
             }
-            is AnimeListQuery.Medium2 -> {
+            is AnimeRecListQuery.Medium2 -> {
                 clickListener.invoke(any.id)
             }
-            is AnimeListQuery.Medium3 -> {
+            is AnimeRecListQuery.Medium3 -> {
                 clickListener.invoke(any.id)
             }
-            is AnimeListQuery.Medium4 -> {
+            is AnimeRecListQuery.Medium4 -> {
                 clickListener.invoke(any.id)
             }
         }

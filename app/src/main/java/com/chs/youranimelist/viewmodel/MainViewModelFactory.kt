@@ -2,9 +2,9 @@ package com.chs.youranimelist.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.chs.youranimelist.network.repository.AnimeListRepository
+import com.chs.youranimelist.network.repository.AnimeRepository
 
-class MainViewModelFactory(private val repository: AnimeListRepository): ViewModelProvider.Factory {
+class MainViewModelFactory(private val repository: AnimeRepository): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(repository) as T

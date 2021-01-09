@@ -10,10 +10,10 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chs.youranimelist.adapter.AnimeListAdapter
+import com.chs.youranimelist.adapter.AnimeRecListAdapter
 import com.chs.youranimelist.adapter.ViewPagerAdapter
 import com.chs.youranimelist.databinding.FragmentFirstBinding
-import com.chs.youranimelist.network.repository.AnimeListRepository
+import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.viewmodel.MainViewModel
 import kotlinx.coroutines.flow.collect
 
@@ -21,8 +21,8 @@ class FirstFragment : Fragment() {
     private lateinit var binding: FragmentFirstBinding
     private lateinit var viewModel: MainViewModel
     private lateinit var viewPagerAdapter: ViewPagerAdapter
-    private lateinit var animeListAdapter: AnimeListAdapter
-    private val repository by lazy { AnimeListRepository() }
+    private lateinit var animeListAdapter: AnimeRecListAdapter
+    private val repository by lazy { AnimeRepository() }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -33,22 +33,21 @@ class FirstFragment : Fragment() {
         return binding.root
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        getAnimeList()
+        getAnimeRecList()
     }
 
-    private fun getAnimeList() {
-        viewModel.getAnimeList().observe(viewLifecycleOwner, {
+    private fun getAnimeRecList() {
+        viewModel.getAnimeRecList().observe(viewLifecycleOwner, {
             lifecycleScope.launchWhenStarted {
                 viewModel.netWorkState.collect { netWorkState ->
                     when (netWorkState) {
                         is MainViewModel.NetWorkState.Success -> {
                             animeListAdapter.submitList(it)
                             getPagerAnimeList()
+                            binding.mainProgressbar.isVisible = false
                         }
                         is MainViewModel.NetWorkState.Error -> {
                             Toast.makeText(
@@ -56,6 +55,7 @@ class FirstFragment : Fragment() {
                                 netWorkState.message,
                                 Toast.LENGTH_SHORT
                             ).show()
+                            binding.mainProgressbar.isVisible = false
                         }
                         is MainViewModel.NetWorkState.Loading -> {
                             // if long time loading -> retry? snackBar
@@ -83,12 +83,13 @@ class FirstFragment : Fragment() {
             this.adapter = viewPagerAdapter
         }
 
-        binding.rvAnimeList.apply {
-            animeListAdapter = AnimeListAdapter(this@FirstFragment.requireContext(),
-                clickListener = {
-
-            },animeclickListener = {
-                val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(it)
+        binding.rvAnimeRecList.apply {
+            animeListAdapter = AnimeRecListAdapter(this@FirstFragment.requireContext(),
+                clickListener = { sortType ->
+                    val action = FirstFragmentDirections.actionFirstFragmentToAnimeListFragment(sortType)
+                    binding.root.findNavController().navigate(action)
+            },animeClickListener = { animeId ->
+                val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(animeId)
                 binding.root.findNavController().navigate(action)
             })
             this.layoutManager = LinearLayoutManager(this@FirstFragment.context)

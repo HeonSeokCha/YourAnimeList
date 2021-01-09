@@ -1,19 +1,22 @@
 package com.chs.youranimelist.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.AnimeListQuery
-import com.chs.youranimelist.network.repository.AnimeListRepository
+import com.chs.youranimelist.AnimeRecListQuery
+import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.type.MediaSeason
+import com.chs.youranimelist.type.MediaSort
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val repository:AnimeListRepository): ViewModel() {
+    private val repository: AnimeRepository
+): ViewModel() {
     private val _netWorkState = MutableStateFlow<NetWorkState>(NetWorkState.Empty)
     val netWorkState: StateFlow<NetWorkState> = _netWorkState
-    private lateinit var viewPagerListQuery: AnimeListQuery.ViewPager
+    private lateinit var viewPagerListQuery: AnimeRecListQuery.ViewPager
 
 
     sealed class NetWorkState {
@@ -23,17 +26,17 @@ class MainViewModel(
         object Empty: NetWorkState()
     }
 
-    fun getPagerAnimeList(): LiveData<AnimeListQuery.ViewPager> {
-        val responseLiveData: MutableLiveData<AnimeListQuery.ViewPager> = MutableLiveData()
+    fun getPagerAnimeList(): LiveData<AnimeRecListQuery.ViewPager> {
+        val responseLiveData: MutableLiveData<AnimeRecListQuery.ViewPager> = MutableLiveData()
         responseLiveData.value = viewPagerListQuery
         return responseLiveData
     }
 
-    fun getAnimeList():LiveData<List<Any>> {
+    fun getAnimeRecList():LiveData<List<Any>> {
         val responseLiveData: MutableLiveData<List<Any>> = MutableLiveData()
         _netWorkState.value = NetWorkState.Loading
         viewModelScope.launch {
-            repository.getAnimeList().catch { e->
+            repository.getAnimeRecList().catch { e->
                 _netWorkState.value = NetWorkState.Error(e.toString())
             }.collect {
                 viewPagerListQuery = it.viewPager!!
@@ -43,6 +46,24 @@ class MainViewModel(
                     it.upcomming?.media as Any,
                     it.alltime?.media as Any,
                 )
+                _netWorkState.value = NetWorkState.Success
+            }
+        }
+        return responseLiveData
+    }
+
+    fun getAnimeList (
+        page: Input<Int>,
+        sort: Input<MediaSort>,
+        season: Input<MediaSeason>,
+        seasonYear: Input<Int> ):LiveData<AnimeListQuery.Data> {
+        val responseLiveData: MutableLiveData<AnimeListQuery.Data> = MutableLiveData()
+        _netWorkState.value = NetWorkState.Loading
+        viewModelScope.launch {
+            repository.getAnimeList(page, sort, season, seasonYear).catch { e->
+                _netWorkState.value = NetWorkState.Error(e.toString())
+            }.collect {
+                responseLiveData.value = it
                 _netWorkState.value = NetWorkState.Success
             }
         }
