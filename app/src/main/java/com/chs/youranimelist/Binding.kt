@@ -106,34 +106,34 @@ object Binding {
                     textView.text = any.title?.romaji
                 }
             }
-            is AnimeRecListQuery.Medium1 -> {
-                if (any.title?.english != null) {
-                    textView.text = any.title?.english
-                } else {
-                    textView.text = any.title?.romaji
-                }
-            }
-            is AnimeRecListQuery.Medium2 -> {
-                if (any.title?.english != null) {
-                    textView.text = any.title?.english
-                } else {
-                    textView.text = any.title?.romaji
-                }
-            }
-            is AnimeRecListQuery.Medium3 -> {
-                if (any.title?.english != null) {
-                    textView.text = any.title?.english
-                } else {
-                    textView.text = any.title?.romaji
-                }
-            }
-            is AnimeRecListQuery.Medium4 -> {
-                if (any.title?.english != null) {
-                    textView.text = any.title?.english
-                } else {
-                    textView.text = any.title?.romaji
-                }
-            }
+//            is AnimeRecListQuery.Medium1 -> {
+//                if (any.title?.english != null) {
+//                    textView.text = any.title?.english
+//                } else {
+//                    textView.text = any.title?.romaji
+//                }
+//            }
+//            is AnimeRecListQuery.Medium2 -> {
+//                if (any.title?.english != null) {
+//                    textView.text = any.title?.english
+//                } else {
+//                    textView.text = any.title?.romaji
+//                }
+//            }
+//            is AnimeRecListQuery.Medium3 -> {
+//                if (any.title?.english != null) {
+//                    textView.text = any.title?.english
+//                } else {
+//                    textView.text = any.title?.romaji
+//                }
+//            }
+//            is AnimeRecListQuery.Medium4 -> {
+//                if (any.title?.english != null) {
+//                    textView.text = any.title?.english
+//                } else {
+//                    textView.text = any.title?.romaji
+//                }
+//            }
         }
     }
 }

@@ -5,13 +5,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.R
+import com.chs.youranimelist.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

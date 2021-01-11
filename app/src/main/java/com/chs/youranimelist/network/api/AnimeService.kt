@@ -6,6 +6,7 @@ import com.apollographql.apollo.cache.normalized.lru.LruNormalizedCacheFactory
 import com.chs.youranimelist.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import java.util.concurrent.TimeUnit
 
 
 object AnimeService {
@@ -28,6 +29,8 @@ object AnimeService {
             interceptor.level = HttpLoggingInterceptor.Level.NONE
         }
         return OkHttpClient.Builder()
+            .connectTimeout(20,TimeUnit.SECONDS)
+            .readTimeout(30,TimeUnit.SECONDS)
             .addNetworkInterceptor(interceptor)
             .build()
     }

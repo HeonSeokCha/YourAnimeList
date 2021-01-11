@@ -27,6 +27,7 @@ class AnimeDetailFragment : Fragment() {
     ): View? {
         binding = FragmentAnimeDetailBinding.inflate(inflater,container,false)
         viewModel = MainViewModel(repository)
+
         return binding.root
     }
 

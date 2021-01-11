@@ -41,10 +41,10 @@ class MainViewModel(
             }.collect {
                 viewPagerListQuery = it.viewPager!!
                 responseLiveData.value = listOf (
-                    it.trending?.media as Any,
-                    it.popular?.media as Any,
-                    it.upcomming?.media as Any,
-                    it.alltime?.media as Any,
+                    it.trending?.media as List<AnimeRecListQuery.Medium>,
+                    it.popular?.media as List<AnimeRecListQuery.Medium>,
+                    it.upcomming?.media as List<AnimeRecListQuery.Medium>,
+                    it.alltime?.media as List<AnimeRecListQuery.Medium>,
                 )
                 _netWorkState.value = NetWorkState.Success
             }
