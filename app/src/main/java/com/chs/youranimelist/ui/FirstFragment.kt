@@ -21,7 +21,7 @@ class FirstFragment : Fragment() {
     private lateinit var binding: FragmentFirstBinding
     private lateinit var viewModel: MainViewModel
     private lateinit var viewPagerAdapter: ViewPagerAdapter
-    private lateinit var animeListAdapter: AnimeRecListAdapter
+    private lateinit var animeRecListAdapter: AnimeRecListAdapter
     private val repository by lazy { AnimeRepository() }
 
     override fun onCreateView(
@@ -45,7 +45,7 @@ class FirstFragment : Fragment() {
                 viewModel.netWorkState.collect { netWorkState ->
                     when (netWorkState) {
                         is MainViewModel.NetWorkState.Success -> {
-                            animeListAdapter.submitList(it)
+                            animeRecListAdapter.submitList(it)
                             getPagerAnimeList()
                             binding.mainProgressbar.isVisible = false
                         }
@@ -84,7 +84,7 @@ class FirstFragment : Fragment() {
         }
 
         binding.rvAnimeRecList.apply {
-            animeListAdapter = AnimeRecListAdapter(this@FirstFragment.requireContext(),
+            animeRecListAdapter = AnimeRecListAdapter(this@FirstFragment.requireContext(),
                 clickListener = { sortType ->
                     val action = FirstFragmentDirections.actionFirstFragmentToAnimeListFragment(sortType)
                     binding.root.findNavController().navigate(action)
@@ -93,7 +93,7 @@ class FirstFragment : Fragment() {
                 binding.root.findNavController().navigate(action)
             })
             this.layoutManager = LinearLayoutManager(this@FirstFragment.context)
-            this.adapter = animeListAdapter
+            this.adapter = animeRecListAdapter
         }
     }
 }

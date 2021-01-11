@@ -32,8 +32,8 @@ class MainViewModel(
         return responseLiveData
     }
 
-    fun getAnimeRecList():LiveData<List<Any>> {
-        val responseLiveData: MutableLiveData<List<Any>> = MutableLiveData()
+    fun getAnimeRecList():LiveData<List<*>> {
+        val responseLiveData: MutableLiveData<List<*>> = MutableLiveData()
         _netWorkState.value = NetWorkState.Loading
         viewModelScope.launch {
             repository.getAnimeRecList().catch { e->
@@ -41,10 +41,10 @@ class MainViewModel(
             }.collect {
                 viewPagerListQuery = it.viewPager!!
                 responseLiveData.value = listOf (
-                    it.trending?.media as List<AnimeRecListQuery.Medium>,
-                    it.popular?.media as List<AnimeRecListQuery.Medium>,
-                    it.upcomming?.media as List<AnimeRecListQuery.Medium>,
-                    it.alltime?.media as List<AnimeRecListQuery.Medium>,
+                    it.trending?.trendingMedia,
+                    it.popular?.popularMedia,
+                    it.upcomming?.upcommingMedia,
+                    it.alltime?.alltimeMedia,
                 )
                 _netWorkState.value = NetWorkState.Success
             }

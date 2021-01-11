@@ -26,11 +26,10 @@ class AnimeRecListAdapter(
             }
         }
             fun bind() {
-                MediaSeason.UNKNOWN__
                 binding.model = listTitleList[layoutPosition]
                 binding.rvAnime.apply {
-                    animeAdapter = AnimeAdapter(getItem(layoutPosition),clickListener = {
-                        animeClickListener.invoke(it)
+                    animeAdapter = AnimeAdapter(getItem(layoutPosition),clickListener = { animeId->
+                        animeClickListener.invoke(animeId)
                     })
                     this.adapter = animeAdapter
                     this.layoutManager = LinearLayoutManager(mcontext,

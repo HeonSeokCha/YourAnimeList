@@ -1,5 +1,5 @@
 query animeRecList {
-    ViewPager : Page(page:1,perPage:6) {
+    ViewPager: Page(page:1,perPage:6) {
         media(sort:[SCORE_DESC],type:ANIME,format:TV){
             id
             idMal
@@ -21,8 +21,8 @@ query animeRecList {
             genres
         }
     },
-    Trending : Page(page:1,perPage:6) {
-        media(sort:[TRENDING_DESC],type:ANIME,format:TV) {
+    Trending: Page(page:1,perPage:6) {
+        TrendingMedia: media(sort:[TRENDING_DESC],type:ANIME,format:TV) {
             id
             idMal
             title {
@@ -39,7 +39,7 @@ query animeRecList {
         }
     },
     Popular : Page(page:1,perPage:6) {
-        media(sort:[POPULARITY_DESC],season:WINTER,seasonYear:2021,type:ANIME,format:TV) {
+        PopularMedia: media(sort:[POPULARITY_DESC],season:WINTER,seasonYear:2021,type:ANIME,format:TV) {
             id
             idMal
             title {
@@ -56,7 +56,7 @@ query animeRecList {
         }
     },
     Upcomming : Page(page:1,perPage:6) {
-        media(sort:[POPULARITY_DESC],season:SPRING,seasonYear:2021,type:ANIME,format:TV) {
+        UpcommingMedia: media(sort:[POPULARITY_DESC],season:SPRING,seasonYear:2021,type:ANIME,format:TV) {
             id
             idMal
             title {
@@ -73,7 +73,7 @@ query animeRecList {
         }
     },
     Alltime : Page(page:1,perPage:6) {
-        media(sort:[POPULARITY_DESC],type:ANIME,format:TV) {
+        AlltimeMedia: media(sort:[POPULARITY_DESC],type:ANIME,format:TV) {
             id
             idMal
             title {
