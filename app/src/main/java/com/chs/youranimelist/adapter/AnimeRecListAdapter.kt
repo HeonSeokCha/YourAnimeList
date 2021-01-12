@@ -13,7 +13,7 @@ import com.chs.youranimelist.type.MediaSeason
 class AnimeRecListAdapter(
     private val mcontext: Context,
     private val clickListener: (sortType: String) -> Unit,
-    private val animeClickListener: (animeId: Int) -> Unit,
+    private val animeClickListener: (animeId: Int,animeName: String) -> Unit,
 ):ListAdapter<Any,AnimeRecListAdapter.AnimeListRecViewHolder>(AnimeRecListDiffUtilCallBack()) {
     private lateinit var animeAdapter:AnimeAdapter
     private var listTitleList = listOf ("TRENDING NOW","POPULAR THIS SEASON",
@@ -28,8 +28,8 @@ class AnimeRecListAdapter(
             fun bind() {
                 binding.model = listTitleList[layoutPosition]
                 binding.rvAnime.apply {
-                    animeAdapter = AnimeAdapter(getItem(layoutPosition),clickListener = { animeId->
-                        animeClickListener.invoke(animeId)
+                    animeAdapter = AnimeAdapter(getItem(layoutPosition),clickListener = { animeId,animeName->
+                        animeClickListener.invoke(animeId,animeName)
                     })
                     this.adapter = animeAdapter
                     this.layoutManager = LinearLayoutManager(mcontext,

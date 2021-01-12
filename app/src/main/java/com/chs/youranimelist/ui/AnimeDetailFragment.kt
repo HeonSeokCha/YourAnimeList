@@ -36,7 +36,7 @@ class AnimeDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initAnimeInfo(args.animeId.toInput())
-        (activity as MainActivity).binding.toolbar.title = args.animeId.toString()
+        (activity as MainActivity).binding.toolbar.title = args.animeName
     }
 
     private fun initAnimeInfo(animeId: Input<Int>) {

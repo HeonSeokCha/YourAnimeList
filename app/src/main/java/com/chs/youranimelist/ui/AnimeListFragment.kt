@@ -112,8 +112,8 @@ class AnimeListFragment : Fragment() {
 
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
-            animeListAdapter = AnimeListAdapter(clickListener = { animeId ->
-                val action = AnimeListFragmentDirections.actionAnimeListFragmentToAnimeDetailFragment(animeId)
+            animeListAdapter = AnimeListAdapter(clickListener = { animeId,animeName ->
+                val action = AnimeListFragmentDirections.actionAnimeListFragmentToAnimeDetailFragment(animeId,animeName)
                 binding.root.findNavController().navigate(action)
             })
             this.adapter = animeListAdapter

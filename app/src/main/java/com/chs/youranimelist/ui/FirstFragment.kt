@@ -76,8 +76,8 @@ class FirstFragment : Fragment() {
 
     private fun initRecyclerView() {
         binding.viewPager2.apply {
-            viewPagerAdapter = ViewPagerAdapter(clickListener = { anime ->
-                val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(anime.id)
+            viewPagerAdapter = ViewPagerAdapter(clickListener = { animeId,animeName ->
+                val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(animeId,animeName)
                 binding.root.findNavController().navigate(action)
             })
             this.adapter = viewPagerAdapter
@@ -88,8 +88,8 @@ class FirstFragment : Fragment() {
                 clickListener = { sortType ->
                     val action = FirstFragmentDirections.actionFirstFragmentToAnimeListFragment(sortType)
                     binding.root.findNavController().navigate(action)
-            },animeClickListener = { animeId ->
-                val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(animeId)
+            },animeClickListener = { animeId,animeName ->
+                val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(animeId,animeName)
                 binding.root.findNavController().navigate(action)
             })
             this.layoutManager = LinearLayoutManager(this@FirstFragment.context)

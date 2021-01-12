@@ -4,12 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.AnimeRecListQuery
 import com.chs.youranimelist.databinding.ItemViewPagerBinding
 
 class ViewPagerAdapter (
-    private val clickListener: (anime: AnimeRecListQuery.Medium) -> Unit,
+    private val clickListener: (animeId: Int,animeName: String) -> Unit,
     ): ListAdapter<AnimeRecListQuery.Medium,ViewPagerAdapter.ViewPagerViewHolder>(ViewPagerDiffUtilCallBack()) {
 
 
@@ -17,14 +16,19 @@ class ViewPagerAdapter (
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                clickListener.invoke(getItem(bindingAdapterPosition))
+                with(getItem(layoutPosition)) {
+                    if(this.title?.english == null) {
+                        clickListener.invoke(this.id,this.title?.romaji!!)
+                    } else {
+                        clickListener.invoke(this.id,this.title?.english!!)
+                    }
+                }
             }
         }
         fun bind() {
-            binding.model = getItem(bindingAdapterPosition)
+            binding.model = getItem(layoutPosition)
         }
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerViewHolder {
         val view = ItemViewPagerBinding.inflate(LayoutInflater.from(parent.context),parent,false)

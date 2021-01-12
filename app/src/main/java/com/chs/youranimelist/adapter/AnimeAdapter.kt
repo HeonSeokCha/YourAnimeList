@@ -10,7 +10,7 @@ import java.lang.Exception
 
 class AnimeAdapter(
     private val items: Any,
-    private val clickListener: (animeId: Int) -> Unit,
+    private val clickListener: (animeId: Int,animeName: String) -> Unit,
 ): RecyclerView.Adapter<AnimeAdapter.AnimeViewHolder>() {
 
     inner class AnimeViewHolder(
@@ -42,16 +42,32 @@ class AnimeAdapter(
     fun castTypeClickListener(any: Any) {
         when (any) {
             is AnimeRecListQuery.TrendingMedium -> {
-                clickListener.invoke(any.id)
+                if(any.title?.english == null) {
+                    clickListener.invoke(any.id,any.title?.romaji!!)
+                } else {
+                    clickListener.invoke(any.id,any.title?.english!!)
+                }
             }
             is AnimeRecListQuery.PopularMedium -> {
-                clickListener.invoke(any.id)
+                if(any.title?.english == null) {
+                    clickListener.invoke(any.id,any.title?.romaji!!)
+                } else {
+                    clickListener.invoke(any.id,any.title?.english!!)
+                }
             }
             is AnimeRecListQuery.UpcommingMedium -> {
-                clickListener.invoke(any.id)
+                if(any.title?.english == null) {
+                    clickListener.invoke(any.id,any.title?.romaji!!)
+                } else {
+                    clickListener.invoke(any.id,any.title?.english!!)
+                }
             }
             is AnimeRecListQuery.AlltimeMedium -> {
-                clickListener.invoke(any.id)
+                if(any.title?.english == null) {
+                    clickListener.invoke(any.id,any.title?.romaji!!)
+                } else {
+                    clickListener.invoke(any.id,any.title?.english!!)
+                }
             }
         }
     }

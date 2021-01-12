@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.chs.youranimelist.ui.FirstFragment"
-        android:label="@string/first_fragment_label"
+        android:label="YourAnimeList"
         tools:layout="@layout/fragment_first">
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
@@ -26,6 +26,9 @@
         <argument
             android:name="animeId"
             app:argType="integer" />
+        <argument
+            android:name="animeName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/animeListFragment"

@@ -8,7 +8,7 @@ import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.databinding.ItemAnimeBinding
 
 class AnimeListAdapter(
-    private val clickListener: (animeId: Int) -> Unit,
+    private val clickListener: (animeId: Int,animeName: String) -> Unit,
 ): ListAdapter<Any,AnimeListAdapter.AnimeListViewHolder>(AnimeDiffUtilCallBack()) {
     inner class AnimeListViewHolder(
         private val binding: ItemAnimeBinding):RecyclerView.ViewHolder(binding.root) {
@@ -34,10 +34,18 @@ class AnimeListAdapter(
     fun castTypeClickListener(any: Any) {
         when (any) {
             is AnimeListQuery.Medium -> {
-                clickListener.invoke(any.id)
+                if(any.title?.english == null) {
+                    clickListener.invoke(any.id,any.title?.romaji!!)
+                } else {
+                    clickListener.invoke(any.id,any.title?.english!!)
+                }
             }
             is AnimeListQuery.Medium1 -> {
-                clickListener.invoke(any.id)
+                if(any.title?.english == null) {
+                    clickListener.invoke(any.id,any.title?.romaji!!)
+                } else {
+                    clickListener.invoke(any.id,any.title?.english!!)
+                }
             }
         }
     }
