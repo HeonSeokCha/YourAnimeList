@@ -9,13 +9,10 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.apollographql.apollo.api.toInput
+import com.chs.youranimelist.SpacesItemDecoration
 import com.chs.youranimelist.adapter.AnimeListAdapter
 import com.chs.youranimelist.databinding.FragmentAnimeListBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
@@ -118,6 +115,8 @@ class AnimeListFragment : Fragment() {
             })
             this.adapter = animeListAdapter
             this.layoutManager = GridLayoutManager(this@AnimeListFragment.context,3)
+            val itemDecoration = SpacesItemDecoration(3,8)
+            this.addItemDecoration(itemDecoration)
         }
     }
 }

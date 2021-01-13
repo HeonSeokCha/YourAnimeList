@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 object Binding {
@@ -30,30 +31,37 @@ object Binding {
         when(any) {
             is AnimeListQuery.Medium -> {
                 Glide.with(imageView.context).load(any.coverImage?.extraLarge)
+                    .transform(RoundedCorners(10))
                     .into(imageView)
             }
             is AnimeListQuery.Medium1 -> {
                 Glide.with(imageView.context).load(any.coverImage?.extraLarge)
+                    .transform(RoundedCorners(10))
                     .into(imageView)
             }
             is AnimeDetailQuery.Media -> {
                 Glide.with(imageView.context).load(any.coverImage?.extraLarge)
+                    .transform(RoundedCorners(10))
                     .into(imageView)
             }
             is AnimeRecListQuery.TrendingMedium -> {
                 Glide.with(imageView.context).load(any.coverImage?.extraLarge)
+                    .transform(RoundedCorners(10))
                     .into(imageView)
             }
             is AnimeRecListQuery.PopularMedium -> {
                 Glide.with(imageView.context).load(any.coverImage?.extraLarge)
+                    .transform(RoundedCorners(10))
                     .into(imageView)
             }
             is AnimeRecListQuery.UpcommingMedium -> {
                 Glide.with(imageView.context).load(any.coverImage?.extraLarge)
+                    .transform(RoundedCorners(10))
                     .into(imageView)
             }
             is AnimeRecListQuery.AlltimeMedium -> {
                 Glide.with(imageView.context).load(any.coverImage?.extraLarge)
+                    .transform(RoundedCorners(10))
                     .into(imageView)
             }
         }
