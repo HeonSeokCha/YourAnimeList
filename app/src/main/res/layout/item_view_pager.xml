@@ -42,7 +42,7 @@
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:maxLines="1"
-            app:textGeneric="@{model}"
+            app:textGenericTitle="@{model}"
             tools:text="TextView"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/img_view_pager_anime_cover"

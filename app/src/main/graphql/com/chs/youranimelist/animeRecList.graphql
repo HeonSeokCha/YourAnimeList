@@ -17,6 +17,9 @@ query animeRecList {
                 extraLarge
                 color
             }
+            seasonYear
+            format
+            status
             bannerImage
             genres
         }
@@ -34,6 +37,9 @@ query animeRecList {
                 extraLarge
                 color
             }
+            seasonYear
+            format
+            status
             bannerImage
             genres
         }
@@ -51,6 +57,9 @@ query animeRecList {
                 extraLarge
                 color
             }
+            seasonYear
+            format
+            status
             bannerImage
             genres
         }
@@ -68,6 +77,9 @@ query animeRecList {
                 extraLarge
                 color
             }
+            seasonYear
+            format
+            status
             bannerImage
             genres
         }
@@ -85,6 +97,9 @@ query animeRecList {
                 extraLarge
                 color
             }
+            seasonYear
+            format
+            status
             bannerImage
             genres
         }

@@ -115,6 +115,7 @@ class AnimeListFragment : Fragment() {
             })
             this.adapter = animeListAdapter
             this.layoutManager = GridLayoutManager(this@AnimeListFragment.context,3)
+            this.setHasFixedSize(true)
             val itemDecoration = SpacesItemDecoration(3,8)
             this.addItemDecoration(itemDecoration)
         }

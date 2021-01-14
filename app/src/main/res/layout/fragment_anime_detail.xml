@@ -60,7 +60,7 @@
                 android:layout_marginStart="16dp"
                 android:maxLines="2"
                 android:ellipsize="end"
-                app:textGeneric="@{model}"
+                app:textGenericTitle="@{model}"
                 android:textSize="18dp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="@+id/img_cover_image"

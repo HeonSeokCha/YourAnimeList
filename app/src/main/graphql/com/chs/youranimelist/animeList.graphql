@@ -21,6 +21,9 @@ query animeList(
                 extraLarge
                 color
             }
+            seasonYear
+            format
+            status
             bannerImage
             genres
         }
@@ -43,6 +46,9 @@ query animeList(
                 extraLarge
                 color
             }
+            seasonYear
+            format
+            status
             bannerImage
             genres
         }

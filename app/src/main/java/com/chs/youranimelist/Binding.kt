@@ -1,5 +1,6 @@
 package com.chs.youranimelist
 
+import android.annotation.SuppressLint
 import android.text.Html
 import android.util.Log
 import android.view.View
@@ -82,9 +83,90 @@ object Binding {
         }
     }
 
-    @BindingAdapter("textGeneric")
+    @SuppressLint("ResourceAsColor")
+    @BindingAdapter("textGenericStatus")
     @JvmStatic
-    fun setGenericText(textView: TextView,any: Any?) {
+    fun setGenericTextStatus(textView: TextView,any: Any?) {
+        var temp: String = ""
+        when (any) {
+            is AnimeDetailQuery.Media -> {
+                temp  = any.status.toString()
+            }
+            is AnimeListQuery.Medium -> {
+                temp  = any.status.toString()
+            }
+            is AnimeListQuery.Medium1 -> {
+                temp  = any.status.toString()
+            }
+            is AnimeRecListQuery.Medium -> {
+                temp  = any.status.toString()
+            }
+            is AnimeRecListQuery.TrendingMedium -> {
+                temp  = any.status.toString()
+            }
+            is AnimeRecListQuery.PopularMedium -> {
+                temp  = any.status.toString()
+            }
+            is AnimeRecListQuery.UpcommingMedium -> {
+                temp  = any.status.toString()
+            }
+            is AnimeRecListQuery.AlltimeMedium -> {
+                temp  = any.status.toString()
+            }
+        }
+        when(temp) {
+            "RELEASING" -> {
+                temp = "Releasing"
+                textView.setTextColor(R.color.releasing)
+            }
+            "FINISHED" -> {
+                temp = "Finished"
+                textView.setTextColor(R.color.finished)
+            }
+            "NOT_YET_RELEASED" -> {
+                temp = "Not Yet Released"
+                textView.setTextColor(R.color.notYet)
+            }
+        }
+        textView.text = temp
+    }
+
+    @BindingAdapter("textGenericType")
+    @JvmStatic
+    fun setGenericTextType(textView: TextView,any: Any?) {
+        var temp: String = ""
+        when (any) {
+            is AnimeDetailQuery.Media -> {
+                temp  = "${any.format} ⦁ ${any.seasonYear}"
+            }
+            is AnimeListQuery.Medium -> {
+                temp  = "${any.format} ⦁ ${any.seasonYear}"
+            }
+            is AnimeListQuery.Medium1 -> {
+                temp  = "${any.format} ⦁ ${any.seasonYear}"
+            }
+            is AnimeRecListQuery.Medium -> {
+                temp  = "${any.format} ⦁ ${any.seasonYear}"
+            }
+            is AnimeRecListQuery.TrendingMedium -> {
+                temp  = "${any.format} ⦁ ${any.seasonYear}"
+            }
+            is AnimeRecListQuery.PopularMedium -> {
+                temp  = "${any.format} ⦁ ${any.seasonYear}"
+            }
+            is AnimeRecListQuery.UpcommingMedium -> {
+                temp  = "${any.format} ⦁ ${any.seasonYear}"
+            }
+            is AnimeRecListQuery.AlltimeMedium -> {
+                temp  = "${any.format} ⦁ ${any.seasonYear}"
+            }
+        }
+        textView.text = temp
+    }
+
+    @BindingAdapter("textGenericTitle")
+    @JvmStatic
+    fun setGenericTextTitle(textView: TextView,any: Any?) {
         when (any) {
             is AnimeDetailQuery.Media -> {
                 if (any.title?.english != null) {
