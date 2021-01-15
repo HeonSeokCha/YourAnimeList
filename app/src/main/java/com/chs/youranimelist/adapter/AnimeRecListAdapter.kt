@@ -32,7 +32,6 @@ class AnimeRecListAdapter(
                         animeClickListener.invoke(animeId,animeName)
                     })
                     this.adapter = animeAdapter
-                    this.setHasFixedSize(true)
                     this.layoutManager = LinearLayoutManager(mcontext,
                         LinearLayoutManager.HORIZONTAL,false)
                 }

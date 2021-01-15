@@ -1,11 +1,13 @@
 package com.chs.youranimelist
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -29,64 +31,56 @@ object Binding {
     @BindingAdapter("imageGenericCoverSrc")
     @JvmStatic
     fun loadGenericCoverImg(imageView: ImageView,any: Any?) {
+        var temp: String = ""
         when(any) {
             is AnimeListQuery.Medium -> {
-                Glide.with(imageView.context).load(any.coverImage?.extraLarge)
-                    .transform(RoundedCorners(10))
-                    .into(imageView)
+                temp = any.coverImage?.extraLarge!!
             }
             is AnimeListQuery.Medium1 -> {
-                Glide.with(imageView.context).load(any.coverImage?.extraLarge)
-                    .transform(RoundedCorners(10))
-                    .into(imageView)
+                temp = any.coverImage?.extraLarge!!
             }
             is AnimeDetailQuery.Media -> {
-                Glide.with(imageView.context).load(any.coverImage?.extraLarge)
-                    .transform(RoundedCorners(10))
-                    .into(imageView)
+                temp = any.coverImage?.extraLarge!!
             }
             is AnimeRecListQuery.TrendingMedium -> {
-                Glide.with(imageView.context).load(any.coverImage?.extraLarge)
-                    .transform(RoundedCorners(10))
-                    .into(imageView)
+                temp = any.coverImage?.extraLarge!!
             }
             is AnimeRecListQuery.PopularMedium -> {
-                Glide.with(imageView.context).load(any.coverImage?.extraLarge)
-                    .transform(RoundedCorners(10))
-                    .into(imageView)
+                temp = any.coverImage?.extraLarge!!
             }
             is AnimeRecListQuery.UpcommingMedium -> {
-                Glide.with(imageView.context).load(any.coverImage?.extraLarge)
-                    .transform(RoundedCorners(10))
-                    .into(imageView)
+                temp = any.coverImage?.extraLarge!!
             }
             is AnimeRecListQuery.AlltimeMedium -> {
-                Glide.with(imageView.context).load(any.coverImage?.extraLarge)
-                    .transform(RoundedCorners(10))
-                    .into(imageView)
+                temp = any.coverImage?.extraLarge!!
             }
         }
+        Glide.with(imageView.context).load(temp)
+            .transform(RoundedCorners(10))
+            .into(imageView)
     }
 
     @BindingAdapter("imageGenericBannerSrc")
     @JvmStatic
     fun loadGenericBannerImg(imageView: ImageView,any: Any?) {
+        var temp: String = ""
         when(any) {
             is AnimeDetailQuery.Media -> {
-                Glide.with(imageView.context).load(any.bannerImage)
-                    .into(imageView)
+                temp = any.bannerImage!!
             }
             is AnimeRecListQuery.Medium -> {
-                Glide.with(imageView.context).load(any.bannerImage)
-                    .into(imageView)
+                temp = any.bannerImage!!
             }
         }
+        Glide.with(imageView.context).load(temp)
+            .transform(RoundedCorners(10))
+            .into(imageView)
     }
 
     @SuppressLint("ResourceAsColor")
     @BindingAdapter("textGenericStatus")
     @JvmStatic
-    fun setGenericTextStatus(textView: TextView,any: Any?) {
+    fun setGenericTextStatus(textView: TextView, any: Any?) {
         var temp: String = ""
         when (any) {
             is AnimeDetailQuery.Media -> {
@@ -117,15 +111,15 @@ object Binding {
         when(temp) {
             "RELEASING" -> {
                 temp = "Releasing"
-                textView.setTextColor(R.color.releasing)
+                textView.setTextColor(ContextCompat.getColor(textView.context,R.color.releasing))
             }
             "FINISHED" -> {
                 temp = "Finished"
-                textView.setTextColor(R.color.finished)
+                textView.setTextColor(ContextCompat.getColor(textView.context,R.color.finished))
             }
             "NOT_YET_RELEASED" -> {
                 temp = "Not Yet Released"
-                textView.setTextColor(R.color.notYet)
+                textView.setTextColor(ContextCompat.getColor(textView.context,R.color.notYet))
             }
         }
         textView.text = temp
