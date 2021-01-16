@@ -17,6 +17,7 @@ query animeRecList {
                 extraLarge
                 color
             }
+            averageScore
             seasonYear
             format
             status
@@ -37,6 +38,7 @@ query animeRecList {
                 extraLarge
                 color
             }
+            averageScore
             seasonYear
             format
             status
@@ -57,6 +59,7 @@ query animeRecList {
                 extraLarge
                 color
             }
+            averageScore
             seasonYear
             format
             status
@@ -77,6 +80,7 @@ query animeRecList {
                 extraLarge
                 color
             }
+            averageScore
             seasonYear
             format
             status
@@ -97,6 +101,7 @@ query animeRecList {
                 extraLarge
                 color
             }
+            averageScore
             seasonYear
             format
             status

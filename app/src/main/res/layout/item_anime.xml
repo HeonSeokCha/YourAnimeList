@@ -45,7 +45,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="TextView"
-                android:textSize="13dp"
+                android:textSize="13sp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toTopOf="@+id/txt_anime_status"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="TextView"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/txt_anime_type"
                 app:layout_constraintStart_toStartOf="@+id/txt_animeList_title"
                 app:textGenericStatus="@{model}" />
@@ -76,6 +76,19 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/txt_anime_status"
                 app:textGenericType="@{model}" />
+
+            <TextView
+                android:id="@+id/txt_animeList_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableLeft="@drawable/ic_score"
+                android:text="75"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:textGenericScore="@{model}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

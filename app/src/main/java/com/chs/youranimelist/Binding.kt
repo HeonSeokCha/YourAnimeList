@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -66,10 +67,10 @@ object Binding {
         var temp: String = ""
         when(any) {
             is AnimeDetailQuery.Media -> {
-                temp = any.bannerImage!!
+                temp = any.bannerImage.toString()
             }
             is AnimeRecListQuery.Medium -> {
-                temp = any.bannerImage!!
+                temp = any.bannerImage.toString()
             }
         }
         Glide.with(imageView.context).load(temp)
@@ -154,6 +155,39 @@ object Binding {
             is AnimeRecListQuery.AlltimeMedium -> {
                 temp  = "${any.format} ⦁ ${any.seasonYear}"
             }
+        }
+        textView.text = temp
+    }
+
+    @BindingAdapter("textGenericScore")
+    @JvmStatic
+    fun setGenericTextScore(textView: TextView,any: Any?) {
+        var temp: String = "0"
+        when (any) {
+            is AnimeDetailQuery.Media -> {
+                temp  = "${any.averageScore}"
+            }
+            is AnimeListQuery.Medium -> {
+                temp  = "${any.averageScore}"
+            }
+            is AnimeListQuery.Medium1 -> {
+                temp  = "${any.averageScore}"
+            }
+            is AnimeRecListQuery.Medium -> {
+                temp  = "${any.averageScore}"
+            }
+            is AnimeRecListQuery.TrendingMedium -> {
+                temp  = "${any.averageScore}"
+            }
+            is AnimeRecListQuery.PopularMedium -> {
+                temp  = "${any.averageScore}"
+            }
+            is AnimeRecListQuery.AlltimeMedium -> {
+                temp  = "${any.averageScore}"
+            }
+        }
+        if(temp == "null") {
+            temp = "0"
         }
         textView.text = temp
     }

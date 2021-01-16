@@ -21,6 +21,7 @@ query animeList(
                 extraLarge
                 color
             }
+            averageScore
             seasonYear
             format
             status
@@ -46,6 +47,7 @@ query animeList(
                 extraLarge
                 color
             }
+            averageScore
             seasonYear
             format
             status
