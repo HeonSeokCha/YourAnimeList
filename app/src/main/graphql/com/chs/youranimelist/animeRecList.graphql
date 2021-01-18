@@ -1,6 +1,6 @@
 query animeRecList {
     ViewPager: Page(page:1,perPage:6) {
-        media(sort:[SCORE_DESC],type:ANIME,format:TV){
+        media(sort:[SCORE_DESC],type:ANIME,format:TV,seasonYear:2021){
             id
             idMal
             title {
@@ -26,7 +26,7 @@ query animeRecList {
         }
     },
     Trending: Page(page:1,perPage:6) {
-        TrendingMedia: media(sort:[TRENDING_DESC],type:ANIME,format:TV) {
+        TrendingMedia: media(sort:[TRENDING_DESC],type:ANIME,format:TV,seasonYear:2021) {
             id
             idMal
             title {

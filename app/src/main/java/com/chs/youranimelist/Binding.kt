@@ -2,6 +2,8 @@ package com.chs.youranimelist
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.text.Html
 import android.util.Log
 import android.view.View
@@ -61,20 +63,25 @@ object Binding {
             .into(imageView)
     }
 
+    @SuppressLint("ResourceType")
     @BindingAdapter("imageGenericBannerSrc")
     @JvmStatic
     fun loadGenericBannerImg(imageView: ImageView,any: Any?) {
         var temp: String = ""
+        var color: String = ""
         when(any) {
             is AnimeDetailQuery.Media -> {
                 temp = any.bannerImage.toString()
+                color = any.coverImage!!.color.toString()
             }
             is AnimeRecListQuery.Medium -> {
                 temp = any.bannerImage.toString()
+                color = any.coverImage!!.color.toString()
             }
         }
         Glide.with(imageView.context).load(temp)
             .transform(RoundedCorners(10))
+//            .placeholder(ColorDrawable(Color.parseColor(color)))
             .into(imageView)
     }
 
@@ -119,7 +126,7 @@ object Binding {
                 textView.setTextColor(ContextCompat.getColor(textView.context,R.color.finished))
             }
             "NOT_YET_RELEASED" -> {
-                temp = "Not Yet Released"
+                temp = "Up Coming"
                 textView.setTextColor(ContextCompat.getColor(textView.context,R.color.notYet))
             }
         }

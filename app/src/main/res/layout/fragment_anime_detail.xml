@@ -46,6 +46,7 @@
                 android:id="@+id/img_cover_image"
                 android:layout_width="125dp"
                 android:layout_height="175dp"
+                android:scaleType="fitXY"
                 android:layout_marginStart="8dp"
                 app:imageGenericCoverSrc="@{model}"
                 app:layout_constraintBottom_toBottomOf="@+id/img_bannerImage"
