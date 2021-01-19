@@ -11,7 +11,7 @@ import com.chs.youranimelist.databinding.ItemAnimeListBinding
 import com.chs.youranimelist.type.MediaSeason
 
 class AnimeRecListAdapter(
-    private val mcontext: Context,
+    private val mContext: Context,
     private val clickListener: (sortType: String) -> Unit,
     private val animeClickListener: (animeId: Int,animeName: String) -> Unit,
 ):ListAdapter<Any,AnimeRecListAdapter.AnimeListRecViewHolder>(AnimeRecListDiffUtilCallBack()) {
@@ -32,7 +32,7 @@ class AnimeRecListAdapter(
                         animeClickListener.invoke(animeId,animeName)
                     })
                     this.adapter = animeAdapter
-                    this.layoutManager = LinearLayoutManager(mcontext,
+                    this.layoutManager = LinearLayoutManager(mContext,
                         LinearLayoutManager.HORIZONTAL,false)
                 }
             }
