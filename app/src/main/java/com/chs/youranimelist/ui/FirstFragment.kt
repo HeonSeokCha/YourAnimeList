@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.adapter.AnimeRecListAdapter
-import com.chs.youranimelist.adapter.ViewPagerAdapter
+import com.chs.youranimelist.adapter.ViewPagerAnimeRecAdapter
 import com.chs.youranimelist.databinding.FragmentFirstBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.viewmodel.MainViewModel
@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.collect
 class FirstFragment : Fragment() {
     private lateinit var binding: FragmentFirstBinding
     private lateinit var viewModel: MainViewModel
-    private lateinit var viewPagerAdapter: ViewPagerAdapter
+    private lateinit var viewPagerAnimeRecAdapter: ViewPagerAnimeRecAdapter
     private lateinit var animeRecListAdapter: AnimeRecListAdapter
     private val repository by lazy { AnimeRepository() }
 
@@ -70,17 +70,17 @@ class FirstFragment : Fragment() {
 
     private fun getPagerAnimeList() {
         viewModel.getPagerAnimeList().observe(viewLifecycleOwner, {
-            viewPagerAdapter.submitList(it.media)
+            viewPagerAnimeRecAdapter.submitList(it.media)
         })
     }
 
     private fun initRecyclerView() {
         binding.viewPager2.apply {
-            viewPagerAdapter = ViewPagerAdapter(clickListener = { animeId,animeName ->
+            viewPagerAnimeRecAdapter = ViewPagerAnimeRecAdapter(clickListener = { animeId, animeName ->
                 val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(animeId,animeName)
                 binding.root.findNavController().navigate(action)
             })
-            this.adapter = viewPagerAdapter
+            this.adapter = viewPagerAnimeRecAdapter
         }
 
         binding.rvAnimeRecList.apply {

@@ -10,9 +10,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -60,6 +60,7 @@ object Binding {
         }
         Glide.with(imageView.context).load(temp)
             .transform(RoundedCorners(10))
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(imageView)
     }
 
@@ -68,20 +69,20 @@ object Binding {
     @JvmStatic
     fun loadGenericBannerImg(imageView: ImageView,any: Any?) {
         var temp: String = ""
-        var color: String = ""
+        var color: String = "#ffffff"
         when(any) {
             is AnimeDetailQuery.Media -> {
                 temp = any.bannerImage.toString()
-                color = any.coverImage!!.color.toString()
+                color = any.coverImage?.color.toString()
             }
             is AnimeRecListQuery.Medium -> {
                 temp = any.bannerImage.toString()
-                color = any.coverImage!!.color.toString()
+                color = any.coverImage?.color.toString()
             }
         }
         Glide.with(imageView.context).load(temp)
-            .transform(RoundedCorners(10))
-//            .placeholder(ColorDrawable(Color.parseColor(color)))
+            .placeholder(ColorDrawable(Color.parseColor(color)))
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(imageView)
     }
 

@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.AnimeRecListQuery
 import com.chs.youranimelist.databinding.ItemViewPagerBinding
 
-class ViewPagerAdapter (
+class ViewPagerAnimeRecAdapter (
     private val clickListener: (animeId: Int,animeName: String) -> Unit,
-    ): ListAdapter<AnimeRecListQuery.Medium,ViewPagerAdapter.ViewPagerViewHolder>(ViewPagerDiffUtilCallBack()) {
+    ): ListAdapter<AnimeRecListQuery.Medium,ViewPagerAnimeRecAdapter.ViewPagerViewHolder>(ViewPagerDiffUtilCallBack()) {
 
 
     inner class ViewPagerViewHolder(private val binding: ItemViewPagerBinding) :

@@ -35,8 +35,9 @@ class AnimeDetailFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initAnimeInfo(args.animeId.toInput())
         (activity as MainActivity).binding.toolbar.title = args.animeName
+        initAnimeInfo(args.animeId.toInput())
+        initTabView()
     }
 
     private fun initAnimeInfo(animeId: Input<Int>) {
@@ -61,5 +62,10 @@ class AnimeDetailFragment : Fragment() {
                 }
             }
         })
+    }
+
+
+    private fun initTabView() {
+
     }
 }
