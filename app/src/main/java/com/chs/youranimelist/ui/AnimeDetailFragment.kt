@@ -14,9 +14,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
+import com.chs.youranimelist.AnimeDetailQuery
+import com.chs.youranimelist.adapter.ViewPagerAnimeDetailAdapter
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.viewmodel.MainViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.flow.collect
 
 class AnimeDetailFragment : Fragment() {
@@ -37,7 +40,6 @@ class AnimeDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as MainActivity).binding.toolbar.title = args.animeName
         initAnimeInfo(args.animeId.toInput())
-        initTabView()
     }
 
     private fun initAnimeInfo(animeId: Input<Int>) {
@@ -47,6 +49,7 @@ class AnimeDetailFragment : Fragment() {
                     when (netWorkState) {
                         is MainViewModel.NetWorkState.Success -> {
                             binding.model = it
+                            initTabView(it)
                             binding.detailPageProgressBar.isVisible = false
                         }
                         is MainViewModel.NetWorkState.Error -> {
@@ -65,7 +68,13 @@ class AnimeDetailFragment : Fragment() {
     }
 
 
-    private fun initTabView() {
-
+    private fun initTabView(animeInfo: AnimeDetailQuery.Media) {
+        binding.viewPagerAnimeDetail.adapter = ViewPagerAnimeDetailAdapter(requireActivity(),animeInfo)
+        TabLayoutMediator(binding.tabAnimeDetail,binding.viewPagerAnimeDetail) { tab,position ->
+            var tabArr: List<String> = listOf("Overview","Characters","Recommend")
+            for(i in 0..position) {
+                tab.text = tabArr[i]
+            }
+        }.attach()
     }
 }

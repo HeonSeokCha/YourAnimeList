@@ -20,7 +20,7 @@
             <ImageView
                 android:id="@+id/img_bannerImage"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="200dp"
                 android:foreground="@drawable/background_gradient"
                 android:scaleType="fitXY"
                 app:imageGenericBannerSrc="@{model}"
@@ -74,9 +74,9 @@
             <ProgressBar
                 android:id="@+id/detailPage_progressBar"
                 style="?android:attr/progressBarStyle"
+                android:elevation="3dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -132,22 +132,24 @@
                 app:layout_constraintTop_toBottomOf="@+id/txt_anime_year" />
 
             <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_anime_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabPaddingStart="10dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/viewPager_anime_detail" />
+                app:layout_constraintTop_toBottomOf="@+id/btn_save_list"
+                app:tabPaddingStart="10dp" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager_anime_detail"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_save_list" />
+                app:layout_constraintTop_toBottomOf="@+id/tab_anime_detail"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
