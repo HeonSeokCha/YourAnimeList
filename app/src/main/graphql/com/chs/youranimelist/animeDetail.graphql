@@ -27,6 +27,19 @@ query animeDetail($id: Int) {
         popularity
         favourites
         source
+        characters(sort: [ID]) {
+            nodes {
+                id
+                name {
+                    first
+                    last
+                    full
+                }
+                image {
+                    large
+                }
+            }
+        }
         recommendations {
             nodes {
                 mediaRecommendation {

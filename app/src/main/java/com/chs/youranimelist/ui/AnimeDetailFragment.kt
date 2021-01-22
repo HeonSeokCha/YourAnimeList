@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.AnimeDetailQuery
@@ -69,10 +70,11 @@ class AnimeDetailFragment : Fragment() {
 
 
     private fun initTabView(animeInfo: AnimeDetailQuery.Media) {
-        binding.viewPagerAnimeDetail.adapter = ViewPagerAnimeDetailAdapter(requireActivity(),animeInfo)
-        TabLayoutMediator(binding.tabAnimeDetail,binding.viewPagerAnimeDetail) { tab,position ->
-            var tabArr: List<String> = listOf("Overview","Characters","Recommend")
-            for(i in 0..position) {
+        var adapter = ViewPagerAnimeDetailAdapter(requireActivity(), animeInfo)
+        binding.viewPagerAnimeDetail.adapter = adapter
+        TabLayoutMediator(binding.tabAnimeDetail, binding.viewPagerAnimeDetail) { tab, position ->
+            var tabArr: List<String> = listOf("Overview", "Characters", "Recommend")
+            for (i in 0..position) {
                 tab.text = tabArr[i]
             }
         }.attach()

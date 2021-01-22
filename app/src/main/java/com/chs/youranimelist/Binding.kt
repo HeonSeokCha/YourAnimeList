@@ -13,7 +13,10 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.DrawableTransformation
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 object Binding {
@@ -29,6 +32,16 @@ object Binding {
     fun setHtmlTags(textView: TextView,string: String?) {
         if(string?.isNotEmpty() == true)
             textView.text = Html.fromHtml(string, Html.FROM_HTML_MODE_LEGACY).toString()
+    }
+
+    @BindingAdapter("circleSrc")
+    @JvmStatic
+    fun loadCircleImg(imageView: ImageView,path: String) {
+        Glide.with(imageView.context).load(path)
+            .apply(RequestOptions().circleCrop())
+            .transition(DrawableTransitionOptions().crossFade())
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(imageView)
     }
 
     @BindingAdapter("imageGenericCoverSrc")
@@ -60,6 +73,7 @@ object Binding {
         }
         Glide.with(imageView.context).load(temp)
             .transform(RoundedCorners(10))
+            .transition(DrawableTransitionOptions().crossFade())
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(imageView)
     }
@@ -80,8 +94,12 @@ object Binding {
                 color = any.coverImage?.color.toString()
             }
         }
+        if(color == "null") {
+            color = "#ffffff"
+        }
         Glide.with(imageView.context).load(temp)
             .placeholder(ColorDrawable(Color.parseColor(color)))
+            .transition(DrawableTransitionOptions().crossFade())
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(imageView)
     }

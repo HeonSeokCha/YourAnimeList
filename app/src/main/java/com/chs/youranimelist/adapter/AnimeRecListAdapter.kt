@@ -28,9 +28,10 @@ class AnimeRecListAdapter(
             fun bind() {
                 binding.model = listTitleList[layoutPosition]
                 binding.rvAnime.apply {
-                    animeAdapter = AnimeAdapter(getItem(layoutPosition),clickListener = { animeId,animeName->
+                    animeAdapter = AnimeAdapter(clickListener = { animeId,animeName->
                         animeClickListener.invoke(animeId,animeName)
                     })
+                    animeAdapter.submitList(currentList[layoutPosition] as List<*>)
                     this.adapter = animeAdapter
                     this.layoutManager = LinearLayoutManager(mContext,
                         LinearLayoutManager.HORIZONTAL,false)
