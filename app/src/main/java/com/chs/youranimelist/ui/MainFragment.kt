@@ -10,15 +10,16 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.adapter.AnimeRecListAdapter
 import com.chs.youranimelist.adapter.ViewPagerAnimeRecAdapter
-import com.chs.youranimelist.databinding.FragmentFirstBinding
+import com.chs.youranimelist.databinding.FragmentMainBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.viewmodel.MainViewModel
 import kotlinx.coroutines.flow.collect
 
-class FirstFragment : Fragment() {
-    private lateinit var binding: FragmentFirstBinding
+class MainFragment : Fragment() {
+    private lateinit var binding: FragmentMainBinding
     private lateinit var viewModel: MainViewModel
     private lateinit var viewPagerAnimeRecAdapter: ViewPagerAnimeRecAdapter
     private lateinit var animeRecListAdapter: AnimeRecListAdapter
@@ -28,7 +29,7 @@ class FirstFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFirstBinding.inflate(inflater, container, false)
+        binding = FragmentMainBinding.inflate(inflater, container, false)
         viewModel = MainViewModel(repository)
         return binding.root
     }
@@ -51,7 +52,7 @@ class FirstFragment : Fragment() {
                         }
                         is MainViewModel.NetWorkState.Error -> {
                             Toast.makeText(
-                                this@FirstFragment.context,
+                                this@MainFragment.context,
                                 netWorkState.message,
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -77,22 +78,22 @@ class FirstFragment : Fragment() {
     private fun initRecyclerView() {
         binding.viewPager2.apply {
             viewPagerAnimeRecAdapter = ViewPagerAnimeRecAdapter(clickListener = { animeId, animeName ->
-                val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(animeId,animeName)
+                val action = MainFragmentDirections.actionFirstFragmentToSecondFragment(animeId,animeName)
                 binding.root.findNavController().navigate(action)
             })
             this.adapter = viewPagerAnimeRecAdapter
         }
 
         binding.rvAnimeRecList.apply {
-            animeRecListAdapter = AnimeRecListAdapter(this@FirstFragment.requireContext(),
+            animeRecListAdapter = AnimeRecListAdapter(this@MainFragment.requireContext(),
                 clickListener = { sortType ->
-                    val action = FirstFragmentDirections.actionFirstFragmentToAnimeListFragment(sortType)
+                    val action = MainFragmentDirections.actionFirstFragmentToAnimeListFragment(sortType)
                     binding.root.findNavController().navigate(action)
             },animeClickListener = { animeId,animeName ->
-                val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(animeId,animeName)
+                val action = MainFragmentDirections.actionFirstFragmentToSecondFragment(animeId,animeName)
                 binding.root.findNavController().navigate(action)
             })
-            this.layoutManager = LinearLayoutManager(this@FirstFragment.context)
+            this.layoutManager = LinearLayoutManager(this@MainFragment.context)
             this.adapter = animeRecListAdapter
         }
     }

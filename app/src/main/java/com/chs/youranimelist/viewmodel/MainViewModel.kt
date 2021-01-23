@@ -18,7 +18,6 @@ class MainViewModel(
     val netWorkState: StateFlow<NetWorkState> = _netWorkState
     private lateinit var viewPagerListQuery: AnimeRecListQuery.ViewPager
 
-
     sealed class NetWorkState {
         object Success: NetWorkState()
         data class Error(val message: String): NetWorkState()
