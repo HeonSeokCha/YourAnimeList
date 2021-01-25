@@ -1,12 +1,12 @@
 package com.chs.youranimelist.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,11 +23,12 @@ class MainFragment : Fragment() {
     private lateinit var viewModel: MainViewModel
     private lateinit var viewPagerAnimeRecAdapter: ViewPagerAnimeRecAdapter
     private lateinit var animeRecListAdapter: AnimeRecListAdapter
+    var currentVisiblePosition: Int = 0
     private val repository by lazy { AnimeRepository() }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         viewModel = MainViewModel(repository)
@@ -38,6 +39,18 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         getAnimeRecList()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        currentVisiblePosition =
+            (binding.rvAnimeRecList.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (binding.rvAnimeRecList.layoutManager as LinearLayoutManager).scrollToPosition(currentVisiblePosition)
+        currentVisiblePosition = 0
     }
 
     private fun getAnimeRecList() {
@@ -78,7 +91,10 @@ class MainFragment : Fragment() {
     private fun initRecyclerView() {
         binding.viewPager2.apply {
             viewPagerAnimeRecAdapter = ViewPagerAnimeRecAdapter(clickListener = { animeId, animeName ->
-                val action = MainFragmentDirections.actionFirstFragmentToSecondFragment(animeId,animeName)
+                val action = MainFragmentDirections.actionFirstFragmentToSecondFragment(
+                    animeId,
+                    animeName
+                )
                 binding.root.findNavController().navigate(action)
             })
             this.adapter = viewPagerAnimeRecAdapter
@@ -87,12 +103,19 @@ class MainFragment : Fragment() {
         binding.rvAnimeRecList.apply {
             animeRecListAdapter = AnimeRecListAdapter(this@MainFragment.requireContext(),
                 clickListener = { sortType ->
-                    val action = MainFragmentDirections.actionFirstFragmentToAnimeListFragment(sortType)
+                    val action = MainFragmentDirections.actionFirstFragmentToAnimeListFragment(
+                        sortType
+                    )
                     binding.root.findNavController().navigate(action)
-            },animeClickListener = { animeId,animeName ->
-                val action = MainFragmentDirections.actionFirstFragmentToSecondFragment(animeId,animeName)
-                binding.root.findNavController().navigate(action)
-            })
+                }, animeClickListener = { animeId, animeName ->
+                    val action = MainFragmentDirections.actionFirstFragmentToSecondFragment(
+                        animeId,
+                        animeName
+                    )
+                    binding.root.findNavController().navigate(action)
+                }).apply {
+                this.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            }
             this.layoutManager = LinearLayoutManager(this@MainFragment.context)
             this.adapter = animeRecListAdapter
         }

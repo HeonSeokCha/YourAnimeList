@@ -11,9 +11,7 @@ import com.chs.youranimelist.type.MediaSort
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class MainViewModel(
-    private val repository: AnimeRepository
-): ViewModel() {
+class MainViewModel (private val repository: AnimeRepository): ViewModel() {
     private val _netWorkState = MutableStateFlow<NetWorkState>(NetWorkState.Empty)
     val netWorkState: StateFlow<NetWorkState> = _netWorkState
     private lateinit var viewPagerListQuery: AnimeRecListQuery.ViewPager
