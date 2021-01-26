@@ -15,7 +15,7 @@ class AnimeRecListAdapter(
     private val clickListener: (sortType: String) -> Unit,
     private val animeClickListener: (animeId: Int,animeName: String) -> Unit,
 ):ListAdapter<Any,AnimeRecListAdapter.AnimeListRecViewHolder>(AnimeRecListDiffUtilCallBack()) {
-    private lateinit var animeAdapter:AnimeAdapter
+    lateinit var animeAdapter:AnimeAdapter
     private var listTitleList = listOf ("TRENDING NOW","POPULAR THIS SEASON",
         "UPCOMING NEXT SEASON","ALL TIME POPULAR")
     inner class AnimeListRecViewHolder(private val binding: ItemAnimeListBinding)
@@ -30,7 +30,9 @@ class AnimeRecListAdapter(
                 binding.rvAnime.apply {
                     animeAdapter = AnimeAdapter(clickListener = { animeId,animeName->
                         animeClickListener.invoke(animeId,animeName)
-                    })
+                    }).apply {
+                        this.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                    }
                     animeAdapter.submitList(currentList[layoutPosition] as List<*>)
                     this.adapter = animeAdapter
                     this.layoutManager = LinearLayoutManager(mContext,

@@ -80,4 +80,22 @@ class MainViewModel (private val repository: AnimeRepository): ViewModel() {
         }
         return responseLiveData
     }
+
+    private val liveOverView: MutableLiveData<String> = MutableLiveData()
+    private val liveCharaList: MutableLiveData<List<AnimeDetailQuery.Node>> = MutableLiveData()
+
+    fun setOverView(overView: String) {
+        liveOverView.value = overView
+    }
+    fun getOverView(): LiveData<String> {
+        return liveOverView
+    }
+
+    fun setCharaList(charaList: List<AnimeDetailQuery.Node>) {
+        liveCharaList.value = charaList
+    }
+
+    fun getCharaList(): LiveData<List<AnimeDetailQuery.Node>> {
+        return liveCharaList
+    }
 }

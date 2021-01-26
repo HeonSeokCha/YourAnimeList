@@ -8,11 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
-import androidx.viewpager2.widget.ViewPager2
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.AnimeDetailQuery
@@ -34,7 +30,6 @@ class AnimeDetailFragment : Fragment() {
     ): View? {
         binding = FragmentAnimeDetailBinding.inflate(inflater,container,false)
         viewModel = MainViewModel(repository)
-
         return binding.root
     }
 
@@ -71,6 +66,8 @@ class AnimeDetailFragment : Fragment() {
 
     private fun initTabView(animeInfo: AnimeDetailQuery.Media) {
         var adapter = ViewPagerAnimeDetailAdapter(requireActivity(), animeInfo)
+        viewModel.setOverView(animeInfo.description!!)
+        viewModel.setCharaList(animeInfo.characters?.nodes as List<AnimeDetailQuery.Node>)
         binding.viewPagerAnimeDetail.adapter = adapter
         TabLayoutMediator(binding.tabAnimeDetail, binding.viewPagerAnimeDetail) { tab, position ->
             var tabArr: List<String> = listOf("Overview", "Characters", "Recommend")
