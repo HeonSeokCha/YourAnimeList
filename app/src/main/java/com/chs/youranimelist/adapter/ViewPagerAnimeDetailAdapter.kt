@@ -12,8 +12,8 @@ class ViewPagerAnimeDetailAdapter(
     private val AnimeInfo: AnimeDetailQuery.Media): FragmentStateAdapter(fm) {
     override fun createFragment(position: Int): Fragment {
         return when(position) {
-            0 -> TabOverviewFragment()
-            1 -> TabCharaFragment()
+            0 -> TabOverviewFragment(AnimeInfo)
+            1 -> TabCharaFragment(AnimeInfo.characters!!.nodes as List<AnimeDetailQuery.Node>)
             else -> Fragment()
         }
     }

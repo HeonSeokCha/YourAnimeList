@@ -66,9 +66,8 @@ class AnimeDetailFragment : Fragment() {
 
     private fun initTabView(animeInfo: AnimeDetailQuery.Media) {
         var adapter = ViewPagerAnimeDetailAdapter(requireActivity(), animeInfo)
-        viewModel.setOverView(animeInfo.description!!)
-        viewModel.setCharaList(animeInfo.characters?.nodes as List<AnimeDetailQuery.Node>)
         binding.viewPagerAnimeDetail.adapter = adapter
+        binding.viewPagerAnimeDetail.isUserInputEnabled = false
         TabLayoutMediator(binding.tabAnimeDetail, binding.viewPagerAnimeDetail) { tab, position ->
             var tabArr: List<String> = listOf("Overview", "Characters", "Recommend")
             for (i in 0..position) {
