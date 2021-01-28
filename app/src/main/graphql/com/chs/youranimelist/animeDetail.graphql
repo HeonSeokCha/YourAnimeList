@@ -27,7 +27,7 @@ query animeDetail($id: Int) {
         popularity
         favourites
         source
-        characters(sort: [ID]) {
+        characters(sort: [ID,ROLE]) {
             nodes {
                 id
                 name {

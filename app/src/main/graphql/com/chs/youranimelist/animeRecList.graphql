@@ -1,112 +1,46 @@
 query animeRecList {
     ViewPager: Page(page:1,perPage:6) {
         media(sort:[SCORE_DESC],type:ANIME,format:TV,seasonYear:2021){
-            id
-            idMal
-            title {
-                romaji
-                native
-                english
-            }
-            trailer {
-                id
-                site
-                thumbnail
-            }
-            coverImage {
-                extraLarge
-                color
-            }
-            averageScore
-            seasonYear
-            format
-            status
-            bannerImage
-            genres
+            ... animeList
         }
     },
     Trending: Page(page:1,perPage:6) {
         TrendingMedia: media(sort:[TRENDING_DESC],type:ANIME,format:TV,seasonYear:2021) {
-            id
-            idMal
-            title {
-                romaji
-                native
-                english
-            }
-            coverImage {
-                extraLarge
-                color
-            }
-            averageScore
-            seasonYear
-            format
-            status
-            bannerImage
-            genres
+            ... animeList
         }
     },
     Popular : Page(page:1,perPage:6) {
         PopularMedia: media(sort:[POPULARITY_DESC],season:WINTER,seasonYear:2021,type:ANIME,format:TV) {
-            id
-            idMal
-            title {
-                romaji
-                native
-                english
-            }
-            coverImage {
-                extraLarge
-                color
-            }
-            averageScore
-            seasonYear
-            format
-            status
-            bannerImage
-            genres
+            ... animeList
         }
     },
     Upcomming : Page(page:1,perPage:6) {
         UpcommingMedia: media(sort:[POPULARITY_DESC],season:SPRING,seasonYear:2021,type:ANIME,format:TV) {
-            id
-            idMal
-            title {
-                romaji
-                native
-                english
-            }
-            coverImage {
-                extraLarge
-                color
-            }
-            averageScore
-            seasonYear
-            format
-            status
-            bannerImage
-            genres
+            ... animeList
         }
     },
     Alltime : Page(page:1,perPage:6) {
         AlltimeMedia: media(sort:[POPULARITY_DESC],type:ANIME,format:TV) {
-            id
-            idMal
-            title {
-                romaji
-                native
-                english
-            }
-            coverImage {
-                extraLarge
-                color
-            }
-            averageScore
-            seasonYear
-            format
-            status
-            bannerImage
-            genres
+            ... animeList
         }
     }
+}
+fragment animeList on Media {
+    id
+    idMal
+    title {
+        romaji
+        native
+        english
+    }
+    coverImage {
+        extraLarge
+        color
+    }
+    averageScore
+    seasonYear
+    format
+    status
+    bannerImage
+    genres
 }

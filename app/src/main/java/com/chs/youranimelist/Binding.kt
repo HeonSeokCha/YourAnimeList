@@ -59,16 +59,16 @@ object Binding {
                 temp = any.coverImage?.extraLarge!!
             }
             is AnimeRecListQuery.TrendingMedium -> {
-                temp = any.coverImage?.extraLarge!!
+                temp = any.fragments.animeList.coverImage?.extraLarge!!
             }
             is AnimeRecListQuery.PopularMedium -> {
-                temp = any.coverImage?.extraLarge!!
+                temp = any.fragments.animeList.coverImage?.extraLarge!!
             }
             is AnimeRecListQuery.UpcommingMedium -> {
-                temp = any.coverImage?.extraLarge!!
+                temp = any.fragments.animeList.coverImage?.extraLarge!!
             }
             is AnimeRecListQuery.AlltimeMedium -> {
-                temp = any.coverImage?.extraLarge!!
+                temp = any.fragments.animeList.coverImage?.extraLarge!!
             }
         }
         Glide.with(imageView.context).load(temp)
@@ -90,8 +90,8 @@ object Binding {
                 color = any.coverImage?.color.toString()
             }
             is AnimeRecListQuery.Medium -> {
-                temp = any.bannerImage.toString()
-                color = any.coverImage?.color.toString()
+                temp = any.fragments.animeList.bannerImage.toString()
+                color = any.fragments.animeList.coverImage?.color.toString()
             }
         }
         if(color == "null") {
@@ -120,19 +120,19 @@ object Binding {
                 temp  = any.status.toString()
             }
             is AnimeRecListQuery.Medium -> {
-                temp  = any.status.toString()
+                temp  = any.fragments.animeList.status.toString()
             }
             is AnimeRecListQuery.TrendingMedium -> {
-                temp  = any.status.toString()
+                temp  = any.fragments.animeList.status.toString()
             }
             is AnimeRecListQuery.PopularMedium -> {
-                temp  = any.status.toString()
+                temp  = any.fragments.animeList.status.toString()
             }
             is AnimeRecListQuery.UpcommingMedium -> {
-                temp  = any.status.toString()
+                temp  = any.fragments.animeList.status.toString()
             }
             is AnimeRecListQuery.AlltimeMedium -> {
-                temp  = any.status.toString()
+                temp  = any.fragments.animeList.status.toString()
             }
         }
         when(temp) {
@@ -167,19 +167,19 @@ object Binding {
                 temp  = "${any.format} ⦁ ${any.seasonYear}"
             }
             is AnimeRecListQuery.Medium -> {
-                temp  = "${any.format} ⦁ ${any.seasonYear}"
+                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
             }
             is AnimeRecListQuery.TrendingMedium -> {
-                temp  = "${any.format} ⦁ ${any.seasonYear}"
+                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
             }
             is AnimeRecListQuery.PopularMedium -> {
-                temp  = "${any.format} ⦁ ${any.seasonYear}"
+                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
             }
             is AnimeRecListQuery.UpcommingMedium -> {
-                temp  = "${any.format} ⦁ ${any.seasonYear}"
+                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
             }
             is AnimeRecListQuery.AlltimeMedium -> {
-                temp  = "${any.format} ⦁ ${any.seasonYear}"
+                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
             }
         }
         textView.text = temp
@@ -200,16 +200,16 @@ object Binding {
                 temp  = "${any.averageScore}"
             }
             is AnimeRecListQuery.Medium -> {
-                temp  = "${any.averageScore}"
+                temp  = "${any.fragments.animeList.averageScore}"
             }
             is AnimeRecListQuery.TrendingMedium -> {
-                temp  = "${any.averageScore}"
+                temp  = "${any.fragments.animeList.averageScore}"
             }
             is AnimeRecListQuery.PopularMedium -> {
-                temp  = "${any.averageScore}"
+                temp  = "${any.fragments.animeList.averageScore}"
             }
             is AnimeRecListQuery.AlltimeMedium -> {
-                temp  = "${any.averageScore}"
+                temp  = "${any.fragments.animeList.averageScore}"
             }
         }
         if(temp == "null") {
@@ -244,38 +244,38 @@ object Binding {
                 }
             }
             is AnimeRecListQuery.Medium -> {
-                if (any.title?.english != null) {
-                    textView.text = any.title.english
+                if (any.fragments.animeList.title?.english != null) {
+                    textView.text = any.fragments.animeList.title?.english
                 } else {
-                    textView.text = any.title?.romaji
+                    textView.text = any.fragments.animeList.title?.romaji
                 }
             }
             is AnimeRecListQuery.TrendingMedium -> {
-                if (any.title?.english != null) {
-                    textView.text = any.title.english
+                if (any.fragments.animeList.title?.english != null) {
+                    textView.text = any.fragments.animeList.title?.english
                 } else {
-                    textView.text = any.title?.romaji
+                    textView.text = any.fragments.animeList.title?.romaji
                 }
             }
             is AnimeRecListQuery.PopularMedium -> {
-                if (any.title?.english != null) {
-                    textView.text = any.title.english
+                if (any.fragments.animeList.title?.english != null) {
+                    textView.text = any.fragments.animeList.title?.english
                 } else {
-                    textView.text = any.title?.romaji
+                    textView.text = any.fragments.animeList.title?.romaji
                 }
             }
             is AnimeRecListQuery.UpcommingMedium -> {
-                if (any.title?.english != null) {
-                    textView.text = any.title.english
+                if (any.fragments.animeList.title?.english != null) {
+                    textView.text = any.fragments.animeList.title?.english
                 } else {
-                    textView.text = any.title?.romaji
+                    textView.text = any.fragments.animeList.title?.romaji
                 }
             }
             is AnimeRecListQuery.AlltimeMedium -> {
-                if (any.title?.english != null) {
-                    textView.text = any.title.english
+                if (any.fragments.animeList.title?.english != null) {
+                    textView.text = any.fragments.animeList.title?.english
                 } else {
-                    textView.text = any.title?.romaji
+                    textView.text = any.fragments.animeList.title?.romaji
                 }
             }
         }

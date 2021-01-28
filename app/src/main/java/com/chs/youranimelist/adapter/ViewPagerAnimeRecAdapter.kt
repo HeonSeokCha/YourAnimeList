@@ -17,10 +17,12 @@ class ViewPagerAnimeRecAdapter (
         init {
             binding.root.setOnClickListener {
                 with(getItem(layoutPosition)) {
-                    if(this.title?.english == null) {
-                        clickListener.invoke(this.id,this.title?.romaji!!)
+                    if(this.fragments.animeList.title?.english == null) {
+                        clickListener.invoke(this.fragments.animeList.id,
+                            this.fragments.animeList.title?.romaji!!)
                     } else {
-                        clickListener.invoke(this.id,this.title?.english!!)
+                        clickListener.invoke(this.fragments.animeList.id,
+                            this.fragments.animeList.title?.english!!)
                     }
                 }
             }

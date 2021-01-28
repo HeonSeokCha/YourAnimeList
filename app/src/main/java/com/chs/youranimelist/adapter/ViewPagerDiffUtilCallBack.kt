@@ -6,7 +6,7 @@ import com.chs.youranimelist.AnimeRecListQuery
 
 class ViewPagerDiffUtilCallBack: DiffUtil.ItemCallback<AnimeRecListQuery.Medium>() {
     override fun areItemsTheSame(oldItem: AnimeRecListQuery.Medium, newItem: AnimeRecListQuery.Medium): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.fragments.animeList.id == newItem.fragments.animeList.id
     }
 
     override fun areContentsTheSame(oldItem: AnimeRecListQuery.Medium, newItem: AnimeRecListQuery.Medium): Boolean {

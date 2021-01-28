@@ -42,31 +42,39 @@ class AnimeAdapter(
     fun castTypeClickListener(any: Any) {
         when (any) {
             is AnimeRecListQuery.TrendingMedium -> {
-                if(any.title?.english == null) {
-                    clickListener.invoke(any.id,any.title?.romaji!!)
+                if(any.fragments.animeList.title?.english == null) {
+                    clickListener.invoke(any.fragments.animeList.id,
+                        any.fragments.animeList.title?.romaji!!)
                 } else {
-                    clickListener.invoke(any.id,any.title?.english!!)
+                    clickListener.invoke(any.fragments.animeList.id,
+                        any.fragments.animeList.title?.romaji!!)
                 }
             }
             is AnimeRecListQuery.PopularMedium -> {
-                if(any.title?.english == null) {
-                    clickListener.invoke(any.id,any.title?.romaji!!)
+                if(any.fragments.animeList.title?.english == null) {
+                    clickListener.invoke(any.fragments.animeList.id,
+                        any.fragments.animeList.title?.romaji!!)
                 } else {
-                    clickListener.invoke(any.id,any.title?.english!!)
+                    clickListener.invoke(any.fragments.animeList.id,
+                        any.fragments.animeList.title?.romaji!!)
                 }
             }
             is AnimeRecListQuery.UpcommingMedium -> {
-                if(any.title?.english == null) {
-                    clickListener.invoke(any.id,any.title?.romaji!!)
+                if(any.fragments.animeList.title?.english == null) {
+                    clickListener.invoke(any.fragments.animeList.id,
+                        any.fragments.animeList.title?.romaji!!)
                 } else {
-                    clickListener.invoke(any.id,any.title?.english!!)
+                    clickListener.invoke(any.fragments.animeList.id,
+                        any.fragments.animeList.title?.romaji!!)
                 }
             }
             is AnimeRecListQuery.AlltimeMedium -> {
-                if(any.title?.english == null) {
-                    clickListener.invoke(any.id,any.title?.romaji!!)
+                if(any.fragments.animeList.title?.english == null) {
+                    clickListener.invoke(any.fragments.animeList.id,
+                        any.fragments.animeList.title?.romaji!!)
                 } else {
-                    clickListener.invoke(any.id,any.title?.english!!)
+                    clickListener.invoke(any.fragments.animeList.id,
+                        any.fragments.animeList.title?.romaji!!)
                 }
             }
         }
