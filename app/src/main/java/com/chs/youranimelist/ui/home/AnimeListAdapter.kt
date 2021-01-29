@@ -1,4 +1,4 @@
-package com.chs.youranimelist.adapter
+package com.chs.youranimelist.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import com.chs.youranimelist.databinding.ItemAnimeBinding
 
 class AnimeListAdapter(
     private val clickListener: (animeId: Int,animeName: String) -> Unit,
-): ListAdapter<Any,AnimeListAdapter.AnimeListViewHolder>(AnimeDiffUtilCallBack()) {
+): ListAdapter<Any, AnimeListAdapter.AnimeListViewHolder>(AnimeRecListChildDiffUtilCallBack()) {
     inner class AnimeListViewHolder(
         private val binding: ItemAnimeBinding):RecyclerView.ViewHolder(binding.root) {
             init {

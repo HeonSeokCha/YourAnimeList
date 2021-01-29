@@ -1,4 +1,4 @@
-package com.chs.youranimelist.adapter
+package com.chs.youranimelist.ui.home
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,16 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.AnimeRecListQuery
 import com.chs.youranimelist.databinding.ItemAnimeListBinding
-import com.chs.youranimelist.type.MediaSeason
 
-class AnimeRecListAdapter(
+class AnimeRecListParentAdapter(
     private val mContext: Context,
     private val clickListener: (sortType: String) -> Unit,
     private val animeClickListener: (animeId: Int,animeName: String) -> Unit,
-):ListAdapter<Any,AnimeRecListAdapter.AnimeListRecViewHolder>(AnimeRecListDiffUtilCallBack()) {
-    lateinit var animeAdapter:AnimeAdapter
+):ListAdapter<Any, AnimeRecListParentAdapter.AnimeListRecViewHolder>(AnimeRecListParentDiffUtilCallBack()) {
+    lateinit var animeAdapter: AnimeRecListChildAdapter
     private var listTitleList = listOf ("TRENDING NOW","POPULAR THIS SEASON",
         "UPCOMING NEXT SEASON","ALL TIME POPULAR")
     inner class AnimeListRecViewHolder(private val binding: ItemAnimeListBinding)
@@ -28,7 +26,7 @@ class AnimeRecListAdapter(
             fun bind() {
                 binding.model = listTitleList[layoutPosition]
                 binding.rvAnime.apply {
-                    animeAdapter = AnimeAdapter(clickListener = { animeId,animeName->
+                    animeAdapter = AnimeRecListChildAdapter(clickListener = { animeId, animeName->
                         animeClickListener.invoke(animeId,animeName)
                     }).apply {
                         this.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY

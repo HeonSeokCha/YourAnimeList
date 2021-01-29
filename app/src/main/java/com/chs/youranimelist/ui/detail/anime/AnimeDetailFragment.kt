@@ -1,4 +1,4 @@
-package com.chs.youranimelist.ui
+package com.chs.youranimelist.ui.detail.anime
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,10 +12,11 @@ import androidx.navigation.fragment.navArgs
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.AnimeDetailQuery
-import com.chs.youranimelist.adapter.ViewPagerAnimeDetailAdapter
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.viewmodel.MainViewModel
+import com.chs.youranimelist.ui.detail.AnimeDetailFragmentArgs
+import com.chs.youranimelist.ui.home.MainActivity
+import com.chs.youranimelist.ui.home.MainViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.flow.collect
 
@@ -65,7 +66,7 @@ class AnimeDetailFragment : Fragment() {
 
 
     private fun initTabView(animeInfo: AnimeDetailQuery.Media) {
-        var adapter = ViewPagerAnimeDetailAdapter(requireActivity(), animeInfo)
+        var adapter = AnimeDetailViewPagerAdapter(requireActivity(), animeInfo)
         binding.viewPagerAnimeDetail.adapter = adapter
         binding.viewPagerAnimeDetail.isUserInputEnabled = false
         TabLayoutMediator(binding.tabAnimeDetail, binding.viewPagerAnimeDetail) { tab, position ->

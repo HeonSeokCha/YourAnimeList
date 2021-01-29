@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/MainFragment"
-        android:name="com.chs.youranimelist.ui.MainFragment"
+        android:name="com.chs.youranimelist.ui.home.HomeFragment"
         android:label="YourAnimeList"
-        tools:layout="@layout/fragment_main">
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/AnimeDetailFragment" />
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/AnimeDetailFragment"
-        android:name="com.chs.youranimelist.ui.AnimeDetailFragment"
+        android:name="com.chs.youranimelist.ui.detail.anime.AnimeDetailFragment"
         android:label="AnimeDetailFragment"
         tools:layout="@layout/fragment_anime_detail">
 
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/animeListFragment"
-        android:name="com.chs.youranimelist.ui.AnimeListFragment"
+        android:name="com.chs.youranimelist.ui.home.AnimeListFragment"
         android:label="fragment_anime_list"
         tools:layout="@layout/fragment_anime_list" >
         <argument

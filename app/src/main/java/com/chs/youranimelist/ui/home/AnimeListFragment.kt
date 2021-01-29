@@ -1,4 +1,4 @@
-package com.chs.youranimelist.ui
+package com.chs.youranimelist.ui.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,12 +14,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.SpacesItemDecoration
-import com.chs.youranimelist.adapter.AnimeListAdapter
 import com.chs.youranimelist.databinding.FragmentAnimeListBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
-import com.chs.youranimelist.viewmodel.MainViewModel
 import kotlinx.coroutines.flow.collect
 
 
@@ -111,7 +109,11 @@ class AnimeListFragment : Fragment() {
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
             animeListAdapter = AnimeListAdapter(clickListener = { animeId,animeName ->
-                val action = AnimeListFragmentDirections.actionAnimeListFragmentToAnimeDetailFragment(animeId,animeName)
+                val action =
+                    AnimeListFragmentDirections.actionAnimeListFragmentToAnimeDetailFragment(
+                        animeId,
+                        animeName
+                    )
                 binding.root.findNavController().navigate(action)
             }).apply {
                 this.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY

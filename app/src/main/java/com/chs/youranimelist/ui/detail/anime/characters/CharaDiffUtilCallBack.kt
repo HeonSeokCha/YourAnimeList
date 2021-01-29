@@ -1,4 +1,4 @@
-package com.chs.youranimelist.adapter
+package com.chs.youranimelist.ui.detail.anime.characters
 
 import androidx.paging.DifferCallback
 import androidx.recyclerview.widget.DiffUtil

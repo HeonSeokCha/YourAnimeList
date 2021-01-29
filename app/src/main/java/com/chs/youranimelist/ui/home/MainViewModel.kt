@@ -1,6 +1,5 @@
-package com.chs.youranimelist.viewmodel
+package com.chs.youranimelist.ui.home
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.AnimeDetailQuery

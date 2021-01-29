@@ -1,10 +1,10 @@
-package com.chs.youranimelist.adapter
+package com.chs.youranimelist.ui.home
 
 import androidx.recyclerview.widget.DiffUtil
 import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.AnimeRecListQuery
 
-class ViewPagerDiffUtilCallBack: DiffUtil.ItemCallback<AnimeRecListQuery.Medium>() {
+class AnimeRecViewPagerDiffUtilCallBack: DiffUtil.ItemCallback<AnimeRecListQuery.Medium>() {
     override fun areItemsTheSame(oldItem: AnimeRecListQuery.Medium, newItem: AnimeRecListQuery.Medium): Boolean {
         return oldItem.fragments.animeList.id == newItem.fragments.animeList.id
     }

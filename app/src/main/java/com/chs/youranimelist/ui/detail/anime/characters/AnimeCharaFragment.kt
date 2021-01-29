@@ -1,4 +1,4 @@
-package com.chs.youranimelist.ui
+package com.chs.youranimelist.ui.detail.anime.characters
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,12 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chs.youranimelist.AnimeDetailQuery
-import com.chs.youranimelist.adapter.CharaAdapter
 import com.chs.youranimelist.databinding.FragmentTabCharaBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.viewmodel.MainViewModel
+import com.chs.youranimelist.ui.home.MainViewModel
 
-class TabCharaFragment(private val test: List<AnimeDetailQuery.Node>) : Fragment() {
+class AnimeCharaFragment(private val test: List<AnimeDetailQuery.Node>) : Fragment() {
     private lateinit var viewModel: MainViewModel
     private val repository by lazy { AnimeRepository() }
     private lateinit var binding: FragmentTabCharaBinding
@@ -35,7 +34,7 @@ class TabCharaFragment(private val test: List<AnimeDetailQuery.Node>) : Fragment
             charaAdapter = CharaAdapter()
             charaAdapter.submitList(test)
             this.adapter = charaAdapter
-            this.layoutManager = GridLayoutManager(this@TabCharaFragment.context,2)
+            this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context,2)
         }
     }
 

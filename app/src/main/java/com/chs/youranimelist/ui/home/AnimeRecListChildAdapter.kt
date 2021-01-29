@@ -1,17 +1,15 @@
-package com.chs.youranimelist.adapter
+package com.chs.youranimelist.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.AnimeRecListQuery
 import com.chs.youranimelist.databinding.ItemAnimeBinding
-import java.lang.Exception
 
-class AnimeAdapter(
+class AnimeRecListChildAdapter(
     private val clickListener: (animeId: Int,animeName: String) -> Unit,
-): ListAdapter<Any, AnimeAdapter.AnimeViewHolder>(AnimeDiffUtilCallBack()) {
+): ListAdapter<Any, AnimeRecListChildAdapter.AnimeViewHolder>(AnimeRecListChildDiffUtilCallBack()) {
 
     inner class AnimeViewHolder(
         private val binding: ItemAnimeBinding

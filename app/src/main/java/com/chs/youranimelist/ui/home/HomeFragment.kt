@@ -1,4 +1,4 @@
-package com.chs.youranimelist.ui
+package com.chs.youranimelist.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,18 +11,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.adapter.AnimeRecListAdapter
-import com.chs.youranimelist.adapter.ViewPagerAnimeRecAdapter
-import com.chs.youranimelist.databinding.FragmentMainBinding
+import com.chs.youranimelist.databinding.FragmentHomeBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.viewmodel.MainViewModel
 import kotlinx.coroutines.flow.collect
 
-class MainFragment : Fragment() {
-    private lateinit var binding: FragmentMainBinding
+class HomeFragment : Fragment() {
+    private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: MainViewModel
-    private lateinit var viewPagerAnimeRecAdapter: ViewPagerAnimeRecAdapter
-    private lateinit var animeRecListAdapter: AnimeRecListAdapter
+    private lateinit var viewPagerAnimeRecAdapter: AnimeRecViewPagerAdapter
+    private lateinit var animeRecListAdapter: AnimeRecListParentAdapter
     var currentVisiblePosition: Int = 0
     private val repository by lazy { AnimeRepository() }
 
@@ -30,7 +27,7 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMainBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         viewModel = MainViewModel(repository)
         return binding.root
     }
@@ -65,7 +62,7 @@ class MainFragment : Fragment() {
                         }
                         is MainViewModel.NetWorkState.Error -> {
                             Toast.makeText(
-                                this@MainFragment.context,
+                                this@HomeFragment.context,
                                 netWorkState.message,
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -90,8 +87,8 @@ class MainFragment : Fragment() {
 
     private fun initRecyclerView() {
         binding.viewPager2.apply {
-            viewPagerAnimeRecAdapter = ViewPagerAnimeRecAdapter(clickListener = { animeId, animeName ->
-                val action = MainFragmentDirections.actionFirstFragmentToSecondFragment(
+            viewPagerAnimeRecAdapter = AnimeRecViewPagerAdapter(clickListener = { animeId, animeName ->
+                val action = HomeFragmentDirections.actionFirstFragmentToSecondFragment(
                     animeId,
                     animeName
                 )
@@ -101,14 +98,14 @@ class MainFragment : Fragment() {
         }
 
         binding.rvAnimeRecList.apply {
-            animeRecListAdapter = AnimeRecListAdapter(this@MainFragment.requireContext(),
+            animeRecListAdapter = AnimeRecListParentAdapter(this@HomeFragment.requireContext(),
                 clickListener = { sortType ->
-                    val action = MainFragmentDirections.actionFirstFragmentToAnimeListFragment(
+                    val action = HomeFragmentDirections.actionFirstFragmentToAnimeListFragment(
                         sortType
                     )
                     binding.root.findNavController().navigate(action)
                 }, animeClickListener = { animeId, animeName ->
-                    val action = MainFragmentDirections.actionFirstFragmentToSecondFragment(
+                    val action = HomeFragmentDirections.actionFirstFragmentToSecondFragment(
                         animeId,
                         animeName
                     )
@@ -116,7 +113,7 @@ class MainFragment : Fragment() {
                 }).apply {
                 this.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             }
-            this.layoutManager = LinearLayoutManager(this@MainFragment.context)
+            this.layoutManager = LinearLayoutManager(this@HomeFragment.context)
             this.adapter = animeRecListAdapter
         }
     }

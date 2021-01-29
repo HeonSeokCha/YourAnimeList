@@ -1,4 +1,4 @@
-package com.chs.youranimelist.ui
+package com.chs.youranimelist.ui.home
 
 import android.os.Bundle
 import android.view.Menu
