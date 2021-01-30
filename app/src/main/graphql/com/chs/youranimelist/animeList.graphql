@@ -4,55 +4,13 @@ query animeList(
     $season: MediaSeason = null,
     $seasonYear: Int = null) {
     NonSeason: Page(page:$page,perPage:20) {
-        media(sort:[$sort],type:ANIME,format:TV){
-            id
-            idMal
-            title {
-                romaji
-                native
-                english
-            }
-            trailer {
-                id
-                site
-                thumbnail
-            }
-            coverImage {
-                extraLarge
-                color
-            }
-            averageScore
-            seasonYear
-            format
-            status
-            bannerImage
-            genres
+        media(sort:[$sort],type:ANIME,format:TV) {
+            ... animeList
         }
     },
     Season: Page(page:$page,perPage:20) {
-        media(sort:[$sort],season:$season,seasonYear:$seasonYear,type:ANIME,format:TV){
-            id
-            idMal
-            title {
-                romaji
-                native
-                english
-            }
-            trailer {
-                id
-                site
-                thumbnail
-            }
-            coverImage {
-                extraLarge
-                color
-            }
-            averageScore
-            seasonYear
-            format
-            status
-            bannerImage
-            genres
+        media(sort:[$sort],season:$season,seasonYear:$seasonYear,type:ANIME,format:TV) {
+            ... animeList
         }
     }
 }

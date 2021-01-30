@@ -1,7 +1,25 @@
 query animeRecList {
     ViewPager: Page(page:1,perPage:6) {
         media(sort:[SCORE_DESC],type:ANIME,format:TV,seasonYear:2021){
-            ... animeList
+            id
+            idMal
+            title {
+                romaji
+                native
+                english
+            }
+            coverImage {
+                extraLarge
+                color
+            }
+            trailer {
+                id
+            }
+            averageScore
+            seasonYear
+            format
+            status
+            bannerImage
         }
     },
     Trending: Page(page:1,perPage:6) {
@@ -42,5 +60,4 @@ fragment animeList on Media {
     format
     status
     bannerImage
-    genres
 }

@@ -1,11 +1,13 @@
 package com.chs.youranimelist.ui.detail.anime
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -14,7 +16,6 @@ import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.ui.detail.AnimeDetailFragmentArgs
 import com.chs.youranimelist.ui.home.MainActivity
 import com.chs.youranimelist.ui.home.MainViewModel
 import com.google.android.material.tabs.TabLayoutMediator
@@ -25,6 +26,7 @@ class AnimeDetailFragment : Fragment() {
     private val repository by lazy { AnimeRepository() }
     private val args: AnimeDetailFragmentArgs by navArgs()
     private lateinit var viewModel: MainViewModel
+    private lateinit var trailerId: String
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -37,6 +39,13 @@ class AnimeDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as MainActivity).binding.toolbar.title = args.animeName
         initAnimeInfo(args.animeId.toInput())
+        initClick()
+    }
+
+    private fun initClick() {
+        binding.btnTrailerPlay.setOnClickListener {
+            trailerPlay(trailerId)
+        }
     }
 
     private fun initAnimeInfo(animeId: Input<Int>) {
@@ -48,6 +57,7 @@ class AnimeDetailFragment : Fragment() {
                             binding.model = it
                             initTabView(it)
                             binding.detailPageProgressBar.isVisible = false
+                            trailerId = it.trailer?.id.toString()
                         }
                         is MainViewModel.NetWorkState.Error -> {
                             Toast.makeText(this@AnimeDetailFragment.context,
@@ -64,7 +74,6 @@ class AnimeDetailFragment : Fragment() {
         })
     }
 
-
     private fun initTabView(animeInfo: AnimeDetailQuery.Media) {
         var adapter = AnimeDetailViewPagerAdapter(requireActivity(), animeInfo)
         binding.viewPagerAnimeDetail.adapter = adapter
@@ -75,5 +84,11 @@ class AnimeDetailFragment : Fragment() {
                 tab.text = tabArr[i]
             }
         }.attach()
+    }
+
+    private fun trailerPlay(videoId: String) {
+        CustomTabsIntent.Builder()
+            .build()
+            .launchUrl(requireActivity(), Uri.parse("https://www.youtube.com/watch?v=$videoId"))
     }
 }

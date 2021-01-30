@@ -9,6 +9,7 @@ import com.chs.youranimelist.databinding.ItemViewPagerBinding
 
 class AnimeRecViewPagerAdapter (
     private val clickListener: (animeId: Int,animeName: String) -> Unit,
+    private val trailerClickListener: (animeId: String) -> Unit
     ): ListAdapter<AnimeRecListQuery.Medium, AnimeRecViewPagerAdapter.ViewPagerViewHolder>(
     AnimeRecViewPagerDiffUtilCallBack()
 ) {
@@ -19,14 +20,15 @@ class AnimeRecViewPagerAdapter (
         init {
             binding.root.setOnClickListener {
                 with(getItem(layoutPosition)) {
-                    if(this.fragments.animeList.title?.english == null) {
-                        clickListener.invoke(this.fragments.animeList.id,
-                            this.fragments.animeList.title?.romaji!!)
+                    if(this.title?.english == null) {
+                        clickListener.invoke(this.id, this.title?.romaji!!)
                     } else {
-                        clickListener.invoke(this.fragments.animeList.id,
-                            this.fragments.animeList.title?.english!!)
+                        clickListener.invoke(this.id, this.title?.english!!)
                     }
                 }
+            }
+            binding.floatingActionButton.setOnClickListener {
+                trailerClickListener.invoke(getItem(layoutPosition).trailer?.id!!)
             }
         }
         fun bind() {

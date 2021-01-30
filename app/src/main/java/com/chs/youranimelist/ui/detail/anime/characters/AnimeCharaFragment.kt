@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chs.youranimelist.AnimeDetailQuery
+import com.chs.youranimelist.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentTabCharaBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.home.MainViewModel
@@ -34,7 +35,8 @@ class AnimeCharaFragment(private val test: List<AnimeDetailQuery.Node>) : Fragme
             charaAdapter = CharaAdapter()
             charaAdapter.submitList(test)
             this.adapter = charaAdapter
-            this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context,2)
+            this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context,3)
+            this.addItemDecoration(SpacesItemDecoration(3,50,true))
         }
     }
 

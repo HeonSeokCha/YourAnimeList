@@ -34,17 +34,21 @@ class AnimeListAdapter(
     fun castTypeClickListener(any: Any) {
         when (any) {
             is AnimeListQuery.Medium -> {
-                if(any.title?.english == null) {
-                    clickListener.invoke(any.id,any.title?.romaji!!)
-                } else {
-                    clickListener.invoke(any.id,any.title?.english!!)
+                with(any.fragments.animeList) {
+                    if(this.title?.english == null) {
+                        clickListener.invoke(this.id,this.title?.romaji!!)
+                    } else {
+                        clickListener.invoke(this.id,this.title?.english!!)
+                    }
                 }
             }
             is AnimeListQuery.Medium1 -> {
-                if(any.title?.english == null) {
-                    clickListener.invoke(any.id,any.title?.romaji!!)
-                } else {
-                    clickListener.invoke(any.id,any.title?.english!!)
+                with(any.fragments.animeList) {
+                    if(this.title?.english == null) {
+                        clickListener.invoke(this.id,this.title?.romaji!!)
+                    } else {
+                        clickListener.invoke(this.id,this.title?.english!!)
+                    }
                 }
             }
         }

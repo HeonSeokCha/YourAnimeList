@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -24,7 +25,7 @@ object Binding {
     @BindingAdapter("trailerBtn")
     @JvmStatic
     fun trailerChk(floatingActionButton: FloatingActionButton, trailer: String?) {
-        if(trailer == null) floatingActionButton.visibility = View.GONE
+        floatingActionButton.isVisible = trailer != null
     }
 
     @BindingAdapter("htmlTags")
@@ -50,10 +51,10 @@ object Binding {
         var temp: String = ""
         when(any) {
             is AnimeListQuery.Medium -> {
-                temp = any.coverImage?.extraLarge!!
+                temp = any.fragments.animeList.coverImage?.extraLarge!!
             }
             is AnimeListQuery.Medium1 -> {
-                temp = any.coverImage?.extraLarge!!
+                temp = any.fragments.animeList.coverImage?.extraLarge!!
             }
             is AnimeDetailQuery.Media -> {
                 temp = any.coverImage?.extraLarge!!
@@ -90,8 +91,8 @@ object Binding {
                 color = any.coverImage?.color.toString()
             }
             is AnimeRecListQuery.Medium -> {
-                temp = any.fragments.animeList.bannerImage.toString()
-                color = any.fragments.animeList.coverImage?.color.toString()
+                temp = any.bannerImage.toString()
+                color = any.coverImage?.color.toString()
             }
         }
         if(color == "null") {
@@ -114,13 +115,13 @@ object Binding {
                 temp  = any.status.toString()
             }
             is AnimeListQuery.Medium -> {
-                temp  = any.status.toString()
+                temp  = any.fragments.animeList.status.toString()
             }
             is AnimeListQuery.Medium1 -> {
-                temp  = any.status.toString()
+                temp  = any.fragments.animeList.status.toString()
             }
             is AnimeRecListQuery.Medium -> {
-                temp  = any.fragments.animeList.status.toString()
+                temp  = any.status.toString()
             }
             is AnimeRecListQuery.TrendingMedium -> {
                 temp  = any.fragments.animeList.status.toString()
@@ -161,13 +162,13 @@ object Binding {
                 temp  = "${any.format} ⦁ ${any.seasonYear}"
             }
             is AnimeListQuery.Medium -> {
-                temp  = "${any.format} ⦁ ${any.seasonYear}"
+                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
             }
             is AnimeListQuery.Medium1 -> {
-                temp  = "${any.format} ⦁ ${any.seasonYear}"
+                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
             }
             is AnimeRecListQuery.Medium -> {
-                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
+                temp  = "${any.format} ⦁ ${any.seasonYear}"
             }
             is AnimeRecListQuery.TrendingMedium -> {
                 temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
@@ -194,13 +195,13 @@ object Binding {
                 temp  = "${any.averageScore}"
             }
             is AnimeListQuery.Medium -> {
-                temp  = "${any.averageScore}"
+                temp  = "${any.fragments.animeList.averageScore}"
             }
             is AnimeListQuery.Medium1 -> {
-                temp  = "${any.averageScore}"
+                temp  = "${any.fragments.animeList.averageScore}"
             }
             is AnimeRecListQuery.Medium -> {
-                temp  = "${any.fragments.animeList.averageScore}"
+                temp  = "${any.averageScore}"
             }
             is AnimeRecListQuery.TrendingMedium -> {
                 temp  = "${any.fragments.animeList.averageScore}"
@@ -230,24 +231,24 @@ object Binding {
                 }
             }
             is AnimeListQuery.Medium -> {
-                if (any.title?.english != null) {
-                    textView.text = any.title.english
-                } else {
-                    textView.text = any.title?.romaji
-                }
-            }
-            is AnimeListQuery.Medium1 -> {
-                if (any.title?.english != null) {
-                    textView.text = any.title.english
-                } else {
-                    textView.text = any.title?.romaji
-                }
-            }
-            is AnimeRecListQuery.Medium -> {
                 if (any.fragments.animeList.title?.english != null) {
                     textView.text = any.fragments.animeList.title?.english
                 } else {
                     textView.text = any.fragments.animeList.title?.romaji
+                }
+            }
+            is AnimeListQuery.Medium1 -> {
+                if (any.fragments.animeList.title?.english != null) {
+                    textView.text = any.fragments.animeList.title?.english
+                } else {
+                    textView.text = any.fragments.animeList.title?.romaji
+                }
+            }
+            is AnimeRecListQuery.Medium -> {
+                if (any.title?.english != null) {
+                    textView.text = any.title?.english
+                } else {
+                    textView.text = any.title?.romaji
                 }
             }
             is AnimeRecListQuery.TrendingMedium -> {

@@ -73,4 +73,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     //Paging
     implementation 'androidx.paging:paging-runtime-ktx:3.0.0-alpha12'
+    //Browser
+    implementation "androidx.browser:browser:1.3.0"
 }

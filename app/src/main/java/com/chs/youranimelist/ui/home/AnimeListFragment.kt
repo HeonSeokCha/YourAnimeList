@@ -120,7 +120,7 @@ class AnimeListFragment : Fragment() {
             }
             this.adapter = animeListAdapter
             this.layoutManager = GridLayoutManager(this@AnimeListFragment.context,3)
-            this.addItemDecoration(SpacesItemDecoration(3,4))
+            this.addItemDecoration(SpacesItemDecoration(3,8,true))
         }
     }
 }
