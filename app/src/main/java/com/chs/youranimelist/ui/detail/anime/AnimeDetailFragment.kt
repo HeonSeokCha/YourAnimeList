@@ -22,16 +22,17 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.flow.collect
 
 class AnimeDetailFragment : Fragment() {
-    private lateinit var binding:FragmentAnimeDetailBinding
+    private var _binding:FragmentAnimeDetailBinding? = null
     private val repository by lazy { AnimeRepository() }
     private val args: AnimeDetailFragmentArgs by navArgs()
     private lateinit var viewModel: MainViewModel
     private lateinit var trailerId: String
+    private val binding get() = _binding!!
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAnimeDetailBinding.inflate(inflater,container,false)
+        _binding = FragmentAnimeDetailBinding.inflate(inflater,container,false)
         viewModel = MainViewModel(repository)
         return binding.root
     }
@@ -90,5 +91,10 @@ class AnimeDetailFragment : Fragment() {
         CustomTabsIntent.Builder()
             .build()
             .launchUrl(requireActivity(), Uri.parse("https://www.youtube.com/watch?v=$videoId"))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

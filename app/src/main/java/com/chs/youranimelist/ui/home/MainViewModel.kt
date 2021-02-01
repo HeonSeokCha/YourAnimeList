@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class MainViewModel (private val repository: AnimeRepository): ViewModel() {
     private val _netWorkState = MutableStateFlow<NetWorkState>(NetWorkState.Empty)
     val netWorkState: StateFlow<NetWorkState> = _netWorkState
-    private lateinit var viewPagerListQuery: AnimeRecListQuery.ViewPager
+    private lateinit var viewPagerListQuery: List<AnimeRecListQuery.Medium>
 
     sealed class NetWorkState {
         object Success: NetWorkState()
@@ -23,8 +23,8 @@ class MainViewModel (private val repository: AnimeRepository): ViewModel() {
         object Empty: NetWorkState()
     }
 
-    fun getPagerAnimeList(): LiveData<AnimeRecListQuery.ViewPager> {
-        val responseLiveData: MutableLiveData<AnimeRecListQuery.ViewPager> = MutableLiveData()
+    fun getPagerAnimeList(): LiveData<List<AnimeRecListQuery.Medium>> {
+        val responseLiveData: MutableLiveData<List<AnimeRecListQuery.Medium>> = MutableLiveData()
         responseLiveData.value = viewPagerListQuery
         return responseLiveData
     }
@@ -36,7 +36,7 @@ class MainViewModel (private val repository: AnimeRepository): ViewModel() {
             repository.getAnimeRecList().catch { e->
                 _netWorkState.value = NetWorkState.Error(e.toString())
             }.collect {
-                viewPagerListQuery = it.viewPager!!
+                viewPagerListQuery = (it.viewPager?.media as List<AnimeRecListQuery.Medium>?)!!
                 responseLiveData.value = listOf (
                     it.trending?.trendingMedia,
                     it.popular?.popularMedia,

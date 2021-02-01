@@ -8,20 +8,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.SpacesItemDecoration
-import com.chs.youranimelist.databinding.FragmentTabCharaBinding
+import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.home.MainViewModel
 
 class AnimeCharaFragment(private val test: List<AnimeDetailQuery.Node>) : Fragment() {
     private lateinit var viewModel: MainViewModel
     private val repository by lazy { AnimeRepository() }
-    private lateinit var binding: FragmentTabCharaBinding
+    private var _binding: FragmentAnimeCharaBinding? = null
+    private val binding get() = _binding!!
     private lateinit var charaAdapter: CharaAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentTabCharaBinding.inflate(inflater,container,false)
+        _binding = FragmentAnimeCharaBinding.inflate(inflater,container,false)
         viewModel = MainViewModel(repository)
         return binding.root
     }
@@ -43,5 +44,10 @@ class AnimeCharaFragment(private val test: List<AnimeDetailQuery.Node>) : Fragme
     override fun onResume() {
         super.onResume()
         binding.root.requestLayout()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

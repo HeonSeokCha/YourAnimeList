@@ -8,18 +8,16 @@ import com.chs.youranimelist.AnimeRecListQuery
 import com.chs.youranimelist.databinding.ItemViewPagerBinding
 
 class AnimeRecViewPagerAdapter (
+    private val items: List<AnimeRecListQuery.Medium>,
     private val clickListener: (animeId: Int,animeName: String) -> Unit,
     private val trailerClickListener: (animeId: String) -> Unit
-    ): ListAdapter<AnimeRecListQuery.Medium, AnimeRecViewPagerAdapter.ViewPagerViewHolder>(
-    AnimeRecViewPagerDiffUtilCallBack()
-) {
-
+    ): RecyclerView.Adapter<AnimeRecViewPagerAdapter.ViewPagerViewHolder>() {
 
     inner class ViewPagerViewHolder(private val binding: ItemViewPagerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                with(getItem(layoutPosition)) {
+                with(items[layoutPosition]) {
                     if(this.title?.english == null) {
                         clickListener.invoke(this.id, this.title?.romaji!!)
                     } else {
@@ -28,11 +26,11 @@ class AnimeRecViewPagerAdapter (
                 }
             }
             binding.floatingActionButton.setOnClickListener {
-                trailerClickListener.invoke(getItem(layoutPosition).trailer?.id!!)
+                trailerClickListener.invoke(items[layoutPosition].trailer?.id!!)
             }
         }
         fun bind() {
-            binding.model = getItem(layoutPosition)
+            binding.model = items[layoutPosition]
         }
     }
 
@@ -44,6 +42,8 @@ class AnimeRecViewPagerAdapter (
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
         holder.bind()
     }
+
+    override fun getItemCount(): Int = items.size
 }
 
 

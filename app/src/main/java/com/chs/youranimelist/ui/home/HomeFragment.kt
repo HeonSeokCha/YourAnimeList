@@ -13,12 +13,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
+import com.chs.youranimelist.AnimeRecListQuery
 import com.chs.youranimelist.databinding.FragmentHomeBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
 import kotlinx.coroutines.flow.collect
 
 class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentHomeBinding
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel: MainViewModel
     private lateinit var viewPagerAnimeRecAdapter: AnimeRecViewPagerAdapter
     private lateinit var animeRecListAdapter: AnimeRecListParentAdapter
@@ -30,7 +33,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         viewModel = MainViewModel(repository)
         return binding.root
     }
@@ -72,25 +75,25 @@ class HomeFragment : Fragment() {
 
     private fun getPagerAnimeList() {
         viewModel.getPagerAnimeList().observe(viewLifecycleOwner, {
-            viewPagerAnimeRecAdapter.submitList(it.media)
+            binding.viewPager2.apply {
+                viewPagerAnimeRecAdapter = AnimeRecViewPagerAdapter(it,clickListener = { animeId, animeName ->
+                    val action = HomeFragmentDirections.actionFirstFragmentToSecondFragment(
+                        animeId,
+                        animeName
+                    )
+                    binding.root.findNavController().navigate(action)
+                },
+                    trailerClickListener = { id ->
+                        trailerPlay(id)
+                })
+                this.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+                this.adapter = viewPagerAnimeRecAdapter
+                binding.indicator.setViewPager2(binding.viewPager2)
+            }
         })
     }
 
     private fun initRecyclerView() {
-        binding.viewPager2.apply {
-            viewPagerAnimeRecAdapter = AnimeRecViewPagerAdapter(clickListener = { animeId, animeName ->
-                val action = HomeFragmentDirections.actionFirstFragmentToSecondFragment(
-                    animeId,
-                    animeName
-                )
-                binding.root.findNavController().navigate(action)
-            },
-            trailerClickListener = { id ->
-                trailerPlay(id)
-            })
-            this.adapter = viewPagerAnimeRecAdapter
-        }
-
         binding.rvAnimeRecList.apply {
             animeRecListAdapter = AnimeRecListParentAdapter(this@HomeFragment.requireContext(),
                 clickListener = { sortType ->
@@ -116,5 +119,10 @@ class HomeFragment : Fragment() {
         CustomTabsIntent.Builder()
             .build()
             .launchUrl(requireActivity(), Uri.parse("https://www.youtube.com/watch?v=$videoId"))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

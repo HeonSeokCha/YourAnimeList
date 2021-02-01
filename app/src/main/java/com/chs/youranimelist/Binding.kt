@@ -214,7 +214,7 @@ object Binding {
             }
         }
         if(temp == "null") {
-            temp = "0"
+            textView.isVisible = false
         }
         textView.text = temp
     }

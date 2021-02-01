@@ -22,7 +22,8 @@ import kotlinx.coroutines.flow.collect
 
 
 class AnimeListFragment : Fragment() {
-    private lateinit var binding: FragmentAnimeListBinding
+    private var _binding: FragmentAnimeListBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel: MainViewModel
     private val args: AnimeListFragmentArgs by navArgs()
     private val repository by lazy { AnimeRepository() }
@@ -37,7 +38,7 @@ class AnimeListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAnimeListBinding.inflate(inflater, container, false)
+        _binding = FragmentAnimeListBinding.inflate(inflater, container, false)
         viewModel = MainViewModel(repository)
         return binding.root
     }
@@ -122,5 +123,10 @@ class AnimeListFragment : Fragment() {
             this.layoutManager = GridLayoutManager(this@AnimeListFragment.context,3)
             this.addItemDecoration(SpacesItemDecoration(3,8,true))
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
