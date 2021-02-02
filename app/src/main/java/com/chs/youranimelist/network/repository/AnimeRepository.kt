@@ -15,13 +15,6 @@ import kotlinx.coroutines.flow.*
 class AnimeRepository {
 
     @ExperimentalCoroutinesApi
-    fun getAnimeInfo(animeId: Input<Int>): Flow<AnimeDetailQuery.Data> {
-        return AnimeService.apolloClient.query(AnimeDetailQuery(animeId)).toFlow().map {
-                it.data!!
-        }
-    }
-
-    @ExperimentalCoroutinesApi
     fun getAnimeRecList(): Flow<AnimeRecListQuery.Data> {
         return AnimeService.apolloClient.query(AnimeRecListQuery()).toFlow().map {
             it.data!!
@@ -37,6 +30,13 @@ class AnimeRepository {
     ): Flow<AnimeListQuery.Data> {
         return AnimeService.apolloClient.query(
             AnimeListQuery(page, sort, season, seasonYear)).toFlow().map {
+            it.data!!
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    fun getAnimeInfo(animeId: Input<Int>): Flow<AnimeDetailQuery.Data> {
+        return AnimeService.apolloClient.query(AnimeDetailQuery(animeId)).toFlow().map {
             it.data!!
         }
     }

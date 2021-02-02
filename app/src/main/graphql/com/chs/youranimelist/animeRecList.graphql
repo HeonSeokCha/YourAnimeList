@@ -23,7 +23,7 @@ query animeRecList {
         }
     },
     Trending: Page(page:1,perPage:6) {
-        TrendingMedia: media(sort:[TRENDING_DESC],type:ANIME,format:TV,seasonYear:2021) {
+        TrendingMedia: media(sort:[TRENDING_DESC],type:ANIME,format:TV) {
             ... animeList
         }
     },
@@ -43,6 +43,7 @@ query animeRecList {
         }
     }
 }
+
 fragment animeList on Media {
     id
     idMal

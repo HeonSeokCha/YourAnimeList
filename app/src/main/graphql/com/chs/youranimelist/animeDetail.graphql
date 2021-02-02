@@ -7,7 +7,17 @@ query animeDetail($id: Int) {
             native
             english
         }
-        description
+        description(asHtml: true)
+        startDate {
+            year
+            month
+            day
+        }
+        endDate {
+            year
+            month
+            day
+        }
         format
         trailer {
             id
@@ -20,13 +30,33 @@ query animeDetail($id: Int) {
         }
         bannerImage
         genres
-        status
+        status(version: 2)
+        seasonInt
         seasonYear
+        episodes
+        duration
         averageScore
         meanScore
         popularity
         favourites
         source
+        relations {
+            edges {
+                node {
+                    id
+                    title {
+                        userPreferred
+                    }
+                    coverImage {
+                        extraLarge
+                    }
+                    type
+                    format
+                }
+                id
+                relationType
+            }
+        }
         characters(sort: [ROLE,ID]) {
             nodes {
                 id

@@ -12,7 +12,7 @@ import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.home.MainViewModel
 
-class AnimeCharaFragment(private val test: List<AnimeDetailQuery.Node>) : Fragment() {
+class AnimeCharaFragment(private val test: List<AnimeDetailQuery.Node1>) : Fragment() {
     private lateinit var viewModel: MainViewModel
     private val repository by lazy { AnimeRepository() }
     private var _binding: FragmentAnimeCharaBinding? = null

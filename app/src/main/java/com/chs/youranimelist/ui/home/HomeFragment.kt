@@ -25,8 +25,6 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel: MainViewModel
     private lateinit var viewPagerAnimeRecAdapter: AnimeRecViewPagerAdapter
     private lateinit var animeRecListAdapter: AnimeRecListParentAdapter
-    private lateinit var trailerId: String
-    var currentVisiblePosition: Int = 0
     private val repository by lazy { AnimeRepository() }
 
     override fun onCreateView(

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.databinding.ItemCharaBinding
 
-class CharaAdapter(): ListAdapter<AnimeDetailQuery.Node,
+class CharaAdapter: ListAdapter<AnimeDetailQuery.Node1,
         CharaAdapter.CharaViewHolder>(CharaDiffUtilCallBack()) {
 
     inner class CharaViewHolder(

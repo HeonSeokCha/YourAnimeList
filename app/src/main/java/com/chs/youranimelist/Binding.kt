@@ -28,6 +28,31 @@ object Binding {
         floatingActionButton.isVisible = trailer != null
     }
 
+    @BindingAdapter("dateText")
+    @JvmStatic
+    fun setTextDate(textView: TextView,date: Any?) {
+        when(date) {
+            is AnimeDetailQuery.StartDate -> {
+                if(date.day != null) {
+                    textView.text = "${date.day} / ${date.month} / ${date.year}"
+                } else {
+                    textView.text ="?"
+                }
+            }
+            is AnimeDetailQuery.EndDate -> {
+                if(date.day != null) {
+                    textView.text = "${date.day} / ${date.month} / ${date.year}"
+                } else {
+                    textView.text ="?"
+                }
+            }
+            else -> {
+                textView.text = "?"
+            }
+        }
+    }
+
+
     @BindingAdapter("htmlTags")
     @JvmStatic
     fun setHtmlTags(textView: TextView,string: String?) {

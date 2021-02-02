@@ -8,7 +8,7 @@ import com.chs.youranimelist.AnimeRecListQuery
 import com.chs.youranimelist.databinding.ItemViewPagerBinding
 
 class AnimeRecViewPagerAdapter (
-    private val items: List<AnimeRecListQuery.Medium>,
+    private val items: List<AnimeRecListQuery.Medium?>,
     private val clickListener: (animeId: Int,animeName: String) -> Unit,
     private val trailerClickListener: (animeId: String) -> Unit
     ): RecyclerView.Adapter<AnimeRecViewPagerAdapter.ViewPagerViewHolder>() {
@@ -17,7 +17,7 @@ class AnimeRecViewPagerAdapter (
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                with(items[layoutPosition]) {
+                with(items[layoutPosition]!!) {
                     if(this.title?.english == null) {
                         clickListener.invoke(this.id, this.title?.romaji!!)
                     } else {
@@ -26,7 +26,7 @@ class AnimeRecViewPagerAdapter (
                 }
             }
             binding.floatingActionButton.setOnClickListener {
-                trailerClickListener.invoke(items[layoutPosition].trailer?.id!!)
+                trailerClickListener.invoke(items[layoutPosition]?.trailer?.id!!)
             }
         }
         fun bind() {
