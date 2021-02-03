@@ -33,23 +33,26 @@ object Binding {
     fun setTextDate(textView: TextView,date: Any?) {
         when(date) {
             is AnimeDetailQuery.StartDate -> {
-                if(date.day != null) {
-                    textView.text = "${date.day} / ${date.month} / ${date.year}"
+                textView.text = if(date.day != null) {
+                    ConvertDate.convertToDateFormat(date.year,date.month,date.day) ?: "?"
                 } else {
-                    textView.text ="?"
+                     "?"
                 }
             }
             is AnimeDetailQuery.EndDate -> {
-                if(date.day != null) {
-                    textView.text = "${date.day} / ${date.month} / ${date.year}"
+                textView.text = if (date.day != null) {
+                    ConvertDate.convertToDateFormat(date.year, date.month, date.day) ?: "?"
                 } else {
-                    textView.text ="?"
+                    "?"
                 }
             }
-            else -> {
-                textView.text = "?"
-            }
         }
+    }
+
+    @BindingAdapter("seasonText")
+    @JvmStatic
+    fun setTextSeason(textView: TextView,media: AnimeDetailQuery.Media) {
+        textView.text = "${media?.season?.name} ${media?.seasonYear}"
     }
 
 

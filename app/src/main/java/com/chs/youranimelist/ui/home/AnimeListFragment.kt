@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.api.toInput
+import com.chs.youranimelist.ConvertDate
 import com.chs.youranimelist.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeListBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
@@ -57,14 +58,14 @@ class AnimeListFragment : Fragment() {
              }
              "POPULAR THIS SEASON" -> {
                  sort = MediaSort.POPULARITY_DESC
-                 mediaSeason = MediaSeason.WINTER
-                 seasonYear = 2021
+                 mediaSeason = ConvertDate.getCurrentSeason()
+                 seasonYear = ConvertDate.getCurrentYear(false)
                  season = true
              }
             "UPCOMING NEXT SEASON" -> {
                 sort = MediaSort.POPULARITY_DESC
-                mediaSeason = MediaSeason.SPRING
-                seasonYear = 2021
+                mediaSeason = ConvertDate.getNextSeason()
+                seasonYear = ConvertDate.getCurrentYear(true)
                 season = true
             }
             "ALL TIME POPULAR" -> {

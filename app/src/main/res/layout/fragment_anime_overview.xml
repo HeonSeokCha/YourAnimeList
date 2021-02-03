@@ -344,7 +344,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="@{model.seasonYear.toString()}"
+            app:seasonText="@{model}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_end_date"
             app:layout_constraintTop_toTopOf="@+id/textView14"

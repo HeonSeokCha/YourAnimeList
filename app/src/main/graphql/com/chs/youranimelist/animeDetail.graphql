@@ -31,6 +31,7 @@ query animeDetail($id: Int) {
         bannerImage
         genres
         status(version: 2)
+        season
         seasonInt
         seasonYear
         episodes
