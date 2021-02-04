@@ -34,19 +34,21 @@ object Binding {
         when(date) {
             is AnimeDetailQuery.StartDate -> {
                 textView.text = if(date.day != null) {
-                    ConvertDate.convertToDateFormat(date.year,date.month,date.day) ?: "?"
-                } else {
-                     "?"
-                }
+                    ConvertDate.convertToDateFormat(date.year,date.month,date.day)
+                } else "?"
             }
             is AnimeDetailQuery.EndDate -> {
                 textView.text = if (date.day != null) {
-                    ConvertDate.convertToDateFormat(date.year, date.month, date.day) ?: "?"
-                } else {
-                    "?"
-                }
+                    ConvertDate.convertToDateFormat(date.year, date.month, date.day)
+                } else "?"
             }
         }
+    }
+
+    @BindingAdapter("underScoreText")
+    @JvmStatic
+    fun replaceUnderScore(textView: TextView,string: String?) {
+        textView.text = string?.replace("_"," ")
     }
 
     @BindingAdapter("seasonText")

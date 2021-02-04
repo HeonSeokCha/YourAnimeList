@@ -8,7 +8,7 @@ object ConvertDate {
 
     fun convertToDateFormat(year: Int?, month: Int?, day: Int?) : String? {
         if (year == null || month == null || day == null) {
-            return null
+            return "?"
         }
         val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.US)
         return try {
@@ -18,7 +18,7 @@ object ConvertDate {
             calendar.set(Calendar.DAY_OF_MONTH, day)
             dateFormat.format(calendar.time)
         } catch (e: Exception) {
-            null
+            "?"
         }
     }
 

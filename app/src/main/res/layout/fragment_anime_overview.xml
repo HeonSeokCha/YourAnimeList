@@ -289,7 +289,7 @@
             android:id="@+id/txt_anime_overview_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{model.status.toString()}"
+            app:underScoreText="@{model.status.toString()}"
             app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_episode_duration"
             app:layout_constraintTop_toTopOf="@+id/textView11"
             tools:text="TextView" />
@@ -343,12 +343,12 @@
             android:id="@+id/txt_anime_overview_season"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            app:seasonText="@{model}"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_end_date"
             app:layout_constraintTop_toTopOf="@+id/textView14"
             app:layout_constraintVertical_bias="0.0"
+            app:seasonText="@{model}"
             tools:text="TextView" />\
 
     </androidx.constraintlayout.widget.ConstraintLayout>
