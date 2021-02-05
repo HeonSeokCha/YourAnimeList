@@ -48,7 +48,7 @@
                 android:layout_height="175dp"
                 android:scaleType="fitXY"
                 android:layout_marginStart="8dp"
-                app:imageGenericCoverSrc="@{model}"
+                app:imageCoverSrc="@{model.coverImage.extraLarge}"
                 app:layout_constraintBottom_toBottomOf="@+id/img_bannerImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/img_bannerImage"
@@ -64,12 +64,12 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textSize="18dp"
+                app:textGenericTitle="@{model}"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/img_cover_image"
                 app:layout_constraintTop_toBottomOf="@+id/img_bannerImage"
-                app:textGenericTitle="@{model}"
                 tools:text="TextView" />
 
             <ProgressBar
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
-                app:textGenericType="@{model}"
+                app:textType="@{model}"
                 app:layout_constraintStart_toStartOf="@+id/txt_anime_title"
                 app:layout_constraintTop_toBottomOf="@+id/txt_anime_title" />
 
@@ -114,9 +114,9 @@
                 android:drawableLeft="@drawable/ic_score"
                 android:drawablePadding="1dp"
                 android:textSize="12sp"
+                app:textScore="@{model.averageScore.toString()}"
                 app:layout_constraintStart_toEndOf="@+id/txt_anime_favorite"
                 app:layout_constraintTop_toBottomOf="@+id/txt_anime_year"
-                app:textGenericScore="@{model}"
                 tools:text="67" />
 
             <TextView

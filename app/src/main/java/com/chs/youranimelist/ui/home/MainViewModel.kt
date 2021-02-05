@@ -2,9 +2,11 @@ package com.chs.youranimelist.ui.home
 
 import androidx.lifecycle.*
 import com.apollographql.apollo.api.Input
+import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.AnimeRecListQuery
+import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
@@ -29,20 +31,44 @@ class MainViewModel (private val repository: AnimeRepository): ViewModel() {
         return responseLiveData
     }
 
-    fun getAnimeRecList():LiveData<List<*>> {
-        val responseLiveData: MutableLiveData<List<*>> = MutableLiveData()
+    fun getAnimeRecList():LiveData<List<List<AnimeList>>> {
+        val responseLiveData: MutableLiveData<List<List<AnimeList>>> = MutableLiveData()
+        val listAnime: MutableList<MutableList<AnimeList>> = mutableListOf()
         _netWorkState.value = NetWorkState.Loading
         viewModelScope.launch {
             repository.getAnimeRecList().catch { e->
                 _netWorkState.value = NetWorkState.Error(e.toString())
             }.collect {
                 viewPagerListQuery = it.viewPager?.media!!
-                responseLiveData.value = listOf (
-                    it.trending?.trendingMedia,
-                    it.popular?.popularMedia,
-                    it.upcomming?.upcommingMedia,
-                    it.alltime?.alltimeMedia,
-                )
+                it.trending?.trendingMedia.apply {
+                    val anime: MutableList<AnimeList> = mutableListOf()
+                     for(i in this!!.indices) {
+                         anime.add(this[i]!!.fragments.animeList)
+                     }
+                    listAnime.add(anime)
+                }
+                it.popular?.popularMedia.apply {
+                    val anime: MutableList<AnimeList> = mutableListOf()
+                    for(i in this!!.indices) {
+                        anime.add(this[i]!!.fragments.animeList)
+                    }
+                    listAnime.add(anime)
+                }
+                it.upcomming?.upcommingMedia.apply {
+                    val anime: MutableList<AnimeList> = mutableListOf()
+                    for(i in this!!.indices) {
+                        anime.add(this[i]!!.fragments.animeList)
+                    }
+                    listAnime.add(anime)
+                }
+                it.alltime?.alltimeMedia.apply {
+                    val anime: MutableList<AnimeList> = mutableListOf()
+                    for(i in this!!.indices) {
+                        anime.add(this[i]!!.fragments.animeList)
+                    }
+                    listAnime.add(anime)
+                }
+                responseLiveData.value = listAnime
                 _netWorkState.value = NetWorkState.Success
             }
         }
@@ -52,15 +78,25 @@ class MainViewModel (private val repository: AnimeRepository): ViewModel() {
     fun getAnimeList (
         page: Input<Int>,
         sort: Input<MediaSort>,
-        season: Input<MediaSeason>,
-        seasonYear: Input<Int> ):LiveData<AnimeListQuery.Data> {
-        val responseLiveData: MutableLiveData<AnimeListQuery.Data> = MutableLiveData()
+        season: MediaSeason?,
+        seasonYear: Input<Int> ):LiveData<List<AnimeList>> {
+        val responseLiveData: MutableLiveData<List<AnimeList>> = MutableLiveData()
+        val listAnime: MutableList<AnimeList> = mutableListOf()
         _netWorkState.value = NetWorkState.Loading
         viewModelScope.launch {
-            repository.getAnimeList(page, sort, season, seasonYear).catch { e->
+            repository.getAnimeList(page, sort, season.toInput(), seasonYear).catch { e->
                 _netWorkState.value = NetWorkState.Error(e.toString())
             }.collect {
-                responseLiveData.value = it
+                if(season == null) {
+                    it.nonSeason!!.media!!.forEach { anime ->
+                        listAnime.add(anime!!.fragments.animeList)
+                    }
+                } else {
+                    it.season!!.media!!.forEach { anime ->
+                        listAnime.add(anime!!.fragments.animeList)
+                    }
+                }
+                responseLiveData.value = listAnime
                 _netWorkState.value = NetWorkState.Success
             }
         }

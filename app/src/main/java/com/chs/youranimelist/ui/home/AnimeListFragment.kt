@@ -77,16 +77,16 @@ class AnimeListFragment : Fragment() {
     private fun getAnimeList() {
         viewModel.getAnimeList(page = page.toInput(),
             sort = sort.toInput(),
-            season = mediaSeason.toInput(),
+            season = mediaSeason,
             seasonYear = seasonYear.toInput()).observe(viewLifecycleOwner,{
             lifecycleScope.launchWhenStarted {
                 viewModel.netWorkState.collect { netWorkState ->
                     when(netWorkState) {
                         is MainViewModel.NetWorkState.Success -> {
                             if(season) {
-                                animeListAdapter.submitList(it.season?.media)
+                                animeListAdapter.submitList(it)
                             } else {
-                                animeListAdapter.submitList(it.nonSeason?.media)
+                                animeListAdapter.submitList(it)
                             }
                             binding.listProgressBar.isVisible = false
                         }

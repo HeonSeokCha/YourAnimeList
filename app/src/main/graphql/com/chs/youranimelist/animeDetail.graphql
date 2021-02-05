@@ -32,7 +32,6 @@ query animeDetail($id: Int) {
         genres
         status(version: 2)
         season
-        seasonInt
         seasonYear
         episodes
         duration

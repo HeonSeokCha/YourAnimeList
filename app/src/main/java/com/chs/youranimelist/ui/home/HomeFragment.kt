@@ -2,6 +2,7 @@ package com.chs.youranimelist.ui.home
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.chs.youranimelist.AnimeRecListQuery
 import com.chs.youranimelist.databinding.FragmentHomeBinding
+import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.repository.AnimeRepository
 import kotlinx.coroutines.flow.collect
 
@@ -38,7 +40,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
         getAnimeRecList()
     }
 
@@ -48,8 +49,9 @@ class HomeFragment : Fragment() {
                 viewModel.netWorkState.collect { netWorkState ->
                     when (netWorkState) {
                         is MainViewModel.NetWorkState.Success -> {
-                            animeRecListAdapter.submitList(it)
                             getPagerAnimeList()
+                            initRecyclerView(it)
+                            Log.d("Trending","${it.size}")
                             binding.mainProgressbar.isVisible = false
                         }
                         is MainViewModel.NetWorkState.Error -> {
@@ -91,9 +93,9 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun initRecyclerView() {
+    private fun initRecyclerView(items: List<List<AnimeList>>) {
         binding.rvAnimeRecList.apply {
-            animeRecListAdapter = AnimeRecListParentAdapter(this@HomeFragment.requireContext(),
+            animeRecListAdapter = AnimeRecListParentAdapter(items,this@HomeFragment.requireContext(),
                 clickListener = { sortType ->
                     val action = HomeFragmentDirections.actionFirstFragmentToAnimeListFragment(
                         sortType

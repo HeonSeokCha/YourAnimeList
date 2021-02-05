@@ -1,12 +1,9 @@
 package com.chs.youranimelist
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.text.Html
-import android.util.Log
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -14,10 +11,10 @@ import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.DrawableTransformation
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.chs.youranimelist.fragment.AnimeList
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 object Binding {
@@ -53,8 +50,16 @@ object Binding {
 
     @BindingAdapter("seasonText")
     @JvmStatic
-    fun setTextSeason(textView: TextView,media: AnimeDetailQuery.Media) {
-        textView.text = "${media?.season?.name} ${media?.seasonYear}"
+    fun setTextSeason(textView: TextView,media: Any?) {
+        when(media) {
+            is AnimeDetailQuery.Media -> {
+                textView.text = "${media?.season?.name} ${media?.seasonYear}"
+            }
+            is AnimeList -> {
+                textView.text = "${media?.season?.name} ${media?.seasonYear}"
+            }
+        }
+
     }
 
 
@@ -75,34 +80,10 @@ object Binding {
             .into(imageView)
     }
 
-    @BindingAdapter("imageGenericCoverSrc")
+    @BindingAdapter("imageCoverSrc")
     @JvmStatic
-    fun loadGenericCoverImg(imageView: ImageView,any: Any?) {
-        var temp: String = ""
-        when(any) {
-            is AnimeListQuery.Medium -> {
-                temp = any.fragments.animeList.coverImage?.extraLarge!!
-            }
-            is AnimeListQuery.Medium1 -> {
-                temp = any.fragments.animeList.coverImage?.extraLarge!!
-            }
-            is AnimeDetailQuery.Media -> {
-                temp = any.coverImage?.extraLarge!!
-            }
-            is AnimeRecListQuery.TrendingMedium -> {
-                temp = any.fragments.animeList.coverImage?.extraLarge!!
-            }
-            is AnimeRecListQuery.PopularMedium -> {
-                temp = any.fragments.animeList.coverImage?.extraLarge!!
-            }
-            is AnimeRecListQuery.UpcommingMedium -> {
-                temp = any.fragments.animeList.coverImage?.extraLarge!!
-            }
-            is AnimeRecListQuery.AlltimeMedium -> {
-                temp = any.fragments.animeList.coverImage?.extraLarge!!
-            }
-        }
-        Glide.with(imageView.context).load(temp)
+    fun loadGenericCoverImg(imageView: ImageView,path: String?) {
+        Glide.with(imageView.context).load(path)
             .transform(RoundedCorners(10))
             .transition(DrawableTransitionOptions().crossFade())
             .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -138,35 +119,9 @@ object Binding {
     @SuppressLint("ResourceAsColor")
     @BindingAdapter("textGenericStatus")
     @JvmStatic
-    fun setGenericTextStatus(textView: TextView, any: Any?) {
+    fun setGenericTextStatus(textView: TextView, text: String?) {
         var temp: String = ""
-        when (any) {
-            is AnimeDetailQuery.Media -> {
-                temp  = any.status.toString()
-            }
-            is AnimeListQuery.Medium -> {
-                temp  = any.fragments.animeList.status.toString()
-            }
-            is AnimeListQuery.Medium1 -> {
-                temp  = any.fragments.animeList.status.toString()
-            }
-            is AnimeRecListQuery.Medium -> {
-                temp  = any.status.toString()
-            }
-            is AnimeRecListQuery.TrendingMedium -> {
-                temp  = any.fragments.animeList.status.toString()
-            }
-            is AnimeRecListQuery.PopularMedium -> {
-                temp  = any.fragments.animeList.status.toString()
-            }
-            is AnimeRecListQuery.UpcommingMedium -> {
-                temp  = any.fragments.animeList.status.toString()
-            }
-            is AnimeRecListQuery.AlltimeMedium -> {
-                temp  = any.fragments.animeList.status.toString()
-            }
-        }
-        when(temp) {
+        when(text) {
             "RELEASING" -> {
                 temp = "Releasing"
                 textView.setTextColor(ContextCompat.getColor(textView.context,R.color.releasing))
@@ -183,130 +138,49 @@ object Binding {
         textView.text = temp
     }
 
-    @BindingAdapter("textGenericType")
+    @BindingAdapter("textType")
     @JvmStatic
-    fun setGenericTextType(textView: TextView,any: Any?) {
-        var temp: String = ""
-        when (any) {
+    fun setGenericTextType(textView: TextView, anime: Any?) {
+        when(anime) {
+            is AnimeList -> {
+                textView.text = "${anime!!.format} ⦁ ${anime!!.seasonYear}"
+            }
             is AnimeDetailQuery.Media -> {
-                temp  = "${any.format} ⦁ ${any.seasonYear}"
-            }
-            is AnimeListQuery.Medium -> {
-                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
-            }
-            is AnimeListQuery.Medium1 -> {
-                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
-            }
-            is AnimeRecListQuery.Medium -> {
-                temp  = "${any.format} ⦁ ${any.seasonYear}"
-            }
-            is AnimeRecListQuery.TrendingMedium -> {
-                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
-            }
-            is AnimeRecListQuery.PopularMedium -> {
-                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
-            }
-            is AnimeRecListQuery.UpcommingMedium -> {
-                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
-            }
-            is AnimeRecListQuery.AlltimeMedium -> {
-                temp  = "${any.fragments.animeList.format} ⦁ ${any.fragments.animeList.seasonYear}"
+                textView.text = "${anime!!.format} ⦁ ${anime!!.seasonYear}"
             }
         }
-        textView.text = temp
+
     }
 
-    @BindingAdapter("textGenericScore")
+    @BindingAdapter("textScore")
     @JvmStatic
-    fun setGenericTextScore(textView: TextView,any: Any?) {
-        var temp: String = "0"
-        when (any) {
-            is AnimeDetailQuery.Media -> {
-                temp  = "${any.averageScore}"
-            }
-            is AnimeListQuery.Medium -> {
-                temp  = "${any.fragments.animeList.averageScore}"
-            }
-            is AnimeListQuery.Medium1 -> {
-                temp  = "${any.fragments.animeList.averageScore}"
-            }
-            is AnimeRecListQuery.Medium -> {
-                temp  = "${any.averageScore}"
-            }
-            is AnimeRecListQuery.TrendingMedium -> {
-                temp  = "${any.fragments.animeList.averageScore}"
-            }
-            is AnimeRecListQuery.PopularMedium -> {
-                temp  = "${any.fragments.animeList.averageScore}"
-            }
-            is AnimeRecListQuery.AlltimeMedium -> {
-                temp  = "${any.fragments.animeList.averageScore}"
-            }
-        }
-        if(temp == "null") {
-            textView.isVisible = false
-        }
-        textView.text = temp
+    fun setGenericTextScore(textView: TextView,any: String?) {
+        textView.text = any ?: "0"
     }
 
     @BindingAdapter("textGenericTitle")
     @JvmStatic
-    fun setGenericTextTitle(textView: TextView,any: Any?) {
-        when (any) {
-            is AnimeDetailQuery.Media -> {
-                if (any.title?.english != null) {
-                    textView.text = any.title.english
-                } else {
-                    textView.text = any.title?.romaji
-                }
-            }
-            is AnimeListQuery.Medium -> {
-                if (any.fragments.animeList.title?.english != null) {
-                    textView.text = any.fragments.animeList.title?.english
-                } else {
-                    textView.text = any.fragments.animeList.title?.romaji
-                }
-            }
-            is AnimeListQuery.Medium1 -> {
-                if (any.fragments.animeList.title?.english != null) {
-                    textView.text = any.fragments.animeList.title?.english
-                } else {
-                    textView.text = any.fragments.animeList.title?.romaji
-                }
-            }
+    fun setGenericTextTitle(textView: TextView,anime: Any?) {
+        when(anime) {
             is AnimeRecListQuery.Medium -> {
-                if (any.title?.english != null) {
-                    textView.text = any.title?.english
+                if (anime.title?.english != null) {
+                    textView.text = anime.title?.english
                 } else {
-                    textView.text = any.title?.romaji
+                    textView.text = anime.title?.romaji
                 }
             }
-            is AnimeRecListQuery.TrendingMedium -> {
-                if (any.fragments.animeList.title?.english != null) {
-                    textView.text = any.fragments.animeList.title?.english
+            is AnimeList -> {
+                if (anime.title?.english != null) {
+                    textView.text = anime.title?.english
                 } else {
-                    textView.text = any.fragments.animeList.title?.romaji
+                    textView.text = anime.title?.romaji
                 }
             }
-            is AnimeRecListQuery.PopularMedium -> {
-                if (any.fragments.animeList.title?.english != null) {
-                    textView.text = any.fragments.animeList.title?.english
+            is AnimeDetailQuery.Media -> {
+                if (anime.title?.english != null) {
+                    textView.text = anime.title?.english
                 } else {
-                    textView.text = any.fragments.animeList.title?.romaji
-                }
-            }
-            is AnimeRecListQuery.UpcommingMedium -> {
-                if (any.fragments.animeList.title?.english != null) {
-                    textView.text = any.fragments.animeList.title?.english
-                } else {
-                    textView.text = any.fragments.animeList.title?.romaji
-                }
-            }
-            is AnimeRecListQuery.AlltimeMedium -> {
-                if (any.fragments.animeList.title?.english != null) {
-                    textView.text = any.fragments.animeList.title?.english
-                } else {
-                    textView.text = any.fragments.animeList.title?.romaji
+                    textView.text = anime.title?.romaji
                 }
             }
         }

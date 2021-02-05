@@ -4,7 +4,7 @@ import androidx.paging.DifferCallback
 import androidx.recyclerview.widget.DiffUtil
 import com.chs.youranimelist.AnimeDetailQuery
 
-class CharaDiffUtilCallBack: DiffUtil.ItemCallback<AnimeDetailQuery.Node1>(){
+class AnimeCharaDiffUtilCallBack: DiffUtil.ItemCallback<AnimeDetailQuery.Node1>(){
     override fun areItemsTheSame(
         oldItem: AnimeDetailQuery.Node1,
         newItem: AnimeDetailQuery.Node1

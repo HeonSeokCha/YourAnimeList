@@ -5,7 +5,7 @@
     <data>
         <variable
             name="model"
-            type="Object" />
+            type="com.chs.youranimelist.fragment.AnimeList" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -27,7 +27,7 @@
                 android:layout_marginEnd="8dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                app:imageGenericCoverSrc="@{model}"
+                app:imageCoverSrc="@{model.coverImage.extraLarge}"
                 app:layout_constraintDimensionRatio="1:1.5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,38 +44,38 @@
                 android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="TextView"
                 android:textSize="13sp"
+                tools:text="TextView"
+                app:textGenericTitle="@{model}"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toTopOf="@+id/txt_anime_status"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/img_animeList"
-                app:layout_constraintVertical_bias="0.0"
-                app:textGenericTitle="@{model}" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/txt_anime_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="TextView"
+                tools:text="TextView"
                 android:textSize="12sp"
+                app:textGenericStatus="@{model.status.toString()}"
                 app:layout_constraintBottom_toTopOf="@+id/txt_anime_type"
-                app:layout_constraintStart_toStartOf="@+id/txt_animeList_title"
-                app:textGenericStatus="@{model}" />
+                app:layout_constraintStart_toStartOf="@+id/txt_animeList_title" />
 
             <TextView
                 android:id="@+id/txt_anime_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="TextView"
+                app:textType="@{model}"
                 android:textSize="12dp"
+                tools:text="TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/txt_anime_status"
-                app:textGenericType="@{model}" />
+                app:layout_constraintStart_toStartOf="@+id/txt_anime_status" />
 
             <TextView
                 android:id="@+id/txt_animeList_score"
@@ -84,11 +84,11 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:drawableLeft="@drawable/ic_score"
-                android:text="75"
+                android:text="@{model.averageScore.toString()}"
                 android:textSize="12sp"
+                tools:text="75"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:textGenericScore="@{model}" />
+                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

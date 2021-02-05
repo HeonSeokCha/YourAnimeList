@@ -17,7 +17,7 @@ class AnimeCharaFragment(private val test: List<AnimeDetailQuery.Node1>) : Fragm
     private val repository by lazy { AnimeRepository() }
     private var _binding: FragmentAnimeCharaBinding? = null
     private val binding get() = _binding!!
-    private lateinit var charaAdapter: CharaAdapter
+    private lateinit var charaAdapter: AnimeCharaAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,7 +33,7 @@ class AnimeCharaFragment(private val test: List<AnimeDetailQuery.Node1>) : Fragm
 
     private fun initRecyclerView() {
         binding.rvAnimeChara.apply {
-            charaAdapter = CharaAdapter()
+            charaAdapter = AnimeCharaAdapter()
             charaAdapter.submitList(test)
             this.adapter = charaAdapter
             this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context,3)
