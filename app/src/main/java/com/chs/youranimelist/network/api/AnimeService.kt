@@ -17,6 +17,7 @@ object AnimeService {
 
     val apolloClient: ApolloClient = ApolloClient.builder()
         .serverUrl(BASE_URL)
+        .okHttpClient(createOkHttpClient())
         .normalizedCache(cache)
         .build()
 

@@ -19,35 +19,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 object Binding {
 
-    @BindingAdapter("trailerBtn")
-    @JvmStatic
-    fun trailerChk(floatingActionButton: FloatingActionButton, trailer: String?) {
-        floatingActionButton.isVisible = trailer != null
-    }
-
-    @BindingAdapter("dateText")
-    @JvmStatic
-    fun setTextDate(textView: TextView,date: Any?) {
-        when(date) {
-            is AnimeDetailQuery.StartDate -> {
-                textView.text = if(date.day != null) {
-                    ConvertDate.convertToDateFormat(date.year,date.month,date.day)
-                } else "?"
-            }
-            is AnimeDetailQuery.EndDate -> {
-                textView.text = if (date.day != null) {
-                    ConvertDate.convertToDateFormat(date.year, date.month, date.day)
-                } else "?"
-            }
-        }
-    }
-
-    @BindingAdapter("underScoreText")
-    @JvmStatic
-    fun replaceUnderScore(textView: TextView,string: String?) {
-        textView.text = string?.replace("_"," ")
-    }
-
     @BindingAdapter("seasonText")
     @JvmStatic
     fun setTextSeason(textView: TextView,media: Any?) {
@@ -59,26 +30,8 @@ object Binding {
                 textView.text = "${media?.season?.name} ${media?.seasonYear}"
             }
         }
-
     }
 
-
-    @BindingAdapter("htmlTags")
-    @JvmStatic
-    fun setHtmlTags(textView: TextView,string: String?) {
-        if(string?.isNotEmpty() == true)
-            textView.text = Html.fromHtml(string, Html.FROM_HTML_MODE_LEGACY).toString()
-    }
-
-    @BindingAdapter("circleSrc")
-    @JvmStatic
-    fun loadCircleImg(imageView: ImageView,path: String) {
-        Glide.with(imageView.context).load(path)
-            .apply(RequestOptions().circleCrop())
-            .transition(DrawableTransitionOptions().crossFade())
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(imageView)
-    }
 
     @BindingAdapter("imageCoverSrc")
     @JvmStatic
@@ -138,19 +91,7 @@ object Binding {
         textView.text = temp
     }
 
-    @BindingAdapter("textType")
-    @JvmStatic
-    fun setGenericTextType(textView: TextView, anime: Any?) {
-        when(anime) {
-            is AnimeList -> {
-                textView.text = "${anime!!.format} ⦁ ${anime!!.seasonYear}"
-            }
-            is AnimeDetailQuery.Media -> {
-                textView.text = "${anime!!.format} ⦁ ${anime!!.seasonYear}"
-            }
-        }
 
-    }
 
     @BindingAdapter("textScore")
     @JvmStatic

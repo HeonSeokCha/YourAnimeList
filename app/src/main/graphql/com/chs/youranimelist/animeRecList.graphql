@@ -56,10 +56,10 @@ fragment animeList on Media {
         extraLarge
         color
     }
+    bannerImage
     averageScore
     season
     seasonYear
     format
     status
-    bannerImage
 }

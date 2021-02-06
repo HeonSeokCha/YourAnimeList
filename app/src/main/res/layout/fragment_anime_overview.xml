@@ -21,7 +21,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:text="TextView"
-            app:htmlTags="@{model.description}"
+            app:animeOverviewHtmlConvert="@{model.description}"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -97,8 +97,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="@{model.averageScore.toString()+'%'}"
                 android:textStyle="bold"
+                app:animeOverviewScoreConvert="@{model.averageScore.toString()}"
                 app:layout_constraintEnd_toEndOf="@+id/textView15"
                 app:layout_constraintStart_toStartOf="@+id/textView15"
                 app:layout_constraintTop_toTopOf="parent"
@@ -109,8 +109,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="@{model.meanScore.toString()+'%'}"
                 android:textStyle="bold"
+                app:animeOverviewScoreConvert="@{model.averageScore.toString()}"
                 app:layout_constraintEnd_toEndOf="@+id/textView16"
                 app:layout_constraintStart_toStartOf="@+id/textView16"
                 app:layout_constraintTop_toTopOf="parent"
@@ -121,8 +121,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="@{model.popularity.toString()}"
                 android:textStyle="bold"
+                app:animeOverviewScoreConvert="@{model.averageScore.toString()}"
                 app:layout_constraintEnd_toEndOf="@+id/textView17"
                 app:layout_constraintStart_toStartOf="@+id/textView17"
                 app:layout_constraintTop_toTopOf="parent"
@@ -133,8 +133,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="@{model.favourites.toString()}"
                 android:textStyle="bold"
+                app:animeOverviewScoreConvert="@{model.averageScore.toString()}"
                 app:layout_constraintEnd_toEndOf="@+id/textView18"
                 app:layout_constraintStart_toStartOf="@+id/textView18"
                 app:layout_constraintTop_toTopOf="parent"
@@ -166,13 +166,13 @@
             android:id="@+id/txt_anime_overview_romaji"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="88dp"
             android:layout_marginEnd="16dp"
             android:maxLines="2"
             android:text="@{model.title.romaji}"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView10"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
             app:layout_constraintTop_toTopOf="@+id/textView3"
             tools:text="TextView" />
 
@@ -191,7 +191,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:maxLines="2"
-            android:text="@{model.title.english.toString()}"
+            app:animeOverviewEnglishNull="@{model.title}"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -253,7 +253,7 @@
             android:id="@+id/txt_anime_overview_episode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{String.valueOf(model.episodes)}"
+            app:animeOverviewEpisode="@{model.episodes}"
             app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_format"
             app:layout_constraintTop_toTopOf="@+id/textView9"
             tools:text="TextView" />
@@ -264,6 +264,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Episode Duration"
+            app:animeOverviewDurationVisible="@{model.duration}"
             app:layout_constraintStart_toStartOf="@+id/textView9"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -271,7 +272,8 @@
             android:id="@+id/txt_anime_overview_episode_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{model.duration.toString()}"
+            app:animeOverviewDurationVisible="@{model.duration}"
+            app:animeOverviewDurationValue="@{model.duration}"
             app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_episode"
             app:layout_constraintTop_toTopOf="@+id/textView10"
             tools:text="TextView" />
@@ -289,7 +291,7 @@
             android:id="@+id/txt_anime_overview_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:underScoreText="@{model.status.toString()}"
+            app:animeOverviewStatusValue="@{model.status.toString()}"
             app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_episode_duration"
             app:layout_constraintTop_toTopOf="@+id/textView11"
             tools:text="TextView" />
@@ -307,7 +309,7 @@
             android:id="@+id/txt_anime_overview_start_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:dateText="@{model.startDate}"
+            app:animeOverviewDateText="@{model.startDate}"
             app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_status"
             app:layout_constraintTop_toTopOf="@+id/textView12"
             tools:text="TextView" />
@@ -325,7 +327,7 @@
             android:id="@+id/txt_anime_overview_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:dateText="@{model.endDate}"
+            app:animeOverviewDateText="@{model.endDate}"
             app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_start_date"
             app:layout_constraintTop_toTopOf="@+id/textView13"
             tools:text="TextView" />
@@ -344,12 +346,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:textColor="@color/purple_500"
+            app:animeOverviewSeasonValue="@{model}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_end_date"
             app:layout_constraintTop_toTopOf="@+id/textView14"
             app:layout_constraintVertical_bias="0.0"
-            app:seasonText="@{model}"
-            tools:text="TextView" />\
-
+            tools:text="TextView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

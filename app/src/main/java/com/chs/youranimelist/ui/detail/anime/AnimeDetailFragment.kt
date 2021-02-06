@@ -2,6 +2,7 @@ package com.chs.youranimelist.ui.detail.anime
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +40,7 @@ class AnimeDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as MainActivity).binding.toolbar.title = args.animeName
+        Log.d("animeId","${args.animeId}")
         initAnimeInfo(args.animeId.toInput())
         initClick()
     }
@@ -57,8 +59,8 @@ class AnimeDetailFragment : Fragment() {
                         is MainViewModel.NetWorkState.Success -> {
                             binding.model = it
                             initTabView(it)
-                            binding.detailPageProgressBar.isVisible = false
                             trailerId = it.trailer?.id.toString()
+                            binding.detailPageProgressBar.isVisible = false
                         }
                         is MainViewModel.NetWorkState.Error -> {
                             Toast.makeText(this@AnimeDetailFragment.context,
