@@ -40,7 +40,6 @@ class AnimeDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as MainActivity).binding.toolbar.title = args.animeName
-        Log.d("animeId","${args.animeId}")
         initAnimeInfo(args.animeId.toInput())
         initClick()
     }

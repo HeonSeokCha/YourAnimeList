@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:textStyle="bold"
-                app:animeOverviewScoreConvert="@{model.averageScore.toString()}"
+                app:animeOverviewScoreConvert="@{model.meanScore.toString()}"
                 app:layout_constraintEnd_toEndOf="@+id/textView16"
                 app:layout_constraintStart_toStartOf="@+id/textView16"
                 app:layout_constraintTop_toTopOf="parent"
@@ -122,11 +122,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:textStyle="bold"
-                app:animeOverviewScoreConvert="@{model.averageScore.toString()}"
+                android:text="@{model.popularity.toString()}"
                 app:layout_constraintEnd_toEndOf="@+id/textView17"
                 app:layout_constraintStart_toStartOf="@+id/textView17"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="0%" />
+                tools:text="0" />
 
             <TextView
                 android:id="@+id/textView22"
@@ -134,11 +134,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:textStyle="bold"
-                app:animeOverviewScoreConvert="@{model.averageScore.toString()}"
+                android:text="@{model.favourites.toString()}"
                 app:layout_constraintEnd_toEndOf="@+id/textView18"
                 app:layout_constraintStart_toStartOf="@+id/textView18"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="0%" />
+                tools:text="0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -346,7 +346,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:textColor="@color/purple_500"
+            android:textColor="@color/red_500"
             app:animeOverviewSeasonValue="@{model}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_end_date"
