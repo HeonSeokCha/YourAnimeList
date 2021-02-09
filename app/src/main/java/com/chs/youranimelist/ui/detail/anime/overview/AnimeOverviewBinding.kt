@@ -1,9 +1,14 @@
 package com.chs.youranimelist.ui.detail.anime.overview
 
 import android.text.Html
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.ConvertDate
 
@@ -86,4 +91,12 @@ object AnimeOverviewBinding {
         textView.text = "${anime.season} ${anime.seasonYear}"
     }
 
+    @BindingAdapter("animeOverviewCoverImage")
+    @JvmStatic
+    fun animeOverviewCoverImage(imageView: ImageView, path: String?) {
+        Glide.with(imageView.context).load(path)
+            .transition(DrawableTransitionOptions().crossFade())
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(imageView)
+    }
 }

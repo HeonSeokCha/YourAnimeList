@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <import type="android.view.View" />
         <variable
             name="model"
-            type="com.chs.youranimelist.fragment.AnimeList" />
+            type="com.chs.youranimelist.AnimeDetailQuery.RelationsEdge" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -20,15 +19,12 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/img_animeList"
+                android:id="@+id/img_relationList"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                app:animeImageCover="@{model.coverImage.extraLarge}"
+                app:animeOverviewCoverImage="@{model.relationsNode.coverImage.extraLarge}"
                 app:layout_constraintDimensionRatio="1:1.5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,60 +32,52 @@
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
-                android:id="@+id/txt_animeList_title"
+                android:id="@+id/txt_relationList_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 android:ellipsize="end"
+                android:gravity="center"
                 android:maxLines="2"
                 android:textSize="13sp"
-                tools:text="TextView"
-                app:animeEnglishNull="@{model.title}"
+                android:text="@{model.relationsNode.title.userPreferred}"
                 app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toTopOf="@+id/txt_anime_status"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/img_animeList"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/img_relationList"
+                tools:text="TextView" />
 
             <TextView
                 android:id="@+id/txt_anime_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                tools:text="TextView"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
                 android:textSize="12sp"
-                app:animeStatusValue="@{model.status.toString()}"
-                app:layout_constraintBottom_toTopOf="@+id/txt_anime_type"
-                app:layout_constraintStart_toStartOf="@+id/txt_animeList_title" />
+                android:text="@{model.relationType.toString()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_relationList_title"
+                tools:text="TextView" />
 
             <TextView
-                android:id="@+id/txt_anime_type"
+                android:id="@+id/textView23"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:textSize="12dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/background_text_view"
+                android:text="@{model.relationsNode.format.toString()}"
+                android:textColor="@color/white"
+                android:textSize="10dp"
                 tools:text="TextView"
-                app:animeFormatYear="@{model}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/txt_anime_status" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/txt_animeList_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:drawableLeft="@drawable/ic_score"
-                android:textSize="12sp"
-                tools:text="75"
-                app:animeScoreVisible="@{model.averageScore}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

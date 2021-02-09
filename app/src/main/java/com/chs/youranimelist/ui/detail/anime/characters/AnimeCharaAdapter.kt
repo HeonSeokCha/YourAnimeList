@@ -7,18 +7,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.databinding.ItemCharaBinding
 
-class AnimeCharaAdapter: ListAdapter<AnimeDetailQuery.Node1,
-        AnimeCharaAdapter.CharaViewHolder>(AnimeCharaDiffUtilCallBack()) {
+class AnimeCharaAdapter(
+    private val items:List<AnimeDetailQuery.CharactersNode?>
+    ): RecyclerView.Adapter<AnimeCharaAdapter.CharaViewHolder>(){
 
     inner class CharaViewHolder(
         private val binding: ItemCharaBinding): RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-
             }
         }
         fun bind() {
-            binding.model = getItem(layoutPosition)
+            binding.model = items[layoutPosition]
         }
     }
 
@@ -30,4 +30,6 @@ class AnimeCharaAdapter: ListAdapter<AnimeDetailQuery.Node1,
     override fun onBindViewHolder(holder: CharaViewHolder, position: Int) {
         holder.bind()
     }
+
+    override fun getItemCount(): Int = items.size
 }

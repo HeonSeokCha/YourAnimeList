@@ -13,7 +13,7 @@ class AnimeDetailViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return when(position) {
             0 -> AnimeOverviewFragment(AnimeInfo)
-            1 -> AnimeCharaFragment(AnimeInfo.characters!!.nodes as List<AnimeDetailQuery.Node1>)
+            1 -> AnimeCharaFragment(AnimeInfo.characters!!.charactersNode!!)
             else -> Fragment()
         }
     }

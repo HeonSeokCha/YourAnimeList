@@ -12,7 +12,7 @@ import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.home.MainViewModel
 
-class AnimeCharaFragment(private val test: List<AnimeDetailQuery.Node1>) : Fragment() {
+class AnimeCharaFragment(private val charaList: List<AnimeDetailQuery.CharactersNode?>) : Fragment() {
     private lateinit var viewModel: MainViewModel
     private val repository by lazy { AnimeRepository() }
     private var _binding: FragmentAnimeCharaBinding? = null
@@ -33,8 +33,7 @@ class AnimeCharaFragment(private val test: List<AnimeDetailQuery.Node1>) : Fragm
 
     private fun initRecyclerView() {
         binding.rvAnimeChara.apply {
-            charaAdapter = AnimeCharaAdapter()
-            charaAdapter.submitList(test)
+            charaAdapter = AnimeCharaAdapter(charaList)
             this.adapter = charaAdapter
             this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context,3)
             this.addItemDecoration(SpacesItemDecoration(3,50,true))

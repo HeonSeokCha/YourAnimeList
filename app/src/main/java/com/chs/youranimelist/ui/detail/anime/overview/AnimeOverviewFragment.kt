@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.databinding.FragmentAnimeOverviewBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
@@ -31,6 +32,15 @@ class AnimeOverviewFragment(private val animeInfo:AnimeDetailQuery.Media) : Frag
 
     private fun initView() {
         binding.model = animeInfo
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        binding.rvAnimeOverviewRelation.apply {
+            this.adapter = AnimeOverviewRelationAdapter(animeInfo.relations?.relationsEdges!!)
+            this.layoutManager = LinearLayoutManager(this@AnimeOverviewFragment.context,
+                LinearLayoutManager.HORIZONTAL,false)
+        }
     }
 
     override fun onResume() {

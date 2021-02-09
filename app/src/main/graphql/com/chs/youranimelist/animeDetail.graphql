@@ -41,8 +41,8 @@ query animeDetail($id: Int) {
         favourites
         source
         relations {
-            edges {
-                node {
+            relationsEdges: edges {
+                relationsNode: node {
                     id
                     title {
                         userPreferred
@@ -58,7 +58,7 @@ query animeDetail($id: Int) {
             }
         }
         characters(sort: [ROLE,ID]) {
-            nodes {
+            charactersNode: nodes {
                 id
                 name {
                     first
@@ -71,7 +71,7 @@ query animeDetail($id: Int) {
             }
         }
         recommendations {
-            nodes {
+            recommendationsNode: nodes {
                 mediaRecommendation {
                     id
                     idMal
