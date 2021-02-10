@@ -1,4 +1,4 @@
-package com.chs.youranimelist.ui.detail.anime
+package com.chs.youranimelist.ui.browse.anime
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -48,7 +48,8 @@ object AnimeDetailBinding {
 
     @BindingAdapter("animeDetailTrailerVisible")
     @JvmStatic
-    fun animeDetailTrailerVisible(floatingActionButton: FloatingActionButton, trailer: AnimeDetailQuery.Trailer?) {
+    fun animeDetailTrailerVisible(
+        floatingActionButton: FloatingActionButton, trailer: AnimeDetailQuery.Trailer?) {
         floatingActionButton.isVisible = trailer != null
     }
 
@@ -68,8 +69,19 @@ object AnimeDetailBinding {
         if(score == null) {
             textView.isVisible = false
         } else {
-            textView.text = score.toString()
+            textView.apply {
+                this.isVisible = true
+                this.text = score.toString()
+            }
         }
+    }
+
+    @ExperimentalStdlibApi
+    @BindingAdapter("animeDetailRelationFormat")
+    @JvmStatic
+    fun animeDetailRelationFormat(textView: TextView, string: String) {
+        var temp = string.replace("_"," ")
+        textView.text = temp[0].uppercase() + temp.substring(1,string.length).toLowerCase()
     }
 
 }

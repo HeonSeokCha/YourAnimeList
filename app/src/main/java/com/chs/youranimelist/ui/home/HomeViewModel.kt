@@ -1,22 +1,29 @@
 package com.chs.youranimelist.ui.home
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
-import com.chs.youranimelist.AnimeDetailQuery
-import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.AnimeRecListQuery
 import com.chs.youranimelist.fragment.AnimeList
+import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
-import kotlinx.coroutines.flow.*
+import com.chs.youranimelist.ui.main.MainViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class MainViewModel (private val repository: AnimeRepository): ViewModel() {
+class HomeViewModel(private val animeRepository: AnimeRepository): ViewModel() {
     private val _netWorkState = MutableStateFlow<NetWorkState>(NetWorkState.Empty)
-    val netWorkState: StateFlow<NetWorkState> = _netWorkState
     private lateinit var viewPagerListQuery: List<AnimeRecListQuery.Medium?>
+    val netWorkState: StateFlow<NetWorkState> = _netWorkState
 
     sealed class NetWorkState {
         object Success: NetWorkState()
@@ -31,20 +38,20 @@ class MainViewModel (private val repository: AnimeRepository): ViewModel() {
         return responseLiveData
     }
 
-    fun getAnimeRecList():LiveData<List<List<AnimeList>>> {
+    fun getAnimeRecList(): LiveData<List<List<AnimeList>>> {
         val responseLiveData: MutableLiveData<List<List<AnimeList>>> = MutableLiveData()
         val listAnime: MutableList<MutableList<AnimeList>> = mutableListOf()
         _netWorkState.value = NetWorkState.Loading
         viewModelScope.launch {
-            repository.getAnimeRecList().catch { e->
+            animeRepository.getAnimeRecList().catch { e->
                 _netWorkState.value = NetWorkState.Error(e.toString())
             }.collect {
                 viewPagerListQuery = it.viewPager?.media!!
                 it.trending?.trendingMedia.apply {
                     val anime: MutableList<AnimeList> = mutableListOf()
-                     for(i in this!!.indices) {
-                         anime.add(this[i]!!.fragments.animeList)
-                     }
+                    for(i in this!!.indices) {
+                        anime.add(this[i]!!.fragments.animeList)
+                    }
                     listAnime.add(anime)
                 }
                 it.popular?.popularMedia.apply {
@@ -69,48 +76,6 @@ class MainViewModel (private val repository: AnimeRepository): ViewModel() {
                     listAnime.add(anime)
                 }
                 responseLiveData.value = listAnime
-                _netWorkState.value = NetWorkState.Success
-            }
-        }
-        return responseLiveData
-    }
-
-    fun getAnimeList (
-        page: Input<Int>,
-        sort: Input<MediaSort>,
-        season: MediaSeason?,
-        seasonYear: Input<Int> ):LiveData<List<AnimeList>> {
-        val responseLiveData: MutableLiveData<List<AnimeList>> = MutableLiveData()
-        val listAnime: MutableList<AnimeList> = mutableListOf()
-        _netWorkState.value = NetWorkState.Loading
-        viewModelScope.launch {
-            repository.getAnimeList(page, sort, season.toInput(), seasonYear).catch { e->
-                _netWorkState.value = NetWorkState.Error(e.toString())
-            }.collect {
-                if(season == null) {
-                    it.nonSeason!!.media!!.forEach { anime ->
-                        listAnime.add(anime!!.fragments.animeList)
-                    }
-                } else {
-                    it.season!!.media!!.forEach { anime ->
-                        listAnime.add(anime!!.fragments.animeList)
-                    }
-                }
-                responseLiveData.value = listAnime
-                _netWorkState.value = NetWorkState.Success
-            }
-        }
-        return responseLiveData
-    }
-
-    fun getAnimeInfo(animeId: Input<Int>):LiveData<AnimeDetailQuery.Media> {
-        val responseLiveData: MutableLiveData<AnimeDetailQuery.Media> = MutableLiveData()
-        _netWorkState.value = NetWorkState.Loading
-        viewModelScope.launch {
-            repository.getAnimeInfo(animeId).catch { e->
-                _netWorkState.value = NetWorkState.Error(e.toString())
-            }.collect{
-                responseLiveData.value = it.media
                 _netWorkState.value = NetWorkState.Success
             }
         }

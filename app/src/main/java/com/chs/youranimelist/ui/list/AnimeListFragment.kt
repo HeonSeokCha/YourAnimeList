@@ -1,5 +1,6 @@
-package com.chs.youranimelist.ui.home
+package com.chs.youranimelist.ui.list
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,26 +9,27 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.ConvertDate
 import com.chs.youranimelist.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeListBinding
+import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
+import com.chs.youranimelist.ui.browse.BrowseActivity
+import com.chs.youranimelist.ui.main.MainViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 
 
 class AnimeListFragment : Fragment() {
     private var _binding: FragmentAnimeListBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: MainViewModel
-    private val args: AnimeListFragmentArgs by navArgs()
-    private val repository by lazy { AnimeRepository() }
+    private lateinit var viewModel: AnimeListViewModel
+    private val repository by lazy { AnimeListRepository() }
     private lateinit var animeListAdapter: AnimeListAdapter
     private lateinit var sort:MediaSort
     private var page = 1
@@ -40,13 +42,12 @@ class AnimeListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAnimeListBinding.inflate(inflater, container, false)
-        viewModel = MainViewModel(repository)
+        viewModel = AnimeListViewModel(repository)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as MainActivity).binding.toolbar.title = args.sortType
-        initSortType(args.sortType)
+        initSortType(arguments?.getString("sortType")!!)
         initRecyclerView()
         getAnimeList()
     }
@@ -82,7 +83,7 @@ class AnimeListFragment : Fragment() {
             lifecycleScope.launchWhenStarted {
                 viewModel.netWorkState.collect { netWorkState ->
                     when(netWorkState) {
-                        is MainViewModel.NetWorkState.Success -> {
+                        is AnimeListViewModel.NetWorkState.Success -> {
                             if(season) {
                                 animeListAdapter.submitList(it)
                             } else {
@@ -90,7 +91,7 @@ class AnimeListFragment : Fragment() {
                             }
                             binding.listProgressBar.isVisible = false
                         }
-                        is MainViewModel.NetWorkState.Error -> {
+                        is AnimeListViewModel.NetWorkState.Error -> {
                             Toast.makeText(
                                 this@AnimeListFragment.context,
                                 netWorkState.message,
@@ -98,7 +99,7 @@ class AnimeListFragment : Fragment() {
                             ).show()
                             binding.listProgressBar.isVisible = false
                         }
-                        is MainViewModel.NetWorkState.Loading -> {
+                        is AnimeListViewModel.NetWorkState.Loading -> {
                             binding.listProgressBar.isVisible = true
                         }
                         else -> Unit
@@ -110,13 +111,12 @@ class AnimeListFragment : Fragment() {
 
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
-            animeListAdapter = AnimeListAdapter(clickListener = { animeId,animeName ->
-                val action =
-                    AnimeListFragmentDirections.actionAnimeListFragmentToAnimeDetailFragment(
-                        animeId,
-                        animeName
-                    )
-                binding.root.findNavController().navigate(action)
+            animeListAdapter = AnimeListAdapter(clickListener = { animeId ->
+                val intent = Intent(activity,BrowseActivity::class.java).apply {
+                    this.putExtra("id",animeId)
+                    this.putExtra("browseType","ANIME")
+                }
+                startActivity(intent)
             }).apply {
                 this.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             }

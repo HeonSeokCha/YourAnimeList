@@ -1,11 +1,11 @@
-package com.chs.youranimelist.ui.detail.anime
+package com.chs.youranimelist.ui.browse.anime
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.chs.youranimelist.AnimeDetailQuery
-import com.chs.youranimelist.ui.detail.anime.characters.AnimeCharaFragment
-import com.chs.youranimelist.ui.detail.anime.overview.AnimeOverviewFragment
+import com.chs.youranimelist.ui.browse.anime.characters.AnimeCharaFragment
+import com.chs.youranimelist.ui.browse.anime.overview.AnimeOverviewFragment
 
 class AnimeDetailViewPagerAdapter(
     fm: FragmentActivity,

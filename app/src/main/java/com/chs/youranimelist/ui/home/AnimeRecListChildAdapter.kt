@@ -8,7 +8,7 @@ import com.chs.youranimelist.fragment.AnimeList
 
 class AnimeRecListChildAdapter(
     private val list: List<AnimeList>,
-    private val clickListener: (animeId: Int,animeName: String) -> Unit,
+    private val clickListener: (animeId: Int) -> Unit,
 ): RecyclerView.Adapter<AnimeRecListChildAdapter.AnimeViewHolder>() {
 
     inner class AnimeViewHolder(
@@ -16,7 +16,7 @@ class AnimeRecListChildAdapter(
     ):RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                clickListener.invoke(list[layoutPosition].id,list[layoutPosition].title?.romaji!!)
+                clickListener.invoke(list[layoutPosition].id)
             }
         }
         fun bind() {

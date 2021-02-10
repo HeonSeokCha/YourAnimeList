@@ -15,7 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.detail.anime.AnimeDetailFragment">
+            tools:context=".ui.browse.anime.AnimeDetailFragment">
 
             <ImageView
                 android:id="@+id/img_bannerImage"
@@ -64,8 +64,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textSize="18dp"
-                android:text=""
-                app:animeDetailEnglishNull="@{model.title}"
+                android:text="@{model.title.romaji}"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

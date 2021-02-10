@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.detail.anime.characters.AnimeCharaFragment">
+    tools:context=".ui.browse.anime.characters.AnimeCharaFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_anime_chara"

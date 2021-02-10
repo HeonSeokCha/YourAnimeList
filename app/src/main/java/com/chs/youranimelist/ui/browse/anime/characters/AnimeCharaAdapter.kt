@@ -1,20 +1,21 @@
-package com.chs.youranimelist.ui.detail.anime.characters
+package com.chs.youranimelist.ui.browse.anime.characters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.databinding.ItemCharaBinding
 
 class AnimeCharaAdapter(
-    private val items:List<AnimeDetailQuery.CharactersNode?>
+    private val items:List<AnimeDetailQuery.CharactersNode?>,
+    private val clickListener: (charaId: Int) -> Unit
     ): RecyclerView.Adapter<AnimeCharaAdapter.CharaViewHolder>(){
 
     inner class CharaViewHolder(
         private val binding: ItemCharaBinding): RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
+                clickListener.invoke(items[layoutPosition]!!.id)
             }
         }
         fun bind() {

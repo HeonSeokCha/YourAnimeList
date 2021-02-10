@@ -21,7 +21,7 @@ class AnimeRecViewPagerAdapter (
                     if(this.title?.english == null) {
                         clickListener.invoke(this.id, this.title?.romaji!!)
                     } else {
-                        clickListener.invoke(this.id, this.title?.english!!)
+                        clickListener.invoke(this.id, this.title?.english)
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package com.chs.youranimelist.ui.detail.anime.characters
+package com.chs.youranimelist.ui.browse.anime.characters
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

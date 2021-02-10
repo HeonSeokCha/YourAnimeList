@@ -1,4 +1,4 @@
-package com.chs.youranimelist.ui.detail.anime.overview
+package com.chs.youranimelist.ui.browse.anime.overview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

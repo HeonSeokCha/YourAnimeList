@@ -1,25 +1,21 @@
-package com.chs.youranimelist.ui.home
+package com.chs.youranimelist.ui.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.databinding.ItemAnimeBinding
 import com.chs.youranimelist.fragment.AnimeList
+import com.chs.youranimelist.ui.home.AnimeRecListChildDiffUtilCallBack
 
 class AnimeListAdapter(
-    private val clickListener: (animeId: Int,animeName: String) -> Unit,
+    private val clickListener: (animeId: Int) -> Unit,
 ): ListAdapter<AnimeList, AnimeListAdapter.AnimeListViewHolder>(AnimeRecListChildDiffUtilCallBack()) {
     inner class AnimeListViewHolder(
         private val binding: ItemAnimeBinding):RecyclerView.ViewHolder(binding.root) {
             init {
                 binding.root.setOnClickListener {
-                    if(getItem(layoutPosition).title?.english == null) {
-                        clickListener.invoke(getItem(layoutPosition).id,getItem(layoutPosition).title?.romaji!!)
-                    } else {
-                        clickListener.invoke(getItem(layoutPosition).id,getItem(layoutPosition).title?.english!!)
-                    }
+                    clickListener.invoke(getItem(layoutPosition).id)
                 }
             }
             fun bind() {

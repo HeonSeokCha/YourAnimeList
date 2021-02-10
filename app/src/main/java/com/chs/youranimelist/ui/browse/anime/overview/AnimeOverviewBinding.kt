@@ -1,4 +1,4 @@
-package com.chs.youranimelist.ui.detail.anime.overview
+package com.chs.youranimelist.ui.browse.anime.overview
 
 import android.text.Html
 import android.widget.ImageView
@@ -8,7 +8,6 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestOptions
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.ConvertDate
 

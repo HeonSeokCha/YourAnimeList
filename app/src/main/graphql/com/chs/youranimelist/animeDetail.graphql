@@ -45,7 +45,8 @@ query animeDetail($id: Int) {
                 relationsNode: node {
                     id
                     title {
-                        userPreferred
+                        english
+                        romaji
                     }
                     coverImage {
                         extraLarge
@@ -54,7 +55,7 @@ query animeDetail($id: Int) {
                     format
                 }
                 id
-                relationType
+                relationType(version: 2)
             }
         }
         characters(sort: [ROLE,ID]) {
