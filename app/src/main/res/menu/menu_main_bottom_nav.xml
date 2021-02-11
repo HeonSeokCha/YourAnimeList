@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/itemHome"
+        android:title="Home"
+        android:orderInCategory="0"/>
+    <item android:id="@+id/itemAnime"
+        android:title="Anime"
+        android:orderInCategory="1"/>
+    <item android:id="@+id/itemChara"
+        android:title="Character"
+        android:orderInCategory="2"/>
+</menu>

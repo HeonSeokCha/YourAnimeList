@@ -40,9 +40,9 @@ class AnimeDetailFragment : Fragment() {
     }
 
     private fun initClick() {
-        binding.btnTrailerPlay.setOnClickListener {
-            trailerPlay(trailerId)
-        }
+//        binding.btnTrailerPlay.setOnClickListener {
+//            trailerPlay(trailerId)
+//        }
     }
 
     private fun initAnimeInfo(animeId: Input<Int>) {
@@ -54,15 +54,15 @@ class AnimeDetailFragment : Fragment() {
                             binding.model = it
                             initTabView(it)
                             trailerId = it.trailer?.id.toString()
-                            binding.detailPageProgressBar.isVisible = false
+//                            binding.detailPageProgressBar.isVisible = false
                         }
                         is AnimeDetailViewModel.NetWorkState.Error -> {
                             Toast.makeText(this@AnimeDetailFragment.context,
                                 netWorkState.message, Toast.LENGTH_SHORT).show()
-                            binding.detailPageProgressBar.isVisible = false
+//                            binding.detailPageProgressBar.isVisible = false
                         }
                         is AnimeDetailViewModel.NetWorkState.Loading -> {
-                            binding.detailPageProgressBar.isVisible = true
+//                            binding.detailPageProgressBar.isVisible = true
                         }
                         else -> Unit
                     }
@@ -72,8 +72,7 @@ class AnimeDetailFragment : Fragment() {
     }
 
     private fun initTabView(animeInfo: AnimeDetailQuery.Media) {
-        var adapter = AnimeDetailViewPagerAdapter(requireActivity(), animeInfo)
-        binding.viewPagerAnimeDetail.adapter = adapter
+        binding.viewPagerAnimeDetail.adapter = AnimeDetailViewPagerAdapter(requireActivity(), animeInfo)
         binding.viewPagerAnimeDetail.isUserInputEnabled = false
         TabLayoutMediator(binding.tabAnimeDetail, binding.viewPagerAnimeDetail) { tab, position ->
             var tabArr: List<String> = listOf("Overview", "Characters", "Recommend")

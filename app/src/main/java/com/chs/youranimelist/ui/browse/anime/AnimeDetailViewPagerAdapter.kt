@@ -8,8 +8,8 @@ import com.chs.youranimelist.ui.browse.anime.characters.AnimeCharaFragment
 import com.chs.youranimelist.ui.browse.anime.overview.AnimeOverviewFragment
 
 class AnimeDetailViewPagerAdapter(
-    fm: FragmentActivity,
-    private val AnimeInfo: AnimeDetailQuery.Media): FragmentStateAdapter(fm) {
+    fa: FragmentActivity,
+    private val AnimeInfo: AnimeDetailQuery.Media): FragmentStateAdapter(fa) {
     override fun createFragment(position: Int): Fragment {
         return when(position) {
             0 -> AnimeOverviewFragment(AnimeInfo)

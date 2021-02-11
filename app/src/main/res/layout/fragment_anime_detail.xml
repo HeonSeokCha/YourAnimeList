@@ -8,151 +8,186 @@
             name="model"
             type="com.chs.youranimelist.AnimeDetailQuery.Media" />
     </data>
-    <androidx.core.widget.NestedScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
-        <androidx.constraintlayout.widget.ConstraintLayout
+        tools:context=".ui.browse.anime.AnimeDetailFragment">
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/characterAppBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".ui.browse.anime.AnimeDetailFragment">
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent">
 
-            <ImageView
-                android:id="@+id/img_bannerImage"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:foreground="@drawable/background_gradient"
-                android:scaleType="fitXY"
-                app:animeDetailImageBanner="@{model}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/backgrounds/scenic" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btn_trailer_play"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:src="@drawable/ic_play"
-                app:animeDetailTrailerVisible="@{model.trailer}"
-                app:layout_constraintBottom_toBottomOf="@+id/img_bannerImage"
-                app:layout_constraintEnd_toEndOf="@+id/img_bannerImage"
-                app:layout_constraintStart_toStartOf="@+id/img_bannerImage"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/img_cover_image"
-                android:layout_width="125dp"
-                android:layout_height="175dp"
-                android:scaleType="fitXY"
-                android:layout_marginStart="8dp"
-                app:animeDetailImageCover="@{model.coverImage.extraLarge}"
-                app:layout_constraintBottom_toBottomOf="@+id/img_bannerImage"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/img_bannerImage"
-                tools:src="@tools:sample/avatars" />
-
-            <TextView
-                android:id="@+id/txt_anime_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textSize="18dp"
-                android:text="@{model.title.romaji}"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/img_cover_image"
-                app:layout_constraintTop_toBottomOf="@+id/img_bannerImage"
-                tools:text="TextView" />
-
-            <ProgressBar
-                android:id="@+id/detailPage_progressBar"
-                style="?android:attr/progressBarStyle"
-                android:elevation="3dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/txt_anime_year"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="TextView"
-                app:animeDetailFormatYear="@{model}"
-                app:layout_constraintStart_toStartOf="@+id/txt_anime_title"
-                app:layout_constraintTop_toBottomOf="@+id/txt_anime_title" />
-
-            <Button
-                android:id="@+id/btn_save_list"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/characterCollapsingToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="ADD MY LIST"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_anime_favorite" />
+                app:toolbarId="@id/characterToolbar"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:contentScrim="@android:color/transparent"
+                app:scrimAnimationDuration="200"
+                android:backgroundTint="@android:color/transparent">
 
-            <TextView
-                android:id="@+id/txt_anime_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:drawableLeft="@drawable/ic_score"
-                android:drawablePadding="1dp"
-                android:textSize="12sp"
-                app:animeDetailScoreVisible="@{model.averageScore}"
-                app:layout_constraintStart_toEndOf="@+id/img_cover_image"
-                app:layout_constraintTop_toBottomOf="@+id/txt_anime_year"
-                tools:text="67" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/txt_anime_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:drawableLeft="@drawable/ic_favorite"
-                android:drawablePadding="1dp"
-                android:text="@{model.favourites.toString()}"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@+id/txt_anime_score"
-                app:layout_constraintTop_toBottomOf="@+id/txt_anime_year"
-                tools:text="188" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_anime_detail"
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            app:animeDetailImageBanner="@{model}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:src="@tools:sample/backgrounds/scenic" />
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/floatingActionButton2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:src="@drawable/ic_play"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@+id/imageView3"
+                            app:layout_constraintTop_toTopOf="@+id/imageView3" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/img_coverImage"
+                        android:layout_width="125dp"
+                        android:layout_height="175dp"
+                        android:layout_marginStart="8dp"
+                        app:animeDetailImageCover="@{model.coverImage.extraLarge}"
+                        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout3"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+                        tools:src="@tools:sample/avatars" />
+
+                    <TextView
+                        android:id="@+id/textView24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:textSize="18dp"
+                        android:text="@{model.title.romaji}"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toEndOf="@+id/img_coverImage"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+                        tools:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/textView25"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:animeDetailFormatYear="@{model}"
+                        tools:text="TextView"
+                        app:layout_constraintStart_toStartOf="@+id/textView24"
+                        app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+                    <Button
+                        android:id="@+id/button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="ADD MY LIST"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/img_coverImage"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/textView26"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="TextView"
+                        android:drawableLeft="@drawable/ic_score"
+                        android:drawablePadding="1dp"
+                        android:textSize="12sp"
+                        tools:text="TextView"
+                        app:animeDetailScoreVisible="@{model.averageScore}"
+                        app:layout_constraintStart_toEndOf="@+id/img_coverImage"
+                        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+                    <TextView
+                        android:id="@+id/textView27"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:drawableLeft="@drawable/ic_favorite"
+                        android:drawablePadding="1dp"
+                        android:text="@{model.favourites.toString()}"
+                        android:textSize="12sp"
+                        tools:text="TextView"
+                        app:layout_constraintStart_toEndOf="@+id/textView26"
+                        app:layout_constraintTop_toTopOf="@+id/textView26" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/characterToolbar"
+                    app:layout_collapseMode="pin"
+                    android:elevation="0dp"
+                    android:backgroundTint="@android:color/transparent"
+                    android:minHeight="75dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_save_list"
-                app:tabPaddingStart="10dp" />
+                android:layout_height="wrap_content">
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_anime_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tabPaddingStart="10dp" />
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPager_anime_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tab_anime_detail"
-                app:layout_constraintVertical_bias="0.0" />
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager_anime_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tab_anime_detail"
+                    app:layout_constraintVertical_bias="0.0" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

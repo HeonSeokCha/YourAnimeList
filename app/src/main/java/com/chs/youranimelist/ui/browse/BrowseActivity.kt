@@ -1,6 +1,8 @@
 package com.chs.youranimelist.ui.browse
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -15,6 +17,9 @@ class BrowseActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityBrowseBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        this.window?.apply { this.statusBarColor = Color.TRANSPARENT
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        }
         changeFragment(AnimeDetailFragment(),
             intent.getIntExtra("id",0),false)
         if(intent?.data != null) {

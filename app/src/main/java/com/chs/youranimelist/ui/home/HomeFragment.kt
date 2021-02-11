@@ -22,6 +22,7 @@ import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.type.MediaType
 import com.chs.youranimelist.ui.browse.BrowseActivity
+import com.chs.youranimelist.ui.list.AnimeListActivity
 import com.chs.youranimelist.ui.list.AnimeListFragment
 import com.chs.youranimelist.ui.main.MainActivity
 import com.chs.youranimelist.ui.main.MainViewModel
@@ -107,7 +108,10 @@ class HomeFragment : Fragment() {
         binding.rvAnimeRecList.apply {
             animeRecListAdapter = AnimeRecListParentAdapter(items,this@HomeFragment.requireContext(),
                 clickListener = { sortType ->
-                    (activity as MainActivity).changeFragment(AnimeListFragment(),sortType,true)
+                    val intent = Intent(activity,AnimeListActivity::class.java).apply {
+                        this.putExtra("sortType",sortType)
+                    }
+                    startActivity(intent)
                 }, animeClickListener = { animeId ->
                     val intent = Intent(activity,BrowseActivity::class.java).apply {
                         this.putExtra("id",animeId)
