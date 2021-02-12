@@ -8,10 +8,12 @@
             name="model"
             type="com.chs.youranimelist.AnimeDetailQuery.Media" />
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.browse.anime.AnimeDetailFragment">
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/characterAppBarLayout"
             android:layout_width="match_parent"
@@ -24,7 +26,7 @@
                 android:layout_height="wrap_content"
                 app:toolbarId="@id/characterToolbar"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:contentScrim="@android:color/transparent"
+                app:contentScrim="@color/red_500"
                 app:scrimAnimationDuration="200"
                 android:backgroundTint="@android:color/transparent">
 
@@ -63,6 +65,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/imageView3"
                             app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <ImageView
@@ -146,15 +149,19 @@
                         tools:text="TextView"
                         app:layout_constraintStart_toEndOf="@+id/textView26"
                         app:layout_constraintTop_toTopOf="@+id/textView26" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/characterToolbar"
-                    app:layout_collapseMode="pin"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
                     android:elevation="0dp"
                     android:backgroundTint="@android:color/transparent"
                     android:minHeight="75dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    app:popupTheme="@style/Theme.YourAnimeList.PopupOverlay"
+                    app:layout_collapseMode="pin"/>
+
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 

@@ -10,9 +10,10 @@ import androidx.fragment.app.FragmentTransaction
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.ActivityAnimeListBinding
 import com.chs.youranimelist.databinding.ActivityMainBinding
+import com.chs.youranimelist.ui.base.BaseActivity
 import com.chs.youranimelist.ui.home.HomeFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
@@ -21,9 +22,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        this.window?.apply { this.statusBarColor = Color.TRANSPARENT
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        }
         initNavigation()
     }
 

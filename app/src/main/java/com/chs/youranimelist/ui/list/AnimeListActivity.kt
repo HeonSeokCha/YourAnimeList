@@ -15,10 +15,11 @@ import com.chs.youranimelist.databinding.ActivityAnimeListBinding
 import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
+import com.chs.youranimelist.ui.base.BaseActivity
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import kotlinx.coroutines.flow.collect
 
-class AnimeListActivity : AppCompatActivity() {
+class AnimeListActivity : BaseActivity() {
 
     private lateinit var animeListAdapter: AnimeListAdapter
     private lateinit var sort: MediaSort
