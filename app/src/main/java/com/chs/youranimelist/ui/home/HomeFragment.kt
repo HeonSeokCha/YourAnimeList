@@ -21,6 +21,7 @@ import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.type.MediaType
+import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.list.AnimeListActivity
 import com.chs.youranimelist.ui.list.AnimeListFragment
@@ -28,10 +29,9 @@ import com.chs.youranimelist.ui.main.MainActivity
 import com.chs.youranimelist.ui.main.MainViewModel
 import kotlinx.coroutines.flow.collect
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var recyclerViewState: Parcelable
     private lateinit var viewModel: HomeViewModel
     private lateinit var viewPagerAnimeRecAdapter: AnimeRecViewPagerAdapter
     private lateinit var animeRecListAdapter: AnimeRecListParentAdapter

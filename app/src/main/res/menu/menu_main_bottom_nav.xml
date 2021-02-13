@@ -2,11 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/itemHome"
         android:title="Home"
+        android:icon="@drawable/ic_home"
         android:orderInCategory="0"/>
     <item android:id="@+id/itemAnime"
         android:title="Anime"
+        android:icon="@drawable/ic_anime_list"
         android:orderInCategory="1"/>
     <item android:id="@+id/itemChara"
         android:title="Character"
+        android:icon="@drawable/ic_character_list"
         android:orderInCategory="2"/>
 </menu>

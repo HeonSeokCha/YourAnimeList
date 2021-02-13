@@ -43,9 +43,9 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
-                            android:id="@+id/imageView3"
+                            android:id="@+id/mediaBannerImage"
                             android:layout_width="match_parent"
-                            android:layout_height="200dp"
+                            android:layout_height="250dp"
                             android:adjustViewBounds="true"
                             android:scaleType="fitXY"
                             app:animeDetailImageBanner="@{model}"
@@ -61,15 +61,15 @@
                             android:layout_height="wrap_content"
                             android:clickable="true"
                             android:src="@drawable/ic_play"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                            app:layout_constraintBottom_toBottomOf="@+id/mediaBannerImage"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@+id/imageView3"
-                            app:layout_constraintTop_toTopOf="@+id/imageView3" />
+                            app:layout_constraintStart_toStartOf="@+id/mediaBannerImage"
+                            app:layout_constraintTop_toTopOf="@+id/mediaBannerImage" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <ImageView
-                        android:id="@+id/img_coverImage"
+                        android:id="@+id/mediaCoverImage"
                         android:layout_width="125dp"
                         android:layout_height="175dp"
                         android:layout_marginStart="8dp"
@@ -80,7 +80,7 @@
                         tools:src="@tools:sample/avatars" />
 
                     <TextView
-                        android:id="@+id/textView24"
+                        android:id="@+id/mediaTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -93,22 +93,22 @@
                         app:layout_constrainedWidth="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toEndOf="@+id/img_coverImage"
+                        app:layout_constraintStart_toEndOf="@+id/mediaCoverImage"
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
                         tools:text="TextView" />
 
                     <TextView
-                        android:id="@+id/textView25"
+                        android:id="@+id/mediaYearFormat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         app:animeDetailFormatYear="@{model}"
                         tools:text="TextView"
-                        app:layout_constraintStart_toStartOf="@+id/textView24"
-                        app:layout_constraintTop_toBottomOf="@+id/textView24" />
+                        app:layout_constraintStart_toStartOf="@+id/mediaTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/mediaTitle" />
 
                     <Button
-                        android:id="@+id/button"
+                        android:id="@+id/mediaSaveList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -119,11 +119,11 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/img_coverImage"
+                        app:layout_constraintTop_toBottomOf="@+id/mediaCoverImage"
                         app:layout_constraintVertical_bias="0.0" />
 
                     <TextView
-                        android:id="@+id/textView26"
+                        android:id="@+id/mediaScore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -134,11 +134,11 @@
                         android:textSize="12sp"
                         tools:text="TextView"
                         app:animeDetailScoreVisible="@{model.averageScore}"
-                        app:layout_constraintStart_toEndOf="@+id/img_coverImage"
-                        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+                        app:layout_constraintStart_toEndOf="@+id/mediaCoverImage"
+                        app:layout_constraintTop_toBottomOf="@+id/mediaYearFormat" />
 
                     <TextView
-                        android:id="@+id/textView27"
+                        android:id="@+id/mediaFavorite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -147,8 +147,8 @@
                         android:text="@{model.favourites.toString()}"
                         android:textSize="12sp"
                         tools:text="TextView"
-                        app:layout_constraintStart_toEndOf="@+id/textView26"
-                        app:layout_constraintTop_toTopOf="@+id/textView26" />
+                        app:layout_constraintStart_toEndOf="@+id/mediaScore"
+                        app:layout_constraintTop_toTopOf="@+id/mediaScore" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
