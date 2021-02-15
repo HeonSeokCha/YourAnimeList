@@ -19,7 +19,7 @@ import com.chs.youranimelist.ui.base.BaseActivity
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import kotlinx.coroutines.flow.collect
 
-class AnimeListActivity : BaseActivity() {
+class AnimeListActivity : AppCompatActivity() {
 
     private lateinit var animeListAdapter: AnimeListAdapter
     private lateinit var sort: MediaSort
@@ -103,8 +103,8 @@ class AnimeListActivity : BaseActivity() {
         binding.rvAnimeList.apply {
             animeListAdapter = AnimeListAdapter(clickListener = { animeId ->
                 val intent = Intent(this@AnimeListActivity, BrowseActivity::class.java).apply {
+                    this.putExtra("type","ANIME")
                     this.putExtra("id",animeId)
-                    this.putExtra("browseType","ANIME")
                 }
                 startActivity(intent)
             }).apply {

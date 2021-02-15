@@ -40,9 +40,9 @@ class AnimeDetailFragment : Fragment() {
     }
 
     private fun initClick() {
-//        binding.btnTrailerPlay.setOnClickListener {
-//            trailerPlay(trailerId)
-//        }
+        binding.btnTrailerPlay.setOnClickListener {
+            trailerPlay(trailerId)
+        }
     }
 
     private fun initAnimeInfo(animeId: Input<Int>) {
@@ -54,15 +54,15 @@ class AnimeDetailFragment : Fragment() {
                             binding.model = it
                             initTabView(it)
                             trailerId = it.trailer?.id.toString()
-//                            binding.detailPageProgressBar.isVisible = false
+                            binding.progressBar.isVisible = false
                         }
                         is AnimeDetailViewModel.NetWorkState.Error -> {
                             Toast.makeText(this@AnimeDetailFragment.context,
                                 netWorkState.message, Toast.LENGTH_SHORT).show()
-//                            binding.detailPageProgressBar.isVisible = false
+                            binding.progressBar.isVisible = false
                         }
                         is AnimeDetailViewModel.NetWorkState.Loading -> {
-//                            binding.detailPageProgressBar.isVisible = true
+                            binding.progressBar.isVisible = true
                         }
                         else -> Unit
                     }

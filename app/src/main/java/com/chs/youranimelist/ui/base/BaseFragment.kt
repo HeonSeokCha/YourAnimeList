@@ -30,6 +30,5 @@ abstract class BaseFragment: Fragment() {
         super.onDetach()
         navigate = null
     }
-
 }
 

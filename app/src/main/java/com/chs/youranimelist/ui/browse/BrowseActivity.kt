@@ -7,6 +7,7 @@ import com.chs.youranimelist.databinding.ActivityBrowseBinding
 import com.chs.youranimelist.ui.base.BaseActivity
 import com.chs.youranimelist.ui.base.BaseNavigator
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragment
+import com.chs.youranimelist.ui.browse.character.CharacterFragment
 
 class BrowseActivity: BaseActivity(), BaseNavigator {
     private lateinit var binding: ActivityBrowseBinding
@@ -15,19 +16,29 @@ class BrowseActivity: BaseActivity(), BaseNavigator {
         super.onCreate(savedInstanceState)
         binding = ActivityBrowseBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        when(intent.getStringExtra("browseType")) {
-            "ANIME" -> {
-                changeFragment(AnimeDetailFragment(),
-                    intent.getIntExtra("id",0),false)
-            }
-        }
+        changeFragment(
+            intent.getStringExtra("type")!!,
+            intent.getIntExtra("id", 0)!!, false)
     }
 
-    override fun changeFragment(targetFragment: Fragment, id: Int,addToBackStack: Boolean) {
+    override fun changeFragment(type: String ,id: Int,addToBackStack: Boolean) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        val bundle = Bundle().apply {
-            this.putInt("id", id)
+        lateinit var targetFragment: Fragment
+        val bundle = Bundle()
+        when(type) {
+            "ANIME" -> {
+                targetFragment = AnimeDetailFragment()
+                bundle.putString("type","ANIME")
+                bundle.putInt("id",id)
+            }
+            "CHARA" -> {
+                targetFragment = CharacterFragment()
+                bundle.putString("type","CHARA")
+                bundle.putInt("id",id)
+            }
+            "MANGA" -> {
+
+            }
         }
         targetFragment.arguments = bundle
         fragmentTransaction.replace(binding.browseFrameLayout.id, targetFragment)

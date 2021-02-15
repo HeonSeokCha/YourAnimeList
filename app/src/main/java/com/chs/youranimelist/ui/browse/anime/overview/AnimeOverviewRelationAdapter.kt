@@ -8,9 +8,18 @@ import com.chs.youranimelist.databinding.ItemRelationBinding
 
 class AnimeOverviewRelationAdapter(
     private val items: List<AnimeDetailQuery.RelationsEdge?>,
+    private val clickListener: (type: String, id: Int) -> Unit
     ): RecyclerView.Adapter<AnimeOverviewRelationAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemRelationBinding): RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickListener.invoke(
+                    items[layoutPosition]!!.relationType!!.name,
+                    items[layoutPosition]!!.relationsNode!!.id
+                )
+            }
+        }
         fun bind() {
             binding.model = items[layoutPosition]
         }

@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.AnimeRecListQuery
 import com.chs.youranimelist.R
 import com.chs.youranimelist.fragment.AnimeList
@@ -35,6 +36,16 @@ object AnimeRecBinding {
             .transition(DrawableTransitionOptions().crossFade())
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(imageView)
+    }
+
+    @BindingAdapter("animeEnglishNull")
+    @JvmStatic
+    fun animeEnglishNull(textView: TextView, title: AnimeList.Title?) {
+        if(title!!.english.isNullOrEmpty()) {
+            textView.text = "${title.romaji}"
+        } else {
+            textView.text = "${title.english}"
+        }
     }
 
     @BindingAdapter("animeImageCover")

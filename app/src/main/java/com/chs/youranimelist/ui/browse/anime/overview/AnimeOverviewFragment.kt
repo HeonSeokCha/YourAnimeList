@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.databinding.FragmentAnimeOverviewBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.ui.base.BaseFragment
+import com.chs.youranimelist.ui.base.BaseNavigator
 import com.chs.youranimelist.ui.main.MainViewModel
 
 
-class AnimeOverviewFragment(private val animeInfo:AnimeDetailQuery.Media) : Fragment() {
+class AnimeOverviewFragment(private val animeInfo:AnimeDetailQuery.Media) : BaseFragment() {
     private lateinit var viewModel: MainViewModel
     private val repository by lazy { AnimeRepository() }
     private var _binding: FragmentAnimeOverviewBinding? = null
@@ -37,9 +39,16 @@ class AnimeOverviewFragment(private val animeInfo:AnimeDetailQuery.Media) : Frag
 
     private fun initRecyclerView() {
         binding.rvAnimeOverviewRelation.apply {
-            this.adapter = AnimeOverviewRelationAdapter(animeInfo.relations?.relationsEdges!!)
+            this.adapter = AnimeOverviewRelationAdapter(animeInfo.relations?.relationsEdges!!,
+            clickListener = { type, id ->
+                this@AnimeOverviewFragment.navigate?.changeFragment("ANIME",id)
+            })
             this.layoutManager = LinearLayoutManager(this@AnimeOverviewFragment.context,
                 LinearLayoutManager.HORIZONTAL,false)
+        }
+
+        binding.rvAnimeOverviewGenre.apply {
+            this.adapter = AnimeOverviewGenreAdapter(animeInfo.genres!!)
         }
     }
 
