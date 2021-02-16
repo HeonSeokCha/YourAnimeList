@@ -11,7 +11,7 @@ object AnimeCharaBinding {
 
     @BindingAdapter("animeCharaCircle")
     @JvmStatic
-    fun animeCharaCircle(imageView: ImageView, path: String) {
+    fun animeCharaCircle(imageView: ImageView, path: String?) {
         Glide.with(imageView.context).load(path)
             .apply(RequestOptions().circleCrop())
             .transition(DrawableTransitionOptions().crossFade())

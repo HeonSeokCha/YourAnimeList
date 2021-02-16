@@ -10,9 +10,11 @@ import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.main.MainViewModel
 
-class AnimeCharaFragment(private val charaList: List<AnimeDetailQuery.CharactersNode?>) : Fragment() {
+class AnimeCharaFragment(private val charaList: List<AnimeDetailQuery.CharactersNode?>) :
+    BaseFragment() {
     private lateinit var viewModel: MainViewModel
     private val repository by lazy { AnimeRepository() }
     private var _binding: FragmentAnimeCharaBinding? = null
@@ -22,7 +24,7 @@ class AnimeCharaFragment(private val charaList: List<AnimeDetailQuery.Characters
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentAnimeCharaBinding.inflate(inflater,container,false)
+        _binding = FragmentAnimeCharaBinding.inflate(inflater, container, false)
         viewModel = MainViewModel(repository)
         return binding.root
     }
@@ -34,11 +36,11 @@ class AnimeCharaFragment(private val charaList: List<AnimeDetailQuery.Characters
     private fun initRecyclerView() {
         binding.rvAnimeChara.apply {
             charaAdapter = AnimeCharaAdapter(charaList, clickListener = { charaId ->
-
+                this@AnimeCharaFragment.navigate!!.changeFragment("CHARA", charaId, false)
             })
             this.adapter = charaAdapter
-            this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context,3)
-            this.addItemDecoration(SpacesItemDecoration(3,50,true))
+            this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context, 3)
+            this.addItemDecoration(SpacesItemDecoration(3, 50, true))
         }
     }
 

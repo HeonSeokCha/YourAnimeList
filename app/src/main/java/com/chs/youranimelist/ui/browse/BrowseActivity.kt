@@ -9,7 +9,7 @@ import com.chs.youranimelist.ui.base.BaseNavigator
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragment
 import com.chs.youranimelist.ui.browse.character.CharacterFragment
 
-class BrowseActivity: BaseActivity(), BaseNavigator {
+class BrowseActivity : BaseActivity(), BaseNavigator {
     private lateinit var binding: ActivityBrowseBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,23 +18,24 @@ class BrowseActivity: BaseActivity(), BaseNavigator {
         setContentView(binding.root)
         changeFragment(
             intent.getStringExtra("type")!!,
-            intent.getIntExtra("id", 0)!!, false)
+            intent.getIntExtra("id", 0)!!, false
+        )
     }
 
-    override fun changeFragment(type: String ,id: Int,addToBackStack: Boolean) {
+    override fun changeFragment(type: String, id: Int, addToBackStack: Boolean) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         lateinit var targetFragment: Fragment
         val bundle = Bundle()
-        when(type) {
+        when (type) {
             "ANIME" -> {
                 targetFragment = AnimeDetailFragment()
-                bundle.putString("type","ANIME")
-                bundle.putInt("id",id)
+                bundle.putString("type", "ANIME")
+                bundle.putInt("id", id)
             }
             "CHARA" -> {
                 targetFragment = CharacterFragment()
-                bundle.putString("type","CHARA")
-                bundle.putInt("id",id)
+                bundle.putString("type", "CHARA")
+                bundle.putInt("id", id)
             }
             "MANGA" -> {
 

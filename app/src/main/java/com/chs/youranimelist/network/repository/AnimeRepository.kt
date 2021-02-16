@@ -18,8 +18,8 @@ class AnimeRepository {
     }
 
     @ExperimentalCoroutinesApi
-    fun getAnimeInfo(animeId: Input<Int>): Flow<AnimeDetailQuery.Data> {
-        return AnimeService.apolloClient.query(AnimeDetailQuery(animeId)).toFlow().map {
+    fun getAnimeInfo(charaId: Input<Int>): Flow<AnimeDetailQuery.Data> {
+        return AnimeService.apolloClient.query(AnimeDetailQuery(charaId)).toFlow().map {
             it.data!!
         }
     }

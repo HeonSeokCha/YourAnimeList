@@ -63,7 +63,7 @@ class HomeFragment : BaseFragment() {
                         is HomeViewModel.NetWorkState.Success -> {
                             getPagerAnimeList()
                             initRecyclerView(it)
-                            Log.d("Trending","${it.size}")
+                            Log.d("Trending", "${it.size}")
                             binding.mainProgressbar.isVisible = false
                         }
                         is HomeViewModel.NetWorkState.Error -> {
@@ -88,15 +88,16 @@ class HomeFragment : BaseFragment() {
     private fun getPagerAnimeList() {
         viewModel.getPagerAnimeList().observe(viewLifecycleOwner, {
             binding.viewPager2.apply {
-                viewPagerAnimeRecAdapter = AnimeRecViewPagerAdapter(it,clickListener = { animeId, animeName ->
-                    val intent = Intent(activity,BrowseActivity::class.java).apply {
-                        this.putExtra("type","ANIME")
-                        this.putExtra("id",animeId)
-                    }
-                    startActivity(intent)
-                },trailerClickListener = { id ->
+                viewPagerAnimeRecAdapter =
+                    AnimeRecViewPagerAdapter(it, clickListener = { animeId, animeName ->
+                        val intent = Intent(activity, BrowseActivity::class.java).apply {
+                            this.putExtra("type", "ANIME")
+                            this.putExtra("id", animeId)
+                        }
+                        startActivity(intent)
+                    }, trailerClickListener = { id ->
                         trailerPlay(id)
-                })
+                    })
                 this.orientation = ViewPager2.ORIENTATION_HORIZONTAL
                 this.adapter = viewPagerAnimeRecAdapter
                 binding.indicator.setViewPager2(binding.viewPager2)
@@ -106,20 +107,21 @@ class HomeFragment : BaseFragment() {
 
     private fun initRecyclerView(items: List<List<AnimeList>>) {
         binding.rvAnimeRecList.apply {
-            animeRecListAdapter = AnimeRecListParentAdapter(items,this@HomeFragment.requireContext(),
-                clickListener = { sortType ->
-                    val intent = Intent(activity,AnimeListActivity::class.java).apply {
-                        this.putExtra("sortType",sortType)
+            animeRecListAdapter =
+                AnimeRecListParentAdapter(items, this@HomeFragment.requireContext(),
+                    clickListener = { sortType ->
+                        val intent = Intent(activity, AnimeListActivity::class.java).apply {
+                            this.putExtra("sortType", sortType)
+                        }
+                        startActivity(intent)
+                    }, animeClickListener = { animeId ->
+                        val intent = Intent(activity, BrowseActivity::class.java).apply {
+                            this.putExtra("type", "ANIME")
+                            this.putExtra("id", animeId)
+                        }
+                        startActivity(intent)
                     }
-                    startActivity(intent)
-                }, animeClickListener = { animeId ->
-                    val intent = Intent(activity,BrowseActivity::class.java).apply {
-                        this.putExtra("type","ANIME")
-                        this.putExtra("id",animeId)
-                    }
-                    startActivity(intent)
-                }
-            )
+                )
             this.layoutManager = LinearLayoutManager(this@HomeFragment.context)
             this.adapter = animeRecListAdapter
         }

@@ -20,16 +20,16 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.flow.collect
 
 class AnimeDetailFragment : Fragment() {
-    private var _binding:FragmentAnimeDetailBinding? = null
+    private var _binding: FragmentAnimeDetailBinding? = null
     private val repository by lazy { AnimeRepository() }
     private lateinit var viewModel: AnimeDetailViewModel
     private lateinit var trailerId: String
     private val binding get() = _binding!!
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentAnimeDetailBinding.inflate(inflater,container,false)
+        _binding = FragmentAnimeDetailBinding.inflate(inflater, container, false)
         viewModel = AnimeDetailViewModel(repository)
         return binding.root
     }
@@ -57,8 +57,10 @@ class AnimeDetailFragment : Fragment() {
                             binding.progressBar.isVisible = false
                         }
                         is AnimeDetailViewModel.NetWorkState.Error -> {
-                            Toast.makeText(this@AnimeDetailFragment.context,
-                                netWorkState.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@AnimeDetailFragment.context,
+                                netWorkState.message, Toast.LENGTH_SHORT
+                            ).show()
                             binding.progressBar.isVisible = false
                         }
                         is AnimeDetailViewModel.NetWorkState.Loading -> {
@@ -72,7 +74,8 @@ class AnimeDetailFragment : Fragment() {
     }
 
     private fun initTabView(animeInfo: AnimeDetailQuery.Media) {
-        binding.viewPagerAnimeDetail.adapter = AnimeDetailViewPagerAdapter(requireActivity(), animeInfo)
+        binding.viewPagerAnimeDetail.adapter =
+            AnimeDetailViewPagerAdapter(requireActivity(), animeInfo)
         binding.viewPagerAnimeDetail.isUserInputEnabled = false
         TabLayoutMediator(binding.tabAnimeDetail, binding.viewPagerAnimeDetail) { tab, position ->
             var tabArr: List<String> = listOf("Overview", "Characters", "Recommend")

@@ -7,17 +7,19 @@ import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.databinding.ItemCharaBinding
 
 class AnimeCharaAdapter(
-    private val items:List<AnimeDetailQuery.CharactersNode?>,
+    private val items: List<AnimeDetailQuery.CharactersNode?>,
     private val clickListener: (charaId: Int) -> Unit
-    ): RecyclerView.Adapter<AnimeCharaAdapter.CharaViewHolder>(){
+) : RecyclerView.Adapter<AnimeCharaAdapter.CharaViewHolder>() {
 
     inner class CharaViewHolder(
-        private val binding: ItemCharaBinding): RecyclerView.ViewHolder(binding.root) {
+        private val binding: ItemCharaBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
                 clickListener.invoke(items[layoutPosition]!!.id)
             }
         }
+
         fun bind() {
             binding.model = items[layoutPosition]
         }

@@ -14,7 +14,7 @@ import com.chs.youranimelist.ui.base.BaseNavigator
 import com.chs.youranimelist.ui.main.MainViewModel
 
 
-class AnimeOverviewFragment(private val animeInfo:AnimeDetailQuery.Media) : BaseFragment() {
+class AnimeOverviewFragment(private val animeInfo: AnimeDetailQuery.Media) : BaseFragment() {
     private lateinit var viewModel: MainViewModel
     private val repository by lazy { AnimeRepository() }
     private var _binding: FragmentAnimeOverviewBinding? = null
@@ -23,7 +23,7 @@ class AnimeOverviewFragment(private val animeInfo:AnimeDetailQuery.Media) : Base
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentAnimeOverviewBinding.inflate(inflater,container,false)
+        _binding = FragmentAnimeOverviewBinding.inflate(inflater, container, false)
         viewModel = MainViewModel(repository)
         return binding.root
     }
@@ -40,11 +40,13 @@ class AnimeOverviewFragment(private val animeInfo:AnimeDetailQuery.Media) : Base
     private fun initRecyclerView() {
         binding.rvAnimeOverviewRelation.apply {
             this.adapter = AnimeOverviewRelationAdapter(animeInfo.relations?.relationsEdges!!,
-            clickListener = { type, id ->
-                this@AnimeOverviewFragment.navigate?.changeFragment("ANIME",id)
-            })
-            this.layoutManager = LinearLayoutManager(this@AnimeOverviewFragment.context,
-                LinearLayoutManager.HORIZONTAL,false)
+                clickListener = { type, id ->
+                    this@AnimeOverviewFragment.navigate?.changeFragment("ANIME", id)
+                })
+            this.layoutManager = LinearLayoutManager(
+                this@AnimeOverviewFragment.context,
+                LinearLayoutManager.HORIZONTAL, false
+            )
         }
 
         binding.rvAnimeOverviewGenre.apply {
