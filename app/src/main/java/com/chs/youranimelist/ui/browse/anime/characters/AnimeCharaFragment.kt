@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
@@ -36,7 +37,7 @@ class AnimeCharaFragment(private val charaList: List<AnimeDetailQuery.Characters
     private fun initRecyclerView() {
         binding.rvAnimeChara.apply {
             charaAdapter = AnimeCharaAdapter(charaList, clickListener = { charaId ->
-                this@AnimeCharaFragment.navigate!!.changeFragment("CHARA", charaId, false)
+                this@AnimeCharaFragment.navigate!!.changeFragment("CHARA", charaId)
             })
             this.adapter = charaAdapter
             this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context, 3)

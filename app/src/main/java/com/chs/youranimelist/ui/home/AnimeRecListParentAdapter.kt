@@ -13,34 +13,41 @@ class AnimeRecListParentAdapter(
     private val mContext: Context,
     private val clickListener: (sortType: String) -> Unit,
     private val animeClickListener: (animeId: Int) -> Unit,
-):RecyclerView.Adapter<AnimeRecListParentAdapter.AnimeListRecViewHolder>() {
+) : RecyclerView.Adapter<AnimeRecListParentAdapter.AnimeListRecViewHolder>() {
     lateinit var animeAdapter: AnimeRecListChildAdapter
-    private var listTitleList = listOf ("TRENDING NOW","POPULAR THIS SEASON",
-        "UPCOMING NEXT SEASON","ALL TIME POPULAR")
-    inner class AnimeListRecViewHolder(private val binding: ItemAnimeListBinding)
-        :RecyclerView.ViewHolder(binding.root) {
+    private var listTitleList = listOf(
+        "TRENDING NOW", "POPULAR THIS SEASON",
+        "UPCOMING NEXT SEASON", "ALL TIME POPULAR"
+    )
+
+    inner class AnimeListRecViewHolder(private val binding: ItemAnimeListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.btnViewAll.setOnClickListener {
                 clickListener.invoke(listTitleList[layoutPosition])
             }
         }
-            fun bind() {
-                binding.model = listTitleList[layoutPosition]
-                binding.rvAnime.apply {
-                    animeAdapter = AnimeRecListChildAdapter(list[layoutPosition],clickListener = { animeId->
+
+        fun bind() {
+            binding.model = listTitleList[layoutPosition]
+            binding.rvAnime.apply {
+                animeAdapter =
+                    AnimeRecListChildAdapter(list[layoutPosition], clickListener = { animeId ->
                         animeClickListener.invoke(animeId)
                     }).apply {
                         this.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
                     }
-                    this.adapter = animeAdapter
-                    this.layoutManager = LinearLayoutManager(mContext,
-                        LinearLayoutManager.HORIZONTAL,false)
-                }
+                this.adapter = animeAdapter
+                this.layoutManager = LinearLayoutManager(
+                    mContext,
+                    LinearLayoutManager.HORIZONTAL, false
+                )
             }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeListRecViewHolder {
-        val view = ItemAnimeListBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val view = ItemAnimeListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AnimeListRecViewHolder(view)
     }
 
