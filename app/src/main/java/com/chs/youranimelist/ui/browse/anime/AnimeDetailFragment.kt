@@ -2,6 +2,7 @@ package com.chs.youranimelist.ui.browse.anime
 
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.collect
 
 class AnimeDetailFragment : Fragment() {
     private var _binding: FragmentAnimeDetailBinding? = null
+    private var scrollPosition: Parcelable? = null
     private val repository by lazy { AnimeRepository() }
     private lateinit var viewModel: AnimeDetailViewModel
     private lateinit var trailerId: String
@@ -40,6 +42,7 @@ class AnimeDetailFragment : Fragment() {
     }
 
     private fun initClick() {
+        binding.animeToolbar.setNavigationOnClickListener { activity?.finish() }
         binding.btnTrailerPlay.setOnClickListener {
             trailerPlay(trailerId)
         }

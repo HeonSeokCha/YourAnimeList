@@ -10,6 +10,7 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/anime_detail_coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.browse.anime.AnimeDetailFragment">
@@ -24,7 +25,7 @@
                 android:id="@+id/characterCollapsingToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:toolbarId="@id/characterToolbar"
+                app:toolbarId="@id/animeToolbar"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:contentScrim="@color/red_500"
                 app:scrimAnimationDuration="200"
@@ -154,12 +155,14 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/characterToolbar"
+                    android:id="@+id/animeToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:elevation="0dp"
                     android:backgroundTint="@android:color/transparent"
                     android:minHeight="75dp"
+                    android:layout_marginTop="25dp"
+                    app:navigationIcon="@drawable/ic_delete"
                     app:popupTheme="@style/Theme.YourAnimeList.PopupOverlay"
                     app:layout_collapseMode="pin"/>
 
@@ -169,6 +172,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/anime_detail_scroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">

@@ -6,7 +6,7 @@ import java.util.*
 
 object ConvertDate {
 
-    fun convertToDateFormat(year: Int?, month: Int?, day: Int?) : String? {
+    fun convertToDateFormat(year: Int?, month: Int?, day: Int?): String? {
         if (year == null || month == null || day == null) {
             return "?"
         }
@@ -24,30 +24,30 @@ object ConvertDate {
 
     fun getCurrentSeason(): MediaSeason {
         val calendar = Calendar.getInstance()
-        return when(calendar.get(Calendar.MONTH)) {
-            in Calendar.APRIL .. Calendar.AUGUST -> MediaSeason.SPRING
-            in Calendar.JULY .. Calendar.SEPTEMBER -> MediaSeason.SUMMER
-            in Calendar.OCTOBER .. Calendar.DECEMBER -> MediaSeason.FALL
-            in Calendar.JANUARY .. Calendar.MARCH -> MediaSeason.WINTER
+        return when (calendar.get(Calendar.MONTH)) {
+            in Calendar.APRIL..Calendar.AUGUST -> MediaSeason.SPRING
+            in Calendar.JULY..Calendar.SEPTEMBER -> MediaSeason.SUMMER
+            in Calendar.OCTOBER..Calendar.DECEMBER -> MediaSeason.FALL
+            in Calendar.JANUARY..Calendar.MARCH -> MediaSeason.WINTER
             else -> MediaSeason.WINTER
         }
     }
 
     fun getNextSeason(): MediaSeason {
         val calendar = Calendar.getInstance()
-        return when(calendar.get(Calendar.MONTH)) {
-            in Calendar.APRIL .. Calendar.AUGUST -> MediaSeason.SUMMER
-            in Calendar.JULY .. Calendar.SEPTEMBER -> MediaSeason.FALL
-            in Calendar.OCTOBER .. Calendar.DECEMBER -> MediaSeason.WINTER
-            in Calendar.JANUARY .. Calendar.MARCH -> MediaSeason.SPRING
+        return when (calendar.get(Calendar.MONTH)) {
+            in Calendar.APRIL..Calendar.AUGUST -> MediaSeason.SUMMER
+            in Calendar.JULY..Calendar.SEPTEMBER -> MediaSeason.FALL
+            in Calendar.OCTOBER..Calendar.DECEMBER -> MediaSeason.WINTER
+            in Calendar.JANUARY..Calendar.MARCH -> MediaSeason.SPRING
             else -> MediaSeason.WINTER
         }
     }
 
-    fun getCurrentYear(upComing:Boolean = false): Int {
+    fun getCurrentYear(upComing: Boolean = false): Int {
         val calendar = Calendar.getInstance()
-        return if(upComing) {
-            if (calendar.get(Calendar.MONTH) in Calendar.OCTOBER .. Calendar.DECEMBER) {
+        return if (upComing) {
+            if (calendar.get(Calendar.MONTH) in Calendar.OCTOBER..Calendar.DECEMBER) {
                 calendar.get(Calendar.YEAR) + 1
             } else calendar.get(Calendar.YEAR)
         } else {
