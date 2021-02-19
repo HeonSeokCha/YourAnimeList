@@ -3,31 +3,21 @@ package com.chs.youranimelist.ui.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.chs.youranimelist.databinding.FragmentHomeBinding
 import com.chs.youranimelist.fragment.AnimeList
-import com.chs.youranimelist.network.repository.AnimeListRepository
+import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.type.MediaType
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.list.AnimeListActivity
-import com.chs.youranimelist.ui.list.AnimeListFragment
-import com.chs.youranimelist.ui.main.MainActivity
-import com.chs.youranimelist.ui.main.MainViewModel
-import kotlinx.coroutines.flow.collect
 
 class HomeFragment : BaseFragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -51,35 +41,22 @@ class HomeFragment : BaseFragment() {
         getAnimeRecList()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-
     private fun getAnimeRecList() {
         viewModel.getAnimeRecList().observe(viewLifecycleOwner, {
-            lifecycleScope.launchWhenStarted {
-                viewModel.netWorkState.collect { netWorkState ->
-                    when (netWorkState) {
-                        is HomeViewModel.NetWorkState.Success -> {
-                            getPagerAnimeList()
-                            initRecyclerView(it)
-                            Log.d("Trending", "${it.size}")
-                            binding.mainProgressbar.isVisible = false
-                        }
-                        is HomeViewModel.NetWorkState.Error -> {
-                            Toast.makeText(
-                                this@HomeFragment.context,
-                                netWorkState.message,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            binding.mainProgressbar.isVisible = false
-                        }
-                        is HomeViewModel.NetWorkState.Loading -> {
-                            // if long time loading -> retry? snackBar
-                            binding.mainProgressbar.isVisible = true
-                        }
-                        else -> Unit
-                    }
+            when (it.responseState) {
+                ResponseState.LOADING -> binding.mainProgressbar.isVisible = true
+                ResponseState.SUCCESS -> {
+                    getPagerAnimeList()
+                    initRecyclerView(it.data!!)
+                    binding.mainProgressbar.isVisible = false
+                }
+                ResponseState.ERROR -> {
+                    binding.mainProgressbar.isVisible = false
+                    Toast.makeText(
+                        this@HomeFragment.context,
+                        it.message,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         })

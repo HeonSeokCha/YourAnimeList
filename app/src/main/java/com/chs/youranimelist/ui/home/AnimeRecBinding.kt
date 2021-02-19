@@ -12,8 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.chs.youranimelist.AnimeDetailQuery
-import com.chs.youranimelist.AnimeRecListQuery
+import com.chs.youranimelist.AnimeRecommendListQuery
 import com.chs.youranimelist.R
 import com.chs.youranimelist.fragment.AnimeList
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -22,14 +21,17 @@ object AnimeRecBinding {
 
     @BindingAdapter("animeRecTrailerVisible")
     @JvmStatic
-    fun animeRecTrailerVisible(floatingActionButton: FloatingActionButton, trailer: AnimeRecListQuery.Trailer?) {
+    fun animeRecTrailerVisible(
+        floatingActionButton: FloatingActionButton,
+        trailer: AnimeRecommendListQuery.Trailer?
+    ) {
         floatingActionButton.isVisible = trailer != null
     }
 
     @SuppressLint("ResourceType")
     @BindingAdapter("animeRecImageBanner")
     @JvmStatic
-    fun animeRecImageBanner(imageView: ImageView, anime: AnimeRecListQuery.Medium) {
+    fun animeRecImageBanner(imageView: ImageView, anime: AnimeRecommendListQuery.Medium) {
         var color: String? = anime.coverImage?.color ?: "#ffffff"
         Glide.with(imageView.context).load(anime.bannerImage)
             .placeholder(ColorDrawable(Color.parseColor(color)))
@@ -41,7 +43,7 @@ object AnimeRecBinding {
     @BindingAdapter("animeEnglishNull")
     @JvmStatic
     fun animeEnglishNull(textView: TextView, title: AnimeList.Title?) {
-        if(title!!.english.isNullOrEmpty()) {
+        if (title!!.english.isNullOrEmpty()) {
             textView.text = "${title.romaji}"
         } else {
             textView.text = "${title.english}"
@@ -68,7 +70,7 @@ object AnimeRecBinding {
     @JvmStatic
     fun animeStatusValue(textView: TextView, status: String) {
         var temp: String = ""
-        when(status) {
+        when (status) {
             "RELEASING" -> {
                 temp = "Releasing"
                 textView.setTextColor(ContextCompat.getColor(textView.context, R.color.releasing))
@@ -88,7 +90,7 @@ object AnimeRecBinding {
     @BindingAdapter("animeScoreVisible")
     @JvmStatic
     fun animeScoreVisible(textView: TextView, score: Int?) {
-        if(score == null) {
+        if (score == null) {
             textView.isVisible = false
         } else {
             textView.text = score.toString()

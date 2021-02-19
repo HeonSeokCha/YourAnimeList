@@ -1,9 +1,8 @@
-package com.chs.youranimelist.viewmodel
+package com.chs.youranimelist.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.ui.main.MainViewModel
 
 class MainViewModelFactory(private val repository: AnimeRepository): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

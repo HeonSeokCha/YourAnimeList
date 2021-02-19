@@ -1,4 +1,4 @@
-query animeList(
+query AnimeListQuery(
     $page: Int = 1,
     $sort: MediaSort,
     $season: MediaSeason = null,

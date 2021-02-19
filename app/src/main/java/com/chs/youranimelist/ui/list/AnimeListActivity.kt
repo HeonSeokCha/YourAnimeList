@@ -12,6 +12,7 @@ import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.ConvertDate
 import com.chs.youranimelist.SpacesItemDecoration
 import com.chs.youranimelist.databinding.ActivityAnimeListBinding
+import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
@@ -20,7 +21,6 @@ import com.chs.youranimelist.ui.browse.BrowseActivity
 import kotlinx.coroutines.flow.collect
 
 class AnimeListActivity : AppCompatActivity() {
-
     private lateinit var animeListAdapter: AnimeListAdapter
     private lateinit var sort: MediaSort
     private lateinit var viewModel: AnimeListViewModel
@@ -44,7 +44,7 @@ class AnimeListActivity : AppCompatActivity() {
     }
 
     private fun initSortType(sortType: String) {
-        when(sortType) {
+        when (sortType) {
             "TRENDING NOW" -> {
                 sort = MediaSort.TRENDING_DESC
             }
@@ -67,33 +67,29 @@ class AnimeListActivity : AppCompatActivity() {
     }
 
     private fun getAnimeList() {
-        viewModel.getAnimeList(page = page.toInput(),
+        viewModel.getAnimeList(
+            page = page.toInput(),
             sort = sort.toInput(),
             season = mediaSeason,
-            seasonYear = seasonYear.toInput()).observe(this,{
-            lifecycleScope.launchWhenStarted {
-                viewModel.netWorkState.collect { netWorkState ->
-                    when(netWorkState) {
-                        is AnimeListViewModel.NetWorkState.Success -> {
-                            if(season) {
-                                animeListAdapter.submitList(it)
-                            } else {
-                                animeListAdapter.submitList(it)
-                            }
-                            binding.listProgressBar.isVisible = false
-                        }
-                        is AnimeListViewModel.NetWorkState.Error -> {
-                            Toast.makeText(this@AnimeListActivity,
-                                netWorkState.message,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            binding.listProgressBar.isVisible = false
-                        }
-                        is AnimeListViewModel.NetWorkState.Loading -> {
-                            binding.listProgressBar.isVisible = true
-                        }
-                        else -> Unit
+            seasonYear = seasonYear.toInput()
+        ).observe(this, {
+            when (it.responseState) {
+                ResponseState.LOADING -> binding.listProgressBar.isVisible = true
+                ResponseState.SUCCESS -> {
+                    if (season) {
+                        animeListAdapter.submitList(it.data)
+                    } else {
+                        animeListAdapter.submitList(it.data)
                     }
+                    binding.listProgressBar.isVisible = false
+                }
+                ResponseState.ERROR -> {
+                    Toast.makeText(
+                        this@AnimeListActivity,
+                        it.message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    binding.listProgressBar.isVisible = false
                 }
             }
         })
@@ -103,16 +99,17 @@ class AnimeListActivity : AppCompatActivity() {
         binding.rvAnimeList.apply {
             animeListAdapter = AnimeListAdapter(clickListener = { animeId ->
                 val intent = Intent(this@AnimeListActivity, BrowseActivity::class.java).apply {
-                    this.putExtra("type","ANIME")
-                    this.putExtra("id",animeId)
+                    this.putExtra("type", "ANIME")
+                    this.putExtra("id", animeId)
                 }
                 startActivity(intent)
             }).apply {
-                this.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                this.stateRestorationPolicy =
+                    RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             }
             this.adapter = animeListAdapter
-            this.layoutManager = GridLayoutManager(this@AnimeListActivity,3)
-            this.addItemDecoration(SpacesItemDecoration(3,8,true))
+            this.layoutManager = GridLayoutManager(this@AnimeListActivity, 3)
+            this.addItemDecoration(SpacesItemDecoration(3, 8, true))
         }
     }
 

@@ -2,24 +2,33 @@ package com.chs.youranimelist.network.repository
 
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.coroutines.toFlow
-import com.chs.youranimelist.network.api.AnimeService
-import com.chs.youranimelist.AnimeDetailQuery
-import com.chs.youranimelist.AnimeRecListQuery
+import com.chs.youranimelist.*
+import com.chs.youranimelist.network.ApolloServices
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
 class AnimeRepository {
 
-    @ExperimentalCoroutinesApi
-    fun getAnimeRecList(): Flow<AnimeRecListQuery.Data> {
-        return AnimeService.apolloClient.query(AnimeRecListQuery()).toFlow().map {
+    fun getAnimeRecList(): Flow<AnimeRecommendListQuery.Data> {
+        return ApolloServices.apolloClient.query(AnimeRecommendListQuery()).toFlow().map {
             it.data!!
         }
     }
 
-    @ExperimentalCoroutinesApi
-    fun getAnimeInfo(charaId: Input<Int>): Flow<AnimeDetailQuery.Data> {
-        return AnimeService.apolloClient.query(AnimeDetailQuery(charaId)).toFlow().map {
+    fun getAnimeInfo(animeId: Input<Int>): Flow<AnimeDetailQuery.Data> {
+        return ApolloServices.apolloClient.query(AnimeDetailQuery(animeId)).toFlow().map {
+            it.data!!
+        }
+    }
+
+    fun getAnimeOverview(animeId: Input<Int>): Flow<AnimeOverviewQuery.Data> {
+        return ApolloServices.apolloClient.query(AnimeOverviewQuery(animeId)).toFlow().map {
+            it.data!!
+        }
+    }
+
+    fun getAnimeCharacter(animeId: Input<Int>): Flow<AnimeCharacterQuery.Data> {
+        return ApolloServices.apolloClient.query(AnimeCharacterQuery(animeId)).toFlow().map {
             it.data!!
         }
     }

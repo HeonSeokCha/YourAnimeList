@@ -5,9 +5,10 @@
     <data>
         <variable
             name="model"
-            type="com.chs.youranimelist.AnimeDetailQuery.Media" />
+            type="com.chs.youranimelist.AnimeOverviewQuery.Media" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/anime_overview_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.browse.anime.overview.AnimeOverviewFragment">

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.CharacterQuery
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.CharacterRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,25 +16,15 @@ import kotlinx.coroutines.launch
 
 class CharacterViewModel(private val repository: CharacterRepository) : ViewModel() {
 
-    private val _netWorkState = MutableStateFlow<NetWorkState>(NetWorkState.Empty)
-    val netWorkState: StateFlow<NetWorkState> = _netWorkState
-
-    sealed class NetWorkState {
-        object Success : NetWorkState()
-        data class Error(val message: String) : NetWorkState()
-        object Loading : NetWorkState()
-        object Empty : NetWorkState()
-    }
-
-    fun getCharaInfo(charaId: Input<Int>): LiveData<CharacterQuery.Character> {
-        val responseLiveData: MutableLiveData<CharacterQuery.Character> = MutableLiveData()
-        _netWorkState.value = NetWorkState.Loading
+    fun getCharaInfo(charaId: Input<Int>): LiveData<NetWorkState<CharacterQuery.Character>> {
+        val responseLiveData: MutableLiveData<NetWorkState<CharacterQuery.Character>> =
+            MutableLiveData()
         viewModelScope.launch {
+            responseLiveData.postValue(NetWorkState.Loading())
             repository.getCharacterInfo(charaId).catch { e ->
-                _netWorkState.value = NetWorkState.Error(e.toString())
+                responseLiveData.postValue(NetWorkState.Error(e.message.toString()))
             }.collect {
-                responseLiveData.value = it.character
-                _netWorkState.value = NetWorkState.Success
+                responseLiveData.postValue(NetWorkState.Success(it.character!!))
             }
         }
         return responseLiveData

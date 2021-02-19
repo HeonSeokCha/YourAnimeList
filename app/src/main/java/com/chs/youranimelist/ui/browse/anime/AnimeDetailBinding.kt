@@ -76,11 +76,12 @@ object AnimeDetailBinding {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @ExperimentalStdlibApi
     @BindingAdapter("animeDetailRelationFormat")
     @JvmStatic
     fun animeDetailRelationFormat(textView: TextView, string: String) {
-        var temp = string.replace("_"," ")
+        var temp = string.replace("_", " ")
         textView.text = temp[0].uppercase() + temp.substring(1,string.length).toLowerCase()
     }
 

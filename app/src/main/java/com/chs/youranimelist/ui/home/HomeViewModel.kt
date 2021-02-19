@@ -5,50 +5,35 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.api.toInput
-import com.chs.youranimelist.AnimeRecListQuery
+import com.chs.youranimelist.AnimeRecommendListQuery
 import com.chs.youranimelist.fragment.AnimeList
-import com.chs.youranimelist.network.repository.AnimeListRepository
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.type.MediaSeason
-import com.chs.youranimelist.type.MediaSort
-import com.chs.youranimelist.ui.main.MainViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val animeRepository: AnimeRepository) : ViewModel() {
-    private val _netWorkState = MutableStateFlow<NetWorkState>(NetWorkState.Empty)
-    private lateinit var viewPagerListQuery: List<AnimeRecListQuery.Medium?>
-    val netWorkState: StateFlow<NetWorkState> = _netWorkState
+    private lateinit var viewPagerListQuery: List<AnimeRecommendListQuery.Medium?>
 
-    sealed class NetWorkState {
-        object Success : NetWorkState()
-        data class Error(val message: String) : NetWorkState()
-        object Loading : NetWorkState()
-        object Empty : NetWorkState()
-    }
 
-    fun getPagerAnimeList(): LiveData<List<AnimeRecListQuery.Medium?>> {
-        val responseLiveData: MutableLiveData<List<AnimeRecListQuery.Medium?>> = MutableLiveData()
+    fun getPagerAnimeList(): LiveData<List<AnimeRecommendListQuery.Medium?>> {
+        val responseLiveData: MutableLiveData<List<AnimeRecommendListQuery.Medium?>> =
+            MutableLiveData()
         responseLiveData.value = viewPagerListQuery
         return responseLiveData
     }
 
     @ExperimentalCoroutinesApi
-    fun getAnimeRecList(): LiveData<List<List<AnimeList>>> {
-        val responseLiveData: MutableLiveData<List<List<AnimeList>>> = MutableLiveData()
+    fun getAnimeRecList(): LiveData<NetWorkState<List<List<AnimeList>>>> {
+        val responseLiveData: MutableLiveData<NetWorkState<List<List<AnimeList>>>> =
+            MutableLiveData()
         val listAnime: MutableList<MutableList<AnimeList>> = mutableListOf()
-        _netWorkState.value = NetWorkState.Loading
         viewModelScope.launch {
+            responseLiveData.postValue(NetWorkState.Loading())
             animeRepository.getAnimeRecList().catch { e ->
-                _netWorkState.value = NetWorkState.Error(e.toString())
-                Log.d("error", "$e")
+                responseLiveData.postValue(NetWorkState.Error(e.message.toString()))
             }.collect {
                 viewPagerListQuery = it.viewPager?.media!!
                 it.trending?.trendingMedia.apply {
@@ -79,8 +64,7 @@ class HomeViewModel(private val animeRepository: AnimeRepository) : ViewModel() 
                     }
                     listAnime.add(anime)
                 }
-                responseLiveData.value = listAnime
-                _netWorkState.value = NetWorkState.Success
+                responseLiveData.postValue(NetWorkState.Success(listAnime))
             }
         }
         return responseLiveData

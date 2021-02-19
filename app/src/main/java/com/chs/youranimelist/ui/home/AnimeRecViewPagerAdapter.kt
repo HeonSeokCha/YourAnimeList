@@ -2,23 +2,22 @@ package com.chs.youranimelist.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.AnimeRecListQuery
+import com.chs.youranimelist.AnimeRecommendListQuery
 import com.chs.youranimelist.databinding.ItemViewPagerBinding
 
-class AnimeRecViewPagerAdapter (
-    private val items: List<AnimeRecListQuery.Medium?>,
-    private val clickListener: (animeId: Int,animeName: String) -> Unit,
+class AnimeRecViewPagerAdapter(
+    private val items: List<AnimeRecommendListQuery.Medium?>,
+    private val clickListener: (animeId: Int, animeName: String) -> Unit,
     private val trailerClickListener: (animeId: String) -> Unit
-    ): RecyclerView.Adapter<AnimeRecViewPagerAdapter.ViewPagerViewHolder>() {
+) : RecyclerView.Adapter<AnimeRecViewPagerAdapter.ViewPagerViewHolder>() {
 
     inner class ViewPagerViewHolder(private val binding: ItemViewPagerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
                 with(items[layoutPosition]!!) {
-                    if(this.title?.english == null) {
+                    if (this.title?.english == null) {
                         clickListener.invoke(this.id, this.title?.romaji!!)
                     } else {
                         clickListener.invoke(this.id, this.title?.english)
@@ -29,13 +28,14 @@ class AnimeRecViewPagerAdapter (
                 trailerClickListener.invoke(items[layoutPosition]?.trailer?.id!!)
             }
         }
+
         fun bind() {
             binding.model = items[layoutPosition]
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerViewHolder {
-        val view = ItemViewPagerBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val view = ItemViewPagerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewPagerViewHolder(view)
     }
 

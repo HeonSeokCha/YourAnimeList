@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.chs.youranimelist.AnimeDetailQuery
+import com.chs.youranimelist.AnimeOverviewQuery
 import com.chs.youranimelist.ConvertDate
 
 object AnimeOverviewBinding {
@@ -32,11 +33,11 @@ object AnimeOverviewBinding {
 
     @BindingAdapter("animeOverviewEnglishNull")
     @JvmStatic
-    fun animeOverviewEnglishNull(textView: TextView, title: AnimeDetailQuery.Title?) {
-        if(title!!.english.isNullOrEmpty()) {
-            textView.text = "${title.romaji}"
+    fun animeOverviewEnglishNull(textView: TextView, title: AnimeOverviewQuery.Title?) {
+        if (title?.english.isNullOrEmpty()) {
+            textView.text = "${title?.romaji}"
         } else {
-            textView.text = "${title.english}"
+            textView.text = "${title?.english}"
         }
     }
 
@@ -86,7 +87,7 @@ object AnimeOverviewBinding {
 
     @BindingAdapter("animeOverviewSeasonValue")
     @JvmStatic
-    fun animeOverviewSeasonValue(textView: TextView, anime: AnimeDetailQuery.Media) {
+    fun animeOverviewSeasonValue(textView: TextView, anime: AnimeOverviewQuery.Media) {
         textView.text = "${anime.season} ${anime.seasonYear}"
     }
 

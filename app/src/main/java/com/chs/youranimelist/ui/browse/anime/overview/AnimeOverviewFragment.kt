@@ -1,21 +1,22 @@
 package com.chs.youranimelist.ui.browse.anime.overview
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chs.youranimelist.AnimeDetailQuery
+import com.apollographql.apollo.api.toInput
+import com.chs.youranimelist.AnimeOverviewQuery
 import com.chs.youranimelist.databinding.FragmentAnimeOverviewBinding
+import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
-import com.chs.youranimelist.ui.base.BaseNavigator
-import com.chs.youranimelist.ui.main.MainViewModel
 
 
-class AnimeOverviewFragment(private val animeInfo: AnimeDetailQuery.Media) : BaseFragment() {
-    private lateinit var viewModel: MainViewModel
+class AnimeOverviewFragment() : BaseFragment() {
+    private lateinit var viewModel: AnimeOverviewViewModel
     private val repository by lazy { AnimeRepository() }
     private var _binding: FragmentAnimeOverviewBinding? = null
     private val binding get() = _binding!!
@@ -24,23 +25,35 @@ class AnimeOverviewFragment(private val animeInfo: AnimeDetailQuery.Media) : Bas
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAnimeOverviewBinding.inflate(inflater, container, false)
-        viewModel = MainViewModel(repository)
+        viewModel = AnimeOverviewViewModel(repository)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initView()
+        Log.d("argument", "${arguments?.getInt("id")}")
+        getAnimeInfo(arguments?.getInt("id")!!)
     }
 
-    private fun initView() {
-        binding.model = animeInfo
-        initRecyclerView()
+    private fun getAnimeInfo(animeId: Int) {
+        viewModel.getAnimeOverview(animeId).observe(viewLifecycleOwner, {
+            when (it.responseState) {
+                ResponseState.LOADING -> {
+                }
+                ResponseState.SUCCESS -> {
+                    binding.model = it.data!!
+                    initRecyclerView(it.data!!)
+                }
+                ResponseState.ERROR -> {
+                    Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
     }
 
-    private fun initRecyclerView() {
+    private fun initRecyclerView(animeInfo: AnimeOverviewQuery.Media) {
         binding.rvAnimeOverviewRelation.apply {
             this.adapter = AnimeOverviewRelationAdapter(animeInfo.relations?.relationsEdges!!,
-                clickListener = { type, id ->
+                clickListener = { _, id ->
                     this@AnimeOverviewFragment.navigate?.changeFragment("ANIME", id)
                 })
             this.layoutManager = LinearLayoutManager(

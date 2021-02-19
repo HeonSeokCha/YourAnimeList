@@ -1,0 +1,20 @@
+query AnimeCharacterQuery(
+    $id: Int
+) {
+    Media(id: $id) {
+        id
+        characters(sort: [ROLE,ID]) {
+            charactersNode: nodes {
+                id
+                name {
+                    first
+                    last
+                    full
+                }
+                image {
+                    large
+                }
+            }
+        }
+    }
+}

@@ -4,14 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.AnimeDetailQuery
+import com.chs.youranimelist.AnimeOverviewQuery
 import com.chs.youranimelist.databinding.ItemRelationBinding
 
 class AnimeOverviewRelationAdapter(
-    private val items: List<AnimeDetailQuery.RelationsEdge?>,
+    private val items: List<AnimeOverviewQuery.RelationsEdge?>,
     private val clickListener: (type: String, id: Int) -> Unit
-    ): RecyclerView.Adapter<AnimeOverviewRelationAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<AnimeOverviewRelationAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: ItemRelationBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: ItemRelationBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
                 clickListener.invoke(
@@ -20,6 +22,7 @@ class AnimeOverviewRelationAdapter(
                 )
             }
         }
+
         fun bind() {
             binding.model = items[layoutPosition]
         }

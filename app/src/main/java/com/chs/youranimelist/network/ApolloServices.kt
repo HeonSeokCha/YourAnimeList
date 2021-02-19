@@ -1,4 +1,4 @@
-package com.chs.youranimelist.network.api
+package com.chs.youranimelist.network
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.cache.normalized.lru.EvictionPolicy
@@ -9,7 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
 
-object AnimeService {
+object ApolloServices {
     private const val BASE_URL = "https://graphql.anilist.co"
 
     private val cache = LruNormalizedCacheFactory(
@@ -29,8 +29,9 @@ object AnimeService {
             interceptor.level = HttpLoggingInterceptor.Level.NONE
         }
         return OkHttpClient.Builder()
-            .connectTimeout(20,TimeUnit.SECONDS)
-            .readTimeout(30,TimeUnit.SECONDS)
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS)
+            .writeTimeout(20, TimeUnit.SECONDS)
             .addNetworkInterceptor(interceptor)
             .build()
     }

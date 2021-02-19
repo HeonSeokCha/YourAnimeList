@@ -1,12 +1,18 @@
-query animeDetail($id: Int) {
+query AnimeOverviewQuery(
+    $id: Int
+) {
     Media(id: $id) {
         id
         idMal
         title {
+            userPreferred
             romaji
-            native
             english
+            native
         }
+        type
+        format
+        status(version: 2)
         description(asHtml: true)
         startDate {
             year
@@ -18,28 +24,38 @@ query animeDetail($id: Int) {
             month
             day
         }
-        format
-        trailer {
-            id
-            thumbnail
-        }
-        episodes
-        coverImage {
-            extraLarge
-            color
-        }
-        bannerImage
-        genres
-        status(version: 2)
         season
         seasonYear
         episodes
         duration
+        chapters
+        volumes
+        countryOfOrigin
+        source
+        hashtag
+        trailer {
+            id
+            site
+        }
+        coverImage {
+            extraLarge
+        }
+        bannerImage
+        genres
+        synonyms
         averageScore
         meanScore
         popularity
         favourites
-        source
+        tags {
+            id
+            name
+            description
+            rank
+            isGeneralSpoiler
+            isMediaSpoiler
+            isAdult
+        }
         relations {
             relationsEdges: edges {
                 relationsNode: node {
@@ -58,33 +74,35 @@ query animeDetail($id: Int) {
                 relationType(version: 2)
             }
         }
-        characters(sort: [ROLE,ID]) {
-            charactersNode: nodes {
-                id
-                name {
-                    first
-                    last
-                    full
-                }
-                image {
-                    large
-                }
-            }
-        }
-        recommendations {
-            recommendationsNode: nodes {
-                mediaRecommendation {
+        studios {
+            studiosEdges: edges {
+                studiosNode: node {
                     id
-                    idMal
-                    title {
-                        romaji
-                        english
-                    }
-                    coverImage {
-                        extraLarge
-                    }
+                    name
+                    isAnimationStudio
+                }
+                isMain
+            }
+        }
+        isFavourite
+        nextAiringEpisode {
+            airingAt
+            episode
+        }
+        airingSchedule {
+            edges {
+                node {
+                    id
+                    airingAt
+                    episode
                 }
             }
         }
+        externalLinks {
+            id
+            url
+            site
+        }
+        siteUrl
     }
 }

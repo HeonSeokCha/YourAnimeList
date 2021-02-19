@@ -10,21 +10,23 @@ import com.chs.youranimelist.ui.home.AnimeRecListChildDiffUtilCallBack
 
 class AnimeListAdapter(
     private val clickListener: (animeId: Int) -> Unit,
-): ListAdapter<AnimeList, AnimeListAdapter.AnimeListViewHolder>(AnimeRecListChildDiffUtilCallBack()) {
+) : ListAdapter<AnimeList, AnimeListAdapter.AnimeListViewHolder>(AnimeRecListChildDiffUtilCallBack()) {
     inner class AnimeListViewHolder(
-        private val binding: ItemAnimeBinding):RecyclerView.ViewHolder(binding.root) {
-            init {
-                binding.root.setOnClickListener {
-                    clickListener.invoke(getItem(layoutPosition).id)
-                }
-            }
-            fun bind() {
-                binding.model = getItem(layoutPosition)
+        private val binding: ItemAnimeBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickListener.invoke(getItem(layoutPosition).id)
             }
         }
 
+        fun bind() {
+            binding.model = getItem(layoutPosition)
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeListViewHolder {
-        val view = ItemAnimeBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val view = ItemAnimeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AnimeListViewHolder(view)
     }
 

@@ -1,4 +1,4 @@
-query animeRecList {
+query AnimeRecommendListQuery {
     ViewPager: Page(page:1,perPage:6) {
         media(sort:[SCORE_DESC],type:ANIME,format:TV,seasonYear:2021){
             id

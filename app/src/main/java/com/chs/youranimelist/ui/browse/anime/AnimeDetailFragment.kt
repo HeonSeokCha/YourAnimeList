@@ -15,6 +15,7 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
+import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.main.MainViewModel
 import com.google.android.material.tabs.TabLayoutMediator
@@ -38,6 +39,7 @@ class AnimeDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initAnimeInfo(arguments?.getInt("id").toInput())
+        initTabView(arguments?.getInt("id")!!)
         initClick()
     }
 
@@ -50,35 +52,27 @@ class AnimeDetailFragment : Fragment() {
 
     private fun initAnimeInfo(animeId: Input<Int>) {
         viewModel.getAnimeInfo(animeId).observe(viewLifecycleOwner, {
-            lifecycleScope.launchWhenStarted {
-                viewModel.netWorkState.collect { netWorkState ->
-                    when (netWorkState) {
-                        is AnimeDetailViewModel.NetWorkState.Success -> {
-                            binding.model = it
-                            initTabView(it)
-                            trailerId = it.trailer?.id.toString()
-                            binding.progressBar.isVisible = false
-                        }
-                        is AnimeDetailViewModel.NetWorkState.Error -> {
-                            Toast.makeText(
-                                this@AnimeDetailFragment.context,
-                                netWorkState.message, Toast.LENGTH_SHORT
-                            ).show()
-                            binding.progressBar.isVisible = false
-                        }
-                        is AnimeDetailViewModel.NetWorkState.Loading -> {
-                            binding.progressBar.isVisible = true
-                        }
-                        else -> Unit
-                    }
+            when (it.responseState) {
+                ResponseState.LOADING -> binding.progressBar.isVisible = true
+                ResponseState.SUCCESS -> {
+                    binding.model = it.data
+                    trailerId = it.data!!.trailer?.id.toString()
+                    binding.progressBar.isVisible = false
+                }
+                ResponseState.ERROR -> {
+                    Toast.makeText(
+                        this@AnimeDetailFragment.context,
+                        it.message, Toast.LENGTH_LONG
+                    ).show()
+                    binding.progressBar.isVisible = false
                 }
             }
         })
     }
 
-    private fun initTabView(animeInfo: AnimeDetailQuery.Media) {
+    private fun initTabView(animeId: Int) {
         binding.viewPagerAnimeDetail.adapter =
-            AnimeDetailViewPagerAdapter(requireActivity(), animeInfo)
+            AnimeDetailViewPagerAdapter(requireActivity(), animeId)
         binding.viewPagerAnimeDetail.isUserInputEnabled = false
         TabLayoutMediator(binding.tabAnimeDetail, binding.viewPagerAnimeDetail) { tab, position ->
             var tabArr: List<String> = listOf("Overview", "Characters", "Recommend")

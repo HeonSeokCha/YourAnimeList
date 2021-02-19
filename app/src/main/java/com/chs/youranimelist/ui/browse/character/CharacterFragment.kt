@@ -11,6 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.databinding.FragmentCharacterBinding
+import com.chs.youranimelist.network.NetWorkState
+import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.CharacterRepository
 import kotlinx.coroutines.flow.collect
 
@@ -31,25 +33,19 @@ class CharacterFragment : Fragment() {
     }
 
     private fun initView() {
-        getCharaInfo(arguments!!.getInt("id", 0).toInput())
+        getCharaInfo(requireArguments().getInt("id", 0).toInput())
     }
 
     private fun getCharaInfo(charaId: Input<Int>) {
         viewModel.getCharaInfo(charaId).observe(viewLifecycleOwner, {
-            lifecycleScope.launchWhenStarted {
-                viewModel.netWorkState.collect { netWorkState ->
-                    when (netWorkState) {
-                        is CharacterViewModel.NetWorkState.Success -> {
-                            binding.model = it
-                        }
-                        is CharacterViewModel.NetWorkState.Error -> {
-                            Toast.makeText(
-                                this@CharacterFragment.context,
-                                netWorkState.message, Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        else -> Unit
-                    }
+            when (it.responseState) {
+                ResponseState.LOADING -> { }
+                ResponseState.SUCCESS -> binding.model = it.data
+                ResponseState.ERROR -> {
+                    Toast.makeText(
+                        this@CharacterFragment.context,
+                        it.message, Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         })
