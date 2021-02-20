@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.youranimelist.AnimeRecommendListQuery
+import com.chs.youranimelist.HomeRecommendListQuery
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.AnimeRepository
@@ -15,11 +15,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val animeRepository: AnimeRepository) : ViewModel() {
-    private lateinit var viewPagerListQuery: List<AnimeRecommendListQuery.Medium?>
+    private lateinit var viewPagerListQuery: List<HomeRecommendListQuery.Medium?>
 
-
-    fun getPagerAnimeList(): LiveData<List<AnimeRecommendListQuery.Medium?>> {
-        val responseLiveData: MutableLiveData<List<AnimeRecommendListQuery.Medium?>> =
+    fun getPagerAnimeList(): LiveData<List<HomeRecommendListQuery.Medium?>> {
+        val responseLiveData: MutableLiveData<List<HomeRecommendListQuery.Medium?>> =
             MutableLiveData()
         responseLiveData.value = viewPagerListQuery
         return responseLiveData

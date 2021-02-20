@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.ItemAnimeBinding
 import com.chs.youranimelist.fragment.AnimeList
 
-class AnimeRecListChildAdapter(
+class HomeRecListChildAdapter(
     private val list: List<AnimeList>,
     private val clickListener: (animeId: Int) -> Unit,
-) : RecyclerView.Adapter<AnimeRecListChildAdapter.AnimeViewHolder>() {
+) : RecyclerView.Adapter<HomeRecListChildAdapter.AnimeViewHolder>() {
 
     inner class AnimeViewHolder(
         private val binding: ItemAnimeBinding

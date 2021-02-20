@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.ItemAnimeBinding
 import com.chs.youranimelist.fragment.AnimeList
-import com.chs.youranimelist.ui.home.AnimeRecListChildDiffUtilCallBack
+import com.chs.youranimelist.ui.home.HomeRecListChildDiffUtilCallBack
 
 class AnimeListAdapter(
     private val clickListener: (animeId: Int) -> Unit,
-) : ListAdapter<AnimeList, AnimeListAdapter.AnimeListViewHolder>(AnimeRecListChildDiffUtilCallBack()) {
+) : ListAdapter<AnimeList, AnimeListAdapter.AnimeListViewHolder>(HomeRecListChildDiffUtilCallBack()) {
     inner class AnimeListViewHolder(
         private val binding: ItemAnimeBinding
     ) : RecyclerView.ViewHolder(binding.root) {

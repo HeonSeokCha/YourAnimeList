@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.*
 
 class AnimeRepository {
 
-    fun getAnimeRecList(): Flow<AnimeRecommendListQuery.Data> {
-        return ApolloServices.apolloClient.query(AnimeRecommendListQuery()).toFlow().map {
+    fun getAnimeRecList(): Flow<HomeRecommendListQuery.Data> {
+        return ApolloServices.apolloClient.query(HomeRecommendListQuery()).toFlow().map {
             it.data!!
         }
     }

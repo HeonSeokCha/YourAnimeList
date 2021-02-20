@@ -1,0 +1,27 @@
+query AnimeRecommendQuery($id: Int) {
+    Media(id: $id) {
+        recommendations(sort: [RATING_DESC]) {
+            edges {
+                node {
+                    id
+                    rating
+                    userRating
+                    mediaRecommendation {
+                        id
+                        title {
+                            userPreferred
+                        }
+                        seasonYear
+                        format
+                        type
+                        averageScore
+                        favourites
+                        coverImage {
+                            extraLarge
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

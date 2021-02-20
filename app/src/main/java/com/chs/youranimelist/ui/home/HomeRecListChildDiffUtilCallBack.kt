@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import com.chs.youranimelist.fragment.AnimeList
 
-class AnimeRecListChildDiffUtilCallBack : DiffUtil.ItemCallback<AnimeList>() {
+class HomeRecListChildDiffUtilCallBack : DiffUtil.ItemCallback<AnimeList>() {
     override fun areItemsTheSame(oldItem: AnimeList, newItem: AnimeList): Boolean {
         return oldItem.id == newItem.id
     }

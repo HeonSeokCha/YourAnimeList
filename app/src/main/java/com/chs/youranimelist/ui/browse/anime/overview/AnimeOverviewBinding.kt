@@ -24,7 +24,7 @@ object AnimeOverviewBinding {
     @BindingAdapter("animeOverviewScoreConvert")
     @JvmStatic
     fun animeOverviewScoreConvert(textView: TextView, string: String?) {
-        if(string.isNullOrEmpty()) {
+        if (string.isNullOrEmpty()) {
             textView.text = "0%"
         } else {
             textView.text = "$string%"
@@ -64,17 +64,17 @@ object AnimeOverviewBinding {
 
     @BindingAdapter("animeOverviewStatusValue")
     @JvmStatic
-    fun animeOverviewStatusValue(textView: TextView, status: String) {
-        textView.text = status.replace("_"," ")
+    fun animeOverviewStatusValue(textView: TextView, status: String?) {
+        textView.text = status?.replace("_", " ") ?: ""
     }
 
     @BindingAdapter("animeOverviewDateText")
     @JvmStatic
-    fun animeOverviewDateText(textView: TextView,date: Any?) {
+    fun animeOverviewDateText(textView: TextView, date: Any?) {
         when(date) {
             is AnimeDetailQuery.StartDate -> {
                 textView.text = if(date.day != null) {
-                    ConvertDate.convertToDateFormat(date.year,date.month,date.day)
+                    ConvertDate.convertToDateFormat(date.year, date.month, date.day)
                 } else "?"
             }
             is AnimeDetailQuery.EndDate -> {
@@ -87,8 +87,8 @@ object AnimeOverviewBinding {
 
     @BindingAdapter("animeOverviewSeasonValue")
     @JvmStatic
-    fun animeOverviewSeasonValue(textView: TextView, anime: AnimeOverviewQuery.Media) {
-        textView.text = "${anime.season} ${anime.seasonYear}"
+    fun animeOverviewSeasonValue(textView: TextView, anime: AnimeOverviewQuery.Media?) {
+        textView.text = "${anime?.season} ${anime?.seasonYear}"
     }
 
     @BindingAdapter("animeOverviewCoverImage")

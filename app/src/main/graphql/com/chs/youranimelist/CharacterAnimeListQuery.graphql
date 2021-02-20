@@ -1,0 +1,37 @@
+query CharacterAnimeListQuery($id: Int) {
+    Character(id: $id) {
+        id
+        name {
+            full
+        }
+        media {
+            edges {
+                node {
+                    id
+                    title {
+                        userPreferred
+                    }
+                    coverImage {
+                        large
+                    }
+                    type
+                    format
+                    startDate {
+                        year
+                        month
+                        day
+                    }
+                    averageScore
+                    popularity
+                    favourites
+                    mediaListEntry {
+                        status
+                    }
+                }
+                relationType
+                characterRole
+                staffRole
+            }
+        }
+    }
+}

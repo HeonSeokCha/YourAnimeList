@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.AnimeRecommendListQuery
 import com.chs.youranimelist.databinding.ItemViewPagerBinding
 
-class AnimeRecViewPagerAdapter(
+class HomeRecViewPagerAdapter(
     private val items: List<AnimeRecommendListQuery.Medium?>,
     private val clickListener: (animeId: Int, animeName: String) -> Unit,
     private val trailerClickListener: (animeId: String) -> Unit
-) : RecyclerView.Adapter<AnimeRecViewPagerAdapter.ViewPagerViewHolder>() {
+) : RecyclerView.Adapter<HomeRecViewPagerAdapter.ViewPagerViewHolder>() {
 
     inner class ViewPagerViewHolder(private val binding: ItemViewPagerBinding) :
         RecyclerView.ViewHolder(binding.root) {

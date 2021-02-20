@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.ItemAnimeListBinding
 import com.chs.youranimelist.fragment.AnimeList
 
-class AnimeRecListParentAdapter(
+class HomeRecListParentAdapter(
     private val list: List<List<AnimeList>>,
     private val mContext: Context,
     private val clickListener: (sortType: String) -> Unit,
     private val animeClickListener: (animeId: Int) -> Unit,
-) : RecyclerView.Adapter<AnimeRecListParentAdapter.AnimeListRecViewHolder>() {
-    lateinit var animeAdapter: AnimeRecListChildAdapter
+) : RecyclerView.Adapter<HomeRecListParentAdapter.AnimeListRecViewHolder>() {
+    lateinit var homeAdapter: HomeRecListChildAdapter
     private var listTitleList = listOf(
         "TRENDING NOW", "POPULAR THIS SEASON",
         "UPCOMING NEXT SEASON", "ALL TIME POPULAR"
@@ -31,13 +31,13 @@ class AnimeRecListParentAdapter(
         fun bind() {
             binding.model = listTitleList[layoutPosition]
             binding.rvAnime.apply {
-                animeAdapter =
-                    AnimeRecListChildAdapter(list[layoutPosition], clickListener = { animeId ->
+                homeAdapter =
+                    HomeRecListChildAdapter(list[layoutPosition], clickListener = { animeId ->
                         animeClickListener.invoke(animeId)
                     }).apply {
                         this.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
                     }
-                this.adapter = animeAdapter
+                this.adapter = homeAdapter
                 this.layoutManager = LinearLayoutManager(
                     mContext,
                     LinearLayoutManager.HORIZONTAL, false
