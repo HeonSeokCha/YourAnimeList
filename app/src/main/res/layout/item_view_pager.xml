@@ -3,7 +3,7 @@
     <data>
         <variable
             name="model"
-            type="com.chs.youranimelist.AnimeRecommendListQuery.Medium" />
+            type="com.chs.youranimelist.HomeRecommendListQuery.Medium" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

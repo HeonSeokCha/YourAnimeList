@@ -9,6 +9,8 @@ query AnimeRecommendQuery($id: Int) {
                     mediaRecommendation {
                         id
                         title {
+                            english
+                            romaji
                             userPreferred
                         }
                         seasonYear

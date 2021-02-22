@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.*
 
 class AnimeRepository {
 
-    fun getAnimeRecList(): Flow<HomeRecommendListQuery.Data> {
+    fun getHomeRecList(): Flow<HomeRecommendListQuery.Data> {
         return ApolloServices.apolloClient.query(HomeRecommendListQuery()).toFlow().map {
             it.data!!
         }
@@ -29,6 +29,12 @@ class AnimeRepository {
 
     fun getAnimeCharacter(animeId: Input<Int>): Flow<AnimeCharacterQuery.Data> {
         return ApolloServices.apolloClient.query(AnimeCharacterQuery(animeId)).toFlow().map {
+            it.data!!
+        }
+    }
+
+    fun getAnimeRecList(animeId: Input<Int>): Flow<AnimeRecommendQuery.Data> {
+        return ApolloServices.apolloClient.query(AnimeRecommendQuery(animeId)).toFlow().map {
             it.data!!
         }
     }

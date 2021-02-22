@@ -15,5 +15,15 @@ query CharacterQuery($id: Int) {
         isFavourite
         siteUrl
         favourites
+        media(sort: [POPULARITY_DESC]) {
+            edges {
+                node {
+                    ... animeList
+                }
+                relationType
+                characterRole
+                staffRole
+            }
+        }
     }
 }

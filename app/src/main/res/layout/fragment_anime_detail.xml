@@ -132,7 +132,7 @@
                         android:layout_marginTop="8dp"
                         android:text="TextView"
                         android:drawableLeft="@drawable/ic_score"
-                        android:drawablePadding="1dp"
+                        android:drawablePadding="2dp"
                         android:textSize="12sp"
                         tools:text="TextView"
                         app:animeDetailScoreVisible="@{model.averageScore}"
@@ -145,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:drawableLeft="@drawable/ic_favorite"
-                        android:drawablePadding="1dp"
+                        android:drawablePadding="2dp"
                         android:text="@{model.favourites.toString()}"
                         android:textSize="12sp"
                         tools:text="TextView"
@@ -207,6 +207,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

@@ -7,6 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.ui.browse.anime.characters.AnimeCharaFragment
 import com.chs.youranimelist.ui.browse.anime.overview.AnimeOverviewFragment
+import com.chs.youranimelist.ui.browse.anime.recommend.AnimeRecommendFragment
 
 class AnimeDetailViewPagerAdapter(
     fa: FragmentActivity,
@@ -21,6 +22,9 @@ class AnimeDetailViewPagerAdapter(
                 arguments = bundle
             }
             1 -> AnimeCharaFragment().apply {
+                arguments = bundle
+            }
+            2 -> AnimeRecommendFragment().apply {
                 arguments = bundle
             }
             else -> Fragment()

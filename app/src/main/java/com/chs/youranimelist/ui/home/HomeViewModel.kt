@@ -31,7 +31,7 @@ class HomeViewModel(private val animeRepository: AnimeRepository) : ViewModel() 
         val listAnime: MutableList<MutableList<AnimeList>> = mutableListOf()
         viewModelScope.launch {
             responseLiveData.postValue(NetWorkState.Loading())
-            animeRepository.getAnimeRecList().catch { e ->
+            animeRepository.getHomeRecList().catch { e ->
                 responseLiveData.postValue(NetWorkState.Error(e.message.toString()))
             }.collect {
                 viewPagerListQuery = it.viewPager?.media!!
