@@ -63,6 +63,15 @@ object AnimeDetailBinding {
             .into(imageView)
     }
 
+    @BindingAdapter("animeRecommendImageCover")
+    @JvmStatic
+    fun animeRecommendImageCover(imageView: ImageView, path: String?) {
+        Glide.with(imageView.context).load(path)
+            .transition(DrawableTransitionOptions().crossFade())
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(imageView)
+    }
+
     @BindingAdapter("animeDetailScoreVisible")
     @JvmStatic
     fun animeDetailScoreVisible(textView: TextView, score: Int?) {

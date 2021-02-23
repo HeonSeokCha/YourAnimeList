@@ -1,6 +1,7 @@
 package com.chs.youranimelist.ui.main
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -25,6 +26,6 @@ class MainActivity : BaseActivity() {
         val fragmentList = listOf(HomeFragment())
         binding.navViewPager.isUserInputEnabled = false
         binding.navViewPager.offscreenPageLimit = fragmentList.size
-        binding.navViewPager.adapter = MainViewPagerAdapter(this,fragmentList)
+        binding.navViewPager.adapter = MainViewPagerAdapter(this, fragmentList)
     }
 }

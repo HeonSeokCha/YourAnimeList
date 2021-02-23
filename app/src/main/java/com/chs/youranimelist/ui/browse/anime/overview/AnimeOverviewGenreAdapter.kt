@@ -8,9 +8,11 @@ import com.chs.youranimelist.ItemColor
 import com.chs.youranimelist.databinding.ItemGenreBinding
 
 class AnimeOverviewGenreAdapter(
-    private val items: List<String?>): RecyclerView.Adapter<AnimeOverviewGenreAdapter.ViewHolder>() {
+    private val items: List<String?>
+) : RecyclerView.Adapter<AnimeOverviewGenreAdapter.ViewHolder>() {
     inner class ViewHolder(
-        private val binding: ItemGenreBinding): RecyclerView.ViewHolder(binding.root) {
+        private val binding: ItemGenreBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind() {
             binding.model = items[layoutPosition]
             binding.genreCard.setCardBackgroundColor(Color.parseColor(ItemColor.GENRE_COLOR[items[layoutPosition]]))

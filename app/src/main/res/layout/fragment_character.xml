@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.browse.character.CharacterFragment" >
+    xmlns:tools="http://schemas.android.com/tools" >
     <data>
         <variable
             name="model"
             type="com.chs.youranimelist.CharacterQuery.Character" />
     </data>
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/character_detail_nested"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/character_detail_constrain"
+            android:id="@+id/character_detail_constrains"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            tools:context=".ui.browse.character.CharacterFragment">
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -78,43 +76,47 @@
                 tools:text="TextView" />
 
             <TextView
+                android:id="@+id/textView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:animeOverviewHtmlConvert="@{model.description}"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button"
+                tools:text="TextView" />
+
+            <TextView
                 android:id="@+id/textView27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="5dp"
                 android:text="Series"
-                app:layout_constraintStart_toStartOf="@+id/button"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView29" />
-
-            <TextView
-                android:id="@+id/textView29"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:text="TextView"
-                app:animeOverviewHtmlConvert="@{model.description}"
-                app:layout_constraintEnd_toEndOf="@+id/button"
-                app:layout_constraintStart_toStartOf="@+id/button"
-                app:layout_constraintTop_toBottomOf="@+id/button" />
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_chara_anime_series"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
-                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView27"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.core.widget.NestedScrollView>
+
 
 </layout>

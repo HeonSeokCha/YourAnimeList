@@ -35,6 +35,7 @@ class CharacterFragment : BaseFragment() {
     ): View? {
         _binding = FragmentCharacterBinding.inflate(inflater, container, false)
         viewModel = CharacterViewModel(repository)
+        binding.lifecycleOwner = this
         initView()
         return binding.root
     }
@@ -68,7 +69,10 @@ class CharacterFragment : BaseFragment() {
                 clickListener = { id ->
                     this@CharacterFragment.navigate?.changeFragment("ANIME", id, true)
                 }
-            )
+            ).apply {
+                this.stateRestorationPolicy =
+                    RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            }
             layoutManager = GridLayoutManager(this@CharacterFragment.context, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
         }

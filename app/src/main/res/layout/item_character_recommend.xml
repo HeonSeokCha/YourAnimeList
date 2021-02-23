@@ -27,7 +27,7 @@
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                app:animeImageCover="@{model.node.mediaRecommendation.coverImage.extraLarge}"
+                app:animeRecommendImageCover="@{model.node.mediaRecommendation.coverImage.extraLarge}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="2:3"
                 app:layout_constraintStart_toStartOf="parent"
