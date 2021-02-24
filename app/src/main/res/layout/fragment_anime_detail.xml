@@ -16,13 +16,13 @@
         tools:context=".ui.browse.anime.AnimeDetailFragment">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/characterAppBarLayout"
+            android:id="@+id/anime_detail_AppBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/transparent">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/characterCollapsingToolbar"
+                android:id="@+id/anime_detail_CollapsingToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:toolbarId="@id/animeToolbar"

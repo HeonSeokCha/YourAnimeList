@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.collect
 
 class AnimeDetailFragment : Fragment() {
     private var _binding: FragmentAnimeDetailBinding? = null
-    private var scrollPosition: Parcelable? = null
     private val repository by lazy { AnimeRepository() }
     private lateinit var viewModel: AnimeDetailViewModel
     private lateinit var trailerId: String

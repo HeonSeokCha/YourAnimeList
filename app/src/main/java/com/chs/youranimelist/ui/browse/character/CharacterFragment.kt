@@ -37,11 +37,16 @@ class CharacterFragment : BaseFragment() {
         viewModel = CharacterViewModel(repository)
         binding.lifecycleOwner = this
         initView()
+        initClick()
         return binding.root
     }
 
     private fun initView() {
         getCharaInfo(requireArguments().getInt("id", 0).toInput())
+    }
+
+    private fun initClick() {
+        binding.characterToolbars.setNavigationOnClickListener { activity?.finish() }
     }
 
     private fun getCharaInfo(charaId: Input<Int>) {
