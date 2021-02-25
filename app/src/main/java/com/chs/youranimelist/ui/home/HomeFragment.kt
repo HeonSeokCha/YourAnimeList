@@ -1,13 +1,11 @@
 package com.chs.youranimelist.ui.home
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -66,14 +64,12 @@ class HomeFragment : BaseFragment() {
         viewModel.getPagerAnimeList().observe(viewLifecycleOwner, {
             binding.viewPager2.apply {
                 viewPagerHomeRecAdapter =
-                    HomeRecViewPagerAdapter(it, clickListener = { animeId, animeName ->
+                    HomeRecViewPagerAdapter(it, clickListener = { animeId ->
                         val intent = Intent(activity, BrowseActivity::class.java).apply {
                             this.putExtra("type", "ANIME")
                             this.putExtra("id", animeId)
                         }
                         startActivity(intent)
-                    }, trailerClickListener = { id ->
-                        trailerPlay(id)
                     })
                 this.orientation = ViewPager2.ORIENTATION_HORIZONTAL
                 this.adapter = viewPagerHomeRecAdapter
@@ -102,12 +98,6 @@ class HomeFragment : BaseFragment() {
             this.layoutManager = LinearLayoutManager(this@HomeFragment.context)
             this.adapter = homeRecListAdapter
         }
-    }
-
-    private fun trailerPlay(videoId: String) {
-        CustomTabsIntent.Builder()
-            .build()
-            .launchUrl(requireActivity(), Uri.parse("https://www.youtube.com/watch?v=$videoId"))
     }
 
     override fun onDestroyView() {

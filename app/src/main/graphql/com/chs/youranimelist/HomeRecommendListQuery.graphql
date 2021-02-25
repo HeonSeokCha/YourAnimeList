@@ -16,6 +16,7 @@ query HomeRecommendListQuery {
                 id
             }
             averageScore
+            favourites
             seasonYear
             format
             status

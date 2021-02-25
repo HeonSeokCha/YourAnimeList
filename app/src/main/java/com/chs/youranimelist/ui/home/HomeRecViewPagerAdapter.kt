@@ -8,24 +8,14 @@ import com.chs.youranimelist.databinding.ItemViewPagerBinding
 
 class HomeRecViewPagerAdapter(
     private val items: List<HomeRecommendListQuery.Medium?>,
-    private val clickListener: (animeId: Int, animeName: String) -> Unit,
-    private val trailerClickListener: (animeId: String) -> Unit
+    private val clickListener: (animeId: Int) -> Unit
 ) : RecyclerView.Adapter<HomeRecViewPagerAdapter.ViewPagerViewHolder>() {
 
     inner class ViewPagerViewHolder(private val binding: ItemViewPagerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                with(items[layoutPosition]!!) {
-                    if (this.title?.english == null) {
-                        clickListener.invoke(this.id, this.title?.romaji!!)
-                    } else {
-                        clickListener.invoke(this.id, this.title?.english)
-                    }
-                }
-            }
-            binding.floatingActionButton.setOnClickListener {
-                trailerClickListener.invoke(items[layoutPosition]?.trailer?.id!!)
+                clickListener.invoke(items[layoutPosition]!!.id)
             }
         }
 

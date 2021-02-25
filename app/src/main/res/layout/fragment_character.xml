@@ -10,7 +10,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/character_coordinator"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:context=".ui.browse.character.CharacterFragment">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -66,6 +66,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="@{model.name.full}"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
                         android:textColor="@color/white"
                         app:layout_constraintBottom_toBottomOf="@+id/character_CoverImage"
                         app:layout_constraintStart_toEndOf="@+id/character_CoverImage"
@@ -79,6 +81,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:textColor="@color/white"
+                        android:textStyle="bold"
                         android:text="@{model.name.native_}"
                         app:layout_constraintStart_toStartOf="@+id/textView24"
                         app:layout_constraintTop_toBottomOf="@+id/textView24"
@@ -92,6 +95,7 @@
                         android:drawableLeft="@drawable/ic_favorite"
                         android:drawablePadding="2dp"
                         android:textColor="@color/white"
+                        android:textStyle="bold"
                         android:text="@{model.favourites.toString()}"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="@+id/textView25"
@@ -120,8 +124,7 @@
             android:id="@+id/character_scroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fillViewport="true"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -134,6 +137,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:lineSpacingExtra="5dp"
                     app:animeOverviewHtmlConvert="@{model.description}"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -146,7 +150,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
                     android:lineSpacingExtra="5dp"
                     android:text="Series"
                     android:textStyle="bold"
@@ -163,7 +166,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView27" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView27"
+                    app:layout_constraintVertical_bias="0.0" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
