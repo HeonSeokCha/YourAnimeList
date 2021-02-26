@@ -18,7 +18,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,23 +29,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             android:text="@{model.toString()}"
             android:textStyle="bold"
-            tools:text="Text View"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_viewAll"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btn_viewAll" />
+            app:layout_constraintTop_toTopOf="@+id/btn_viewAll"
+            tools:text="Text View" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_viewAll"
-            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/view_all"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ic_view_more"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
