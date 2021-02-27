@@ -1,0 +1,24 @@
+query MediaSearchQuery(
+    $page: Int = 1,
+    $search: String,
+    $type: MediaType) {
+    Page(
+        page: $page,
+        perPage: 6
+    ) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        media(
+            search: $search,
+            type: $type,
+            sort: [FAVOURITES_DESC]
+        ) {
+            ...animeList
+        }
+    }
+}

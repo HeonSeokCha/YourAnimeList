@@ -59,6 +59,7 @@ fragment animeList on Media {
     }
     bannerImage
     averageScore
+    favourites
     season
     seasonYear
     format
