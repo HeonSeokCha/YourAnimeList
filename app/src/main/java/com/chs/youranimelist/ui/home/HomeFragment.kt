@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentHomeBinding
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.ResponseState
@@ -16,6 +17,7 @@ import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.list.AnimeListActivity
+import com.chs.youranimelist.ui.search.SearchActivity
 
 class HomeFragment : BaseFragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -37,6 +39,7 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getAnimeRecList()
+        initMenu()
     }
 
     private fun getAnimeRecList() {
@@ -58,6 +61,22 @@ class HomeFragment : BaseFragment() {
                 }
             }
         })
+    }
+
+    private fun initMenu() {
+        binding.mainHomeToolbar.apply {
+            this.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.menu_home_search -> {
+                        startActivity(Intent(this@HomeFragment.context, SearchActivity::class.java))
+                        true
+                    }
+                    else -> {
+                        super.onOptionsItemSelected(it)
+                    }
+                }
+            }
+        }
     }
 
     private fun getPagerAnimeList() {

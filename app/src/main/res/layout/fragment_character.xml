@@ -29,81 +29,6 @@
                 app:scrimAnimationDuration="200"
                 android:backgroundTint="@android:color/transparent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/red_200">
-
-                    <ImageView
-                        android:id="@+id/character_CoverImage"
-                        android:layout_width="150dp"
-                        android:layout_height="200dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="100dp"
-                        app:animeCharaCircle="@{model.image.large}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:src="@drawable/ic_default" />
-
-                    <Button
-                        android:id="@+id/mediaSaveList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="ADD MY LIST"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/character_CoverImage"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                    <TextView
-                        android:id="@+id/textView24"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="@{model.name.full}"
-                        android:textSize="14dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"
-                        app:layout_constraintBottom_toBottomOf="@+id/character_CoverImage"
-                        app:layout_constraintStart_toEndOf="@+id/character_CoverImage"
-                        app:layout_constraintTop_toTopOf="@+id/character_CoverImage"
-                        app:layout_constraintVertical_bias="0.19999999"
-                        tools:text="TextView" />
-
-                    <TextView
-                        android:id="@+id/textView25"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:text="@{model.name.native_}"
-                        app:layout_constraintStart_toStartOf="@+id/textView24"
-                        app:layout_constraintTop_toBottomOf="@+id/textView24"
-                        tools:text="TextView" />
-
-                    <TextView
-                        android:id="@+id/character_Favorite"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:drawableLeft="@drawable/ic_favorite"
-                        android:drawablePadding="2dp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:text="@{model.favourites.toString()}"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="@+id/textView25"
-                        app:layout_constraintTop_toBottomOf="@+id/textView25"
-                        tools:text="TextView" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/character_Toolbars"
                     android:layout_width="match_parent"
@@ -111,7 +36,6 @@
                     android:elevation="0dp"
                     android:backgroundTint="@android:color/transparent"
                     android:minHeight="75dp"
-                    android:layout_marginTop="25dp"
                     app:navigationIcon="@drawable/ic_delete"
                     app:popupTheme="@style/Theme.YourAnimeList.PopupOverlay"
                     app:layout_collapseMode="pin"/>
@@ -172,6 +96,83 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/red_200"
+            app:layout_anchor="@+id/character_AppbarLayout"
+            app:layout_anchorGravity="center">
+
+            <ImageView
+                android:id="@+id/character_CoverImage"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="100dp"
+                app:animeCharaCircle="@{model.image.large}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_default" />
+
+            <Button
+                android:id="@+id/mediaSaveList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="ADD MY LIST"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/character_CoverImage"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@{model.name.full}"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/character_CoverImage"
+                app:layout_constraintStart_toEndOf="@+id/character_CoverImage"
+                app:layout_constraintTop_toTopOf="@+id/character_CoverImage"
+                app:layout_constraintVertical_bias="0.2"
+                tools:text="TextView" />
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@{model.name.native_}"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/textView24"
+                app:layout_constraintTop_toBottomOf="@+id/textView24"
+                tools:text="TextView" />
+
+            <TextView
+                android:id="@+id/character_Favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableLeft="@drawable/ic_favorite"
+                android:drawablePadding="2dp"
+                android:text="@{model.favourites.toString()}"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/textView25"
+                app:layout_constraintTop_toBottomOf="@+id/textView25"
+                tools:text="TextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

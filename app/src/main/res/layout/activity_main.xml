@@ -25,7 +25,7 @@
         app:menu="@menu/menu_main_bottom_nav"
         app:labelVisibilityMode="labeled"
         app:backgroundTint="@color/red_200"
-        app:itemIconTint="@color/red_700"
+        app:itemIconTint="@color/red_500"
         app:itemTextColor="@color/red_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -10,21 +10,16 @@ import kotlinx.coroutines.flow.map
 
 class SearchRepository {
 
-    fun getAnimeSearch(
+    fun getMediaSearch(
         search: String,
         type: MediaType,
     ): Flow<MediaSearchQuery.Data> {
-        return ApolloServices.apolloClient.query(MediaSearchQuery(search.toInput(), type.toInput()))
-            .toFlow().map {
-                it.data!!
-            }
-    }
-
-    fun getMangaSearch(
-        search: String,
-        type: MediaType,
-    ): Flow<MediaSearchQuery.Data> {
-        return ApolloServices.apolloClient.query(MediaSearchQuery(search.toInput(), type.toInput()))
+        return ApolloServices.apolloClient.query(
+            MediaSearchQuery(
+                search = search.toInput(),
+                type = type.toInput()
+            )
+        )
             .toFlow().map {
                 it.data!!
             }
