@@ -8,6 +8,7 @@ import com.chs.youranimelist.MediaSearchQuery
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.SearchRepository
 import com.chs.youranimelist.type.MediaType
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
         val responseLiveData: MutableLiveData<NetWorkState<List<MediaSearchQuery.Medium?>>> =
             MutableLiveData()
         viewModelScope.launch {
+            delay(3500)
             repository.getMediaSearch(searchKeyword, searchType).catch { e ->
                 responseLiveData.postValue(NetWorkState.Error(e.message.toString()))
             }.collect {

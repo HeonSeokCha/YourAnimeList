@@ -3,7 +3,7 @@
     <data>
         <variable
             name="model"
-            type="com.chs.youranimelist.AnimeRecommendQuery.Edge" />
+            type="com.chs.youranimelist.fragment.AnimeList" />
     </data>
     <com.google.android.material.card.MaterialCardView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -27,7 +27,7 @@
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                app:animeRecommendImageCover="@{model.node.mediaRecommendation.coverImage.extraLarge}"
+                app:animeRecommendImageCover="@{model.coverImage.extraLarge}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="2:3"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,10 +43,10 @@
                 android:layout_marginEnd="8dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="@{model.node.mediaRecommendation.title.english}"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 tools:text="TextView"
+                app:animeEnglishNull="@{model.title}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/img_anime_recommend_cover"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@{model.node.mediaRecommendation.format.toString()}"
+                android:text="@{model.format.toString()}"
                 android:textSize="12sp"
                 android:textColor="@color/white"
                 tools:text="TextView"
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@{model.node.mediaRecommendation.averageScore.toString()}"
+                android:text="@{model.averageScore.toString()}"
                 android:drawableLeft="@drawable/ic_score"
                 android:drawablePadding="2dp"
                 android:textColor="@color/white"
@@ -85,25 +85,11 @@
                 android:layout_marginStart="16dp"
                 android:drawableLeft="@drawable/ic_favorite"
                 android:drawablePadding="2dp"
-                android:text="@{model.node.mediaRecommendation.favourites.toString()}"
+                android:text="@{model.favourites.toString()}"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toEndOf="@+id/txt_anime_recommend_score"
                 app:layout_constraintTop_toTopOf="@+id/txt_anime_recommend_score"
                 tools:text="10955" />
-
-            <TextView
-                android:id="@+id/txt_anime_recommend_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
-                android:drawableLeft="@drawable/ic_rating"
-                android:drawablePadding="3dp"
-                android:text="@{model.node.rating.toString()}"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/img_anime_recommend_cover"
-                tools:text="189" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
