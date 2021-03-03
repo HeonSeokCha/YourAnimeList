@@ -1,7 +1,6 @@
-query MediaSearchQuery(
+query SearchAnimeQuery(
     $page: Int = 1,
-    $search: String,
-    $type: MediaType) {
+    $search: String) {
     Page(
         page: $page,
         perPage: 6
@@ -15,7 +14,7 @@ query MediaSearchQuery(
         }
         media(
             search: $search,
-            type: $type,
+            type: ANIME,
             sort: [FAVOURITES_DESC]
         ) {
             ...animeList

@@ -1,4 +1,4 @@
-package com.chs.youranimelist.ui.search
+package com.chs.youranimelist.ui.search.anime
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
+class SearchAnimeViewModel(private val repository: SearchRepository) : ViewModel() {
 
     fun getMediaSearch(
         page: Int = 1,

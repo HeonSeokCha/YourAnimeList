@@ -4,24 +4,18 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.databinding.ActivitySearchBinding
 import com.chs.youranimelist.network.repository.SearchRepository
 import com.chs.youranimelist.type.MediaType
 import com.chs.youranimelist.ui.browse.BrowseActivity
-import kotlinx.coroutines.delay
+import com.chs.youranimelist.ui.search.anime.SearchAnimeViewModel
 import java.util.*
-import kotlin.concurrent.schedule
 
 class SearchActivity : AppCompatActivity() {
-    private lateinit var viewModel: SearchViewModel
+    private lateinit var viewModel: SearchAnimeViewModel
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var timerTask: TimerTask
     private val repository by lazy { SearchRepository() }
@@ -31,7 +25,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivitySearchBinding.inflate(layoutInflater)
-        viewModel = SearchViewModel(repository)
+        viewModel = SearchAnimeViewModel(repository)
         setContentView(binding.root)
         initRecyclerView()
         initView()
