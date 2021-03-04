@@ -11,12 +11,15 @@ import com.chs.youranimelist.databinding.ActivitySearchBinding
 import com.chs.youranimelist.network.repository.SearchRepository
 import com.chs.youranimelist.type.MediaType
 import com.chs.youranimelist.ui.browse.BrowseActivity
+import com.chs.youranimelist.ui.browse.anime.AnimeDetailViewPagerAdapter
+import com.chs.youranimelist.ui.search.anime.SearchAnimeAdapter
 import com.chs.youranimelist.ui.search.anime.SearchAnimeViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var viewModel: SearchAnimeViewModel
-    private lateinit var searchAdapter: SearchAdapter
+    private lateinit var searchAdapter: SearchAnimeAdapter
     private lateinit var timerTask: TimerTask
     private val repository by lazy { SearchRepository() }
     private var _binding: ActivitySearchBinding? = null
@@ -27,59 +30,30 @@ class SearchActivity : AppCompatActivity() {
         _binding = ActivitySearchBinding.inflate(layoutInflater)
         viewModel = SearchAnimeViewModel(repository)
         setContentView(binding.root)
-        initRecyclerView()
         initView()
     }
 
     private fun initView() {
-//        binding.textInput.doAfterTextChanged {
-//            if (it!!.length > 2) {
-//                timerTask = Timer().schedule(500) {
-//                    Handler(Looper.getMainLooper()).post {
-//                        initObserver(it.toString())
-//                    }
-//                }
-//            } else if (it!!.isEmpty()) {
-//                searchAdapter.submitList(mutableListOf())
-//            }
-//        }
-//        binding.textInput.doOnTextChanged { _, _, _, _ ->
-//            if (::timerTask.isInitialized) {
-//                timerTask.cancel()
-//            }
-//        }
-        binding.textInput.setOnEditorActionListener { textView, actionId, _ ->
+        binding.textSearchInput.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                initObserver(textView.text.toString())
                 closeKeyboard()
+                initTabView(textView.text.toString())
                 return@setOnEditorActionListener true
             }
             false
         }
     }
 
-    private fun initObserver(searchKeyword: String) {
-        viewModel.getMediaSearch(
-            searchKeyword = searchKeyword,
-            searchType = MediaType.ANIME
-        ).observe(this@SearchActivity, {
-            searchAdapter.submitList(it.data)
-        })
-    }
-
-    private fun initRecyclerView() {
-        binding.rvSearch.apply {
-            searchAdapter = SearchAdapter { id ->
-                val intent = Intent(this@SearchActivity, BrowseActivity::class.java).apply {
-                    this.putExtra("type", "ANIME")
-                    this.putExtra("id", id)
-                }
-                startActivity(intent)
+    private fun initTabView(searchKeyword: String) {
+        binding.viewPagerSearch.adapter =
+            SearchViewPagerAdapter(this, searchKeyword)
+        binding.viewPagerSearch.isUserInputEnabled = false
+        TabLayoutMediator(binding.searchTabLayout, binding.viewPagerSearch) { tab, position ->
+            var tabArr: List<String> = listOf("Anime", "Manga", "Character")
+            for (i in 0..position) {
+                tab.text = tabArr[i]
             }
-            searchAdapter.setHasStableIds(true)
-            this.layoutManager = LinearLayoutManager(this@SearchActivity)
-            this.adapter = searchAdapter
-        }
+        }.attach()
     }
 
     private fun closeKeyboard() {

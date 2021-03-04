@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.youranimelist.MediaSearchQuery
+import com.chs.youranimelist.SearchAnimeQuery
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.SearchRepository
-import com.chs.youranimelist.type.MediaType
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -15,16 +14,14 @@ import kotlinx.coroutines.launch
 
 class SearchAnimeViewModel(private val repository: SearchRepository) : ViewModel() {
 
-    fun getMediaSearch(
+    fun getAnimeSearch(
         page: Int = 1,
         searchKeyword: String,
-        searchType: MediaType
-    ): LiveData<NetWorkState<List<MediaSearchQuery.Medium?>>> {
-        val responseLiveData: MutableLiveData<NetWorkState<List<MediaSearchQuery.Medium?>>> =
+    ): LiveData<NetWorkState<List<SearchAnimeQuery.Medium?>>> {
+        val responseLiveData: MutableLiveData<NetWorkState<List<SearchAnimeQuery.Medium?>>> =
             MutableLiveData()
         viewModelScope.launch {
-            delay(3500)
-            repository.getMediaSearch(searchKeyword, searchType).catch { e ->
+            repository.getAnimeSearch(searchKeyword).catch { e ->
                 responseLiveData.postValue(NetWorkState.Error(e.message.toString()))
             }.collect {
                 responseLiveData.postValue(NetWorkState.Success(it.page!!.media!!))
@@ -32,5 +29,4 @@ class SearchAnimeViewModel(private val repository: SearchRepository) : ViewModel
         }
         return responseLiveData
     }
-
 }

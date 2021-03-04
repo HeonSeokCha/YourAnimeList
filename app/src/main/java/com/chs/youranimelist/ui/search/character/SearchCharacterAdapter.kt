@@ -1,27 +1,30 @@
-package com.chs.youranimelist.ui.search
+package com.chs.youranimelist.ui.search.character
 
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.MediaSearchQuery
+import com.chs.youranimelist.SearchAnimeQuery
+import com.chs.youranimelist.SearchCharacterQuery
 import com.chs.youranimelist.databinding.ItemSearchBinding
 
-class SearchAdapter(
+class SearchCharacterAdapter(
     private val clickListener: (id: Int) -> Unit
-) : ListAdapter<MediaSearchQuery.Medium, SearchAdapter.ViewHolder>(SearchDiffUtil()) {
+) : ListAdapter<SearchCharacterQuery.Character, SearchCharacterAdapter.ViewHolder>(
+    SearchCharacterDiffUtil()
+) {
 
     inner class ViewHolder(private val binding: ItemSearchBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                clickListener.invoke(getItem(layoutPosition).fragments.animeList.id)
+                clickListener.invoke(getItem(layoutPosition).id)
             }
         }
 
         fun bind() {
-            binding.model = getItem(layoutPosition).fragments.animeList
+//            binding.model = getItem(layoutPosition)
         }
     }
 
@@ -34,5 +37,5 @@ class SearchAdapter(
         holder.bind()
     }
 
-    override fun getItemId(position: Int): Long = getItem(position).fragments.animeList.id.toLong()
+    override fun getItemId(position: Int): Long = getItem(position).id.toLong()
 }
