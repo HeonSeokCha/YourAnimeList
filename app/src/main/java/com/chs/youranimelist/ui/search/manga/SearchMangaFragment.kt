@@ -11,6 +11,7 @@ import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentSearchMangaBinding
 import com.chs.youranimelist.network.repository.SearchRepository
 import com.chs.youranimelist.ui.browse.BrowseActivity
+import com.chs.youranimelist.ui.search.SearchActivity
 import com.chs.youranimelist.ui.search.anime.SearchAnimeAdapter
 import com.chs.youranimelist.ui.search.character.SearchCharacterViewModel
 
@@ -20,7 +21,7 @@ class SearchMangaFragment : Fragment() {
     private lateinit var viewModel: SearchMangaViewModel
     private val repository by lazy { SearchRepository() }
     private val binding get() = _binding!!
-    private lateinit var searchMangaAdapter: SearchAnimeAdapter
+    private lateinit var searchMangaAdapter: SearchMangaAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +35,11 @@ class SearchMangaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        initObserver(arguments?.getString("searchKeyword")!!)
+        if (activity is SearchActivity) {
+            (activity as SearchActivity).searchLiveData.observe(viewLifecycleOwner, {
+                initObserver(it)
+            })
+        }
     }
 
     private fun initObserver(searchKeyword: String) {
@@ -45,9 +50,9 @@ class SearchMangaFragment : Fragment() {
 
     private fun initRecyclerView() {
         binding.rvSearchManga.apply {
-            searchMangaAdapter = SearchAnimeAdapter { id ->
+            searchMangaAdapter = SearchMangaAdapter { id ->
                 val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                    this.putExtra("type", "ANIME")
+                    this.putExtra("type", "Media")
                     this.putExtra("id", id)
                 }
                 startActivity(intent)
@@ -58,9 +63,13 @@ class SearchMangaFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }

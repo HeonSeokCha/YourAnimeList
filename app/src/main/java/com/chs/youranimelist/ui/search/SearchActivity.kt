@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.databinding.ActivitySearchBinding
 import com.chs.youranimelist.network.repository.SearchRepository
@@ -19,11 +21,10 @@ import java.util.*
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var viewModel: SearchAnimeViewModel
-    private lateinit var searchAdapter: SearchAnimeAdapter
-    private lateinit var timerTask: TimerTask
     private val repository by lazy { SearchRepository() }
     private var _binding: ActivitySearchBinding? = null
     private val binding get() = _binding!!
+    val searchLiveData: MutableLiveData<String> = MutableLiveData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,23 +32,23 @@ class SearchActivity : AppCompatActivity() {
         viewModel = SearchAnimeViewModel(repository)
         setContentView(binding.root)
         initView()
+        initTabView()
     }
 
     private fun initView() {
+        binding.textSearchInput.requestFocus()
         binding.textSearchInput.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 closeKeyboard()
-                initTabView(textView.text.toString())
+                searchLiveData.value = textView.text.toString()
                 return@setOnEditorActionListener true
             }
             false
         }
     }
 
-    private fun initTabView(searchKeyword: String) {
-        binding.viewPagerSearch.adapter =
-            SearchViewPagerAdapter(this, searchKeyword)
-        binding.viewPagerSearch.isUserInputEnabled = false
+    private fun initTabView() {
+        binding.viewPagerSearch.adapter = SearchViewPagerAdapter(this)
         TabLayoutMediator(binding.searchTabLayout, binding.viewPagerSearch) { tab, position ->
             var tabArr: List<String> = listOf("Anime", "Manga", "Character")
             for (i in 0..position) {

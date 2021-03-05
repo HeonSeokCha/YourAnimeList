@@ -5,9 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.SearchAnimeQuery
 import com.chs.youranimelist.SearchCharacterQuery
-import com.chs.youranimelist.databinding.ItemSearchBinding
+import com.chs.youranimelist.databinding.ItemSearchCharacterBinding
 
 class SearchCharacterAdapter(
     private val clickListener: (id: Int) -> Unit
@@ -15,7 +14,7 @@ class SearchCharacterAdapter(
     SearchCharacterDiffUtil()
 ) {
 
-    inner class ViewHolder(private val binding: ItemSearchBinding) :
+    inner class ViewHolder(private val binding: ItemSearchCharacterBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
@@ -24,12 +23,13 @@ class SearchCharacterAdapter(
         }
 
         fun bind() {
-//            binding.model = getItem(layoutPosition)
+            binding.model = getItem(layoutPosition)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = ItemSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view =
+            ItemSearchCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 

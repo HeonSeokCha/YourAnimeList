@@ -42,7 +42,7 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun initView() {
-        getCharaInfo(requireArguments().getInt("id", 0).toInput())
+        getCharaInfo(arguments?.getInt("id", 0).toInput())
     }
 
     private fun initClick() {

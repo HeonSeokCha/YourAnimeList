@@ -85,7 +85,7 @@ class HomeFragment : BaseFragment() {
                 viewPagerHomeRecAdapter =
                     HomeRecViewPagerAdapter(it, clickListener = { animeId ->
                         val intent = Intent(activity, BrowseActivity::class.java).apply {
-                            this.putExtra("type", "ANIME")
+                            this.putExtra("type", "Media")
                             this.putExtra("id", animeId)
                         }
                         startActivity(intent)
@@ -108,7 +108,7 @@ class HomeFragment : BaseFragment() {
                         startActivity(intent)
                     }, animeClickListener = { animeId ->
                         val intent = Intent(activity, BrowseActivity::class.java).apply {
-                            this.putExtra("type", "ANIME")
+                            this.putExtra("type", "Media")
                             this.putExtra("id", animeId)
                         }
                         startActivity(intent)

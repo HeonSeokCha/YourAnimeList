@@ -11,6 +11,7 @@ import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentSearchAnimeBinding
 import com.chs.youranimelist.network.repository.SearchRepository
 import com.chs.youranimelist.ui.browse.BrowseActivity
+import com.chs.youranimelist.ui.search.SearchActivity
 
 class SearchAnimeFragment : Fragment() {
     private var _binding: FragmentSearchAnimeBinding? = null
@@ -31,8 +32,11 @@ class SearchAnimeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        arguments
-        initObserver(arguments?.getString("searchKeyword")!!)
+        if (activity is SearchActivity) {
+            (activity as SearchActivity).searchLiveData.observe(viewLifecycleOwner, {
+                initObserver(it)
+            })
+        }
     }
 
     private fun initObserver(searchKeyword: String) {
@@ -45,7 +49,7 @@ class SearchAnimeFragment : Fragment() {
         binding.rvSearchAnime.apply {
             searchAnimeAdapter = SearchAnimeAdapter { id ->
                 val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                    this.putExtra("type", "ANIME")
+                    this.putExtra("type", "Media")
                     this.putExtra("id", id)
                 }
                 startActivity(intent)
@@ -54,6 +58,11 @@ class SearchAnimeFragment : Fragment() {
             this.layoutManager = LinearLayoutManager(this.context)
             this.adapter = searchAnimeAdapter
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
     }
 
     override fun onDestroyView() {

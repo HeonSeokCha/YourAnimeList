@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.SearchAnimeQuery
-import com.chs.youranimelist.databinding.ItemSearchBinding
+import com.chs.youranimelist.databinding.ItemSearchMediaBinding
 
 class SearchAnimeAdapter(
     private val clickListener: (id: Int) -> Unit
 ) : ListAdapter<SearchAnimeQuery.Medium, SearchAnimeAdapter.ViewHolder>(SearchAnimeDiffUtil()) {
 
-    inner class ViewHolder(private val binding: ItemSearchBinding) :
+    inner class ViewHolder(private val binding: ItemSearchMediaBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
@@ -26,7 +26,8 @@ class SearchAnimeAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = ItemSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view =
+            ItemSearchMediaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 

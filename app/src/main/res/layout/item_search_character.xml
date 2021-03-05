@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="model"
+            type="com.chs.youranimelist.SearchCharacterQuery.Character" />
+    </data>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="4dp"
+        app:cardBackgroundColor="@color/red_200">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_search_character_cover"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                app:animeRecommendImageCover="@{model.image.large}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="2:3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/txt_search_character_name_full"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textStyle="bold"
+                android:text="@{model.name.full}"
+                android:textColor="@color/white"
+                tools:text="TextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_search_character_cover"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txt_search_character_name_native"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@{model.name.native_}"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                tools:text="TextView"
+                app:layout_constraintStart_toEndOf="@+id/img_search_character_cover"
+                app:layout_constraintTop_toBottomOf="@+id/txt_search_character_name_full" />
+
+            <TextView
+                android:id="@+id/txt_search_character_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableLeft="@drawable/ic_favorite"
+                android:drawablePadding="2dp"
+                android:text="@{model.favourites.toString()}"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="@+id/txt_search_character_name_native"
+                app:layout_constraintTop_toBottomOf="@+id/txt_search_character_name_native"
+                tools:text="10955" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

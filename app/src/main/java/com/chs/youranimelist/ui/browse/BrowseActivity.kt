@@ -27,18 +27,13 @@ class BrowseActivity : BaseActivity(), BaseNavigator {
         lateinit var targetFragment: Fragment
         val bundle = Bundle()
         when (type) {
-            "ANIME" -> {
+            "Media" -> {
                 targetFragment = AnimeDetailFragment()
-                bundle.putString("type", "ANIME")
                 bundle.putInt("id", id)
             }
             "CHARA" -> {
                 targetFragment = CharacterFragment()
-                bundle.putString("type", "CHARA")
                 bundle.putInt("id", id)
-            }
-            "MANGA" -> {
-
             }
         }
         targetFragment.arguments = bundle

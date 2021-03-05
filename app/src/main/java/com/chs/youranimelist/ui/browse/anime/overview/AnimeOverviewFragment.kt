@@ -54,7 +54,7 @@ class AnimeOverviewFragment() : BaseFragment() {
         binding.rvAnimeOverviewRelation.apply {
             this.adapter = AnimeOverviewRelationAdapter(animeInfo.relations?.relationsEdges!!,
                 clickListener = { _, id ->
-                    this@AnimeOverviewFragment.navigate?.changeFragment("ANIME", id)
+                    this@AnimeOverviewFragment.navigate?.changeFragment("Media", id)
                 })
             this.layoutManager = LinearLayoutManager(
                 this@AnimeOverviewFragment.context,

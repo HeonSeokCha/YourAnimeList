@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.youranimelist.SearchAnimeQuery
+import com.chs.youranimelist.SearchMangaQuery
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.SearchRepository
 import kotlinx.coroutines.flow.catch
@@ -16,11 +16,11 @@ class SearchMangaViewModel(private val repository: SearchRepository) : ViewModel
     fun getMangaSearch(
         page: Int = 1,
         searchKeyword: String,
-    ): LiveData<NetWorkState<List<SearchAnimeQuery.Medium?>>> {
-        val responseLiveData: MutableLiveData<NetWorkState<List<SearchAnimeQuery.Medium?>>> =
+    ): LiveData<NetWorkState<List<SearchMangaQuery.Medium?>>> {
+        val responseLiveData: MutableLiveData<NetWorkState<List<SearchMangaQuery.Medium?>>> =
             MutableLiveData()
         viewModelScope.launch {
-            repository.getAnimeSearch(searchKeyword).catch { e ->
+            repository.getMangaSearch(searchKeyword).catch { e ->
                 responseLiveData.postValue(NetWorkState.Error(e.message.toString()))
             }.collect {
                 responseLiveData.postValue(NetWorkState.Success(it.page!!.media!!))

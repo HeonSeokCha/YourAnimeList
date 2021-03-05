@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment : Fragment() {
     internal var navigate: BaseNavigator? = null
 
     override fun onCreateView(
