@@ -52,7 +52,7 @@ class AnimeRecommendFragment : BaseFragment() {
         binding.rvAnimeRecommend.apply {
             this.adapter = AnimeRecommendAdapter(
                 items, clickListener = { id ->
-                    this@AnimeRecommendFragment.navigate?.changeFragment("ANIME", id, true)
+                    this@AnimeRecommendFragment.navigate?.changeFragment("Media", id, true)
                 }
             )
             this.layoutManager = LinearLayoutManager(this@AnimeRecommendFragment.context)

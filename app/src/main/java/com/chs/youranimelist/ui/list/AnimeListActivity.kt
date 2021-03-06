@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.api.toInput
@@ -99,7 +98,7 @@ class AnimeListActivity : AppCompatActivity() {
         binding.rvAnimeList.apply {
             animeListAdapter = AnimeListAdapter(clickListener = { animeId ->
                 val intent = Intent(this@AnimeListActivity, BrowseActivity::class.java).apply {
-                    this.putExtra("type", "ANIME")
+                    this.putExtra("type", "Media")
                     this.putExtra("id", animeId)
                 }
                 startActivity(intent)

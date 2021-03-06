@@ -28,10 +28,11 @@
 
     <style name="Theme.YourAnimeList.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-<!--    <style name="Theme.MaterialComponents.NoActionBar.Translucent" parent="Theme.YourAnimeList">-->
-<!--&lt;!&ndash;        <item name="android:windowBackground">@android:color/transparent</item>&ndash;&gt;-->
-<!--        <item name="android:colorBackgroundCacheHint">@null</item>-->
-<!--        <item name="android:windowIsTranslucent">true</item>-->
-<!--        <item name="android:windowAnimationStyle">@android:style/Animation</item>-->
-<!--    </style>-->
+    <style name="Theme.MaterialComponents.NoActionBar.Translucent" parent="Theme.YourAnimeList">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
 </resources>

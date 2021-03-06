@@ -10,16 +10,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
-import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.ui.main.MainViewModel
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.flow.collect
 
 class AnimeDetailFragment : Fragment() {
     private var _binding: FragmentAnimeDetailBinding? = null

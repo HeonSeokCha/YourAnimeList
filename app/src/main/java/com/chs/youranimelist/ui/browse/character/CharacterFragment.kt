@@ -1,27 +1,20 @@
 package com.chs.youranimelist.ui.browse.character
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.CharacterQuery
 import com.chs.youranimelist.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentCharacterBinding
-import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.CharacterRepository
 import com.chs.youranimelist.ui.base.BaseFragment
-import kotlinx.coroutines.flow.collect
 
 class CharacterFragment : BaseFragment() {
     private val repository by lazy { CharacterRepository() }
@@ -72,7 +65,7 @@ class CharacterFragment : BaseFragment() {
         binding.rvCharaAnimeSeries.apply {
             adapter = CharacterAnimeAdapter(items,
                 clickListener = { id ->
-                    this@CharacterFragment.navigate?.changeFragment("ANIME", id, true)
+                    this@CharacterFragment.navigate?.changeFragment("Media", id, true)
                 }
             ).apply {
                 this.stateRestorationPolicy =
