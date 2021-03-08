@@ -31,7 +31,11 @@ object AnimeDetailBinding {
     @JvmStatic
     fun animeDetailFormatYear(textView: TextView, anime: AnimeDetailQuery.Media?) {
         textView.text = ""
-        textView.text = "${anime?.format} ⦁ ${anime?.seasonYear}"
+        textView.text = if (anime?.seasonYear != null) {
+            "${anime?.format}" + " ⦁ ${anime?.seasonYear}"
+        } else {
+            "${anime?.format}"
+        }
     }
 
     @SuppressLint("ResourceType")
@@ -91,7 +95,7 @@ object AnimeDetailBinding {
     @JvmStatic
     fun animeDetailRelationFormat(textView: TextView, string: String) {
         var temp = string.replace("_", " ")
-        textView.text = temp[0].uppercase() + temp.substring(1,string.length).toLowerCase()
+        textView.text = temp[0].uppercase() + temp.substring(1, string.length).toLowerCase()
     }
 
 }

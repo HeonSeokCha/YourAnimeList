@@ -11,23 +11,26 @@
         android:id="@+id/character_coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         tools:context=".ui.browse.character.CharacterFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/character_AppbarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
             android:backgroundTint="@android:color/transparent" >
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/character_CollapsingToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                android:backgroundTint="@android:color/transparent"
                 app:toolbarId="@id/character_Toolbars"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:contentScrim="@color/red_500"
-                app:scrimAnimationDuration="200"
-                android:backgroundTint="@android:color/transparent">
+                app:scrimAnimationDuration="200" >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout4"
@@ -112,8 +115,8 @@
                     android:elevation="0dp"
                     android:backgroundTint="@android:color/transparent"
                     android:minHeight="75dp"
-                    app:navigationIcon="@drawable/ic_delete"
                     app:popupTheme="@style/Theme.YourAnimeList.PopupOverlay"
+                    app:navigationIcon="@drawable/ic_delete"
                     app:layout_collapseMode="pin"/>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>

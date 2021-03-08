@@ -1,10 +1,12 @@
 package com.chs.youranimelist.ui.browse.character
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.api.Input
@@ -20,6 +22,7 @@ class CharacterFragment : BaseFragment() {
     private val repository by lazy { CharacterRepository() }
     private var _binding: FragmentCharacterBinding? = null
     private val binding get() = _binding!!
+    private lateinit var scrollPosition: Bundle
     private lateinit var viewModel: CharacterViewModel
 
     override fun onCreateView(
@@ -29,9 +32,15 @@ class CharacterFragment : BaseFragment() {
         _binding = FragmentCharacterBinding.inflate(inflater, container, false)
         viewModel = CharacterViewModel(repository)
         binding.lifecycleOwner = this
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        scrollPosition = Bundle()
         initView()
         initClick()
-        return binding.root
     }
 
     private fun initView() {
@@ -69,7 +78,7 @@ class CharacterFragment : BaseFragment() {
                 }
             ).apply {
                 this.stateRestorationPolicy =
-                    RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                    RecyclerView.Adapter.StateRestorationPolicy.ALLOW
             }
             layoutManager = GridLayoutManager(this@CharacterFragment.context, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))

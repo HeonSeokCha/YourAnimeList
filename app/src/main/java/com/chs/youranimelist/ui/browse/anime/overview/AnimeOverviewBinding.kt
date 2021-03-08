@@ -17,7 +17,7 @@ object AnimeOverviewBinding {
     @BindingAdapter("animeOverviewHtmlConvert")
     @JvmStatic
     fun animeOverviewHtmlConvert(textView: TextView, string: String?) {
-        if(string?.isNotEmpty() == true)
+        if (string?.isNotEmpty() == true)
             textView.text = Html.fromHtml(string, Html.FROM_HTML_MODE_LEGACY).toString()
     }
 
@@ -51,7 +51,7 @@ object AnimeOverviewBinding {
     @BindingAdapter("animeOverviewDurationVisible")
     @JvmStatic
     fun animeOverviewDurationVisible(textView: TextView, duration: Int?) {
-        if(duration == null) {
+        if (duration == null) {
             textView.isVisible = false
         }
     }
@@ -73,7 +73,7 @@ object AnimeOverviewBinding {
     fun animeOverviewDateText(textView: TextView, date: Any?) {
         when(date) {
             is AnimeDetailQuery.StartDate -> {
-                textView.text = if(date.day != null) {
+                textView.text = if (date.day != null) {
                     ConvertDate.convertToDateFormat(date.year, date.month, date.day)
                 } else "?"
             }
@@ -88,7 +88,11 @@ object AnimeOverviewBinding {
     @BindingAdapter("animeOverviewSeasonValue")
     @JvmStatic
     fun animeOverviewSeasonValue(textView: TextView, anime: AnimeOverviewQuery.Media?) {
-        textView.text = "${anime?.season} ${anime?.seasonYear}"
+        textView.text = if (anime?.seasonYear != null) {
+            "${anime?.format}" + " ⦁ ${anime?.seasonYear}"
+        } else {
+            "${anime?.format}"
+        }
     }
 
     @BindingAdapter("animeOverviewCoverImage")
