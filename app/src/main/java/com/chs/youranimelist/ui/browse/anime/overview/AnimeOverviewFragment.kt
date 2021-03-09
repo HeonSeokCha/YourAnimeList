@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.AnimeOverviewQuery
+import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentAnimeOverviewBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
@@ -32,6 +34,7 @@ class AnimeOverviewFragment() : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("argument", "${arguments?.getInt("id")}")
         getAnimeInfo(arguments?.getInt("id")!!)
+        initClick()
     }
 
     private fun getAnimeInfo(animeId: Int) {
@@ -48,6 +51,20 @@ class AnimeOverviewFragment() : BaseFragment() {
                 }
             }
         })
+    }
+
+    private fun initClick() {
+        binding.btnExpand.setOnClickListener {
+            if (binding.txtAnimeDescriptionPreview.isVisible) {
+                binding.txtAnimeDescriptionPreview.visibility = View.GONE
+                binding.txtAnimeDescription.visibility = View.VISIBLE
+                binding.btnExpand.setBackgroundResource(R.drawable.ic_arrow_up)
+            } else {
+                binding.txtAnimeDescriptionPreview.visibility = View.VISIBLE
+                binding.txtAnimeDescription.visibility = View.GONE
+                binding.btnExpand.setBackgroundResource(R.drawable.ic_arrow_down)
+            }
+        }
     }
 
     private fun initRecyclerView(animeInfo: AnimeOverviewQuery.Media) {

@@ -79,7 +79,7 @@ object AnimeDetailBinding {
     @BindingAdapter("animeDetailScoreVisible")
     @JvmStatic
     fun animeDetailScoreVisible(textView: TextView, score: Int?) {
-        if(score == null) {
+        if (score == null) {
             textView.isVisible = false
         } else {
             textView.apply {

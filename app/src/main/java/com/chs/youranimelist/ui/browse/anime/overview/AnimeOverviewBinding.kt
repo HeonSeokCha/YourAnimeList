@@ -1,5 +1,6 @@
 package com.chs.youranimelist.ui.browse.anime.overview
 
+import android.annotation.SuppressLint
 import android.text.Html
 import android.widget.ImageView
 import android.widget.TextView
@@ -44,7 +45,7 @@ object AnimeOverviewBinding {
     @BindingAdapter("animeOverviewEpisode")
     @JvmStatic
     fun animeOverviewEpisode(textView: TextView, episode: Int?) {
-        if(episode == null) textView.text = "?"
+        if (episode == null) textView.text = "?"
         else textView.text = episode.toString()
     }
 

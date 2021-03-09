@@ -63,7 +63,12 @@ object HomeRecBinding {
     @BindingAdapter("animeFormatYear")
     @JvmStatic
     fun animeFormatYear(textView: TextView, anime: AnimeList?) {
-        textView.text = "${anime!!.format} ⦁ ${anime!!.seasonYear}"
+        textView.text = ""
+        textView.text = if (anime?.seasonYear != null) {
+            "${anime?.format}" + " ⦁ ${anime?.seasonYear}"
+        } else {
+            "${anime?.format}"
+        }
     }
 
     @BindingAdapter("animeStatusValue")
