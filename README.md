@@ -7,7 +7,7 @@ Anime API = "https://anilist.gitbook.io/anilist-apiv2-docs/"
 
 * Application Screens.
 <div>
-<img width="300" src="https://user-images.githubusercontent.com/55890012/107380329-1f70fc80-6b31-11eb-92fd-513aa57c1c68.png">
-<img width="300" src="https://user-images.githubusercontent.com/55890012/107380354-2435b080-6b31-11eb-8b3f-d281cb7b62ce.png">
+<img width="300" src="https://user-images.githubusercontent.com/55890012/110489571-d2ce1080-8132-11eb-9d57-29532cf71d3e.png">
+<img width="300" src="https://user-images.githubusercontent.com/55890012/110489593-d5c90100-8132-11eb-9f74-b772fd510806.png">
  
 </div>
