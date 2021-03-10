@@ -2,6 +2,7 @@ package com.chs.youranimelist.ui.browse.character
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,6 @@ class CharacterFragment : BaseFragment() {
     private val repository by lazy { CharacterRepository() }
     private var _binding: FragmentCharacterBinding? = null
     private val binding get() = _binding!!
-    private lateinit var scrollPosition: Bundle
     private lateinit var viewModel: CharacterViewModel
 
     override fun onCreateView(
@@ -40,13 +40,13 @@ class CharacterFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        scrollPosition = Bundle()
         initView()
         initClick()
     }
 
     private fun initView() {
         getCharaInfo(arguments?.getInt("id", 0).toInput())
+
     }
 
     private fun initClick() {

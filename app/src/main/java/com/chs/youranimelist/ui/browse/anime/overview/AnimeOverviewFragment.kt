@@ -33,7 +33,7 @@ class AnimeOverviewFragment() : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("argument", "${arguments?.getInt("id")}")
-        getAnimeInfo(arguments?.getInt("id")!!)
+        initView()
         initClick()
     }
 
@@ -51,6 +51,10 @@ class AnimeOverviewFragment() : BaseFragment() {
                 }
             }
         })
+    }
+
+    private fun initView() {
+        getAnimeInfo(arguments?.getInt("id")!!)
     }
 
     private fun initClick() {

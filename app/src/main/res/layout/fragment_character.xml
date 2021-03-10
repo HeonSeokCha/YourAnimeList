@@ -137,6 +137,7 @@
                     android:id="@+id/description_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -148,10 +149,12 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
-                        android:lineSpacingExtra="5dp"
                         android:visibility="gone"
+                        android:layout_marginBottom="8dp"
+                        android:lineSpacingExtra="5dp"
                         app:animeOverviewHtmlConvert="@{model.description}"
                         app:layout_constrainedWidth="true"
+                        app:layout_constraintBottom_toTopOf="@+id/btn_expand"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -164,14 +167,17 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:ellipsize="end"
                         android:lineSpacingExtra="5dp"
                         android:lines="5"
                         android:maxLines="5"
-                        android:ellipsize="end"
                         app:animeOverviewHtmlConvert="@{model.description}"
+                        app:layout_constraintBottom_toTopOf="@+id/btn_expand"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_character_description"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0"
                         tools:text="@string/loerm" />
 
                     <ImageButton
@@ -183,9 +189,7 @@
                         android:foreground="?android:attr/selectableItemBackgroundBorderless"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_character_description_preview"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintStart_toStartOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
