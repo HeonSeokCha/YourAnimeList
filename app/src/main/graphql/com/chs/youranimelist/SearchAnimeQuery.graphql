@@ -5,13 +5,7 @@ query SearchAnimeQuery(
         page: $page,
         perPage: 6
     ) {
-        pageInfo {
-            total
-            perPage
-            currentPage
-            lastPage
-            hasNextPage
-        }
+        ... pageInfo
         media(
             search: $search,
             type: ANIME,

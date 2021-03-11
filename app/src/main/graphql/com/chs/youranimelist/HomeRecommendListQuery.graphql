@@ -1,5 +1,6 @@
 query HomeRecommendListQuery {
     ViewPager: Page(page:1,perPage:6) {
+        ... pageInfo
         media(sort:[SCORE_DESC],type:ANIME,format:TV,seasonYear:2021){
             id
             idMal
@@ -24,21 +25,25 @@ query HomeRecommendListQuery {
         }
     },
     Trending: Page(page:1,perPage:6) {
+        ... pageInfo
         TrendingMedia: media(sort:[TRENDING_DESC],type:ANIME,format:TV) {
             ... animeList
         }
     },
     Popular : Page(page:1,perPage:6) {
+        ... pageInfo
         PopularMedia: media(sort:[POPULARITY_DESC],season:WINTER,seasonYear:2021,type:ANIME,format:TV) {
             ... animeList
         }
     },
     Upcomming : Page(page:1,perPage:6) {
+        ... pageInfo
         UpcommingMedia: media(sort:[POPULARITY_DESC],season:SPRING,seasonYear:2021,type:ANIME,format:TV) {
             ... animeList
         }
     },
     Alltime : Page(page:1,perPage:6) {
+        ... pageInfo
         AlltimeMedia: media(sort:[POPULARITY_DESC],type:ANIME,format:TV) {
             ... animeList
         }
@@ -64,4 +69,14 @@ fragment animeList on Media {
     seasonYear
     format
     status
+}
+
+fragment pageInfo on Page {
+    pageInfo {
+        total
+        perPage
+        currentPage
+        lastPage
+        hasNextPage
+    }
 }

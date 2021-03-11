@@ -24,7 +24,8 @@ class AnimeListActivity : AppCompatActivity() {
     private lateinit var sort: MediaSort
     private lateinit var viewModel: AnimeListViewModel
     private var _binding: ActivityAnimeListBinding? = null
-    private var page = 1
+    private var page: Int = 1
+    private var isLoading: Boolean = false
     private var mediaSeason: MediaSeason? = null
     private var seasonYear: Int? = null
     private var season: Boolean = false
@@ -75,6 +76,11 @@ class AnimeListActivity : AppCompatActivity() {
             when (it.responseState) {
                 ResponseState.LOADING -> binding.listProgressBar.isVisible = true
                 ResponseState.SUCCESS -> {
+                    if (isLoading) {
+                        viewModel.animeResultList.removeAt(viewModel.animeResultList.lastIndex)
+                        animeListAdapter.notifyItemRemoved(viewModel.animeResultList.size)
+                        isLoading = false
+                    }
                     if (season) {
                         animeListAdapter.submitList(it.data)
                     } else {
@@ -92,6 +98,12 @@ class AnimeListActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun loadMore() {
+        if (viewModel.hasNextPage) {
+
+        }
     }
 
     private fun initRecyclerView() {

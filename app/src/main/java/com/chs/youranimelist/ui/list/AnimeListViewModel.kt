@@ -16,6 +16,10 @@ import kotlinx.coroutines.launch
 
 class AnimeListViewModel(private val animeListRepository: AnimeListRepository) : ViewModel() {
 
+    var page: Int = 1
+    var hasNextPage: Boolean = true
+    var animeResultList: ArrayList<AnimeList> = ArrayList()
+
     fun getAnimeList(
         page: Input<Int>,
         sort: Input<MediaSort>,

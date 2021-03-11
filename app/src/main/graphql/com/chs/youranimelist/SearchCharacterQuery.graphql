@@ -5,13 +5,7 @@ query SearchCharacterQuery(
         page: $page,
         perPage: 6
     ) {
-        pageInfo {
-            total
-            perPage
-            currentPage
-            lastPage
-            hasNextPage
-        }
+        ... pageInfo
         characters(
             search: $search,
             sort: [FAVOURITES_DESC]
