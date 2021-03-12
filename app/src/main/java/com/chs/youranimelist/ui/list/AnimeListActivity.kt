@@ -11,6 +11,7 @@ import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.ConvertDate
 import com.chs.youranimelist.SpacesItemDecoration
 import com.chs.youranimelist.databinding.ActivityAnimeListBinding
+import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.type.MediaSeason
@@ -39,8 +40,8 @@ class AnimeListActivity : AppCompatActivity() {
         viewModel = AnimeListViewModel(repository)
         setContentView(binding.root)
         initSortType(intent.getStringExtra("sortType")!!)
-        initRecyclerView()
         getAnimeList()
+        initRecyclerView()
     }
 
     private fun initSortType(sortType: String) {
@@ -68,7 +69,6 @@ class AnimeListActivity : AppCompatActivity() {
 
     private fun getAnimeList() {
         viewModel.getAnimeList(
-            page = page.toInput(),
             sort = sort.toInput(),
             season = mediaSeason,
             seasonYear = seasonYear.toInput()
@@ -81,11 +81,23 @@ class AnimeListActivity : AppCompatActivity() {
                         animeListAdapter.notifyItemRemoved(viewModel.animeResultList.size)
                         isLoading = false
                     }
+
+                    viewModel.page += 1
+
                     if (season) {
-                        animeListAdapter.submitList(it.data)
+                        viewModel.hasNextPage =
+                            it.data!!.season!!.fragments.pageInfo.pageInfo!!.hasNextPage ?: false
+                        it.data?.season?.media?.forEach { seasonAnime ->
+                            viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
+                        }
                     } else {
-                        animeListAdapter.submitList(it.data)
+                        viewModel.hasNextPage =
+                            it.data!!.nonSeason!!.fragments.pageInfo.pageInfo!!.hasNextPage ?: false
+                        it.data?.nonSeason?.media?.forEach { nonSeasonAnime ->
+                            viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
+                        }
                     }
+                    animeListAdapter.notifyDataSetChanged()
                     binding.listProgressBar.isVisible = false
                 }
                 ResponseState.ERROR -> {
@@ -100,27 +112,41 @@ class AnimeListActivity : AppCompatActivity() {
         })
     }
 
-    private fun loadMore() {
-        if (viewModel.hasNextPage) {
-
-        }
-    }
-
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
-            animeListAdapter = AnimeListAdapter(clickListener = { animeId ->
-                val intent = Intent(this@AnimeListActivity, BrowseActivity::class.java).apply {
-                    this.putExtra("type", "Media")
-                    this.putExtra("id", animeId)
+            animeListAdapter =
+                AnimeListAdapter(viewModel.animeResultList, clickListener = { animeId ->
+                    val intent = Intent(this@AnimeListActivity, BrowseActivity::class.java).apply {
+                        this.putExtra("type", "Media")
+                        this.putExtra("id", animeId)
+                    }
+                    startActivity(intent)
+                }).apply {
+                    this.stateRestorationPolicy =
+                        RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
                 }
-                startActivity(intent)
-            }).apply {
-                this.stateRestorationPolicy =
-                    RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-            }
             this.adapter = animeListAdapter
             this.layoutManager = GridLayoutManager(this@AnimeListActivity, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
+            this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE &&
+                        !recyclerView.canScrollVertically(1) && !isLoading
+                    ) {
+                        loadMore()
+                        isLoading = true
+                    }
+                }
+            })
+        }
+    }
+
+    private fun loadMore() {
+        if (viewModel.hasNextPage) {
+            viewModel.animeResultList.add(null)
+            animeListAdapter.notifyItemInserted(viewModel.animeResultList.lastIndex)
+
         }
     }
 

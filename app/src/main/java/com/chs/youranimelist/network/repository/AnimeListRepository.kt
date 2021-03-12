@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class AnimeListRepository {
+
+
     @ExperimentalCoroutinesApi
     fun getAnimeList(
         page: Input<Int>,
