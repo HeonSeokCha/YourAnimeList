@@ -4,13 +4,25 @@ query AnimeListQuery(
     $season: MediaSeason = null,
     $seasonYear: Int = null) {
     NonSeason: Page(page:$page,perPage:20) {
-        ... pageInfo
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
         media(sort:[$sort],type:ANIME,format:TV) {
             ... animeList
         }
     },
     Season: Page(page:$page,perPage:20) {
-        ... pageInfo
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
         media(sort:[$sort],season:$season,seasonYear:$seasonYear,type:ANIME,format:TV) {
             ... animeList
         }

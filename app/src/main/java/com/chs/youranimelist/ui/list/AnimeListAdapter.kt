@@ -10,10 +10,8 @@ import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.ui.home.HomeRecListChildDiffUtilCallBack
 
 class AnimeListAdapter(
-    private val list: List<AnimeList?>,
     private val clickListener: (animeId: Int) -> Unit,
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+) : ListAdapter<AnimeList, RecyclerView.ViewHolder>(HomeRecListChildDiffUtilCallBack()) {
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1
@@ -24,12 +22,12 @@ class AnimeListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                clickListener.invoke(list[layoutPosition]!!.id)
+                clickListener.invoke(getItem(layoutPosition).id)
             }
         }
 
         fun bind() {
-            binding.model = list[layoutPosition]
+            binding.model = getItem(layoutPosition)
         }
     }
 
@@ -53,12 +51,10 @@ class AnimeListAdapter(
         }
     }
 
+
     override fun getItemViewType(position: Int): Int {
-        return if (list[position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
+        return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
-
+    override fun getItemId(position: Int): Long = getItem(position).id.toLong()
 }

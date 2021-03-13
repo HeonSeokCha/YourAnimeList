@@ -3,8 +3,10 @@ package com.chs.youranimelist.ui.list
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.api.toInput
@@ -68,13 +70,19 @@ class AnimeListActivity : AppCompatActivity() {
     }
 
     private fun getAnimeList() {
+
         viewModel.getAnimeList(
             sort = sort.toInput(),
             season = mediaSeason,
             seasonYear = seasonYear.toInput()
-        ).observe(this, {
+        )
+
+        viewModel.uiState.asLiveData().observe(this, {
             when (it.responseState) {
-                ResponseState.LOADING -> binding.listProgressBar.isVisible = true
+                ResponseState.LOADING -> {
+                    Log.d("isLoading", isLoading.toString())
+                    if (!isLoading) binding.listProgressBar.isVisible = true
+                }
                 ResponseState.SUCCESS -> {
                     if (isLoading) {
                         viewModel.animeResultList.removeAt(viewModel.animeResultList.lastIndex)
@@ -82,22 +90,20 @@ class AnimeListActivity : AppCompatActivity() {
                         isLoading = false
                     }
 
-                    viewModel.page += 1
-
                     if (season) {
                         viewModel.hasNextPage =
-                            it.data!!.season!!.fragments.pageInfo.pageInfo!!.hasNextPage ?: false
+                            it.data?.season?.pageInfo?.hasNextPage ?: false
                         it.data?.season?.media?.forEach { seasonAnime ->
                             viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
                         }
                     } else {
                         viewModel.hasNextPage =
-                            it.data!!.nonSeason!!.fragments.pageInfo.pageInfo!!.hasNextPage ?: false
+                            it.data?.nonSeason?.pageInfo!!.hasNextPage ?: false
                         it.data?.nonSeason?.media?.forEach { nonSeasonAnime ->
                             viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
                         }
                     }
-                    animeListAdapter.notifyDataSetChanged()
+                    animeListAdapter.submitList(viewModel.animeResultList)
                     binding.listProgressBar.isVisible = false
                 }
                 ResponseState.ERROR -> {
@@ -106,6 +112,7 @@ class AnimeListActivity : AppCompatActivity() {
                         it.message,
                         Toast.LENGTH_LONG
                     ).show()
+                    isLoading = false
                     binding.listProgressBar.isVisible = false
                 }
             }
@@ -115,16 +122,13 @@ class AnimeListActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
             animeListAdapter =
-                AnimeListAdapter(viewModel.animeResultList, clickListener = { animeId ->
+                AnimeListAdapter(clickListener = { animeId ->
                     val intent = Intent(this@AnimeListActivity, BrowseActivity::class.java).apply {
                         this.putExtra("type", "Media")
                         this.putExtra("id", animeId)
                     }
                     startActivity(intent)
-                }).apply {
-                    this.stateRestorationPolicy =
-                        RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-                }
+                })
             this.adapter = animeListAdapter
             this.layoutManager = GridLayoutManager(this@AnimeListActivity, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
@@ -146,7 +150,8 @@ class AnimeListActivity : AppCompatActivity() {
         if (viewModel.hasNextPage) {
             viewModel.animeResultList.add(null)
             animeListAdapter.notifyItemInserted(viewModel.animeResultList.lastIndex)
-
+            viewModel.page += 1
+            getAnimeList()
         }
     }
 
