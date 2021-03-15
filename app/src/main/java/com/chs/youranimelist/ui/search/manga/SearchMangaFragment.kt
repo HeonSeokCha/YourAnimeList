@@ -6,19 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentSearchMangaBinding
 import com.chs.youranimelist.network.repository.SearchRepository
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.SearchActivity
-import com.chs.youranimelist.ui.search.anime.SearchAnimeAdapter
-import com.chs.youranimelist.ui.search.character.SearchCharacterViewModel
+import com.chs.youranimelist.ui.search.SearchViewModel
 
 class SearchMangaFragment : Fragment() {
 
     private var _binding: FragmentSearchMangaBinding? = null
-    private lateinit var viewModel: SearchMangaViewModel
+    private lateinit var viewModel: SearchViewModel
     private val repository by lazy { SearchRepository() }
     private val binding get() = _binding!!
     private lateinit var searchMangaAdapter: SearchMangaAdapter
@@ -28,7 +27,7 @@ class SearchMangaFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSearchMangaBinding.inflate(inflater, container, false)
-        viewModel = SearchMangaViewModel(repository)
+        viewModel = SearchViewModel(repository)
         return binding.root
     }
 
@@ -43,7 +42,8 @@ class SearchMangaFragment : Fragment() {
     }
 
     private fun initObserver(searchKeyword: String) {
-        viewModel.getMangaSearch(searchKeyword = searchKeyword).observe(viewLifecycleOwner, {
+        viewModel.getMangaSearch(searchKeyword = searchKeyword)
+        viewModel.mangaSearchUiState.asLiveData().observe(viewLifecycleOwner, {
             searchMangaAdapter.submitList(it.data)
         })
     }

@@ -2,7 +2,6 @@ package com.chs.youranimelist.ui.browse.anime
 
 import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
+import androidx.lifecycle.asLiveData
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
@@ -46,7 +46,8 @@ class AnimeDetailFragment : Fragment() {
     }
 
     private fun initAnimeInfo(animeId: Input<Int>) {
-        viewModel.getAnimeInfo(animeId).observe(viewLifecycleOwner, {
+        viewModel.getAnimeInfo(animeId)
+        viewModel.animeDetailUiState.asLiveData().observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> binding.progressBar.isVisible = true
                 ResponseState.SUCCESS -> {

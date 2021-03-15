@@ -27,7 +27,6 @@ class AnimeListActivity : AppCompatActivity() {
     private lateinit var sort: MediaSort
     private lateinit var viewModel: AnimeListViewModel
     private var _binding: ActivityAnimeListBinding? = null
-    private var page: Int = 1
     private var isLoading: Boolean = false
     private var mediaSeason: MediaSeason? = null
     private var seasonYear: Int? = null
@@ -77,12 +76,9 @@ class AnimeListActivity : AppCompatActivity() {
             seasonYear = seasonYear.toInput()
         )
 
-        viewModel.uiState.asLiveData().observe(this, {
+        viewModel.animeListUiState.asLiveData().observe(this, {
             when (it.responseState) {
-                ResponseState.LOADING -> {
-                    Log.d("isLoading", isLoading.toString())
-                    if (!isLoading) binding.listProgressBar.isVisible = true
-                }
+                ResponseState.LOADING -> if (!isLoading) binding.listProgressBar.isVisible = true
                 ResponseState.SUCCESS -> {
                     if (isLoading) {
                         viewModel.animeResultList.removeAt(viewModel.animeResultList.lastIndex)
@@ -132,14 +128,15 @@ class AnimeListActivity : AppCompatActivity() {
             this.adapter = animeListAdapter
             this.layoutManager = GridLayoutManager(this@AnimeListActivity, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
+
             this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     if (newState == RecyclerView.SCROLL_STATE_IDLE &&
                         !recyclerView.canScrollVertically(1) && !isLoading
                     ) {
-                        loadMore()
                         isLoading = true
+                        loadMore()
                     }
                 }
             })

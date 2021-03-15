@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.AnimeCharacterQuery
@@ -38,7 +39,8 @@ class AnimeCharaFragment() :
     }
 
     private fun getCharacters(animeId: Int) {
-        viewModel.getAnimeCharacter(animeId).observe(viewLifecycleOwner, {
+        viewModel.getAnimeCharacter(animeId)
+        viewModel.animeCharaUiState.asLiveData().observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> {
                 }

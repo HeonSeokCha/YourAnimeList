@@ -1,26 +1,18 @@
 package com.chs.youranimelist.ui.search
 
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.databinding.ActivitySearchBinding
 import com.chs.youranimelist.network.repository.SearchRepository
-import com.chs.youranimelist.type.MediaType
-import com.chs.youranimelist.ui.browse.BrowseActivity
-import com.chs.youranimelist.ui.browse.anime.AnimeDetailViewPagerAdapter
-import com.chs.youranimelist.ui.search.anime.SearchAnimeAdapter
-import com.chs.youranimelist.ui.search.anime.SearchAnimeViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
 
 class SearchActivity : AppCompatActivity() {
-    private lateinit var viewModel: SearchAnimeViewModel
+    private lateinit var viewModel: SearchViewModel
     private val repository by lazy { SearchRepository() }
     private var _binding: ActivitySearchBinding? = null
     private val binding get() = _binding!!
@@ -29,7 +21,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivitySearchBinding.inflate(layoutInflater)
-        viewModel = SearchAnimeViewModel(repository)
+        viewModel = SearchViewModel(repository)
         setContentView(binding.root)
         initView()
         initTabView()

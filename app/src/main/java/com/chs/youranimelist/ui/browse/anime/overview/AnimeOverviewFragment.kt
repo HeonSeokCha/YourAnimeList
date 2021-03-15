@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.AnimeOverviewQuery
@@ -32,25 +33,8 @@ class AnimeOverviewFragment() : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("argument", "${arguments?.getInt("id")}")
         initView()
         initClick()
-    }
-
-    private fun getAnimeInfo(animeId: Int) {
-        viewModel.getAnimeOverview(animeId).observe(viewLifecycleOwner, {
-            when (it.responseState) {
-                ResponseState.LOADING -> {
-                }
-                ResponseState.SUCCESS -> {
-                    binding.model = it.data!!
-                    initRecyclerView(it.data!!)
-                }
-                ResponseState.ERROR -> {
-                    Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
     }
 
     private fun initView() {
@@ -69,6 +53,22 @@ class AnimeOverviewFragment() : BaseFragment() {
                 binding.btnExpand.setBackgroundResource(R.drawable.ic_arrow_down)
             }
         }
+    }
+
+    private fun getAnimeInfo(animeId: Int) {
+        viewModel.getAnimeOverview(animeId)
+        viewModel.animeOverviewUiState.asLiveData().observe(viewLifecycleOwner, {
+            when (it.responseState) {
+                ResponseState.LOADING -> Unit
+                ResponseState.SUCCESS -> {
+                    binding.model = it.data!!
+                    initRecyclerView(it.data!!)
+                }
+                ResponseState.ERROR -> {
+                    Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
     }
 
     private fun initRecyclerView(animeInfo: AnimeOverviewQuery.Media) {

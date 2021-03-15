@@ -6,18 +6,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.databinding.FragmentSearchCharacterBinding
 import com.chs.youranimelist.network.repository.SearchRepository
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.SearchActivity
-import com.chs.youranimelist.ui.search.manga.SearchMangaAdapter
+import com.chs.youranimelist.ui.search.SearchViewModel
 
 
 class SearchCharacterFragment : Fragment() {
 
     private var _binding: FragmentSearchCharacterBinding? = null
-    private lateinit var viewModel: SearchCharacterViewModel
+    private lateinit var viewModel: SearchViewModel
     private val repository by lazy { SearchRepository() }
     private val binding get() = _binding!!
     private lateinit var searchCharacterAdapter: SearchCharacterAdapter
@@ -27,7 +28,7 @@ class SearchCharacterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSearchCharacterBinding.inflate(inflater, container, false)
-        viewModel = SearchCharacterViewModel(repository)
+        viewModel = SearchViewModel(repository)
         return binding.root
     }
 
@@ -42,7 +43,8 @@ class SearchCharacterFragment : Fragment() {
     }
 
     private fun initObserver(searchKeyword: String) {
-        viewModel.getCharacterSearch(searchKeyword = searchKeyword).observe(viewLifecycleOwner, {
+        viewModel.getCharacterSearch(searchKeyword = searchKeyword)
+        viewModel.charaSearchUiState.asLiveData().observe(viewLifecycleOwner, {
             searchCharacterAdapter.submitList(it.data)
         })
     }

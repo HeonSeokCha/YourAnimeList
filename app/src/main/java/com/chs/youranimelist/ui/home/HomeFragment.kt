@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.chs.youranimelist.R
@@ -43,7 +44,8 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun getAnimeRecList() {
-        viewModel.getAnimeRecList().observe(viewLifecycleOwner, {
+        viewModel.getAnimeRecList()
+        viewModel.animeRecListUiState.asLiveData().observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> binding.mainProgressbar.isVisible = true
                 ResponseState.SUCCESS -> {
@@ -80,21 +82,19 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun getPagerAnimeList() {
-        viewModel.getPagerAnimeList().observe(viewLifecycleOwner, {
-            binding.viewPager2.apply {
-                viewPagerHomeRecAdapter =
-                    HomeRecViewPagerAdapter(it, clickListener = { animeId ->
-                        val intent = Intent(activity, BrowseActivity::class.java).apply {
-                            this.putExtra("type", "Media")
-                            this.putExtra("id", animeId)
-                        }
-                        startActivity(intent)
-                    })
-                this.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-                this.adapter = viewPagerHomeRecAdapter
-                binding.indicator.setViewPager2(binding.viewPager2)
-            }
-        })
+        binding.viewPager2.apply {
+            viewPagerHomeRecAdapter =
+                HomeRecViewPagerAdapter(viewModel.pagerRecList, clickListener = { animeId ->
+                    val intent = Intent(activity, BrowseActivity::class.java).apply {
+                        this.putExtra("type", "Media")
+                        this.putExtra("id", animeId)
+                    }
+                    startActivity(intent)
+                })
+            this.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+            this.adapter = viewPagerHomeRecAdapter
+            binding.indicator.setViewPager2(binding.viewPager2)
+        }
     }
 
     private fun initRecyclerView(items: List<List<AnimeList>>) {

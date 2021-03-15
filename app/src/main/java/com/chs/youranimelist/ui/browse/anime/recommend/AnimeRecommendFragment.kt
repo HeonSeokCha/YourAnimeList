@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.AnimeRecommendQuery
 import com.chs.youranimelist.databinding.FragmentAnimeRecommendBinding
@@ -36,10 +37,10 @@ class AnimeRecommendFragment : BaseFragment() {
     }
 
     private fun getRecommendList(animeId: Int) {
-        viewModel.getRecommendList(animeId).observe(viewLifecycleOwner, {
+        viewModel.getRecommendList(animeId)
+        viewModel.animeRecUiState.asLiveData().observe(viewLifecycleOwner, {
             when (it.responseState) {
-                ResponseState.LOADING -> {
-                }
+                ResponseState.LOADING -> Unit
                 ResponseState.SUCCESS -> initRecyclerView(it.data!!)
                 ResponseState.ERROR -> {
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()

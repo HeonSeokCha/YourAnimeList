@@ -1,71 +1,67 @@
 package com.chs.youranimelist.ui.home
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.HomeRecommendListQuery
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.AnimeRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val animeRepository: AnimeRepository) : ViewModel() {
-    private lateinit var viewPagerListQuery: List<HomeRecommendListQuery.Medium?>
 
-    fun getPagerAnimeList(): LiveData<List<HomeRecommendListQuery.Medium?>> {
-        val responseLiveData: MutableLiveData<List<HomeRecommendListQuery.Medium?>> =
-            MutableLiveData()
-        responseLiveData.value = viewPagerListQuery
-        return responseLiveData
-    }
+    private val _animeRecUiState: MutableStateFlow<NetWorkState<ArrayList<ArrayList<AnimeList>>>> =
+        MutableStateFlow(NetWorkState.Loading())
+    val animeRecListUiState = _animeRecUiState.asStateFlow()
 
-    @ExperimentalCoroutinesApi
-    fun getAnimeRecList(): LiveData<NetWorkState<List<List<AnimeList>>>> {
-        val responseLiveData: MutableLiveData<NetWorkState<List<List<AnimeList>>>> =
-            MutableLiveData()
-        val listAnime: MutableList<MutableList<AnimeList>> = mutableListOf()
+    var pagerRecList = ArrayList<HomeRecommendListQuery.Medium?>()
+
+
+    fun getAnimeRecList() {
+        val listAnime = ArrayList<ArrayList<AnimeList>>()
         viewModelScope.launch {
-            responseLiveData.postValue(NetWorkState.Loading())
+            _animeRecUiState.value = NetWorkState.Loading()
             animeRepository.getHomeRecList().catch { e ->
-                responseLiveData.postValue(NetWorkState.Error(e.message.toString()))
+                _animeRecUiState.value = NetWorkState.Error(e.message.toString())
             }.collect {
-                viewPagerListQuery = it.viewPager?.media!!
+                it.viewPager?.media!!.forEach { pager ->
+                    pagerRecList.add(pager)
+                }
                 it.trending?.trendingMedia.apply {
-                    val anime: MutableList<AnimeList> = mutableListOf()
-                    for (i in this!!.indices) {
-                        anime.add(this[i]!!.fragments.animeList)
+                    val anime: ArrayList<AnimeList> = ArrayList()
+                    this!!.forEach { trending ->
+                        anime.add(trending!!.fragments.animeList)
                     }
                     listAnime.add(anime)
                 }
                 it.popular?.popularMedia.apply {
-                    val anime: MutableList<AnimeList> = mutableListOf()
-                    for (i in this!!.indices) {
-                        anime.add(this[i]!!.fragments.animeList)
+                    val anime: ArrayList<AnimeList> = ArrayList()
+                    this!!.forEach { popular ->
+                        anime.add(popular!!.fragments.animeList)
                     }
                     listAnime.add(anime)
                 }
                 it.upcomming?.upcommingMedia.apply {
-                    val anime: MutableList<AnimeList> = mutableListOf()
-                    for (i in this!!.indices) {
-                        anime.add(this[i]!!.fragments.animeList)
+                    val anime: ArrayList<AnimeList> = ArrayList()
+                    this!!.forEach { upComming ->
+                        anime.add(upComming!!.fragments.animeList)
                     }
                     listAnime.add(anime)
                 }
                 it.alltime?.alltimeMedia.apply {
-                    val anime: MutableList<AnimeList> = mutableListOf()
-                    for (i in this!!.indices) {
-                        anime.add(this[i]!!.fragments.animeList)
+                    val anime: ArrayList<AnimeList> = ArrayList()
+                    this!!.forEach { allTime ->
+                        anime.add(allTime!!.fragments.animeList)
                     }
                     listAnime.add(anime)
                 }
-                responseLiveData.postValue(NetWorkState.Success(listAnime))
             }
+            _animeRecUiState.value = NetWorkState.Success(listAnime)
         }
-        return responseLiveData
     }
 }

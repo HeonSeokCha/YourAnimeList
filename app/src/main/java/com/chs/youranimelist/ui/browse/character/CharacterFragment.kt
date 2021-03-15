@@ -1,14 +1,12 @@
 package com.chs.youranimelist.ui.browse.character
 
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.api.Input
@@ -65,7 +63,8 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun getCharaInfo(charaId: Input<Int>) {
-        viewModel.getCharaInfo(charaId).observe(viewLifecycleOwner, {
+        viewModel.getCharaInfo(charaId)
+        viewModel.characterUiState.asLiveData().observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> {
                 }

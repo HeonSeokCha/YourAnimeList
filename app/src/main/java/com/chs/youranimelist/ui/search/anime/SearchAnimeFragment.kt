@@ -6,16 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentSearchAnimeBinding
 import com.chs.youranimelist.network.repository.SearchRepository
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.SearchActivity
+import com.chs.youranimelist.ui.search.SearchViewModel
 
 class SearchAnimeFragment : Fragment() {
     private var _binding: FragmentSearchAnimeBinding? = null
-    private lateinit var viewModel: SearchAnimeViewModel
+    private lateinit var viewModel: SearchViewModel
     private lateinit var searchAnimeAdapter: SearchAnimeAdapter
     private val repository by lazy { SearchRepository() }
     private val binding get() = _binding!!
@@ -25,7 +26,7 @@ class SearchAnimeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSearchAnimeBinding.inflate(inflater, container, false)
-        viewModel = SearchAnimeViewModel(repository)
+        viewModel = SearchViewModel(repository)
         return binding.root
     }
 
@@ -40,7 +41,8 @@ class SearchAnimeFragment : Fragment() {
     }
 
     private fun initObserver(searchKeyword: String) {
-        viewModel.getAnimeSearch(searchKeyword = searchKeyword).observe(viewLifecycleOwner, {
+        viewModel.getAnimeSearch(searchKeyword = searchKeyword)
+        viewModel.animeSearchUiState.asLiveData().observe(viewLifecycleOwner, {
             searchAnimeAdapter.submitList(it.data)
         })
     }
