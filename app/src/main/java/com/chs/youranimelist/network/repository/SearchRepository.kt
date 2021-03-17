@@ -11,25 +11,25 @@ import kotlinx.coroutines.flow.map
 
 class SearchRepository {
 
-    fun getAnimeSearch(search: String): Flow<SearchAnimeQuery.Data> {
+    fun getAnimeSearch(page: Int, search: String): Flow<SearchAnimeQuery.Data> {
         return ApolloServices.apolloClient.query(
-            SearchAnimeQuery(search = search.toInput())
+            SearchAnimeQuery(page.toInput(), search.toInput())
         ).toFlow().map {
             it.data!!
         }
     }
 
-    fun getMangaSearch(search: String): Flow<SearchMangaQuery.Data> {
+    fun getMangaSearch(page: Int, search: String): Flow<SearchMangaQuery.Data> {
         return ApolloServices.apolloClient.query(
-            SearchMangaQuery(search = search.toInput())
+            SearchMangaQuery(page.toInput(), search.toInput())
         ).toFlow().map {
             it.data!!
         }
     }
 
-    fun getCharacterSearch(search: String): Flow<SearchCharacterQuery.Data> {
+    fun getCharacterSearch(page: Int, search: String): Flow<SearchCharacterQuery.Data> {
         return ApolloServices.apolloClient.query(
-            SearchCharacterQuery(search = search.toInput())
+            SearchCharacterQuery(page.toInput(), search.toInput())
         ).toFlow().map {
             it.data!!
         }
