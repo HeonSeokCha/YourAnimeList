@@ -1,34 +1,32 @@
-package com.chs.youranimelist.ui.search.character
+package com.chs.youranimelist.ui.search.adapter
 
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.SearchCharacterQuery
+import com.chs.youranimelist.SearchMangaQuery
 import com.chs.youranimelist.databinding.ItemLoadingBinding
-import com.chs.youranimelist.databinding.ItemSearchCharacterBinding
-import com.chs.youranimelist.ui.search.anime.SearchAnimeAdapter
+import com.chs.youranimelist.databinding.ItemSearchMediaBinding
 
-class SearchCharacterAdapter(
+class SearchMangaAdapter(
     private val clickListener: (id: Int) -> Unit
-) : ListAdapter<SearchCharacterQuery.Character, RecyclerView.ViewHolder>(SearchCharacterDiffUtil()) {
+) : ListAdapter<SearchMangaQuery.Medium, RecyclerView.ViewHolder>(SearchMangaDiffUtil()) {
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1
     }
 
-
-    inner class SearchCharacterViewHolder(private val binding: ItemSearchCharacterBinding) :
+    inner class SearchMangaViewHolder(private val binding: ItemSearchMediaBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                clickListener.invoke(getItem(layoutPosition).id)
+                clickListener.invoke(getItem(layoutPosition).fragments.animeList.id)
             }
         }
 
         fun bind() {
-            binding.model = getItem(layoutPosition)
+            binding.model = getItem(layoutPosition).fragments.animeList
         }
     }
 
@@ -37,10 +35,9 @@ class SearchCharacterAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_ITEM) {
-            val view = ItemSearchCharacterBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
-            SearchCharacterViewHolder(view)
+            val view =
+                ItemSearchMediaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            SearchMangaViewHolder(view)
         } else {
             val view =
                 ItemLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -49,10 +46,10 @@ class SearchCharacterAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is SearchCharacterViewHolder) holder.bind()
+        if (holder is SearchMangaViewHolder) holder.bind()
     }
 
-    override fun getItemId(position: Int): Long = getItem(position).id.toLong()
+    override fun getItemId(position: Int): Long = getItem(position).fragments.animeList.id.toLong()
 
     override fun getItemViewType(position: Int): Int {
         return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM

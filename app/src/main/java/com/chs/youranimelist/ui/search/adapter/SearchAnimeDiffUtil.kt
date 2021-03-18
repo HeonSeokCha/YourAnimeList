@@ -1,4 +1,4 @@
-package com.chs.youranimelist.ui.search.anime
+package com.chs.youranimelist.ui.search.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.chs.youranimelist.SearchAnimeQuery

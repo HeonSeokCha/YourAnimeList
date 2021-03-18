@@ -15,21 +15,21 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
 
-    private val _animeSearchUiState: MutableStateFlow<NetWorkState<List<SearchAnimeQuery.Medium?>>> =
+    private val _animeSearchUiState: MutableStateFlow<NetWorkState<SearchAnimeQuery.Page?>> =
         MutableStateFlow(NetWorkState.Loading())
     val animeSearchUiState = _animeSearchUiState.asStateFlow()
     var animeSearchPage = 1
     var animeHasNextPage: Boolean = true
     var animeSearchList: ArrayList<SearchAnimeQuery.Medium?> = ArrayList()
 
-    private val _mangaSearchUiState: MutableStateFlow<NetWorkState<List<SearchMangaQuery.Medium?>>> =
+    private val _mangaSearchUiState: MutableStateFlow<NetWorkState<SearchMangaQuery.Page?>> =
         MutableStateFlow(NetWorkState.Loading())
     val mangaSearchUiState = _mangaSearchUiState.asStateFlow()
     var mangaSearchPage = 1
     var mangaHasNextPage: Boolean = true
     var mangaSearchList: ArrayList<SearchMangaQuery.Medium?> = ArrayList()
 
-    private val _charaSearchUiState: MutableStateFlow<NetWorkState<List<SearchCharacterQuery.Character?>>> =
+    private val _charaSearchUiState: MutableStateFlow<NetWorkState<SearchCharacterQuery.Page?>> =
         MutableStateFlow(NetWorkState.Loading())
     val charaSearchUiState = _charaSearchUiState.asStateFlow()
     var charaSearchPage = 1
@@ -43,7 +43,7 @@ class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
             repository.getAnimeSearch(animeSearchPage, searchKeyword).catch { e ->
                 _animeSearchUiState.value = NetWorkState.Error(e.message.toString())
             }.collect {
-                _animeSearchUiState.value = NetWorkState.Success(it.page!!.media!!)
+                _animeSearchUiState.value = NetWorkState.Success(it.page!!)
             }
         }
     }
@@ -54,7 +54,7 @@ class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
             repository.getMangaSearch(mangaSearchPage, searchKeyword).catch { e ->
                 _mangaSearchUiState.value = NetWorkState.Error(e.message.toString())
             }.collect {
-                _mangaSearchUiState.value = NetWorkState.Success(it.page!!.media!!)
+                _mangaSearchUiState.value = NetWorkState.Success(it.page!!)
             }
         }
     }
@@ -66,7 +66,7 @@ class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
             repository.getCharacterSearch(charaSearchPage, searchKeyword).catch { e ->
                 _charaSearchUiState.value = NetWorkState.Error(e.message.toString())
             }.collect {
-                _charaSearchUiState.value = NetWorkState.Success(it.page!!.characters!!)
+                _charaSearchUiState.value = NetWorkState.Success(it.page!!)
             }
         }
     }

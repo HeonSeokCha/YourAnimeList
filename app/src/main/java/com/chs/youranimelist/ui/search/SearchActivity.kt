@@ -40,9 +40,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initTabView() {
-        binding.viewPagerSearch.adapter = SearchViewPagerAdapter(this)
+        var tabArr: List<String> = listOf("Anime", "Manga", "Character")
+        binding.viewPagerSearch.adapter = SearchViewPagerAdapter(this, tabArr)
         TabLayoutMediator(binding.searchTabLayout, binding.viewPagerSearch) { tab, position ->
-            var tabArr: List<String> = listOf("Anime", "Manga", "Character")
             for (i in 0..position) {
                 tab.text = tabArr[i]
             }

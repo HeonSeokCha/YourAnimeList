@@ -1,24 +1,23 @@
-package com.chs.youranimelist.ui.search.manga
+package com.chs.youranimelist.ui.search.adapter
 
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.SearchMangaQuery
+import com.chs.youranimelist.SearchAnimeQuery
 import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.databinding.ItemSearchMediaBinding
-import com.chs.youranimelist.ui.search.anime.SearchAnimeAdapter
 
-class SearchMangaAdapter(
+class SearchAnimeAdapter(
     private val clickListener: (id: Int) -> Unit
-) : ListAdapter<SearchMangaQuery.Medium, RecyclerView.ViewHolder>(SearchMangaDiffUtil()) {
+) : ListAdapter<SearchAnimeQuery.Medium, RecyclerView.ViewHolder>(SearchAnimeDiffUtil()) {
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1
     }
 
-    inner class SearchMangaViewHolder(private val binding: ItemSearchMediaBinding) :
+    inner class SearchAnimeViewHolder(private val binding: ItemSearchMediaBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
@@ -38,7 +37,7 @@ class SearchMangaAdapter(
         return if (viewType == VIEW_TYPE_ITEM) {
             val view =
                 ItemSearchMediaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            SearchMangaViewHolder(view)
+            SearchAnimeViewHolder(view)
         } else {
             val view =
                 ItemLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -47,7 +46,7 @@ class SearchMangaAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is SearchMangaViewHolder) holder.bind()
+        if (holder is SearchAnimeViewHolder) holder.bind()
     }
 
     override fun getItemId(position: Int): Long = getItem(position).fragments.animeList.id.toLong()
