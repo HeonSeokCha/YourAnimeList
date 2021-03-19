@@ -16,7 +16,9 @@ class SearchActivity : AppCompatActivity() {
     private val repository by lazy { SearchRepository() }
     private var _binding: ActivitySearchBinding? = null
     private val binding get() = _binding!!
-    val searchLiveData: MutableLiveData<String> = MutableLiveData()
+    val searchLiveData: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

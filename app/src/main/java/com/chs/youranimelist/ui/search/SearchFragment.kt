@@ -66,7 +66,7 @@ class SearchFragment : Fragment() {
                             }
                             viewModel.animeSearchPage += 1
                             viewModel.animeHasNextPage =
-                                it.data?.fragments?.pageInfo?.pageInfo?.hasNextPage ?: false
+                                it.data?.pageInfo?.hasNextPage ?: false
 
                             it.data?.media?.forEach { searchAnime ->
                                 viewModel.animeSearchList.add(searchAnime)
