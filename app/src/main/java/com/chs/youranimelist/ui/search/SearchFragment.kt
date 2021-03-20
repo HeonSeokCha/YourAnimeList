@@ -11,8 +11,13 @@ import android.widget.Toast
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chs.youranimelist.SearchAnimeQuery
+import com.chs.youranimelist.SearchCharacterQuery
+import com.chs.youranimelist.SearchMangaQuery
 import com.chs.youranimelist.databinding.FragmentSearchBinding
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.ResponseState
+import com.chs.youranimelist.network.SearchResult
 import com.chs.youranimelist.network.repository.SearchRepository
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.adapter.SearchAnimeAdapter
@@ -23,12 +28,8 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: SearchViewModel
-    private lateinit var searchAnimeAdapter: SearchAnimeAdapter
-    private lateinit var searchMangaAdapter: SearchMangaAdapter
-    private lateinit var searchCharaAdapter: SearchCharacterAdapter
+    private lateinit var adapter: RecyclerView.Adapter<*>
     private var isLoading: Boolean = false
-    private var searchKeyWord: String = ""
-    private var searchPage: String = ""
     private val repository by lazy { SearchRepository() }
 
     companion object {
@@ -46,97 +47,57 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchPage = arguments?.getString(SEARCH_TYPE)!!
+        viewModel.searchPage = arguments?.getString(SEARCH_TYPE)!!
         initRecyclerView()
         initView()
+        initObserver()
     }
 
-    private fun initObserver(searchKeyWord: String) {
-        when (searchPage) {
-            "Anime" -> {
-                viewModel.getAnimeSearch(searchKeyWord)
-                viewModel.animeSearchUiState.asLiveData().observe(viewLifecycleOwner, {
-                    when (it.responseState) {
-                        ResponseState.LOADING -> Unit
-                        ResponseState.SUCCESS -> {
-                            if (isLoading) {
-                                viewModel.animeSearchList.removeAt(viewModel.animeSearchList.lastIndex)
-                                searchAnimeAdapter.notifyItemRemoved(viewModel.animeSearchList.size)
-                                isLoading = false
+    private fun initObserver() {
+        viewModel.getObserver()?.observe(viewLifecycleOwner, {
+            when ((it as NetWorkState<*>?)?.responseState) {
+                ResponseState.SUCCESS -> {
+                    if (isLoading) {
+                        viewModel.searchList.removeAt(viewModel.searchList.lastIndex)
+                        adapter.notifyItemRemoved(viewModel.searchList.size)
+                        isLoading = false
+                    }
+                    viewModel.page += 1
+                    when (viewModel.searchPage) {
+                        "Anime" -> {
+                            val searchAnime = it as NetWorkState<SearchAnimeQuery.Page>
+                            viewModel.hasNextPage = searchAnime.data?.pageInfo?.hasNextPage ?: false
+                            searchAnime.data?.media?.forEach { anime ->
+                                viewModel.searchList.add(SearchResult(animeSearchResult = anime))
                             }
-                            viewModel.animeSearchPage += 1
-                            viewModel.animeHasNextPage =
-                                it.data?.pageInfo?.hasNextPage ?: false
-
-                            it.data?.media?.forEach { searchAnime ->
-                                viewModel.animeSearchList.add(searchAnime)
-                            }
-
-                            searchAnimeAdapter.submitList(viewModel.animeSearchList)
                         }
-                        ResponseState.ERROR -> {
-                            Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
-                            isLoading = false
+                        "Manga" -> {
+                            val searchManga = it as NetWorkState<SearchMangaQuery.Page>
+                            viewModel.hasNextPage = searchManga.data?.pageInfo?.hasNextPage ?: false
+                            searchManga.data?.media?.forEach { manga ->
+                                viewModel.searchList.add(SearchResult(mangaSearchResult = manga))
+                            }
+                        }
+                        "Character" -> {
+                            val searchChara = it as NetWorkState<SearchCharacterQuery.Page>
+                            viewModel.hasNextPage = searchChara.data?.pageInfo?.hasNextPage ?: false
+                            searchChara.data?.characters?.forEach { chara ->
+                                viewModel.searchList.add(SearchResult(charactersSearchResult = chara))
+                            }
                         }
                     }
-                })
+                    adapter.notifyDataSetChanged()
+                }
+                ResponseState.ERROR -> {
+                    isLoading = false
+                    Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
+                }
             }
-            "Manga" -> {
-                viewModel.getMangaSearch(searchKeyWord)
-                viewModel.mangaSearchUiState.asLiveData().observe(viewLifecycleOwner, {
-                    when (it.responseState) {
-                        ResponseState.LOADING -> Unit
-                        ResponseState.SUCCESS -> {
-                            if (isLoading) {
-                                viewModel.mangaSearchList.removeAt(viewModel.mangaSearchList.lastIndex)
-                                searchMangaAdapter.notifyItemRemoved(viewModel.mangaSearchList.size)
-                                isLoading = false
-                            }
-                            viewModel.mangaHasNextPage =
-                                it.data?.fragments?.pageInfo?.pageInfo?.hasNextPage ?: false
-                            it.data!!.media!!.forEach { mangaList ->
-                                viewModel.mangaSearchList.add(mangaList)
-                            }
-                            searchMangaAdapter.submitList(viewModel.mangaSearchList)
-                        }
-                        ResponseState.ERROR -> {
-                            Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
-                            isLoading = false
-                        }
-                    }
-                })
-            }
-            "Character" -> {
-                viewModel.getCharacterSearch(searchKeyWord)
-                viewModel.charaSearchUiState.asLiveData().observe(viewLifecycleOwner, {
-                    when (it.responseState) {
-                        ResponseState.LOADING -> Unit
-                        ResponseState.SUCCESS -> {
-                            if (isLoading) {
-                                viewModel.charaSearchList.removeAt(viewModel.charaSearchList.lastIndex)
-                                searchCharaAdapter.notifyItemRemoved(viewModel.charaSearchList.size)
-                                isLoading = false
-                            }
-                            viewModel.charaHasNextPage =
-                                it.data?.fragments?.pageInfo?.pageInfo?.hasNextPage ?: false
-                            it.data!!.characters!!.forEach { character ->
-                                viewModel.charaSearchList.add(character)
-                            }
-                            searchCharaAdapter.submitList(viewModel.charaSearchList)
-                        }
-                        ResponseState.ERROR -> {
-                            Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
-                            isLoading = false
-                        }
-                    }
-                })
-            }
-        }
-
+        })
     }
 
     private fun initView() {
-        binding.rvSearchAnime.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.rvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
@@ -151,59 +112,63 @@ class SearchFragment : Fragment() {
 
         if (activity is SearchActivity) {
             (activity as SearchActivity).searchLiveData.observe(viewLifecycleOwner, {
-                searchKeyWord = it
-                viewModel.animeSearchList.clear()
-                initObserver(it)
+                viewModel.searchKeyword = it
+                viewModel.searchList.clear()
+
                 isLoading = false
-                viewModel.animeSearchPage = 1
-                viewModel.animeHasNextPage = true
+                viewModel.page = 1
+                viewModel.hasNextPage = true
+
+                adapter.notifyDataSetChanged()
+
+                if (it.isNotBlank()) {
+                    viewModel.search(viewModel.searchKeyword)
+                }
             })
         }
     }
 
     private fun initRecyclerView() {
-        binding.rvSearchAnime.apply {
-            when (searchPage) {
-                "Anime" -> {
-                    searchAnimeAdapter = SearchAnimeAdapter { id ->
-                        val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                            this.putExtra("type", "Media")
-                            this.putExtra("id", id)
-                        }
-                        startActivity(intent)
+        Log.d("viewModel.searchPage", viewModel.searchPage)
+        adapter = when (viewModel.searchPage) {
+            "Anime" -> {
+                SearchAnimeAdapter(viewModel.searchList) { id ->
+                    val intent = Intent(this.context, BrowseActivity::class.java).apply {
+                        this.putExtra("type", "Media")
+                        this.putExtra("id", id)
                     }
-                    this.adapter = searchAnimeAdapter
-                }
-                "Manga" -> {
-                    searchMangaAdapter = SearchMangaAdapter { id ->
-                        val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                            this.putExtra("type", "Media")
-                            this.putExtra("id", id)
-                        }
-                        startActivity(intent)
-                    }
-                    this.adapter = searchMangaAdapter
-                }
-                "Character" -> {
-                    searchCharaAdapter = SearchCharacterAdapter { id ->
-                        val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                            this.putExtra("type", "CHARA")
-                            this.putExtra("id", id)
-                        }
-                        startActivity(intent)
-                    }
-                    this.adapter = searchCharaAdapter
+                    startActivity(intent)
                 }
             }
-
-            this.layoutManager = LinearLayoutManager(this.context)
+            "Manga" -> {
+                SearchMangaAdapter(viewModel.searchList) { id ->
+                    val intent = Intent(this.context, BrowseActivity::class.java).apply {
+                        this.putExtra("type", "Media")
+                        this.putExtra("id", id)
+                    }
+                    startActivity(intent)
+                }
+            }
+            "Character" -> {
+                SearchCharacterAdapter(viewModel.searchList) { id ->
+                    val intent = Intent(this.context, BrowseActivity::class.java).apply {
+                        this.putExtra("type", "CHARA")
+                        this.putExtra("id", id)
+                    }
+                    startActivity(intent)
+                }
+            }
+            else -> SearchAnimeAdapter(viewModel.searchList) { }
         }
+        adapter.setHasStableIds(true)
+        binding.rvSearch.adapter = adapter
+        binding.rvSearch.layoutManager = LinearLayoutManager(this.context)
     }
 
     private fun loadMore() {
-        if (viewModel.animeHasNextPage) {
-            viewModel.animeSearchList.add(null)
-            searchAnimeAdapter.notifyItemInserted(viewModel.animeSearchList.lastIndex)
+        if (viewModel.hasNextPage) {
+            viewModel.searchList.add(null)
+            viewModel.search(viewModel.searchKeyword)
         }
     }
 

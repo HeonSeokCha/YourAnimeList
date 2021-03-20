@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.SearchMangaQuery
 import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.databinding.ItemSearchMediaBinding
+import com.chs.youranimelist.network.SearchResult
 
 class SearchMangaAdapter(
+    private val list: List<SearchResult?>,
     private val clickListener: (id: Int) -> Unit
-) : ListAdapter<SearchMangaQuery.Medium, RecyclerView.ViewHolder>(SearchMangaDiffUtil()) {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1
@@ -21,12 +23,12 @@ class SearchMangaAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                clickListener.invoke(getItem(layoutPosition).fragments.animeList.id)
+                clickListener.invoke(list[layoutPosition]!!.mangaSearchResult!!.fragments.animeList.id)
             }
         }
 
         fun bind() {
-            binding.model = getItem(layoutPosition).fragments.animeList
+            binding.model = list[layoutPosition]!!.mangaSearchResult!!.fragments.animeList
         }
     }
 
@@ -49,9 +51,12 @@ class SearchMangaAdapter(
         if (holder is SearchMangaViewHolder) holder.bind()
     }
 
-    override fun getItemId(position: Int): Long = getItem(position).fragments.animeList.id.toLong()
-
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
+        return if (list[position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
     }
+
+    override fun getItemCount(): Int = list.size
+
+    override fun getItemId(position: Int): Long =
+        list[position]?.mangaSearchResult?.fragments?.animeList?.id?.toLong() ?: 99912L
 }

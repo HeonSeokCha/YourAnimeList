@@ -1,18 +1,17 @@
 package com.chs.youranimelist.ui.search.adapter
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.SearchAnimeQuery
 import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.databinding.ItemSearchMediaBinding
+import com.chs.youranimelist.network.SearchResult
 
 class SearchAnimeAdapter(
+    private val list: List<SearchResult?>,
     private val clickListener: (id: Int) -> Unit
-) : ListAdapter<SearchAnimeQuery.Medium?, RecyclerView.ViewHolder>(SearchAnimeDiffUtil()) {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1
@@ -22,12 +21,12 @@ class SearchAnimeAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                clickListener.invoke(getItem(layoutPosition)!!.fragments.animeList.id)
+                clickListener.invoke(list[layoutPosition]!!.animeSearchResult!!.fragments.animeList.id)
             }
         }
 
         fun bind() {
-            binding.model = getItem(layoutPosition)!!.fragments.animeList
+            binding.model = list[layoutPosition]!!.animeSearchResult!!.fragments.animeList
         }
     }
 
@@ -50,10 +49,12 @@ class SearchAnimeAdapter(
         if (holder is SearchAnimeViewHolder) holder.bind()
     }
 
-    override fun getItemId(position: Int): Long =
-        getItem(position)?.fragments?.animeList?.id?.toLong() ?: 999912.toLong()
-
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
+        return if (list[position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
     }
+
+    override fun getItemCount(): Int = list.size
+
+    override fun getItemId(position: Int): Long =
+        list[position]?.animeSearchResult?.fragments?.animeList?.id?.toLong() ?: 99912L
 }
