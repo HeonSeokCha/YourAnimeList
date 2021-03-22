@@ -8,6 +8,7 @@
     tools:context=".ui.search.SearchActivity">
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:id="@+id/textSearchInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

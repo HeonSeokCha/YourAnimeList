@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
-import androidx.lifecycle.asLiveData
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
@@ -33,7 +32,8 @@ class AnimeDetailFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initAnimeInfo(arguments?.getInt("id").toInput())
+        viewModel.getAnimeInfo(arguments?.getInt("id").toInput())
+        initAnimeInfo()
         initTabView(arguments?.getInt("id")!!)
         initClick()
     }
@@ -45,14 +45,13 @@ class AnimeDetailFragment : Fragment() {
         }
     }
 
-    private fun initAnimeInfo(animeId: Input<Int>) {
-        viewModel.getAnimeInfo(animeId)
-        viewModel.animeDetailUiState.asLiveData().observe(viewLifecycleOwner, {
+    private fun initAnimeInfo() {
+        viewModel.animeDetailResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> binding.progressBar.isVisible = true
                 ResponseState.SUCCESS -> {
-                    binding.model = it.data
-                    trailerId = it.data!!.trailer?.id.toString()
+                    binding.model = it.data!!.media
+                    trailerId = it.data?.media?.trailer?.id.toString()
                     binding.progressBar.isVisible = false
                 }
                 ResponseState.ERROR -> {

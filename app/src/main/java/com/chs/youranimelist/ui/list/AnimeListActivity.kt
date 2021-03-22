@@ -3,24 +3,19 @@ package com.chs.youranimelist.ui.list
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.ConvertDate
 import com.chs.youranimelist.SpacesItemDecoration
 import com.chs.youranimelist.databinding.ActivityAnimeListBinding
-import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
-import com.chs.youranimelist.ui.base.BaseActivity
 import com.chs.youranimelist.ui.browse.BrowseActivity
-import kotlinx.coroutines.flow.collect
 
 class AnimeListActivity : AppCompatActivity() {
     private lateinit var animeListAdapter: AnimeListAdapter
@@ -29,7 +24,7 @@ class AnimeListActivity : AppCompatActivity() {
     private var _binding: ActivityAnimeListBinding? = null
     private var isLoading: Boolean = false
     private var mediaSeason: MediaSeason? = null
-    private var seasonYear: Int? = null
+    private var seasonYear: Int = 0
     private var season: Boolean = false
     private val binding get() = _binding!!
     private val repository by lazy { AnimeListRepository() }
@@ -41,9 +36,10 @@ class AnimeListActivity : AppCompatActivity() {
         viewModel = AnimeListViewModel(repository)
         setContentView(binding.root)
         initSortType(intent.getStringExtra("sortType")!!)
-        getAnimeList()
         initRecyclerView()
+        getAnimeList()
     }
+
 
     private fun initSortType(sortType: String) {
         when (sortType) {
@@ -71,12 +67,12 @@ class AnimeListActivity : AppCompatActivity() {
     private fun getAnimeList() {
 
         viewModel.getAnimeList(
-            sort = sort.toInput(),
+            sort = sort,
             season = mediaSeason,
-            seasonYear = seasonYear.toInput()
+            seasonYear = seasonYear
         )
 
-        viewModel.animeListUiState.asLiveData().observe(this, {
+        viewModel.animeListResponse.observe(this, {
             when (it.responseState) {
                 ResponseState.LOADING -> if (!isLoading) binding.listProgressBar.isVisible = true
                 ResponseState.SUCCESS -> {

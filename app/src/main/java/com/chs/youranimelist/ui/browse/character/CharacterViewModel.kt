@@ -14,18 +14,15 @@ import kotlinx.coroutines.launch
 
 class CharacterViewModel(private val repository: CharacterRepository) : ViewModel() {
 
-    private val _characterUiState: MutableStateFlow<NetWorkState<CharacterQuery.Character>> =
-        MutableStateFlow(NetWorkState.Loading())
-    val characterUiState = _characterUiState.asStateFlow()
+    val characterDetailResponse by lazy {
+        repository.characterDetailResponse
+    }
+
+    var characterAnimeList = ArrayList<CharacterQuery.Edge?>()
 
     fun getCharaInfo(charaId: Input<Int>) {
         viewModelScope.launch {
-            _characterUiState.value = NetWorkState.Loading()
-            repository.getCharacterInfo(charaId).catch { e ->
-                _characterUiState.value = NetWorkState.Error(e.message.toString())
-            }.collect {
-                _characterUiState.value = NetWorkState.Success(it.character!!)
-            }
+            repository.getCharacterDetail(charaId)
         }
     }
 }

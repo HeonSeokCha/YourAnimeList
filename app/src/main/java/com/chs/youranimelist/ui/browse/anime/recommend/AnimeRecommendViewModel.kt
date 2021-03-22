@@ -17,18 +17,15 @@ import kotlinx.coroutines.launch
 
 class AnimeRecommendViewModel(private val repository: AnimeRepository) : ViewModel() {
 
-    private val _animeRecUiState: MutableStateFlow<NetWorkState<List<AnimeRecommendQuery.Edge?>>> =
-        MutableStateFlow(NetWorkState.Loading())
-    val animeRecUiState = _animeRecUiState.asStateFlow()
+    val animeRecommendResponse by lazy {
+        repository.animeRecommendResponse
+    }
+
+    var animeRecList = ArrayList<AnimeRecommendQuery.Edge?>()
 
     fun getRecommendList(animeId: Int) {
         viewModelScope.launch {
-            _animeRecUiState.value = NetWorkState.Loading()
-            repository.getAnimeRecList(animeId.toInput()).catch { e ->
-                _animeRecUiState.value = NetWorkState.Error(e.message!!)
-            }.collect {
-                _animeRecUiState.value = NetWorkState.Success(it.media!!.recommendations!!.edges!!)
-            }
+            repository.getAnimeRecList(animeId.toInput())
         }
     }
 }

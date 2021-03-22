@@ -2,6 +2,7 @@ package com.chs.youranimelist.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,27 +40,55 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getHomeRecList()
+        initRecyclerView()
         getAnimeRecList()
         initMenu()
     }
 
     private fun getAnimeRecList() {
-        viewModel.getAnimeRecList()
-        viewModel.animeRecListUiState.asLiveData().observe(viewLifecycleOwner, {
+        viewModel.animePagerRecommendResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> binding.mainProgressbar.isVisible = true
                 ResponseState.SUCCESS -> {
-                    getPagerAnimeList()
-                    initRecyclerView(it.data!!)
+                    it.data?.viewPager?.media?.forEach { viewPager ->
+                        viewModel.pagerRecList.add(viewPager!!)
+                    }
+                    it.data?.trending?.trendingMedia.apply {
+                        val anime: ArrayList<AnimeList> = ArrayList()
+                        this!!.forEach { trending ->
+                            anime.add(trending!!.fragments.animeList)
+                        }
+                        viewModel.homeRecList.add(anime)
+                    }
+                    it.data?.popular?.popularMedia.apply {
+                        val anime: ArrayList<AnimeList> = ArrayList()
+                        this!!.forEach { popular ->
+                            anime.add(popular!!.fragments.animeList)
+                        }
+                        viewModel.homeRecList.add(anime)
+                    }
+                    it.data?.upcomming?.upcommingMedia.apply {
+                        val anime: ArrayList<AnimeList> = ArrayList()
+                        this!!.forEach { upComming ->
+                            anime.add(upComming!!.fragments.animeList)
+                        }
+                        viewModel.homeRecList.add(anime)
+                    }
+                    it.data?.alltime?.alltimeMedia.apply {
+                        val anime: ArrayList<AnimeList> = ArrayList()
+                        this!!.forEach { allTime ->
+                            anime.add(allTime!!.fragments.animeList)
+                        }
+                        viewModel.homeRecList.add(anime)
+                    }
+                    viewPagerHomeRecAdapter.notifyDataSetChanged()
+                    homeRecListAdapter.notifyDataSetChanged()
                     binding.mainProgressbar.isVisible = false
                 }
                 ResponseState.ERROR -> {
                     binding.mainProgressbar.isVisible = false
-                    Toast.makeText(
-                        this@HomeFragment.context,
-                        it.message,
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -81,7 +110,7 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun getPagerAnimeList() {
+    private fun initRecyclerView() {
         binding.viewPager2.apply {
             viewPagerHomeRecAdapter =
                 HomeRecViewPagerAdapter(viewModel.pagerRecList, clickListener = { animeId ->
@@ -95,12 +124,10 @@ class HomeFragment : BaseFragment() {
             this.adapter = viewPagerHomeRecAdapter
             binding.indicator.setViewPager2(binding.viewPager2)
         }
-    }
 
-    private fun initRecyclerView(items: List<List<AnimeList>>) {
         binding.rvAnimeRecList.apply {
             homeRecListAdapter =
-                HomeRecListParentAdapter(items, this@HomeFragment.requireContext(),
+                HomeRecListParentAdapter(viewModel.homeRecList, this@HomeFragment.requireContext(),
                     clickListener = { sortType ->
                         val intent = Intent(activity, AnimeListActivity::class.java).apply {
                             this.putExtra("sortType", sortType)
@@ -114,8 +141,8 @@ class HomeFragment : BaseFragment() {
                         startActivity(intent)
                     }
                 )
-            this.layoutManager = LinearLayoutManager(this@HomeFragment.context)
             this.adapter = homeRecListAdapter
+            this.layoutManager = LinearLayoutManager(this@HomeFragment.context)
         }
     }
 

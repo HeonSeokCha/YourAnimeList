@@ -35,17 +35,21 @@ class AnimeCharaFragment() :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initRecyclerView()
         getCharacters(arguments?.getInt("id")!!)
     }
 
     private fun getCharacters(animeId: Int) {
         viewModel.getAnimeCharacter(animeId)
-        viewModel.animeCharaUiState.asLiveData().observe(viewLifecycleOwner, {
+        viewModel.animeCharacterResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> {
                 }
                 ResponseState.SUCCESS -> {
-                    initRecyclerView(it.data!!)
+                    it.data?.media?.characters?.charactersNode?.forEach { animeChara ->
+                        viewModel.animeCharacterList.add(animeChara!!)
+                    }
+                    charaAdapter.notifyDataSetChanged()
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
@@ -54,11 +58,12 @@ class AnimeCharaFragment() :
         })
     }
 
-    private fun initRecyclerView(charaList: List<AnimeCharacterQuery.CharactersNode?>) {
+    private fun initRecyclerView() {
         binding.rvAnimeChara.apply {
-            charaAdapter = AnimeCharaAdapter(charaList, clickListener = { charaId ->
-                this@AnimeCharaFragment.navigate!!.changeFragment("CHARA", charaId)
-            })
+            charaAdapter =
+                AnimeCharaAdapter(viewModel.animeCharacterList, clickListener = { charaId ->
+                    this@AnimeCharaFragment.navigate!!.changeFragment("CHARA", charaId)
+                })
             this.adapter = charaAdapter
             this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 50, true))

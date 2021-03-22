@@ -55,5 +55,5 @@ class HomeRecListParentAdapter(
         holder.bind()
     }
 
-    override fun getItemCount(): Int = 4
+    override fun getItemCount(): Int = list.size
 }

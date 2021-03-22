@@ -20,6 +20,8 @@ import com.chs.youranimelist.ui.base.BaseFragment
 
 class AnimeOverviewFragment() : BaseFragment() {
     private lateinit var viewModel: AnimeOverviewViewModel
+    private lateinit var relationAdapter: AnimeOverviewRelationAdapter
+    private lateinit var genreAdapter: AnimeOverviewGenreAdapter
     private val repository by lazy { AnimeRepository() }
     private var _binding: FragmentAnimeOverviewBinding? = null
     private val binding get() = _binding!!
@@ -33,12 +35,9 @@ class AnimeOverviewFragment() : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initView()
-        initClick()
-    }
-
-    private fun initView() {
+        initRecyclerView()
         getAnimeInfo(arguments?.getInt("id")!!)
+        initClick()
     }
 
     private fun initClick() {
@@ -57,12 +56,20 @@ class AnimeOverviewFragment() : BaseFragment() {
 
     private fun getAnimeInfo(animeId: Int) {
         viewModel.getAnimeOverview(animeId)
-        viewModel.animeOverviewUiState.asLiveData().observe(viewLifecycleOwner, {
+        viewModel.animeOverviewResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> Unit
                 ResponseState.SUCCESS -> {
-                    binding.model = it.data!!
-                    initRecyclerView(it.data!!)
+                    binding.model = it.data?.media!!
+                    it.data?.media.relations?.relationsEdges?.forEach { relation ->
+                        viewModel.animeOverviewRelationList.add(relation)
+                    }
+
+                    it.data?.media.genres?.forEach { genres ->
+                        viewModel.animeGenresList.add(genres!!)
+                    }
+                    relationAdapter.notifyDataSetChanged()
+                    genreAdapter.notifyDataSetChanged()
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
@@ -71,12 +78,13 @@ class AnimeOverviewFragment() : BaseFragment() {
         })
     }
 
-    private fun initRecyclerView(animeInfo: AnimeOverviewQuery.Media) {
+    private fun initRecyclerView() {
         binding.rvAnimeOverviewRelation.apply {
-            this.adapter = AnimeOverviewRelationAdapter(animeInfo.relations?.relationsEdges!!,
+            relationAdapter = AnimeOverviewRelationAdapter(viewModel.animeOverviewRelationList,
                 clickListener = { _, id ->
                     this@AnimeOverviewFragment.navigate?.changeFragment("Media", id)
                 })
+            this.adapter = relationAdapter
             this.layoutManager = LinearLayoutManager(
                 this@AnimeOverviewFragment.context,
                 LinearLayoutManager.HORIZONTAL, false
@@ -84,7 +92,8 @@ class AnimeOverviewFragment() : BaseFragment() {
         }
 
         binding.rvAnimeOverviewGenre.apply {
-            this.adapter = AnimeOverviewGenreAdapter(animeInfo.genres!!)
+            genreAdapter = AnimeOverviewGenreAdapter(viewModel.animeGenresList)
+            this.adapter = genreAdapter
         }
     }
 

@@ -14,18 +14,13 @@ import kotlinx.coroutines.launch
 
 class AnimeDetailViewModel(private val repository: AnimeRepository) : ViewModel() {
 
-    private val _animeDetailUiState: MutableStateFlow<NetWorkState<AnimeDetailQuery.Media>> =
-        MutableStateFlow(NetWorkState.Loading())
-    val animeDetailUiState = _animeDetailUiState.asStateFlow()
+    val animeDetailResponse by lazy {
+        repository.animeDetailResponse
+    }
 
     fun getAnimeInfo(animeId: Input<Int>) {
         viewModelScope.launch {
-            _animeDetailUiState.value = NetWorkState.Loading()
-            repository.getAnimeInfo(animeId).catch { e ->
-                _animeDetailUiState.value = NetWorkState.Error(e.message.toString())
-            }.collect {
-                _animeDetailUiState.value = NetWorkState.Success(it.media!!)
-            }
+            repository.getAnimeDetail(animeId)
         }
     }
 }

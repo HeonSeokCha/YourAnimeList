@@ -18,19 +18,15 @@ import kotlinx.coroutines.launch
 
 class AnimeCharaViewModel(private val repository: AnimeRepository) : ViewModel() {
 
-    private val _animeCharaUiState: MutableStateFlow<NetWorkState<List<AnimeCharacterQuery.CharactersNode?>>> =
-        MutableStateFlow(NetWorkState.Loading())
-    val animeCharaUiState = _animeCharaUiState.asStateFlow()
+    val animeCharacterResponse by lazy {
+        repository.animeCharacterResponse
+    }
+
+    var animeCharacterList = ArrayList<AnimeCharacterQuery.CharactersNode>()
 
     fun getAnimeCharacter(animeId: Int) {
         viewModelScope.launch {
-            _animeCharaUiState.value = NetWorkState.Loading()
-            repository.getAnimeCharacter(animeId.toInput()).catch { e ->
-                _animeCharaUiState.value = NetWorkState.Error(e.message.toString())
-            }.collect {
-                _animeCharaUiState.value =
-                    NetWorkState.Success(it.media?.characters?.charactersNode!!)
-            }
+            repository.getAnimeCharacter(animeId.toInput())
         }
     }
 }

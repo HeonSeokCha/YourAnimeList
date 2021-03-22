@@ -28,26 +28,29 @@ class SearchRepository {
 
 
     suspend fun searchAnime(page: Int, search: String) {
+        _searchAnimeResponse.postValue(NetWorkState.Loading())
         ApolloServices.apolloClient.query(
             SearchAnimeQuery(page.toInput(), search.toInput())
-        ).toFlow().flowOn(Dispatchers.IO)
-            .catch { e -> _searchAnimeResponse.postValue(NetWorkState.Error(e.message.toString())) }
-            .collect { _searchAnimeResponse.postValue(NetWorkState.Success(it.data?.page!!)) }
+        ).toFlow().catch { e ->
+            _searchAnimeResponse.postValue(NetWorkState.Error(e.message.toString()))
+        }.collect { _searchAnimeResponse.postValue(NetWorkState.Success(it.data?.page!!)) }
     }
 
     suspend fun searchManga(page: Int, search: String) {
+        _searchMangaResponse.postValue(NetWorkState.Loading())
         ApolloServices.apolloClient.query(
             SearchMangaQuery(page.toInput(), search.toInput())
-        ).toFlow().flowOn(Dispatchers.IO)
-            .catch { e -> _searchMangaResponse.postValue(NetWorkState.Error(e.message.toString())) }
-            .collect { _searchMangaResponse.postValue(NetWorkState.Success(it.data?.page!!)) }
+        ).toFlow().catch { e ->
+            _searchMangaResponse.postValue(NetWorkState.Error(e.message.toString()))
+        }.collect { _searchMangaResponse.postValue(NetWorkState.Success(it.data?.page!!)) }
     }
 
     suspend fun searchCharacter(page: Int, search: String) {
+        _searchCharaResponse.postValue(NetWorkState.Loading())
         ApolloServices.apolloClient.query(
             SearchCharacterQuery(page.toInput(), search.toInput())
-        ).toFlow().flowOn(Dispatchers.IO)
-            .catch { e -> _searchCharaResponse.postValue(NetWorkState.Error(e.message.toString())) }
-            .collect { _searchCharaResponse.postValue(NetWorkState.Success(it.data?.page!!)) }
+        ).toFlow().catch { e ->
+            _searchCharaResponse.postValue(NetWorkState.Error(e.message.toString()))
+        }.collect { _searchCharaResponse.postValue(NetWorkState.Success(it.data?.page!!)) }
     }
 }

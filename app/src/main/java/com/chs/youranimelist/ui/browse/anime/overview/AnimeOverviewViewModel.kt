@@ -17,18 +17,17 @@ import kotlinx.coroutines.launch
 
 class AnimeOverviewViewModel(private val repository: AnimeRepository) : ViewModel() {
 
-    private val _animeOverviewUiState: MutableStateFlow<NetWorkState<AnimeOverviewQuery.Media>> =
-        MutableStateFlow(NetWorkState.Loading())
-    val animeOverviewUiState = _animeOverviewUiState.asStateFlow()
+    val animeOverviewResponse by lazy {
+        repository.animeOverviewResponse
+    }
+
+    var animeOverviewRelationList = ArrayList<AnimeOverviewQuery.RelationsEdge?>()
+
+    var animeGenresList = ArrayList<String>()
 
     fun getAnimeOverview(animeId: Int) {
         viewModelScope.launch {
-            _animeOverviewUiState.value = NetWorkState.Loading()
-            repository.getAnimeOverview(animeId.toInput()).catch { e ->
-                _animeOverviewUiState.value = NetWorkState.Error(e.message.toString())
-            }.collect {
-                _animeOverviewUiState.value = NetWorkState.Success(it.media!!)
-            }
+            repository.getAnimeOverview(animeId.toInput())
         }
     }
 }

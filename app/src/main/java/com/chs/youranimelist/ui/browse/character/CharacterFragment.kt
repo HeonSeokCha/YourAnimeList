@@ -24,6 +24,7 @@ class CharacterFragment : BaseFragment() {
     private var _binding: FragmentCharacterBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: CharacterViewModel
+    private lateinit var animeAdapter: CharacterAnimeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,13 +39,9 @@ class CharacterFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
-        initClick()
-    }
-
-    private fun initView() {
+        initRecyclerView()
         getCharaInfo(arguments?.getInt("id", 0).toInput())
-
+        initClick()
     }
 
     private fun initClick() {
@@ -64,13 +61,16 @@ class CharacterFragment : BaseFragment() {
 
     private fun getCharaInfo(charaId: Input<Int>) {
         viewModel.getCharaInfo(charaId)
-        viewModel.characterUiState.asLiveData().observe(viewLifecycleOwner, {
+        viewModel.characterDetailResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> {
                 }
                 ResponseState.SUCCESS -> {
-                    binding.model = it.data
-                    initRecyclerView(it.data!!.media!!.edges!!)
+                    binding.model = it.data?.character
+                    it.data?.character?.media?.edges?.forEach { anime ->
+                        viewModel.characterAnimeList.add(anime)
+                    }
+                    animeAdapter.notifyDataSetChanged()
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(
@@ -82,9 +82,9 @@ class CharacterFragment : BaseFragment() {
         })
     }
 
-    private fun initRecyclerView(items: List<CharacterQuery.Edge?>) {
+    private fun initRecyclerView() {
         binding.rvCharaAnimeSeries.apply {
-            adapter = CharacterAnimeAdapter(items,
+            animeAdapter = CharacterAnimeAdapter(viewModel.characterAnimeList,
                 clickListener = { id ->
                     this@CharacterFragment.navigate?.changeFragment("Media", id, true)
                 }
@@ -92,7 +92,8 @@ class CharacterFragment : BaseFragment() {
                 this.stateRestorationPolicy =
                     RecyclerView.Adapter.StateRestorationPolicy.ALLOW
             }
-            layoutManager = GridLayoutManager(this@CharacterFragment.context, 3)
+            this.adapter = animeAdapter
+            this.layoutManager = GridLayoutManager(this@CharacterFragment.context, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
         }
     }

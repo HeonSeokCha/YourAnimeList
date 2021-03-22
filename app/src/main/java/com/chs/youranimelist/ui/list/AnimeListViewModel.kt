@@ -14,27 +14,24 @@ import kotlinx.coroutines.launch
 
 class AnimeListViewModel(private val animeListRepository: AnimeListRepository) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<NetWorkState<AnimeListQuery.Data>> =
-        MutableStateFlow(NetWorkState.Loading())
-    val animeListUiState = _uiState.asStateFlow()
-
     var page: Int = 1
     var hasNextPage: Boolean = true
+    var season: Boolean = true
     var animeResultList: ArrayList<AnimeList?> = ArrayList()
 
+    val animeListResponse by lazy {
+        animeListRepository.animeListResponse
+    }
+
     fun getAnimeList(
-        sort: Input<MediaSort>,
+        sort: MediaSort,
         season: MediaSeason?,
-        seasonYear: Input<Int>
+        seasonYear: Int
     ) {
         viewModelScope.launch {
-            _uiState.value = NetWorkState.Loading()
-            animeListRepository.getAnimeList(page.toInput(), sort, season.toInput(), seasonYear)
-                .catch { e ->
-                    _uiState.value = NetWorkState.Error(e.message.toString())
-                }.collect {
-                    _uiState.value = NetWorkState.Success(it)
-                }
+            animeListRepository.getAnimeList(
+                page.toInput(), sort.toInput(), season.toInput(), seasonYear.toInput()
+            )
         }
     }
 }

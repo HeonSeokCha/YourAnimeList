@@ -21,6 +21,7 @@ class AnimeRecommendFragment : BaseFragment() {
     private val binding get() = _binding!!
     private val repository by lazy { AnimeRepository() }
     private lateinit var viewModel: AnimeRecommendViewModel
+    private lateinit var animeRecommendAdapter: AnimeRecommendAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,15 +34,22 @@ class AnimeRecommendFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initRecyclerView()
+        viewModel.getRecommendList(arguments?.getInt("id")!!)
         getRecommendList(arguments?.getInt("id")!!)
     }
 
     private fun getRecommendList(animeId: Int) {
         viewModel.getRecommendList(animeId)
-        viewModel.animeRecUiState.asLiveData().observe(viewLifecycleOwner, {
+        viewModel.animeRecommendResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> Unit
-                ResponseState.SUCCESS -> initRecyclerView(it.data!!)
+                ResponseState.SUCCESS -> {
+                    it.data?.media?.recommendations?.edges?.forEach { recommend ->
+                        viewModel.animeRecList.add(recommend)
+                    }
+                    animeRecommendAdapter.notifyDataSetChanged()
+                }
                 ResponseState.ERROR -> {
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
                 }
@@ -49,13 +57,14 @@ class AnimeRecommendFragment : BaseFragment() {
         })
     }
 
-    private fun initRecyclerView(items: List<AnimeRecommendQuery.Edge?>) {
+    private fun initRecyclerView() {
         binding.rvAnimeRecommend.apply {
-            this.adapter = AnimeRecommendAdapter(
-                items, clickListener = { id ->
+            animeRecommendAdapter = AnimeRecommendAdapter(
+                viewModel.animeRecList, clickListener = { id ->
                     this@AnimeRecommendFragment.navigate?.changeFragment("Media", id, true)
                 }
             )
+            this.adapter = animeRecommendAdapter
             this.layoutManager = LinearLayoutManager(this@AnimeRecommendFragment.context)
         }
     }
