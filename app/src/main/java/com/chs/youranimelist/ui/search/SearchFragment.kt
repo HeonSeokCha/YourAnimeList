@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -56,6 +57,7 @@ class SearchFragment : Fragment() {
     private fun initObserver() {
         viewModel.getObserver()?.observe(viewLifecycleOwner, {
             when ((it as NetWorkState<*>?)?.responseState) {
+                ResponseState.LOADING -> binding.progressBar.isVisible = true
                 ResponseState.SUCCESS -> {
                     if (isLoading) {
                         viewModel.searchList.removeAt(viewModel.searchList.lastIndex)
@@ -87,10 +89,12 @@ class SearchFragment : Fragment() {
                         }
                     }
                     adapter.notifyDataSetChanged()
+                    binding.progressBar.isVisible = false
                 }
                 ResponseState.ERROR -> {
                     isLoading = false
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
+                    binding.progressBar.isVisible = false
                 }
             }
         })

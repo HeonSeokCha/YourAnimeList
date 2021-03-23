@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,16 +44,17 @@ class AnimeCharaFragment() :
         viewModel.getAnimeCharacter(animeId)
         viewModel.animeCharacterResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
-                ResponseState.LOADING -> {
-                }
+                ResponseState.LOADING -> binding.progressBar.isVisible = true
                 ResponseState.SUCCESS -> {
                     it.data?.media?.characters?.charactersNode?.forEach { animeChara ->
                         viewModel.animeCharacterList.add(animeChara!!)
                     }
                     charaAdapter.notifyDataSetChanged()
+                    binding.progressBar.isVisible = false
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
+                    binding.progressBar.isVisible = false
                 }
             }
         })
