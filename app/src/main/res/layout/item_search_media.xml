@@ -43,10 +43,10 @@
                 android:layout_marginEnd="8dp"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:text="@{model.title.english ?? model.title.romaji}"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 tools:text="TextView"
-                app:animeEnglishNull="@{model.title}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/img_anime_recommend_cover"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -3,7 +3,7 @@ query SearchMangaQuery(
     $search: String) {
     Page(
         page: $page,
-        perPage: 6
+        perPage: 20
     ) {
         pageInfo {
             total

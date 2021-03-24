@@ -16,17 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 object AnimeDetailBinding {
 
-    @BindingAdapter("animeDetailEnglishNull")
-    @JvmStatic
-    fun animeDetailEnglishNull(textView: TextView, title: AnimeDetailQuery.Title?) {
-        textView.text = ""
-        if(title?.english.isNullOrEmpty()) {
-            textView.text = "${title?.romaji}"
-        } else {
-            textView.text = "${title?.english}"
-        }
-    }
-
     @BindingAdapter("animeDetailFormatYear")
     @JvmStatic
     fun animeDetailFormatYear(textView: TextView, anime: AnimeDetailQuery.Media?) {

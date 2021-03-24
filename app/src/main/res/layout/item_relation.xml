@@ -41,7 +41,7 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="2"
-                android:text="@{model.relationsNode.title.romaji}"
+                android:text="@{model.relationsNode.title.english ?? model.relationsNode.title.romaji}"
                 android:textSize="13sp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"

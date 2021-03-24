@@ -19,21 +19,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 object HomeRecBinding {
 
-    @BindingAdapter("animeRecTrailerVisible")
-    @JvmStatic
-    fun animeRecTrailerVisible(
-        floatingActionButton: FloatingActionButton,
-        trailer: HomeRecommendListQuery.Trailer?
-    ) {
-        floatingActionButton.isVisible = trailer != null
-    }
-
     @SuppressLint("ResourceType")
     @BindingAdapter("animeRecImageBanner")
     @JvmStatic
     fun animeRecImageBanner(imageView: ImageView, anime: HomeRecommendListQuery.Medium) {
         var color: String? = anime.coverImage?.color ?: "#ffffff"
         Glide.with(imageView.context).load(anime.bannerImage)
+            .override(750,250)
             .placeholder(ColorDrawable(Color.parseColor(color)))
             .transition(DrawableTransitionOptions().crossFade())
             .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -55,6 +47,7 @@ object HomeRecBinding {
     fun animeImageCover(imageView: ImageView, path: String?) {
         Glide.with(imageView.context).load(path)
             .transform(RoundedCorners(10))
+            .override(260, 540)
             .transition(DrawableTransitionOptions().crossFade())
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(imageView)
