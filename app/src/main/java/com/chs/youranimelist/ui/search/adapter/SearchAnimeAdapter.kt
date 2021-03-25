@@ -55,6 +55,4 @@ class SearchAnimeAdapter(
 
     override fun getItemCount(): Int = list.size
 
-    override fun getItemId(position: Int): Long =
-        list[position]?.animeSearchResult?.fragments?.animeList?.id?.toLong() ?: 99912L
 }

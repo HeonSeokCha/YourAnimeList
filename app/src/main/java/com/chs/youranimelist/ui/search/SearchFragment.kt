@@ -133,7 +133,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        Log.d("viewModel.searchPage", viewModel.searchPage)
         adapter = when (viewModel.searchPage) {
             "Anime" -> {
                 SearchAnimeAdapter(viewModel.searchList) { id ->
@@ -164,7 +163,6 @@ class SearchFragment : Fragment() {
             }
             else -> SearchAnimeAdapter(viewModel.searchList) { }
         }
-        adapter.setHasStableIds(true)
         binding.rvSearch.adapter = adapter
         binding.rvSearch.layoutManager = LinearLayoutManager(this.context)
     }

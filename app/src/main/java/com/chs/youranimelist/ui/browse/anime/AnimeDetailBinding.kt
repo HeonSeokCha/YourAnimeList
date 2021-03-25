@@ -12,13 +12,27 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.chs.youranimelist.AnimeDetailQuery
+import com.chs.youranimelist.AnimeRecommendQuery
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 object AnimeDetailBinding {
 
+
+
     @BindingAdapter("animeDetailFormatYear")
     @JvmStatic
     fun animeDetailFormatYear(textView: TextView, anime: AnimeDetailQuery.Media?) {
+        textView.text = ""
+        textView.text = if (anime?.seasonYear != null) {
+            "${anime?.format}" + " ⦁ ${anime?.seasonYear}"
+        } else {
+            "${anime?.format}"
+        }
+    }
+
+    @BindingAdapter("animeRecFormatYear")
+    @JvmStatic
+    fun animeRecFormatYear(textView: TextView, anime: AnimeRecommendQuery.MediaRecommendation) {
         textView.text = ""
         textView.text = if (anime?.seasonYear != null) {
             "${anime?.format}" + " ⦁ ${anime?.seasonYear}"

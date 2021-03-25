@@ -59,6 +59,4 @@ class SearchCharacterAdapter(
 
     override fun getItemCount(): Int = list.size
 
-    override fun getItemId(position: Int): Long =
-        list[position]?.charactersSearchResult?.id?.toLong() ?: 99912
 }

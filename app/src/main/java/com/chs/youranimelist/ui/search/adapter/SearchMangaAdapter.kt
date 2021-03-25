@@ -57,6 +57,4 @@ class SearchMangaAdapter(
 
     override fun getItemCount(): Int = list.size
 
-    override fun getItemId(position: Int): Long =
-        list[position]?.mangaSearchResult?.fragments?.animeList?.id?.toLong() ?: 99912L
 }
