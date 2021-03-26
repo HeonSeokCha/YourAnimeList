@@ -115,8 +115,8 @@ class SearchFragment : Fragment() {
         })
 
         if (activity is SearchActivity) {
-            (activity as SearchActivity).searchLiveData.observe(viewLifecycleOwner, {
-                viewModel.searchKeyword = it
+            (activity as SearchActivity).searchLiveData.observe(viewLifecycleOwner, { search ->
+                viewModel.searchKeyword = search
                 viewModel.searchList.clear()
 
                 isLoading = false
@@ -125,7 +125,7 @@ class SearchFragment : Fragment() {
 
                 adapter.notifyDataSetChanged()
 
-                if (it.isNotBlank()) {
+                if (search.isNotBlank()) {
                     viewModel.search(viewModel.searchKeyword)
                 }
             })
