@@ -14,6 +14,8 @@ import kotlinx.coroutines.launch
 
 class AnimeDetailViewModel(private val repository: AnimeRepository) : ViewModel() {
 
+    var animeDetail: AnimeDetailQuery.Media? = null
+
     val animeDetailResponse by lazy {
         repository.animeDetailResponse
     }

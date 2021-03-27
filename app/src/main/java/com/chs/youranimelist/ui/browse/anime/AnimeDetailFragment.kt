@@ -43,6 +43,9 @@ class AnimeDetailFragment : Fragment() {
         binding.btnTrailerPlay.setOnClickListener {
             trailerPlay(trailerId)
         }
+        binding.mediaSaveList.setOnClickListener {
+            saveList()
+        }
     }
 
     private fun initAnimeInfo() {
@@ -52,6 +55,7 @@ class AnimeDetailFragment : Fragment() {
                 ResponseState.SUCCESS -> {
                     binding.model = it.data!!.media
                     trailerId = it.data?.media?.trailer?.id.toString()
+                    viewModel.animeDetail = it.data!!.media
                     binding.progressBar.isVisible = false
                 }
                 ResponseState.ERROR -> {
@@ -81,6 +85,12 @@ class AnimeDetailFragment : Fragment() {
         CustomTabsIntent.Builder()
             .build()
             .launchUrl(requireActivity(), Uri.parse("https://www.youtube.com/watch?v=$videoId"))
+    }
+
+    private fun saveList() {
+        if (viewModel.animeDetail != null) {
+            //Insert Data
+        }
     }
 
     override fun onDestroyView() {

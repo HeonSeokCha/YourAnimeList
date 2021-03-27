@@ -44,6 +44,7 @@ class HomeFragment : BaseFragment() {
         initRecyclerView()
         getAnimeRecList()
         initMenu()
+        initClick()
     }
 
     private fun getAnimeRecList() {
@@ -89,9 +90,21 @@ class HomeFragment : BaseFragment() {
                 ResponseState.ERROR -> {
                     binding.mainProgressbar.isVisible = false
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
+                    binding.txtError.apply {
+                        this.text = it.message
+                        this.isVisible = true
+                    }
+                    binding.btnRetry.isVisible = true
                 }
             }
         })
+    }
+
+    private fun initClick() {
+        binding.btnRetry.setOnClickListener {
+            binding.txtError.isVisible = false
+            binding.btnRetry.isVisible = false
+        }
     }
 
     private fun initMenu() {
