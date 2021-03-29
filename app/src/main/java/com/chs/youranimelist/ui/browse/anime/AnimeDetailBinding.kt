@@ -13,11 +13,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.AnimeRecommendQuery
+import com.chs.youranimelist.ConvertDate.secondsToDateTime
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 object AnimeDetailBinding {
-
-
 
     @BindingAdapter("animeDetailFormatYear")
     @JvmStatic
@@ -56,7 +55,8 @@ object AnimeDetailBinding {
     @BindingAdapter("animeDetailTrailerVisible")
     @JvmStatic
     fun animeDetailTrailerVisible(
-        floatingActionButton: FloatingActionButton, trailer: AnimeDetailQuery.Trailer?) {
+        floatingActionButton: FloatingActionButton, trailer: AnimeDetailQuery.Trailer?
+    ) {
         floatingActionButton.isVisible = trailer != null
     }
 
@@ -99,6 +99,16 @@ object AnimeDetailBinding {
     fun animeDetailRelationFormat(textView: TextView, string: String) {
         var temp = string.replace("_", " ")
         textView.text = temp[0].uppercase() + temp.substring(1, string.length).toLowerCase()
+    }
+
+    @BindingAdapter("animeDetailAiring")
+    @JvmStatic
+    fun animeDetailAiring(textView: TextView, airingEpisode: AnimeDetailQuery.NextAiringEpisode?) {
+        if (airingEpisode != null) {
+            textView.text =
+                "Ep ${airingEpisode?.episode} on ${airingEpisode?.airingAt?.secondsToDateTime()}"
+            textView.isVisible = true
+        }
     }
 
 }

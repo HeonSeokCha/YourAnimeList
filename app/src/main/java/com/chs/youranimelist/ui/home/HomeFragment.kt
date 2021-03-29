@@ -2,13 +2,11 @@ package com.chs.youranimelist.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.chs.youranimelist.R
@@ -44,7 +42,6 @@ class HomeFragment : BaseFragment() {
         initRecyclerView()
         getAnimeRecList()
         initMenu()
-        initClick()
     }
 
     private fun getAnimeRecList() {
@@ -89,22 +86,14 @@ class HomeFragment : BaseFragment() {
                 }
                 ResponseState.ERROR -> {
                     binding.mainProgressbar.isVisible = false
-                    Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
                     binding.txtError.apply {
                         this.text = it.message
                         this.isVisible = true
                     }
-                    binding.btnRetry.isVisible = true
+                    Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
                 }
             }
         })
-    }
-
-    private fun initClick() {
-        binding.btnRetry.setOnClickListener {
-            binding.txtError.isVisible = false
-            binding.btnRetry.isVisible = false
-        }
     }
 
     private fun initMenu() {

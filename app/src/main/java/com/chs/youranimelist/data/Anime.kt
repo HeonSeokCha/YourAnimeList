@@ -1,0 +1,25 @@
+package com.chs.youranimelist.data
+
+import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
+
+@Entity(tableName = "anime")
+@Parcelize
+data class Anime(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val title: String = "",
+    val format: String = "",
+    val status: String? = null,
+    val startDate: String? = null,
+    val season: String? = null,
+    val seasonYear: Int? = null,
+    val episode: Int? = null,
+    val coverImage: String? = null,
+    val bannerImage: String? = null,
+    val averageScore: Int? = null,
+    val popularity: Int? = null,
+    val created: Long = System.currentTimeMillis(),
+) : Parcelable

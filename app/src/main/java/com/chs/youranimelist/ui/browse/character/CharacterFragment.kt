@@ -33,9 +33,9 @@ class CharacterFragment : BaseFragment() {
         _binding = FragmentCharacterBinding.inflate(inflater, container, false)
         viewModel = CharacterViewModel(repository)
         binding.lifecycleOwner = this
+
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

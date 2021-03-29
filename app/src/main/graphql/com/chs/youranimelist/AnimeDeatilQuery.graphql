@@ -40,5 +40,9 @@ query AnimeDetailQuery($id: Int) {
         popularity
         favourites
         source
+        nextAiringEpisode {
+            airingAt
+            episode
+        }
     }
 }

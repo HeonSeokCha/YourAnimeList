@@ -3,7 +3,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="model"
             type="com.chs.youranimelist.AnimeDetailQuery.Media" />
@@ -19,19 +21,19 @@
             android:id="@+id/anime_detail_AppBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:backgroundTint="@android:color/transparent">
+            android:backgroundTint="@android:color/transparent"
+            android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/anime_detail_CollapsingToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
                 android:backgroundTint="@android:color/transparent"
-                app:toolbarId="@id/animeToolbar"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:fitsSystemWindows="true"
                 app:contentScrim="@color/red_500"
-                app:scrimAnimationDuration="200" >
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:scrimAnimationDuration="200"
+                app:toolbarId="@id/animeToolbar">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -51,8 +53,8 @@
                             android:layout_height="250dp"
                             android:adjustViewBounds="true"
                             android:scaleType="fitXY"
-                            app:layout_collapseMode="parallax"
                             app:animeDetailImageBanner="@{model}"
+                            app:layout_collapseMode="parallax"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -108,23 +110,23 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         app:animeDetailFormatYear="@{model}"
-                        tools:text="TextView"
                         app:layout_constraintStart_toStartOf="@+id/mediaTitle"
-                        app:layout_constraintTop_toBottomOf="@+id/mediaTitle" />
+                        app:layout_constraintTop_toBottomOf="@+id/mediaTitle"
+                        tools:text="TextView" />
 
                     <Button
                         android:id="@+id/mediaSaveList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:text="ADD MY LIST"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/mediaCoverImage"
+                        app:layout_constraintTop_toBottomOf="@+id/mediaAiring"
                         app:layout_constraintVertical_bias="0.0" />
 
                     <TextView
@@ -133,14 +135,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:text="TextView"
                         android:drawableLeft="@drawable/ic_score"
                         android:drawablePadding="2dp"
+                        android:text="TextView"
                         android:textSize="12sp"
-                        tools:text="TextView"
                         app:animeDetailScoreVisible="@{model.averageScore}"
                         app:layout_constraintStart_toEndOf="@+id/mediaCoverImage"
-                        app:layout_constraintTop_toBottomOf="@+id/mediaYearFormat" />
+                        app:layout_constraintTop_toBottomOf="@+id/mediaYearFormat"
+                        tools:text="TextView" />
 
                     <TextView
                         android:id="@+id/mediaFavorite"
@@ -151,9 +153,27 @@
                         android:drawablePadding="2dp"
                         android:text="@{model.favourites.toString()}"
                         android:textSize="12sp"
-                        tools:text="TextView"
                         app:layout_constraintStart_toEndOf="@+id/mediaScore"
-                        app:layout_constraintTop_toTopOf="@+id/mediaScore" />
+                        app:layout_constraintTop_toTopOf="@+id/mediaScore"
+                        tools:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/mediaAiring"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="TextView"
+                        android:textColor="@color/red_500"
+                        android:textSize="13dp"
+                        android:visibility="gone"
+                        app:animeDetailAiring="@{model.nextAiringEpisode}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toEndOf="@+id/mediaCoverImage"
+                        app:layout_constraintTop_toBottomOf="@+id/mediaFavorite"
+                        tools:text="Ep 1 on Tue, 30 Mar 2021, 12:00 AM"
+                        tools:visibility="visible" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -161,12 +181,12 @@
                     android:id="@+id/animeToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:elevation="0dp"
                     android:backgroundTint="@android:color/transparent"
+                    android:elevation="0dp"
                     android:minHeight="75dp"
+                    app:layout_collapseMode="pin"
                     app:navigationIcon="@drawable/ic_delete"
-                    app:popupTheme="@style/Theme.YourAnimeList.PopupOverlay"
-                    app:layout_collapseMode="pin"/>
+                    app:popupTheme="@style/Theme.YourAnimeList.PopupOverlay" />
 
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -211,7 +231,7 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
