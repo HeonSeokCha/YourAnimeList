@@ -12,6 +12,7 @@ import com.chs.youranimelist.ui.base.BaseFragment
 class AnimeListFragment : BaseFragment() {
     private var _binding: FragmentAnimeListBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by lazy { AnimeListViewModel() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,6 +20,10 @@ class AnimeListFragment : BaseFragment() {
     ): View? {
         _binding = FragmentAnimeListBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onDestroy() {

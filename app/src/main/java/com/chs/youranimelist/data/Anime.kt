@@ -10,6 +10,7 @@ import kotlinx.parcelize.Parcelize
 data class Anime(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    val animeId: Int = 0,
     val title: String = "",
     val format: String = "",
     val status: String? = null,
@@ -20,6 +21,10 @@ data class Anime(
     val coverImage: String? = null,
     val bannerImage: String? = null,
     val averageScore: Int? = null,
-    val popularity: Int? = null,
+    val favorites: Int? = null,
+    val studio: String? = null,
+//    val genre: List<String>? = null,
     val created: Long = System.currentTimeMillis(),
 ) : Parcelable
+
+//Need TypeConverter

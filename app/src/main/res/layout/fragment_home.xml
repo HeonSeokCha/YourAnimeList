@@ -81,7 +81,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/indicator"
                 tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_anime"
+                tools:listitem="@layout/item_anime_child"
                 tools:orientation="horizontal" />
 
             <com.tbuonomo.viewpagerdotsindicator.DotsIndicator

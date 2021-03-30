@@ -40,6 +40,14 @@ query AnimeDetailQuery($id: Int) {
         popularity
         favourites
         source
+        studios (isMain: true) {
+            edges {
+                node {
+                    id
+                    name
+                }
+            }
+        }
         nextAiringEpisode {
             airingAt
             episode

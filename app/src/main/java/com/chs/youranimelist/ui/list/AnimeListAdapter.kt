@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.databinding.ItemAnimeBinding
+import com.chs.youranimelist.databinding.ItemAnimeChildBinding
 import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.ui.home.HomeRecListChildDiffUtilCallBack
@@ -18,7 +18,7 @@ class AnimeListAdapter(
     }
 
     inner class AnimeListViewHolder(
-        private val binding: ItemAnimeBinding
+        private val binding: ItemAnimeChildBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
@@ -36,7 +36,7 @@ class AnimeListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_ITEM) {
             val view =
-                ItemAnimeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                ItemAnimeChildBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             AnimeListViewHolder(view)
         } else {
             val view =
