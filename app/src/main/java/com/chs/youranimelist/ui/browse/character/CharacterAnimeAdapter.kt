@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.CharacterQuery
-import com.chs.youranimelist.databinding.ItemAnimeBinding
+import com.chs.youranimelist.databinding.ItemAnimeChildBinding
 
 class CharacterAnimeAdapter(
     private val items: List<CharacterQuery.Edge?>,
@@ -12,7 +12,7 @@ class CharacterAnimeAdapter(
 ) :
     RecyclerView.Adapter<CharacterAnimeAdapter.ViewHolder>() {
 
-    inner class ViewHolder(private val binding: ItemAnimeBinding) :
+    inner class ViewHolder(private val binding: ItemAnimeChildBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
@@ -26,7 +26,7 @@ class CharacterAnimeAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = ItemAnimeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = ItemAnimeChildBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 

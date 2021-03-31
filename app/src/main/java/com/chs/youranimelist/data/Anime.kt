@@ -23,8 +23,6 @@ data class Anime(
     val averageScore: Int? = null,
     val favorites: Int? = null,
     val studio: String? = null,
-//    val genre: List<String>? = null,
+    val genre: List<String?>? = null,
     val created: Long = System.currentTimeMillis(),
 ) : Parcelable
-
-//Need TypeConverter

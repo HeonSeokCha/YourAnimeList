@@ -9,8 +9,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
-import com.apollographql.apollo.api.Input
+import androidx.lifecycle.asLiveData
 import com.apollographql.apollo.api.toInput
+import com.chs.youranimelist.data.Anime
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
@@ -27,15 +28,33 @@ class AnimeDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAnimeDetailBinding.inflate(inflater, container, false)
-        viewModel = AnimeDetailViewModel(repository)
+        viewModel = AnimeDetailViewModel(repository, activity!!.application)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.getAnimeInfo(arguments?.getInt("id").toInput())
+        checkAnimeList()
+        viewModel.getAnimeDetail(arguments?.getInt("id").toInput())
         initAnimeInfo()
         initTabView(arguments?.getInt("id")!!)
         initClick()
+    }
+
+    private fun checkAnimeList() {
+        viewModel.checkAnimeList(arguments?.getInt("id")!!).observe(viewLifecycleOwner, {
+            if (it.size == 1) {
+                viewModel.initAnimeList == it[0]
+                binding.mediaSaveList.apply {
+                    text = "SAVED LIST"
+                    isClickable = false
+                }
+            } else {
+                binding.mediaSaveList.apply {
+                    text = "ADD MY LIST"
+                    isClickable = true
+                }
+            }
+        })
     }
 
     private fun initClick() {
@@ -88,9 +107,32 @@ class AnimeDetailFragment : Fragment() {
     }
 
     private fun saveList() {
-        if (viewModel.animeDetail != null) {
-            //Insert Data
+        if (viewModel.animeDetail != null && viewModel.initAnimeList == null) {
+            with(viewModel.animeDetail) {
+                viewModel.insertAnimeList(
+                    Anime(
+                        animeId = this!!.id,
+                        title = this!!.title!!.english ?: this!!.title!!.romaji!!,
+                        format = this!!.format.toString(),
+                        status = this!!.status.toString(),
+                        startDate = this!!.startDate.toString(),
+                        season = this!!.season.toString(),
+                        seasonYear = this!!.seasonYear ?: 0,
+                        episode = this!!.episodes ?: 0,
+                        coverImage = this!!.coverImage?.extraLarge,
+                        bannerImage = this!!.bannerImage,
+                        averageScore = this!!.averageScore ?: 0,
+                        favorites = this!!.favourites,
+                        studio = this!!.studios!!.edges?.get(0)!!.node!!.name,
+                        genre = this.genres ?: listOf(),
+                    )
+                )
+            }
+        } else if (viewModel.initAnimeList != null) {
+            viewModel.deleteAnimeList(viewModel.initAnimeList!!)
+            viewModel.initAnimeList = null
         }
+        checkAnimeList()
     }
 
     override fun onDestroyView() {

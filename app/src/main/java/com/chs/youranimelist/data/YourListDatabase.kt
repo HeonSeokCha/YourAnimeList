@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
 
 @Database(
@@ -12,6 +13,7 @@ import androidx.room.RoomDatabase
         Character::class
     ], version = 1, exportSchema = false
 )
+@TypeConverters(Converters::class)
 abstract class YourListDatabase : RoomDatabase() {
 
     abstract fun yourListDao(): YourListDao

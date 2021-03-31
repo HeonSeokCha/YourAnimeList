@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.ItemAnimeListBinding
+import com.chs.youranimelist.databinding.ItemAnimeParentBinding
 import com.chs.youranimelist.fragment.AnimeList
 
 class HomeRecListParentAdapter(
@@ -20,7 +21,7 @@ class HomeRecListParentAdapter(
         "UPCOMING NEXT SEASON", "ALL TIME POPULAR"
     )
 
-    inner class AnimeListRecViewHolder(private val binding: ItemAnimeListBinding) :
+    inner class AnimeListRecViewHolder(private val binding: ItemAnimeParentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.btnViewAll.setOnClickListener {
@@ -47,7 +48,8 @@ class HomeRecListParentAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeListRecViewHolder {
-        val view = ItemAnimeListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view =
+            ItemAnimeParentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AnimeListRecViewHolder(view)
     }
 

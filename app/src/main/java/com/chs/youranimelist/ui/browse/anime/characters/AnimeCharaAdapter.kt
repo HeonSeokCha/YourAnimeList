@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.AnimeCharacterQuery
 import com.chs.youranimelist.AnimeDetailQuery
-import com.chs.youranimelist.databinding.ItemCharaBinding
+import com.chs.youranimelist.databinding.ItemCharacterBinding
 
 class AnimeCharaAdapter(
     private val items: List<AnimeCharacterQuery.CharactersNode?>,
@@ -13,7 +13,7 @@ class AnimeCharaAdapter(
 ) : RecyclerView.Adapter<AnimeCharaAdapter.CharaViewHolder>() {
 
     inner class CharaViewHolder(
-        private val binding: ItemCharaBinding
+        private val binding: ItemCharacterBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
@@ -27,7 +27,7 @@ class AnimeCharaAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharaViewHolder {
-        val view = ItemCharaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = ItemCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CharaViewHolder(view)
     }
 

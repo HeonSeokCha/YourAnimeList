@@ -3,7 +3,7 @@ package com.chs.youranimelist.ui.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.databinding.ItemAnimeBinding
+import com.chs.youranimelist.databinding.ItemAnimeChildBinding
 import com.chs.youranimelist.fragment.AnimeList
 
 class HomeRecListChildAdapter(
@@ -12,7 +12,7 @@ class HomeRecListChildAdapter(
 ) : RecyclerView.Adapter<HomeRecListChildAdapter.AnimeViewHolder>() {
 
     inner class AnimeViewHolder(
-        private val binding: ItemAnimeBinding
+        private val binding: ItemAnimeChildBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
@@ -27,7 +27,7 @@ class HomeRecListChildAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeViewHolder {
-        val view = ItemAnimeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = ItemAnimeChildBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AnimeViewHolder(view)
     }
 
