@@ -21,6 +21,9 @@ interface YourListDao {
     @Query("SELECT * FROM character ORDER BY id DESC")
     fun getAllCharaList(): Flow<List<Character>>
 
+    @Query("SELECT * FROM character where :charaId")
+    fun checkCharaList(charaId: Int): Flow<List<Character>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCharaList(character: Character): Long
 

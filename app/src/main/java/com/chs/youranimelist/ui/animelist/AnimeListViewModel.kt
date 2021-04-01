@@ -18,4 +18,3 @@ class AnimeListViewModel(private val listRepository: AnimeListRepository) : View
         }
     }
 }
-
