@@ -9,7 +9,7 @@ interface YourListDao {
     @Query("SELECT * FROM anime ORDER BY id DESC")
     fun getAllAnimeList(): Flow<List<Anime>>
 
-    @Query("SELECT * FROM anime where :animeId")
+    @Query("SELECT * FROM anime where animeId = :animeId")
     fun checkAnimeList(animeId: Int): Flow<List<Anime>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

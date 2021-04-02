@@ -31,7 +31,7 @@ class CharacterFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCharacterBinding.inflate(inflater, container, false)
-        viewModel = CharacterViewModel(repository)
+        viewModel = CharacterViewModel(repository, activity!!.application)
         binding.lifecycleOwner = this
 
         return binding.root

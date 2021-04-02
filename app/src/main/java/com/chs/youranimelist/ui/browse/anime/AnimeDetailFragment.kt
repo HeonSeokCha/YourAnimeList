@@ -2,6 +2,7 @@ package com.chs.youranimelist.ui.browse.anime
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -42,16 +43,15 @@ class AnimeDetailFragment : Fragment() {
 
     private fun checkAnimeList() {
         viewModel.checkAnimeList(arguments?.getInt("id")!!).observe(viewLifecycleOwner, {
+            Log.d("ListSize", it.size.toString())
             if (it.size == 1) {
-                viewModel.initAnimeList == it[0]
+                viewModel.initAnimeList = it[0]
                 binding.mediaSaveList.apply {
                     text = "SAVED LIST"
-                    isClickable = false
                 }
             } else {
                 binding.mediaSaveList.apply {
                     text = "ADD MY LIST"
-                    isClickable = true
                 }
             }
         })
@@ -115,7 +115,6 @@ class AnimeDetailFragment : Fragment() {
                         title = this!!.title!!.english ?: this!!.title!!.romaji!!,
                         format = this!!.format.toString(),
                         status = this!!.status.toString(),
-                        startDate = this!!.startDate.toString(),
                         season = this!!.season.toString(),
                         seasonYear = this!!.seasonYear ?: 0,
                         episode = this!!.episodes ?: 0,

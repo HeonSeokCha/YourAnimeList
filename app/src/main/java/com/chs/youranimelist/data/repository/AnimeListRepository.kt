@@ -14,8 +14,7 @@ import kotlinx.coroutines.flow.collect
 
 class AnimeListRepository(application: Application) {
     private val dao: YourListDao by lazy {
-        val db = YourListDatabase.getInstance(application)
-        db.yourListDao()
+        YourListDatabase.getInstance(application).yourListDao()
     }
 
     fun getAllAnimeList(): LiveData<List<Anime>> = dao.getAllAnimeList().asLiveData()

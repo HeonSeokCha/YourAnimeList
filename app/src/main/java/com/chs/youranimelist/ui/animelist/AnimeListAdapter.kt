@@ -2,10 +2,12 @@ package com.chs.youranimelist.ui.animelist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.data.Anime
 import com.chs.youranimelist.databinding.ItemAnimeListBinding
+import com.chs.youranimelist.ui.browse.anime.overview.AnimeOverviewGenreAdapter
 
 class AnimeListAdapter :
     ListAdapter<Anime, AnimeListAdapter.AnimeListViewHolder>(AnimeListComparator()) {
@@ -14,6 +16,13 @@ class AnimeListAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
             binding.model = getItem(layoutPosition)
+            if (!getItem(layoutPosition).genre.isNullOrEmpty()) {
+                binding.rvAnimeListGenre.apply {
+                    isVisible = true
+                    binding.rvAnimeListGenre.adapter =
+                        AnimeOverviewGenreAdapter(getItem(layoutPosition).genre!!)
+                }
+            } else binding.rvAnimeListGenre.isVisible = false
         }
     }
 

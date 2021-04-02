@@ -14,7 +14,6 @@ data class Anime(
     val title: String = "",
     val format: String = "",
     val status: String? = null,
-    val startDate: String? = null,
     val season: String? = null,
     val seasonYear: Int? = null,
     val episode: Int? = null,
