@@ -16,14 +16,13 @@ import kotlinx.coroutines.launch
 class CharacterViewModel(private val repository: CharacterRepository, application: Application) :
     ViewModel() {
 
-    val characterDetailResponse by lazy {
-        repository.characterDetailResponse
-    }
     private val charaRepository: CharacterListRepository by lazy {
         CharacterListRepository(application)
     }
+
+    val characterDetailResponse by lazy { repository.characterDetailResponse }
     var characterAnimeList = ArrayList<CharacterQuery.Edge?>()
-    var charaDetail: CharacterQuery.Edge? = null
+    var charaDetail: CharacterQuery.Character? = null
     var initCharaList: Character? = null
 
     fun getCharaInfo(charaId: Input<Int>) {

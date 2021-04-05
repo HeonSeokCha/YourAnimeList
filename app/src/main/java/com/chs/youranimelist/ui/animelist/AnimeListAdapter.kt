@@ -9,11 +9,18 @@ import com.chs.youranimelist.data.Anime
 import com.chs.youranimelist.databinding.ItemAnimeListBinding
 import com.chs.youranimelist.ui.browse.anime.overview.AnimeOverviewGenreAdapter
 
-class AnimeListAdapter :
-    ListAdapter<Anime, AnimeListAdapter.AnimeListViewHolder>(AnimeListComparator()) {
+class AnimeListAdapter(
+    private val clickListener: (id: Int) -> Unit
+) : ListAdapter<Anime, AnimeListAdapter.AnimeListViewHolder>(AnimeListComparator()) {
 
     inner class AnimeListViewHolder(private val binding: ItemAnimeListBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickListener.invoke(getItem(layoutPosition).animeId)
+            }
+        }
+
         fun bind() {
             binding.model = getItem(layoutPosition)
             if (!getItem(layoutPosition).genre.isNullOrEmpty()) {

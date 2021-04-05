@@ -44,7 +44,7 @@ class AnimeDetailFragment : Fragment() {
     private fun checkAnimeList() {
         viewModel.checkAnimeList(arguments?.getInt("id")!!).observe(viewLifecycleOwner, {
             Log.d("ListSize", it.size.toString())
-            if (it.size == 1) {
+            if (it.size == 1 && it[0].animeId == arguments?.getInt("id")!!) {
                 viewModel.initAnimeList = it[0]
                 binding.mediaSaveList.apply {
                     text = "SAVED LIST"
@@ -108,21 +108,21 @@ class AnimeDetailFragment : Fragment() {
 
     private fun saveList() {
         if (viewModel.animeDetail != null && viewModel.initAnimeList == null) {
-            with(viewModel.animeDetail) {
+            with(viewModel.animeDetail!!) {
                 viewModel.insertAnimeList(
                     Anime(
-                        animeId = this!!.id,
-                        title = this!!.title!!.english ?: this!!.title!!.romaji!!,
-                        format = this!!.format.toString(),
-                        status = this!!.status.toString(),
-                        season = this!!.season.toString(),
-                        seasonYear = this!!.seasonYear ?: 0,
-                        episode = this!!.episodes ?: 0,
-                        coverImage = this!!.coverImage?.extraLarge,
-                        bannerImage = this!!.bannerImage,
-                        averageScore = this!!.averageScore ?: 0,
-                        favorites = this!!.favourites,
-                        studio = this!!.studios!!.edges?.get(0)!!.node!!.name,
+                        animeId = this.id,
+                        title = this.title!!.english ?: this.title!!.romaji!!,
+                        format = this.format.toString(),
+                        status = this.status.toString(),
+                        season = this.season.toString(),
+                        seasonYear = this.seasonYear ?: 0,
+                        episode = this.episodes ?: 0,
+                        coverImage = this.coverImage?.extraLarge,
+                        bannerImage = this.bannerImage,
+                        averageScore = this.averageScore ?: 0,
+                        favorites = this.favourites,
+                        studio = this.studios!!.edges?.get(0)!!.node!!.name,
                         genre = this.genres ?: listOf(),
                     )
                 )

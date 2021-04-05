@@ -7,11 +7,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.data.Character
 import com.chs.youranimelist.databinding.ItemCharacterListBinding
 
-class CharacterListAdapter :
-    ListAdapter<Character, CharacterListAdapter.CharacterListViewHolder>(CharacterListComparator()) {
+class CharacterListAdapter(
+    private val clickListener: (id: Int) -> Unit
+) : ListAdapter<Character, CharacterListAdapter.CharacterListViewHolder>(CharacterListComparator()) {
 
     inner class CharacterListViewHolder(private val binding: ItemCharacterListBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickListener.invoke(getItem(layoutPosition).charaId)
+            }
+        }
+
         fun bind() {
             binding.model = getItem(layoutPosition)
         }

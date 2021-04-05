@@ -1,5 +1,6 @@
 package com.chs.youranimelist.ui.characterlist
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import com.chs.youranimelist.R
 import com.chs.youranimelist.data.repository.CharacterListRepository
 import com.chs.youranimelist.databinding.FragmentCharacterListBinding
 import com.chs.youranimelist.ui.base.BaseFragment
+import com.chs.youranimelist.ui.browse.BrowseActivity
 
 class CharacterListFragment : BaseFragment() {
     private var _binding: FragmentCharacterListBinding? = null
@@ -36,11 +38,18 @@ class CharacterListFragment : BaseFragment() {
     private fun getCharaList() {
         viewModel.getAllCharaList().observe(viewLifecycleOwner, {
             charaListAdapter.submitList(it)
+            binding.mainCharaListToolbar.subtitle = "List (${it.size})"
         })
     }
 
     private fun initRecyclerView() {
-        charaListAdapter = CharacterListAdapter()
+        charaListAdapter = CharacterListAdapter() { id ->
+            val intent = Intent(this.context, BrowseActivity::class.java).apply {
+                this.putExtra("type", "CHARA")
+                this.putExtra("id", id)
+            }
+            startActivity(intent)
+        }
         binding.rvCharaList.apply {
             adapter = charaListAdapter
             layoutManager = LinearLayoutManager(this.context)

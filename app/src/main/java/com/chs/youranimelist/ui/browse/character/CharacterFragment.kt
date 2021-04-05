@@ -14,6 +14,7 @@ import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.CharacterQuery
 import com.chs.youranimelist.R
 import com.chs.youranimelist.SpacesItemDecoration
+import com.chs.youranimelist.data.Character
 import com.chs.youranimelist.databinding.FragmentCharacterBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.CharacterRepository
@@ -39,8 +40,9 @@ class CharacterFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkCharaList()
         initRecyclerView()
-        getCharaInfo(arguments?.getInt("id", 0).toInput())
+        getCharaInfo(arguments?.getInt("id").toInput())
         initClick()
     }
 
@@ -57,6 +59,9 @@ class CharacterFragment : BaseFragment() {
                 binding.btnExpand.setBackgroundResource(R.drawable.ic_arrow_down)
             }
         }
+        binding.mediaSaveList.setOnClickListener {
+            saveList()
+        }
     }
 
     private fun getCharaInfo(charaId: Input<Int>) {
@@ -67,6 +72,7 @@ class CharacterFragment : BaseFragment() {
                 }
                 ResponseState.SUCCESS -> {
                     binding.model = it.data?.character
+                    viewModel.charaDetail = it.data?.character
                     it.data?.character?.media?.edges?.forEach { anime ->
                         viewModel.characterAnimeList.add(anime)
                     }
@@ -78,6 +84,17 @@ class CharacterFragment : BaseFragment() {
                         it.message, Toast.LENGTH_SHORT
                     ).show()
                 }
+            }
+        })
+    }
+
+    private fun checkCharaList() {
+        viewModel.checkCharaList(arguments?.getInt("id")!!).observe(viewLifecycleOwner, {
+            if (it.size == 1 && it[0].charaId == arguments?.getInt("id")!!) {
+                viewModel.initCharaList = it[0]
+                binding.mediaSaveList.text = "SAVED LIST"
+            } else {
+                binding.mediaSaveList.text = "ADD MY LIST"
             }
         })
     }
@@ -95,6 +112,25 @@ class CharacterFragment : BaseFragment() {
             this.adapter = animeAdapter
             this.layoutManager = GridLayoutManager(this@CharacterFragment.context, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
+        }
+    }
+
+    private fun saveList() {
+        if (viewModel.charaDetail != null && viewModel.initCharaList == null) {
+            with(viewModel.charaDetail!!) {
+                viewModel.insertCharaList(
+                    Character(
+                        charaId = this.id,
+                        name = this.name?.full ?: "",
+                        nativeName = this.name?.native_ ?: "",
+                        image = this.image?.large ?: "",
+                        favourites = this.favourites,
+                    )
+                )
+            }
+        } else if (viewModel.initCharaList != null) {
+            viewModel.deleteCharaList(viewModel.initCharaList!!)
+            viewModel.initCharaList = null
         }
     }
 

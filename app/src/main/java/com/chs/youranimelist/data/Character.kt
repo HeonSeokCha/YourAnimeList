@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 data class Character(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val chardId: Int,
+    val charaId: Int,
     val name: String? = null,
     val nativeName: String? = null,
     val image: String? = null,

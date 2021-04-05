@@ -1,17 +1,15 @@
 package com.chs.youranimelist.ui.animelist
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chs.youranimelist.R
 import com.chs.youranimelist.data.repository.AnimeListRepository
 import com.chs.youranimelist.databinding.FragmentAnimeListBinding
 import com.chs.youranimelist.ui.base.BaseFragment
+import com.chs.youranimelist.ui.browse.BrowseActivity
 
 class AnimeListFragment : BaseFragment() {
     private var _binding: FragmentAnimeListBinding? = null
@@ -43,7 +41,13 @@ class AnimeListFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        animeListAdapter = AnimeListAdapter()
+        animeListAdapter = AnimeListAdapter() { id ->
+            val intent = Intent(this.context, BrowseActivity::class.java).apply {
+                this.putExtra("type", "Media")
+                this.putExtra("id", id)
+            }
+            startActivity(intent)
+        }
         binding.rvAnimeList.apply {
             this.adapter = animeListAdapter
             this.layoutManager = LinearLayoutManager(this.context)
