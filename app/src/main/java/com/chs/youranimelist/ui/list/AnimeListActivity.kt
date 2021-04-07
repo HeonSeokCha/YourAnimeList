@@ -45,21 +45,33 @@ class AnimeListActivity : AppCompatActivity() {
         when (sortType) {
             "TRENDING NOW" -> {
                 sort = MediaSort.TRENDING_DESC
+                binding.animeListYear.text = "Any"
+                binding.animeListSeason.text = "Any"
+                binding.animeListSort.text = "Trending"
             }
             "POPULAR THIS SEASON" -> {
                 sort = MediaSort.POPULARITY_DESC
                 mediaSeason = ConvertDate.getCurrentSeason()
                 seasonYear = ConvertDate.getCurrentYear(false)
                 season = true
+                binding.animeListYear.text = "2021"
+                binding.animeListSeason.text = "Spring"
+                binding.animeListSort.text = "Popularity"
             }
             "UPCOMING NEXT SEASON" -> {
                 sort = MediaSort.POPULARITY_DESC
                 mediaSeason = ConvertDate.getNextSeason()
                 seasonYear = ConvertDate.getCurrentYear(true)
                 season = true
+                binding.animeListYear.text = "2021"
+                binding.animeListSeason.text = "Summer"
+                binding.animeListSort.text = "Popularity"
             }
             "ALL TIME POPULAR" -> {
                 sort = MediaSort.POPULARITY_DESC
+                binding.animeListYear.text = "Any"
+                binding.animeListSeason.text = "Any"
+                binding.animeListSort.text = "Popularity"
             }
         }
     }
