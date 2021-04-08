@@ -42,6 +42,7 @@ class AnimeListActivity : AppCompatActivity() {
 
 
     private fun initSortType(sortType: String) {
+        val convertDate: ConvertDate = ConvertDate
         when (sortType) {
             "TRENDING NOW" -> {
                 sort = MediaSort.TRENDING_DESC
@@ -54,8 +55,8 @@ class AnimeListActivity : AppCompatActivity() {
                 mediaSeason = ConvertDate.getCurrentSeason()
                 seasonYear = ConvertDate.getCurrentYear(false)
                 season = true
-                binding.animeListYear.text = "2021"
-                binding.animeListSeason.text = "Spring"
+                binding.animeListYear.text = convertDate.getCurrentYear(false).toString()
+                binding.animeListSeason.text = convertDate.getCurrentSeason().toString()
                 binding.animeListSort.text = "Popularity"
             }
             "UPCOMING NEXT SEASON" -> {
@@ -63,8 +64,8 @@ class AnimeListActivity : AppCompatActivity() {
                 mediaSeason = ConvertDate.getNextSeason()
                 seasonYear = ConvertDate.getCurrentYear(true)
                 season = true
-                binding.animeListYear.text = "2021"
-                binding.animeListSeason.text = "Summer"
+                binding.animeListYear.text = convertDate.getCurrentYear(true).toString()
+                binding.animeListSeason.text = convertDate.getNextSeason().toString()
                 binding.animeListSort.text = "Popularity"
             }
             "ALL TIME POPULAR" -> {

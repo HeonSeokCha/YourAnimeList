@@ -1,6 +1,7 @@
 query SearchAnimeQuery(
     $page: Int = 1,
-    $search: String) {
+    $search: String
+) {
     Page(
         page: $page,
         perPage: 20

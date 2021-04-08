@@ -1,7 +1,20 @@
-query HomeRecommendListQuery {
-    ViewPager: Page(page:1,perPage:6) {
+query HomeRecommendListQuery(
+    $currentSeason: MediaSeason,
+    $nextSeason: MediaSeason,
+    $currentYear: Int,
+    $nexrYear: Int
+) {
+    ViewPager: Page(
+        page: 1,
+        perPage: 6
+    ) {
         ... pageInfo
-        media(sort:[SCORE_DESC],type:ANIME,format:TV,seasonYear:2021){
+        media(
+            sort: [SCORE_DESC],
+            type: ANIME,
+            format: TV,
+            seasonYear: $currentYear
+        ){
             id
             idMal
             title {
@@ -24,27 +37,58 @@ query HomeRecommendListQuery {
             bannerImage
         }
     },
-    Trending: Page(page:1,perPage:6) {
+    Trending: Page(
+        page: 1,
+        perPage: 6
+    ) {
         ... pageInfo
-        TrendingMedia: media(sort:[TRENDING_DESC],type:ANIME,format:TV) {
+        TrendingMedia: media(
+            sort: [TRENDING_DESC],
+            type: ANIME,format:TV
+        ) {
             ... animeList
         }
     },
-    Popular : Page(page:1,perPage:6) {
+    Popular: Page(
+        page: 1,
+        perPage: 6
+    ) {
         ... pageInfo
-        PopularMedia: media(sort:[POPULARITY_DESC],season:WINTER,seasonYear:2021,type:ANIME,format:TV) {
+        PopularMedia: media(
+            sort: [POPULARITY_DESC],
+            season: $currentSeason,
+            seasonYear: $currentYear,
+            type: ANIME,
+            format: TV
+        ) {
             ... animeList
         }
     },
-    Upcomming : Page(page:1,perPage:6) {
+    Upcomming: Page(
+        page: 1,
+        perPage: 6
+    ) {
         ... pageInfo
-        UpcommingMedia: media(sort:[POPULARITY_DESC],season:SPRING,seasonYear:2021,type:ANIME,format:TV) {
+        UpcommingMedia: media(
+            sort: [POPULARITY_DESC],
+            season: $nextSeason,
+            seasonYear: $nexrYear,
+            type: ANIME,
+            format: TV
+        ) {
             ... animeList
         }
     },
-    Alltime : Page(page:1,perPage:6) {
+    Alltime : Page(
+        page: 1,
+        perPage: 6
+    ) {
         ... pageInfo
-        AlltimeMedia: media(sort:[POPULARITY_DESC],type:ANIME,format:TV) {
+        AlltimeMedia: media(
+            sort: [POPULARITY_DESC],
+            type: ANIME,
+            format: TV
+        ) {
             ... animeList
         }
     }

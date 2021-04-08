@@ -57,7 +57,6 @@ object ConvertDate {
 
     fun Int.secondsToDateTime(): String {
         val dateFormat = SimpleDateFormat("E, dd MMM yyyy, hh:mm a", Locale.US)
-        val date = Date(this * 1000L)
-        return dateFormat.format(date)
+        return dateFormat.format(Date(this * 1000L))
     }
 }

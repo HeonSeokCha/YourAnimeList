@@ -2,6 +2,7 @@ package com.chs.youranimelist.network.repository
 
 import androidx.lifecycle.LiveData
 import com.apollographql.apollo.api.Input
+import com.apollographql.apollo.api.toInput
 import com.apollographql.apollo.coroutines.toFlow
 import com.chs.youranimelist.*
 import com.chs.youranimelist.network.ApolloServices
@@ -34,7 +35,14 @@ class AnimeRepository {
 
     suspend fun getHomeRecList() {
         _homeRecommendResponse.postValue(NetWorkState.Loading())
-        ApolloServices.apolloClient.query(HomeRecommendListQuery()).toFlow()
+        ApolloServices.apolloClient.query(
+            HomeRecommendListQuery(
+                ConvertDate.getCurrentSeason().toInput(),
+                ConvertDate.getNextSeason().toInput(),
+                ConvertDate.getCurrentYear(false).toInput(),
+                ConvertDate.getCurrentYear(true).toInput()
+            )
+        ).toFlow()
             .catch { e -> _homeRecommendResponse.postValue(NetWorkState.Error(e.message.toString())) }
             .collect { _homeRecommendResponse.postValue(NetWorkState.Success(it.data!!)) }
     }
@@ -60,7 +68,7 @@ class AnimeRepository {
             .collect { _animeCharacterResponse.postValue(NetWorkState.Success(it.data!!)) }
     }
 
-    suspend fun getAnimeRecList(animeId: Input<Int>){
+    suspend fun getAnimeRecList(animeId: Input<Int>) {
         _animeRecommendResponse.postValue(NetWorkState.Loading())
         ApolloServices.apolloClient.query(AnimeRecommendQuery(animeId)).toFlow()
             .catch { e -> _animeRecommendResponse.postValue(NetWorkState.Error(e.message.toString())) }
