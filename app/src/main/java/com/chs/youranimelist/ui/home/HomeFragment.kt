@@ -16,7 +16,7 @@ import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
-import com.chs.youranimelist.ui.list.AnimeListActivity
+import com.chs.youranimelist.ui.sortedlist.SortedListActivity
 import com.chs.youranimelist.ui.search.SearchActivity
 
 class HomeFragment : BaseFragment() {
@@ -131,7 +131,7 @@ class HomeFragment : BaseFragment() {
             homeRecListAdapter =
                 HomeRecListParentAdapter(viewModel.homeRecList, this@HomeFragment.requireContext(),
                     clickListener = { sortType ->
-                        val intent = Intent(activity, AnimeListActivity::class.java).apply {
+                        val intent = Intent(activity, SortedListActivity::class.java).apply {
                             this.putExtra("sortType", sortType)
                         }
                         startActivity(intent)

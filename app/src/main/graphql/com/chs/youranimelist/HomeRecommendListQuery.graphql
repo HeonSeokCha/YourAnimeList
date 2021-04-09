@@ -44,7 +44,7 @@ query HomeRecommendListQuery(
         ... pageInfo
         TrendingMedia: media(
             sort: [TRENDING_DESC],
-            type: ANIME,format:TV
+            type: ANIME
         ) {
             ... animeList
         }
@@ -58,8 +58,7 @@ query HomeRecommendListQuery(
             sort: [POPULARITY_DESC],
             season: $currentSeason,
             seasonYear: $currentYear,
-            type: ANIME,
-            format: TV
+            type: ANIME
         ) {
             ... animeList
         }
@@ -73,8 +72,7 @@ query HomeRecommendListQuery(
             sort: [POPULARITY_DESC],
             season: $nextSeason,
             seasonYear: $nexrYear,
-            type: ANIME,
-            format: TV
+            type: ANIME
         ) {
             ... animeList
         }
@@ -86,8 +84,7 @@ query HomeRecommendListQuery(
         ... pageInfo
         AlltimeMedia: media(
             sort: [POPULARITY_DESC],
-            type: ANIME,
-            format: TV
+            type: ANIME
         ) {
             ... animeList
         }

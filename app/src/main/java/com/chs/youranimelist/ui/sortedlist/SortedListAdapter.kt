@@ -1,4 +1,4 @@
-package com.chs.youranimelist.ui.list
+package com.chs.youranimelist.ui.sortedlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.ui.home.HomeRecListChildDiffUtilCallBack
 
-class AnimeListAdapter(
+class SortedListAdapter(
     private val clickListener: (animeId: Int) -> Unit,
 ) : ListAdapter<AnimeList, RecyclerView.ViewHolder>(HomeRecListChildDiffUtilCallBack()) {
     companion object {

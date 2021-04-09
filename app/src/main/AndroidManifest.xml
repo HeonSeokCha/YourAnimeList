@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.list.AnimeListActivity" />
+        <activity android:name=".ui.sortedlist.SortedListActivity" />
         <activity android:name=".ui.browse.BrowseActivity" />
     </application>
 

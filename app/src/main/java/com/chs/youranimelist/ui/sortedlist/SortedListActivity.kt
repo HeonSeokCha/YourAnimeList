@@ -1,43 +1,78 @@
-package com.chs.youranimelist.ui.list
+package com.chs.youranimelist.ui.sortedlist
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.ConvertDate
 import com.chs.youranimelist.SpacesItemDecoration
-import com.chs.youranimelist.databinding.ActivityAnimeListBinding
+import com.chs.youranimelist.databinding.ActivitySortedListBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeListRepository
-import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.ui.browse.BrowseActivity
 
-class AnimeListActivity : AppCompatActivity() {
-    private lateinit var animeListAdapter: AnimeListAdapter
-    private lateinit var sort: MediaSort
-    private lateinit var viewModel: AnimeListViewModel
-    private var _binding: ActivityAnimeListBinding? = null
+class SortedListActivity : AppCompatActivity() {
+    private lateinit var animeListAdapter: SortedListAdapter
+    private lateinit var viewModel: SortedListViewModel
+    private var _binding: ActivitySortedListBinding? = null
     private var isLoading: Boolean = false
-    private var mediaSeason: MediaSeason? = null
-    private var seasonYear: Int = 0
-    private var season: Boolean = false
     private val binding get() = _binding!!
     private val repository by lazy { AnimeListRepository() }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityAnimeListBinding.inflate(layoutInflater)
-        viewModel = AnimeListViewModel(repository)
+        _binding = ActivitySortedListBinding.inflate(layoutInflater)
+        viewModel = SortedListViewModel(repository)
         setContentView(binding.root)
+        initClick()
         initSortType(intent.getStringExtra("sortType")!!)
         initRecyclerView()
         getAnimeList()
+    }
+
+    private fun initClick() {
+        binding.animeListYear.setOnClickListener {
+            val yearList =
+                ArrayList((ConvertDate.getCurrentYear(false) + 1 downTo 1950).map { it.toString() })
+            AlertDialog.Builder(this)
+                .setItems(yearList.toTypedArray()) { _, which ->
+                    if (which == 0) {
+                        binding.animeListYear.text = yearList[which]
+                    } else {
+                        viewModel.selectedYear = yearList[which].toInt()
+                        binding.animeListYear.text = viewModel.selectedYear?.toString()
+                    }
+                    viewModel.refresh()
+                }
+                .show()
+        }
+
+        binding.animeListSeason.setOnClickListener {
+            val seasonArray = viewModel.animeSeasonList.map { it.name }.toTypedArray()
+            AlertDialog.Builder(this)
+                .setItems(seasonArray) { _, which ->
+                    viewModel.selectedSeason = viewModel.animeSeasonList[which]
+                    binding.animeListSeason.text = viewModel.selectedSeason?.name
+                    viewModel.refresh()
+                }
+                .show()
+        }
+
+        binding.animeListSort.setOnClickListener {
+            AlertDialog.Builder(this)
+                .setItems(viewModel.animeSortArray) { _, which ->
+                    viewModel.selectedSort = viewModel.animeSortList[which]
+                    binding.animeListSort.text = viewModel.animeSortArray[which]
+                    viewModel.refresh()
+                }
+                .show()
+        }
     }
 
 
@@ -45,31 +80,31 @@ class AnimeListActivity : AppCompatActivity() {
         val convertDate: ConvertDate = ConvertDate
         when (sortType) {
             "TRENDING NOW" -> {
-                sort = MediaSort.TRENDING_DESC
+                viewModel.selectedSort = MediaSort.TRENDING_DESC
                 binding.animeListYear.text = "Any"
                 binding.animeListSeason.text = "Any"
                 binding.animeListSort.text = "Trending"
             }
             "POPULAR THIS SEASON" -> {
-                sort = MediaSort.POPULARITY_DESC
-                mediaSeason = ConvertDate.getCurrentSeason()
-                seasonYear = ConvertDate.getCurrentYear(false)
-                season = true
+                viewModel.selectedSort = MediaSort.POPULARITY_DESC
+                viewModel.selectedSeason = ConvertDate.getCurrentSeason()
+                viewModel.selectedYear = ConvertDate.getCurrentYear(false)
+                viewModel.isSeason = true
                 binding.animeListYear.text = convertDate.getCurrentYear(false).toString()
                 binding.animeListSeason.text = convertDate.getCurrentSeason().toString()
                 binding.animeListSort.text = "Popularity"
             }
             "UPCOMING NEXT SEASON" -> {
-                sort = MediaSort.POPULARITY_DESC
-                mediaSeason = ConvertDate.getNextSeason()
-                seasonYear = ConvertDate.getCurrentYear(true)
-                season = true
+                viewModel.selectedSort = MediaSort.POPULARITY_DESC
+                viewModel.selectedSeason = ConvertDate.getNextSeason()
+                viewModel.selectedYear = ConvertDate.getCurrentYear(true)
+                viewModel.isSeason = true
                 binding.animeListYear.text = convertDate.getCurrentYear(true).toString()
                 binding.animeListSeason.text = convertDate.getNextSeason().toString()
                 binding.animeListSort.text = "Popularity"
             }
             "ALL TIME POPULAR" -> {
-                sort = MediaSort.POPULARITY_DESC
+                viewModel.selectedSort = MediaSort.POPULARITY_DESC
                 binding.animeListYear.text = "Any"
                 binding.animeListSeason.text = "Any"
                 binding.animeListSort.text = "Popularity"
@@ -78,13 +113,7 @@ class AnimeListActivity : AppCompatActivity() {
     }
 
     private fun getAnimeList() {
-
-        viewModel.getAnimeList(
-            sort = sort,
-            season = mediaSeason,
-            seasonYear = seasonYear
-        )
-
+        viewModel.getAnimeList()
         viewModel.animeListResponse.observe(this, {
             when (it.responseState) {
                 ResponseState.LOADING -> if (!isLoading) binding.listProgressBar.isVisible = true
@@ -95,7 +124,7 @@ class AnimeListActivity : AppCompatActivity() {
                         isLoading = false
                     }
 
-                    if (season) {
+                    if (viewModel.isSeason) {
                         viewModel.hasNextPage =
                             it.data?.season?.pageInfo?.hasNextPage ?: false
                         it.data?.season?.media?.forEach { seasonAnime ->
@@ -113,7 +142,7 @@ class AnimeListActivity : AppCompatActivity() {
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(
-                        this@AnimeListActivity,
+                        this@SortedListActivity,
                         it.message,
                         Toast.LENGTH_LONG
                     ).show()
@@ -126,16 +155,15 @@ class AnimeListActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
-            animeListAdapter =
-                AnimeListAdapter(clickListener = { animeId ->
-                    val intent = Intent(this@AnimeListActivity, BrowseActivity::class.java).apply {
-                        this.putExtra("type", "Media")
-                        this.putExtra("id", animeId)
-                    }
-                    startActivity(intent)
-                })
+            animeListAdapter = SortedListAdapter(clickListener = { animeId ->
+                val intent = Intent(this@SortedListActivity, BrowseActivity::class.java).apply {
+                    this.putExtra("type", "Media")
+                    this.putExtra("id", animeId)
+                }
+                startActivity(intent)
+            })
             this.adapter = animeListAdapter
-            this.layoutManager = GridLayoutManager(this@AnimeListActivity, 3)
+            this.layoutManager = GridLayoutManager(this@SortedListActivity, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
 
             this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
