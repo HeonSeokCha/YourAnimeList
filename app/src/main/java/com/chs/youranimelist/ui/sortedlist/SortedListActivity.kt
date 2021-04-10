@@ -49,6 +49,7 @@ class SortedListActivity : AppCompatActivity() {
                         binding.animeListYear.text = viewModel.selectedYear?.toString()
                     }
                     viewModel.refresh()
+                    animeListAdapter.notifyDataSetChanged()
                 }
                 .show()
         }
@@ -60,6 +61,7 @@ class SortedListActivity : AppCompatActivity() {
                     viewModel.selectedSeason = viewModel.animeSeasonList[which]
                     binding.animeListSeason.text = viewModel.selectedSeason?.name
                     viewModel.refresh()
+                    animeListAdapter.notifyDataSetChanged()
                 }
                 .show()
         }
@@ -70,6 +72,7 @@ class SortedListActivity : AppCompatActivity() {
                     viewModel.selectedSort = viewModel.animeSortList[which]
                     binding.animeListSort.text = viewModel.animeSortArray[which]
                     viewModel.refresh()
+                    animeListAdapter.notifyDataSetChanged()
                 }
                 .show()
         }
@@ -137,7 +140,7 @@ class SortedListActivity : AppCompatActivity() {
                             viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
                         }
                     }
-                    animeListAdapter.submitList(viewModel.animeResultList)
+                    animeListAdapter.notifyDataSetChanged()
                     binding.listProgressBar.isVisible = false
                 }
                 ResponseState.ERROR -> {
@@ -155,13 +158,13 @@ class SortedListActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
-            animeListAdapter = SortedListAdapter(clickListener = { animeId ->
+            animeListAdapter = SortedListAdapter(viewModel.animeResultList) { animeId ->
                 val intent = Intent(this@SortedListActivity, BrowseActivity::class.java).apply {
                     this.putExtra("type", "Media")
                     this.putExtra("id", animeId)
                 }
                 startActivity(intent)
-            })
+            }
             this.adapter = animeListAdapter
             this.layoutManager = GridLayoutManager(this@SortedListActivity, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))

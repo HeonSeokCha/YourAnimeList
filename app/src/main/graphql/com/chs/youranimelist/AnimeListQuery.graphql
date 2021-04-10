@@ -17,8 +17,7 @@ query AnimeListQuery(
         }
         media(
             sort: [$sort],
-            type: ANIME,
-            format: TV
+            type: ANIME
         ) {
             ... animeList
         }
@@ -38,8 +37,7 @@ query AnimeListQuery(
             sort: [$sort],
             season: $season,
             seasonYear: $seasonYear,
-            type: ANIME,
-            format: TV
+            type: ANIME
         ) {
             ... animeList
         }

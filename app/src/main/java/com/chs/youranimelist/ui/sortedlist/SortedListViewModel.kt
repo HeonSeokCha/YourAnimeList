@@ -24,33 +24,23 @@ class SortedListViewModel(private val animeListRepository: AnimeListRepository) 
     }
 
     val animeSortArray = arrayOf(
-        "NEWEST",
-        "OLDEST",
-        "TITLE ROMAJI",
-        "TITLE ENGLISH",
-        "TITLE NATIVE",
-        "HIGHEST SCORE",
-        "LOWEST SCORE",
-        "MOST POPULAR",
-        "LEAST POPULAR",
-        "MOST FAVORITE",
-        "LEAST FAVORITE",
-        "TRENDING"
+        "TITLE",
+        "POPULARITY",
+        "AVERAGE SCORE",
+        "TRENDING",
+        "FAVORITE",
+        "DATE ADDED",
+        "RELEASE DATE",
     )
 
     var animeSortList = arrayListOf(
-        MediaSort.START_DATE_DESC,
-        MediaSort.START_DATE,
-        MediaSort.TITLE_ROMAJI,
         MediaSort.TITLE_ENGLISH,
-        MediaSort.TITLE_NATIVE,
-        MediaSort.SCORE_DESC,
-        MediaSort.SCORE,
         MediaSort.POPULARITY_DESC,
-        MediaSort.POPULARITY,
+        MediaSort.SCORE_DESC,
+        MediaSort.TRENDING_DESC,
         MediaSort.FAVOURITES_DESC,
-        MediaSort.FAVOURITES,
-        MediaSort.TRENDING_DESC
+        MediaSort.ID_DESC,
+        MediaSort.START_DATE_DESC
     )
 
     val animeSeasonList = arrayListOf(
