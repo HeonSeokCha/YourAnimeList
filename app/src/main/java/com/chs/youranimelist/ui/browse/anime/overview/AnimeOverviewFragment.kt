@@ -22,6 +22,7 @@ class AnimeOverviewFragment() : BaseFragment() {
     private lateinit var viewModel: AnimeOverviewViewModel
     private lateinit var relationAdapter: AnimeOverviewRelationAdapter
     private lateinit var genreAdapter: AnimeOverviewGenreAdapter
+    private lateinit var linkAdapter: AnimeOverviewLinkAdapter
     private val repository by lazy { AnimeRepository() }
     private var _binding: FragmentAnimeOverviewBinding? = null
     private val binding get() = _binding!!
@@ -68,8 +69,14 @@ class AnimeOverviewFragment() : BaseFragment() {
                     it.data?.media.genres?.forEach { genres ->
                         viewModel.animeGenresList.add(genres!!)
                     }
+
+                    it.data.media.externalLinks?.forEach { links ->
+                        viewModel.animeLinkList.add(links)
+                        Log.d("Lniks", links.toString())
+                    }
                     relationAdapter.notifyDataSetChanged()
                     genreAdapter.notifyDataSetChanged()
+                    linkAdapter.notifyDataSetChanged()
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
@@ -94,6 +101,11 @@ class AnimeOverviewFragment() : BaseFragment() {
         binding.rvAnimeOverviewGenre.apply {
             genreAdapter = AnimeOverviewGenreAdapter(viewModel.animeGenresList)
             this.adapter = genreAdapter
+        }
+
+        binding.rvAnimeOverviewLinks.apply {
+            linkAdapter = AnimeOverviewLinkAdapter(viewModel.animeLinkList)
+            this.adapter = linkAdapter
         }
     }
 

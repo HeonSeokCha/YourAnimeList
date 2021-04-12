@@ -2,11 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="model"
             type="com.chs.youranimelist.AnimeOverviewQuery.Media" />
     </data>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/anime_overview_nested"
         android:layout_width="match_parent"
@@ -15,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/anime_overview_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="2000dp"
             tools:context=".ui.browse.anime.overview.AnimeOverviewFragment">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -59,9 +62,9 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:visibility="gone"
-                    android:lineSpacingExtra="5dp"
                     android:layout_marginBottom="8dp"
+                    android:lineSpacingExtra="5dp"
+                    android:visibility="gone"
                     app:animeOverviewHtmlConvert="@{model.description}"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintBottom_toTopOf="@+id/btn_expand"
@@ -198,8 +201,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:textStyle="bold"
                     android:text="@{model.popularity.toString()}"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textView17"
                     app:layout_constraintStart_toStartOf="@+id/textView17"
                     app:layout_constraintTop_toTopOf="parent"
@@ -210,8 +213,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:textStyle="bold"
                     android:text="@{model.favourites.toString()}"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/textView18"
                     app:layout_constraintStart_toStartOf="@+id/textView18"
                     app:layout_constraintTop_toTopOf="parent"
@@ -349,8 +352,8 @@
                 android:id="@+id/txt_anime_overview_episode_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:animeOverviewDurationVisible="@{model.duration}"
                 app:animeOverviewDurationValue="@{model.duration}"
+                app:animeOverviewDurationVisible="@{model.duration}"
                 app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_episode"
                 app:layout_constraintTop_toTopOf="@+id/textView10"
                 tools:text="TextView" />
@@ -435,8 +438,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -449,6 +450,32 @@
                 android:text="@string/relation"
                 app:layout_constraintStart_toStartOf="@+id/textView14"
                 app:layout_constraintTop_toBottomOf="@+id/txt_anime_overview_season" />
+
+            <TextView
+                android:id="@+id/textView28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Links"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_anime_overview_relation" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_anime_overview_links"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView28"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
