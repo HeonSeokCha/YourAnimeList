@@ -1,5 +1,7 @@
 package com.chs.youranimelist
 
+import android.graphics.Color
+
 object ItemColor {
     val DEFAULT_GENRE_COLOR = "#727272"
     val GENRE_COLOR = hashMapOf(
@@ -22,5 +24,51 @@ object ItemColor {
         Pair("Sports", "#6B9145"),
         Pair("Supernatural", "#338074"),
         Pair("Thriller", "#224C80")
+    )
+
+    val EXTERNAL_LINK = hashMapOf(
+        Pair("anilist", "#324760"),
+        Pair("twitter", "#03A9F4"),
+        Pair("crunchyroll", "#FF9100"),
+        Pair("youtube", "#FF0000"),
+        Pair("funimation", "#452C8A"),
+        Pair("hidive", "#03A8EB"),
+        Pair("vrv", "#FEDD01"),
+        Pair("netflix", "#F44335"),
+        Pair("amazon", "#04A3DD"),
+        Pair("hulu", "#8AC34A"),
+        Pair("hbo max", "#9531EC"),
+        Pair("animelab", "#3B0087"),
+        Pair("viz", "#FF0000"),
+        Pair("adult swim", "#171717"),
+        Pair("retro crush", "#000000"),
+        Pair("midnight pulp", "#B7F00F"),
+        Pair("tubi tv", "#F84C18"),
+        Pair("contv", "#E35623"),
+        Pair("manga plus", "#DC0812"),
+        Pair("manga.club", "#F47D30"),
+        Pair("fakku", "#911918"),
+        Pair("webtoons", "#04CF62"),
+        Pair("lezhin", "#E71D31"),
+        Pair("toomics", "#EB2C2C"),
+        Pair("web comics", "#F7745E"),
+        Pair("comicwalker (jp)", "#F80003"),
+        Pair("pixiv comic (jp)", "#088ED5"),
+        Pair("comico (jp)", "#EE0208"),
+        Pair("mangabox (jp)", "#3999B8"),
+        Pair("pixiv novel (jp)", "#088ED5"),
+        Pair("piccoma (jp)", "#F3C016"),
+        Pair("pocket magazine (jp)", "#0C2F89"),
+        Pair("nico nico seiga (jp)", "#323232"),
+        Pair("shonen jump plus (jp)", "#E60109"),
+        Pair("naver (ko)", "#00CE63"),
+        Pair("daum webtoon (ko)", "#F82E40"),
+        Pair("bomtoon (ko)", "#F82BA8"),
+        Pair("kakaopage (ko)", "#F8CD01"),
+        Pair("kuaikan manhua (cn)", "#F8D00B"),
+        Pair("qq (cn)", "#FB9144"),
+        Pair("dajiaochong manhua (cn)", "#E9CE0E"),
+        Pair("weibo manhua (cn)", "#E0172B"),
+        Pair("manman manhua (cn)", "#FF5746")
     )
 }

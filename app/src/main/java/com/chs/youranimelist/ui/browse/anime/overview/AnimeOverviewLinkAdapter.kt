@@ -1,9 +1,11 @@
 package com.chs.youranimelist.ui.browse.anime.overview
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.AnimeOverviewQuery
+import com.chs.youranimelist.ItemColor
 import com.chs.youranimelist.databinding.ItemLinkBinding
 
 class AnimeOverviewLinkAdapter(
@@ -14,6 +16,9 @@ class AnimeOverviewLinkAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
             binding.model = list[layoutPosition]
+            binding.linkCard.setCardBackgroundColor(
+                Color.parseColor(ItemColor.EXTERNAL_LINK[list[layoutPosition]?.site?.toLowerCase()])
+            )
         }
     }
 
