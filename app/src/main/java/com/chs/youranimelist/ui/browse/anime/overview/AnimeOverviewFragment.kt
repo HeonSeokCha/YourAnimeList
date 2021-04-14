@@ -1,11 +1,13 @@
 package com.chs.youranimelist.ui.browse.anime.overview
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -104,7 +106,11 @@ class AnimeOverviewFragment() : BaseFragment() {
         }
 
         binding.rvAnimeOverviewLinks.apply {
-            linkAdapter = AnimeOverviewLinkAdapter(viewModel.animeLinkList)
+            linkAdapter = AnimeOverviewLinkAdapter(viewModel.animeLinkList) {
+                CustomTabsIntent.Builder()
+                    .build()
+                    .launchUrl(this@AnimeOverviewFragment.activity!!, Uri.parse(it))
+            }
             this.adapter = linkAdapter
         }
     }

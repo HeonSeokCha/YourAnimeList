@@ -3,33 +3,43 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="model"
             type="com.chs.youranimelist.data.Anime" />
     </data>
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
         android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
         app:cardBackgroundColor="@color/red_200">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/exploreImageGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.302" />
 
             <ImageView
                 android:id="@+id/img_anime_list_cover"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 app:animeRecommendImageCover="@{model.coverImage}"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="2:3"
+                app:layout_constraintEnd_toStartOf="@id/exploreImageGuideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@drawable/image_cover" />
@@ -42,14 +52,14 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:ellipsize="end"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:text="@{model.title}"
-                android:textStyle="bold"
                 android:textColor="@color/white"
-                tools:text="TextView"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/img_anime_list_cover"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="TextView" />
 
             <TextView
                 android:id="@+id/txt_anime_list_studio"
@@ -58,11 +68,11 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@{model.studio}"
-                android:textSize="12sp"
                 android:textColor="@color/white"
-                tools:text="TextView"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/img_anime_list_cover"
-                app:layout_constraintTop_toBottomOf="@+id/txt_anime_list_title" />
+                app:layout_constraintTop_toBottomOf="@+id/txt_anime_list_title"
+                tools:text="TextView" />
 
             <TextView
                 android:id="@+id/txt_anime_list_brief"
@@ -112,11 +122,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 android:orientation="horizontal"
                 app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/img_anime_list_cover"
                 app:layout_constraintTop_toBottomOf="@+id/txt_anime_list_score" />
