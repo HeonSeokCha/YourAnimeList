@@ -48,6 +48,7 @@ class SortedListActivity : AppCompatActivity() {
                         viewModel.selectedYear = yearList[which].toInt()
                         binding.animeListYear.text = viewModel.selectedYear?.toString()
                     }
+                    isLoading = false
                     viewModel.refresh()
                     animeListAdapter.notifyDataSetChanged()
                 }
@@ -60,6 +61,7 @@ class SortedListActivity : AppCompatActivity() {
                 .setItems(seasonArray) { _, which ->
                     viewModel.selectedSeason = viewModel.animeSeasonList[which]
                     binding.animeListSeason.text = viewModel.selectedSeason?.name
+                    isLoading = false
                     viewModel.refresh()
                     animeListAdapter.notifyDataSetChanged()
                 }
@@ -71,6 +73,7 @@ class SortedListActivity : AppCompatActivity() {
                 .setItems(viewModel.animeSortArray) { _, which ->
                     viewModel.selectedSort = viewModel.animeSortList[which]
                     binding.animeListSort.text = viewModel.animeSortArray[which]
+                    isLoading = false
                     viewModel.refresh()
                     animeListAdapter.notifyDataSetChanged()
                 }
@@ -165,6 +168,7 @@ class SortedListActivity : AppCompatActivity() {
                 }
                 startActivity(intent)
             }
+            animeListAdapter.setHasStableIds(true)
             this.adapter = animeListAdapter
             this.layoutManager = GridLayoutManager(this@SortedListActivity, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))

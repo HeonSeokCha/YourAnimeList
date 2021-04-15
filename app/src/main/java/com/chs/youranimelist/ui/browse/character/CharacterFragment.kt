@@ -42,7 +42,8 @@ class CharacterFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         checkCharaList()
         initRecyclerView()
-        getCharaInfo(arguments?.getInt("id").toInput())
+        viewModel.getCharaInfo(arguments?.getInt("id").toInput())
+        getCharaInfo()
         initClick()
     }
 
@@ -64,8 +65,7 @@ class CharacterFragment : BaseFragment() {
         }
     }
 
-    private fun getCharaInfo(charaId: Input<Int>) {
-        viewModel.getCharaInfo(charaId)
+    private fun getCharaInfo() {
         viewModel.characterDetailResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> {

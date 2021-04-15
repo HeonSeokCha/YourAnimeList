@@ -43,7 +43,6 @@ class AnimeDetailFragment : Fragment() {
 
     private fun checkAnimeList() {
         viewModel.checkAnimeList(arguments?.getInt("id")!!).observe(viewLifecycleOwner, {
-            Log.d("ListSize", it.size.toString())
             if (it.size == 1 && it[0].animeId == arguments?.getInt("id")!!) {
                 viewModel.initAnimeList = it[0]
                 binding.mediaSaveList.apply {

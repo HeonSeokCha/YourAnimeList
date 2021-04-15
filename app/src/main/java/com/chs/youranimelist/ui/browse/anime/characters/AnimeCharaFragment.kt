@@ -37,11 +37,11 @@ class AnimeCharaFragment() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initRecyclerView()
-        getCharacters(arguments?.getInt("id")!!)
+        viewModel.getAnimeCharacter(arguments?.getInt("id")!!)
+        getCharacters()
     }
 
-    private fun getCharacters(animeId: Int) {
-        viewModel.getAnimeCharacter(animeId)
+    private fun getCharacters() {
         viewModel.animeCharacterResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> binding.progressBar.isVisible = true

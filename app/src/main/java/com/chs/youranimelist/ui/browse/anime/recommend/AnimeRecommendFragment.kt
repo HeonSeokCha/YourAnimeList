@@ -37,11 +37,10 @@ class AnimeRecommendFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         viewModel.getRecommendList(arguments?.getInt("id")!!)
-        getRecommendList(arguments?.getInt("id")!!)
+        getRecommendList()
     }
 
-    private fun getRecommendList(animeId: Int) {
-        viewModel.getRecommendList(animeId)
+    private fun getRecommendList() {
         viewModel.animeRecommendResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> binding.progressBar.isVisible = true

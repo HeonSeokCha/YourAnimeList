@@ -64,7 +64,9 @@ class SearchFragment : Fragment() {
                         adapter.notifyItemRemoved(viewModel.searchList.size)
                         isLoading = false
                     }
+
                     viewModel.page += 1
+
                     when (viewModel.searchPage) {
                         "Anime" -> {
                             val searchAnime = it as NetWorkState<SearchAnimeQuery.Page>

@@ -38,8 +38,9 @@ class AnimeOverviewFragment() : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel.getAnimeOverview(arguments?.getInt("id")!!)
         initRecyclerView()
-        getAnimeInfo(arguments?.getInt("id")!!)
+        getAnimeInfo()
         initClick()
     }
 
@@ -57,8 +58,7 @@ class AnimeOverviewFragment() : BaseFragment() {
         }
     }
 
-    private fun getAnimeInfo(animeId: Int) {
-        viewModel.getAnimeOverview(animeId)
+    private fun getAnimeInfo() {
         viewModel.animeOverviewResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> Unit
@@ -74,7 +74,6 @@ class AnimeOverviewFragment() : BaseFragment() {
 
                     it.data.media.externalLinks?.forEach { links ->
                         viewModel.animeLinkList.add(links)
-                        Log.d("Lniks", links.toString())
                     }
                     relationAdapter.notifyDataSetChanged()
                     genreAdapter.notifyDataSetChanged()

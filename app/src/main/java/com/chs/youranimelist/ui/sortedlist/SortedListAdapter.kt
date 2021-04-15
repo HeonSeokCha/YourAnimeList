@@ -56,4 +56,6 @@ class SortedListAdapter(
     }
 
     override fun getItemCount(): Int = items.size
+
+    override fun getItemId(position: Int): Long = items[position]?.id?.toLong() ?: 9999L
 }
