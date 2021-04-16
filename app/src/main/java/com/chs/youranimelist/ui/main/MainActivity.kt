@@ -47,4 +47,9 @@ class MainActivity : BaseActivity() {
             true
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
