@@ -17,7 +17,7 @@ import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.ui.browse.BrowseActivity
 
 class SortedListActivity : AppCompatActivity() {
-    private var animeListAdapter: SortedListAdapter? = null
+    private lateinit var animeListAdapter: SortedListAdapter
     private lateinit var viewModel: SortedListViewModel
     private var _binding: ActivitySortedListBinding? = null
     private var isLoading: Boolean = false
@@ -51,7 +51,7 @@ class SortedListActivity : AppCompatActivity() {
                     }
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter!!.notifyDataSetChanged()
+                    animeListAdapter.notifyDataSetChanged()
                 }
                 .show()
         }
@@ -64,7 +64,7 @@ class SortedListActivity : AppCompatActivity() {
                     binding.animeListSeason.text = viewModel.selectedSeason?.name
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter!!.notifyDataSetChanged()
+                    animeListAdapter.notifyDataSetChanged()
                 }
                 .show()
         }
@@ -76,7 +76,7 @@ class SortedListActivity : AppCompatActivity() {
                     binding.animeListSort.text = viewModel.animeSortArray[which]
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter!!.notifyDataSetChanged()
+                    animeListAdapter.notifyDataSetChanged()
                 }
                 .show()
         }
@@ -128,7 +128,7 @@ class SortedListActivity : AppCompatActivity() {
                 ResponseState.SUCCESS -> {
                     if (isLoading) {
                         viewModel.animeResultList.removeAt(viewModel.animeResultList.lastIndex)
-                        animeListAdapter!!.notifyItemRemoved(viewModel.animeResultList.size)
+                        animeListAdapter.notifyItemRemoved(viewModel.animeResultList.size)
                         isLoading = false
                     }
 
@@ -145,7 +145,7 @@ class SortedListActivity : AppCompatActivity() {
                             viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
                         }
                     }
-                    animeListAdapter!!.notifyDataSetChanged()
+                    animeListAdapter.notifyDataSetChanged()
                     binding.listProgressBar.isVisible = false
                 }
                 ResponseState.ERROR -> {
@@ -170,7 +170,7 @@ class SortedListActivity : AppCompatActivity() {
                 }
                 startActivity(intent)
             }
-            animeListAdapter!!.setHasStableIds(true)
+            animeListAdapter.setHasStableIds(true)
             this.adapter = animeListAdapter
             this.layoutManager = GridLayoutManager(this@SortedListActivity, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
@@ -181,8 +181,8 @@ class SortedListActivity : AppCompatActivity() {
                     if (newState == RecyclerView.SCROLL_STATE_IDLE &&
                         !recyclerView.canScrollVertically(1) && !isLoading
                     ) {
-                        isLoading = true
                         loadMore()
+                        isLoading = true
                     }
                 }
             })
@@ -192,7 +192,7 @@ class SortedListActivity : AppCompatActivity() {
     private fun loadMore() {
         if (viewModel.hasNextPage) {
             viewModel.animeResultList.add(null)
-            animeListAdapter!!.notifyItemInserted(viewModel.animeResultList.lastIndex)
+            animeListAdapter.notifyItemInserted(viewModel.animeResultList.lastIndex)
             viewModel.page += 1
             viewModel.getAnimeList()
         }
@@ -200,7 +200,6 @@ class SortedListActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         _binding = null
-        animeListAdapter = null
         super.onDestroy()
     }
 }

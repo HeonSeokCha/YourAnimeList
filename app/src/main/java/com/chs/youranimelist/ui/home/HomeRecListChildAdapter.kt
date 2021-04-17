@@ -11,19 +11,7 @@ class HomeRecListChildAdapter(
     private val clickListener: (animeId: Int) -> Unit,
 ) : RecyclerView.Adapter<HomeRecListChildAdapter.AnimeViewHolder>() {
 
-    inner class AnimeViewHolder(
-        private val binding: ItemAnimeChildBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener {
-                clickListener.invoke(list[layoutPosition].id)
-            }
-        }
-
-        fun bind() {
-            binding.model = list[layoutPosition]
-        }
-    }
+    class AnimeViewHolder(val binding: ItemAnimeChildBinding) : RecyclerView.ViewHolder(binding.root)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeViewHolder {
@@ -32,7 +20,10 @@ class HomeRecListChildAdapter(
     }
 
     override fun onBindViewHolder(holder: AnimeViewHolder, position: Int) {
-        holder.bind()
+        holder.binding.root.setOnClickListener {
+            clickListener.invoke(list[position].id)
+        }
+        holder.binding.model = list[position]
     }
 
     override fun getItemCount(): Int = list.size

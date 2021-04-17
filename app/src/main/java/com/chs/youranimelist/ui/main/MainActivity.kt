@@ -12,6 +12,7 @@ import com.chs.youranimelist.ui.base.BaseActivity
 import com.chs.youranimelist.ui.base.BaseNavigator
 import com.chs.youranimelist.ui.characterlist.CharacterListFragment
 import com.chs.youranimelist.ui.home.HomeFragment
+import leakcanary.AppWatcher
 
 class MainActivity : BaseActivity() {
     private var _binding: ActivityMainBinding? = null

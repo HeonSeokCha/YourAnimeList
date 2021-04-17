@@ -21,31 +21,8 @@ class HomeRecListParentAdapter(
         "UPCOMING NEXT SEASON", "ALL TIME POPULAR"
     )
 
-    inner class AnimeListRecViewHolder(private val binding: ItemAnimeParentBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.btnViewAll.setOnClickListener {
-                clickListener.invoke(listTitleList[layoutPosition])
-            }
-        }
-
-        fun bind() {
-            binding.model = listTitleList[layoutPosition]
-            binding.rvAnime.apply {
-                homeAdapter =
-                    HomeRecListChildAdapter(list[layoutPosition], clickListener = { animeId ->
-                        animeClickListener.invoke(animeId)
-                    }).apply {
-                        this.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-                    }
-                this.adapter = homeAdapter
-                this.layoutManager = LinearLayoutManager(
-                    mContext,
-                    LinearLayoutManager.HORIZONTAL, false
-                )
-            }
-        }
-    }
+    class AnimeListRecViewHolder(val binding: ItemAnimeParentBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeListRecViewHolder {
         val view =
@@ -54,7 +31,23 @@ class HomeRecListParentAdapter(
     }
 
     override fun onBindViewHolder(holder: AnimeListRecViewHolder, position: Int) {
-        holder.bind()
+        holder.binding.btnViewAll.setOnClickListener {
+            clickListener.invoke(listTitleList[position])
+        }
+        holder.binding.model = listTitleList[position]
+        holder.binding.rvAnime.apply {
+            homeAdapter =
+                HomeRecListChildAdapter(list[position], clickListener = { animeId ->
+                    animeClickListener.invoke(animeId)
+                }).apply {
+                    this.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                }
+            this.adapter = homeAdapter
+            this.layoutManager = LinearLayoutManager(
+                mContext,
+                LinearLayoutManager.HORIZONTAL, false
+            )
+        }
     }
 
     override fun getItemCount(): Int = list.size
