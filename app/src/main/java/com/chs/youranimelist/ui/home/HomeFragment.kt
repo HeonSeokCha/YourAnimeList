@@ -59,27 +59,27 @@ class HomeFragment : BaseFragment() {
                         }
                         viewModel.homeRecList.add(anime)
                     }
-//                    it.data?.popular?.popularMedia.apply {
-//                        val anime: ArrayList<AnimeList> = ArrayList()
-//                        this!!.forEach { popular ->
-//                            anime.add(popular!!.fragments.animeList)
-//                        }
-//                        viewModel.homeRecList.add(anime)
-//                    }
-//                    it.data?.upcomming?.upcommingMedia.apply {
-//                        val anime: ArrayList<AnimeList> = ArrayList()
-//                        this!!.forEach { upComming ->
-//                            anime.add(upComming!!.fragments.animeList)
-//                        }
-//                        viewModel.homeRecList.add(anime)
-//                    }
-//                    it.data?.alltime?.alltimeMedia.apply {
-//                        val anime: ArrayList<AnimeList> = ArrayList()
-//                        this!!.forEach { allTime ->
-//                            anime.add(allTime!!.fragments.animeList)
-//                        }
-//                        viewModel.homeRecList.add(anime)
-//                    }
+                    it.data?.popular?.popularMedia.apply {
+                        val anime: ArrayList<AnimeList> = ArrayList()
+                        this!!.forEach { popular ->
+                            anime.add(popular!!.fragments.animeList)
+                        }
+                        viewModel.homeRecList.add(anime)
+                    }
+                    it.data?.upcomming?.upcommingMedia.apply {
+                        val anime: ArrayList<AnimeList> = ArrayList()
+                        this!!.forEach { upComming ->
+                            anime.add(upComming!!.fragments.animeList)
+                        }
+                        viewModel.homeRecList.add(anime)
+                    }
+                    it.data?.alltime?.alltimeMedia.apply {
+                        val anime: ArrayList<AnimeList> = ArrayList()
+                        this!!.forEach { allTime ->
+                            anime.add(allTime!!.fragments.animeList)
+                        }
+                        viewModel.homeRecList.add(anime)
+                    }
                     viewPagerHomeRecAdapter.notifyDataSetChanged()
                     homeRecListAdapter.notifyDataSetChanged()
                     binding.mainProgressbar.isVisible = false

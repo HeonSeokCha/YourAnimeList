@@ -11,18 +11,7 @@ class CharacterListAdapter(
     private val clickListener: (id: Int) -> Unit
 ) : ListAdapter<Character, CharacterListAdapter.CharacterListViewHolder>(CharacterListComparator()) {
 
-    inner class CharacterListViewHolder(private val binding: ItemCharacterListBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener {
-                clickListener.invoke(getItem(layoutPosition).charaId)
-            }
-        }
-
-        fun bind() {
-            binding.model = getItem(layoutPosition)
-        }
-    }
+    class CharacterListViewHolder(val binding: ItemCharacterListBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterListViewHolder {
         val view =
@@ -31,7 +20,10 @@ class CharacterListAdapter(
     }
 
     override fun onBindViewHolder(holder: CharacterListViewHolder, position: Int) {
-        holder.bind()
+        holder.binding.model = getItem(position)
+        holder.binding.root.setOnClickListener {
+            clickListener.invoke(getItem(position).charaId)
+        }
     }
 
     override fun getItemId(position: Int): Long = getItem(position).id.toLong()

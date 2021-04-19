@@ -11,18 +11,8 @@ class HomeRecViewPagerAdapter(
     private val clickListener: (animeId: Int) -> Unit
 ) : RecyclerView.Adapter<HomeRecViewPagerAdapter.ViewPagerViewHolder>() {
 
-    inner class ViewPagerViewHolder(private val binding: ItemViewPagerBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener {
-                clickListener.invoke(items[layoutPosition]!!.id)
-            }
-        }
-
-        fun bind() {
-            binding.model = items[layoutPosition]
-        }
-    }
+    class ViewPagerViewHolder(val binding: ItemViewPagerBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerViewHolder {
         val view = ItemViewPagerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,7 +20,10 @@ class HomeRecViewPagerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
-        holder.bind()
+        holder.binding.model = items[position]
+        holder.binding.root.setOnClickListener {
+            clickListener.invoke(items[position]!!.id)
+        }
     }
 
     override fun getItemCount(): Int = items.size

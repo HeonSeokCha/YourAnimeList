@@ -14,7 +14,7 @@ import com.chs.youranimelist.ui.characterlist.CharacterListFragment
 import com.chs.youranimelist.ui.home.HomeFragment
 import leakcanary.AppWatcher
 
-class MainActivity : BaseActivity() {
+class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 

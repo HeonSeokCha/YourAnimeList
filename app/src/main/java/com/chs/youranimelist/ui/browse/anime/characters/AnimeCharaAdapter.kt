@@ -12,19 +12,7 @@ class AnimeCharaAdapter(
     private val clickListener: (charaId: Int) -> Unit
 ) : RecyclerView.Adapter<AnimeCharaAdapter.CharaViewHolder>() {
 
-    inner class CharaViewHolder(
-        private val binding: ItemCharacterBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener {
-                clickListener.invoke(items[layoutPosition]!!.id)
-            }
-        }
-
-        fun bind() {
-            binding.model = items[layoutPosition]
-        }
-    }
+    class CharaViewHolder(val binding: ItemCharacterBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharaViewHolder {
         val view = ItemCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,7 +20,10 @@ class AnimeCharaAdapter(
     }
 
     override fun onBindViewHolder(holder: CharaViewHolder, position: Int) {
-        holder.bind()
+        holder.binding.model = items[position]
+        holder.binding.root.setOnClickListener {
+            clickListener.invoke(items[position]!!.id)
+        }
     }
 
     override fun getItemCount(): Int = items.size

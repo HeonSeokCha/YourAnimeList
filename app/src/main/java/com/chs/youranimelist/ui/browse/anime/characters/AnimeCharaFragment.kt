@@ -1,23 +1,17 @@
 package com.chs.youranimelist.ui.browse.anime.characters
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.AnimeCharacterQuery
-import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
-import com.chs.youranimelist.ui.main.MainViewModel
 
 class AnimeCharaFragment() :
     BaseFragment() {

@@ -10,14 +10,8 @@ import com.chs.youranimelist.databinding.ItemGenreBinding
 class AnimeOverviewGenreAdapter(
     private val items: List<String?>
 ) : RecyclerView.Adapter<AnimeOverviewGenreAdapter.ViewHolder>() {
-    inner class ViewHolder(
-        private val binding: ItemGenreBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind() {
-            binding.model = items[layoutPosition]
-            binding.genreCard.setCardBackgroundColor(Color.parseColor(ItemColor.GENRE_COLOR[items[layoutPosition]]))
-        }
-    }
+
+    class ViewHolder(val binding: ItemGenreBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemGenreBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,7 +19,8 @@ class AnimeOverviewGenreAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind()
+        holder.binding.model = items[position]
+        holder.binding.genreCard.setCardBackgroundColor(Color.parseColor(ItemColor.GENRE_COLOR[items[position]]))
     }
 
     override fun getItemCount(): Int = items.size

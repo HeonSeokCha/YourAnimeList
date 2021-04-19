@@ -12,18 +12,7 @@ class CharacterAnimeAdapter(
 ) :
     RecyclerView.Adapter<CharacterAnimeAdapter.ViewHolder>() {
 
-    inner class ViewHolder(private val binding: ItemAnimeChildBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener {
-                clickListener.invoke(items[layoutPosition]!!.node!!.fragments.animeList.id)
-            }
-        }
-
-        fun bind() {
-            binding.model = items[layoutPosition]!!.node!!.fragments.animeList
-        }
-    }
+    class ViewHolder(val binding: ItemAnimeChildBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemAnimeChildBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -31,7 +20,10 @@ class CharacterAnimeAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind()
+        holder.binding.model = items[position]!!.node!!.fragments.animeList
+        holder.binding.root.setOnClickListener {
+            clickListener.invoke(items[position]!!.node!!.fragments.animeList.id)
+        }
     }
 
     override fun getItemCount(): Int = items.size

@@ -18,7 +18,7 @@ object ApolloServices {
     val apolloClient: ApolloClient = ApolloClient.builder()
         .serverUrl(BASE_URL)
         .okHttpClient(createOkHttpClient())
-        .normalizedCache(cache)
+//        .normalizedCache(cache)
         .build()
 
     private fun createOkHttpClient(): OkHttpClient {

@@ -14,23 +14,8 @@ class AnimeOverviewLinkAdapter(
     private val clickListener: (url: String) -> Unit
 ) : RecyclerView.Adapter<AnimeOverviewLinkAdapter.AnimeOverviewLinkViewHolder>() {
 
-    inner class AnimeOverviewLinkViewHolder(private val binding: ItemLinkBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener {
-                clickListener.invoke(list[layoutPosition]!!.url)
-            }
-        }
-
-        fun bind() {
-            binding.model = list[layoutPosition]
-            if (ItemColor.EXTERNAL_LINK.containsKey(list[layoutPosition]!!.site.toLowerCase())) {
-                binding.linkCard.setCardBackgroundColor(
-                    Color.parseColor(ItemColor.EXTERNAL_LINK[list[layoutPosition]!!.site.toLowerCase()])
-                )
-            }
-        }
-    }
+    class AnimeOverviewLinkViewHolder(val binding: ItemLinkBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeOverviewLinkViewHolder {
         val view = ItemLinkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -38,7 +23,15 @@ class AnimeOverviewLinkAdapter(
     }
 
     override fun onBindViewHolder(holder: AnimeOverviewLinkViewHolder, position: Int) {
-        holder.bind()
+        holder.binding.model = list[position]
+        if (ItemColor.EXTERNAL_LINK.containsKey(list[position]!!.site.toLowerCase())) {
+            holder.binding.linkCard.setCardBackgroundColor(
+                Color.parseColor(ItemColor.EXTERNAL_LINK[list[position]!!.site.toLowerCase()])
+            )
+        }
+        holder.binding.root.setOnClickListener {
+            clickListener.invoke(list[position]!!.url)
+        }
     }
 
     override fun getItemCount(): Int = list.size

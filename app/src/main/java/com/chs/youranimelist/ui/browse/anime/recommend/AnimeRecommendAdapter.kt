@@ -11,18 +11,7 @@ class AnimeRecommendAdapter(
     private val clickListener: (id: Int) -> Unit
 ) : RecyclerView.Adapter<AnimeRecommendAdapter.ViewHolder>() {
 
-    inner class ViewHolder(private val binding: ItemAnimeRecommendBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener {
-                clickListener.invoke(items[layoutPosition]!!.node!!.mediaRecommendation!!.id)
-            }
-        }
-
-        fun bind() {
-            binding.model = items[layoutPosition]!!.node
-        }
-    }
+    class ViewHolder(val binding: ItemAnimeRecommendBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemAnimeRecommendBinding.inflate(
@@ -32,7 +21,10 @@ class AnimeRecommendAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind()
+        holder.binding.model = items[position]!!.node
+        holder.binding.root.setOnClickListener {
+            clickListener.invoke(items[position]!!.node!!.mediaRecommendation!!.id)
+        }
     }
 
     override fun getItemCount(): Int = items.size

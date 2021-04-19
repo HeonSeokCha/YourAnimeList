@@ -57,7 +57,9 @@ class SearchFragment : Fragment() {
     private fun initObserver() {
         viewModel.getObserver()?.observe(viewLifecycleOwner, {
             when ((it as NetWorkState<*>?)?.responseState) {
+                
                 ResponseState.LOADING -> binding.progressBar.isVisible = true
+
                 ResponseState.SUCCESS -> {
                     if (isLoading) {
                         viewModel.searchList.removeAt(viewModel.searchList.lastIndex)

@@ -13,25 +13,7 @@ class AnimeListAdapter(
     private val clickListener: (id: Int) -> Unit
 ) : ListAdapter<Anime, AnimeListAdapter.AnimeListViewHolder>(AnimeListComparator()) {
 
-    inner class AnimeListViewHolder(private val binding: ItemAnimeListBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener {
-                clickListener.invoke(getItem(layoutPosition).animeId)
-            }
-        }
-
-        fun bind() {
-            binding.model = getItem(layoutPosition)
-            if (!getItem(layoutPosition).genre.isNullOrEmpty()) {
-                binding.rvAnimeListGenre.apply {
-                    isVisible = true
-                    binding.rvAnimeListGenre.adapter =
-                        AnimeOverviewGenreAdapter(getItem(layoutPosition).genre!!)
-                }
-            } else binding.rvAnimeListGenre.isVisible = false
-        }
-    }
+    class AnimeListViewHolder(val binding: ItemAnimeListBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeListViewHolder {
         val view = ItemAnimeListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -39,7 +21,17 @@ class AnimeListAdapter(
     }
 
     override fun onBindViewHolder(holder: AnimeListViewHolder, position: Int) {
-        holder.bind()
+        holder.binding.model = getItem(position)
+        holder.binding.root.setOnClickListener {
+            clickListener.invoke(getItem(position).animeId)
+        }
+        if (!getItem(position).genre.isNullOrEmpty()) {
+            holder.binding.rvAnimeListGenre.apply {
+                isVisible = true
+                holder.binding.rvAnimeListGenre.adapter =
+                    AnimeOverviewGenreAdapter(getItem(position).genre!!)
+            }
+        } else holder.binding.rvAnimeListGenre.isVisible = false
     }
 
     override fun getItemId(position: Int): Long = getItem(position).id.toLong()
