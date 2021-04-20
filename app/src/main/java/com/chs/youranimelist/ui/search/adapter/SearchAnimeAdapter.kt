@@ -17,20 +17,10 @@ class SearchAnimeAdapter(
         const val VIEW_TYPE_LOADING = 1
     }
 
-    inner class SearchAnimeViewHolder(private val binding: ItemSearchMediaBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener {
-                clickListener.invoke(list[layoutPosition]!!.animeSearchResult!!.fragments.animeList.id)
-            }
-        }
+    class SearchAnimeViewHolder(val binding: ItemSearchMediaBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-        fun bind() {
-            binding.model = list[layoutPosition]!!.animeSearchResult!!.fragments.animeList
-        }
-    }
-
-    inner class LoadingViewHolder(binding: ItemLoadingBinding) :
+    class LoadingViewHolder(binding: ItemLoadingBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -46,7 +36,12 @@ class SearchAnimeAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is SearchAnimeViewHolder) holder.bind()
+        if (holder is SearchAnimeViewHolder) {
+            holder.binding.model = list[position]!!.animeSearchResult!!.fragments.animeList
+            holder.binding.root.setOnClickListener {
+                clickListener.invoke(list[position]!!.animeSearchResult!!.fragments.animeList.id)
+            }
+        }
     }
 
     override fun getItemViewType(position: Int): Int {

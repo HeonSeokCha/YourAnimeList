@@ -63,6 +63,7 @@ class AnimeOverviewFragment() : BaseFragment() {
             when (it.responseState) {
                 ResponseState.LOADING -> Unit
                 ResponseState.SUCCESS -> {
+
                     binding.model = it.data?.media!!
                     it.data?.media.relations?.relationsEdges?.forEach { relation ->
                         viewModel.animeOverviewRelationList.add(relation)
@@ -75,6 +76,7 @@ class AnimeOverviewFragment() : BaseFragment() {
                     it.data.media.externalLinks?.forEach { links ->
                         viewModel.animeLinkList.add(links)
                     }
+
                     relationAdapter.notifyDataSetChanged()
                     genreAdapter.notifyDataSetChanged()
                     linkAdapter.notifyDataSetChanged()

@@ -116,11 +116,13 @@ class HomeFragment : BaseFragment() {
         binding.viewPager2.apply {
             viewPagerHomeRecAdapter =
                 HomeRecViewPagerAdapter(viewModel.pagerRecList, clickListener = { animeId ->
-                    val intent = Intent(activity, BrowseActivity::class.java).apply {
+                    startActivity(Intent(
+                        activity!!.applicationContext,
+                        BrowseActivity::class.java
+                    ).apply {
                         this.putExtra("type", "Media")
                         this.putExtra("id", animeId)
-                    }
-                    startActivity(intent)
+                    })
                 })
             this.orientation = ViewPager2.ORIENTATION_HORIZONTAL
             this.adapter = viewPagerHomeRecAdapter
