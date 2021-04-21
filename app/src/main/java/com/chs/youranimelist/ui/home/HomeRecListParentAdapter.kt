@@ -39,7 +39,7 @@ class HomeRecListParentAdapter(
             homeAdapter =
                 HomeRecListChildAdapter(list[position], clickListener = { animeId ->
                     animeClickListener.invoke(animeId)
-                }).apply {
+                }, mContext).apply {
                     this.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
                 }
             this.adapter = homeAdapter

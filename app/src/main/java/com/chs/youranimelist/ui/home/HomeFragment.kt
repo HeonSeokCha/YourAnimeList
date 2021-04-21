@@ -115,15 +115,18 @@ class HomeFragment : BaseFragment() {
     private fun initRecyclerView() {
         binding.viewPager2.apply {
             viewPagerHomeRecAdapter =
-                HomeRecViewPagerAdapter(viewModel.pagerRecList, clickListener = { animeId ->
-                    startActivity(Intent(
-                        activity!!.applicationContext,
-                        BrowseActivity::class.java
-                    ).apply {
-                        this.putExtra("type", "Media")
-                        this.putExtra("id", animeId)
+                HomeRecViewPagerAdapter(
+                    viewModel.pagerRecList,
+                    this@HomeFragment.context!!,
+                    clickListener = { animeId ->
+                        startActivity(Intent(
+                            activity!!.applicationContext,
+                            BrowseActivity::class.java
+                        ).apply {
+                            this.putExtra("type", "Media")
+                            this.putExtra("id", animeId)
+                        })
                     })
-                })
             this.orientation = ViewPager2.ORIENTATION_HORIZONTAL
             this.adapter = viewPagerHomeRecAdapter
             binding.indicator.setViewPager2(binding.viewPager2)

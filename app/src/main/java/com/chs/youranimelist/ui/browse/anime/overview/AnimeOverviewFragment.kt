@@ -2,17 +2,13 @@ package com.chs.youranimelist.ui.browse.anime.overview
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
-import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.apollographql.apollo.api.toInput
-import com.chs.youranimelist.AnimeOverviewQuery
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentAnimeOverviewBinding
 import com.chs.youranimelist.network.ResponseState
@@ -20,7 +16,7 @@ import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
 
 
-class AnimeOverviewFragment() : BaseFragment() {
+class AnimeOverviewFragment : BaseFragment() {
     private lateinit var viewModel: AnimeOverviewViewModel
     private lateinit var relationAdapter: AnimeOverviewRelationAdapter
     private lateinit var genreAdapter: AnimeOverviewGenreAdapter
