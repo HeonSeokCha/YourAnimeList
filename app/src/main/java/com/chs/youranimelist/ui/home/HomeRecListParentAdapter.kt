@@ -15,6 +15,7 @@ class HomeRecListParentAdapter(
     private val clickListener: (sortType: String) -> Unit,
     private val animeClickListener: (animeId: Int) -> Unit,
 ) : RecyclerView.Adapter<HomeRecListParentAdapter.AnimeListRecViewHolder>() {
+
     lateinit var homeAdapter: HomeRecListChildAdapter
     private var listTitleList = listOf(
         "TRENDING NOW", "POPULAR THIS SEASON",
@@ -37,9 +38,9 @@ class HomeRecListParentAdapter(
         holder.binding.model = listTitleList[position]
         holder.binding.rvAnime.apply {
             homeAdapter =
-                HomeRecListChildAdapter(list[position], clickListener = { animeId ->
+                HomeRecListChildAdapter(list[position]) { animeId ->
                     animeClickListener.invoke(animeId)
-                }, mContext).apply {
+                }.apply {
                     this.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
                 }
             this.adapter = homeAdapter

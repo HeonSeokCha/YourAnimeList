@@ -48,7 +48,8 @@ object AnimeDetailBinding {
         Glide.with(imageView.context).load(anime?.bannerImage)
             .placeholder(ColorDrawable(Color.parseColor(color)))
             .transition(DrawableTransitionOptions().crossFade())
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .skipMemoryCache(false)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(imageView)
     }
 
@@ -66,7 +67,8 @@ object AnimeDetailBinding {
         Glide.with(imageView.context).load(path)
             .transform(RoundedCorners(10))
             .transition(DrawableTransitionOptions().crossFade())
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .skipMemoryCache(false)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(imageView)
     }
 
@@ -75,7 +77,8 @@ object AnimeDetailBinding {
     fun animeRecommendImageCover(imageView: ImageView, path: String?) {
         Glide.with(imageView.context).load(path)
             .transition(DrawableTransitionOptions().crossFade())
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .skipMemoryCache(false)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(imageView)
     }
 

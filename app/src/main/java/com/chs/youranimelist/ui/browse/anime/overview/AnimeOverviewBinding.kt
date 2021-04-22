@@ -101,7 +101,8 @@ object AnimeOverviewBinding {
     fun animeOverviewCoverImage(imageView: ImageView, path: String?) {
         Glide.with(imageView.context).load(path)
             .transition(DrawableTransitionOptions().crossFade())
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .skipMemoryCache(false)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(imageView)
     }
 }
