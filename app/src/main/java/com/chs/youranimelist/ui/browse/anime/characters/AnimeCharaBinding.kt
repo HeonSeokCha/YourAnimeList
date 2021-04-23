@@ -15,7 +15,8 @@ object AnimeCharaBinding {
         Glide.with(imageView.context).load(path)
             .apply(RequestOptions().circleCrop())
             .transition(DrawableTransitionOptions().crossFade())
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .skipMemoryCache(false)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(imageView)
     }
 

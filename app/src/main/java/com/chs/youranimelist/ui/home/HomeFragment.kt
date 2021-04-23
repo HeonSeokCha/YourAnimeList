@@ -23,8 +23,8 @@ class HomeFragment : BaseFragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: HomeViewModel
-    private lateinit var viewPagerHomeRecAdapter: HomeRecViewPagerAdapter
-    private lateinit var homeRecListAdapter: HomeRecListParentAdapter
+    private var viewPagerHomeRecAdapter: HomeRecViewPagerAdapter? = null
+    private var homeRecListAdapter: HomeRecListParentAdapter? = null
     private val animeRepository by lazy { AnimeRepository() }
 
     override fun onCreateView(
@@ -80,8 +80,8 @@ class HomeFragment : BaseFragment() {
                         }
                         viewModel.homeRecList.add(anime)
                     }
-                    viewPagerHomeRecAdapter.notifyDataSetChanged()
-                    homeRecListAdapter.notifyDataSetChanged()
+                    viewPagerHomeRecAdapter!!.notifyDataSetChanged()
+                    homeRecListAdapter!!.notifyDataSetChanged()
                     binding.mainProgressbar.isVisible = false
                 }
                 ResponseState.ERROR -> {
@@ -154,5 +154,7 @@ class HomeFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        homeRecListAdapter = null
+        viewPagerHomeRecAdapter = null
     }
 }

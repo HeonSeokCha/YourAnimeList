@@ -57,9 +57,9 @@ class AnimeCharaFragment() :
     private fun initRecyclerView() {
         binding.rvAnimeChara.apply {
             charaAdapter =
-                AnimeCharaAdapter(viewModel.animeCharacterList, clickListener = { charaId ->
+                AnimeCharaAdapter(viewModel.animeCharacterList) { charaId ->
                     this@AnimeCharaFragment.navigate!!.changeFragment("CHARA", charaId)
-                })
+                }
             this.adapter = charaAdapter
             this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 50, true))

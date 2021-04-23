@@ -61,11 +61,9 @@ class AnimeRecommendFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         binding.rvAnimeRecommend.apply {
-            animeRecommendAdapter = AnimeRecommendAdapter(
-                viewModel.animeRecList, clickListener = { id ->
-                    this@AnimeRecommendFragment.navigate?.changeFragment("Media", id, true)
-                }
-            )
+            animeRecommendAdapter = AnimeRecommendAdapter(viewModel.animeRecList) { id ->
+                this@AnimeRecommendFragment.navigate?.changeFragment("Media", id, true)
+            }
             this.adapter = animeRecommendAdapter
             this.layoutManager = LinearLayoutManager(this@AnimeRecommendFragment.context)
         }

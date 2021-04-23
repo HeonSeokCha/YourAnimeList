@@ -86,10 +86,10 @@ class AnimeOverviewFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         binding.rvAnimeOverviewRelation.apply {
-            relationAdapter = AnimeOverviewRelationAdapter(viewModel.animeOverviewRelationList,
-                clickListener = { _, id ->
+            relationAdapter =
+                AnimeOverviewRelationAdapter(viewModel.animeOverviewRelationList) { _, id ->
                     this@AnimeOverviewFragment.navigate?.changeFragment("Media", id)
-                })
+                }
             this.adapter = relationAdapter
             this.layoutManager = LinearLayoutManager(
                 this@AnimeOverviewFragment.context,

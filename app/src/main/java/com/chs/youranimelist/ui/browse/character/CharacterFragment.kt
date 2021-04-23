@@ -101,11 +101,9 @@ class CharacterFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         binding.rvCharaAnimeSeries.apply {
-            animeAdapter = CharacterAnimeAdapter(viewModel.characterAnimeList,
-                clickListener = { id ->
-                    this@CharacterFragment.navigate?.changeFragment("Media", id, true)
-                }
-            ).apply {
+            animeAdapter = CharacterAnimeAdapter(viewModel.characterAnimeList) { id ->
+                this@CharacterFragment.navigate?.changeFragment("Media", id, true)
+            }.apply {
                 this.stateRestorationPolicy =
                     RecyclerView.Adapter.StateRestorationPolicy.ALLOW
             }
