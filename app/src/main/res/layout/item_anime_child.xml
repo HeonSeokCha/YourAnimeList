@@ -27,7 +27,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:adjustViewBounds="true"
-                android:scaleType="fitXY"
                 app:animeImageCover="@{model.coverImage.extraLarge}"
                 app:layout_constraintDimensionRatio="2:3"
                 app:layout_constraintEnd_toEndOf="parent"

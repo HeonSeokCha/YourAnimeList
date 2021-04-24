@@ -24,7 +24,7 @@ object HomeRecBinding {
     @JvmStatic
     fun animeRecImageBanner(imageView: ImageView, anime: HomeRecommendListQuery.Medium) {
         Glide.with(imageView.context).load(anime.bannerImage)
-            .override(750, 250)
+            .override(750, 250).centerInside()
             .placeholder(ColorDrawable(Color.parseColor(anime.coverImage?.color ?: "#ffffff")))
             .transition(DrawableTransitionOptions().crossFade())
             .skipMemoryCache(false)
@@ -37,7 +37,7 @@ object HomeRecBinding {
     fun animeImageCover(imageView: ImageView, path: String?) {
         Glide.with(imageView.context).load(path)
             .transform(RoundedCorners(10))
-            .override(260, 540)
+            .override(130, 270).centerInside()
             .transition(DrawableTransitionOptions().crossFade())
             .skipMemoryCache(false)
             .diskCacheStrategy(DiskCacheStrategy.NONE)

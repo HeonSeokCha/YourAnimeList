@@ -44,9 +44,9 @@ object AnimeDetailBinding {
     @BindingAdapter("animeDetailImageBanner")
     @JvmStatic
     fun animeDetailImageBanner(imageView: ImageView, anime: AnimeDetailQuery.Media?) {
-        var color: String = anime?.coverImage?.color ?: "#ffffff"
         Glide.with(imageView.context).load(anime?.bannerImage)
-            .placeholder(ColorDrawable(Color.parseColor(color)))
+            .override(750, 250).centerInside()
+            .placeholder(ColorDrawable(Color.parseColor(anime?.coverImage?.color ?: "#ffffff")))
             .transition(DrawableTransitionOptions().crossFade())
             .skipMemoryCache(false)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -66,6 +66,7 @@ object AnimeDetailBinding {
     fun animeDetailImageCover(imageView: ImageView, path: String?) {
         Glide.with(imageView.context).load(path)
             .transform(RoundedCorners(10))
+            .override(130, 270).centerInside()
             .transition(DrawableTransitionOptions().crossFade())
             .skipMemoryCache(false)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -77,6 +78,7 @@ object AnimeDetailBinding {
     fun animeRecommendImageCover(imageView: ImageView, path: String?) {
         Glide.with(imageView.context).load(path)
             .transition(DrawableTransitionOptions().crossFade())
+            .override(130, 270).centerInside()
             .skipMemoryCache(false)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(imageView)
