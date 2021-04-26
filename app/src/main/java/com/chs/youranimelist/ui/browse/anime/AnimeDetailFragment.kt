@@ -55,10 +55,14 @@ class AnimeDetailFragment : Fragment() {
     }
 
     private fun initClick() {
-        binding.animeToolbar.setNavigationOnClickListener { activity?.finish() }
+        binding.animeToolbar.setNavigationOnClickListener {
+            activity?.finish()
+        }
+
         binding.btnTrailerPlay.setOnClickListener {
             trailerPlay(trailerId)
         }
+
         binding.mediaSaveList.setOnClickListener {
             saveList()
         }
@@ -67,12 +71,15 @@ class AnimeDetailFragment : Fragment() {
     private fun initAnimeInfo() {
         viewModel.animeDetailResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
-                ResponseState.LOADING -> binding.progressBar.isVisible = true
+                ResponseState.LOADING -> {
+                    binding.progressBar.isVisible = true
+                }
                 ResponseState.SUCCESS -> {
                     binding.model = it.data!!.media
                     trailerId = it.data?.media?.trailer?.id.toString()
                     viewModel.animeDetail = it.data!!.media
                     binding.progressBar.isVisible = false
+                    binding.btnTrailerPlay.isVisible = true
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(

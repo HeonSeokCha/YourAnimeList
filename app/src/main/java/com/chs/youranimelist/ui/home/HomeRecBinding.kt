@@ -37,7 +37,7 @@ object HomeRecBinding {
     fun animeImageCover(imageView: ImageView, path: String?) {
         Glide.with(imageView.context).load(path)
             .transform(RoundedCorners(10))
-            .override(130, 270).centerInside()
+            .override(260, 540).centerInside()
             .transition(DrawableTransitionOptions().crossFade())
             .skipMemoryCache(false)
             .diskCacheStrategy(DiskCacheStrategy.NONE)

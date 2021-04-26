@@ -67,11 +67,23 @@
                             android:layout_height="wrap_content"
                             android:clickable="true"
                             android:src="@drawable/ic_play"
+                            android:visibility="gone"
                             app:animeDetailTrailerVisible="@{model.trailer}"
                             app:layout_constraintBottom_toBottomOf="@+id/mediaBannerImage"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/mediaBannerImage"
                             app:layout_constraintTop_toTopOf="@+id/mediaBannerImage" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            app:layout_constraintBottom_toBottomOf="@+id/mediaBannerImage"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@+id/mediaBannerImage"
+                            app:layout_constraintTop_toTopOf="@+id/mediaBannerImage"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -225,13 +237,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -66,7 +66,7 @@ object AnimeDetailBinding {
     fun animeDetailImageCover(imageView: ImageView, path: String?) {
         Glide.with(imageView.context).load(path)
             .transform(RoundedCorners(10))
-            .override(130, 270).centerInside()
+            .override(260, 540).centerInside()
             .transition(DrawableTransitionOptions().crossFade())
             .skipMemoryCache(false)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -78,7 +78,7 @@ object AnimeDetailBinding {
     fun animeRecommendImageCover(imageView: ImageView, path: String?) {
         Glide.with(imageView.context).load(path)
             .transition(DrawableTransitionOptions().crossFade())
-            .override(130, 270).centerInside()
+            .override(260, 540).centerInside()
             .skipMemoryCache(false)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(imageView)

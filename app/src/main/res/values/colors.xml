@@ -15,4 +15,5 @@
     <color name="notYet">#673AB7</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="shimmer">#E5E5E5</color>
 </resources>
