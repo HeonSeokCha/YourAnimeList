@@ -18,6 +18,6 @@ object AnimeCharaBinding {
             .skipMemoryCache(false)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(imageView)
-    }
 
+    }
 }

@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
+import coil.load
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -44,13 +45,11 @@ object AnimeDetailBinding {
     @BindingAdapter("animeDetailImageBanner")
     @JvmStatic
     fun animeDetailImageBanner(imageView: ImageView, anime: AnimeDetailQuery.Media?) {
-        Glide.with(imageView.context).load(anime?.bannerImage)
-            .override(750, 250).centerInside()
-            .placeholder(ColorDrawable(Color.parseColor(anime?.coverImage?.color ?: "#ffffff")))
-            .transition(DrawableTransitionOptions().crossFade())
-            .skipMemoryCache(false)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .into(imageView)
+        imageView.load(anime!!.bannerImage) {
+            placeholder(ColorDrawable(Color.parseColor(anime.coverImage?.color ?: "#ffffff")))
+            crossfade(true)
+            size(750, 250)
+        }
     }
 
     @BindingAdapter("animeDetailTrailerVisible")
@@ -64,24 +63,19 @@ object AnimeDetailBinding {
     @BindingAdapter("animeDetailImageCover")
     @JvmStatic
     fun animeDetailImageCover(imageView: ImageView, path: String?) {
-        Glide.with(imageView.context).load(path)
-            .transform(RoundedCorners(10))
-            .override(260, 540).centerInside()
-            .transition(DrawableTransitionOptions().crossFade())
-            .skipMemoryCache(false)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .into(imageView)
+        imageView.load(path) {
+            crossfade(true)
+            size(260, 540)
+        }
     }
 
     @BindingAdapter("animeRecommendImageCover")
     @JvmStatic
     fun animeRecommendImageCover(imageView: ImageView, path: String?) {
-        Glide.with(imageView.context).load(path)
-            .transition(DrawableTransitionOptions().crossFade())
-            .override(260, 540).centerInside()
-            .skipMemoryCache(false)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .into(imageView)
+        imageView.load(path) {
+            crossfade(true)
+            size(260, 540)
+        }
     }
 
     @BindingAdapter("animeDetailScoreVisible")
