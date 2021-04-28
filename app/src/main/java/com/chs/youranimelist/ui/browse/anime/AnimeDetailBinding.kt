@@ -8,10 +8,8 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import coil.load
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import coil.transform.RoundedCornersTransformation
+
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.AnimeRecommendQuery
 import com.chs.youranimelist.ConvertDate.secondsToDateTime
@@ -45,8 +43,8 @@ object AnimeDetailBinding {
     @BindingAdapter("animeDetailImageBanner")
     @JvmStatic
     fun animeDetailImageBanner(imageView: ImageView, anime: AnimeDetailQuery.Media?) {
-        imageView.load(anime!!.bannerImage) {
-            placeholder(ColorDrawable(Color.parseColor(anime.coverImage?.color ?: "#ffffff")))
+        imageView.load(anime?.bannerImage) {
+            placeholder(ColorDrawable(Color.parseColor(anime?.coverImage?.color ?: "#ffffff")))
             crossfade(true)
             size(750, 250)
         }
@@ -65,6 +63,7 @@ object AnimeDetailBinding {
     fun animeDetailImageCover(imageView: ImageView, path: String?) {
         imageView.load(path) {
             crossfade(true)
+            transformations(RoundedCornersTransformation(15f))
             size(260, 540)
         }
     }
@@ -74,6 +73,7 @@ object AnimeDetailBinding {
     fun animeRecommendImageCover(imageView: ImageView, path: String?) {
         imageView.load(path) {
             crossfade(true)
+            transformations(RoundedCornersTransformation(15f))
             size(260, 540)
         }
     }

@@ -3,16 +3,11 @@ package com.chs.youranimelist.ui.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.ActivityMainBinding
 import com.chs.youranimelist.ui.animelist.AnimeListFragment
-import com.chs.youranimelist.ui.base.BaseActivity
-import com.chs.youranimelist.ui.base.BaseNavigator
 import com.chs.youranimelist.ui.characterlist.CharacterListFragment
 import com.chs.youranimelist.ui.home.HomeFragment
-import leakcanary.AppWatcher
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null

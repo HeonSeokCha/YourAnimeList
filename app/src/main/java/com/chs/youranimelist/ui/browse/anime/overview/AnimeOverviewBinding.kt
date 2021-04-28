@@ -1,14 +1,12 @@
 package com.chs.youranimelist.ui.browse.anime.overview
 
-import android.annotation.SuppressLint
 import android.text.Html
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.AnimeOverviewQuery
 import com.chs.youranimelist.ConvertDate
@@ -99,10 +97,10 @@ object AnimeOverviewBinding {
     @BindingAdapter("animeOverviewCoverImage")
     @JvmStatic
     fun animeOverviewCoverImage(imageView: ImageView, path: String?) {
-        Glide.with(imageView.context).load(path)
-            .transition(DrawableTransitionOptions().crossFade())
-            .skipMemoryCache(false)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .into(imageView)
+        imageView.load(path) {
+            crossfade(true)
+            transformations(RoundedCornersTransformation(15f))
+            size(260, 540)
+        }
     }
 }

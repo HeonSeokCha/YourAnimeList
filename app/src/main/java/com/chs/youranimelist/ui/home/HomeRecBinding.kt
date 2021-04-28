@@ -8,16 +8,12 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
-import coil.Coil
 import coil.load
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import coil.size.Scale
+import coil.transform.RoundedCornersTransformation
 import com.chs.youranimelist.HomeRecommendListQuery
 import com.chs.youranimelist.R
 import com.chs.youranimelist.fragment.AnimeList
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 object HomeRecBinding {
 
@@ -29,6 +25,7 @@ object HomeRecBinding {
             placeholder(ColorDrawable(Color.parseColor(anime.coverImage?.color ?: "#ffffff")))
             crossfade(true)
             size(750, 250)
+            scale(Scale.FIT)
         }
     }
 
@@ -37,6 +34,7 @@ object HomeRecBinding {
     fun animeImageCover(imageView: ImageView, path: String?) {
         imageView.load(path) {
             crossfade(true)
+            transformations(RoundedCornersTransformation(15f))
             size(260, 540)
         }
     }
