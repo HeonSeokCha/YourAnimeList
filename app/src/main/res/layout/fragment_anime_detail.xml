@@ -50,9 +50,9 @@
                         <ImageView
                             android:id="@+id/mediaBannerImage"
                             android:layout_width="match_parent"
-                            android:layout_height="200dp"
+                            android:layout_height="250dp"
                             android:adjustViewBounds="true"
-                            android:scaleType="center"
+                            android:scaleType="centerCrop"
                             app:animeDetailImageBanner="@{model}"
                             app:layout_collapseMode="parallax"
                             app:layout_constraintBottom_toBottomOf="parent"

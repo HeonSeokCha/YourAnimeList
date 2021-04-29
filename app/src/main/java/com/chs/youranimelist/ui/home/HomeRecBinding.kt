@@ -23,9 +23,7 @@ object HomeRecBinding {
     fun animeRecImageBanner(imageView: ImageView, anime: HomeRecommendListQuery.Medium) {
         imageView.load(anime.bannerImage) {
             placeholder(ColorDrawable(Color.parseColor(anime.coverImage?.color ?: "#ffffff")))
-            crossfade(true)
-            size(750, 250)
-            scale(Scale.FIT)
+            size(400, 250)
         }
     }
 
@@ -33,9 +31,7 @@ object HomeRecBinding {
     @JvmStatic
     fun animeImageCover(imageView: ImageView, path: String?) {
         imageView.load(path) {
-            crossfade(true)
-            transformations(RoundedCornersTransformation(15f))
-            size(260, 540)
+            size(200, 350)
         }
     }
 

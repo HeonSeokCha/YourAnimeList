@@ -46,7 +46,7 @@ object AnimeDetailBinding {
         imageView.load(anime?.bannerImage) {
             placeholder(ColorDrawable(Color.parseColor(anime?.coverImage?.color ?: "#ffffff")))
             crossfade(true)
-            size(750, 250)
+            size(400, 250)
         }
     }
 
@@ -62,9 +62,8 @@ object AnimeDetailBinding {
     @JvmStatic
     fun animeDetailImageCover(imageView: ImageView, path: String?) {
         imageView.load(path) {
+            size(200, 350)
             crossfade(true)
-            transformations(RoundedCornersTransformation(15f))
-            size(260, 540)
         }
     }
 
@@ -73,8 +72,8 @@ object AnimeDetailBinding {
     fun animeRecommendImageCover(imageView: ImageView, path: String?) {
         imageView.load(path) {
             crossfade(true)
-            transformations(RoundedCornersTransformation(15f))
-            size(260, 540)
+            size(300, 450)
+            transformations(RoundedCornersTransformation(topLeft = 15f, bottomLeft = 15f))
         }
     }
 

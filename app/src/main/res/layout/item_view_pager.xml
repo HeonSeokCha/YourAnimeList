@@ -2,11 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="model"
             type="com.chs.youranimelist.HomeRecommendListQuery.Medium" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,9 +18,9 @@
             android:id="@+id/img_view_pager_anime_cover"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:foreground="@drawable/background_gradient"
             android:adjustViewBounds="true"
-            android:scaleType="fitXY"
+            android:foreground="@drawable/background_gradient"
+            android:scaleType="centerCrop"
             app:animeRecImageBanner="@{model}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -51,8 +54,8 @@
             android:layout_width="125dp"
             android:layout_height="175dp"
             android:layout_marginStart="8dp"
-            android:scaleType="fitXY"
             android:layout_marginBottom="8dp"
+            android:scaleType="centerCrop"
             app:animeImageCover="@{model.coverImage.extraLarge}"
             app:layout_constraintBottom_toBottomOf="@+id/img_view_pager_anime_cover"
             app:layout_constraintStart_toStartOf="@+id/img_view_pager_anime_cover"
@@ -63,26 +66,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@{model.averageScore.toString()}"
             android:drawableLeft="@drawable/ic_score"
             android:drawablePadding="2dp"
+            android:text="@{model.averageScore.toString()}"
             android:textColor="@color/white"
-            tools:text="TextView"
             app:layout_constraintStart_toStartOf="@+id/txt_main_pager_title"
-            app:layout_constraintTop_toBottomOf="@+id/txt_main_pager_title" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_main_pager_title"
+            tools:text="TextView" />
 
         <TextView
             android:id="@+id/textView29"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@{model.favourites.toString()}"
             android:drawableLeft="@drawable/ic_favorite"
             android:drawablePadding="2dp"
+            android:text="@{model.favourites.toString()}"
             android:textColor="@color/white"
-            tools:text="TextView"
             app:layout_constraintStart_toEndOf="@+id/textView26"
-            app:layout_constraintTop_toTopOf="@+id/textView26" />
+            app:layout_constraintTop_toTopOf="@+id/textView26"
+            tools:text="TextView" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
