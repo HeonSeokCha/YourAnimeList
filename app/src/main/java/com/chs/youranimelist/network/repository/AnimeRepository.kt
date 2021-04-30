@@ -4,11 +4,15 @@ import androidx.lifecycle.LiveData
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
 import com.apollographql.apollo.coroutines.toFlow
+import retrofit2.Callback
 import com.chs.youranimelist.*
 import com.chs.youranimelist.network.ApolloServices
+import com.chs.youranimelist.network.JikanRestService
 import com.chs.youranimelist.network.NetWorkState
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.chs.youranimelist.network.response.AnimeDetails
 import kotlinx.coroutines.flow.*
+import retrofit2.Call
+import retrofit2.Response
 
 class AnimeRepository {
 
@@ -32,6 +36,10 @@ class AnimeRepository {
     private val _animeRecommendResponse = SingleLiveEvent<NetWorkState<AnimeRecommendQuery.Data>>()
     val animeRecommendResponse: LiveData<NetWorkState<AnimeRecommendQuery.Data>>
         get() = _animeRecommendResponse
+
+    private val _animeOverviewThemeResponse = SingleLiveEvent<NetWorkState<AnimeDetails>>()
+    val animeOverviewThemeResponse: LiveData<NetWorkState<AnimeDetails>>
+        get() = _animeOverviewThemeResponse
 
     suspend fun getHomeRecList() {
         _homeRecommendResponse.postValue(NetWorkState.Loading())
@@ -73,5 +81,18 @@ class AnimeRepository {
         ApolloServices.apolloClient.query(AnimeRecommendQuery(animeId)).toFlow()
             .catch { e -> _animeRecommendResponse.postValue(NetWorkState.Error(e.message.toString())) }
             .collect { _animeRecommendResponse.postValue(NetWorkState.Success(it.data!!)) }
+    }
+
+    fun getAnimeOverviewTheme(animeId: Int) {
+        _animeOverviewThemeResponse.postValue(NetWorkState.Loading())
+        JikanRestService().getAnimeDetails(animeId).enqueue(object : Callback<AnimeDetails> {
+            override fun onResponse(call: Call<AnimeDetails>, response: Response<AnimeDetails>) {
+                _animeOverviewThemeResponse.postValue(NetWorkState.Success(response.body()!!))
+            }
+
+            override fun onFailure(call: Call<AnimeDetails>, t: Throwable) {
+                _animeOverviewThemeResponse.postValue(NetWorkState.Error(t.localizedMessage))
+            }
+        })
     }
 }

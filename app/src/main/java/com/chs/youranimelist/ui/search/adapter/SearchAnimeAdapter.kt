@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.databinding.ItemSearchMediaBinding
-import com.chs.youranimelist.network.SearchResult
+import com.chs.youranimelist.network.response.SearchResult
 
 class SearchAnimeAdapter(
     private val list: List<SearchResult?>,

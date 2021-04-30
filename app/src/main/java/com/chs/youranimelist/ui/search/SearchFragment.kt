@@ -2,14 +2,12 @@ package com.chs.youranimelist.ui.search
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.SearchAnimeQuery
@@ -18,7 +16,7 @@ import com.chs.youranimelist.SearchMangaQuery
 import com.chs.youranimelist.databinding.FragmentSearchBinding
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.ResponseState
-import com.chs.youranimelist.network.SearchResult
+import com.chs.youranimelist.network.response.SearchResult
 import com.chs.youranimelist.network.repository.SearchRepository
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.adapter.SearchAnimeAdapter

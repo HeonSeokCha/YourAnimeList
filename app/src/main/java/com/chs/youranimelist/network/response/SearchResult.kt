@@ -1,4 +1,4 @@
-package com.chs.youranimelist.network
+package com.chs.youranimelist.network.response
 
 import com.chs.youranimelist.SearchAnimeQuery
 import com.chs.youranimelist.SearchCharacterQuery

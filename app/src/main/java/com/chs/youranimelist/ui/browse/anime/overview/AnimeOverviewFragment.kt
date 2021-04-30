@@ -35,6 +35,7 @@ class AnimeOverviewFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.getAnimeOverview(arguments?.getInt("id")!!)
+        viewModel.getAnimeTheme(arguments?.getInt("id")!!)
         initRecyclerView()
         getAnimeInfo()
         initClick()
@@ -82,6 +83,19 @@ class AnimeOverviewFragment : BaseFragment() {
                 }
             }
         })
+
+        viewModel.animeOverViewThemeResponse.observe(viewLifecycleOwner, {
+            when (it.responseState) {
+                ResponseState.LOADING -> Unit
+                ResponseState.SUCCESS -> {
+                    TODO()
+                }
+                ResponseState.ERROR -> {
+                    Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
     }
 
     private fun initRecyclerView() {

@@ -3,7 +3,7 @@ package com.chs.youranimelist.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.youranimelist.network.SearchResult
+import com.chs.youranimelist.network.response.SearchResult
 import com.chs.youranimelist.network.repository.SearchRepository
 import kotlinx.coroutines.launch
 
