@@ -35,7 +35,6 @@ class AnimeOverviewFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.getAnimeOverview(arguments?.getInt("id")!!)
-        viewModel.getAnimeTheme(arguments?.getInt("id")!!)
         initRecyclerView()
         getAnimeInfo()
         initClick()
@@ -58,10 +57,12 @@ class AnimeOverviewFragment : BaseFragment() {
     private fun getAnimeInfo() {
         viewModel.animeOverviewResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
-                ResponseState.LOADING -> Unit
                 ResponseState.SUCCESS -> {
 
                     binding.model = it.data?.media!!
+
+                    viewModel.getAnimeTheme(it.data?.media?.idMal!!)
+
                     it.data?.media.relations?.relationsEdges?.forEach { relation ->
                         viewModel.animeOverviewRelationList.add(relation)
                     }
@@ -84,11 +85,11 @@ class AnimeOverviewFragment : BaseFragment() {
             }
         })
 
-        viewModel.animeOverViewThemeResponse.observe(viewLifecycleOwner, {
+        viewModel.animeThemeResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
-                ResponseState.LOADING -> Unit
                 ResponseState.SUCCESS -> {
-                    TODO()
+                    viewModel.animeDetails = it.data
+                    initAnimeTheme()
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
@@ -123,6 +124,31 @@ class AnimeOverviewFragment : BaseFragment() {
                     .launchUrl(this@AnimeOverviewFragment.activity!!, Uri.parse(it))
             }
             this.adapter = linkAdapter
+        }
+    }
+
+    private fun initAnimeTheme() {
+        binding.rvAnimeThemeOp.isVisible = false
+        binding.txtAnimeThemeOp.isVisible = false
+        binding.rvAnimeThemeEd.isVisible = false
+        binding.txtAnimeThemeEd.isVisible = false
+
+        if (viewModel.animeDetails?.openingThemes?.isNullOrEmpty() == false) {
+            binding.txtAnimeThemeOp.isVisible = true
+            binding.rvAnimeThemeOp.apply {
+                isVisible = true
+                adapter =
+                    AnimeOverviewThemeAdapter(viewModel.animeDetails?.openingThemes ?: listOf())
+            }
+        }
+
+        if (viewModel.animeDetails?.endingThemes?.isNullOrEmpty() == false) {
+            binding.txtAnimeThemeEd.isVisible = true
+            binding.rvAnimeThemeEd.apply {
+                isVisible = true
+                adapter =
+                    AnimeOverviewThemeAdapter(viewModel.animeDetails?.endingThemes ?: listOf())
+            }
         }
     }
 

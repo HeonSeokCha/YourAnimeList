@@ -446,10 +446,11 @@
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/relation"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/textView14"
-                app:layout_constraintTop_toBottomOf="@+id/textView31" />
+                app:layout_constraintTop_toBottomOf="@+id/rv_anime_theme_ed" />
 
             <TextView
                 android:id="@+id/textView28"
@@ -458,6 +459,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Links"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_anime_overview_relation" />
 
@@ -478,22 +480,50 @@
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/textView30"
+                android:id="@+id/txt_anime_theme_op"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:text="Opening Themes"
-                app:layout_constraintStart_toStartOf="@+id/textView14"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
             <TextView
-                android:id="@+id/textView31"
+                android:id="@+id/txt_anime_theme_ed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="Endingk Themes"
-                app:layout_constraintStart_toStartOf="@+id/textView30"
-                app:layout_constraintTop_toBottomOf="@+id/textView30" />
+                android:text="Ending Themes"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_anime_theme_op" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_anime_theme_op"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="@+id/txt_anime_theme_op"
+                app:layout_constraintTop_toBottomOf="@+id/txt_anime_theme_op" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_anime_theme_ed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="@+id/txt_anime_theme_ed"
+                app:layout_constraintTop_toBottomOf="@+id/txt_anime_theme_ed" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

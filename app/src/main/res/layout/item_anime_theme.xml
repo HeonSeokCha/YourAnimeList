@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingBottom="8dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/txt_anime_theme"
-        android:foreground="?selectableItemBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="TextView"/>
+        android:ellipsize="end"
+        android:foreground="?selectableItemBackground"
+        android:maxLines="2"
+        android:textColor="@color/red_500"
+        tools:text="TextView" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

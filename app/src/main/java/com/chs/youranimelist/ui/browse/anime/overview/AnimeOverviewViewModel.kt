@@ -22,7 +22,7 @@ class AnimeOverviewViewModel(private val repository: AnimeRepository) : ViewMode
         repository.animeOverviewResponse
     }
 
-    val animeOverViewThemeResponse by lazy {
+    val animeThemeResponse by lazy {
         repository.animeOverviewThemeResponse
     }
 
