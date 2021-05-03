@@ -1,6 +1,7 @@
 package com.chs.youranimelist.ui.browse
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -20,11 +21,13 @@ class BrowseActivity : AppCompatActivity(), BaseNavigator {
         setContentView(binding.root)
         changeFragment(
             intent.getStringExtra("type")!!,
-            intent.getIntExtra("id", 0)!!, false
+            intent.getIntExtra("id", 0),
+            intent.getIntExtra("idMal", 0),
+            false
         )
     }
 
-    override fun changeFragment(type: String, id: Int, addToBackStack: Boolean) {
+    override fun changeFragment(type: String, id: Int, idMal: Int, addToBackStack: Boolean) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         lateinit var targetFragment: Fragment
         val bundle = Bundle()
@@ -32,6 +35,7 @@ class BrowseActivity : AppCompatActivity(), BaseNavigator {
             "Media" -> {
                 targetFragment = AnimeDetailFragment()
                 bundle.putInt("id", id)
+                bundle.putInt("idMal", idMal)
             }
             "CHARA" -> {
                 targetFragment = CharacterFragment()

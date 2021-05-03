@@ -115,13 +115,14 @@ class HomeFragment : BaseFragment() {
     private fun initRecyclerView() {
         binding.viewPager2.apply {
             viewPagerHomeRecAdapter =
-                HomeRecViewPagerAdapter(viewModel.pagerRecList) { animeId ->
+                HomeRecViewPagerAdapter(viewModel.pagerRecList) { id, idMal ->
                     startActivity(Intent(
                         activity!!.applicationContext,
                         BrowseActivity::class.java
                     ).apply {
                         this.putExtra("type", "Media")
-                        this.putExtra("id", animeId)
+                        this.putExtra("id", id)
+                        this.putExtra("idMal", idMal)
                     })
                 }
 
@@ -138,10 +139,11 @@ class HomeFragment : BaseFragment() {
                             this.putExtra("sortType", sortType)
                         }
                         startActivity(intent)
-                    }, animeClickListener = { animeId ->
+                    }, animeClickListener = { id, idMal ->
                         val intent = Intent(activity, BrowseActivity::class.java).apply {
                             this.putExtra("type", "Media")
-                            this.putExtra("id", animeId)
+                            this.putExtra("id", id)
+                            this.putExtra("idMal", idMal)
                         }
                         startActivity(intent)
                     }

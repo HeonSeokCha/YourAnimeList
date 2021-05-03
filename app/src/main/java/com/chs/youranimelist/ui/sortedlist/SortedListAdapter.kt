@@ -9,14 +9,15 @@ import com.chs.youranimelist.fragment.AnimeList
 
 class SortedListAdapter(
     private val items: ArrayList<AnimeList?>,
-    private val clickListener: (animeId: Int) -> Unit,
+    private val clickListener: (id: Int, idMal: Int) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1
     }
 
-    class SortedListViewHolder(val binding: ItemAnimeChildBinding) : RecyclerView.ViewHolder(binding.root)
+    class SortedListViewHolder(val binding: ItemAnimeChildBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     class LoadingViewHolder(binding: ItemLoadingBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -35,7 +36,7 @@ class SortedListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is SortedListViewHolder) {
             holder.binding.root.setOnClickListener {
-                clickListener.invoke(items[position]!!.id)
+                clickListener.invoke(items[position]!!.id, items[position]!!.idMal!!)
             }
             holder.binding.model = items[position]
         }

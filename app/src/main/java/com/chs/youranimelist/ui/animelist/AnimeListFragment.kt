@@ -41,10 +41,11 @@ class AnimeListFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        animeListAdapter = AnimeListAdapter() { id ->
+        animeListAdapter = AnimeListAdapter() { id, idMal ->
             val intent = Intent(this.context, BrowseActivity::class.java).apply {
                 this.putExtra("type", "Media")
                 this.putExtra("id", id)
+                this.putExtra("idMal", idMal)
             }
             startActivity(intent)
         }

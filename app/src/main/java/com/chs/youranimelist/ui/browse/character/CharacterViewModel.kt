@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.CharacterQuery
-import com.chs.youranimelist.data.Anime
-import com.chs.youranimelist.data.Character
+import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.data.repository.CharacterListRepository
 import com.chs.youranimelist.network.repository.CharacterRepository
 import kotlinx.coroutines.Dispatchers

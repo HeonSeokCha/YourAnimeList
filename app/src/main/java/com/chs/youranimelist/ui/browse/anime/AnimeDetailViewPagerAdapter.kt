@@ -11,11 +11,13 @@ import com.chs.youranimelist.ui.browse.anime.recommend.AnimeRecommendFragment
 
 class AnimeDetailViewPagerAdapter(
     fa: FragmentActivity,
-    private val animeId: Int
+    private val animeId: Int,
+    private val idMal: Int
 ) : FragmentStateAdapter(fa) {
     override fun createFragment(position: Int): Fragment {
         val bundle = Bundle().apply {
             this.putInt("id", animeId)
+            this.putInt("idMal", idMal)
         }
         return when (position) {
             0 -> AnimeOverviewFragment().apply {

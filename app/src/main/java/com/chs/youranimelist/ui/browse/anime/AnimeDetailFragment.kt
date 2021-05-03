@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
 import com.apollographql.apollo.api.toInput
-import com.chs.youranimelist.data.Anime
+import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
@@ -35,7 +35,10 @@ class AnimeDetailFragment : Fragment() {
         checkAnimeList()
         viewModel.getAnimeDetail(arguments?.getInt("id").toInput())
         initAnimeInfo()
-        initTabView(arguments?.getInt("id")!!)
+        initTabView(
+            arguments?.getInt("id")!!,
+            arguments?.getInt("idMal")!!
+        )
         initClick()
     }
 
@@ -92,9 +95,9 @@ class AnimeDetailFragment : Fragment() {
         })
     }
 
-    private fun initTabView(animeId: Int) {
+    private fun initTabView(animeId: Int, idMal: Int) {
         binding.viewPagerAnimeDetail.adapter =
-            AnimeDetailViewPagerAdapter(requireActivity(), animeId)
+            AnimeDetailViewPagerAdapter(requireActivity(), animeId, idMal)
         binding.viewPagerAnimeDetail.isUserInputEnabled = false
         TabLayoutMediator(binding.tabAnimeDetail, binding.viewPagerAnimeDetail) { tab, position ->
             var tabArr: List<String> = listOf("Overview", "Characters", "Recommend")
@@ -116,6 +119,7 @@ class AnimeDetailFragment : Fragment() {
                 viewModel.insertAnimeList(
                     Anime(
                         animeId = this.id,
+                        idMal = this.idMal!!,
                         title = this.title!!.english ?: this.title!!.romaji!!,
                         format = this.format.toString(),
                         status = this.status.toString(),

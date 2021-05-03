@@ -2,6 +2,7 @@ package com.chs.youranimelist.ui.browse.anime.overview
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ class AnimeOverviewFragment : BaseFragment() {
     private val repository by lazy { AnimeRepository() }
     private var _binding: FragmentAnimeOverviewBinding? = null
     private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,6 +37,9 @@ class AnimeOverviewFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.getAnimeOverview(arguments?.getInt("id")!!)
+        if (arguments?.getInt("idMal")!! != 0) {
+            viewModel.getAnimeTheme(arguments?.getInt("idMal")!!)
+        }
         initRecyclerView()
         getAnimeInfo()
         initClick()
@@ -60,8 +65,6 @@ class AnimeOverviewFragment : BaseFragment() {
                 ResponseState.SUCCESS -> {
 
                     binding.model = it.data?.media!!
-
-                    viewModel.getAnimeTheme(it.data?.media?.idMal!!)
 
                     it.data?.media.relations?.relationsEdges?.forEach { relation ->
                         viewModel.animeOverviewRelationList.add(relation)
@@ -92,18 +95,17 @@ class AnimeOverviewFragment : BaseFragment() {
                     initAnimeTheme()
                 }
                 ResponseState.ERROR -> {
-                    Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this.context, "Fail!", Toast.LENGTH_SHORT).show()
                 }
             }
         })
-
     }
 
     private fun initRecyclerView() {
         binding.rvAnimeOverviewRelation.apply {
             relationAdapter =
-                AnimeOverviewRelationAdapter(viewModel.animeOverviewRelationList) { _, id ->
-                    this@AnimeOverviewFragment.navigate?.changeFragment("Media", id)
+                AnimeOverviewRelationAdapter(viewModel.animeOverviewRelationList) { id, idMal ->
+                    this@AnimeOverviewFragment.navigate?.changeFragment("Media", id, idMal, false)
                 }
             this.adapter = relationAdapter
             this.layoutManager = LinearLayoutManager(
@@ -128,11 +130,6 @@ class AnimeOverviewFragment : BaseFragment() {
     }
 
     private fun initAnimeTheme() {
-        binding.rvAnimeThemeOp.isVisible = false
-        binding.txtAnimeThemeOp.isVisible = false
-        binding.rvAnimeThemeEd.isVisible = false
-        binding.txtAnimeThemeEd.isVisible = false
-
         if (viewModel.animeDetails?.openingThemes?.isNullOrEmpty() == false) {
             binding.txtAnimeThemeOp.isVisible = true
             binding.rvAnimeThemeOp.apply {

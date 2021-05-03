@@ -163,10 +163,11 @@ class SortedListActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
-            animeListAdapter = SortedListAdapter(viewModel.animeResultList) { animeId ->
+            animeListAdapter = SortedListAdapter(viewModel.animeResultList) { id, idMal ->
                 val intent = Intent(this@SortedListActivity, BrowseActivity::class.java).apply {
                     this.putExtra("type", "Media")
-                    this.putExtra("id", animeId)
+                    this.putExtra("id", id)
+                    this.putExtra("idMal", idMal)
                 }
                 startActivity(intent)
             }

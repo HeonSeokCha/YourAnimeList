@@ -3,7 +3,7 @@ package com.chs.youranimelist.data.repository
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import com.chs.youranimelist.data.Character
+import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.data.YourListDao
 import com.chs.youranimelist.data.YourListDatabase
 

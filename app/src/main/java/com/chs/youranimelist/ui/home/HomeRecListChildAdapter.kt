@@ -9,7 +9,7 @@ import com.chs.youranimelist.type.MediaStatus
 
 class HomeRecListChildAdapter(
     private val list: List<AnimeList>,
-    private val clickListener: (animeId: Int) -> Unit,
+    private val clickListener: (id: Int, idMal: Int) -> Unit,
 ) : RecyclerView.Adapter<HomeRecListChildAdapter.AnimeViewHolder>() {
 
     class AnimeViewHolder(val binding: ItemAnimeChildBinding) :
@@ -22,7 +22,7 @@ class HomeRecListChildAdapter(
 
     override fun onBindViewHolder(holder: AnimeViewHolder, position: Int) {
         holder.binding.root.setOnClickListener {
-            clickListener.invoke(list[position].id)
+            clickListener.invoke(list[position].id, list[position].idMal!!)
         }
         holder.binding.model = list[position]
     }

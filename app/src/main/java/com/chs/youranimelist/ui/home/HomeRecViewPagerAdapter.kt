@@ -8,7 +8,7 @@ import com.chs.youranimelist.databinding.ItemViewPagerBinding
 
 class HomeRecViewPagerAdapter(
     private val items: List<HomeRecommendListQuery.Medium?>,
-    private val clickListener: (animeId: Int) -> Unit
+    private val clickListener: (id: Int, idMal: Int) -> Unit
 ) : RecyclerView.Adapter<HomeRecViewPagerAdapter.ViewPagerViewHolder>() {
 
     class ViewPagerViewHolder(val binding: ItemViewPagerBinding) :
@@ -21,7 +21,7 @@ class HomeRecViewPagerAdapter(
 
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
         holder.binding.root.setOnClickListener {
-            clickListener.invoke(items[position]!!.id)
+            clickListener.invoke(items[position]!!.id, items[position]!!.idMal!!)
         }
         holder.binding.model = items[position]
     }

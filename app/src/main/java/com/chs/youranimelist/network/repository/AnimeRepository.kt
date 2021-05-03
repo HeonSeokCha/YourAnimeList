@@ -87,7 +87,11 @@ class AnimeRepository {
         _animeOverviewThemeResponse.postValue(NetWorkState.Loading())
         JikanRestService().getAnimeDetails(animeId).enqueue(object : Callback<AnimeDetails> {
             override fun onResponse(call: Call<AnimeDetails>, response: Response<AnimeDetails>) {
-                _animeOverviewThemeResponse.postValue(NetWorkState.Success(response.body()!!))
+                try {
+                    _animeOverviewThemeResponse.postValue(NetWorkState.Success(response.body()!!))
+                } catch (t: Throwable) {
+                    _animeOverviewThemeResponse.postValue(NetWorkState.Error(response.message()))
+                }
             }
 
             override fun onFailure(call: Call<AnimeDetails>, t: Throwable) {

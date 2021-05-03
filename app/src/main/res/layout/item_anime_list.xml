@@ -8,7 +8,7 @@
 
         <variable
             name="model"
-            type="com.chs.youranimelist.data.Anime" />
+            type="com.chs.youranimelist.data.dto.Anime" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

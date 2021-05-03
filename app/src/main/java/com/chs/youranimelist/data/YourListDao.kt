@@ -1,6 +1,8 @@
 package com.chs.youranimelist.data
 
 import androidx.room.*
+import com.chs.youranimelist.data.dto.Anime
+import com.chs.youranimelist.data.dto.Character
 import kotlinx.coroutines.flow.Flow
 
 @Dao

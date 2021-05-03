@@ -137,19 +137,19 @@ class SearchFragment : Fragment() {
     private fun initRecyclerView() {
         adapter = when (viewModel.searchPage) {
             "Anime" -> {
-                SearchAnimeAdapter(viewModel.searchList) { id ->
+                SearchAnimeAdapter(viewModel.searchList) { idMal ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
                         this.putExtra("type", "Media")
-                        this.putExtra("id", id)
+                        this.putExtra("id", idMal)
                     }
                     startActivity(intent)
                 }
             }
             "Manga" -> {
-                SearchMangaAdapter(viewModel.searchList) { id ->
+                SearchMangaAdapter(viewModel.searchList) { idMal ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
                         this.putExtra("type", "Media")
-                        this.putExtra("id", id)
+                        this.putExtra("id", idMal)
                     }
                     startActivity(intent)
                 }

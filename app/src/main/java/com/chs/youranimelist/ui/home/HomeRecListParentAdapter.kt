@@ -13,7 +13,7 @@ class HomeRecListParentAdapter(
     private val list: List<List<AnimeList>>,
     private val mContext: Context,
     private val clickListener: (sortType: String) -> Unit,
-    private val animeClickListener: (animeId: Int) -> Unit,
+    private val animeClickListener: (id: Int, idMal: Int) -> Unit,
 ) : RecyclerView.Adapter<HomeRecListParentAdapter.AnimeListRecViewHolder>() {
 
     lateinit var homeAdapter: HomeRecListChildAdapter
@@ -37,12 +37,9 @@ class HomeRecListParentAdapter(
         }
         holder.binding.model = listTitleList[position]
         holder.binding.rvAnime.apply {
-            homeAdapter =
-                HomeRecListChildAdapter(list[position]) { animeId ->
-                    animeClickListener.invoke(animeId)
-                }.apply {
-                    this.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-                }
+            homeAdapter = HomeRecListChildAdapter(list[position]) { id, idMal ->
+                animeClickListener.invoke(id, idMal)
+            }
             this.adapter = homeAdapter
             this.layoutManager = LinearLayoutManager(
                 mContext,

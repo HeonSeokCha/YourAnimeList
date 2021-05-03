@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.data.Anime
+import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.databinding.ItemAnimeListBinding
 import com.chs.youranimelist.ui.browse.anime.overview.AnimeOverviewGenreAdapter
 
 class AnimeListAdapter(
-    private val clickListener: (id: Int) -> Unit
+    private val clickListener: (id: Int, idMal: Int) -> Unit
 ) : ListAdapter<Anime, AnimeListAdapter.AnimeListViewHolder>(AnimeListComparator()) {
 
     class AnimeListViewHolder(val binding: ItemAnimeListBinding) : RecyclerView.ViewHolder(binding.root)
@@ -23,7 +23,7 @@ class AnimeListAdapter(
     override fun onBindViewHolder(holder: AnimeListViewHolder, position: Int) {
         holder.binding.model = getItem(position)
         holder.binding.root.setOnClickListener {
-            clickListener.invoke(getItem(position).animeId)
+            clickListener.invoke(getItem(position).id, getItem(position).idMal)
         }
         if (!getItem(position).genre.isNullOrEmpty()) {
             holder.binding.rvAnimeListGenre.apply {

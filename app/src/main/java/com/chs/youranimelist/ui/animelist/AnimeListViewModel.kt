@@ -3,7 +3,7 @@ package com.chs.youranimelist.ui.animelist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.youranimelist.data.Anime
+import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.data.repository.AnimeListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

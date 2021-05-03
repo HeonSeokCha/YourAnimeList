@@ -1,7 +1,7 @@
 package com.chs.youranimelist.ui.animelist
 
 import androidx.recyclerview.widget.DiffUtil
-import com.chs.youranimelist.data.Anime
+import com.chs.youranimelist.data.dto.Anime
 
 class AnimeListComparator : DiffUtil.ItemCallback<Anime>() {
     override fun areItemsTheSame(oldItem: Anime, newItem: Anime): Boolean {

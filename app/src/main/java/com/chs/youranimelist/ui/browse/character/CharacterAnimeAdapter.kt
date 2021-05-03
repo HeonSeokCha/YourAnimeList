@@ -8,7 +8,7 @@ import com.chs.youranimelist.databinding.ItemAnimeChildBinding
 
 class CharacterAnimeAdapter(
     private val items: List<CharacterQuery.Edge?>,
-    private val clickListener: (id: Int) -> Unit
+    private val clickListener: (id: Int, idMal: Int) -> Unit
 ) :
     RecyclerView.Adapter<CharacterAnimeAdapter.ViewHolder>() {
 
@@ -22,7 +22,10 @@ class CharacterAnimeAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.model = items[position]!!.node!!.fragments.animeList
         holder.binding.root.setOnClickListener {
-            clickListener.invoke(items[position]!!.node!!.fragments.animeList.id)
+            clickListener.invoke(
+                items[position]!!.node!!.fragments.animeList.id,
+                items[position]!!.node!!.fragments.animeList.idMal!!
+            )
         }
     }
 

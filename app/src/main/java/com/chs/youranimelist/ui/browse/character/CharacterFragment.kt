@@ -6,15 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
-import com.chs.youranimelist.CharacterQuery
 import com.chs.youranimelist.R
 import com.chs.youranimelist.SpacesItemDecoration
-import com.chs.youranimelist.data.Character
+import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.databinding.FragmentCharacterBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.CharacterRepository
@@ -101,11 +98,8 @@ class CharacterFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         binding.rvCharaAnimeSeries.apply {
-            animeAdapter = CharacterAnimeAdapter(viewModel.characterAnimeList) { id ->
-                this@CharacterFragment.navigate?.changeFragment("Media", id, true)
-            }.apply {
-                this.stateRestorationPolicy =
-                    RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+            animeAdapter = CharacterAnimeAdapter(viewModel.characterAnimeList) { id, idMal ->
+                this@CharacterFragment.navigate?.changeFragment("Media", id, idMal, true)
             }
             this.adapter = animeAdapter
             this.layoutManager = GridLayoutManager(this@CharacterFragment.context, 3)

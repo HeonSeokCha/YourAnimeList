@@ -3,14 +3,9 @@ package com.chs.youranimelist.data.repository
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import com.chs.youranimelist.SingleLiveEvent
-import com.chs.youranimelist.data.Anime
+import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.data.YourListDao
 import com.chs.youranimelist.data.YourListDatabase
-import com.chs.youranimelist.network.NetWorkState
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 
 class AnimeListRepository(application: Application) {
     private val dao: YourListDao by lazy {
