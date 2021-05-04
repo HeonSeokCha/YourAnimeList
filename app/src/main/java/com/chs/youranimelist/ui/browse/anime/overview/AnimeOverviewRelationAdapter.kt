@@ -9,7 +9,7 @@ import com.chs.youranimelist.databinding.ItemRelationBinding
 
 class AnimeOverviewRelationAdapter(
     private val items: List<AnimeOverviewQuery.RelationsEdge?>,
-    private val clickListener: (id: Int, idMal: Int) -> Unit
+    private val clickListener: (id: Int, idMal: Int?) -> Unit
 ) : RecyclerView.Adapter<AnimeOverviewRelationAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemRelationBinding) : RecyclerView.ViewHolder(binding.root)
@@ -24,7 +24,7 @@ class AnimeOverviewRelationAdapter(
         holder.binding.root.setOnClickListener {
             clickListener.invoke(
                 items[position]!!.relationsNode!!.id,
-                items[position]!!.relationsNode!!.idMal!!
+                items[position]!!.relationsNode!!.idMal ?: 0
             )
         }
     }

@@ -94,9 +94,6 @@ class AnimeOverviewFragment : BaseFragment() {
                     viewModel.animeDetails = it.data
                     initAnimeTheme()
                 }
-                ResponseState.ERROR -> {
-                    Toast.makeText(this.context, "Fail!", Toast.LENGTH_SHORT).show()
-                }
             }
         })
     }
@@ -105,7 +102,7 @@ class AnimeOverviewFragment : BaseFragment() {
         binding.rvAnimeOverviewRelation.apply {
             relationAdapter =
                 AnimeOverviewRelationAdapter(viewModel.animeOverviewRelationList) { id, idMal ->
-                    this@AnimeOverviewFragment.navigate?.changeFragment("Media", id, idMal, false)
+                    this@AnimeOverviewFragment.navigate?.changeFragment("Media", id, idMal!!, true)
                 }
             this.adapter = relationAdapter
             this.layoutManager = LinearLayoutManager(

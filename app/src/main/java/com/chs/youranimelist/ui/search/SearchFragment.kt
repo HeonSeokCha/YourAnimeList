@@ -137,19 +137,21 @@ class SearchFragment : Fragment() {
     private fun initRecyclerView() {
         adapter = when (viewModel.searchPage) {
             "Anime" -> {
-                SearchAnimeAdapter(viewModel.searchList) { idMal ->
+                SearchAnimeAdapter(viewModel.searchList) { id, idMal ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
                         this.putExtra("type", "Media")
-                        this.putExtra("id", idMal)
+                        this.putExtra("id", id)
+                        this.putExtra("idMal", idMal)
                     }
                     startActivity(intent)
                 }
             }
             "Manga" -> {
-                SearchMangaAdapter(viewModel.searchList) { idMal ->
+                SearchMangaAdapter(viewModel.searchList) { id, idMal ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
                         this.putExtra("type", "Media")
-                        this.putExtra("id", idMal)
+                        this.putExtra("id", id)
+                        this.putExtra("idMal", idMal)
                     }
                     startActivity(intent)
                 }
@@ -163,7 +165,16 @@ class SearchFragment : Fragment() {
                     startActivity(intent)
                 }
             }
-            else -> SearchAnimeAdapter(viewModel.searchList) { }
+            else -> {
+                SearchAnimeAdapter(viewModel.searchList) { id, idMal ->
+                    val intent = Intent(this.context, BrowseActivity::class.java).apply {
+                        this.putExtra("type", "Media")
+                        this.putExtra("id", id)
+                        this.putExtra("idMal", idMal)
+                    }
+                    startActivity(intent)
+                }
+            }
         }
         binding.rvSearch.adapter = adapter
         binding.rvSearch.layoutManager = LinearLayoutManager(this.context)

@@ -10,7 +10,7 @@ import com.chs.youranimelist.network.response.SearchResult
 
 class SearchAnimeAdapter(
     private val list: List<SearchResult?>,
-    private val clickListener: (idMal: Int) -> Unit
+    private val clickListener: (id: Int, idMal: Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEW_TYPE_ITEM = 0
@@ -39,7 +39,10 @@ class SearchAnimeAdapter(
         if (holder is SearchAnimeViewHolder) {
             holder.binding.model = list[position]!!.animeSearchResult!!.fragments.animeList
             holder.binding.root.setOnClickListener {
-                clickListener.invoke(list[position]!!.animeSearchResult!!.fragments.animeList.idMal!!)
+                clickListener.invoke(
+                    list[position]!!.animeSearchResult!!.fragments.animeList.id,
+                    list[position]!!.animeSearchResult!!.fragments.animeList.idMal ?: 0
+                )
             }
         }
     }

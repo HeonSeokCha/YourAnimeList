@@ -13,7 +13,8 @@ class AnimeListAdapter(
     private val clickListener: (id: Int, idMal: Int) -> Unit
 ) : ListAdapter<Anime, AnimeListAdapter.AnimeListViewHolder>(AnimeListComparator()) {
 
-    class AnimeListViewHolder(val binding: ItemAnimeListBinding) : RecyclerView.ViewHolder(binding.root)
+    class AnimeListViewHolder(val binding: ItemAnimeListBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeListViewHolder {
         val view = ItemAnimeListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,7 +24,7 @@ class AnimeListAdapter(
     override fun onBindViewHolder(holder: AnimeListViewHolder, position: Int) {
         holder.binding.model = getItem(position)
         holder.binding.root.setOnClickListener {
-            clickListener.invoke(getItem(position).id, getItem(position).idMal)
+            clickListener.invoke(getItem(position).animeId, getItem(position).idMal)
         }
         if (!getItem(position).genre.isNullOrEmpty()) {
             holder.binding.rvAnimeListGenre.apply {
