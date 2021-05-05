@@ -44,7 +44,7 @@ object AnimeDetailBinding {
     @JvmStatic
     fun animeDetailImageBanner(imageView: ImageView, anime: AnimeDetailQuery.Media?) {
         imageView.load(anime?.bannerImage) {
-            placeholder(ColorDrawable(Color.parseColor(anime?.coverImage?.color ?: "#ffffff")))
+            placeholder(ColorDrawable(Color.parseColor(anime?.coverImage?.color ?: "#D9666F")))
             crossfade(true)
             size(400, 250)
         }

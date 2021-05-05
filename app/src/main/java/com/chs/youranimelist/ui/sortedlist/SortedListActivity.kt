@@ -3,6 +3,7 @@ package com.chs.youranimelist.ui.sortedlist
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
@@ -14,6 +15,7 @@ import com.chs.youranimelist.databinding.ActivitySortedListBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.type.MediaSort
+import com.chs.youranimelist.type.MediaStatus
 import com.chs.youranimelist.ui.browse.BrowseActivity
 
 class SortedListActivity : AppCompatActivity() {
@@ -40,13 +42,15 @@ class SortedListActivity : AppCompatActivity() {
     private fun initClick() {
         binding.animeListYear.setOnClickListener {
             val yearList =
-                ArrayList((ConvertDate.getCurrentYear(false) + 1 downTo 1950).map { it.toString() })
+                ArrayList((ConvertDate.getCurrentYear(false) + 1 downTo 1970).map { it.toString() })
             AlertDialog.Builder(this)
                 .setItems(yearList.toTypedArray()) { _, which ->
                     if (which == 0) {
                         binding.animeListYear.text = yearList[which]
+                        viewModel.selectStatus = MediaStatus.NOT_YET_RELEASED
                     } else {
                         viewModel.selectedYear = yearList[which].toInt()
+                        viewModel.selectStatus = null
                         binding.animeListYear.text = viewModel.selectedYear?.toString()
                     }
                     isLoading = false

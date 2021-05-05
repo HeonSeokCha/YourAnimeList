@@ -6,6 +6,7 @@ import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
+import com.chs.youranimelist.type.MediaStatus
 import kotlinx.coroutines.launch
 
 class SortedListViewModel(private val animeListRepository: AnimeListRepository) : ViewModel() {
@@ -13,6 +14,7 @@ class SortedListViewModel(private val animeListRepository: AnimeListRepository) 
     var selectedYear: Int? = null
     var selectedSeason: MediaSeason? = null
     var selectedSort: MediaSort? = null
+    var selectStatus: MediaStatus? = null
 
     var page: Int = 1
     var hasNextPage: Boolean = true
@@ -53,7 +55,8 @@ class SortedListViewModel(private val animeListRepository: AnimeListRepository) 
                 page.toInput(),
                 selectedSort.toInput(),
                 selectedSeason.toInput(),
-                selectedYear.toInput()
+                selectedYear.toInput(),
+                selectStatus.toInput()
             )
         }
     }

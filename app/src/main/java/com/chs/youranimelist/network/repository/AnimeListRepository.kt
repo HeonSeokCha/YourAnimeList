@@ -9,6 +9,7 @@ import com.chs.youranimelist.network.ApolloServices
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
+import com.chs.youranimelist.type.MediaStatus
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -26,11 +27,12 @@ class AnimeListRepository {
         page: Input<Int>,
         sort: Input<MediaSort>,
         season: Input<MediaSeason>,
-        seasonYear: Input<Int>
+        seasonYear: Input<Int>,
+        status: Input<MediaStatus>
     ) {
         _animeListResponse.postValue(NetWorkState.Loading())
         ApolloServices.apolloClient.query(
-            AnimeListQuery(page, sort, season, seasonYear)
+            AnimeListQuery(page, sort, season, seasonYear, status)
         ).toFlow().catch { e ->
             _animeListResponse.postValue(NetWorkState.Error(e.message.toString()))
         }.collect { _animeListResponse.postValue(NetWorkState.Success(it.data!!)) }
