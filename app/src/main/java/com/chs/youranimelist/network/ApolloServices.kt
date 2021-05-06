@@ -13,12 +13,13 @@ object ApolloServices {
     private const val BASE_URL = "https://graphql.anilist.co"
 
     private val cache = LruNormalizedCacheFactory(
-        EvictionPolicy.builder().maxSizeBytes(10 * 1024 * 1024).build())
+        EvictionPolicy.builder().maxSizeBytes(10 * 1024 * 1024).build()
+    )
 
     val apolloClient: ApolloClient = ApolloClient.builder()
         .serverUrl(BASE_URL)
-        .okHttpClient(createOkHttpClient())
-//        .normalizedCache(cache)
+//        .okHttpClient(createOkHttpClient())
+        .normalizedCache(cache)
         .build()
 
     private fun createOkHttpClient(): OkHttpClient {

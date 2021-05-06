@@ -83,7 +83,7 @@
                             app:layout_constraintBottom_toBottomOf="@+id/mediaBannerImage"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/mediaBannerImage"
-                            app:layout_constraintTop_toTopOf="@+id/mediaBannerImage"/>
+                            app:layout_constraintTop_toTopOf="@+id/mediaBannerImage" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
