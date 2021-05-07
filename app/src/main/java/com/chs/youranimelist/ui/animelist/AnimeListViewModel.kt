@@ -10,7 +10,15 @@ import kotlinx.coroutines.launch
 
 class AnimeListViewModel(private val listRepository: AnimeListRepository) : ViewModel() {
 
-    fun getAllAnimeList(): LiveData<List<Anime>> = listRepository.getAllAnimeList()
+    val animeListResponse by lazy {
+        listRepository.animeListResponse
+    }
+
+    fun getAllAnimeList() {
+        viewModelScope.launch {
+            listRepository.getAllAnimeList()
+        }
+    }
 
     fun deleteAnimeList(anime: Anime) {
         viewModelScope.launch(Dispatchers.IO) {

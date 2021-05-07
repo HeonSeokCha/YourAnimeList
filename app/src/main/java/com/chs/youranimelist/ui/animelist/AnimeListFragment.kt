@@ -29,12 +29,13 @@ class AnimeListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getAllAnimeList()
         initRecyclerView()
         getAnimeList()
     }
 
     private fun getAnimeList() {
-        viewModel.getAllAnimeList().observe(viewLifecycleOwner, {
+        viewModel.animeListResponse.observe(viewLifecycleOwner, {
             animeListAdapter.submitList(it)
             binding.mainAnimeListToolbar.subtitle = "List (${it.size})"
         })
@@ -58,7 +59,7 @@ class AnimeListFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         if (::viewModel.isInitialized && ::animeListAdapter.isInitialized) {
-            getAnimeList()
+            viewModel.getAllAnimeList()
         }
     }
 
