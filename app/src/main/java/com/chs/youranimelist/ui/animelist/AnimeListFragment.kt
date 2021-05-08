@@ -2,6 +2,7 @@ package com.chs.youranimelist.ui.animelist
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +39,7 @@ class AnimeListFragment : BaseFragment() {
         viewModel.animeListResponse.observe(viewLifecycleOwner, {
             animeListAdapter.submitList(it)
             binding.mainAnimeListToolbar.subtitle = "List (${it.size})"
+            Log.d("AnimeList Size", it.size.toString())
         })
     }
 
@@ -50,15 +52,16 @@ class AnimeListFragment : BaseFragment() {
             }
             startActivity(intent)
         }
+        animeListAdapter.setHasStableIds(true)
         binding.rvAnimeList.apply {
             this.adapter = animeListAdapter
             this.layoutManager = LinearLayoutManager(this.context)
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (::viewModel.isInitialized && ::animeListAdapter.isInitialized) {
+    override fun onStart() {
+        super.onStart()
+        if (::animeListAdapter.isInitialized) {
             viewModel.getAllAnimeList()
         }
     }

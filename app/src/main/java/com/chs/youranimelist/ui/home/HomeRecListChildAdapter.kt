@@ -22,7 +22,7 @@ class HomeRecListChildAdapter(
 
     override fun onBindViewHolder(holder: AnimeViewHolder, position: Int) {
         holder.binding.root.setOnClickListener {
-            clickListener.invoke(list[position].id, list[position].idMal!!)
+            clickListener.invoke(list[position].id, list[position].idMal ?: 0)
         }
         holder.binding.model = list[position]
     }

@@ -1,5 +1,6 @@
 package com.chs.youranimelist.ui.animelist
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -25,6 +26,7 @@ class AnimeListAdapter(
         holder.binding.model = getItem(position)
         holder.binding.root.setOnClickListener {
             clickListener.invoke(getItem(position).animeId, getItem(position).idMal)
+            Log.d("AnimeListSize", "${currentList.size}, $position")
         }
         if (!getItem(position).genre.isNullOrEmpty()) {
             holder.binding.rvAnimeListGenre.apply {

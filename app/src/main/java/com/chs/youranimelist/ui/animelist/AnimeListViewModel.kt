@@ -10,6 +10,8 @@ import kotlinx.coroutines.launch
 
 class AnimeListViewModel(private val listRepository: AnimeListRepository) : ViewModel() {
 
+    var animeList: List<Anime> = listOf()
+
     val animeListResponse by lazy {
         listRepository.animeListResponse
     }
