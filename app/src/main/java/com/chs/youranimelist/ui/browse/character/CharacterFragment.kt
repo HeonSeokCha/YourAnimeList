@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,9 @@ import com.chs.youranimelist.databinding.FragmentCharacterBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.CharacterRepository
 import com.chs.youranimelist.ui.base.BaseFragment
+import com.github.razir.progressbutton.bindProgressButton
+import com.github.razir.progressbutton.hideDrawable
+import com.github.razir.progressbutton.showDrawable
 
 class CharacterFragment : BaseFragment() {
     private val repository by lazy { CharacterRepository() }
@@ -42,6 +46,7 @@ class CharacterFragment : BaseFragment() {
         viewModel.getCharaInfo(arguments?.getInt("id").toInput())
         getCharaInfo()
         initClick()
+        bindProgressButton(binding.mediaSaveList)
     }
 
     private fun initClick() {
@@ -89,9 +94,19 @@ class CharacterFragment : BaseFragment() {
         viewModel.checkCharaList(arguments?.getInt("id")!!).observe(viewLifecycleOwner, {
             if (it.size == 1 && it[0].charaId == arguments?.getInt("id")!!) {
                 viewModel.initCharaList = it[0]
-                binding.mediaSaveList.text = "SAVED LIST"
+                binding.mediaSaveList.apply {
+                    val animatedDrawable =
+                        ContextCompat.getDrawable(this.context!!, R.drawable.ic_check)!!
+                    animatedDrawable.setBounds(0, 0, 50, 50)
+                    showDrawable(animatedDrawable) {
+                        buttonText = "Saved"
+                    }
+                }
             } else {
-                binding.mediaSaveList.text = "ADD MY LIST"
+                binding.mediaSaveList.apply {
+                    hideDrawable()
+                    text = "ADD MY LIST"
+                }
             }
         })
     }
@@ -124,6 +139,7 @@ class CharacterFragment : BaseFragment() {
             viewModel.deleteCharaList(viewModel.initCharaList!!)
             viewModel.initCharaList = null
         }
+        checkCharaList()
     }
 
     override fun onDestroyView() {

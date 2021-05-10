@@ -39,7 +39,6 @@ class AnimeListFragment : BaseFragment() {
         viewModel.animeListResponse.observe(viewLifecycleOwner, {
             animeListAdapter.submitList(it)
             binding.mainAnimeListToolbar.subtitle = "List (${it.size})"
-            Log.d("AnimeList Size", it.size.toString())
         })
     }
 
@@ -59,8 +58,8 @@ class AnimeListFragment : BaseFragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         if (::animeListAdapter.isInitialized) {
             viewModel.getAllAnimeList()
         }
