@@ -8,36 +8,41 @@
     tools:context=".ui.search.SearchActivity">
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:id="@+id/textSearchInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/red_500"
+        android:textColorHint="@color/white"
+        app:hintTextColor="@color/white"
         app:endIconMode="clear_text"
-        app:boxBackgroundColor="@color/red_500"
-        app:startIconTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:startIconDrawable="@drawable/ic_search">
+        app:startIconDrawable="@drawable/ic_arrow_back"
+        app:startIconTint="@color/white">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textSearchInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1"
+            android:hint="Search"
+            android:backgroundTint="@color/red_500"
             android:textColor="@color/white"
             android:imeOptions="actionDone"
-            android:hint="Search"
-            />
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColorHint="@color/white" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/search_tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textSearchInputLayout"
-        tools:layout_editor_absoluteX="2dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textSearchInputLayout">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -61,6 +66,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_tabLayout" />
 
 

@@ -8,6 +8,7 @@ import com.chs.youranimelist.databinding.ActivityMainBinding
 import com.chs.youranimelist.ui.animelist.AnimeListFragment
 import com.chs.youranimelist.ui.characterlist.CharacterListFragment
 import com.chs.youranimelist.ui.home.HomeFragment
+import com.chs.youranimelist.ui.search.SearchFragment
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         val fragmentList = listOf(
             HomeFragment(),
             AnimeListFragment(),
-            CharacterListFragment()
+            CharacterListFragment(),
         )
         binding.navViewPager.isUserInputEnabled = false
         binding.navViewPager.offscreenPageLimit = fragmentList.size
