@@ -26,12 +26,23 @@ class SearchActivity : AppCompatActivity() {
         viewModel = SearchViewModel(repository)
         setContentView(binding.root)
         initView()
+        initClick()
         initTabView()
     }
 
+    private fun initClick() {
+        binding.searchBackButton.setOnClickListener {
+            onBackPressed()
+        }
+
+        binding.searchClear.setOnClickListener {
+            binding.searchBarEditText.text.clear()
+        }
+    }
+
     private fun initView() {
-        binding.textSearchInput.requestFocus()
-        binding.textSearchInput.setOnEditorActionListener { textView, actionId, _ ->
+        binding.searchBarEditText.requestFocus()
+        binding.searchBarEditText.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 closeKeyboard()
                 searchLiveData.value = textView.text.toString()
