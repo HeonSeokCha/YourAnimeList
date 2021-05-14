@@ -38,7 +38,6 @@ class AnimeListFragment : BaseFragment() {
     private fun getAnimeList() {
         viewModel.animeListResponse.observe(viewLifecycleOwner, {
             animeListAdapter.submitList(it)
-            binding.mainAnimeListToolbar.subtitle = "List (${it.size})"
         })
     }
 

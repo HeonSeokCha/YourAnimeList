@@ -26,6 +26,10 @@ class AnimeListRepository(application: Application) {
     fun checkAnimeList(animeId: Int): LiveData<List<Anime>> =
         dao.checkAnimeList(animeId).asLiveData()
 
+    fun searchAnimeList(animeTitle: String) {
+        dao.searchAnimeList("%$animeTitle%")
+    }
+
 
     suspend fun insertAnimeList(anime: Anime) {
         dao.insertAnimeList(anime)

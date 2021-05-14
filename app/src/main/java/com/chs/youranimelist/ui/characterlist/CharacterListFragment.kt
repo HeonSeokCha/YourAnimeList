@@ -38,7 +38,6 @@ class CharacterListFragment : BaseFragment() {
     private fun getCharaList() {
         viewModel.getAllCharaList().observe(viewLifecycleOwner, {
             charaListAdapter.submitList(it)
-            binding.mainCharaListToolbar.subtitle = "List (${it.size})"
         })
     }
 

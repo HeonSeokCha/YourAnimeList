@@ -22,6 +22,12 @@ class AnimeListViewModel(private val listRepository: AnimeListRepository) : View
         }
     }
 
+    fun searchAnimeList(animeTitle: String) {
+        viewModelScope.launch {
+            listRepository.searchAnimeList(animeTitle)
+        }
+    }
+
     fun deleteAnimeList(anime: Anime) {
         viewModelScope.launch(Dispatchers.IO) {
             listRepository.deleteAnimeList(anime)
