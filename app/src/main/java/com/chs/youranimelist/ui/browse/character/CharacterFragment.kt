@@ -8,10 +8,9 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.R
-import com.chs.youranimelist.SpacesItemDecoration
+import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.databinding.FragmentCharacterBinding
 import com.chs.youranimelist.network.ResponseState

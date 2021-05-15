@@ -2,9 +2,7 @@ package com.chs.youranimelist.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,7 +40,7 @@ class HomeFragment : BaseFragment() {
         viewModel.getHomeRecList()
         initRecyclerView()
         getAnimeRecList()
-        initMenu()
+        setHasOptionsMenu(true)
     }
 
     private fun getAnimeRecList() {
@@ -97,22 +95,6 @@ class HomeFragment : BaseFragment() {
         })
     }
 
-    private fun initMenu() {
-        binding.mainHomeToolbar.apply {
-            this.setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.menu_home_search -> {
-                        startActivity(Intent(this@HomeFragment.context, SearchActivity::class.java))
-                        true
-                    }
-                    else -> {
-                        super.onOptionsItemSelected(it)
-                    }
-                }
-            }
-        }
-    }
-
     private fun initRecyclerView() {
         binding.viewPager2.apply {
             viewPagerHomeRecAdapter =
@@ -151,6 +133,23 @@ class HomeFragment : BaseFragment() {
                 )
             this.adapter = homeRecListAdapter
             this.layoutManager = LinearLayoutManager(this@HomeFragment.context)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_home, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_home_search -> {
+                startActivity(Intent(this@HomeFragment.context, SearchActivity::class.java))
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
     }
 

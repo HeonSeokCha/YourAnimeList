@@ -3,10 +3,10 @@ package com.chs.youranimelist.ui.animelist
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.chs.youranimelist.R
 import com.chs.youranimelist.data.repository.AnimeListRepository
 import com.chs.youranimelist.databinding.FragmentAnimeListBinding
 import com.chs.youranimelist.ui.base.BaseFragment
@@ -33,6 +33,7 @@ class AnimeListFragment : BaseFragment() {
         viewModel.getAllAnimeList()
         initRecyclerView()
         getAnimeList()
+        setHasOptionsMenu(true)
     }
 
     private fun getAnimeList() {

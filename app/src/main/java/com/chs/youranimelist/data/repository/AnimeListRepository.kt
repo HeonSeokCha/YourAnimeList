@@ -3,7 +3,7 @@ package com.chs.youranimelist.data.repository
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import com.chs.youranimelist.SingleLiveEvent
+import com.chs.youranimelist.util.SingleLiveEvent
 import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.data.YourListDao
 import com.chs.youranimelist.data.YourListDatabase
@@ -27,7 +27,7 @@ class AnimeListRepository(application: Application) {
         dao.checkAnimeList(animeId).asLiveData()
 
     fun searchAnimeList(animeTitle: String) {
-        dao.searchAnimeList("%$animeTitle%")
+        dao.searchAnimeList(animeTitle)
     }
 
 

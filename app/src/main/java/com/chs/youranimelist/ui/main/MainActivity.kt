@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         initViewPager()
         initNavigation()
+        setSupportActionBar(binding.mainHomeToolbar)
+        supportActionBar
     }
 
     private fun initViewPager() {

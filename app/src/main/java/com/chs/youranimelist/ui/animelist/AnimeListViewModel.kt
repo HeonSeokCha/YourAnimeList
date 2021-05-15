@@ -1,6 +1,5 @@
 package com.chs.youranimelist.ui.animelist
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.data.dto.Anime

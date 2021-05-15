@@ -1,4 +1,4 @@
-package com.chs.youranimelist
+package com.chs.youranimelist.util
 
 import android.util.Log
 import androidx.annotation.MainThread

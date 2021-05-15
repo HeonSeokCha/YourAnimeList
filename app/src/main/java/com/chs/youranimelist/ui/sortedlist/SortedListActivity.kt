@@ -8,8 +8,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.ConvertDate
-import com.chs.youranimelist.SpacesItemDecoration
+import com.chs.youranimelist.util.ConvertDate
+import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.databinding.ActivitySortedListBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeListRepository

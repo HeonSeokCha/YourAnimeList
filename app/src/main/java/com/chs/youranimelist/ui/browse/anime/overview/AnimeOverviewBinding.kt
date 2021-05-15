@@ -9,7 +9,7 @@ import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.AnimeOverviewQuery
-import com.chs.youranimelist.ConvertDate
+import com.chs.youranimelist.util.ConvertDate
 
 object AnimeOverviewBinding {
 

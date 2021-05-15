@@ -14,7 +14,7 @@ interface YourListDao {
     @Query("SELECT * FROM anime WHERE animeId = :animeId")
     fun checkAnimeList(animeId: Int): Flow<List<Anime>>
 
-    @Query("SELECT * FROM anime WHERE title LIKE :animeTitle")
+    @Query("SELECT * FROM anime WHERE title LIKE '%' || :animeTitle || '%'")
     fun searchAnimeList(animeTitle: String): Flow<List<Anime>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -29,7 +29,7 @@ interface YourListDao {
     @Query("SELECT * FROM character where charaId = :charaId")
     fun checkCharaList(charaId: Int): Flow<List<Character>>
 
-    @Query("SELECT * FROM character WHERE name LIKE :charaName")
+    @Query("SELECT * FROM character WHERE name LIKE '%' || :charaName || '%'")
     fun searchCharaList(charaName: String): Flow<List<Character>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

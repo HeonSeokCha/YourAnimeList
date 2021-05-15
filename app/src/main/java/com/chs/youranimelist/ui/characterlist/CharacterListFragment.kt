@@ -2,16 +2,14 @@ package com.chs.youranimelist.ui.characterlist
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.R
 import com.chs.youranimelist.data.repository.CharacterListRepository
 import com.chs.youranimelist.databinding.FragmentCharacterListBinding
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
+import com.chs.youranimelist.ui.search.SearchActivity
 
 class CharacterListFragment : BaseFragment() {
     private var _binding: FragmentCharacterListBinding? = null

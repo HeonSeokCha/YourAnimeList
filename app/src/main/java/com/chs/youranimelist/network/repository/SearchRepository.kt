@@ -6,10 +6,9 @@ import com.apollographql.apollo.coroutines.toFlow
 import com.chs.youranimelist.SearchAnimeQuery
 import com.chs.youranimelist.SearchCharacterQuery
 import com.chs.youranimelist.SearchMangaQuery
-import com.chs.youranimelist.SingleLiveEvent
+import com.chs.youranimelist.util.SingleLiveEvent
 import com.chs.youranimelist.network.ApolloServices
 import com.chs.youranimelist.network.NetWorkState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 
 class SearchRepository {

@@ -1,4 +1,4 @@
-package com.chs.youranimelist
+package com.chs.youranimelist.util
 
 import com.chs.youranimelist.type.MediaSeason
 import java.text.SimpleDateFormat

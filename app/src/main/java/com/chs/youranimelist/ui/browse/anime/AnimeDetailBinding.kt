@@ -12,7 +12,7 @@ import coil.transform.RoundedCornersTransformation
 
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.AnimeRecommendQuery
-import com.chs.youranimelist.ConvertDate.secondsToDateTime
+import com.chs.youranimelist.util.ConvertDate.secondsToDateTime
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 object AnimeDetailBinding {

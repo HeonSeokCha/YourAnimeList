@@ -19,7 +19,7 @@ class CharacterListRepository(application: Application) {
         dao.checkCharaList(charaId).asLiveData()
 
     fun searchCharaList(charaName: String) {
-        dao.searchCharaList("%$charaName%")
+        dao.searchCharaList(charaName)
     }
 
     suspend fun insertCharaList(character: Character) {

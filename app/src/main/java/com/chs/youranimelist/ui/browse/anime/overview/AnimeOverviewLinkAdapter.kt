@@ -3,10 +3,9 @@ package com.chs.youranimelist.ui.browse.anime.overview
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ExpandableListView
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.AnimeOverviewQuery
-import com.chs.youranimelist.ItemColor
+import com.chs.youranimelist.util.ItemColor
 import com.chs.youranimelist.databinding.ItemLinkBinding
 
 class AnimeOverviewLinkAdapter(
