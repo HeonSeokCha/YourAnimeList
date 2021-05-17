@@ -2,7 +2,6 @@ package com.chs.youranimelist.ui.animelist
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +10,7 @@ import com.chs.youranimelist.data.repository.AnimeListRepository
 import com.chs.youranimelist.databinding.FragmentAnimeListBinding
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
+import com.chs.youranimelist.util.onQueryTextChanged
 
 class AnimeListFragment : BaseFragment() {
     private var _binding: FragmentAnimeListBinding? = null
@@ -33,7 +33,6 @@ class AnimeListFragment : BaseFragment() {
         viewModel.getAllAnimeList()
         initRecyclerView()
         getAnimeList()
-        setHasOptionsMenu(true)
     }
 
     private fun getAnimeList() {
@@ -58,11 +57,23 @@ class AnimeListFragment : BaseFragment() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_lists, menu)
+
+        val searchItem = menu.findItem(R.id.menu_list_search)
+        val searchView = searchItem.actionView as SearchView
+        searchView.onQueryTextChanged {
+            //Update Search Query..
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         if (::animeListAdapter.isInitialized) {
             viewModel.getAllAnimeList()
         }
+        setHasOptionsMenu(true)
     }
 
     override fun onDestroy() {
