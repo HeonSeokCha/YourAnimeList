@@ -36,7 +36,7 @@ class CharacterListFragment : BaseFragment() {
     }
 
     private fun getCharaList() {
-        viewModel.getAllCharaList().observe(viewLifecycleOwner, {
+        viewModel.charaListResponse.observe(viewLifecycleOwner, {
             charaListAdapter.submitList(it)
         })
     }
@@ -61,15 +61,16 @@ class CharacterListFragment : BaseFragment() {
 
         val searchItem = menu.findItem(R.id.menu_list_search)
         val searchView = searchItem.actionView as SearchView
+
         searchView.onQueryTextChanged {
-            //Update Search Query..
+            viewModel.searchCharaList(it)
         }
     }
 
     override fun onResume() {
         super.onResume()
         if (::charaListAdapter.isInitialized) {
-            getCharaList()
+            viewModel.getAllCharaList()
         }
         setHasOptionsMenu(true)
     }

@@ -50,7 +50,6 @@ class AnimeListFragment : BaseFragment() {
             }
             startActivity(intent)
         }
-        animeListAdapter.setHasStableIds(true)
         binding.rvAnimeList.apply {
             this.adapter = animeListAdapter
             this.layoutManager = LinearLayoutManager(this.context)
@@ -63,8 +62,9 @@ class AnimeListFragment : BaseFragment() {
 
         val searchItem = menu.findItem(R.id.menu_list_search)
         val searchView = searchItem.actionView as SearchView
+
         searchView.onQueryTextChanged {
-            //Update Search Query..
+            viewModel.searchAnimeList(it)
         }
     }
 

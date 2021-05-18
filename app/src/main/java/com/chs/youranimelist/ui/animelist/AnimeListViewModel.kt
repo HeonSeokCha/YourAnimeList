@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.data.repository.AnimeListRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class AnimeListViewModel(private val listRepository: AnimeListRepository) : ViewModel() {
