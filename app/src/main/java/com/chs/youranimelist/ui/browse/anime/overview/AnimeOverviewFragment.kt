@@ -45,6 +45,11 @@ class AnimeOverviewFragment : BaseFragment() {
         initClick()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
+    }
+
     private fun initClick() {
         binding.btnExpand.setOnClickListener {
             if (binding.txtAnimeDescriptionPreview.isVisible) {
@@ -144,11 +149,6 @@ class AnimeOverviewFragment : BaseFragment() {
                     AnimeOverviewThemeAdapter(viewModel.animeDetails?.endingThemes ?: listOf())
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.root.requestLayout()
     }
 
     override fun onDestroyView() {

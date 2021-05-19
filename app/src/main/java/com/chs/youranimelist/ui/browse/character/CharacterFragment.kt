@@ -49,20 +49,22 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun initClick() {
-        binding.characterToolbars.setNavigationOnClickListener { activity?.finish() }
         binding.btnExpand.setOnClickListener {
             if (binding.txtCharacterDescriptionPreview.isVisible) {
-                binding.txtCharacterDescriptionPreview.visibility = View.GONE
-                binding.txtCharacterDescription.visibility = View.VISIBLE
+                binding.txtCharacterDescriptionPreview.isVisible = false
+                binding.txtCharacterDescription.isVisible = true
                 binding.btnExpand.setBackgroundResource(R.drawable.ic_arrow_up)
             } else {
-                binding.txtCharacterDescriptionPreview.visibility = View.VISIBLE
-                binding.txtCharacterDescription.visibility = View.GONE
+                binding.txtCharacterDescriptionPreview.isVisible = true
+                binding.txtCharacterDescription.isVisible = false
                 binding.btnExpand.setBackgroundResource(R.drawable.ic_arrow_down)
             }
         }
         binding.mediaSaveList.setOnClickListener {
             saveList()
+        }
+        binding.characterToolbars.setNavigationOnClickListener {
+            activity!!.finish()
         }
     }
 
@@ -84,27 +86,6 @@ class CharacterFragment : BaseFragment() {
                         this@CharacterFragment.context,
                         it.message, Toast.LENGTH_SHORT
                     ).show()
-                }
-            }
-        })
-    }
-
-    private fun checkCharaList() {
-        viewModel.checkCharaList(arguments?.getInt("id")!!).observe(viewLifecycleOwner, {
-            if (it.size == 1 && it[0].charaId == arguments?.getInt("id")!!) {
-                viewModel.initCharaList = it[0]
-                binding.mediaSaveList.apply {
-                    val animatedDrawable =
-                        ContextCompat.getDrawable(this.context!!, R.drawable.ic_check)!!
-                    animatedDrawable.setBounds(0, 0, 50, 50)
-                    showDrawable(animatedDrawable) {
-                        buttonText = "Saved"
-                    }
-                }
-            } else {
-                binding.mediaSaveList.apply {
-                    hideDrawable()
-                    text = "ADD MY LIST"
                 }
             }
         })
@@ -138,7 +119,27 @@ class CharacterFragment : BaseFragment() {
             viewModel.deleteCharaList(viewModel.initCharaList!!)
             viewModel.initCharaList = null
         }
-        checkCharaList()
+    }
+
+    private fun checkCharaList() {
+        viewModel.checkCharaList(arguments?.getInt("id")!!).observe(viewLifecycleOwner, {
+            if (it.size == 1 && it[0].charaId == arguments?.getInt("id")!!) {
+                viewModel.initCharaList = it[0]
+                binding.mediaSaveList.apply {
+                    val animatedDrawable =
+                        ContextCompat.getDrawable(this.context!!, R.drawable.ic_check)!!
+                    animatedDrawable.setBounds(0, 0, 50, 50)
+                    showDrawable(animatedDrawable) {
+                        buttonText = "Saved"
+                    }
+                }
+            } else {
+                binding.mediaSaveList.apply {
+                    hideDrawable()
+                    text = "ADD MY LIST"
+                }
+            }
+        })
     }
 
     override fun onDestroyView() {

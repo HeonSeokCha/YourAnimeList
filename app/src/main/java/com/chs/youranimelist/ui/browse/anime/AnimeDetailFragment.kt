@@ -28,6 +28,7 @@ class AnimeDetailFragment : Fragment() {
     private lateinit var viewModel: AnimeDetailViewModel
     private lateinit var trailerId: String
     private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,8 +39,8 @@ class AnimeDetailFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        checkAnimeList()
         viewModel.getAnimeDetail(arguments?.getInt("id").toInput())
+        checkAnimeList()
         initAnimeInfo()
         initTabView(
             arguments?.getInt("id")!!,
@@ -112,18 +113,13 @@ class AnimeDetailFragment : Fragment() {
         binding.viewPagerAnimeDetail.adapter =
             AnimeDetailViewPagerAdapter(requireActivity(), animeId, idMal)
         binding.viewPagerAnimeDetail.isUserInputEnabled = false
+
         TabLayoutMediator(binding.tabAnimeDetail, binding.viewPagerAnimeDetail) { tab, position ->
             var tabArr: List<String> = listOf("Overview", "Characters", "Recommend")
             for (i in 0..position) {
                 tab.text = tabArr[i]
             }
         }.attach()
-    }
-
-    private fun trailerPlay(videoId: String) {
-        CustomTabsIntent.Builder()
-            .build()
-            .launchUrl(requireActivity(), Uri.parse("https://www.youtube.com/watch?v=$videoId"))
     }
 
     private fun saveList() {
@@ -152,7 +148,12 @@ class AnimeDetailFragment : Fragment() {
             viewModel.deleteAnimeList(viewModel.initAnimeList!!)
             viewModel.initAnimeList = null
         }
-        checkAnimeList()
+    }
+
+    private fun trailerPlay(videoId: String) {
+        CustomTabsIntent.Builder()
+            .build()
+            .launchUrl(requireActivity(), Uri.parse("https://www.youtube.com/watch?v=$videoId"))
     }
 
     override fun onDestroyView() {

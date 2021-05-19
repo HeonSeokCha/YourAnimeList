@@ -118,10 +118,8 @@ class HomeFragment : BaseFragment() {
             homeRecListAdapter =
                 HomeRecListParentAdapter(viewModel.homeRecList, this@HomeFragment.requireContext(),
                     clickListener = { sortType ->
-                        val intent = Intent(activity, SortedListActivity::class.java).apply {
-                            this.putExtra("sortType", sortType)
-                        }
-                        startActivity(intent)
+                        //ViewPager2 does not support direct child views
+//                        this@HomeFragment.navigate?.changeFragment(sortType, 0, 0, true)
                     }, animeClickListener = { id, idMal ->
                         val intent = Intent(activity, BrowseActivity::class.java).apply {
                             this.putExtra("type", "Media")

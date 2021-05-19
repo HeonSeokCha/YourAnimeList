@@ -9,11 +9,12 @@ import com.chs.youranimelist.CharacterQuery
 import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.data.repository.CharacterListRepository
 import com.chs.youranimelist.network.repository.CharacterRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CharacterViewModel(private val repository: CharacterRepository, application: Application) :
-    ViewModel() {
+class CharacterViewModel(
+    private val repository: CharacterRepository,
+    application: Application
+) : ViewModel() {
 
     private val charaRepository: CharacterListRepository by lazy {
         CharacterListRepository(application)
@@ -24,24 +25,18 @@ class CharacterViewModel(private val repository: CharacterRepository, applicatio
     var charaDetail: CharacterQuery.Character? = null
     var initCharaList: Character? = null
 
-    fun getCharaInfo(charaId: Input<Int>) {
-        viewModelScope.launch {
-            repository.getCharacterDetail(charaId)
-        }
+    fun getCharaInfo(charaId: Input<Int>) = viewModelScope.launch {
+        repository.getCharacterDetail(charaId)
     }
 
     fun checkCharaList(charaId: Int): LiveData<List<Character>> =
         charaRepository.checkCharaList(charaId)
 
-    fun insertCharaList(character: Character) {
-        viewModelScope.launch(Dispatchers.IO) {
-            charaRepository.insertCharaList(character)
-        }
+    fun insertCharaList(character: Character) = viewModelScope.launch {
+        charaRepository.insertCharaList(character)
     }
 
-    fun deleteCharaList(character: Character) {
-        viewModelScope.launch(Dispatchers.IO) {
-            charaRepository.deleteCharaList(character)
-        }
+    fun deleteCharaList(character: Character) = viewModelScope.launch {
+        charaRepository.deleteCharaList(character)
     }
 }

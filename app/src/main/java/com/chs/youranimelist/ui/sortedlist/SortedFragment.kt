@@ -1,38 +1,49 @@
 package com.chs.youranimelist.ui.sortedlist
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.util.ConvertDate
-import com.chs.youranimelist.util.SpacesItemDecoration
-import com.chs.youranimelist.databinding.ActivitySortedListBinding
+import com.chs.youranimelist.R
+import com.chs.youranimelist.databinding.FragmentHomeBinding
+import com.chs.youranimelist.databinding.FragmentSortedBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.type.MediaStatus
+import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
+import com.chs.youranimelist.util.ConvertDate
+import com.chs.youranimelist.util.SpacesItemDecoration
 
-class SortedListActivity : AppCompatActivity() {
-    private var _binding: ActivitySortedListBinding? = null
+class SortedFragment : BaseFragment() {
+    private var _binding: FragmentSortedBinding? = null
     private val binding get() = _binding!!
     private var isLoading: Boolean = false
     private lateinit var animeListAdapter: SortedListAdapter
     private lateinit var viewModel: SortedListViewModel
     private val repository by lazy { AnimeListRepository() }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _binding = ActivitySortedListBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSortedBinding.inflate(inflater, container, false)
         viewModel = SortedListViewModel(repository)
-        setContentView(binding.root)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initClick()
-        initSortType(intent.getStringExtra("sortType")!!)
+        initSortType(arguments?.getString("sortType")!!)
         initRecyclerView()
         viewModel.getAnimeList()
         getAnimeList()
@@ -42,7 +53,7 @@ class SortedListActivity : AppCompatActivity() {
         binding.animeListYear.setOnClickListener {
             val yearList =
                 ArrayList((ConvertDate.getCurrentYear(false) + 1 downTo 1970).map { it.toString() })
-            AlertDialog.Builder(this)
+            AlertDialog.Builder(this.context!!)
                 .setItems(yearList.toTypedArray()) { _, which ->
                     if (which == 0) {
                         binding.animeListYear.text = yearList[which]
@@ -61,7 +72,7 @@ class SortedListActivity : AppCompatActivity() {
 
         binding.animeListSeason.setOnClickListener {
             val seasonArray = viewModel.animeSeasonList.map { it.name }.toTypedArray()
-            AlertDialog.Builder(this)
+            AlertDialog.Builder(this.context!!)
                 .setItems(seasonArray) { _, which ->
                     viewModel.selectedSeason = viewModel.animeSeasonList[which]
                     binding.animeListSeason.text = viewModel.selectedSeason?.name
@@ -73,7 +84,7 @@ class SortedListActivity : AppCompatActivity() {
         }
 
         binding.animeListSort.setOnClickListener {
-            AlertDialog.Builder(this)
+            AlertDialog.Builder(this.context!!)
                 .setItems(viewModel.animeSortArray) { _, which ->
                     viewModel.selectedSort = viewModel.animeSortList[which]
                     binding.animeListSort.text = viewModel.animeSortArray[which]
@@ -153,7 +164,7 @@ class SortedListActivity : AppCompatActivity() {
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(
-                        this@SortedListActivity,
+                        this@SortedFragment.context,
                         it.message,
                         Toast.LENGTH_LONG
                     ).show()
@@ -167,7 +178,7 @@ class SortedListActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
             animeListAdapter = SortedListAdapter(viewModel.animeResultList) { id, idMal ->
-                val intent = Intent(this@SortedListActivity, BrowseActivity::class.java).apply {
+                val intent = Intent(this@SortedFragment.context, BrowseActivity::class.java).apply {
                     this.putExtra("type", "Media")
                     this.putExtra("id", id)
                     this.putExtra("idMal", idMal)
@@ -176,7 +187,7 @@ class SortedListActivity : AppCompatActivity() {
             }
             animeListAdapter.setHasStableIds(true)
             this.adapter = animeListAdapter
-            this.layoutManager = GridLayoutManager(this@SortedListActivity, 3)
+            this.layoutManager = GridLayoutManager(this@SortedFragment.context, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
 
             this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -202,8 +213,8 @@ class SortedListActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
-        super.onDestroy()
     }
 }
