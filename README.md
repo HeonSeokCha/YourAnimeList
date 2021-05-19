@@ -3,11 +3,11 @@ This app recommends an animation list.
 
 Anime API = "https://anilist.gitbook.io/anilist-apiv2-docs/"
 
-  "I'm thinking of redesigning it."
-
 * Application Screens.
 <div>
-<img width="300" src="https://user-images.githubusercontent.com/55890012/110489571-d2ce1080-8132-11eb-9d57-29532cf71d3e.png">
-<img width="300" src="https://user-images.githubusercontent.com/55890012/110489593-d5c90100-8132-11eb-9f74-b772fd510806.png">
+
+<img width="250" src="https://user-images.githubusercontent.com/55890012/118823154-b8af6c00-b8f3-11eb-872f-a980f592dccd.png">
+<img width="250" src="https://user-images.githubusercontent.com/55890012/118823180-bcdb8980-b8f3-11eb-8017-69dc97353cb7.png">
+<img width="250" src="https://user-images.githubusercontent.com/55890012/118823188-bf3de380-b8f3-11eb-98dd-b5900cb7761e.png">
  
 </div>
