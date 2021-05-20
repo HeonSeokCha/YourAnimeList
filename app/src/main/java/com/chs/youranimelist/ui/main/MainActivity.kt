@@ -16,7 +16,7 @@ import com.chs.youranimelist.ui.home.HomeFragment
 import com.chs.youranimelist.ui.search.SearchFragment
 import com.chs.youranimelist.ui.sortedlist.SortedFragment
 
-class MainActivity : AppCompatActivity(), BaseNavigator {
+class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
@@ -55,20 +55,5 @@ class MainActivity : AppCompatActivity(), BaseNavigator {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    override fun changeFragment(type: String, id: Int, idMal: Int, addToBackStack: Boolean) {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        lateinit var targetFragment: Fragment
-        val bundle = Bundle()
-        targetFragment = SortedFragment()
-        bundle.putString("sortType", type)
-        targetFragment.arguments = bundle
-        fragmentTransaction.replace(binding.navViewPager.id, targetFragment)
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        if (addToBackStack) {
-            fragmentTransaction.addToBackStack(null)
-        }
-        fragmentTransaction.commit()
     }
 }

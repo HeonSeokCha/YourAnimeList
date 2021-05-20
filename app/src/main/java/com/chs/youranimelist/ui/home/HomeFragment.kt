@@ -118,8 +118,10 @@ class HomeFragment : BaseFragment() {
             homeRecListAdapter =
                 HomeRecListParentAdapter(viewModel.homeRecList, this@HomeFragment.requireContext(),
                     clickListener = { sortType ->
-                        //ViewPager2 does not support direct child views
-//                        this@HomeFragment.navigate?.changeFragment(sortType, 0, 0, true)
+                        val intent = Intent(activity, SortedListActivity::class.java).apply {
+                            this.putExtra("sortType", sortType)
+                        }
+                        startActivity(intent)
                     }, animeClickListener = { id, idMal ->
                         val intent = Intent(activity, BrowseActivity::class.java).apply {
                             this.putExtra("type", "Media")
@@ -154,7 +156,5 @@ class HomeFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        homeRecListAdapter = null
-        viewPagerHomeRecAdapter = null
     }
 }
