@@ -1,12 +1,10 @@
 package com.chs.youranimelist.ui.browse
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.chs.youranimelist.databinding.ActivityBrowseBinding
-import com.chs.youranimelist.ui.base.BaseActivity
 import com.chs.youranimelist.ui.base.BaseNavigator
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragment
 import com.chs.youranimelist.ui.browse.character.CharacterFragment
