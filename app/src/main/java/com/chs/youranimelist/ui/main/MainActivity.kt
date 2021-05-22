@@ -26,12 +26,7 @@ class MainActivity : AppCompatActivity(), BaseNavigator {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.mainHomeToolbar)
-        changeFragment("Main", 0, 0, true)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+        changeFragment("Main", 0, 0, false)
     }
 
     override fun changeFragment(type: String, id: Int, idMal: Int, addToBackStack: Boolean) {
@@ -55,4 +50,10 @@ class MainActivity : AppCompatActivity(), BaseNavigator {
         }
         fragmentTransaction.commit()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
 }

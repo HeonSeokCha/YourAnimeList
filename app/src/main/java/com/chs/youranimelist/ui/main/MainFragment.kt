@@ -1,10 +1,12 @@
 package com.chs.youranimelist.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentMainBinding
 import com.chs.youranimelist.ui.animelist.AnimeListFragment
@@ -15,6 +17,7 @@ import com.chs.youranimelist.ui.home.HomeFragment
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+    private lateinit var onBackCallback: OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +31,20 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViewPager()
         initNavigation()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        onBackCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.navViewPager.currentItem != 0) {
+                    binding.navViewPager.currentItem = 0
+                } else {
+                    activity?.finish()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackCallback)
     }
 
     private fun initViewPager() {
@@ -50,6 +67,11 @@ class MainFragment : Fragment() {
             }
             true
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        onBackCallback.remove()
     }
 
     override fun onDestroy() {
