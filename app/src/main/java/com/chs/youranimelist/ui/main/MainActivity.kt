@@ -51,6 +51,11 @@ class MainActivity : AppCompatActivity(), BaseNavigator {
         fragmentTransaction.commit()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

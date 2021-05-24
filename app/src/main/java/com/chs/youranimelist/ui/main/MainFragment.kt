@@ -39,6 +39,7 @@ class MainFragment : Fragment() {
             override fun handleOnBackPressed() {
                 if (binding.navViewPager.currentItem != 0) {
                     binding.navViewPager.currentItem = 0
+                    binding.bottomNavigationView.selectedItemId = R.id.itemHome
                 } else {
                     activity?.finish()
                 }

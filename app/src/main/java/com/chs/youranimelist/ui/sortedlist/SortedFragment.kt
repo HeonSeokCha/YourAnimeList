@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -20,6 +21,7 @@ import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.type.MediaStatus
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
+import com.chs.youranimelist.ui.main.MainActivity
 import com.chs.youranimelist.util.ConvertDate
 import com.chs.youranimelist.util.SpacesItemDecoration
 
@@ -47,6 +49,7 @@ class SortedFragment : BaseFragment() {
         initRecyclerView()
         viewModel.getAnimeList()
         getAnimeList()
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun initClick() {
@@ -136,7 +139,7 @@ class SortedFragment : BaseFragment() {
     }
 
     private fun getAnimeList() {
-        viewModel.animeListResponse.observe(this, {
+        viewModel.animeListResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> if (!isLoading) binding.listProgressBar.isVisible = true
                 ResponseState.SUCCESS -> {
@@ -216,5 +219,6 @@ class SortedFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 }
