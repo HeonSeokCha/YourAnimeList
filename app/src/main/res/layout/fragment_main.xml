@@ -10,7 +10,6 @@
         android:id="@+id/nav_viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,11 +25,9 @@
         app:itemIconTint="@color/bottom_nav_item_select_color"
         app:itemTextColor="@color/bottom_nav_item_select_color"
         app:labelVisibilityMode="labeled"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:hideOnScroll="false"
         app:menu="@menu/menu_main_bottom_nav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
