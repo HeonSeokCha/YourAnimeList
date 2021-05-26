@@ -5,15 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.ActivityMainBinding
-import com.chs.youranimelist.ui.animelist.AnimeListFragment
 import com.chs.youranimelist.ui.base.BaseNavigator
-import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragment
-import com.chs.youranimelist.ui.browse.character.CharacterFragment
-import com.chs.youranimelist.ui.characterlist.CharacterListFragment
-import com.chs.youranimelist.ui.home.HomeFragment
-import com.chs.youranimelist.ui.search.SearchFragment
 import com.chs.youranimelist.ui.sortedlist.SortedFragment
 
 class MainActivity : AppCompatActivity(), BaseNavigator {
@@ -33,14 +26,11 @@ class MainActivity : AppCompatActivity(), BaseNavigator {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         lateinit var targetFragment: Fragment
         val bundle = Bundle()
-        when (type) {
-            "Main" -> {
-                targetFragment = MainFragment()
-            }
-            else -> {
-                targetFragment = SortedFragment()
-                bundle.putString("sortType", type)
-            }
+        if (type == "Main") {
+            targetFragment = MainFragment()
+        } else {
+            targetFragment = SortedFragment()
+            bundle.putString("sortType", type)
         }
         targetFragment.arguments = bundle
         fragmentTransaction.replace(binding.mainContainer.id, targetFragment)

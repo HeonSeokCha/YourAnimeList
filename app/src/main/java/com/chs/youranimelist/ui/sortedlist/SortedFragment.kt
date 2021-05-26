@@ -2,9 +2,7 @@ package com.chs.youranimelist.ui.sortedlist
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -13,7 +11,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.R
-import com.chs.youranimelist.databinding.FragmentHomeBinding
 import com.chs.youranimelist.databinding.FragmentSortedBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeListRepository
@@ -39,6 +36,8 @@ class SortedFragment : BaseFragment() {
     ): View? {
         _binding = FragmentSortedBinding.inflate(inflater, container, false)
         viewModel = SortedListViewModel(repository)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white)
         return binding.root
     }
 
@@ -49,7 +48,6 @@ class SortedFragment : BaseFragment() {
         initRecyclerView()
         viewModel.getAnimeList()
         getAnimeList()
-        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun initClick() {
@@ -101,7 +99,6 @@ class SortedFragment : BaseFragment() {
 
 
     private fun initSortType(sortType: String) {
-        val convertDate: ConvertDate = ConvertDate
         when (sortType) {
             "TRENDING NOW" -> {
                 viewModel.selectedSort = MediaSort.TRENDING_DESC
@@ -115,8 +112,8 @@ class SortedFragment : BaseFragment() {
                 viewModel.selectedSeason = ConvertDate.getCurrentSeason()
                 viewModel.selectedYear = ConvertDate.getCurrentYear(false)
                 viewModel.isSeason = true
-                binding.animeListYear.text = convertDate.getCurrentYear(false).toString()
-                binding.animeListSeason.text = convertDate.getCurrentSeason().toString()
+                binding.animeListYear.text = ConvertDate.getCurrentYear(false).toString()
+                binding.animeListSeason.text = ConvertDate.getCurrentSeason().toString()
                 binding.animeListSort.text = "Popularity"
             }
             "UPCOMING NEXT SEASON" -> {
@@ -124,8 +121,8 @@ class SortedFragment : BaseFragment() {
                 viewModel.selectedSeason = ConvertDate.getNextSeason()
                 viewModel.selectedYear = ConvertDate.getCurrentYear(true)
                 viewModel.isSeason = true
-                binding.animeListYear.text = convertDate.getCurrentYear(true).toString()
-                binding.animeListSeason.text = convertDate.getNextSeason().toString()
+                binding.animeListYear.text = ConvertDate.getCurrentYear(true).toString()
+                binding.animeListSeason.text = ConvertDate.getNextSeason().toString()
                 binding.animeListSort.text = "Popularity"
             }
             "ALL TIME POPULAR" -> {
