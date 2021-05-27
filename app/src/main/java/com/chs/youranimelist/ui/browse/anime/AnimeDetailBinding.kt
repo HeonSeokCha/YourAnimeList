@@ -14,6 +14,7 @@ import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.AnimeRecommendQuery
 import com.chs.youranimelist.util.ConvertDate.secondsToDateTime
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.util.*
 
 object AnimeDetailBinding {
 
@@ -22,7 +23,7 @@ object AnimeDetailBinding {
     fun animeDetailFormatYear(textView: TextView, anime: AnimeDetailQuery.Media?) {
         textView.text = ""
         textView.text = if (anime?.seasonYear != null) {
-            "${anime?.format}" + " ⦁ ${anime?.seasonYear}"
+            "${anime.format}" + " ⦁ ${anime.seasonYear}"
         } else {
             "${anime?.format}"
         }
@@ -32,10 +33,10 @@ object AnimeDetailBinding {
     @JvmStatic
     fun animeRecFormatYear(textView: TextView, anime: AnimeRecommendQuery.MediaRecommendation) {
         textView.text = ""
-        textView.text = if (anime?.seasonYear != null) {
-            "${anime?.format}" + " ⦁ ${anime?.seasonYear}"
+        textView.text = if (anime.seasonYear != null && anime.format != null) {
+            "${anime.format}" + " ⦁ ${anime.seasonYear}"
         } else {
-            "${anime?.format}"
+            "${anime.format}"
         }
     }
 
@@ -96,7 +97,8 @@ object AnimeDetailBinding {
     @JvmStatic
     fun animeDetailRelationFormat(textView: TextView, string: String) {
         var temp = string.replace("_", " ")
-        textView.text = temp[0].uppercase() + temp.substring(1, string.length).toLowerCase()
+        textView.text = temp[0].uppercase() + temp.substring(1, string.length)
+            .lowercase(Locale.getDefault())
     }
 
     @BindingAdapter("animeDetailAiring")
@@ -104,7 +106,7 @@ object AnimeDetailBinding {
     fun animeDetailAiring(textView: TextView, airingEpisode: AnimeDetailQuery.NextAiringEpisode?) {
         if (airingEpisode != null) {
             textView.text =
-                "Ep ${airingEpisode?.episode} on ${airingEpisode?.airingAt?.secondsToDateTime()}"
+                "Ep ${airingEpisode.episode} on ${airingEpisode.airingAt.secondsToDateTime()}"
             textView.isVisible = true
         }
     }

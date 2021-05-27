@@ -93,8 +93,8 @@ class AnimeDetailFragment : Fragment() {
                 }
                 ResponseState.SUCCESS -> {
                     binding.model = it.data!!.media
-                    trailerId = it.data?.media?.trailer?.id.toString()
-                    viewModel.animeDetail = it.data!!.media
+                    trailerId = it.data.media?.trailer?.id.toString()
+                    viewModel.animeDetail = it.data.media
                     binding.progressBar.isVisible = false
                     binding.btnTrailerPlay.isVisible = true
                 }
@@ -129,7 +129,7 @@ class AnimeDetailFragment : Fragment() {
                     Anime(
                         animeId = this.id,
                         idMal = this.idMal!!,
-                        title = this.title!!.english ?: this.title!!.romaji!!,
+                        title = this.title!!.english ?: this.title.romaji!!,
                         format = this.format.toString(),
                         status = this.status.toString(),
                         season = this.season.toString(),

@@ -97,7 +97,7 @@ class AnimeRepository {
             }
 
             override fun onFailure(call: Call<AnimeDetails>, t: Throwable) {
-                _animeOverviewThemeResponse.postValue(NetWorkState.Error(t.localizedMessage))
+                _animeOverviewThemeResponse.postValue(NetWorkState.Error(t.localizedMessage!!))
             }
         })
     }

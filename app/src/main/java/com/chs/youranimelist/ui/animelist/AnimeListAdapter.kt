@@ -19,7 +19,10 @@ class AnimeListAdapter(
         fun bind() {
             binding.model = getItem(layoutPosition)
             binding.root.setOnClickListener {
-                clickListener.invoke(getItem(layoutPosition).animeId, getItem(position).idMal)
+                clickListener.invoke(
+                    getItem(layoutPosition).animeId,
+                    getItem(layoutPosition).idMal
+                )
             }
             if (!getItem(layoutPosition).genre.isNullOrEmpty()) {
                 binding.rvAnimeListGenre.apply {

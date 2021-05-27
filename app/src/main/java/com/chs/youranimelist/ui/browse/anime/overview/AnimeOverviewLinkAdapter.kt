@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.AnimeOverviewQuery
 import com.chs.youranimelist.util.ItemColor
 import com.chs.youranimelist.databinding.ItemLinkBinding
+import java.util.*
 
 class AnimeOverviewLinkAdapter(
     private val list: List<AnimeOverviewQuery.ExternalLink?>,
@@ -23,9 +24,9 @@ class AnimeOverviewLinkAdapter(
 
     override fun onBindViewHolder(holder: AnimeOverviewLinkViewHolder, position: Int) {
         holder.binding.model = list[position]
-        if (ItemColor.EXTERNAL_LINK.containsKey(list[position]!!.site.toLowerCase())) {
+        if (ItemColor.EXTERNAL_LINK.containsKey(list[position]!!.site.lowercase(Locale.getDefault()))) {
             holder.binding.linkCard.setCardBackgroundColor(
-                Color.parseColor(ItemColor.EXTERNAL_LINK[list[position]!!.site.toLowerCase()])
+                Color.parseColor(ItemColor.EXTERNAL_LINK[list[position]!!.site.lowercase(Locale.getDefault())])
             )
         }
         holder.binding.root.setOnClickListener {

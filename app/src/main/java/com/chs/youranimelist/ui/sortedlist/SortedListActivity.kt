@@ -142,9 +142,8 @@ class SortedListActivity : AppCompatActivity() {
                             viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
                         }
                     } else {
-                        viewModel.hasNextPage =
-                            it.data?.nonSeason?.pageInfo!!.hasNextPage ?: false
-                        it.data?.nonSeason?.media?.forEach { nonSeasonAnime ->
+                        viewModel.hasNextPage = it.data?.nonSeason?.pageInfo!!.hasNextPage ?: false
+                        it.data?.nonSeason.media?.forEach { nonSeasonAnime ->
                             viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
                         }
                     }

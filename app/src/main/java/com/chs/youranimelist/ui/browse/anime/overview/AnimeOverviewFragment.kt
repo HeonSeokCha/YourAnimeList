@@ -71,11 +71,11 @@ class AnimeOverviewFragment : BaseFragment() {
 
                     binding.model = it.data?.media!!
 
-                    it.data?.media.relations?.relationsEdges?.forEach { relation ->
+                    it.data.media.relations?.relationsEdges?.forEach { relation ->
                         viewModel.animeOverviewRelationList.add(relation)
                     }
 
-                    it.data?.media.genres?.forEach { genres ->
+                    it.data.media.genres?.forEach { genres ->
                         viewModel.animeGenresList.add(genres!!)
                     }
 

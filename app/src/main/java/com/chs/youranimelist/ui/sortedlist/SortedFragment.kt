@@ -155,7 +155,7 @@ class SortedFragment : BaseFragment() {
                     } else {
                         viewModel.hasNextPage =
                             it.data?.nonSeason?.pageInfo!!.hasNextPage ?: false
-                        it.data?.nonSeason?.media?.forEach { nonSeasonAnime ->
+                        it.data.nonSeason.media?.forEach { nonSeasonAnime ->
                             viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
                         }
                     }

@@ -39,10 +39,12 @@ object HomeRecBinding {
     @JvmStatic
     fun animeFormatYear(textView: TextView, anime: AnimeList?) {
         textView.text = ""
-        textView.text = if (anime?.seasonYear != null) {
-            "${anime?.format}" + " ⦁ ${anime?.seasonYear}"
-        } else {
-            "${anime?.format}"
+        if (anime != null) {
+            textView.text = if (anime?.seasonYear != null && anime?.format != null) {
+                "${anime.format}" + " ⦁ ${anime.seasonYear}"
+            } else {
+                "${anime.format}"
+            }
         }
     }
 
