@@ -24,10 +24,10 @@ import com.chs.youranimelist.ui.search.adapter.SearchCharacterAdapter
 import com.chs.youranimelist.ui.search.adapter.SearchMangaAdapter
 
 class SearchFragment : Fragment() {
-    private var _binding: FragmentSearchBinding? = null
-    private val binding get() = _binding!!
     private lateinit var viewModel: SearchViewModel
     private lateinit var adapter: RecyclerView.Adapter<*>
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
     private var isLoading: Boolean = false
     private val repository by lazy { SearchRepository() }
 
@@ -55,7 +55,7 @@ class SearchFragment : Fragment() {
     private fun initObserver() {
         viewModel.getObserver()?.observe(viewLifecycleOwner, {
             when ((it as NetWorkState<*>?)?.responseState) {
-                
+
                 ResponseState.LOADING -> binding.progressBar.isVisible = true
 
                 ResponseState.SUCCESS -> {

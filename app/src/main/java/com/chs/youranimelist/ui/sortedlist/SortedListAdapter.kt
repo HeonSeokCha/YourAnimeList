@@ -11,6 +11,7 @@ class SortedListAdapter(
     private val items: ArrayList<AnimeList?>,
     private val clickListener: (id: Int, idMal: Int) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1

@@ -9,7 +9,9 @@ import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.type.MediaStatus
 import kotlinx.coroutines.launch
 
-class SortedListViewModel(private val animeListRepository: AnimeListRepository) : ViewModel() {
+class SortedListViewModel(
+    private val animeListRepository: AnimeListRepository
+) : ViewModel() {
 
     var selectedYear: Int? = null
     var selectedSeason: MediaSeason? = null

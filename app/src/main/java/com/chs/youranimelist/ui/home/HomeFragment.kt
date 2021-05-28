@@ -14,8 +14,6 @@ import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
-import com.chs.youranimelist.ui.main.MainActivity
-import com.chs.youranimelist.ui.sortedlist.SortedListActivity
 import com.chs.youranimelist.ui.search.SearchActivity
 
 class HomeFragment : BaseFragment() {
@@ -116,7 +114,7 @@ class HomeFragment : BaseFragment() {
 
         binding.rvAnimeRecList.apply {
             homeRecListAdapter =
-                HomeRecListParentAdapter(viewModel.homeRecList, this@HomeFragment.requireContext(),
+                HomeRecListParentAdapter(viewModel.homeRecList, this@HomeFragment.context!!,
                     clickListener = { sortType ->
                         this@HomeFragment.navigate?.changeFragment(sortType, 0, 0, true)
                     }, animeClickListener = { id, idMal ->

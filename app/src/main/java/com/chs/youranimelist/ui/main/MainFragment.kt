@@ -56,7 +56,7 @@ class MainFragment : Fragment() {
         )
         binding.navViewPager.isUserInputEnabled = false
         binding.navViewPager.offscreenPageLimit = fragmentList.size
-        binding.navViewPager.adapter = MainViewPagerAdapter(this.activity!!, fragmentList)
+        binding.navViewPager.adapter = MainViewPagerAdapter(this.requireActivity(), fragmentList)
     }
 
     private fun initNavigation() {

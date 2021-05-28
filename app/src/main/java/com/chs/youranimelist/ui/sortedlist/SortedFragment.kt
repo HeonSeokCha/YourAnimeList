@@ -36,8 +36,7 @@ class SortedFragment : BaseFragment() {
     ): View? {
         _binding = FragmentSortedBinding.inflate(inflater, container, false)
         viewModel = SortedListViewModel(repository)
-        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white)
+        initActionBar()
         return binding.root
     }
 
@@ -48,6 +47,11 @@ class SortedFragment : BaseFragment() {
         initRecyclerView()
         viewModel.getAnimeList()
         getAnimeList()
+    }
+
+    private fun initActionBar() {
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white)
     }
 
     private fun initClick() {
