@@ -37,9 +37,6 @@ class AnimeOverviewFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.getAnimeOverview(arguments?.getInt("id")!!)
-        if (arguments?.getInt("idMal")!! != 0) {
-            viewModel.getAnimeTheme(arguments?.getInt("idMal")!!)
-        }
         initRecyclerView()
         getAnimeInfo()
         initClick()
@@ -65,6 +62,10 @@ class AnimeOverviewFragment : BaseFragment() {
     }
 
     private fun getAnimeInfo() {
+        if (arguments?.getInt("idMal")!! != 0) {
+            viewModel.getAnimeTheme(arguments?.getInt("idMal")!!)
+        }
+
         viewModel.animeOverviewResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.SUCCESS -> {
@@ -125,13 +126,14 @@ class AnimeOverviewFragment : BaseFragment() {
             linkAdapter = AnimeOverviewLinkAdapter(viewModel.animeLinkList) {
                 CustomTabsIntent.Builder()
                     .build()
-                    .launchUrl(this@AnimeOverviewFragment.activity!!, Uri.parse(it))
+                    .launchUrl(this@AnimeOverviewFragment.requireContext(), Uri.parse(it))
             }
             this.adapter = linkAdapter
         }
     }
 
     private fun initAnimeTheme() {
+
         if (viewModel.animeDetails?.openingThemes?.isNullOrEmpty() == false) {
             binding.txtAnimeThemeOp.isVisible = true
             binding.rvAnimeThemeOp.apply {

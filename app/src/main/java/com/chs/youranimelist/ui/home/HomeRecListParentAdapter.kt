@@ -12,18 +12,23 @@ import com.chs.youranimelist.fragment.AnimeList
 class HomeRecListParentAdapter(
     private val list: List<List<AnimeList>>,
     private val mContext: Context,
-    private val clickListener: (sortType: String) -> Unit,
-    private val animeClickListener: (id: Int, idMal: Int) -> Unit,
+    private val listener: HomeRecListener
 ) : RecyclerView.Adapter<HomeRecListParentAdapter.AnimeListRecViewHolder>() {
 
+    class AnimeListRecViewHolder(val binding: ItemAnimeParentBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
     lateinit var homeAdapter: HomeRecListChildAdapter
-    private var listTitleList = listOf(
+
+    private val listTitleList = listOf(
         "TRENDING NOW", "POPULAR THIS SEASON",
         "UPCOMING NEXT SEASON", "ALL TIME POPULAR"
     )
 
-    class AnimeListRecViewHolder(val binding: ItemAnimeParentBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    interface HomeRecListener {
+        fun clickMore(sortType: String)
+        fun clickAnime(id: Int, idMal: Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeListRecViewHolder {
         val view =
@@ -33,12 +38,12 @@ class HomeRecListParentAdapter(
 
     override fun onBindViewHolder(holder: AnimeListRecViewHolder, position: Int) {
         holder.binding.btnViewAll.setOnClickListener {
-            clickListener.invoke(listTitleList[position])
+            listener.clickMore(listTitleList[position])
         }
         holder.binding.model = listTitleList[position]
         holder.binding.rvAnime.apply {
             homeAdapter = HomeRecListChildAdapter(list[position]) { id, idMal ->
-                animeClickListener.invoke(id, idMal)
+                listener.clickAnime(id, idMal)
             }
             this.adapter = homeAdapter
             this.layoutManager = LinearLayoutManager(

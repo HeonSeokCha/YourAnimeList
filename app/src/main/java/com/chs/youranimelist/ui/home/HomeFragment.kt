@@ -98,7 +98,7 @@ class HomeFragment : BaseFragment() {
             viewPagerHomeRecAdapter =
                 HomeRecViewPagerAdapter(viewModel.pagerRecList) { id, idMal ->
                     startActivity(Intent(
-                        activity!!.applicationContext,
+                        requireActivity().baseContext,
                         BrowseActivity::class.java
                     ).apply {
                         this.putExtra("type", "Media")
@@ -114,18 +114,22 @@ class HomeFragment : BaseFragment() {
 
         binding.rvAnimeRecList.apply {
             homeRecListAdapter =
-                HomeRecListParentAdapter(viewModel.homeRecList, this@HomeFragment.context!!,
-                    clickListener = { sortType ->
-                        this@HomeFragment.navigate?.changeFragment(sortType, 0, 0, true)
-                    }, animeClickListener = { id, idMal ->
-                        val intent = Intent(activity, BrowseActivity::class.java).apply {
-                            this.putExtra("type", "Media")
-                            this.putExtra("id", id)
-                            this.putExtra("idMal", idMal)
+                HomeRecListParentAdapter(viewModel.homeRecList, this@HomeFragment.requireContext(),
+                    object : HomeRecListParentAdapter.HomeRecListener {
+                        override fun clickMore(sortType: String) {
+                            this@HomeFragment.navigate?.changeFragment(sortType, 0, 0, true)
                         }
-                        startActivity(intent)
-                    }
-                )
+
+                        override fun clickAnime(id: Int, idMal: Int) {
+                            val intent = Intent(activity, BrowseActivity::class.java).apply {
+                                this.putExtra("type", "Media")
+                                this.putExtra("id", id)
+                                this.putExtra("idMal", idMal)
+                            }
+                            startActivity(intent)
+                        }
+
+                    })
             this.adapter = homeRecListAdapter
             this.layoutManager = LinearLayoutManager(this@HomeFragment.context)
         }
