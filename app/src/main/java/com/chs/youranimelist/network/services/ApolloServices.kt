@@ -1,4 +1,4 @@
-package com.chs.youranimelist.network
+package com.chs.youranimelist.network.services
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.cache.normalized.lru.EvictionPolicy

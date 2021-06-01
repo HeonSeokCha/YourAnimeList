@@ -5,7 +5,7 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.coroutines.toFlow
 import com.chs.youranimelist.CharacterQuery
 import com.chs.youranimelist.util.SingleLiveEvent
-import com.chs.youranimelist.network.ApolloServices
+import com.chs.youranimelist.network.services.ApolloServices
 import com.chs.youranimelist.network.NetWorkState
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect

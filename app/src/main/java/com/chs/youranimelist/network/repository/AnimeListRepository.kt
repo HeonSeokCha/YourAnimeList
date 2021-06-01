@@ -5,7 +5,7 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.coroutines.toFlow
 import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.util.SingleLiveEvent
-import com.chs.youranimelist.network.ApolloServices
+import com.chs.youranimelist.network.services.ApolloServices
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort

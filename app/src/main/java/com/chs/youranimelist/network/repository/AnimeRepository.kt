@@ -6,8 +6,8 @@ import com.apollographql.apollo.api.toInput
 import com.apollographql.apollo.coroutines.toFlow
 import retrofit2.Callback
 import com.chs.youranimelist.*
-import com.chs.youranimelist.network.ApolloServices
-import com.chs.youranimelist.network.JikanRestService
+import com.chs.youranimelist.network.services.ApolloServices
+import com.chs.youranimelist.network.services.JikanRestService
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.response.AnimeDetails
 import com.chs.youranimelist.util.ConvertDate

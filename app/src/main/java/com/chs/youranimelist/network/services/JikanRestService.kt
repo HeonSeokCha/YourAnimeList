@@ -1,4 +1,4 @@
-package com.chs.youranimelist.network
+package com.chs.youranimelist.network.services
 
 import com.chs.youranimelist.network.response.AnimeDetails
 import okhttp3.OkHttpClient

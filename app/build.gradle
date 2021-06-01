@@ -88,5 +88,7 @@ dependencies {
     implementation 'com.github.razir.progressbutton:progressbutton:2.1.0'
     //Shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    //viewBinding
+    implementation 'com.github.yogacp:android-viewbinding:1.0.3'
 
 }
