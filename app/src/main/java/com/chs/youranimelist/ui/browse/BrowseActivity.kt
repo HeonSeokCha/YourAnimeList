@@ -8,6 +8,7 @@ import com.chs.youranimelist.databinding.ActivityBrowseBinding
 import com.chs.youranimelist.ui.base.BaseNavigator
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragment
 import com.chs.youranimelist.ui.browse.character.CharacterFragment
+import com.chs.youranimelist.util.Constant
 
 class BrowseActivity : AppCompatActivity(), BaseNavigator {
     private var _binding: ActivityBrowseBinding? = null
@@ -30,12 +31,12 @@ class BrowseActivity : AppCompatActivity(), BaseNavigator {
         lateinit var targetFragment: Fragment
         val bundle = Bundle()
         when (type) {
-            "Media" -> {
+            Constant.TARGET_MEDIA -> {
                 targetFragment = AnimeDetailFragment()
                 bundle.putInt("id", id)
                 bundle.putInt("idMal", idMal)
             }
-            "CHARA" -> {
+            Constant.TARGET_CHARA -> {
                 targetFragment = CharacterFragment()
                 bundle.putInt("id", id)
             }

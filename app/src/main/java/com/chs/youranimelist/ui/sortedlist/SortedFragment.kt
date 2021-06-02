@@ -19,6 +19,7 @@ import com.chs.youranimelist.type.MediaStatus
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.main.MainActivity
+import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.ConvertDate
 import com.chs.youranimelist.util.SpacesItemDecoration
 
@@ -58,7 +59,7 @@ class SortedFragment : BaseFragment() {
         binding.animeListYear.setOnClickListener {
             val yearList =
                 ArrayList((ConvertDate.getCurrentYear(false) + 1 downTo 1970).map { it.toString() })
-            AlertDialog.Builder(this.context!!)
+            AlertDialog.Builder(this.requireContext())
                 .setItems(yearList.toTypedArray()) { _, which ->
                     if (which == 0) {
                         binding.animeListYear.text = yearList[which]
@@ -77,7 +78,7 @@ class SortedFragment : BaseFragment() {
 
         binding.animeListSeason.setOnClickListener {
             val seasonArray = viewModel.animeSeasonList.map { it.name }.toTypedArray()
-            AlertDialog.Builder(this.context!!)
+            AlertDialog.Builder(this.requireContext())
                 .setItems(seasonArray) { _, which ->
                     viewModel.selectedSeason = viewModel.animeSeasonList[which]
                     binding.animeListSeason.text = viewModel.selectedSeason?.name
@@ -89,7 +90,7 @@ class SortedFragment : BaseFragment() {
         }
 
         binding.animeListSort.setOnClickListener {
-            AlertDialog.Builder(this.context!!)
+            AlertDialog.Builder(this.requireContext())
                 .setItems(viewModel.animeSortArray) { _, which ->
                     viewModel.selectedSort = viewModel.animeSortList[which]
                     binding.animeListSort.text = viewModel.animeSortArray[which]
@@ -183,7 +184,7 @@ class SortedFragment : BaseFragment() {
         binding.rvAnimeList.apply {
             animeListAdapter = SortedListAdapter(viewModel.animeResultList) { id, idMal ->
                 val intent = Intent(this@SortedFragment.context, BrowseActivity::class.java).apply {
-                    this.putExtra("type", "Media")
+                    this.putExtra("type", Constant.TARGET_MEDIA)
                     this.putExtra("id", id)
                     this.putExtra("idMal", idMal)
                 }

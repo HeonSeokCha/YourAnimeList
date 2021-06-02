@@ -4,8 +4,8 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.util.ItemColor
 import com.chs.youranimelist.databinding.ItemGenreBinding
+import com.chs.youranimelist.util.Constant
 
 class AnimeOverviewGenreAdapter(
     private val items: List<String?>
@@ -20,7 +20,8 @@ class AnimeOverviewGenreAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.model = items[position]
-        holder.binding.genreCard.setCardBackgroundColor(Color.parseColor(ItemColor.GENRE_COLOR[items[position]]))
+        holder.binding.genreCard
+            .setCardBackgroundColor(Color.parseColor(Constant.GENRE_COLOR[items[position]]))
     }
 
     override fun getItemCount(): Int = items.size

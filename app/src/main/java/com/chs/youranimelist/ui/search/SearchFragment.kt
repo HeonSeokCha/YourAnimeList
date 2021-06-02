@@ -22,6 +22,7 @@ import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.adapter.SearchAnimeAdapter
 import com.chs.youranimelist.ui.search.adapter.SearchCharacterAdapter
 import com.chs.youranimelist.ui.search.adapter.SearchMangaAdapter
+import com.chs.youranimelist.util.Constant
 
 class SearchFragment : Fragment() {
     private lateinit var viewModel: SearchViewModel
@@ -30,10 +31,6 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private var isLoading: Boolean = false
     private val repository by lazy { SearchRepository() }
-
-    companion object {
-        const val SEARCH_TYPE: String = "searchType"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +43,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.searchPage = arguments?.getString(SEARCH_TYPE)!!
+        viewModel.searchPage = arguments?.getString(Constant.TARGET_SEARCH)!!
         initRecyclerView()
         initView()
         initObserver()
@@ -68,21 +65,21 @@ class SearchFragment : Fragment() {
                     viewModel.page += 1
 
                     when (viewModel.searchPage) {
-                        "Anime" -> {
+                        Constant.TARGET_ANIME -> {
                             val searchAnime = it as NetWorkState<SearchAnimeQuery.Page>
                             viewModel.hasNextPage = searchAnime.data?.pageInfo?.hasNextPage ?: false
                             searchAnime.data?.media?.forEach { anime ->
                                 viewModel.searchList.add(SearchResult(animeSearchResult = anime))
                             }
                         }
-                        "Manga" -> {
+                        Constant.TARGET_MANGA -> {
                             val searchManga = it as NetWorkState<SearchMangaQuery.Page>
                             viewModel.hasNextPage = searchManga.data?.pageInfo?.hasNextPage ?: false
                             searchManga.data?.media?.forEach { manga ->
                                 viewModel.searchList.add(SearchResult(mangaSearchResult = manga))
                             }
                         }
-                        "Character" -> {
+                        Constant.TARGET_CHARA -> {
                             val searchChara = it as NetWorkState<SearchCharacterQuery.Page>
                             viewModel.hasNextPage = searchChara.data?.pageInfo?.hasNextPage ?: false
                             searchChara.data?.characters?.forEach { chara ->
@@ -139,7 +136,7 @@ class SearchFragment : Fragment() {
             "Anime" -> {
                 SearchAnimeAdapter(viewModel.searchList) { id, idMal ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                        this.putExtra("type", "Media")
+                        this.putExtra("type", Constant.TARGET_MEDIA)
                         this.putExtra("id", id)
                         this.putExtra("idMal", idMal)
                     }
@@ -149,7 +146,7 @@ class SearchFragment : Fragment() {
             "Manga" -> {
                 SearchMangaAdapter(viewModel.searchList) { id, idMal ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                        this.putExtra("type", "Media")
+                        this.putExtra("type", Constant.TARGET_MEDIA)
                         this.putExtra("id", id)
                         this.putExtra("idMal", idMal)
                     }
@@ -159,7 +156,7 @@ class SearchFragment : Fragment() {
             "Character" -> {
                 SearchCharacterAdapter(viewModel.searchList) { id ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                        this.putExtra("type", "CHARA")
+                        this.putExtra("type", Constant.TARGET_CHARA)
                         this.putExtra("id", id)
                     }
                     startActivity(intent)
@@ -168,7 +165,7 @@ class SearchFragment : Fragment() {
             else -> {
                 SearchAnimeAdapter(viewModel.searchList) { id, idMal ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                        this.putExtra("type", "Media")
+                        this.putExtra("type", Constant.TARGET_MEDIA)
                         this.putExtra("id", id)
                         this.putExtra("idMal", idMal)
                     }

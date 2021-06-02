@@ -9,23 +9,26 @@ import androidx.fragment.app.FragmentTransaction
 import com.chs.youranimelist.databinding.ActivityMainBinding
 import com.chs.youranimelist.ui.base.BaseNavigator
 import com.chs.youranimelist.ui.sortedlist.SortedFragment
+import com.chs.youranimelist.util.Constant
 
 class MainActivity : AppCompatActivity(), BaseNavigator {
-    private val binding: ActivityMainBinding by viewBinding()
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.mainHomeToolbar)
-        changeFragment("Main", 0, 0, false)
+        changeFragment(Constant.TARGET_MAIN, 0, 0, false)
     }
 
     override fun changeFragment(type: String, id: Int, idMal: Int, addToBackStack: Boolean) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         lateinit var targetFragment: Fragment
         val bundle = Bundle()
-        if (type == "Main") {
+        if (type == Constant.TARGET_MAIN) {
             targetFragment = MainFragment()
         } else {
             targetFragment = SortedFragment()
@@ -43,5 +46,10 @@ class MainActivity : AppCompatActivity(), BaseNavigator {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

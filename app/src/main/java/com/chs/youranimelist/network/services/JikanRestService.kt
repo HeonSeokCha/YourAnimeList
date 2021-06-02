@@ -1,6 +1,7 @@
 package com.chs.youranimelist.network.services
 
 import com.chs.youranimelist.network.response.AnimeDetails
+import com.chs.youranimelist.util.Constant
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -24,7 +25,7 @@ interface JikanRestService {
 
             return Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl("https://api.jikan.moe/v3/")
+                .baseUrl(Constant.JIKAN_API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(JikanRestService::class.java)

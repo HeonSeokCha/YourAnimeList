@@ -5,24 +5,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.viewbinding.library.activity.viewBinding
 import androidx.lifecycle.MutableLiveData
 import com.chs.youranimelist.databinding.ActivitySearchBinding
 import com.chs.youranimelist.network.repository.SearchRepository
+import com.chs.youranimelist.util.Constant
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var viewModel: SearchViewModel
     private val repository by lazy { SearchRepository() }
-    private var _binding: ActivitySearchBinding? = null
-    private val binding get() = _binding!!
+    private val binding: ActivitySearchBinding by viewBinding()
     val searchLiveData: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivitySearchBinding.inflate(layoutInflater)
         viewModel = SearchViewModel(repository)
         setContentView(binding.root)
         initView()
@@ -53,7 +53,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initTabView() {
-        var tabArr: List<String> = listOf("Anime", "Manga", "Character")
+        var tabArr: List<String> = listOf(
+            Constant.TARGET_ANIME, Constant.TARGET_MANGA, Constant.TARGET_CHARA
+        )
         binding.viewPagerSearch.adapter = SearchViewPagerAdapter(this, tabArr)
         TabLayoutMediator(binding.searchTabLayout, binding.viewPagerSearch) { tab, position ->
             for (i in 0..position) {

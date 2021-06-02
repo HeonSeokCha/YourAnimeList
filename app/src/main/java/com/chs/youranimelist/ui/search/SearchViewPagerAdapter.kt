@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.chs.youranimelist.util.Constant
 
 class SearchViewPagerAdapter(
     fa: FragmentActivity,
@@ -12,7 +13,7 @@ class SearchViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         val fragment: Fragment = SearchFragment()
         val bundle: Bundle = Bundle().apply {
-            this.putString("searchType", list[position])
+            this.putString(Constant.TARGET_SEARCH, list[position])
         }
         fragment.arguments = bundle
         return fragment

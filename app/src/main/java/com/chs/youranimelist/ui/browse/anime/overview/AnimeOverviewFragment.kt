@@ -15,6 +15,7 @@ import com.chs.youranimelist.databinding.FragmentAnimeOverviewBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
+import com.chs.youranimelist.util.Constant
 
 
 class AnimeOverviewFragment : BaseFragment() {
@@ -108,7 +109,7 @@ class AnimeOverviewFragment : BaseFragment() {
         binding.rvAnimeOverviewRelation.apply {
             relationAdapter =
                 AnimeOverviewRelationAdapter(viewModel.animeOverviewRelationList) { id, idMal ->
-                    this@AnimeOverviewFragment.navigate?.changeFragment("Media", id, idMal!!, true)
+                    this@AnimeOverviewFragment.navigate?.changeFragment(Constant.TARGET_MEDIA, id, idMal!!, true)
                 }
             this.adapter = relationAdapter
             this.layoutManager = LinearLayoutManager(

@@ -10,6 +10,7 @@ import com.chs.youranimelist.data.repository.AnimeListRepository
 import com.chs.youranimelist.databinding.FragmentAnimeListBinding
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
+import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.onQueryTextChanged
 
 class AnimeListFragment : BaseFragment() {
@@ -44,7 +45,7 @@ class AnimeListFragment : BaseFragment() {
     private fun initRecyclerView() {
         animeListAdapter = AnimeListAdapter() { id, idMal ->
             val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                this.putExtra("type", "Media")
+                this.putExtra("type", Constant.TARGET_MEDIA)
                 this.putExtra("id", id)
                 this.putExtra("idMal", idMal)
             }

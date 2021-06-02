@@ -15,6 +15,7 @@ import com.chs.youranimelist.databinding.FragmentAnimeRecommendBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
+import com.chs.youranimelist.util.Constant
 
 
 class AnimeRecommendFragment : BaseFragment() {
@@ -62,7 +63,7 @@ class AnimeRecommendFragment : BaseFragment() {
     private fun initRecyclerView() {
         binding.rvAnimeRecommend.apply {
             animeRecommendAdapter = AnimeRecommendAdapter(viewModel.animeRecList) { id, idMal ->
-                this@AnimeRecommendFragment.navigate?.changeFragment("Media", id, idMal, true)
+                this@AnimeRecommendFragment.navigate?.changeFragment(Constant.TARGET_MEDIA, id, idMal, true)
             }
             this.adapter = animeRecommendAdapter
             this.layoutManager = LinearLayoutManager(this@AnimeRecommendFragment.context)

@@ -3,6 +3,7 @@ package com.chs.youranimelist.ui.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.viewbinding.library.fragment.viewBinding
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.SearchActivity
+import com.chs.youranimelist.util.Constant
 
 class HomeFragment : BaseFragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -101,7 +103,7 @@ class HomeFragment : BaseFragment() {
                         requireActivity().baseContext,
                         BrowseActivity::class.java
                     ).apply {
-                        this.putExtra("type", "Media")
+                        this.putExtra("type", Constant.TARGET_MEDIA)
                         this.putExtra("id", id)
                         this.putExtra("idMal", idMal)
                     })
@@ -122,7 +124,7 @@ class HomeFragment : BaseFragment() {
 
                         override fun clickAnime(id: Int, idMal: Int) {
                             val intent = Intent(activity, BrowseActivity::class.java).apply {
-                                this.putExtra("type", "Media")
+                                this.putExtra("type", Constant.TARGET_MEDIA)
                                 this.putExtra("id", id)
                                 this.putExtra("idMal", idMal)
                             }
@@ -150,10 +152,5 @@ class HomeFragment : BaseFragment() {
                 super.onOptionsItemSelected(item)
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

@@ -1,9 +1,20 @@
 package com.chs.youranimelist.util
 
-import android.graphics.Color
+object Constant {
+    const val ANILIST_API_URL: String = "https://graphql.anilist.co"
+    const val JIKAN_API_URL: String = "https://api.jikan.moe/v3/"
 
-object ItemColor {
+    const val TARGET_MAIN: String = "main"
+    const val TARGET_SORT: String = "sort"
+    const val TARGET_MEDIA: String = "media"
+    const val TARGET_ANIME: String = "anime"
+    const val TARGET_MANGA: String = "manga"
+    const val TARGET_CHARA: String = "chara"
+    const val TARGET_SEARCH: String = "searchType"
+
+
     val DEFAULT_GENRE_COLOR = "#727272"
+
     val GENRE_COLOR = hashMapOf(
         Pair("Action", "#24687B"),
         Pair("Adventure", "#014037"),

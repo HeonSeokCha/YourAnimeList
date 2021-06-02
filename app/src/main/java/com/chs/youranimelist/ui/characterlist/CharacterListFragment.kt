@@ -11,6 +11,7 @@ import com.chs.youranimelist.databinding.FragmentCharacterListBinding
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.SearchActivity
+import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.onQueryTextChanged
 
 class CharacterListFragment : BaseFragment() {
@@ -44,7 +45,7 @@ class CharacterListFragment : BaseFragment() {
     private fun initRecyclerView() {
         charaListAdapter = CharacterListAdapter() { id ->
             val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                this.putExtra("type", "CHARA")
+                this.putExtra("type", Constant.TARGET_CHARA)
                 this.putExtra("id", id)
             }
             startActivity(intent)
