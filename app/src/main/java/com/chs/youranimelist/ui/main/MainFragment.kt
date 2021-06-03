@@ -1,11 +1,9 @@
 package com.chs.youranimelist.ui.main
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.viewbinding.library.fragment.viewBinding
 import androidx.activity.OnBackPressedCallback
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentMainBinding
@@ -14,27 +12,12 @@ import com.chs.youranimelist.ui.characterlist.CharacterListFragment
 import com.chs.youranimelist.ui.home.HomeFragment
 
 
-class MainFragment : Fragment() {
-    private var _binding: FragmentMainBinding? = null
-    private val binding get() = _binding!!
+class MainFragment : Fragment(R.layout.fragment_main) {
+    private val binding: FragmentMainBinding by viewBinding()
     private lateinit var onBackCallback: OnBackPressedCallback
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initViewPager()
-        initNavigation()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         onBackCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (binding.navViewPager.currentItem != 0) {
@@ -46,6 +29,12 @@ class MainFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackCallback)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViewPager()
+        initNavigation()
     }
 
     private fun initViewPager() {
@@ -73,10 +62,5 @@ class MainFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         onBackCallback.remove()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }

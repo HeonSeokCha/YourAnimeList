@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.viewbinding.library.fragment.viewBinding
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -20,22 +21,16 @@ import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideDrawable
 import com.github.razir.progressbutton.showDrawable
 
-class CharacterFragment : BaseFragment() {
+class CharacterFragment : BaseFragment(R.layout.fragment_character) {
     private val repository by lazy { CharacterRepository() }
-    private var _binding: FragmentCharacterBinding? = null
-    private val binding get() = _binding!!
+    private val binding: FragmentCharacterBinding by viewBinding()
     private lateinit var viewModel: CharacterViewModel
     private lateinit var animeAdapter: CharacterAnimeAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentCharacterBinding.inflate(inflater, container, false)
-        viewModel = CharacterViewModel(repository, activity!!.application)
-        binding.lifecycleOwner = this
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = CharacterViewModel(repository, requireActivity().application)
 
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,6 +40,7 @@ class CharacterFragment : BaseFragment() {
         viewModel.getCharaInfo(arguments?.getInt("id").toInput())
         getCharaInfo()
         initClick()
+//        binding.lifecycleOwner = this
         bindProgressButton(binding.mediaSaveList)
     }
 
@@ -64,7 +60,7 @@ class CharacterFragment : BaseFragment() {
             saveList()
         }
         binding.characterToolbars.setNavigationOnClickListener {
-            activity!!.finish()
+            requireActivity().finish()
         }
     }
 
@@ -140,10 +136,5 @@ class CharacterFragment : BaseFragment() {
                 }
             }
         })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

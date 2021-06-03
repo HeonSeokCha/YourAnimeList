@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.viewbinding.library.fragment.viewBinding
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chs.youranimelist.R
 import com.chs.youranimelist.SearchAnimeQuery
 import com.chs.youranimelist.SearchCharacterQuery
 import com.chs.youranimelist.SearchMangaQuery
@@ -24,21 +26,16 @@ import com.chs.youranimelist.ui.search.adapter.SearchCharacterAdapter
 import com.chs.youranimelist.ui.search.adapter.SearchMangaAdapter
 import com.chs.youranimelist.util.Constant
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(R.layout.fragment_search) {
     private lateinit var viewModel: SearchViewModel
     private lateinit var adapter: RecyclerView.Adapter<*>
-    private var _binding: FragmentSearchBinding? = null
-    private val binding get() = _binding!!
+    private val binding: FragmentSearchBinding by viewBinding()
     private var isLoading: Boolean = false
     private val repository by lazy { SearchRepository() }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel = SearchViewModel(repository)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -187,10 +184,5 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.root.requestLayout()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

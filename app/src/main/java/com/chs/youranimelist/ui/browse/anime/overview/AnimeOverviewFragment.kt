@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.viewbinding.library.fragment.viewBinding
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
@@ -18,22 +19,17 @@ import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 
 
-class AnimeOverviewFragment : BaseFragment() {
+class AnimeOverviewFragment : BaseFragment(R.layout.fragment_anime_overview) {
     private lateinit var viewModel: AnimeOverviewViewModel
     private lateinit var relationAdapter: AnimeOverviewRelationAdapter
     private lateinit var genreAdapter: AnimeOverviewGenreAdapter
     private lateinit var linkAdapter: AnimeOverviewLinkAdapter
     private val repository by lazy { AnimeRepository() }
-    private var _binding: FragmentAnimeOverviewBinding? = null
-    private val binding get() = _binding!!
+    private val binding: FragmentAnimeOverviewBinding by viewBinding()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentAnimeOverviewBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel = AnimeOverviewViewModel(repository)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -152,10 +148,5 @@ class AnimeOverviewFragment : BaseFragment() {
                     AnimeOverviewThemeAdapter(viewModel.animeDetails?.endingThemes ?: listOf())
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

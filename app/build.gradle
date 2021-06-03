@@ -72,14 +72,14 @@ dependencies {
     implementation 'androidx.room:room-ktx:2.3.0'
     kapt 'androidx.room:room-compiler:2.3.0'
     //Apollo
-    implementation('com.apollographql.apollo:apollo-runtime:2.5.7')
-    implementation('com.apollographql.apollo:apollo-coroutines-support:2.5.7')
+    implementation 'com.apollographql.apollo:apollo-runtime:2.5.7'
+    implementation 'com.apollographql.apollo:apollo-coroutines-support:2.5.7'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
     //Retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //Coil
-    implementation('io.coil-kt:coil:1.2.1')
+    implementation 'io.coil-kt:coil:1.2.1'
     //Indicator
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
     //Browser

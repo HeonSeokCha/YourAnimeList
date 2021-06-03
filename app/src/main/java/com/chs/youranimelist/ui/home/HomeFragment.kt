@@ -18,21 +18,16 @@ import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.SearchActivity
 import com.chs.youranimelist.util.Constant
 
-class HomeFragment : BaseFragment() {
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+class HomeFragment : BaseFragment(R.layout.fragment_home) {
+    private val binding: FragmentHomeBinding by viewBinding()
     private lateinit var viewModel: HomeViewModel
     private var viewPagerHomeRecAdapter: HomeRecViewPagerAdapter? = null
     private var homeRecListAdapter: HomeRecListParentAdapter? = null
     private val animeRepository by lazy { AnimeRepository() }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel = HomeViewModel(animeRepository)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.viewbinding.library.fragment.viewBinding
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
@@ -22,20 +23,16 @@ import com.github.razir.progressbutton.hideDrawable
 import com.github.razir.progressbutton.showDrawable
 import com.google.android.material.tabs.TabLayoutMediator
 
-class AnimeDetailFragment : Fragment() {
-    private var _binding: FragmentAnimeDetailBinding? = null
+class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
+
+    private val binding: FragmentAnimeDetailBinding by viewBinding()
     private val repository by lazy { AnimeRepository() }
     private lateinit var viewModel: AnimeDetailViewModel
     private lateinit var trailerId: String
-    private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentAnimeDetailBinding.inflate(inflater, container, false)
-        viewModel = AnimeDetailViewModel(repository, activity!!.application)
-        return binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = AnimeDetailViewModel(repository, requireActivity().application)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -154,10 +151,5 @@ class AnimeDetailFragment : Fragment() {
         CustomTabsIntent.Builder()
             .build()
             .launchUrl(requireActivity(), Uri.parse("https://www.youtube.com/watch?v=$videoId"))
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

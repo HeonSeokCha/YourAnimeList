@@ -4,29 +4,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.viewbinding.library.fragment.viewBinding
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
+import com.chs.youranimelist.R
 import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
 
-class AnimeCharaFragment() :
-    BaseFragment() {
-    private lateinit var viewModel: AnimeCharaViewModel
+class AnimeCharaFragment : BaseFragment(R.layout.fragment_anime_chara) {
+
+    private val binding: FragmentAnimeCharaBinding by viewBinding()
     private val repository by lazy { AnimeRepository() }
-    private var _binding: FragmentAnimeCharaBinding? = null
-    private val binding get() = _binding!!
     private lateinit var charaAdapter: AnimeCharaAdapter
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentAnimeCharaBinding.inflate(inflater, container, false)
+    private lateinit var viewModel: AnimeCharaViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel = AnimeCharaViewModel(repository)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,8 +69,4 @@ class AnimeCharaFragment() :
         binding.root.requestLayout()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }
