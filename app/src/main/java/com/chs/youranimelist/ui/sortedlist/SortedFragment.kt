@@ -142,6 +142,10 @@ class SortedFragment : BaseFragment(R.layout.fragment_sorted) {
             when (it.responseState) {
                 ResponseState.LOADING -> if (!isLoading) binding.listProgressBar.isVisible = true
                 ResponseState.SUCCESS -> {
+                    if (!viewModel.hasNextPage) {
+                        return@observe
+                    }
+
                     if (isLoading) {
                         viewModel.animeResultList.removeAt(viewModel.animeResultList.lastIndex)
                         animeListAdapter.notifyItemRemoved(viewModel.animeResultList.size)
@@ -213,5 +217,10 @@ class SortedFragment : BaseFragment(R.layout.fragment_sorted) {
             viewModel.page += 1
             viewModel.getAnimeList()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 }

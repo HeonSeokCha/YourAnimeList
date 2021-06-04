@@ -53,6 +53,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 ResponseState.LOADING -> binding.progressBar.isVisible = true
 
                 ResponseState.SUCCESS -> {
+                    if (!viewModel.hasNextPage) {
+                        return@observe
+                    }
+
                     if (isLoading) {
                         viewModel.searchList.removeAt(viewModel.searchList.lastIndex)
                         adapter.notifyItemRemoved(viewModel.searchList.size)
