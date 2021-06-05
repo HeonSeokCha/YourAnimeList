@@ -41,7 +41,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private fun getAnimeRecList() {
         viewModel.animePagerRecommendResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
-                ResponseState.LOADING -> binding.mainProgressbar.isVisible = true
+                ResponseState.LOADING -> binding.layoutShimmerHome.root.isVisible = true
                 ResponseState.SUCCESS -> {
                     it.data?.viewPager?.media?.forEach { viewPager ->
                         viewModel.pagerRecList.add(viewPager!!)
@@ -76,14 +76,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                     }
                     viewPagerHomeRecAdapter!!.notifyDataSetChanged()
                     homeRecListAdapter!!.notifyDataSetChanged()
-                    binding.mainProgressbar.isVisible = false
+                    binding.layoutShimmerHome.root.isVisible = false
+                    binding.indicator.isVisible = true
+                    binding.rvAnimeRecList.isVisible = true
+                    binding.viewPager2.isVisible = true
                 }
                 ResponseState.ERROR -> {
-                    binding.mainProgressbar.isVisible = false
-                    binding.txtError.apply {
-                        this.text = it.message
-                        this.isVisible = true
-                    }
+                    binding.layoutShimmerHome.root.isVisible = false
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
                 }
             }

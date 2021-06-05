@@ -14,6 +14,7 @@ import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
+import com.chs.youranimelist.util.Constant
 
 class AnimeCharaFragment : BaseFragment(R.layout.fragment_anime_chara) {
 
@@ -56,7 +57,7 @@ class AnimeCharaFragment : BaseFragment(R.layout.fragment_anime_chara) {
         binding.rvAnimeChara.apply {
             charaAdapter =
                 AnimeCharaAdapter(viewModel.animeCharacterList) { charaId ->
-                    this@AnimeCharaFragment.navigate!!.changeFragment("CHARA", charaId)
+                    this@AnimeCharaFragment.navigate!!.changeFragment(Constant.TARGET_CHARA, charaId)
                 }
             this.adapter = charaAdapter
             this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context, 3)

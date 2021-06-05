@@ -17,6 +17,7 @@ import com.chs.youranimelist.databinding.FragmentCharacterBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.CharacterRepository
 import com.chs.youranimelist.ui.base.BaseFragment
+import com.chs.youranimelist.util.Constant
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideDrawable
 import com.github.razir.progressbutton.showDrawable
@@ -90,7 +91,12 @@ class CharacterFragment : BaseFragment(R.layout.fragment_character) {
     private fun initRecyclerView() {
         binding.rvCharaAnimeSeries.apply {
             animeAdapter = CharacterAnimeAdapter(viewModel.characterAnimeList) { id, idMal ->
-                this@CharacterFragment.navigate?.changeFragment("Media", id, idMal, true)
+                this@CharacterFragment.navigate?.changeFragment(
+                    Constant.TARGET_MEDIA,
+                    id,
+                    idMal,
+                    true
+                )
             }
             this.adapter = animeAdapter
             this.layoutManager = GridLayoutManager(this@CharacterFragment.context, 3)
