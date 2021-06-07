@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include
+        android:id="@+id/shimmer_anime_parent_1"
+        layout="@layout/shimmer_item_anime_child"
+        android:layout_width="110dp"
+        android:layout_height="230dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/shimmer_anime_parent_2"
+        layout="@layout/shimmer_item_anime_child"
+        android:layout_width="110dp"
+        android:layout_height="230dp"
+        app:layout_constraintEnd_toStartOf="@+id/shimmer_anime_parent_3"
+        app:layout_constraintStart_toEndOf="@+id/shimmer_anime_parent_1"
+        app:layout_constraintTop_toTopOf="@+id/shimmer_anime_parent_1" />
+
+    <include
+        android:id="@+id/shimmer_anime_parent_3"
+        layout="@layout/shimmer_item_anime_child"
+        android:layout_width="110dp"
+        android:layout_height="230dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/shimmer_anime_parent_2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

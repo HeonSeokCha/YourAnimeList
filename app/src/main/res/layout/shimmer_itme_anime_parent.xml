@@ -1,44 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <View
-        android:id="@+id/shimmer_btn_viewAll2"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/ic_view_more"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackgroundBorderless"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
         android:id="@+id/shimmer_anime_parent_title"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@color/shimmer"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/shimmer_btn_viewAll2" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <include
         android:id="@+id/shimmer_anime_parent_1"
         layout="@layout/shimmer_item_anime_child"
         android:layout_width="130dp"
-        android:layout_height="270dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="260dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shimmer_btn_viewAll2" />
+        app:layout_constraintTop_toBottomOf="@+id/shimmer_anime_parent_title" />
 
     <include
         android:id="@+id/shimmer_anime_parent_2"
         layout="@layout/shimmer_item_anime_child"
         android:layout_width="130dp"
-        android:layout_height="270dp"
+        android:layout_height="260dp"
         app:layout_constraintStart_toEndOf="@+id/shimmer_anime_parent_1"
         app:layout_constraintTop_toTopOf="@+id/shimmer_anime_parent_1" />
 
@@ -46,7 +36,7 @@
         android:id="@+id/shimmer_anime_parent_3"
         layout="@layout/shimmer_item_anime_child"
         android:layout_width="130dp"
-        android:layout_height="270dp"
+        android:layout_height="260dp"
         app:layout_constraintStart_toEndOf="@+id/shimmer_anime_parent_2"
         app:layout_constraintTop_toTopOf="@+id/shimmer_anime_parent_2" />
     <include

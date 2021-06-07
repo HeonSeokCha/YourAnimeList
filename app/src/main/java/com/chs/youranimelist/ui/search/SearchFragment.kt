@@ -50,7 +50,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         viewModel.getObserver()?.observe(viewLifecycleOwner, {
             when ((it as NetWorkState<*>?)?.responseState) {
 
-                ResponseState.LOADING -> binding.progressBar.isVisible = true
+                ResponseState.LOADING -> binding.layoutShimmerSearch.root.isVisible = true
 
                 ResponseState.SUCCESS -> {
                     if (!viewModel.hasNextPage) {
@@ -89,12 +89,13 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                         }
                     }
                     adapter.notifyDataSetChanged()
-                    binding.progressBar.isVisible = false
+                    binding.layoutShimmerSearch.root.isVisible = false
+                    binding.rvSearch.isVisible = true
                 }
                 ResponseState.ERROR -> {
                     isLoading = false
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
-                    binding.progressBar.isVisible = false
+                    binding.layoutShimmerSearch.root.isVisible = false
                 }
             }
         })

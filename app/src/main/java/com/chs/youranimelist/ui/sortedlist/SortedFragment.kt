@@ -140,7 +140,10 @@ class SortedFragment : BaseFragment(R.layout.fragment_sorted) {
     private fun getAnimeList() {
         viewModel.animeListResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
-                ResponseState.LOADING -> if (!isLoading) binding.listProgressBar.isVisible = true
+                ResponseState.LOADING -> {
+                    if (!isLoading)
+                        binding.layoutShimmerSorted.root.isVisible = true
+                }
                 ResponseState.SUCCESS -> {
                     if (!viewModel.hasNextPage) {
                         return@observe
@@ -166,7 +169,8 @@ class SortedFragment : BaseFragment(R.layout.fragment_sorted) {
                         }
                     }
                     animeListAdapter.notifyDataSetChanged()
-                    binding.listProgressBar.isVisible = false
+                    binding.layoutShimmerSorted.root.isVisible = false
+                    binding.rvAnimeList.isVisible = true
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(
@@ -175,7 +179,7 @@ class SortedFragment : BaseFragment(R.layout.fragment_sorted) {
                         Toast.LENGTH_LONG
                     ).show()
                     isLoading = false
-                    binding.listProgressBar.isVisible = false
+                    binding.layoutShimmerSorted.root.isVisible = false
                 }
             }
         })
