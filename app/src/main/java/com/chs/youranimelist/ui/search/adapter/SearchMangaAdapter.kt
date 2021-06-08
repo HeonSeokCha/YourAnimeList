@@ -10,7 +10,7 @@ import com.chs.youranimelist.network.response.SearchResult
 
 class SearchMangaAdapter(
     private val list: List<SearchResult?>,
-    private val clickListener: (id: Int,idMal: Int) -> Unit
+    private val clickListener: (id: Int, idMal: Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEW_TYPE_ITEM = 0

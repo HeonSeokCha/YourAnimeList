@@ -21,7 +21,7 @@
 
     <include
         android:id="@+id/layout_shimmerSearch"
-        layout="@layout/shimmer_media_list"
+        layout="@layout/shimmer_item_serach_child"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
