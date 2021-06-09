@@ -42,6 +42,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.searchPage = arguments?.getString(Constant.TARGET_SEARCH)!!
+        Log.d("SearchPage", viewModel.searchPage)
         initRecyclerView()
         initView()
         initObserver()
@@ -139,10 +140,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun initRecyclerView() {
-        Log.d(
-            "viewModel.searchPage", "${viewModel.searchPage}  ${Constant.TARGET_ANIME}" +
-                    "${viewModel.searchPage}  ${Constant.TARGET_MANGA}  ${viewModel.searchPage} ${Constant.TARGET_CHARA}"
-        )
         adapter = when (viewModel.searchPage) {
             Constant.TARGET_ANIME -> {
                 SearchAnimeAdapter(viewModel.searchList) { id, idMal ->

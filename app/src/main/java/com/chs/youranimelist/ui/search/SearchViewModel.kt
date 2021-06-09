@@ -14,7 +14,7 @@ class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
     var hasNextPage: Boolean = true
     var searchKeyword: String = ""
     var searchList: ArrayList<SearchResult?> = ArrayList()
-    var searchPage: String = ""
+    lateinit var searchPage: String
 
     private val searchAnimeResponse by lazy {
         repository.searchAnimeResponse

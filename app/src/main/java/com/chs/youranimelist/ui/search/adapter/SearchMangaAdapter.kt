@@ -36,7 +36,7 @@ class SearchMangaAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is SearchMangaViewHolder) {
-            holder.binding.model = list[position]!!.animeSearchResult!!.fragments.animeList
+            holder.binding.model = list[position]!!.mangaSearchResult!!.fragments.animeList
             holder.binding.root.setOnClickListener {
                 clickListener.invoke(
                     list[position]!!.animeSearchResult!!.fragments.animeList.id,

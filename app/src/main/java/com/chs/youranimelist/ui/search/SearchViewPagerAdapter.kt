@@ -13,7 +13,12 @@ class SearchViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         val fragment: Fragment = SearchFragment()
         val bundle: Bundle = Bundle().apply {
-            this.putString(Constant.TARGET_SEARCH, list[position])
+            when (position) {
+                0 -> this.putString(Constant.TARGET_SEARCH, Constant.TARGET_ANIME)
+                1 -> this.putString(Constant.TARGET_SEARCH, Constant.TARGET_MANGA)
+                2 -> this.putString(Constant.TARGET_SEARCH, Constant.TARGET_CHARA)
+            }
+
         }
         fragment.arguments = bundle
         return fragment
