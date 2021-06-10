@@ -180,7 +180,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun loadMore() {
         if (viewModel.hasNextPage) {
-            viewModel.searchList.add(null)
+            viewModel.loading()
             viewModel.search(viewModel.searchKeyword)
         }
     }

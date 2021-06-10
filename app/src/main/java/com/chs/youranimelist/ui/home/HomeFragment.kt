@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentHomeBinding
 import com.chs.youranimelist.fragment.AnimeList
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment

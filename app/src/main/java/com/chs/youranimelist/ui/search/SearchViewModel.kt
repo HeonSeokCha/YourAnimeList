@@ -46,4 +46,8 @@ class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
             else -> null
         }
     }
+
+    fun loading() {
+        searchList.add(null)
+    }
 }
