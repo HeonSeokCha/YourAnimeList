@@ -52,7 +52,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         viewModel.getObserver()?.observe(viewLifecycleOwner, {
             when ((it as NetWorkState<*>?)?.responseState) {
 
-                ResponseState.LOADING -> binding.layoutShimmerSearch.root.isVisible = true
+                ResponseState.LOADING -> {
+                    if (!isLoading) {
+                        binding.layoutShimmerSearch.root.isVisible = true
+                    }
+                }
 
                 ResponseState.SUCCESS -> {
                     if (!viewModel.hasNextPage) {
