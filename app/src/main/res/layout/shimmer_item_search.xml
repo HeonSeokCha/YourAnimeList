@@ -17,7 +17,7 @@
     <View
         android:id="@+id/shimmer_search_title"
         android:layout_width="200dp"
-        android:layout_height="15dp"
+        android:layout_height="14dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:background="@color/shimmer"
@@ -27,7 +27,7 @@
     <View
         android:id="@+id/shimmer_search_format"
         android:layout_width="100dp"
-        android:layout_height="15dp"
+        android:layout_height="14dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@color/shimmer"
@@ -37,7 +37,7 @@
     <View
         android:id="@+id/shimmer_search_score"
         android:layout_width="30dp"
-        android:layout_height="15dp"
+        android:layout_height="14dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:background="@color/shimmer"
@@ -47,11 +47,10 @@
     <View
         android:id="@+id/shimmer_search_favorite"
         android:layout_width="30dp"
-        android:layout_height="15dp"
+        android:layout_height="14dp"
         android:layout_marginStart="16dp"
         android:background="@color/shimmer"
         app:layout_constraintStart_toEndOf="@+id/shimmer_search_score"
         app:layout_constraintTop_toTopOf="@+id/shimmer_search_score" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

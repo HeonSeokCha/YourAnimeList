@@ -112,6 +112,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun initView() {
+        setHasOptionsMenu(false)
         binding.rvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)

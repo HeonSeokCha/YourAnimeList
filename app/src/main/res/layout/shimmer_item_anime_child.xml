@@ -6,7 +6,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/img_animeList"
@@ -26,7 +30,7 @@
         <TextView
             android:id="@+id/txt_animeList_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="14dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -46,7 +50,7 @@
         <TextView
             android:id="@+id/txt_anime_status"
             android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_height="14dp"
             android:layout_marginBottom="8dp"
             android:background="@color/shimmer"
             android:textSize="12sp"
@@ -56,7 +60,7 @@
         <TextView
             android:id="@+id/txt_anime_type"
             android:layout_width="60dp"
-            android:layout_height="wrap_content"
+            android:layout_height="14dp"
             android:layout_marginBottom="8dp"
             android:background="@color/shimmer"
             android:textSize="12dp"
@@ -66,7 +70,7 @@
         <TextView
             android:id="@+id/txt_animeList_score"
             android:layout_width="20dp"
-            android:layout_height="wrap_content"
+            android:layout_height="14dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:background="@color/shimmer"

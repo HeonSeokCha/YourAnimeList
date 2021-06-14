@@ -37,17 +37,18 @@ class AnimeCharaFragment : BaseFragment(R.layout.fragment_anime_chara) {
     private fun getCharacters() {
         viewModel.animeCharacterResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
-                ResponseState.LOADING -> binding.progressBar.isVisible = true
+                ResponseState.LOADING -> binding.shimmerAnimeChara.root.isVisible = true
                 ResponseState.SUCCESS -> {
                     it.data?.media?.characters?.charactersNode?.forEach { animeChara ->
                         viewModel.animeCharacterList.add(animeChara!!)
                     }
                     charaAdapter.notifyDataSetChanged()
-                    binding.progressBar.isVisible = false
+                    binding.rvAnimeChara.isVisible = true
+                    binding.shimmerAnimeChara.root.isVisible = false
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
-                    binding.progressBar.isVisible = false
+                    binding.shimmerAnimeChara.root.isVisible = false
                 }
             }
         })

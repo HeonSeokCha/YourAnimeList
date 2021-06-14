@@ -3,6 +3,7 @@ package com.chs.youranimelist.ui.sortedlist
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.viewbinding.library.fragment.viewBinding
@@ -45,6 +46,7 @@ class SortedFragment : BaseFragment(R.layout.fragment_sorted) {
         initRecyclerView()
         viewModel.getAnimeList()
         getAnimeList()
+        setHasOptionsMenu(true)
     }
 
     private fun initActionBar() {
@@ -223,8 +225,12 @@ class SortedFragment : BaseFragment(R.layout.fragment_sorted) {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.clear()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 }

@@ -8,7 +8,7 @@
     <View
         android:id="@+id/shimmer_anime_parent_title"
         android:layout_width="100dp"
-        android:layout_height="20dp"
+        android:layout_height="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@color/shimmer"
@@ -18,7 +18,7 @@
     <include
         android:id="@+id/shimmer_anime_parent_1"
         layout="@layout/shimmer_item_anime_child"
-        android:layout_width="130dp"
+        android:layout_width="wrap_content"
         android:layout_height="260dp"
         android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
     <include
         android:id="@+id/shimmer_anime_parent_2"
         layout="@layout/shimmer_item_anime_child"
-        android:layout_width="130dp"
+        android:layout_width="wrap_content"
         android:layout_height="260dp"
         app:layout_constraintStart_toEndOf="@+id/shimmer_anime_parent_1"
         app:layout_constraintTop_toTopOf="@+id/shimmer_anime_parent_1" />
@@ -35,14 +35,14 @@
     <include
         android:id="@+id/shimmer_anime_parent_3"
         layout="@layout/shimmer_item_anime_child"
-        android:layout_width="130dp"
+        android:layout_width="wrap_content"
         android:layout_height="260dp"
         app:layout_constraintStart_toEndOf="@+id/shimmer_anime_parent_2"
         app:layout_constraintTop_toTopOf="@+id/shimmer_anime_parent_2" />
     <include
         android:id="@+id/shimmer_anime_parent_4"
         layout="@layout/shimmer_item_anime_child"
-        android:layout_width="130dp"
+        android:layout_width="wrap_content"
         android:layout_height="270dp"
         app:layout_constraintStart_toEndOf="@+id/shimmer_anime_parent_3"
         app:layout_constraintTop_toTopOf="@+id/shimmer_anime_parent_3" />
