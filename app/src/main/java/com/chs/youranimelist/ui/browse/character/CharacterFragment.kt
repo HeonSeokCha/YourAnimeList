@@ -31,7 +31,6 @@ class CharacterFragment : BaseFragment(R.layout.fragment_character) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = CharacterViewModel(repository, requireActivity().application)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +40,7 @@ class CharacterFragment : BaseFragment(R.layout.fragment_character) {
         viewModel.getCharaInfo(arguments?.getInt("id").toInput())
         getCharaInfo()
         initClick()
-//        binding.lifecycleOwner = this
+        binding.lifecycleOwner = this
         bindProgressButton(binding.mediaSaveList)
     }
 
@@ -142,5 +141,10 @@ class CharacterFragment : BaseFragment(R.layout.fragment_character) {
                 }
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.characterAnimeList.clear()
     }
 }

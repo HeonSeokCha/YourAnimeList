@@ -39,8 +39,8 @@ class SearchMangaAdapter(
             holder.binding.model = list[position]!!.mangaSearchResult!!.fragments.animeList
             holder.binding.root.setOnClickListener {
                 clickListener.invoke(
-                    list[position]!!.animeSearchResult!!.fragments.animeList.id,
-                    list[position]!!.animeSearchResult!!.fragments.animeList.idMal ?: 0
+                    list[position]!!.mangaSearchResult!!.fragments.animeList.id,
+                    list[position]!!.mangaSearchResult!!.fragments.animeList.idMal ?: 0
                 )
             }
         }

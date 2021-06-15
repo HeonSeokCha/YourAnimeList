@@ -8,7 +8,7 @@
         android:id="@+id/shimmer_search_img"
         android:layout_width="120dp"
         android:layout_height="180dp"
-        android:background="@color/shimmer"
+        android:background="@drawable/background_skeleton_rec"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="2:3"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +20,7 @@
         android:layout_height="14dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:background="@color/shimmer"
+        android:background="@drawable/background_skeleton_rec"
         app:layout_constraintStart_toEndOf="@+id/shimmer_search_img"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +30,7 @@
         android:layout_height="14dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/shimmer"
+        android:background="@drawable/background_skeleton_rec"
         app:layout_constraintStart_toEndOf="@+id/shimmer_search_img"
         app:layout_constraintTop_toBottomOf="@+id/shimmer_search_title" />
 
@@ -40,7 +40,7 @@
         android:layout_height="14dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:background="@color/shimmer"
+        android:background="@drawable/background_skeleton_rec"
         app:layout_constraintStart_toEndOf="@+id/shimmer_search_img"
         app:layout_constraintTop_toBottomOf="@+id/shimmer_search_format" />
 
@@ -49,7 +49,7 @@
         android:layout_width="30dp"
         android:layout_height="14dp"
         android:layout_marginStart="16dp"
-        android:background="@color/shimmer"
+        android:background="@drawable/background_skeleton_rec"
         app:layout_constraintStart_toEndOf="@+id/shimmer_search_score"
         app:layout_constraintTop_toTopOf="@+id/shimmer_search_score" />
 

@@ -18,7 +18,7 @@
 
     <include
         android:id="@+id/layout_shimmerSearch"
-        layout="@layout/shimmer_item_serach_child"
+        layout="@layout/shimmer_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"

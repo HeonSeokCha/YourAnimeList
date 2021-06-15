@@ -4,6 +4,4 @@
 
     <solid android:color="@color/shimmer" />
 
-    <corners android:radius="5dp" />
-
 </shape>

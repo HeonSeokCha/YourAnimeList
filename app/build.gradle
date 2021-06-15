@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
-    id("com.apollographql.apollo").version("2.5.8")
+    id("com.apollographql.apollo").version("2.5.9")
 }
 
 android {
@@ -72,8 +72,8 @@ dependencies {
     implementation 'androidx.room:room-ktx:2.3.0'
     kapt 'androidx.room:room-compiler:2.3.0'
     //Apollo
-    implementation 'com.apollographql.apollo:apollo-runtime:2.5.8'
-    implementation 'com.apollographql.apollo:apollo-coroutines-support:2.5.8'
+    implementation 'com.apollographql.apollo:apollo-runtime:2.5.9'
+    implementation 'com.apollographql.apollo:apollo-coroutines-support:2.5.9'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
     //Retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

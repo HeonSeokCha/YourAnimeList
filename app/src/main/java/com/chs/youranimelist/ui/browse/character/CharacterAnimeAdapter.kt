@@ -24,7 +24,7 @@ class CharacterAnimeAdapter(
         holder.binding.root.setOnClickListener {
             clickListener.invoke(
                 items[position]!!.node!!.fragments.animeList.id,
-                items[position]!!.node!!.fragments.animeList.idMal!!
+                items[position]!!.node!!.fragments.animeList.idMal ?: 0
             )
         }
     }
