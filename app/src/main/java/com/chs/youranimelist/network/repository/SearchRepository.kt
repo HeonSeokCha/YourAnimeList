@@ -32,7 +32,13 @@ class SearchRepository {
             SearchAnimeQuery(page.toInput(), search.toInput())
         ).toFlow().catch { e ->
             _searchAnimeResponse.postValue(NetWorkState.Error(e.message.toString()))
-        }.collect { _searchAnimeResponse.postValue(NetWorkState.Success(it.data?.page!!)) }
+        }.collect {
+            if (it.data!!.page!!.media!!.isEmpty()) {
+                _searchAnimeResponse.postValue(NetWorkState.Error("Not Found"))
+            } else {
+                _searchAnimeResponse.postValue(NetWorkState.Success(it.data?.page!!))
+            }
+        }
     }
 
     suspend fun searchManga(page: Int, search: String) {
@@ -41,7 +47,13 @@ class SearchRepository {
             SearchMangaQuery(page.toInput(), search.toInput())
         ).toFlow().catch { e ->
             _searchMangaResponse.postValue(NetWorkState.Error(e.message.toString()))
-        }.collect { _searchMangaResponse.postValue(NetWorkState.Success(it.data?.page!!)) }
+        }.collect {
+            if (it.data!!.page!!.media!!.isEmpty()) {
+                _searchMangaResponse.postValue(NetWorkState.Error("Not Found"))
+            } else {
+                _searchMangaResponse.postValue(NetWorkState.Success(it.data?.page!!))
+            }
+        }
     }
 
     suspend fun searchCharacter(page: Int, search: String) {
@@ -50,6 +62,12 @@ class SearchRepository {
             SearchCharacterQuery(page.toInput(), search.toInput())
         ).toFlow().catch { e ->
             _searchCharaResponse.postValue(NetWorkState.Error(e.message.toString()))
-        }.collect { _searchCharaResponse.postValue(NetWorkState.Success(it.data?.page!!)) }
+        }.collect {
+            if (it.data?.page!!.characters!!.isEmpty()) {
+                _searchCharaResponse.postValue(NetWorkState.Error("Not Found"))
+            } else {
+                _searchCharaResponse.postValue(NetWorkState.Success(it.data?.page!!))
+            }
+        }
     }
 }

@@ -55,6 +55,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 ResponseState.LOADING -> {
                     if (!isLoading) {
                         binding.layoutShimmerSearch.root.isVisible = true
+                        binding.imgSearchError.isVisible = false
+                        binding.txtSearchError.isVisible = false
                     }
                 }
 
@@ -104,8 +106,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 }
                 ResponseState.ERROR -> {
                     isLoading = false
-                    Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
                     binding.layoutShimmerSearch.root.isVisible = false
+                    binding.imgSearchError.isVisible = true
+                    binding.txtSearchError.isVisible = true
                 }
             }
         })
