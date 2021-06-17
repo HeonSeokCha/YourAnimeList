@@ -152,4 +152,10 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
             .build()
             .launchUrl(requireActivity(), Uri.parse("https://www.youtube.com/watch?v=$videoId"))
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.animeDetail = null
+        viewModel.initAnimeList = null
+    }
 }

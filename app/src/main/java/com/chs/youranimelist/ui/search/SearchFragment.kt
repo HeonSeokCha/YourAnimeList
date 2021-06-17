@@ -29,7 +29,7 @@ import com.chs.youranimelist.util.Constant
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
     private lateinit var viewModel: SearchViewModel
-    private lateinit var adapter: RecyclerView.Adapter<*>
+    private var adapter: RecyclerView.Adapter<*>? = null
     private val binding: FragmentSearchBinding by viewBinding()
     private var isLoading: Boolean = false
     private val repository by lazy { SearchRepository() }
@@ -41,11 +41,55 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(false)
         viewModel.searchPage = arguments?.getString(Constant.TARGET_SEARCH)!!
-        Log.d("SearchPage", viewModel.searchPage)
         initRecyclerView()
         initView()
         initObserver()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
+    }
+
+    private fun initView() {
+        binding.rvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE &&
+                    !recyclerView.canScrollVertically(1) && !isLoading
+                ) {
+                    loadMore()
+                    isLoading = true
+                }
+            }
+        })
+
+        if (activity is SearchActivity) {
+            (activity as SearchActivity).searchLiveData.observe(viewLifecycleOwner, { search ->
+                viewModel.searchKeyword = search
+                viewModel.searchList.clear()
+
+                isLoading = false
+                viewModel.page = 1
+                viewModel.hasNextPage = true
+
+                adapter?.notifyDataSetChanged()
+
+                if (search.isNotBlank()) {
+                    viewModel.search(viewModel.searchKeyword)
+                }
+            })
+        }
+    }
+
+    private fun loadMore() {
+        if (viewModel.hasNextPage) {
+            viewModel.loading()
+            viewModel.search(viewModel.searchKeyword)
+        }
     }
 
     private fun initObserver() {
@@ -67,7 +111,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
                     if (isLoading) {
                         viewModel.searchList.removeAt(viewModel.searchList.lastIndex)
-                        adapter.notifyItemRemoved(viewModel.searchList.size)
+                        adapter?.notifyItemRemoved(viewModel.searchList.size)
                         isLoading = false
                     }
 
@@ -100,7 +144,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                         }
                     }
 
-                    adapter.notifyDataSetChanged()
+                    adapter?.notifyDataSetChanged()
                     binding.layoutShimmerSearch.root.isVisible = false
                     binding.rvSearch.isVisible = true
                 }
@@ -112,39 +156,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 }
             }
         })
-    }
-
-    private fun initView() {
-        setHasOptionsMenu(false)
-        binding.rvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                if (newState == RecyclerView.SCROLL_STATE_IDLE &&
-                    !recyclerView.canScrollVertically(1) && !isLoading
-                ) {
-                    loadMore()
-                    isLoading = true
-                }
-            }
-        })
-
-        if (activity is SearchActivity) {
-            (activity as SearchActivity).searchLiveData.observe(viewLifecycleOwner, { search ->
-                viewModel.searchKeyword = search
-                viewModel.searchList.clear()
-
-                isLoading = false
-                viewModel.page = 1
-                viewModel.hasNextPage = true
-
-                adapter.notifyDataSetChanged()
-
-                if (search.isNotBlank()) {
-                    viewModel.search(viewModel.searchKeyword)
-                }
-            })
-        }
     }
 
     private fun initRecyclerView() {
@@ -186,15 +197,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.rvSearch.layoutManager = LinearLayoutManager(this.context)
     }
 
-    private fun loadMore() {
-        if (viewModel.hasNextPage) {
-            viewModel.loading()
-            viewModel.search(viewModel.searchKeyword)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.root.requestLayout()
+    override fun onDestroy() {
+        super.onDestroy()
+        adapter = null
+        viewModel.searchList.clear()
     }
 }

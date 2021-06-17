@@ -20,12 +20,12 @@ import com.chs.youranimelist.util.Constant
 
 
 class AnimeOverviewFragment : BaseFragment(R.layout.fragment_anime_overview) {
-    private lateinit var viewModel: AnimeOverviewViewModel
-    private lateinit var relationAdapter: AnimeOverviewRelationAdapter
-    private lateinit var genreAdapter: AnimeOverviewGenreAdapter
-    private lateinit var linkAdapter: AnimeOverviewLinkAdapter
     private val repository by lazy { AnimeRepository() }
     private val binding: FragmentAnimeOverviewBinding by viewBinding()
+    private lateinit var viewModel: AnimeOverviewViewModel
+    private var relationAdapter: AnimeOverviewRelationAdapter? = null
+    private var genreAdapter: AnimeOverviewGenreAdapter? = null
+    private var linkAdapter: AnimeOverviewLinkAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,9 +81,9 @@ class AnimeOverviewFragment : BaseFragment(R.layout.fragment_anime_overview) {
                         viewModel.animeLinkList.add(links)
                     }
 
-                    relationAdapter.notifyDataSetChanged()
-                    genreAdapter.notifyDataSetChanged()
-                    linkAdapter.notifyDataSetChanged()
+                    relationAdapter?.notifyDataSetChanged()
+                    genreAdapter?.notifyDataSetChanged()
+                    linkAdapter?.notifyDataSetChanged()
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
@@ -130,7 +130,6 @@ class AnimeOverviewFragment : BaseFragment(R.layout.fragment_anime_overview) {
     }
 
     private fun initAnimeTheme() {
-
         if (viewModel.animeDetails?.openingThemes?.isNullOrEmpty() == false) {
             binding.txtAnimeThemeOp.isVisible = true
             binding.rvAnimeThemeOp.apply {
@@ -148,5 +147,16 @@ class AnimeOverviewFragment : BaseFragment(R.layout.fragment_anime_overview) {
                     AnimeOverviewThemeAdapter(viewModel.animeDetails?.endingThemes ?: listOf())
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.animeDetails = null
+        viewModel.animeGenresList.clear()
+        viewModel.animeOverviewRelationList.clear()
+        viewModel.animeLinkList.clear()
+        genreAdapter = null
+        linkAdapter = null
+        relationAdapter = null
     }
 }

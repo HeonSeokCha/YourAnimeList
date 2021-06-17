@@ -24,7 +24,7 @@ class AnimeRecommendFragment : BaseFragment(R.layout.fragment_anime_recommend) {
     private val binding: FragmentAnimeRecommendBinding by viewBinding()
     private val repository by lazy { AnimeRepository() }
     private lateinit var viewModel: AnimeRecommendViewModel
-    private lateinit var animeRecommendAdapter: AnimeRecommendAdapter
+    private var animeRecommendAdapter: AnimeRecommendAdapter? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +39,11 @@ class AnimeRecommendFragment : BaseFragment(R.layout.fragment_anime_recommend) {
         getRecommendList()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
+    }
+
     private fun getRecommendList() {
         viewModel.animeRecommendResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
@@ -47,7 +52,7 @@ class AnimeRecommendFragment : BaseFragment(R.layout.fragment_anime_recommend) {
                     it.data?.media?.recommendations?.edges?.forEach { recommend ->
                         viewModel.animeRecList.add(recommend)
                     }
-                    animeRecommendAdapter.notifyDataSetChanged()
+                    animeRecommendAdapter?.notifyDataSetChanged()
                     binding.progressBar.isVisible = false
                 }
                 ResponseState.ERROR -> {
@@ -73,9 +78,9 @@ class AnimeRecommendFragment : BaseFragment(R.layout.fragment_anime_recommend) {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.root.requestLayout()
+    override fun onDestroy() {
+        super.onDestroy()
+        animeRecommendAdapter = null
     }
 
 }

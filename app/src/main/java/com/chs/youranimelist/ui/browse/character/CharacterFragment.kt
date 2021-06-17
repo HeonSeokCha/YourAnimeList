@@ -26,7 +26,7 @@ class CharacterFragment : BaseFragment(R.layout.fragment_character) {
     private val repository by lazy { CharacterRepository() }
     private val binding: FragmentCharacterBinding by viewBinding()
     private lateinit var viewModel: CharacterViewModel
-    private lateinit var animeAdapter: CharacterAnimeAdapter
+    private var animeAdapter: CharacterAnimeAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +75,7 @@ class CharacterFragment : BaseFragment(R.layout.fragment_character) {
                     it.data?.character?.media?.edges?.forEach { anime ->
                         viewModel.characterAnimeList.add(anime)
                     }
-                    animeAdapter.notifyDataSetChanged()
+                    animeAdapter?.notifyDataSetChanged()
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(
@@ -143,8 +143,9 @@ class CharacterFragment : BaseFragment(R.layout.fragment_character) {
         })
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         viewModel.characterAnimeList.clear()
+        animeAdapter = null
     }
 }
