@@ -78,9 +78,8 @@ class AnimeRecommendFragment : BaseFragment(R.layout.fragment_anime_recommend) {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        animeRecommendAdapter = null
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.rvAnimeRecommend.adapter = null
     }
-
 }

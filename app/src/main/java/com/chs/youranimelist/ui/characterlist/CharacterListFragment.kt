@@ -33,6 +33,14 @@ class CharacterListFragment : BaseFragment(R.layout.fragment_character_list) {
         getCharaList()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (::charaListAdapter.isInitialized) {
+            viewModel.getAllCharaList()
+        }
+        setHasOptionsMenu(true)
+    }
+
     private fun getCharaList() {
         viewModel.charaListResponse.observe(viewLifecycleOwner, {
             charaListAdapter.submitList(it)
@@ -65,12 +73,8 @@ class CharacterListFragment : BaseFragment(R.layout.fragment_character_list) {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (::charaListAdapter.isInitialized) {
-            viewModel.getAllCharaList()
-        }
-        setHasOptionsMenu(true)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.rvCharaList.adapter = null
     }
-
 }

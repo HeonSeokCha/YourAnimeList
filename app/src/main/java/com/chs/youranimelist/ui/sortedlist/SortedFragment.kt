@@ -229,10 +229,9 @@ class SortedFragment : BaseFragment(R.layout.fragment_sorted) {
         menu.clear()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.animeResultList.clear()
-        animeListAdapter = null
+    override fun onDestroyView() {
+        super.onDestroyView()
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        binding.rvAnimeList.adapter = null
     }
 }

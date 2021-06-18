@@ -32,6 +32,14 @@ class AnimeListFragment : BaseFragment(R.layout.fragment_anime_list) {
         getAnimeList()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (::animeListAdapter.isInitialized) {
+            viewModel.getAllAnimeList()
+        }
+        setHasOptionsMenu(true)
+    }
+
     private fun getAnimeList() {
         viewModel.animeListResponse.observe(viewLifecycleOwner, {
             animeListAdapter.submitList(it)
@@ -65,11 +73,8 @@ class AnimeListFragment : BaseFragment(R.layout.fragment_anime_list) {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (::animeListAdapter.isInitialized) {
-            viewModel.getAllAnimeList()
-        }
-        setHasOptionsMenu(true)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.rvAnimeList.adapter = null
     }
 }

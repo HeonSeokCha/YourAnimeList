@@ -197,9 +197,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.rvSearch.layoutManager = LinearLayoutManager(this.context)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        adapter = null
-        viewModel.searchList.clear()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.rvSearch.adapter = null
     }
 }

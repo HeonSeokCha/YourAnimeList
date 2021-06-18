@@ -21,15 +21,25 @@ import com.chs.youranimelist.util.Constant
 
 class AnimeOverviewFragment : BaseFragment(R.layout.fragment_anime_overview) {
     private val repository by lazy { AnimeRepository() }
-    private val binding: FragmentAnimeOverviewBinding by viewBinding()
+    private var _binding: FragmentAnimeOverviewBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel: AnimeOverviewViewModel
-    private var relationAdapter: AnimeOverviewRelationAdapter? = null
-    private var genreAdapter: AnimeOverviewGenreAdapter? = null
-    private var linkAdapter: AnimeOverviewLinkAdapter? = null
+    private lateinit var relationAdapter: AnimeOverviewRelationAdapter
+    private lateinit var genreAdapter: AnimeOverviewGenreAdapter
+    private lateinit var linkAdapter: AnimeOverviewLinkAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = AnimeOverviewViewModel(repository)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentAnimeOverviewBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -149,14 +159,12 @@ class AnimeOverviewFragment : BaseFragment(R.layout.fragment_anime_overview) {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.animeDetails = null
-        viewModel.animeGenresList.clear()
-        viewModel.animeOverviewRelationList.clear()
-        viewModel.animeLinkList.clear()
-        genreAdapter = null
-        linkAdapter = null
-        relationAdapter = null
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.rvAnimeOverviewGenre.adapter = null
+        binding.rvAnimeOverviewLinks.adapter = null
+        binding.rvAnimeOverviewRelation.adapter = null
+        binding.rvAnimeThemeEd.adapter = null
+        binding.rvAnimeThemeOp.adapter = null
     }
 }

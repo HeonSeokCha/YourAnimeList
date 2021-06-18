@@ -34,6 +34,11 @@ class AnimeCharaFragment : BaseFragment(R.layout.fragment_anime_chara) {
         getCharacters()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
+    }
+
     private fun getCharacters() {
         viewModel.animeCharacterResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
@@ -66,9 +71,8 @@ class AnimeCharaFragment : BaseFragment(R.layout.fragment_anime_chara) {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.root.requestLayout()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.rvAnimeChara.adapter = null
     }
-
 }
