@@ -3,7 +3,6 @@ package com.chs.youranimelist.ui.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.viewbinding.library.fragment.viewBinding
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +10,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentHomeBinding
 import com.chs.youranimelist.fragment.AnimeList
-import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
@@ -19,8 +17,9 @@ import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.SearchActivity
 import com.chs.youranimelist.util.Constant
 
-class HomeFragment : BaseFragment(R.layout.fragment_home) {
-    private val binding: FragmentHomeBinding by viewBinding()
+class HomeFragment : BaseFragment() {
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel: HomeViewModel
     private var viewPagerHomeRecAdapter: HomeRecViewPagerAdapter? = null
     private var homeRecListAdapter: HomeRecListParentAdapter? = null
@@ -29,6 +28,15 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = HomeViewModel(animeRepository)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -147,5 +155,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.rvAnimeRecList.adapter = null
+        _binding = null
     }
 }

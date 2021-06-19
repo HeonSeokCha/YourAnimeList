@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.viewbinding.library.fragment.viewBinding
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
@@ -19,7 +18,7 @@ import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 
 
-class AnimeOverviewFragment : BaseFragment(R.layout.fragment_anime_overview) {
+class AnimeOverviewFragment : BaseFragment() {
     private val repository by lazy { AnimeRepository() }
     private var _binding: FragmentAnimeOverviewBinding? = null
     private val binding get() = _binding!!
@@ -166,5 +165,6 @@ class AnimeOverviewFragment : BaseFragment(R.layout.fragment_anime_overview) {
         binding.rvAnimeOverviewRelation.adapter = null
         binding.rvAnimeThemeEd.adapter = null
         binding.rvAnimeThemeOp.adapter = null
+        _binding = null
     }
 }

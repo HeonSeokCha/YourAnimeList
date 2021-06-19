@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.viewbinding.library.fragment.viewBinding
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -22,15 +21,25 @@ import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideDrawable
 import com.github.razir.progressbutton.showDrawable
 
-class CharacterFragment : BaseFragment(R.layout.fragment_character) {
+class CharacterFragment : BaseFragment() {
+    private var _binding: FragmentCharacterBinding? = null
+    private val binding get() = _binding!!
     private val repository by lazy { CharacterRepository() }
-    private val binding: FragmentCharacterBinding by viewBinding()
     private lateinit var viewModel: CharacterViewModel
     private var animeAdapter: CharacterAnimeAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = CharacterViewModel(repository, requireActivity().application)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentCharacterBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -147,5 +156,6 @@ class CharacterFragment : BaseFragment(R.layout.fragment_character) {
         super.onDestroyView()
         viewModel.characterAnimeList.clear()
         binding.rvCharaAnimeSeries.adapter = null
+        _binding = null
     }
 }

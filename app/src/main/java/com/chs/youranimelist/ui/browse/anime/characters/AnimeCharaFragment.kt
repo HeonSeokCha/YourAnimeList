@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.viewbinding.library.fragment.viewBinding
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import com.chs.youranimelist.R
 import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.ResponseState
@@ -16,9 +14,10 @@ import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 
-class AnimeCharaFragment : BaseFragment(R.layout.fragment_anime_chara) {
+class AnimeCharaFragment : BaseFragment() {
 
-    private val binding: FragmentAnimeCharaBinding by viewBinding()
+    private var _binding: FragmentAnimeCharaBinding? = null
+    private val binding get() = _binding!!
     private val repository by lazy { AnimeRepository() }
     private lateinit var charaAdapter: AnimeCharaAdapter
     private lateinit var viewModel: AnimeCharaViewModel
@@ -26,6 +25,15 @@ class AnimeCharaFragment : BaseFragment(R.layout.fragment_anime_chara) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = AnimeCharaViewModel(repository)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentAnimeCharaBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +71,10 @@ class AnimeCharaFragment : BaseFragment(R.layout.fragment_anime_chara) {
         binding.rvAnimeChara.apply {
             charaAdapter =
                 AnimeCharaAdapter(viewModel.animeCharacterList) { charaId ->
-                    this@AnimeCharaFragment.navigate!!.changeFragment(Constant.TARGET_CHARA, charaId)
+                    this@AnimeCharaFragment.navigate!!.changeFragment(
+                        Constant.TARGET_CHARA,
+                        charaId
+                    )
                 }
             this.adapter = charaAdapter
             this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context, 3)
@@ -74,5 +85,6 @@ class AnimeCharaFragment : BaseFragment(R.layout.fragment_anime_chara) {
     override fun onDestroyView() {
         super.onDestroyView()
         binding.rvAnimeChara.adapter = null
+        _binding = null
     }
 }

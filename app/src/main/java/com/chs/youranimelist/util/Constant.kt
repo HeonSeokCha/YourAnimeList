@@ -11,6 +11,9 @@ object Constant {
     const val TARGET_MANGA: String = "manga"
     const val TARGET_CHARA: String = "chara"
     const val TARGET_SEARCH: String = "searchType"
+    const val TARGET_ID: String = "id"
+    const val TARGET_ID_MAL: String = "idMal"
+    const val TARGET_SORTED: String = "sorted"
 
 
     val DEFAULT_GENRE_COLOR = "#727272"

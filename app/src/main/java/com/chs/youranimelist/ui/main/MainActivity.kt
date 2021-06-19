@@ -1,7 +1,6 @@
 package com.chs.youranimelist.ui.main
 
 import android.os.Bundle
-import android.viewbinding.library.activity.viewBinding
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
@@ -12,13 +11,14 @@ import com.chs.youranimelist.ui.sortedlist.SortedFragment
 import com.chs.youranimelist.util.Constant
 
 class MainActivity : AppCompatActivity(), BaseNavigator {
-    private val binding: ActivityMainBinding by viewBinding()
-
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
         setSupportActionBar(binding.mainHomeToolbar)
-        changeFragment(Constant.TARGET_MAIN, 0, 0, false)
+        changeFragment(Constant.TARGET_MAIN, 0, 0, true)
     }
 
     override fun changeFragment(type: String, id: Int, idMal: Int, addToBackStack: Boolean) {
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), BaseNavigator {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        supportFragmentManager.popBackStack()
         return true
     }
 }

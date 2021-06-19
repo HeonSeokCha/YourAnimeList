@@ -3,7 +3,6 @@ package com.chs.youranimelist.ui.characterlist
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.viewbinding.library.fragment.viewBinding
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.R
@@ -11,12 +10,12 @@ import com.chs.youranimelist.data.repository.CharacterListRepository
 import com.chs.youranimelist.databinding.FragmentCharacterListBinding
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
-import com.chs.youranimelist.ui.search.SearchActivity
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.onQueryTextChanged
 
-class CharacterListFragment : BaseFragment(R.layout.fragment_character_list) {
-    private val binding: FragmentCharacterListBinding by viewBinding()
+class CharacterListFragment : BaseFragment() {
+    private var _binding: FragmentCharacterListBinding? = null
+    private val binding get() = _binding!!
     private val repository by lazy { CharacterListRepository(requireActivity().application) }
     private lateinit var viewModel: CharacterListViewModel
     private lateinit var charaListAdapter: CharacterListAdapter
@@ -25,6 +24,15 @@ class CharacterListFragment : BaseFragment(R.layout.fragment_character_list) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = CharacterListViewModel(repository)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentCharacterListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,5 +84,6 @@ class CharacterListFragment : BaseFragment(R.layout.fragment_character_list) {
     override fun onDestroyView() {
         super.onDestroyView()
         binding.rvCharaList.adapter = null
+        _binding = null
     }
 }

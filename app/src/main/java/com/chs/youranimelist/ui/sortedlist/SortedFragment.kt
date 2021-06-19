@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.viewbinding.library.fragment.viewBinding
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
@@ -25,8 +24,9 @@ import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.ConvertDate
 import com.chs.youranimelist.util.SpacesItemDecoration
 
-class SortedFragment : BaseFragment(R.layout.fragment_sorted) {
-    private val binding: FragmentSortedBinding by viewBinding()
+class SortedFragment : BaseFragment() {
+    private var _binding: FragmentSortedBinding? = null
+    private val binding get() = _binding!!
     private var isLoading: Boolean = false
     private var animeListAdapter: SortedListAdapter? = null
     private lateinit var viewModel: SortedListViewModel
@@ -37,6 +37,15 @@ class SortedFragment : BaseFragment(R.layout.fragment_sorted) {
         super.onCreate(savedInstanceState)
         viewModel = SortedListViewModel(repository)
         initActionBar()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSortedBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -233,5 +242,6 @@ class SortedFragment : BaseFragment(R.layout.fragment_sorted) {
         super.onDestroyView()
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         binding.rvAnimeList.adapter = null
+        _binding = null
     }
 }

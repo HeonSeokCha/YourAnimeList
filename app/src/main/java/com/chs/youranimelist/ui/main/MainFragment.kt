@@ -1,9 +1,10 @@
 package com.chs.youranimelist.ui.main
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.viewbinding.library.fragment.viewBinding
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentMainBinding
@@ -12,8 +13,9 @@ import com.chs.youranimelist.ui.characterlist.CharacterListFragment
 import com.chs.youranimelist.ui.home.HomeFragment
 
 
-class MainFragment : Fragment(R.layout.fragment_main) {
-    private val binding: FragmentMainBinding by viewBinding()
+class MainFragment : Fragment() {
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding!!
     private lateinit var onBackCallback: OnBackPressedCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +31,15 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackCallback)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,6 +68,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
             true
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onDetach() {
