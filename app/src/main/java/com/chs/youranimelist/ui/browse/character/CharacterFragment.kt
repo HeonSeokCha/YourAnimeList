@@ -1,9 +1,11 @@
 package com.chs.youranimelist.ui.browse.character
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.TranslateAnimation
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -60,8 +62,8 @@ class CharacterFragment : BaseFragment() {
                 binding.txtCharacterDescription.isVisible = true
                 binding.btnExpand.setBackgroundResource(R.drawable.ic_arrow_up)
             } else {
-                binding.txtCharacterDescriptionPreview.isVisible = true
                 binding.txtCharacterDescription.isVisible = false
+                binding.txtCharacterDescriptionPreview.isVisible = true
                 binding.btnExpand.setBackgroundResource(R.drawable.ic_arrow_down)
             }
         }
