@@ -88,6 +88,7 @@ class SortedFragment : BaseFragment() {
             val seasonArray = viewModel.animeSeasonList.map { it.name }.toTypedArray()
             AlertDialog.Builder(this.requireContext())
                 .setItems(seasonArray) { _, which ->
+                    viewModel.isSeason = true
                     viewModel.selectedSeason = viewModel.animeSeasonList[which]
                     binding.animeListSeason.text = viewModel.selectedSeason?.name
                     isLoading = false
