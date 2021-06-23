@@ -28,7 +28,9 @@ class AnimeListAdapter(
                 binding.rvAnimeListGenre.apply {
                     isVisible = true
                     binding.rvAnimeListGenre.adapter =
-                        AnimeOverviewGenreAdapter(getItem(layoutPosition).genre!!)
+                        AnimeOverviewGenreAdapter(getItem(layoutPosition).genre!!) {
+
+                        }
                 }
             } else binding.rvAnimeListGenre.isVisible = false
         }

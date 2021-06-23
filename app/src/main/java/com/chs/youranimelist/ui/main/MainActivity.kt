@@ -18,10 +18,10 @@ class MainActivity : AppCompatActivity(), BaseNavigator {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setSupportActionBar(binding.mainHomeToolbar)
-        changeFragment(Constant.TARGET_MAIN, 0, 0, true)
+        changeFragment(Constant.TARGET_MAIN, 0, 0)
     }
 
-    override fun changeFragment(type: String, id: Int, idMal: Int, addToBackStack: Boolean) {
+    override fun changeFragment(type: String, id: Int, idMal: Int) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         lateinit var targetFragment: Fragment
         val bundle = Bundle()
@@ -34,10 +34,13 @@ class MainActivity : AppCompatActivity(), BaseNavigator {
         targetFragment.arguments = bundle
         fragmentTransaction.replace(binding.mainContainer.id, targetFragment)
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        if (addToBackStack) {
-            fragmentTransaction.addToBackStack(null)
-        }
+        fragmentTransaction.addToBackStack(null)
+
         fragmentTransaction.commit()
+    }
+
+    override fun changeFragment(genre: String, addToBackStack: Boolean) {
+        TODO("Not yet implemented")
     }
 
     override fun onSupportNavigateUp(): Boolean {

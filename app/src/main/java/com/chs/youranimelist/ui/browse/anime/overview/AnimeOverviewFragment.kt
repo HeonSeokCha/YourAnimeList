@@ -114,7 +114,11 @@ class AnimeOverviewFragment : BaseFragment() {
         binding.rvAnimeOverviewRelation.apply {
             relationAdapter =
                 AnimeOverviewRelationAdapter(viewModel.animeOverviewRelationList) { id, idMal ->
-                    this@AnimeOverviewFragment.navigate?.changeFragment(Constant.TARGET_MEDIA, id, idMal!!, true)
+                    this@AnimeOverviewFragment.navigate?.changeFragment(
+                        Constant.TARGET_MEDIA,
+                        id,
+                        idMal!!,
+                    )
                 }
             this.adapter = relationAdapter
             this.layoutManager = LinearLayoutManager(
@@ -124,7 +128,9 @@ class AnimeOverviewFragment : BaseFragment() {
         }
 
         binding.rvAnimeOverviewGenre.apply {
-            genreAdapter = AnimeOverviewGenreAdapter(viewModel.animeGenresList)
+            genreAdapter = AnimeOverviewGenreAdapter(viewModel.animeGenresList) {
+                this@AnimeOverviewFragment.navigate?.changeFragment(it)
+            }
             this.adapter = genreAdapter
         }
 

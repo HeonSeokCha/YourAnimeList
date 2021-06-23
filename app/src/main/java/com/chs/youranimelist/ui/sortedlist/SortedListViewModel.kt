@@ -17,6 +17,7 @@ class SortedListViewModel(
     var selectedSeason: MediaSeason? = null
     var selectedSort: MediaSort? = null
     var selectStatus: MediaStatus? = null
+    var selectGenre: String? = null
 
     var page: Int = 1
     var hasNextPage: Boolean = true
@@ -58,7 +59,8 @@ class SortedListViewModel(
                 selectedSort.toInput(),
                 selectedSeason.toInput(),
                 selectedYear.toInput(),
-                selectStatus.toInput()
+                selectStatus.toInput(),
+                selectGenre.toInput()
             )
         }
     }

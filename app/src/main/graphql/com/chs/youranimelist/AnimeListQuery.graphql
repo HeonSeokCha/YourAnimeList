@@ -43,6 +43,7 @@ query AnimeListQuery(
             season: $season,
             seasonYear: $seasonYear,
             status: $status,
+            genre: $genre,
             type: ANIME,
             isAdult: false
         ) {

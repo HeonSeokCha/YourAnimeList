@@ -105,7 +105,6 @@ class CharacterFragment : BaseFragment() {
                     Constant.TARGET_MEDIA,
                     id,
                     idMal,
-                    true
                 )
             }
             this.adapter = animeAdapter

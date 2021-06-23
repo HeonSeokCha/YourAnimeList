@@ -25,11 +25,19 @@ class AnimeListRepository {
         sort: Input<MediaSort>,
         season: Input<MediaSeason>,
         seasonYear: Input<Int>,
-        status: Input<MediaStatus>
+        status: Input<MediaStatus>,
+        genre: Input<String>
     ) {
         _animeListResponse.postValue(NetWorkState.Loading())
         ApolloServices.apolloClient.query(
-            AnimeListQuery(page, sort, season, seasonYear, status)
+            AnimeListQuery(
+                page,
+                sort,
+                season,
+                seasonYear,
+                status,
+                genre
+            )
         ).toFlow().catch { e ->
             _animeListResponse.postValue(NetWorkState.Error(e.message.toString()))
         }.collect { _animeListResponse.postValue(NetWorkState.Success(it.data!!)) }

@@ -8,7 +8,8 @@ import com.chs.youranimelist.databinding.ItemGenreBinding
 import com.chs.youranimelist.util.Constant
 
 class AnimeOverviewGenreAdapter(
-    private val items: List<String?>
+    private val items: List<String?>,
+    private val clickListener: (genre: String) -> Unit
 ) : RecyclerView.Adapter<AnimeOverviewGenreAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemGenreBinding) : RecyclerView.ViewHolder(binding.root)
@@ -20,6 +21,9 @@ class AnimeOverviewGenreAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.model = items[position]
+        holder.binding.root.setOnClickListener {
+            clickListener.invoke(items[position]!!)
+        }
         holder.binding.genreCard
             .setCardBackgroundColor(Color.parseColor(Constant.GENRE_COLOR[items[position]]))
     }

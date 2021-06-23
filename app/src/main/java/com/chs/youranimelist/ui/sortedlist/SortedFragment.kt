@@ -30,13 +30,14 @@ class SortedFragment : BaseFragment() {
     private var isLoading: Boolean = false
     private var animeListAdapter: SortedListAdapter? = null
     private lateinit var viewModel: SortedListViewModel
+    private var isGenre: Boolean = false
     private val repository by lazy { AnimeListRepository() }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = SortedListViewModel(repository)
-        initActionBar()
+//        initActionBar()
     }
 
     override fun onCreateView(
@@ -51,7 +52,8 @@ class SortedFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initClick()
-        initSortType(arguments?.getString("sortType")!!)
+        initActionBar()
+        initSortType(requireArguments().getString("sortType")!!)
         initRecyclerView()
         viewModel.getAnimeList()
         getAnimeList()
@@ -59,8 +61,10 @@ class SortedFragment : BaseFragment() {
     }
 
     private fun initActionBar() {
-        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white)
+        if (requireArguments().getString("genre") == null) {
+            (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white)
+        }
     }
 
     private fun initClick() {
@@ -145,6 +149,14 @@ class SortedFragment : BaseFragment() {
                 binding.animeListYear.text = "Any"
                 binding.animeListSeason.text = "Any"
                 binding.animeListSort.text = "Popularity"
+            }
+            "Genre" -> {
+                viewModel.selectedSort = MediaSort.SCORE_DESC
+                viewModel.isSeason = false
+                binding.animeListYear.text = "Any"
+                binding.animeListSeason.text = "Any"
+                binding.animeListSort.text = "Popularity"
+                viewModel.selectGenre = requireArguments().getString("genre")
             }
         }
     }
@@ -241,7 +253,9 @@ class SortedFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        if (requireActivity() is MainActivity) {
+            (requireActivity() as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        }
         binding.rvAnimeList.adapter = null
         _binding = null
     }

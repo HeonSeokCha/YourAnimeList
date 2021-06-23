@@ -122,7 +122,7 @@ class HomeFragment : BaseFragment() {
                 HomeRecListParentAdapter(viewModel.homeRecList, this@HomeFragment.requireContext(),
                     object : HomeRecListParentAdapter.HomeRecListener {
                         override fun clickMore(sortType: String) {
-                            this@HomeFragment.navigate?.changeFragment(sortType, 0, 0, true)
+                            this@HomeFragment.navigate?.changeFragment(sortType, 0, 0)
                         }
 
                         override fun clickAnime(id: Int, idMal: Int) {
