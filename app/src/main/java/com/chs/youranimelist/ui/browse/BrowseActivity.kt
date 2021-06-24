@@ -22,11 +22,12 @@ class BrowseActivity : AppCompatActivity(), BaseNavigator {
         changeFragment(
             intent.getStringExtra("type")!!,
             intent.getIntExtra("id", 0),
-            intent.getIntExtra("idMal", 0)
+            intent.getIntExtra("idMal", 0),
+            false
         )
     }
 
-    override fun changeFragment(type: String, id: Int, idMal: Int) {
+    override fun changeFragment(type: String, id: Int, idMal: Int, addToBackStack: Boolean) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         lateinit var targetFragment: Fragment
         val bundle = Bundle()
@@ -44,8 +45,9 @@ class BrowseActivity : AppCompatActivity(), BaseNavigator {
         targetFragment.arguments = bundle
         fragmentTransaction.replace(binding.browseFrameLayout.id, targetFragment)
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        fragmentTransaction.addToBackStack(null)
-
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(null)
+        }
         fragmentTransaction.commit()
     }
 

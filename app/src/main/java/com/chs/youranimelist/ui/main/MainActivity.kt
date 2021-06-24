@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), BaseNavigator {
         changeFragment(Constant.TARGET_MAIN, 0, 0)
     }
 
-    override fun changeFragment(type: String, id: Int, idMal: Int) {
+    override fun changeFragment(type: String, id: Int, idMal: Int, addToBackStack: Boolean) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         lateinit var targetFragment: Fragment
         val bundle = Bundle()
@@ -34,8 +34,9 @@ class MainActivity : AppCompatActivity(), BaseNavigator {
         targetFragment.arguments = bundle
         fragmentTransaction.replace(binding.mainContainer.id, targetFragment)
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        fragmentTransaction.addToBackStack(null)
-
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(null)
+        }
         fragmentTransaction.commit()
     }
 

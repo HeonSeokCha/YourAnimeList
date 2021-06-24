@@ -29,6 +29,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
+                    android:id="@+id/sorted_filter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -79,7 +80,7 @@
                         android:text="Sort" />
 
                     <TextView
-                        android:id="@+id/anime_list_sort"
+                        android:id="@+id/anime_list_sort2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="28dp"
@@ -90,6 +91,7 @@
                         android:textColor="@color/red_500" />
 
                 </LinearLayout>
+
 
             </HorizontalScrollView>
 
