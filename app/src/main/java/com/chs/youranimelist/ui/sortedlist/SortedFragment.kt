@@ -37,7 +37,7 @@ class SortedFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = SortedListViewModel(repository)
-//        initActionBar()
+        initActionBar()
     }
 
     override fun onCreateView(
@@ -52,7 +52,6 @@ class SortedFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initClick()
-        initActionBar()
         initSortType(requireArguments().getString("sortType")!!)
         initRecyclerView()
         viewModel.getAnimeList()
@@ -113,6 +112,10 @@ class SortedFragment : BaseFragment() {
                 }
                 .show()
         }
+
+        binding.animeListGenre.setOnClickListener {
+            TODO("apply in dialog genre text")
+        }
     }
 
 
@@ -151,6 +154,9 @@ class SortedFragment : BaseFragment() {
                 binding.animeListSort.text = "Popularity"
             }
             "Genre" -> {
+                binding.horizontalFilterScrollView.isVisible = false
+                binding.horizontalTagScrollView.isVisible = true
+                binding.animeListGenre.text = requireArguments().getString("genre")
                 viewModel.selectedSort = MediaSort.SCORE_DESC
                 viewModel.isSeason = false
                 binding.animeListYear.text = "Any"
