@@ -23,9 +23,14 @@ class SortedListViewModel(
     var hasNextPage: Boolean = true
     var isSeason: Boolean = false
     var animeResultList: ArrayList<AnimeList?> = ArrayList()
+    var genreList: ArrayList<String> = ArrayList()
 
     val animeListResponse by lazy {
         animeListRepository.animeListResponse
+    }
+
+    val genreListResponse by lazy {
+        animeListRepository.genreListResponse
     }
 
     val animeSortArray = arrayOf(
@@ -62,6 +67,12 @@ class SortedListViewModel(
                 selectStatus.toInput(),
                 selectGenre.toInput()
             )
+        }
+    }
+
+    fun getGenreList() {
+        viewModelScope.launch {
+            animeListRepository.getGenre()
         }
     }
 

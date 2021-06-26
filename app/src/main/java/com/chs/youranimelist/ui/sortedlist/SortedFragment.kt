@@ -30,13 +30,13 @@ class SortedFragment : BaseFragment() {
     private var isLoading: Boolean = false
     private var animeListAdapter: SortedListAdapter? = null
     private lateinit var viewModel: SortedListViewModel
-    private var isGenre: Boolean = false
     private val repository by lazy { AnimeListRepository() }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = SortedListViewModel(repository)
+
         initActionBar()
     }
 
@@ -55,7 +55,9 @@ class SortedFragment : BaseFragment() {
         initSortType(requireArguments().getString("sortType")!!)
         initRecyclerView()
         viewModel.getAnimeList()
+        viewModel.getGenreList()
         getAnimeList()
+        getGenre()
         setHasOptionsMenu(true)
     }
 
@@ -114,7 +116,16 @@ class SortedFragment : BaseFragment() {
         }
 
         binding.animeListGenre.setOnClickListener {
-            TODO("apply in dialog genre text")
+            AlertDialog.Builder(this.requireContext())
+                .setItems(viewModel.genreList.toTypedArray()) { _, which ->
+                    viewModel.selectedSort = MediaSort.POPULARITY_DESC
+                    viewModel.selectGenre = viewModel.genreList[which]
+                    binding.animeListGenre.text = viewModel.genreList[which]
+                    isLoading = false
+                    viewModel.refresh()
+                    animeListAdapter?.notifyDataSetChanged()
+                }
+                .show()
         }
     }
 
@@ -210,6 +221,28 @@ class SortedFragment : BaseFragment() {
                     ).show()
                     isLoading = false
                     binding.layoutShimmerSorted.root.isVisible = false
+                }
+            }
+        })
+    }
+
+    private fun getGenre() {
+        viewModel.genreListResponse.observe(viewLifecycleOwner, { it ->
+            when (it.responseState) {
+                ResponseState.SUCCESS -> {
+                    it.data?.genreCollection?.forEach { genre ->
+                        if (genre != null) {
+                            viewModel.genreList.add(genre)
+                        }
+                    }
+                }
+
+                ResponseState.ERROR -> {
+                    Toast.makeText(
+                        this@SortedFragment.context,
+                        it.message,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         })
