@@ -82,4 +82,9 @@ class SortedListViewModel(
         animeResultList.clear()
         getAnimeList()
     }
+
+    fun clear() {
+        animeResultList.clear()
+        genreList.clear()
+    }
 }

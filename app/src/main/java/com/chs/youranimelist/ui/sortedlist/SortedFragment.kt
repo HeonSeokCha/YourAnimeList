@@ -36,7 +36,6 @@ class SortedFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = SortedListViewModel(repository)
-
         initActionBar()
     }
 
@@ -172,7 +171,7 @@ class SortedFragment : BaseFragment() {
                 viewModel.isSeason = false
                 binding.animeListYear.text = "Any"
                 binding.animeListSeason.text = "Any"
-                binding.animeListSort.text = "Popularity"
+                binding.animeListSort.text = "AverageScore"
                 viewModel.selectGenre = requireArguments().getString("genre")
             }
         }
@@ -296,6 +295,7 @@ class SortedFragment : BaseFragment() {
             (requireActivity() as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         }
         binding.rvAnimeList.adapter = null
+        viewModel.clear()
         _binding = null
     }
 }

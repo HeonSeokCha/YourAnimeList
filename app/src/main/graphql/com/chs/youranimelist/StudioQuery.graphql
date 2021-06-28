@@ -1,0 +1,35 @@
+query StudioQuery(
+    $id: Int,
+    $sort: MediaSort,
+    $page: Int
+){
+    Studio(id: $id) {
+        id
+        name
+        favourites
+        media(sort: [$sort], page: $page) {
+            edges {
+                node {
+                    id
+                    title {
+                        userPreferred
+                        english
+                        romaji
+                    }
+                    coverImage {
+                        large
+                    }
+                    type
+                    format
+                }
+            }
+            pageInfo {
+                total
+                perPage
+                currentPage
+                lastPage
+                hasNextPage
+            }
+        }
+    }
+}
