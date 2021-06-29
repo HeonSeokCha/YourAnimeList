@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_browse"
+    app:startDestination="@id/animeDetailFragment">
+
+    <fragment
+        android:id="@+id/animeDetailFragment"
+        android:name="com.chs.youranimelist.ui.browse.anime.AnimeDetailFragment"
+        android:label="AnimeDetailFragment" >
+        <action
+            android:id="@+id/action_animeDetailFragment_self"
+            app:destination="@id/animeDetailFragment" />
+        <action
+            android:id="@+id/action_animeDetailFragment_to_characterFragment"
+            app:destination="@id/characterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterFragment"
+        android:name="com.chs.youranimelist.ui.browse.character.CharacterFragment"
+        android:label="CharacterFragment" >
+        <action
+            android:id="@+id/action_characterFragment_self"
+            app:destination="@id/characterFragment" />
+        <action
+            android:id="@+id/action_characterFragment_to_animeDetailFragment"
+            app:destination="@id/animeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/studioFragment"
+        android:name="com.chs.youranimelist.ui.browse.studio.StudioFragment"
+        android:label="studio_fragment"
+        tools:layout="@layout/studio_fragment" />
+</navigation>
