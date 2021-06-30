@@ -8,5 +8,46 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.chs.youranimelist.ui.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment"
+        app:startDestination="@id/action_homeFragment_to_sortedFragment">
+        <action
+            android:id="@+id/action_homeFragment_to_sortedFragment"
+            app:destination="@id/sortedFragment">
+
+        <argument
+            android:name="sortType"
+            app:argType="string" />
+
+        <argument
+            android:name="genre"
+            app:argType="string" />
+        </action>
+
+        <action
+            android:id="@+id/action_homeFragment_to_animeListFragment"
+            app:destination="@id/animeListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_characterListFragment"
+            app:destination="@id/characterListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sortedFragment"
+        android:name="com.chs.youranimelist.ui.sortedlist.SortedFragment"
+        android:label="SortedFragment" >
+        <argument
+            android:name="sortType"
+            app:argType="string" />
+
+        <argument
+            android:name="genre"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/animeListFragment"
+        android:name="com.chs.youranimelist.ui.animelist.AnimeListFragment"
+        android:label="AnimeListFragment" />
+    <fragment
+        android:id="@+id/characterListFragment"
+        android:name="com.chs.youranimelist.ui.characterlist.CharacterListFragment"
+        android:label="CharacterListFragment" />
 </navigation>

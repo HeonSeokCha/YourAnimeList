@@ -9,6 +9,7 @@ import android.view.animation.TranslateAnimation
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.R
@@ -17,13 +18,12 @@ import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.databinding.FragmentCharacterBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.CharacterRepository
-import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideDrawable
 import com.github.razir.progressbutton.showDrawable
 
-class CharacterFragment : BaseFragment() {
+class CharacterFragment : Fragment() {
     private var _binding: FragmentCharacterBinding? = null
     private val binding get() = _binding!!
     private val repository by lazy { CharacterRepository() }
@@ -101,11 +101,7 @@ class CharacterFragment : BaseFragment() {
     private fun initRecyclerView() {
         binding.rvCharaAnimeSeries.apply {
             animeAdapter = CharacterAnimeAdapter(viewModel.characterAnimeList) { id, idMal ->
-                this@CharacterFragment.navigate?.changeFragment(
-                    Constant.TARGET_MEDIA,
-                    id,
-                    idMal,
-                )
+
             }
             this.adapter = animeAdapter
             this.layoutManager = GridLayoutManager(this@CharacterFragment.context, 3)

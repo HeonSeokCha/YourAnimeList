@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 
-class AnimeCharaFragment : BaseFragment() {
+class AnimeCharaFragment : Fragment() {
 
     private var _binding: FragmentAnimeCharaBinding? = null
     private val binding get() = _binding!!
@@ -71,10 +71,7 @@ class AnimeCharaFragment : BaseFragment() {
         binding.rvAnimeChara.apply {
             charaAdapter =
                 AnimeCharaAdapter(viewModel.animeCharacterList) { charaId ->
-                    this@AnimeCharaFragment.navigate!!.changeFragment(
-                        Constant.TARGET_CHARA,
-                        charaId
-                    )
+
                 }
             this.adapter = charaAdapter
             this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context, 3)

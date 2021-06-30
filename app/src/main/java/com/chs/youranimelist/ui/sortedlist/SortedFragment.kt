@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.R
@@ -17,14 +18,13 @@ import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.type.MediaStatus
-import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.main.MainActivity
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.ConvertDate
 import com.chs.youranimelist.util.SpacesItemDecoration
 
-class SortedFragment : BaseFragment() {
+class SortedFragment : Fragment() {
     private var _binding: FragmentSortedBinding? = null
     private val binding get() = _binding!!
     private var isLoading: Boolean = false

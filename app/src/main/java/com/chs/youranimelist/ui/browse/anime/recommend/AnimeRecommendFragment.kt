@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.databinding.FragmentAnimeRecommendBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 
 
-class AnimeRecommendFragment : BaseFragment() {
+class AnimeRecommendFragment : Fragment() {
     private var _binding: FragmentAnimeRecommendBinding? = null
     private val binding get() = _binding!!
     private val repository by lazy { AnimeRepository() }
@@ -70,11 +70,7 @@ class AnimeRecommendFragment : BaseFragment() {
     private fun initRecyclerView() {
         binding.rvAnimeRecommend.apply {
             animeRecommendAdapter = AnimeRecommendAdapter(viewModel.animeRecList) { id, idMal ->
-                this@AnimeRecommendFragment.navigate?.changeFragment(
-                    Constant.TARGET_MEDIA,
-                    id,
-                    idMal,
-                )
+
             }
             this.adapter = animeRecommendAdapter
             this.layoutManager = LinearLayoutManager(this@AnimeRecommendFragment.context)

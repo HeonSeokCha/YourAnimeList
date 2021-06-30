@@ -22,7 +22,7 @@ class HomeRecListParentAdapter(
 
     private val listTitleList = listOf(
         "TRENDING NOW", "POPULAR THIS SEASON",
-        "UPCOMING NEXT SEASON", "ALL TIME POPULAR"
+        "UPCOMING NEXT SEASON", "ALL TIME POPULAR",
     )
 
     interface HomeRecListener {

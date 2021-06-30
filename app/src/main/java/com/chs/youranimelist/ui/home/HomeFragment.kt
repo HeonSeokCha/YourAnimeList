@@ -5,19 +5,20 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.viewpager2.widget.ViewPager2
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentHomeBinding
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.SearchActivity
 import com.chs.youranimelist.util.Constant
 
-class HomeFragment : BaseFragment() {
+class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: HomeViewModel
@@ -122,7 +123,7 @@ class HomeFragment : BaseFragment() {
                 HomeRecListParentAdapter(viewModel.homeRecList, this@HomeFragment.requireContext(),
                     object : HomeRecListParentAdapter.HomeRecListener {
                         override fun clickMore(sortType: String) {
-                            this@HomeFragment.navigate?.changeFragment(sortType, 0, 0)
+
                         }
 
                         override fun clickAnime(id: Int, idMal: Int) {
@@ -135,6 +136,7 @@ class HomeFragment : BaseFragment() {
                         }
 
                     })
+            homeRecListAdapter!!.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
             this.adapter = homeRecListAdapter
             this.layoutManager = LinearLayoutManager(this@HomeFragment.context)
         }
@@ -160,6 +162,8 @@ class HomeFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding.rvAnimeRecList.adapter = null
+        viewModel.homeRecList.clear()
+        viewModel.pagerRecList.clear()
         _binding = null
     }
 }
