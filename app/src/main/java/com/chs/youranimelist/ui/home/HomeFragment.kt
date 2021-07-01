@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.viewpager2.widget.ViewPager2
@@ -123,7 +124,9 @@ class HomeFragment : Fragment() {
                 HomeRecListParentAdapter(viewModel.homeRecList, this@HomeFragment.requireContext(),
                     object : HomeRecListParentAdapter.HomeRecListener {
                         override fun clickMore(sortType: String) {
-
+                            val action =
+                                HomeFragmentDirections.actionHomeFragmentToSortedFragment(sortType)
+                            findNavController().navigate(action)
                         }
 
                         override fun clickAnime(id: Int, idMal: Int) {
@@ -136,7 +139,7 @@ class HomeFragment : Fragment() {
                         }
 
                     })
-            homeRecListAdapter!!.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            homeRecListAdapter!!.stateRestorationPolicy = StateRestorationPolicy.ALLOW
             this.adapter = homeRecListAdapter
             this.layoutManager = LinearLayoutManager(this@HomeFragment.context)
         }
@@ -161,9 +164,9 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.rvAnimeRecList.adapter = null
         viewModel.homeRecList.clear()
         viewModel.pagerRecList.clear()
+        binding.rvAnimeRecList.adapter = null
         _binding = null
     }
 }

@@ -25,7 +25,7 @@ object ConvertDate {
     fun getCurrentSeason(): MediaSeason {
         val calendar = Calendar.getInstance()
         return when (calendar.get(Calendar.MONTH)) {
-            in Calendar.APRIL..Calendar.AUGUST -> MediaSeason.SPRING
+            in Calendar.APRIL..Calendar.JUNE -> MediaSeason.SPRING
             in Calendar.JULY..Calendar.SEPTEMBER -> MediaSeason.SUMMER
             in Calendar.OCTOBER..Calendar.DECEMBER -> MediaSeason.FALL
             in Calendar.JANUARY..Calendar.MARCH -> MediaSeason.WINTER
@@ -36,7 +36,7 @@ object ConvertDate {
     fun getNextSeason(): MediaSeason {
         val calendar = Calendar.getInstance()
         return when (calendar.get(Calendar.MONTH)) {
-            in Calendar.APRIL..Calendar.AUGUST -> MediaSeason.SUMMER
+            in Calendar.APRIL..Calendar.JUNE -> MediaSeason.SUMMER
             in Calendar.JULY..Calendar.SEPTEMBER -> MediaSeason.FALL
             in Calendar.OCTOBER..Calendar.DECEMBER -> MediaSeason.WINTER
             in Calendar.JANUARY..Calendar.MARCH -> MediaSeason.SPRING

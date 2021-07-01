@@ -1,6 +1,7 @@
 package com.chs.youranimelist.ui.home
 
 
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +12,6 @@ import com.chs.youranimelist.network.repository.AnimeRepository
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val animeRepository: AnimeRepository) : ViewModel() {
-
 
     val animePagerRecommendResponse: LiveData<NetWorkState<HomeRecommendListQuery.Data>> by lazy {
         animeRepository.homeRecommendResponse

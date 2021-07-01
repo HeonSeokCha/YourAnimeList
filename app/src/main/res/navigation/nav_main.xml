@@ -8,8 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.chs.youranimelist.ui.home.HomeFragment"
-        android:label="HomeFragment"
-        app:startDestination="@id/action_homeFragment_to_sortedFragment">
+        android:label="HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_sortedFragment"
             app:destination="@id/sortedFragment">
@@ -18,9 +17,16 @@
             android:name="sortType"
             app:argType="string" />
 
-        <argument
-            android:name="genre"
-            app:argType="string" />
+        </action>
+
+        <action
+            android:id="@+id/action_homeFragment_to_sortedFragment2"
+            app:destination="@id/sortedFragment">
+
+            <argument
+                android:name="genre"
+                app:argType="string" />
+
         </action>
 
         <action
@@ -34,13 +40,6 @@
         android:id="@+id/sortedFragment"
         android:name="com.chs.youranimelist.ui.sortedlist.SortedFragment"
         android:label="SortedFragment" >
-        <argument
-            android:name="sortType"
-            app:argType="string" />
-
-        <argument
-            android:name="genre"
-            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/animeListFragment"
