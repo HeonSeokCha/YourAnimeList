@@ -130,22 +130,21 @@
             android:layout_height="wrap_content"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" >
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:id="@+id/description_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:animateLayoutChanges="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:orientation="vertical"
+                    android:animateLayoutChanges="true">
 
                     <TextView
                         android:id="@+id/txt_character_description"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
@@ -155,10 +154,6 @@
                         android:lineSpacingExtra="5dp"
                         app:animeOverviewHtmlConvert="@{model.description}"
                         app:layout_constrainedWidth="true"
-                        app:layout_constraintBottom_toTopOf="@+id/btn_expand"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="@string/loerm" />
 
                     <TextView
@@ -174,11 +169,6 @@
                         android:lines="5"
                         android:maxLines="5"
                         app:animeOverviewHtmlConvert="@{model.description}"
-                        app:layout_constraintBottom_toTopOf="@+id/btn_expand"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0"
                         tools:text="@string/loerm" />
 
                     <ImageButton
@@ -187,12 +177,10 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/ic_arrow_down"
                         android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        android:layout_gravity="center"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/textView27"
@@ -212,14 +200,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView27"
-                    app:layout_constraintVertical_bias="0.0" />
+                    android:layout_marginBottom="8dp" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 

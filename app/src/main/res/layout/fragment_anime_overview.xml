@@ -18,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/anime_overview_layout"
             android:layout_width="match_parent"
-            android:layout_height="2000dp"
+            android:layout_height="wrap_content"
             tools:context=".ui.browse.anime.overview.AnimeOverviewFragment">
 
             <androidx.recyclerview.widget.RecyclerView
