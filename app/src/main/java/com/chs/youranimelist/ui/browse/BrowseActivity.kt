@@ -2,17 +2,12 @@ package com.chs.youranimelist.ui.browse
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.ActivityBrowseBinding
-import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragment
-import com.chs.youranimelist.ui.browse.character.CharacterFragment
-import com.chs.youranimelist.ui.sortedlist.SortedFragment
 import com.chs.youranimelist.util.Constant
+
 
 class BrowseActivity : AppCompatActivity() {
 
@@ -29,5 +24,20 @@ class BrowseActivity : AppCompatActivity() {
     private fun initNav() {
         val navHostFragment: NavHostFragment = binding.navContainer.getFragment()!!
         navController = navHostFragment.navController
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_browse)
+        val bundle = Bundle()
+        if (intent?.getStringExtra("type") == Constant.TARGET_MEDIA) {
+            navGraph.setStartDestination(R.id.animeDetailFragment)
+            bundle.apply {
+                this.putInt("id", intent?.getIntExtra("id", 0)!!)
+                this.putInt("idMal", intent?.getIntExtra("idMal", 0)!!)
+            }
+        } else {
+            navGraph.setStartDestination(R.id.characterFragment)
+            bundle.apply {
+                this.putInt("id", intent?.getIntExtra("id", 0)!!)
+            }
+        }
+        navController.setGraph(navGraph, bundle)
     }
 }

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.R
@@ -18,7 +19,6 @@ import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.databinding.FragmentCharacterBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.CharacterRepository
-import com.chs.youranimelist.util.Constant
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideDrawable
 import com.github.razir.progressbutton.showDrawable
@@ -78,8 +78,6 @@ class CharacterFragment : Fragment() {
     private fun getCharaInfo() {
         viewModel.characterDetailResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
-                ResponseState.LOADING -> {
-                }
                 ResponseState.SUCCESS -> {
                     binding.model = it.data?.character
                     viewModel.charaDetail = it.data?.character
@@ -101,7 +99,12 @@ class CharacterFragment : Fragment() {
     private fun initRecyclerView() {
         binding.rvCharaAnimeSeries.apply {
             animeAdapter = CharacterAnimeAdapter(viewModel.characterAnimeList) { id, idMal ->
-
+                val action =
+                    CharacterFragmentDirections.actionCharacterFragmentToAnimeDetailFragment(
+                        id,
+                        idMal
+                    )
+                findNavController().navigate(action)
             }
             this.adapter = animeAdapter
             this.layoutManager = GridLayoutManager(this@CharacterFragment.context, 3)

@@ -12,7 +12,8 @@
         android:id="@+id/rv_anime_recommend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        tools:listitem="@layout/item_anime_recommend"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

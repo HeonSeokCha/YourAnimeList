@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.util.Constant
 
 class AnimeCharaFragment : Fragment() {
 
@@ -71,7 +71,11 @@ class AnimeCharaFragment : Fragment() {
         binding.rvAnimeChara.apply {
             charaAdapter =
                 AnimeCharaAdapter(viewModel.animeCharacterList) { charaId ->
-
+                    val action =
+                        AnimeCharaFragmentDirections.actionAnimeCharaFragmentToCharacterFragment(
+                            charaId
+                        )
+                    findNavController().navigate(action)
                 }
             this.adapter = charaAdapter
             this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context, 3)

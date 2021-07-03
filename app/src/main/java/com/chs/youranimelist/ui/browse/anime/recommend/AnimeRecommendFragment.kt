@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.databinding.FragmentAnimeRecommendBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.util.Constant
 
 
 class AnimeRecommendFragment : Fragment() {
@@ -70,7 +70,9 @@ class AnimeRecommendFragment : Fragment() {
     private fun initRecyclerView() {
         binding.rvAnimeRecommend.apply {
             animeRecommendAdapter = AnimeRecommendAdapter(viewModel.animeRecList) { id, idMal ->
-
+                val action =
+                    AnimeRecommendFragmentDirections.actionAnimeRecommendFragmentToAnimeDetailFragment(id, idMal)
+                findNavController().navigate(action)
             }
             this.adapter = animeRecommendAdapter
             this.layoutManager = LinearLayoutManager(this@AnimeRecommendFragment.context)
