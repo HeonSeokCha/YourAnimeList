@@ -15,6 +15,7 @@ import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentAnimeOverviewBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 
 
 class AnimeOverviewFragment : Fragment() {
@@ -114,7 +115,7 @@ class AnimeOverviewFragment : Fragment() {
             relationAdapter =
                 AnimeOverviewRelationAdapter(viewModel.animeOverviewRelationList) { id, idMal ->
                     val action =
-                        AnimeOverviewFragmentDirections.actionAnimeOverviewFragmentToAnimeDetailFragment(
+                        AnimeDetailFragmentDirections.actionAnimeDetailFragmentSelf(
                             id,
                             idMal
                         )
@@ -130,7 +131,10 @@ class AnimeOverviewFragment : Fragment() {
         binding.rvAnimeOverviewGenre.apply {
             genreAdapter = AnimeOverviewGenreAdapter(viewModel.animeGenresList) {
                 val action =
-                    AnimeOverviewFragmentDirections.actionAnimeOverviewFragmentToSortedFragment()
+                    AnimeDetailFragmentDirections.actionAnimeDetailFragmentToSortedFragment(
+                        "Genre",
+                        it
+                    )
                 findNavController().navigate(action)
             }
             this.adapter = genreAdapter

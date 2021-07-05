@@ -13,6 +13,7 @@ import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 
 class AnimeCharaFragment : Fragment() {
 
@@ -72,7 +73,7 @@ class AnimeCharaFragment : Fragment() {
             charaAdapter =
                 AnimeCharaAdapter(viewModel.animeCharacterList) { charaId ->
                     val action =
-                        AnimeCharaFragmentDirections.actionAnimeCharaFragmentToCharacterFragment(
+                        AnimeDetailFragmentDirections.actionAnimeDetailFragmentToCharacterFragment(
                             charaId
                         )
                     findNavController().navigate(action)

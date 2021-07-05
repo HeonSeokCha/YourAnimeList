@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.databinding.FragmentAnimeRecommendBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 
 
 class AnimeRecommendFragment : Fragment() {
@@ -71,7 +72,7 @@ class AnimeRecommendFragment : Fragment() {
         binding.rvAnimeRecommend.apply {
             animeRecommendAdapter = AnimeRecommendAdapter(viewModel.animeRecList) { id, idMal ->
                 val action =
-                    AnimeRecommendFragmentDirections.actionAnimeRecommendFragmentToAnimeDetailFragment(id, idMal)
+                    AnimeDetailFragmentDirections.actionAnimeDetailFragmentSelf(id, idMal)
                 findNavController().navigate(action)
             }
             this.adapter = animeRecommendAdapter
