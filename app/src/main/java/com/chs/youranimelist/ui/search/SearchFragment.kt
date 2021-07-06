@@ -169,9 +169,9 @@ class SearchFragment : Fragment() {
             Constant.TARGET_ANIME -> {
                 SearchAnimeAdapter(viewModel.searchList) { id, idMal ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                        this.putExtra("type", Constant.TARGET_MEDIA)
-                        this.putExtra("id", id)
-                        this.putExtra("idMal", idMal)
+                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                        this.putExtra(Constant.TARGET_ID, id)
+                        this.putExtra(Constant.TARGET_ID_MAL, idMal)
                     }
                     startActivity(intent)
                 }
@@ -179,9 +179,9 @@ class SearchFragment : Fragment() {
             Constant.TARGET_MANGA -> {
                 SearchMangaAdapter(viewModel.searchList) { id, idMal ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                        this.putExtra("type", Constant.TARGET_MEDIA)
-                        this.putExtra("id", id)
-                        this.putExtra("idMal", idMal)
+                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                        this.putExtra(Constant.TARGET_ID, id)
+                        this.putExtra(Constant.TARGET_ID_MAL, idMal)
                     }
                     startActivity(intent)
                 }
@@ -189,8 +189,8 @@ class SearchFragment : Fragment() {
             Constant.TARGET_CHARA -> {
                 SearchCharacterAdapter(viewModel.searchList) { id ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                        this.putExtra("type", Constant.TARGET_CHARA)
-                        this.putExtra("id", id)
+                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_CHARA)
+                        this.putExtra(Constant.TARGET_ID, id)
                     }
                     startActivity(intent)
                 }

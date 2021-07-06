@@ -16,7 +16,7 @@
             app:destination="@id/sortedFragment">
 
         <argument
-            android:name="sortType"
+            android:name="sort"
             app:argType="string" />
 
         </action>

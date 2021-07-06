@@ -13,6 +13,7 @@ import com.chs.youranimelist.databinding.FragmentAnimeRecommendBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
+import com.chs.youranimelist.util.Constant
 
 
 class AnimeRecommendFragment : Fragment() {
@@ -40,7 +41,7 @@ class AnimeRecommendFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        viewModel.getRecommendList(arguments?.getInt("id")!!)
+        viewModel.getRecommendList(arguments?.getInt(Constant.TARGET_ID)!!)
         getRecommendList()
     }
 

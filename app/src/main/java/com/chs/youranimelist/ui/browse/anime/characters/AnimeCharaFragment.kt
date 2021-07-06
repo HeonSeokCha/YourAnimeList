@@ -14,6 +14,7 @@ import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
+import com.chs.youranimelist.util.Constant
 
 class AnimeCharaFragment : Fragment() {
 
@@ -39,7 +40,7 @@ class AnimeCharaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initRecyclerView()
-        viewModel.getAnimeCharacter(arguments?.getInt("id")!!)
+        viewModel.getAnimeCharacter(arguments?.getInt(Constant.TARGET_ID)!!)
         getCharacters()
     }
 

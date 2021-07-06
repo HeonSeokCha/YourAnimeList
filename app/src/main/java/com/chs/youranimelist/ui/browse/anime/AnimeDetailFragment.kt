@@ -17,6 +17,7 @@ import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.util.Constant
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideDrawable
 import com.github.razir.progressbutton.showDrawable
@@ -44,36 +45,37 @@ class AnimeDetailFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.getAnimeDetail(arguments?.getInt("id").toInput())
+        viewModel.getAnimeDetail(arguments?.getInt(Constant.TARGET_ID).toInput())
         checkAnimeList()
         initAnimeInfo()
         initTabView(
-            arguments?.getInt("id")!!,
-            arguments?.getInt("idMal")!!
+            arguments?.getInt(Constant.TARGET_ID)!!,
+            arguments?.getInt(Constant.TARGET_ID_MAL)!!
         )
         initClick()
         bindProgressButton(binding.mediaSaveList)
     }
 
     private fun checkAnimeList() {
-        viewModel.checkAnimeList(arguments?.getInt("id")!!).observe(viewLifecycleOwner, {
-            if (it.size == 1 && it[0].animeId == arguments?.getInt("id")!!) {
-                viewModel.initAnimeList = it[0]
-                binding.mediaSaveList.apply {
-                    val animatedDrawable =
-                        ContextCompat.getDrawable(this.context!!, R.drawable.ic_check)!!
-                    animatedDrawable.setBounds(0, 0, 50, 50)
-                    showDrawable(animatedDrawable) {
-                        buttonText = "Saved"
+        viewModel.checkAnimeList(arguments?.getInt(Constant.TARGET_ID)!!)
+            .observe(viewLifecycleOwner, {
+                if (it.size == 1 && it[0].animeId == arguments?.getInt(Constant.TARGET_ID)!!) {
+                    viewModel.initAnimeList = it[0]
+                    binding.mediaSaveList.apply {
+                        val animatedDrawable =
+                            ContextCompat.getDrawable(this.context!!, R.drawable.ic_check)!!
+                        animatedDrawable.setBounds(0, 0, 50, 50)
+                        showDrawable(animatedDrawable) {
+                            buttonText = "Saved"
+                        }
+                    }
+                } else {
+                    binding.mediaSaveList.apply {
+                        hideDrawable()
+                        text = "ADD MY LIST"
                     }
                 }
-            } else {
-                binding.mediaSaveList.apply {
-                    hideDrawable()
-                    text = "ADD MY LIST"
-                }
-            }
-        })
+            })
     }
 
     private fun initClick() {

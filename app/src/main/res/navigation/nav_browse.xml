@@ -50,7 +50,7 @@
             android:id="@+id/action_animeDetailFragment_to_sortedFragment"
             app:destination="@id/sortedFragment">
             <argument
-                android:name="sortType"
+                android:name="sort"
                 app:argType="string" />
 
             <argument

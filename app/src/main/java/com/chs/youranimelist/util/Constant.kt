@@ -14,6 +14,8 @@ object Constant {
     const val TARGET_ID: String = "id"
     const val TARGET_ID_MAL: String = "idMal"
     const val TARGET_SORTED: String = "sorted"
+    const val TARGET_TYPE: String = "type"
+    const val TARGET_GENRE: String = "genre"
 
 
     val DEFAULT_GENRE_COLOR = "#727272"

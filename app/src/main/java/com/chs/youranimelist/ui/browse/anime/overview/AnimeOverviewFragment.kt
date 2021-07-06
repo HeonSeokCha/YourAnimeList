@@ -16,6 +16,7 @@ import com.chs.youranimelist.databinding.FragmentAnimeOverviewBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
+import com.chs.youranimelist.util.Constant
 
 
 class AnimeOverviewFragment : Fragment() {
@@ -42,7 +43,7 @@ class AnimeOverviewFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.getAnimeOverview(arguments?.getInt("id")!!)
+        viewModel.getAnimeOverview(arguments?.getInt(Constant.TARGET_ID)!!)
         initRecyclerView()
         getAnimeInfo()
         initClick()
@@ -68,8 +69,8 @@ class AnimeOverviewFragment : Fragment() {
     }
 
     private fun getAnimeInfo() {
-        if (arguments?.getInt("idMal")!! != 0) {
-            viewModel.getAnimeTheme(arguments?.getInt("idMal")!!)
+        if (arguments?.getInt(Constant.TARGET_ID_MAL)!! != 0) {
+            viewModel.getAnimeTheme(arguments?.getInt(Constant.TARGET_ID_MAL)!!)
         }
 
         viewModel.animeOverviewResponse.observe(viewLifecycleOwner, {
@@ -132,7 +133,7 @@ class AnimeOverviewFragment : Fragment() {
             genreAdapter = AnimeOverviewGenreAdapter(viewModel.animeGenresList) {
                 val action =
                     AnimeDetailFragmentDirections.actionAnimeDetailFragmentToSortedFragment(
-                        "Genre",
+                        Constant.TARGET_GENRE,
                         it
                     )
                 findNavController().navigate(action)

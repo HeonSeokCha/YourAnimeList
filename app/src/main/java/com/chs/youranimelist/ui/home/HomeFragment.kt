@@ -108,9 +108,9 @@ class HomeFragment : Fragment() {
                         requireActivity().baseContext,
                         BrowseActivity::class.java
                     ).apply {
-                        this.putExtra("type", Constant.TARGET_MEDIA)
-                        this.putExtra("id", id)
-                        this.putExtra("idMal", idMal)
+                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                        this.putExtra(Constant.TARGET_ID, id)
+                        this.putExtra(Constant.TARGET_ID_MAL, idMal)
                     })
                 }
 
@@ -131,9 +131,9 @@ class HomeFragment : Fragment() {
 
                         override fun clickAnime(id: Int, idMal: Int) {
                             val intent = Intent(activity, BrowseActivity::class.java).apply {
-                                this.putExtra("type", Constant.TARGET_MEDIA)
-                                this.putExtra("id", id)
-                                this.putExtra("idMal", idMal)
+                                this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                                this.putExtra(Constant.TARGET_ID, id)
+                                this.putExtra(Constant.TARGET_ID_MAL, idMal)
                             }
                             startActivity(intent)
                         }

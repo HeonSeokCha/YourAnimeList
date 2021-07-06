@@ -59,8 +59,8 @@ class CharacterListFragment : Fragment() {
     private fun initRecyclerView() {
         charaListAdapter = CharacterListAdapter() { id ->
             val intent = Intent(this.context, BrowseActivity::class.java).apply {
-                this.putExtra("type", Constant.TARGET_CHARA)
-                this.putExtra("id", id)
+                this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_CHARA)
+                this.putExtra(Constant.TARGET_ID, id)
             }
             startActivity(intent)
         }

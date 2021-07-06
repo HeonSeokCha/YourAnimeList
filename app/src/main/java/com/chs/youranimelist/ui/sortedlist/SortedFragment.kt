@@ -51,7 +51,7 @@ class SortedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initClick()
-        initSortType(requireArguments().getString("sortType")!!)
+        initSortType(requireArguments().getString(Constant.TARGET_SORT)!!)
         initRecyclerView()
         viewModel.getAnimeList()
         viewModel.getGenreList()
@@ -61,7 +61,7 @@ class SortedFragment : Fragment() {
     }
 
     private fun initActionBar() {
-        if (requireArguments().getString("genre") == null) {
+        if (requireArguments().getString(Constant.TARGET_GENRE) == null) {
             (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
             (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white)
         }
@@ -163,16 +163,16 @@ class SortedFragment : Fragment() {
                 binding.animeListSeason.text = "Any"
                 binding.animeListSort.text = "Popularity"
             }
-            "Genre" -> {
+            Constant.TARGET_GENRE -> {
                 binding.horizontalFilterScrollView.isVisible = false
                 binding.horizontalTagScrollView.isVisible = true
-                binding.animeListGenre.text = requireArguments().getString("genre")
+                binding.animeListGenre.text = requireArguments().getString(Constant.TARGET_GENRE)
                 viewModel.selectedSort = MediaSort.SCORE_DESC
                 viewModel.isSeason = false
                 binding.animeListYear.text = "Any"
                 binding.animeListSeason.text = "Any"
                 binding.animeListSort.text = "AverageScore"
-                viewModel.selectGenre = requireArguments().getString("genre")
+                viewModel.selectGenre = requireArguments().getString(Constant.TARGET_GENRE)
             }
         }
     }
@@ -226,7 +226,7 @@ class SortedFragment : Fragment() {
     }
 
     private fun getGenre() {
-        viewModel.genreListResponse.observe(viewLifecycleOwner, { it ->
+        viewModel.genreListResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.SUCCESS -> {
                     it.data?.genreCollection?.forEach { genre ->
@@ -251,9 +251,9 @@ class SortedFragment : Fragment() {
         binding.rvAnimeList.apply {
             animeListAdapter = SortedListAdapter(viewModel.animeResultList) { id, idMal ->
                 val intent = Intent(this@SortedFragment.context, BrowseActivity::class.java).apply {
-                    this.putExtra("type", Constant.TARGET_MEDIA)
-                    this.putExtra("id", id)
-                    this.putExtra("idMal", idMal)
+                    this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                    this.putExtra(Constant.TARGET_ID, id)
+                    this.putExtra(Constant.TARGET_ID_MAL, idMal)
                 }
                 startActivity(intent)
             }

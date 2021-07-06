@@ -26,18 +26,23 @@ class BrowseActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         val navGraph = navController.navInflater.inflate(R.navigation.nav_browse)
         val bundle = Bundle()
-        if (intent?.getStringExtra("type") == Constant.TARGET_MEDIA) {
+        if (intent?.getStringExtra(Constant.TARGET_TYPE) == Constant.TARGET_MEDIA) {
             navGraph.setStartDestination(R.id.animeDetailFragment)
             bundle.apply {
-                this.putInt("id", intent?.getIntExtra("id", 0)!!)
-                this.putInt("idMal", intent?.getIntExtra("idMal", 0)!!)
+                this.putInt(Constant.TARGET_ID, intent?.getIntExtra(Constant.TARGET_ID, 0)!!)
+                this.putInt(Constant.TARGET_ID_MAL, intent?.getIntExtra(Constant.TARGET_ID, 0)!!)
             }
         } else {
             navGraph.setStartDestination(R.id.characterFragment)
             bundle.apply {
-                this.putInt("id", intent?.getIntExtra("id", 0)!!)
+                this.putInt(Constant.TARGET_ID, intent?.getIntExtra(Constant.TARGET_ID, 0)!!)
             }
         }
         navController.setGraph(navGraph, bundle)
+    }
+
+    override fun onBackPressed() {
+        navController.popBackStack()
+        super.onBackPressed()
     }
 }

@@ -8,6 +8,7 @@ import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.ui.browse.anime.characters.AnimeCharaFragment
 import com.chs.youranimelist.ui.browse.anime.overview.AnimeOverviewFragment
 import com.chs.youranimelist.ui.browse.anime.recommend.AnimeRecommendFragment
+import com.chs.youranimelist.util.Constant
 
 class AnimeDetailViewPagerAdapter(
     fa: FragmentActivity,
@@ -16,8 +17,8 @@ class AnimeDetailViewPagerAdapter(
 ) : FragmentStateAdapter(fa) {
     override fun createFragment(position: Int): Fragment {
         val bundle = Bundle().apply {
-            this.putInt("id", animeId)
-            this.putInt("idMal", idMal)
+            this.putInt(Constant.TARGET_ID, animeId)
+            this.putInt(Constant.TARGET_ID_MAL, idMal)
         }
         return when (position) {
             0 -> AnimeOverviewFragment().apply {
