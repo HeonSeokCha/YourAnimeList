@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.TranslateAnimation
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.R
@@ -34,6 +36,13 @@ class CharacterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = CharacterViewModel(repository, requireActivity().application)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (!findNavController().popBackStack()) {
+                requireActivity().finish()
+            } else {
+                findNavController().navigateUp()
+            }
+        }
     }
 
     override fun onCreateView(

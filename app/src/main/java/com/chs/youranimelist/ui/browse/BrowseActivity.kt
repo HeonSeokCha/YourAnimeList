@@ -42,7 +42,9 @@ class BrowseActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        navController.popBackStack()
         super.onBackPressed()
+//        if (!navController.popBackStack()) {
+//            finish()
+//        }
     }
 }

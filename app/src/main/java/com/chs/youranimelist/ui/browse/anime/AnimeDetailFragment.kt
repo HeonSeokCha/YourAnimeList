@@ -7,9 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.R
@@ -33,6 +35,13 @@ class AnimeDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = AnimeDetailViewModel(repository, requireActivity().application)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (!findNavController().popBackStack()) {
+                requireActivity().finish()
+            } else {
+                findNavController().navigateUp()
+            }
+        }
     }
 
     override fun onCreateView(
@@ -80,7 +89,7 @@ class AnimeDetailFragment : Fragment() {
 
     private fun initClick() {
         binding.animeToolbar.setNavigationOnClickListener {
-            activity?.finish()
+            requireActivity().finish()
         }
 
         binding.btnTrailerPlay.setOnClickListener {

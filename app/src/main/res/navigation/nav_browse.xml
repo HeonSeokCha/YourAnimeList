@@ -12,8 +12,7 @@
 
         <action
             android:id="@+id/action_animeDetailFragment_self"
-            app:destination="@id/animeDetailFragment"
-            app:launchSingleTop="true">
+            app:destination="@id/animeDetailFragment">
             <argument
                 android:name="id"
                 app:argType="integer" />
