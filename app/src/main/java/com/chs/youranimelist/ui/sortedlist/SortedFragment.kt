@@ -7,9 +7,11 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.R
@@ -37,6 +39,11 @@ class SortedFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = SortedListViewModel(repository)
         initActionBar()
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (!findNavController().popBackStack()) {
+                requireActivity().finish()
+            }
+        }
     }
 
     override fun onCreateView(

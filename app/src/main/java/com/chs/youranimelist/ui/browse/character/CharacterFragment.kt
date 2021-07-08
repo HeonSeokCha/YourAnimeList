@@ -39,8 +39,6 @@ class CharacterFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (!findNavController().popBackStack()) {
                 requireActivity().finish()
-            } else {
-                findNavController().navigateUp()
             }
         }
     }

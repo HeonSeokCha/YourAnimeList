@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.ActivityBrowseBinding
 import com.chs.youranimelist.util.Constant
@@ -39,12 +40,5 @@ class BrowseActivity : AppCompatActivity() {
             }
         }
         navController.setGraph(navGraph, bundle)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-//        if (!navController.popBackStack()) {
-//            finish()
-//        }
     }
 }

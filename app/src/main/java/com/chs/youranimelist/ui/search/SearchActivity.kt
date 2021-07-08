@@ -53,7 +53,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initTabView() {
-        var tabArr: List<String> = listOf(
+        val tabArr: List<String> = listOf(
             Constant.TARGET_ANIME, Constant.TARGET_MANGA, Constant.TARGET_CHARA
         )
         binding.viewPagerSearch.adapter = SearchViewPagerAdapter(this, tabArr)

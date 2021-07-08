@@ -24,27 +24,13 @@
         </action>
 
         <action
-            android:id="@+id/action_studioFragment_to_animeDetailFragment"
-            app:destination="@id/animeDetailFragment">
-            <argument
-                android:name="id"
-                app:argType="integer" />
-
-            <argument
-                android:name="idMal"
-                app:argType="integer" />
-        </action>
-
-        <action
             android:id="@+id/action_animeDetailFragment_to_characterFragment"
             app:destination="@id/characterFragment">
             <argument
                 android:name="id"
                 app:argType="integer" />
         </action>
-        <action
-            android:id="@+id/action_animeDetailFragment_to_studioFragment"
-            app:destination="@id/studioFragment" />
+
         <action
             android:id="@+id/action_animeDetailFragment_to_sortedFragment"
             app:destination="@id/sortedFragment">
@@ -57,6 +43,8 @@
                 app:argType="string" />
         </action>
     </fragment>
+
+
 
     <fragment
         android:id="@+id/characterFragment"
