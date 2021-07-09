@@ -21,12 +21,13 @@ import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.databinding.FragmentCharacterBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.CharacterRepository
+import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideDrawable
 import com.github.razir.progressbutton.showDrawable
 
-class CharacterFragment : Fragment() {
+class CharacterFragment : BaseFragment() {
     private var _binding: FragmentCharacterBinding? = null
     private val binding get() = _binding!!
     private val repository by lazy { CharacterRepository() }
@@ -36,11 +37,6 @@ class CharacterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = CharacterViewModel(repository, requireActivity().application)
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            if (!findNavController().popBackStack()) {
-                requireActivity().finish()
-            }
-        }
     }
 
     override fun onCreateView(

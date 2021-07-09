@@ -86,7 +86,7 @@
         android:id="@+id/studioFragment"
         android:name="com.chs.youranimelist.ui.browse.studio.StudioFragment"
         android:label="studio_fragment"
-        tools:layout="@layout/studio_fragment">
+        tools:layout="@layout/fragment_studio">
         <action
             android:id="@+id/action_studioFragment_to_animeDetailFragment"
             app:destination="@id/animeDetailFragment">

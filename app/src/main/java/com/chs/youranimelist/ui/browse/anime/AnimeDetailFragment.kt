@@ -19,13 +19,14 @@ import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideDrawable
 import com.github.razir.progressbutton.showDrawable
 import com.google.android.material.tabs.TabLayoutMediator
 
-class AnimeDetailFragment : Fragment() {
+class AnimeDetailFragment : BaseFragment() {
     private var _binding: FragmentAnimeDetailBinding? = null
     private val binding get() = _binding!!
     private val repository by lazy { AnimeRepository() }
@@ -35,11 +36,6 @@ class AnimeDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = AnimeDetailViewModel(repository, requireActivity().application)
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            if (!findNavController().popBackStack()) {
-                requireActivity().finish()
-            }
-        }
     }
 
     override fun onCreateView(
