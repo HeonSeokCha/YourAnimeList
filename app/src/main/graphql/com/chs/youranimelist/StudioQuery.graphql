@@ -1,4 +1,4 @@
-query StudioQuery(
+query StudioAnimeQuery(
     $id: Int,
     $sort: MediaSort,
     $page: Int
