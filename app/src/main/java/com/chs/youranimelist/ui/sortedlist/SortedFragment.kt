@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.R
@@ -34,12 +35,12 @@ class SortedFragment : BaseFragment() {
     private var animeListAdapter: SortedListAdapter? = null
     private lateinit var viewModel: SortedListViewModel
     private val repository by lazy { AnimeListRepository() }
-
+    private val args: SortedFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = SortedListViewModel(repository)
-        initActionBar()
+//        initActionBar()
     }
 
     override fun onCreateView(
@@ -54,20 +55,13 @@ class SortedFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initClick()
-        initSortType(requireArguments().getString(Constant.TARGET_SORT)!!)
+        initSortType(args.sortType)
         initRecyclerView()
         viewModel.getAnimeList()
         viewModel.getGenreList()
         getAnimeList()
         getGenre()
         setHasOptionsMenu(true)
-    }
-
-    private fun initActionBar() {
-        if (requireArguments().getString(Constant.TARGET_GENRE) == null) {
-            (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white)
-        }
     }
 
     private fun initClick() {
@@ -169,13 +163,22 @@ class SortedFragment : BaseFragment() {
             Constant.TARGET_GENRE -> {
                 binding.horizontalFilterScrollView.isVisible = false
                 binding.horizontalTagScrollView.isVisible = true
-                binding.animeListGenre.text = requireArguments().getString(Constant.TARGET_GENRE)
+                binding.animeListGenre.text = args.genre
                 viewModel.selectedSort = MediaSort.SCORE_DESC
                 viewModel.isSeason = false
                 binding.animeListYear.text = "Any"
                 binding.animeListSeason.text = "Any"
                 binding.animeListSort.text = "AverageScore"
-                viewModel.selectGenre = requireArguments().getString(Constant.TARGET_GENRE)
+                viewModel.selectGenre = args.genre
+            }
+            Constant.TARGET_SEASON -> {
+                viewModel.selectedSort = MediaSort.POPULARITY_DESC
+                viewModel.selectedSeason = args.season
+                viewModel.selectedYear = args.year
+                viewModel.isSeason = true
+                binding.animeListYear.text = args.year.toString()
+                binding.animeListSeason.text = args.season.toString()
+                binding.animeListSort.text = "Popularity"
             }
         }
     }

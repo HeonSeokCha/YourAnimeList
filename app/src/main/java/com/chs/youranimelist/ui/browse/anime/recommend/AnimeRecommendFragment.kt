@@ -73,7 +73,7 @@ class AnimeRecommendFragment : Fragment() {
         binding.rvAnimeRecommend.apply {
             animeRecommendAdapter = AnimeRecommendAdapter(viewModel.animeRecList) { id, idMal ->
                 val action =
-                    AnimeDetailFragmentDirections.actionAnimeDetailFragmentSelf(id, idMal)
+                    AnimeDetailFragmentDirections.actionAnimeDetailSelf(id, idMal)
                 findNavController().navigate(action)
             }
             this.adapter = animeRecommendAdapter

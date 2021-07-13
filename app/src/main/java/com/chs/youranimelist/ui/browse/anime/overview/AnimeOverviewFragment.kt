@@ -10,11 +10,13 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentAnimeOverviewBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import com.chs.youranimelist.util.Constant
 
@@ -27,6 +29,8 @@ class AnimeOverviewFragment : Fragment() {
     private lateinit var relationAdapter: AnimeOverviewRelationAdapter
     private lateinit var genreAdapter: AnimeOverviewGenreAdapter
     private lateinit var linkAdapter: AnimeOverviewLinkAdapter
+    private lateinit var season: MediaSeason
+    private var seasonYear: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +70,16 @@ class AnimeOverviewFragment : Fragment() {
                 binding.btnExpand.setBackgroundResource(R.drawable.ic_arrow_down)
             }
         }
+
+        binding.txtAnimeOverviewSeason.setOnClickListener {
+            val action =
+                AnimeDetailFragmentDirections.actionAnimeDetailToSortedSeason(
+                    Constant.TARGET_SEASON,
+                    season,
+                    seasonYear
+                )
+            findNavController().navigate(action)
+        }
     }
 
     private fun getAnimeInfo() {
@@ -78,6 +92,11 @@ class AnimeOverviewFragment : Fragment() {
                 ResponseState.SUCCESS -> {
 
                     binding.model = it.data?.media!!
+
+                    if (it.data?.media.season != null && it.data.media.seasonYear != null) {
+                        season = it.data?.media.season
+                        seasonYear = it.data.media.seasonYear
+                    }
 
                     it.data.media.relations?.relationsEdges?.forEach { relation ->
                         viewModel.animeOverviewRelationList.add(relation)
@@ -116,7 +135,7 @@ class AnimeOverviewFragment : Fragment() {
             relationAdapter =
                 AnimeOverviewRelationAdapter(viewModel.animeOverviewRelationList) { id, idMal ->
                     val action =
-                        AnimeDetailFragmentDirections.actionAnimeDetailFragmentSelf(
+                        AnimeDetailFragmentDirections.actionAnimeDetailSelf(
                             id,
                             idMal
                         )
@@ -132,7 +151,7 @@ class AnimeOverviewFragment : Fragment() {
         binding.rvAnimeOverviewGenre.apply {
             genreAdapter = AnimeOverviewGenreAdapter(viewModel.animeGenresList) {
                 val action =
-                    AnimeDetailFragmentDirections.actionAnimeDetailFragmentToSortedFragment(
+                    AnimeDetailFragmentDirections.actionAnimeDetailToSortedGenre(
                         Constant.TARGET_GENRE,
                         it
                     )

@@ -11,7 +11,7 @@
         tools:layout="@layout/fragment_anime_detail">
 
         <action
-            android:id="@+id/action_animeDetailFragment_self"
+            android:id="@+id/action_animeDetail_self"
             app:destination="@id/animeDetailFragment">
             <argument
                 android:name="id"
@@ -24,7 +24,7 @@
         </action>
 
         <action
-            android:id="@+id/action_animeDetailFragment_to_characterFragment"
+            android:id="@+id/action_animeDetail_to_character"
             app:destination="@id/characterFragment">
             <argument
                 android:name="id"
@@ -32,15 +32,43 @@
         </action>
 
         <action
-            android:id="@+id/action_animeDetailFragment_to_sortedFragment"
+            android:id="@+id/action_animeDetail_to_sorted"
             app:destination="@id/sortedFragment">
             <argument
-                android:name="sort"
+                android:name="sortType"
+                app:argType="string" />
+
+        </action>
+
+        <action
+            android:id="@+id/action_animeDetail_to_sorted_genre"
+            app:destination="@id/sortedFragment">
+            <argument
+                android:name="sortType"
                 app:argType="string" />
 
             <argument
                 android:name="genre"
                 app:argType="string" />
+
+
+        </action>
+
+        <action
+            android:id="@+id/action_animeDetail_to_sorted_season"
+            app:destination="@id/sortedFragment">
+            <argument
+                android:name="sortType"
+                app:argType="string" />
+
+            <argument
+                android:name="season"
+                app:argType="com.chs.youranimelist.type.MediaSeason" />
+
+            <argument
+                android:name="year"
+                app:argType="integer" />
+
         </action>
     </fragment>
 
@@ -80,6 +108,24 @@
                 android:name="idMal"
                 app:argType="integer" />
         </action>
+        <argument
+            android:name="sortType"
+            app:argType="string" />
+
+        <argument
+            android:name="genre"
+            app:argType="string"
+            android:defaultValue=""/>
+
+        <argument
+            android:name="season"
+            app:argType="com.chs.youranimelist.type.MediaSeason"
+            android:defaultValue="UNKNOWN__" />
+
+        <argument
+            android:name="year"
+            app:argType="integer"
+            android:defaultValue="0"/>
     </fragment>
 
     <fragment

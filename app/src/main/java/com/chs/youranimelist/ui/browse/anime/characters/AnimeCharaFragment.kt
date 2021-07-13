@@ -74,7 +74,7 @@ class AnimeCharaFragment : Fragment() {
             charaAdapter =
                 AnimeCharaAdapter(viewModel.animeCharacterList) { charaId ->
                     val action =
-                        AnimeDetailFragmentDirections.actionAnimeDetailFragmentToCharacterFragment(
+                        AnimeDetailFragmentDirections.actionAnimeDetailToCharacter(
                             charaId
                         )
                     findNavController().navigate(action)

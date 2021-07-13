@@ -231,7 +231,7 @@ object BindingAdapter {
     @JvmStatic
     fun animeOverviewSeasonValue(textView: TextView, anime: AnimeOverviewQuery.Media?) {
         textView.text = if (anime?.seasonYear != null) {
-            "${anime?.format}" + " ⦁ ${anime?.seasonYear}"
+            "${anime?.season} ${anime?.seasonYear}"
         } else {
             "${anime?.format}"
         }
