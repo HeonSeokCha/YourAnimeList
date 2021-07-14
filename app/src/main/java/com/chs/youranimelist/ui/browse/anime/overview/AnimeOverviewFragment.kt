@@ -92,7 +92,6 @@ class AnimeOverviewFragment : Fragment() {
                 ResponseState.SUCCESS -> {
 
                     binding.model = it.data?.media!!
-
                     if (it.data?.media.season != null && it.data.media.seasonYear != null) {
                         season = it.data?.media.season
                         seasonYear = it.data.media.seasonYear

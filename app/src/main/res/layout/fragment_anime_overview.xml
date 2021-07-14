@@ -420,6 +420,25 @@
                 app:layout_constraintTop_toTopOf="@+id/textView14"
                 tools:text="TextView" />
 
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/studio"
+                app:layout_constraintStart_toStartOf="@+id/textView14"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <TextView
+                android:id="@+id/txt_anime_overview_studio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_500"
+                app:studioMain="@{model.studios.studiosEdges}"
+                app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_end_date"
+                app:layout_constraintTop_toTopOf="@+id/textView23"
+                tools:text="TextView" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_anime_overview_relation"
                 android:layout_width="match_parent"
@@ -478,7 +497,7 @@
                 android:textStyle="bold"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+                app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
             <TextView
                 android:id="@+id/txt_anime_theme_ed"

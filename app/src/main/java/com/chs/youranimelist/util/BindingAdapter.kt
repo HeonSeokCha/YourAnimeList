@@ -275,4 +275,16 @@ object BindingAdapter {
         }
     }
 
+    @BindingAdapter("studioMain")
+    @JvmStatic
+    fun studioMain(textView: TextView, studioList: List<AnimeOverviewQuery.StudiosEdge?>?) {
+        if (studioList != null) {
+            for (i in studioList.indices) {
+                if (studioList[i]!!.isMain) {
+                    textView.text = studioList[i]!!.studiosNode!!.name
+                    break
+                }
+            }
+        }
+    }
 }
