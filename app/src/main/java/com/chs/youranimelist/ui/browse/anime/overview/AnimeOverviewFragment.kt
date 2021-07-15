@@ -18,6 +18,7 @@ import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
+import com.chs.youranimelist.ui.browse.studio.StudioFragmentDirections
 import com.chs.youranimelist.util.Constant
 
 
@@ -30,6 +31,7 @@ class AnimeOverviewFragment : Fragment() {
     private lateinit var genreAdapter: AnimeOverviewGenreAdapter
     private lateinit var linkAdapter: AnimeOverviewLinkAdapter
     private lateinit var season: MediaSeason
+    private var studioId: Int = 0
     private var seasonYear: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +82,14 @@ class AnimeOverviewFragment : Fragment() {
                 )
             findNavController().navigate(action)
         }
+
+        binding.txtAnimeOverviewStudio.setOnClickListener {
+            val action =
+                AnimeDetailFragmentDirections.actionAnimeDetailFragmentToStudioFragment(
+                    studioId
+                )
+            findNavController().navigate(action)
+        }
     }
 
     private fun getAnimeInfo() {
@@ -95,6 +105,13 @@ class AnimeOverviewFragment : Fragment() {
                     if (it.data?.media.season != null && it.data.media.seasonYear != null) {
                         season = it.data?.media.season
                         seasonYear = it.data.media.seasonYear
+                        for (i in it.data?.media?.studios?.studiosEdges?.indices!!) {
+                            if (it.data?.media?.studios?.studiosEdges[i]?.isMain == true) {
+                                studioId =
+                                    it.data?.media?.studios?.studiosEdges[i]?.studiosNode?.id!!
+                                break
+                            }
+                        }
                     }
 
                     it.data.media.relations?.relationsEdges?.forEach { relation ->

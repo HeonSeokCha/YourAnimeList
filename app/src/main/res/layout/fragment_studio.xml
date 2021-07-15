@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="com.chs.youranimelist.CharacterQuery.Character" />
+            type="com.chs.youranimelist.StudioAnimeQuery.Studio" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -42,12 +42,12 @@
                     android:background="@color/red_200">
 
                     <TextView
-                        android:id="@+id/textView24"
+                        android:id="@+id/txt_studio_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="75dp"
-                        android:text="@{model.name.full}"
+                        android:text="@{model.name}"
                         android:textColor="@color/white"
                         android:textSize="18dp"
                         android:textStyle="bold"
@@ -56,7 +56,7 @@
                         tools:text="Kyoto Ainmation" />
 
                     <TextView
-                        android:id="@+id/character_Favorite"
+                        android:id="@+id/txt_studio_favorite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -68,8 +68,8 @@
                         android:textSize="12sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/textView24"
-                        app:layout_constraintTop_toBottomOf="@+id/textView24"
+                        app:layout_constraintStart_toStartOf="@+id/txt_studio_title"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_studio_title"
                         tools:text="12228" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

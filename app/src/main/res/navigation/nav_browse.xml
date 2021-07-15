@@ -70,6 +70,9 @@
                 app:argType="integer" />
 
         </action>
+        <action
+            android:id="@+id/action_animeDetailFragment_to_studioFragment"
+            app:destination="@id/studioFragment" />
     </fragment>
 
 
@@ -144,6 +147,10 @@
                 android:name="idMal"
                 app:argType="integer" />
         </action>
+        <argument
+            android:name="studioId"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 
 </navigation>

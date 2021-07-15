@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.collect
 
 class StudioRepository {
 
-    private val _studioResponse = SingleLiveEvent<NetWorkState<StudioAnimeQuery.Media>>()
-    val studioResponse: LiveData<NetWorkState<StudioAnimeQuery.Media>>
+    private val _studioResponse = SingleLiveEvent<NetWorkState<StudioAnimeQuery.Studio>>()
+    val studioResponse: LiveData<NetWorkState<StudioAnimeQuery.Studio>>
         get() = _studioResponse
 
 
@@ -23,10 +23,10 @@ class StudioRepository {
             .catch { e ->
                 _studioResponse.postValue(NetWorkState.Error(e.message.toString()))
             }.collect {
-                if (it.data!!.studio!!.media!!.edges!!.isEmpty()) {
+                if (it.data?.studio == null) {
                     _studioResponse.postValue(NetWorkState.Error("Not Found"))
                 } else {
-                    _studioResponse.postValue(NetWorkState.Success(it.data!!.studio!!.media!!))
+                    _studioResponse.postValue(NetWorkState.Success(it.data!!.studio!!))
                 }
             }
     }
