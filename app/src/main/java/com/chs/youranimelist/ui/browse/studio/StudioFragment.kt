@@ -5,22 +5,32 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentStudioBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.StudioRepository
+import com.chs.youranimelist.type.MediaSort
+import com.chs.youranimelist.ui.browse.character.CharacterFragmentDirections
+import com.chs.youranimelist.util.Constant
+import com.chs.youranimelist.util.SpacesItemDecoration
 
 class StudioFragment : Fragment() {
     private var _binding: FragmentStudioBinding? = null
     private val binding get() = _binding!!
     private val repository by lazy { StudioRepository() }
     private val args: StudioFragmentArgs by navArgs()
+    private var studioAnimeAdapter: StudioAnimeAdapter? = null
     private lateinit var viewModel: StudioViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = StudioViewModel(repository)
+        viewModel.studioId = args.studioId
     }
 
     override fun onCreateView(
@@ -33,7 +43,9 @@ class StudioFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getStudio(args.studioId)
+        viewModel.getStudio()
+        initClick()
+        initRecyclerView()
         initStudio()
     }
 
@@ -42,13 +54,54 @@ class StudioFragment : Fragment() {
             when (it.responseState) {
                 ResponseState.SUCCESS -> {
                     binding.model = it.data
+                    it.data!!.media!!.edges!!.forEach { edge ->
+                        viewModel.studioAnimeList.add(edge!!)
+                    }
+                    studioAnimeAdapter?.notifyDataSetChanged()
+                }
+                ResponseState.ERROR -> {
+                    Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         })
     }
 
+    private fun initClick() {
+        binding.studioToolbars.setNavigationOnClickListener {
+            requireActivity().finish()
+        }
+
+        binding.txtStudioSort.setOnClickListener {
+            AlertDialog.Builder(this.requireContext())
+                .setItems(Constant.animeSortArray) { _, which ->
+                    viewModel.selectsort = Constant.animeSortList[which]
+                    binding.txtStudioSort.text = Constant.animeSortArray[which]
+                    viewModel.refresh()
+                    studioAnimeAdapter?.notifyDataSetChanged()
+                }
+                .show()
+        }
+    }
+
+    private fun initRecyclerView() {
+        binding.rvStudio.apply {
+            studioAnimeAdapter = StudioAnimeAdapter(viewModel.studioAnimeList) { id, idMal ->
+                val action =
+                    StudioFragmentDirections.actionStudioFragmentToAnimeDetailFragment(
+                        id,
+                        idMal
+                    )
+                findNavController().navigate(action)
+            }
+            this.adapter = studioAnimeAdapter
+            this.layoutManager = GridLayoutManager(this@StudioFragment.context, 3)
+            this.addItemDecoration(SpacesItemDecoration(3, 8, true))
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        studioAnimeAdapter = null
         _binding = null
     }
 }

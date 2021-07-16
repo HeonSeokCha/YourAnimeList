@@ -101,9 +101,9 @@ class SortedFragment : BaseFragment() {
 
         binding.animeListSort.setOnClickListener {
             AlertDialog.Builder(this.requireContext())
-                .setItems(viewModel.animeSortArray) { _, which ->
-                    viewModel.selectedSort = viewModel.animeSortList[which]
-                    binding.animeListSort.text = viewModel.animeSortArray[which]
+                .setItems(Constant.animeSortArray) { _, which ->
+                    viewModel.selectedSort = Constant.animeSortList[which]
+                    binding.animeListSort.text = Constant.animeSortArray[which]
                     isLoading = false
                     viewModel.refresh()
                     animeListAdapter?.notifyDataSetChanged()

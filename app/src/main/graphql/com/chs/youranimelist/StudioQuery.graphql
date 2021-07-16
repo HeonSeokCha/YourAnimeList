@@ -7,20 +7,14 @@ query StudioAnimeQuery(
         id
         name
         favourites
-        media(sort: [$sort], page: $page) {
+        media(
+            sort: [$sort],
+            page: $page,
+            perPage: 20
+        ) {
             edges {
                 node {
-                    id
-                    title {
-                        userPreferred
-                        english
-                        romaji
-                    }
-                    coverImage {
-                        large
-                    }
-                    type
-                    format
+                    ... animeList
                 }
             }
             pageInfo {

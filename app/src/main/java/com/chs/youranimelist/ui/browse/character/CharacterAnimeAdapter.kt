@@ -9,8 +9,7 @@ import com.chs.youranimelist.databinding.ItemAnimeChildBinding
 class CharacterAnimeAdapter(
     private val items: List<CharacterQuery.Edge?>,
     private val clickListener: (id: Int, idMal: Int) -> Unit
-) :
-    RecyclerView.Adapter<CharacterAnimeAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<CharacterAnimeAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemAnimeChildBinding) : RecyclerView.ViewHolder(binding.root)
 

@@ -33,26 +33,6 @@ class SortedListViewModel(
         animeListRepository.genreListResponse
     }
 
-    val animeSortArray = arrayOf(
-        "TITLE",
-        "POPULARITY",
-        "AVERAGE SCORE",
-        "TRENDING",
-        "FAVORITE",
-        "DATE ADDED",
-        "RELEASE DATE",
-    )
-
-    var animeSortList = arrayListOf(
-        MediaSort.TITLE_ENGLISH,
-        MediaSort.POPULARITY_DESC,
-        MediaSort.SCORE_DESC,
-        MediaSort.TRENDING_DESC,
-        MediaSort.FAVOURITES_DESC,
-        MediaSort.ID_DESC,
-        MediaSort.START_DATE_DESC
-    )
-
     val animeSeasonList = arrayListOf(
         MediaSeason.WINTER, MediaSeason.SPRING, MediaSeason.SUMMER, MediaSeason.FALL
     )

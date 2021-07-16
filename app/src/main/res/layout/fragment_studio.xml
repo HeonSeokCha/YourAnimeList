@@ -75,7 +75,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/character_Toolbars"
+                    android:id="@+id/studio_Toolbars"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:backgroundTint="@android:color/transparent"

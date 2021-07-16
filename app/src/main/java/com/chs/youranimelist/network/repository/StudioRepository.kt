@@ -7,6 +7,7 @@ import com.chs.youranimelist.SearchAnimeQuery
 import com.chs.youranimelist.StudioAnimeQuery
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.services.ApolloServices
+import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.util.SingleLiveEvent
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -18,8 +19,14 @@ class StudioRepository {
         get() = _studioResponse
 
 
-    suspend fun getStudioAnime(studioId: Int) {
-        ApolloServices.apolloClient.query(StudioAnimeQuery(studioId.toInput())).toFlow()
+    suspend fun getStudioAnime(studioId: Int, sort: MediaSort, page: Int) {
+        ApolloServices.apolloClient.query(
+            StudioAnimeQuery(
+                studioId.toInput(),
+                sort.toInput(),
+                page.toInput()
+            )
+        ).toFlow()
             .catch { e ->
                 _studioResponse.postValue(NetWorkState.Error(e.message.toString()))
             }.collect {

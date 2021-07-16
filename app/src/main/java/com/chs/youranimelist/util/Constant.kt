@@ -1,5 +1,7 @@
 package com.chs.youranimelist.util
 
+import com.chs.youranimelist.type.MediaSort
+
 object Constant {
     const val ANILIST_API_URL: String = "https://graphql.anilist.co"
     const val JIKAN_API_URL: String = "https://api.jikan.moe/v3/"
@@ -87,5 +89,23 @@ object Constant {
         Pair("dajiaochong manhua (cn)", "#E9CE0E"),
         Pair("weibo manhua (cn)", "#E0172B"),
         Pair("manman manhua (cn)", "#FF5746")
+    )
+
+    val animeSortArray = arrayOf(
+        "POPULARITY",
+        "AVERAGE SCORE",
+        "FAVORITE",
+        "NEWEST",
+        "OLDEST",
+        "TITLE",
+    )
+
+    var animeSortList = arrayListOf(
+        MediaSort.POPULARITY_DESC,
+        MediaSort.SCORE_DESC,
+        MediaSort.FAVOURITES_DESC,
+        MediaSort.START_DATE_DESC,
+        MediaSort.START_DATE,
+        MediaSort.TITLE_ENGLISH_DESC,
     )
 }
