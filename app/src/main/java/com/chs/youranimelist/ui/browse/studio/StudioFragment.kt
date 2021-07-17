@@ -10,16 +10,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentStudioBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.StudioRepository
-import com.chs.youranimelist.type.MediaSort
-import com.chs.youranimelist.ui.browse.character.CharacterFragmentDirections
+import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.SpacesItemDecoration
 
-class StudioFragment : Fragment() {
+class StudioFragment : BaseFragment() {
     private var _binding: FragmentStudioBinding? = null
     private val binding get() = _binding!!
     private val repository by lazy { StudioRepository() }
@@ -102,6 +100,7 @@ class StudioFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         studioAnimeAdapter = null
+        viewModel.clear()
         _binding = null
     }
 }

@@ -28,4 +28,8 @@ class StudioViewModel(private val repository: StudioRepository) : ViewModel() {
         studioAnimeList.clear()
         getStudio()
     }
+
+    fun clear() {
+        studioAnimeList.clear()
+    }
 }
