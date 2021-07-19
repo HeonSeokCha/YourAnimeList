@@ -188,18 +188,16 @@ class AnimeOverviewFragment : Fragment() {
 
     private fun initAnimeTheme() {
         if (viewModel.animeDetails?.openingThemes?.isNullOrEmpty() == false) {
-            binding.txtAnimeThemeOp.isVisible = true
+            binding.inOverviewLayoutThemeOp.isVisible = true
             binding.rvAnimeThemeOp.apply {
-                isVisible = true
                 adapter =
                     AnimeOverviewThemeAdapter(viewModel.animeDetails?.openingThemes ?: listOf())
             }
         }
 
         if (viewModel.animeDetails?.endingThemes?.isNullOrEmpty() == false) {
-            binding.txtAnimeThemeEd.isVisible = true
+            binding.inOverviewLayoutThemeEd.isVisible = true
             binding.rvAnimeThemeEd.apply {
-                isVisible = true
                 adapter =
                     AnimeOverviewThemeAdapter(viewModel.animeDetails?.endingThemes ?: listOf())
             }
