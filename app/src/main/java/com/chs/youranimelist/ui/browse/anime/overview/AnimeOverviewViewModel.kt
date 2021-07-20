@@ -30,6 +30,7 @@ class AnimeOverviewViewModel(private val repository: AnimeRepository) : ViewMode
     var animeDetails: AnimeDetails? = null
     var animeGenresList = ArrayList<String>()
     var animeLinkList = ArrayList<AnimeOverviewQuery.ExternalLink?>()
+    var animeStudioList = ArrayList<AnimeOverviewQuery.StudiosNode>()
 
     fun getAnimeOverview(animeId: Int) {
         viewModelScope.launch {

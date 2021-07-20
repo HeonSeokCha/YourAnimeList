@@ -16,17 +16,18 @@ class AnimeOverviewRelationAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemRelationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(view)
+        val viewHolder = ViewHolder(view)
+        viewHolder.itemView.setOnClickListener {
+            clickListener.invoke(
+                items[viewHolder.layoutPosition]!!.relationsNode!!.id,
+                items[viewHolder.layoutPosition]!!.relationsNode!!.idMal ?: 0
+            )
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.model = items[position]
-        holder.binding.root.setOnClickListener {
-            clickListener.invoke(
-                items[position]!!.relationsNode!!.id,
-                items[position]!!.relationsNode!!.idMal ?: 0
-            )
-        }
     }
 
     override fun getItemCount(): Int = items.size

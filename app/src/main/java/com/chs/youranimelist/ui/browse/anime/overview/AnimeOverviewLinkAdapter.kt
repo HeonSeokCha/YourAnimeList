@@ -19,7 +19,11 @@ class AnimeOverviewLinkAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeOverviewLinkViewHolder {
         val view = ItemLinkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return AnimeOverviewLinkViewHolder(view)
+        val viewHolder = AnimeOverviewLinkViewHolder(view)
+        viewHolder.itemView.setOnClickListener {
+            clickListener.invoke(list[viewHolder.layoutPosition]!!.url)
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: AnimeOverviewLinkViewHolder, position: Int) {
@@ -30,9 +34,6 @@ class AnimeOverviewLinkAdapter(
                     Constant.EXTERNAL_LINK[list[position]!!.site.lowercase(Locale.getDefault())]
                 )
             )
-        }
-        holder.binding.root.setOnClickListener {
-            clickListener.invoke(list[position]!!.url)
         }
     }
 

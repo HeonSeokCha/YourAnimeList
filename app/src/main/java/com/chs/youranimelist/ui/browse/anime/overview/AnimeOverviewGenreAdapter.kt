@@ -16,14 +16,15 @@ class AnimeOverviewGenreAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemGenreBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(view)
+        val viewHolder = ViewHolder(view)
+        viewHolder.itemView.setOnClickListener {
+            clickListener.invoke(items[viewHolder.layoutPosition]!!)
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.model = items[position]
-        holder.binding.root.setOnClickListener {
-            clickListener.invoke(items[position]!!)
-        }
         holder.binding.genreCard
             .setCardBackgroundColor(Color.parseColor(Constant.GENRE_COLOR[items[position]]))
     }

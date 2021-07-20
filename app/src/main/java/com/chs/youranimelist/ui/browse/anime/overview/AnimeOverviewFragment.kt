@@ -26,13 +26,13 @@ class AnimeOverviewFragment : Fragment() {
     private val repository by lazy { AnimeRepository() }
     private var _binding: FragmentAnimeOverviewBinding? = null
     private val binding get() = _binding!!
+    private var seasonYear: Int = 0
     private lateinit var viewModel: AnimeOverviewViewModel
     private lateinit var relationAdapter: AnimeOverviewRelationAdapter
     private lateinit var genreAdapter: AnimeOverviewGenreAdapter
     private lateinit var linkAdapter: AnimeOverviewLinkAdapter
+    private lateinit var studioAdapter: AnimeOverviewStudioAdapter
     private lateinit var season: MediaSeason
-    private var studioId: Int = 0
-    private var seasonYear: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,13 +83,6 @@ class AnimeOverviewFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        binding.txtAnimeOverviewStudio.setOnClickListener {
-            val action =
-                AnimeDetailFragmentDirections.actionAnimeDetailFragmentToStudioFragment(
-                    studioId
-                )
-            findNavController().navigate(action)
-        }
     }
 
     private fun getAnimeInfo() {
@@ -105,13 +98,6 @@ class AnimeOverviewFragment : Fragment() {
                     if (it.data?.media.season != null && it.data.media.seasonYear != null) {
                         season = it.data?.media.season
                         seasonYear = it.data.media.seasonYear
-                        for (i in it.data?.media?.studios?.studiosEdges?.indices!!) {
-                            if (it.data?.media?.studios?.studiosEdges[i]?.isMain == true) {
-                                studioId =
-                                    it.data?.media?.studios?.studiosEdges[i]?.studiosNode?.id!!
-                                break
-                            }
-                        }
                     }
 
                     it.data.media.relations?.relationsEdges?.forEach { relation ->
@@ -126,9 +112,18 @@ class AnimeOverviewFragment : Fragment() {
                         viewModel.animeLinkList.add(links)
                     }
 
+                    it.data.media.studios?.studiosEdges?.forEach { studiosEdge ->
+                        if (viewModel.animeStudioList.isNullOrEmpty()) {
+                            if (studiosEdge?.isMain!!) {
+                                viewModel.animeStudioList.add(studiosEdge.studiosNode!!)
+                            }
+                        }
+                    }
+
                     relationAdapter?.notifyDataSetChanged()
                     genreAdapter?.notifyDataSetChanged()
                     linkAdapter?.notifyDataSetChanged()
+                    studioAdapter?.notifyDataSetChanged()
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
@@ -183,6 +178,21 @@ class AnimeOverviewFragment : Fragment() {
                     .launchUrl(this@AnimeOverviewFragment.requireContext(), Uri.parse(it))
             }
             this.adapter = linkAdapter
+        }
+
+        binding.rvAnimeOverviewStudio.apply {
+            studioAdapter = AnimeOverviewStudioAdapter(viewModel.animeStudioList) { studioId ->
+                val action =
+                    AnimeDetailFragmentDirections.actionAnimeDetailFragmentToStudioFragment(
+                        studioId
+                    )
+                findNavController().navigate(action)
+            }
+            this.adapter = studioAdapter
+            this.layoutManager = LinearLayoutManager(
+                this@AnimeOverviewFragment.context,
+                LinearLayoutManager.VERTICAL, false
+            )
         }
     }
 
