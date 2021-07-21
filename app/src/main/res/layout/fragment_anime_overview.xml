@@ -428,6 +428,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView14"
                 app:layout_constraintTop_toBottomOf="@+id/textView14">
@@ -449,6 +450,33 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/in_overview_layout_producer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView14"
+                app:layout_constraintTop_toBottomOf="@+id/in_overview_layout_studio">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/producer" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_anime_overview_producer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:nestedScrollingEnabled="false"
+                    tools:layout_height="30dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/in_overview_layout_theme_op"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -459,7 +487,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/in_overview_layout_studio">
+                app:layout_constraintTop_toBottomOf="@+id/in_overview_layout_producer">
 
                 <TextView
                     android:id="@+id/txt_anime_theme_op"

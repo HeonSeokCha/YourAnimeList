@@ -32,6 +32,7 @@ class AnimeOverviewFragment : Fragment() {
     private lateinit var genreAdapter: AnimeOverviewGenreAdapter
     private lateinit var linkAdapter: AnimeOverviewLinkAdapter
     private lateinit var studioAdapter: AnimeOverviewStudioAdapter
+    private lateinit var producerAdapter: AnimeOverviewStudioAdapter
     private lateinit var season: MediaSeason
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,10 +114,17 @@ class AnimeOverviewFragment : Fragment() {
                     }
 
                     it.data.media.studios?.studiosEdges?.forEach { studiosEdge ->
-                        if (viewModel.animeStudioList.isNullOrEmpty()) {
-                            if (studiosEdge?.isMain!!) {
-                                viewModel.animeStudioList.add(studiosEdge.studiosNode!!)
-                            }
+                        if (studiosEdge?.isMain == true) {
+                            viewModel.animeStudioList.add(studiosEdge.studiosNode!!)
+                        } else {
+                            viewModel.animeProducerList.add(studiosEdge?.studiosNode!!)
+                        }
+                    }
+
+                    if (viewModel.animeStudioList.isNotEmpty()) {
+                        binding.inOverviewLayoutStudio.isVisible = true
+                        if (viewModel.animeProducerList.isNotEmpty()) {
+                            binding.inOverviewLayoutProducer.isVisible = true
                         }
                     }
 
@@ -124,6 +132,7 @@ class AnimeOverviewFragment : Fragment() {
                     genreAdapter?.notifyDataSetChanged()
                     linkAdapter?.notifyDataSetChanged()
                     studioAdapter?.notifyDataSetChanged()
+                    producerAdapter?.notifyDataSetChanged()
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
@@ -194,6 +203,21 @@ class AnimeOverviewFragment : Fragment() {
                 LinearLayoutManager.VERTICAL, false
             )
         }
+
+        binding.rvAnimeOverviewProducer.apply {
+            producerAdapter = AnimeOverviewStudioAdapter(viewModel.animeProducerList) { studioId ->
+                val action =
+                    AnimeDetailFragmentDirections.actionAnimeDetailFragmentToStudioFragment(
+                        studioId
+                    )
+                findNavController().navigate(action)
+            }
+            this.adapter = producerAdapter
+            this.layoutManager = LinearLayoutManager(
+                this@AnimeOverviewFragment.context,
+                LinearLayoutManager.VERTICAL, false
+            )
+        }
     }
 
     private fun initAnimeTheme() {
@@ -216,6 +240,7 @@ class AnimeOverviewFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.clearList()
         binding.rvAnimeOverviewGenre.adapter = null
         binding.rvAnimeOverviewLinks.adapter = null
         binding.rvAnimeOverviewRelation.adapter = null
