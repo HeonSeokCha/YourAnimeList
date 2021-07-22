@@ -105,6 +105,10 @@ class AnimeOverviewFragment : Fragment() {
                         viewModel.animeOverviewRelationList.add(relation)
                     }
 
+                    if (viewModel.animeOverviewRelationList.isEmpty()) {
+                        binding.inOverviewLayoutRelation.isVisible = false
+                    }
+
                     it.data.media.genres?.forEach { genres ->
                         viewModel.animeGenresList.add(genres!!)
                     }
@@ -112,6 +116,11 @@ class AnimeOverviewFragment : Fragment() {
                     it.data.media.externalLinks?.forEach { links ->
                         viewModel.animeLinkList.add(links)
                     }
+
+                    if (viewModel.animeLinkList.isEmpty()) {
+                        binding.inOverviewLayoutLinks.isVisible = false
+                    }
+
 
                     it.data.media.studios?.studiosEdges?.forEach { studiosEdge ->
                         if (studiosEdge?.isMain == true) {
