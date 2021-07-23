@@ -131,9 +131,11 @@ class AnimeOverviewFragment : Fragment() {
                     }
 
                     if (viewModel.animeStudioList.isNotEmpty()) {
-                        binding.inOverviewLayoutStudio.isVisible = true
+                        binding.txtAnimeStudio.isVisible = true
+                        binding.rvAnimeOverviewStudio.isVisible = true
                         if (viewModel.animeProducerList.isNotEmpty()) {
-                            binding.inOverviewLayoutProducer.isVisible = true
+                            binding.txtAnimeProducer.isVisible = true
+                            binding.rvAnimeOverviewProducer.isVisible = true
                         }
                     }
 

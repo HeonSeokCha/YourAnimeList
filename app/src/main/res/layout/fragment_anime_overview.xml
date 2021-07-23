@@ -80,7 +80,6 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
-                    android:ellipsize="end"
                     android:lineSpacingExtra="5dp"
                     android:lines="5"
                     android:maxLines="5"
@@ -421,60 +420,49 @@
                 app:layout_constraintTop_toTopOf="@+id/textView14"
                 tools:text="TextView" />
 
-
-            <LinearLayout
-                android:id="@+id/in_overview_layout_studio"
+            <TextView
+                android:id="@+id/txt_anime_studio"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal"
+                android:text="@string/studio"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView14"
-                app:layout_constraintTop_toBottomOf="@+id/textView14">
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="@string/studio" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_anime_overview_studio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_season"
+                app:layout_constraintTop_toBottomOf="@+id/textView14"
+                tools:layout_height="30dp"
+                tools:listitem="@layout/item_studio" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_anime_overview_studio"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    tools:layout_height="30dp"
-                    android:nestedScrollingEnabled="false" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/in_overview_layout_producer"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/txt_anime_producer"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal"
+                android:text="@string/producer"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView14"
-                app:layout_constraintTop_toBottomOf="@+id/in_overview_layout_studio">
+                app:layout_constraintTop_toBottomOf="@+id/txt_anime_studio" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="@string/producer" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_anime_overview_producer"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:nestedScrollingEnabled="false"
-                    tools:layout_height="30dp" />
-
-            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_anime_overview_producer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintStart_toStartOf="@+id/rv_anime_overview_studio"
+                app:layout_constraintTop_toBottomOf="@+id/rv_anime_overview_studio"
+                tools:layout_height="30dp" />
 
             <LinearLayout
                 android:id="@+id/in_overview_layout_theme_op"
@@ -487,7 +475,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/in_overview_layout_producer">
+                app:layout_constraintTop_toBottomOf="@+id/rv_anime_overview_producer">
 
                 <TextView
                     android:id="@+id/txt_anime_theme_op"

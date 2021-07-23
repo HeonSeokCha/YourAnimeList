@@ -44,8 +44,8 @@ class AnimeOverviewViewModel(private val repository: AnimeRepository) : ViewMode
     }
 
     fun clearList() {
-        animeOverviewRelationList.clear()
         animeDetails = null
+        animeOverviewRelationList.clear()
         animeGenresList.clear()
         animeLinkList.clear()
         animeStudioList.clear()
