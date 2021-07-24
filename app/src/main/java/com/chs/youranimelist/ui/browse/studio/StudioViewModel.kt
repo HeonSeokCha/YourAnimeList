@@ -14,11 +14,11 @@ class StudioViewModel(private val repository: StudioRepository) : ViewModel() {
     var selectsort: MediaSort = MediaSort.START_DATE_DESC
     var studioId: Int = 0
     var hasNextPage: Boolean = true
-    var studioAnimeList: ArrayList<StudioAnimeQuery.Edge> = ArrayList()
+    var studioAnimeList: ArrayList<StudioAnimeQuery.Edge?> = ArrayList()
 
     val studioResponse by lazy { repository.studioResponse }
 
-    fun getStudio() = viewModelScope.launch {
+    fun getStudioAnime() = viewModelScope.launch {
         repository.getStudioAnime(studioId, selectsort!!, page)
     }
 
@@ -26,7 +26,7 @@ class StudioViewModel(private val repository: StudioRepository) : ViewModel() {
         page = 1
         hasNextPage = true
         studioAnimeList.clear()
-        getStudio()
+        getStudioAnime()
     }
 
     fun clear() {

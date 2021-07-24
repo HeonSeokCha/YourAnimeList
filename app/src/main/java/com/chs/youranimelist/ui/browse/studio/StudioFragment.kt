@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentStudioBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.StudioRepository
@@ -22,6 +23,7 @@ class StudioFragment : BaseFragment() {
     private val repository by lazy { StudioRepository() }
     private val args: StudioFragmentArgs by navArgs()
     private var studioAnimeAdapter: StudioAnimeAdapter? = null
+    private var isLoading: Boolean = false
     private lateinit var viewModel: StudioViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +42,7 @@ class StudioFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getStudio()
+        viewModel.getStudioAnime()
         initClick()
         initRecyclerView()
         initStudio()
@@ -50,17 +52,33 @@ class StudioFragment : BaseFragment() {
         viewModel.studioResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.SUCCESS -> {
+                    if (isLoading) {
+                        viewModel.studioAnimeList.removeAt(viewModel.studioAnimeList.lastIndex)
+                        studioAnimeAdapter?.notifyItemRemoved(viewModel.studioAnimeList.size)
+                        isLoading = false
+                    }
                     binding.model = it.data
+                    viewModel.hasNextPage = it.data?.media?.pageInfo?.hasNextPage ?: false
                     it.data!!.media!!.edges!!.forEach { edge ->
                         viewModel.studioAnimeList.add(edge!!)
                     }
                     studioAnimeAdapter?.notifyDataSetChanged()
                 }
                 ResponseState.ERROR -> {
+                    isLoading = false
                     Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         })
+    }
+
+    private fun loadMore() {
+        if (viewModel.hasNextPage) {
+            viewModel.studioAnimeList.add(null)
+            studioAnimeAdapter?.notifyItemInserted(viewModel.studioAnimeList.lastIndex)
+            viewModel.page += 1
+            viewModel.getStudioAnime()
+        }
     }
 
     private fun initClick() {
@@ -82,6 +100,19 @@ class StudioFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         binding.rvStudio.apply {
+            this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE &&
+                        !recyclerView.canScrollVertically(1) && !isLoading
+                    ) {
+                        loadMore()
+                        isLoading = true
+                    }
+                }
+            })
+
             studioAnimeAdapter = StudioAnimeAdapter(viewModel.studioAnimeList) { id, idMal ->
                 val action =
                     StudioFragmentDirections.actionStudioFragmentToAnimeDetailFragment(

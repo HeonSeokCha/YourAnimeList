@@ -8,7 +8,7 @@ query AnimeListQuery(
 ) {
     NonSeason: Page(
         page: $page,
-        perPage: 20,
+        perPage: 10,
     ) {
         pageInfo {
             total

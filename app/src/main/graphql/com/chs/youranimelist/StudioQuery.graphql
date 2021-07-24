@@ -10,7 +10,7 @@ query StudioAnimeQuery(
         media(
             sort: [$sort],
             page: $page,
-            perPage: 20
+            perPage: 10
         ) {
             edges {
                 node {
