@@ -25,7 +25,8 @@ object BindingAdapter {
     @JvmStatic
     fun animeRecImageBanner(imageView: ImageView, anime: HomeRecommendListQuery.Medium) {
         imageView.load(anime.bannerImage) {
-
+            crossfade(true)
+            crossfade(400)
             size(400, 250)
         }
     }
@@ -34,6 +35,8 @@ object BindingAdapter {
     @JvmStatic
     fun animeImageCover(imageView: ImageView, path: String?) {
         imageView.load(path) {
+            crossfade(true)
+            crossfade(400)
             size(200, 350)
         }
     }
@@ -109,6 +112,7 @@ object BindingAdapter {
         imageView.load(anime?.bannerImage) {
             placeholder(ColorDrawable(Color.parseColor(anime?.coverImage?.color ?: "#D9666F")))
             crossfade(true)
+            crossfade(400)
             size(400, 250)
         }
     }
@@ -125,8 +129,9 @@ object BindingAdapter {
     @JvmStatic
     fun animeDetailImageCover(imageView: ImageView, path: String?) {
         imageView.load(path) {
-            size(200, 350)
             crossfade(true)
+            crossfade(400)
+            size(200, 350)
         }
     }
 
@@ -135,6 +140,7 @@ object BindingAdapter {
     fun animeRecommendImageCover(imageView: ImageView, path: String?) {
         imageView.load(path) {
             crossfade(true)
+            crossfade(400)
             size(300, 450)
             transformations(RoundedCornersTransformation(topLeft = 15f, bottomLeft = 15f))
         }
@@ -260,8 +266,9 @@ object BindingAdapter {
     fun animeOverviewCoverImage(imageView: ImageView, path: String?) {
         imageView.load(path) {
             crossfade(true)
-            transformations(RoundedCornersTransformation(15f))
+            crossfade(400)
             size(260, 540)
+            transformations(RoundedCornersTransformation(15f))
         }
     }
 
@@ -269,9 +276,10 @@ object BindingAdapter {
     @JvmStatic
     fun animeCharaCircle(imageView: ImageView, path: String?) {
         imageView.load(path) {
-            transformations(CircleCropTransformation())
-            size(200, 200)
             crossfade(true)
+            crossfade(400)
+            size(200, 200)
+            transformations(CircleCropTransformation())
         }
     }
 

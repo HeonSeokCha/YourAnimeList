@@ -23,9 +23,6 @@ import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.CharacterRepository
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
-import com.github.razir.progressbutton.bindProgressButton
-import com.github.razir.progressbutton.hideDrawable
-import com.github.razir.progressbutton.showDrawable
 
 class CharacterFragment : BaseFragment() {
     private var _binding: FragmentCharacterBinding? = null
@@ -56,7 +53,6 @@ class CharacterFragment : BaseFragment() {
         getCharaInfo()
         initClick()
         binding.lifecycleOwner = this
-        bindProgressButton(binding.mediaSaveList)
     }
 
     private fun initClick() {
@@ -144,14 +140,9 @@ class CharacterFragment : BaseFragment() {
                         val animatedDrawable =
                             ContextCompat.getDrawable(this.context!!, R.drawable.ic_check)!!
                         animatedDrawable.setBounds(0, 0, 50, 50)
-                        showDrawable(animatedDrawable) {
-                            buttonText = "Saved"
-                        }
                     }
                 } else {
                     binding.mediaSaveList.apply {
-                        hideDrawable()
-                        text = "ADD MY LIST"
                     }
                 }
             })

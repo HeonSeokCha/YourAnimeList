@@ -3,16 +3,12 @@ package com.chs.youranimelist.ui.browse.anime
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.R
 import com.chs.youranimelist.data.dto.Anime
@@ -21,9 +17,6 @@ import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
-import com.github.razir.progressbutton.bindProgressButton
-import com.github.razir.progressbutton.hideDrawable
-import com.github.razir.progressbutton.showDrawable
 import com.google.android.material.tabs.TabLayoutMediator
 
 class AnimeDetailFragment : BaseFragment() {
@@ -56,7 +49,6 @@ class AnimeDetailFragment : BaseFragment() {
             arguments?.getInt(Constant.TARGET_ID_MAL)!!
         )
         initClick()
-        bindProgressButton(binding.mediaSaveList)
     }
 
     private fun checkAnimeList() {
@@ -68,13 +60,9 @@ class AnimeDetailFragment : BaseFragment() {
                         val animatedDrawable =
                             ContextCompat.getDrawable(this.context!!, R.drawable.ic_check)!!
                         animatedDrawable.setBounds(0, 0, 50, 50)
-                        showDrawable(animatedDrawable) {
-                            buttonText = "Saved"
-                        }
                     }
                 } else {
                     binding.mediaSaveList.apply {
-                        hideDrawable()
                         text = "ADD MY LIST"
                     }
                 }
