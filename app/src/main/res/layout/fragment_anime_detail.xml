@@ -126,15 +126,18 @@
                         app:layout_constraintTop_toBottomOf="@+id/mediaTitle"
                         tools:text="TextView" />
 
-                    <Button
+                    <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
                         android:id="@+id/mediaSaveList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:text="ADD MY LIST"
+                        android:textColor="@color/white"
+                        app:spinning_bar_color="@color/white"
+                        app:spinning_bar_padding="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
