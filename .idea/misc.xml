@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/hs960/Work_Repository/Android/YourAnimeList/app/src/main/res/drawable/ic_check.xml" value="0.415625" />
+        <entry key="..\:/Users/hs960/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_anime_chara.xml" value="0.39947916666666666" />
+        <entry key="..\:/Users/hs960/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_anime_detail.xml" value="0.4" />
+        <entry key="..\:/Users/hs960/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_anime_child.xml" value="0.8800000000000001" />
+        <entry key="..\:/Users/hs960/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_view_pager.xml" value="0.39947916666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

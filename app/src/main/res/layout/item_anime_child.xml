@@ -26,13 +26,13 @@
                 android:id="@+id/img_animeList"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:animeImageCover="@{model.coverImage.extraLarge}"
-                app:layout_constraintDimensionRatio="2:3"
+                app:layout_constraintDimensionRatio="2:2.7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -56,7 +56,6 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/img_animeList"
-                app:layout_constraintVertical_bias="0.0"
                 tools:text="TextView" />
 
             <TextView

@@ -51,11 +51,10 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="125dp"
+            android:layout_width="150dp"
             android:layout_height="175dp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
-            android:scaleType="centerCrop"
             app:animeImageCover="@{model.coverImage.extraLarge}"
             app:layout_constraintBottom_toBottomOf="@+id/img_view_pager_anime_cover"
             app:layout_constraintStart_toStartOf="@+id/img_view_pager_anime_cover"

@@ -37,7 +37,8 @@ object BindingAdapter {
         imageView.load(path) {
             crossfade(true)
             crossfade(400)
-            size(200, 350)
+            size(250, 350)
+            transformations(RoundedCornersTransformation(15f))
         }
     }
 
@@ -131,7 +132,8 @@ object BindingAdapter {
         imageView.load(path) {
             crossfade(true)
             crossfade(400)
-            size(200, 350)
+            size(250, 350)
+            transformations(RoundedCornersTransformation(15f))
         }
     }
 

@@ -37,7 +37,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout3"
@@ -89,9 +90,10 @@
 
                     <ImageView
                         android:id="@+id/mediaCoverImage"
-                        android:layout_width="125dp"
+                        android:layout_width="150dp"
                         android:layout_height="175dp"
                         android:layout_marginStart="8dp"
+                        android:adjustViewBounds="true"
                         app:animeDetailImageCover="@{model.coverImage.extraLarge}"
                         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout3"
                         app:layout_constraintStart_toStartOf="parent"
@@ -126,7 +128,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/mediaTitle"
                         tools:text="TextView" />
 
-                    <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/mediaSaveList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -136,13 +138,12 @@
                         android:layout_marginBottom="8dp"
                         android:text="ADD MY LIST"
                         android:textColor="@color/white"
-                        app:spinning_bar_color="@color/white"
-                        app:spinning_bar_padding="16dp"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/mediaAiring"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintTop_toBottomOf="@+id/mediaAiring" />
 
                     <TextView
                         android:id="@+id/mediaScore"

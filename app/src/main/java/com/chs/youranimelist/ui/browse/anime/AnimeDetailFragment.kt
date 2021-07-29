@@ -1,5 +1,6 @@
 package com.chs.youranimelist.ui.browse.anime
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -57,22 +58,22 @@ class AnimeDetailFragment : BaseFragment() {
     }
 
     private fun checkAnimeList() {
-        val bitmap: Bitmap = BitmapFactory.decodeResource(
-            requireActivity().resources,
-            R.drawable.ic_default
-        )
         viewModel.checkAnimeList(arguments?.getInt(Constant.TARGET_ID)!!)
             .observe(viewLifecycleOwner, {
                 if (it.size == 1 && it[0].animeId == arguments?.getInt(Constant.TARGET_ID)!!) {
                     viewModel.initAnimeList = it[0]
+                    binding.mediaSaveList.apply {
+                        this.icon =
+                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
+                        this.text = "SAVED"
+                    }
 
-                    binding.mediaSaveList.doneLoadingAnimation(R.color.red_500, bitmap)
 
                 } else {
                     binding.mediaSaveList.apply {
-                        text = "ADD MY LIST"
+                        this.icon = null
+                        this.text = "ADD MY LIST"
                     }
-                    binding.mediaSaveList.doneLoadingAnimation(R.color.red_500, bitmap)
                 }
             })
     }
@@ -87,8 +88,6 @@ class AnimeDetailFragment : BaseFragment() {
         }
 
         binding.mediaSaveList.setOnClickListener {
-            binding.mediaSaveList.text = ""
-            binding.mediaSaveList.startAnimation()
             saveList()
         }
     }
