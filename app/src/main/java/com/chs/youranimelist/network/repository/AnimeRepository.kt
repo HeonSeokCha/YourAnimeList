@@ -18,11 +18,6 @@ import retrofit2.Response
 
 class AnimeRepository {
 
-    private val _homeRecommendResponse =
-        SingleLiveEvent<NetWorkState<HomeRecommendListQuery.Data>>()
-    val homeRecommendResponse: LiveData<NetWorkState<HomeRecommendListQuery.Data>>
-        get() = _homeRecommendResponse
-
     private val _animeDetailResponse = SingleLiveEvent<NetWorkState<AnimeDetailQuery.Data>>()
     val animeDetailResponse: LiveData<NetWorkState<AnimeDetailQuery.Data>>
         get() = _animeDetailResponse
@@ -43,19 +38,15 @@ class AnimeRepository {
     val animeOverviewThemeResponse: LiveData<NetWorkState<AnimeDetails>>
         get() = _animeOverviewThemeResponse
 
-    suspend fun getHomeRecList() {
-        _homeRecommendResponse.postValue(NetWorkState.Loading())
-        ApolloServices.apolloClient.query(
-            HomeRecommendListQuery(
-                ConvertDate.getCurrentSeason().toInput(),
-                ConvertDate.getNextSeason().toInput(),
-                ConvertDate.getCurrentYear(false).toInput(),
-                ConvertDate.getCurrentYear(true).toInput()
-            )
-        ).toFlow()
-            .catch { e -> _homeRecommendResponse.postValue(NetWorkState.Error(e.message.toString())) }
-            .collect { _homeRecommendResponse.postValue(NetWorkState.Success(it.data!!)) }
-    }
+    fun getHomeRecList() = ApolloServices.apolloClient.query(
+        HomeRecommendListQuery(
+            ConvertDate.getCurrentSeason().toInput(),
+            ConvertDate.getNextSeason().toInput(),
+            ConvertDate.getCurrentYear(false).toInput(),
+            ConvertDate.getCurrentYear(true).toInput()
+        )
+    ).toFlow()
+
 
     suspend fun getAnimeDetail(animeId: Input<Int>) {
         _animeDetailResponse.postValue(NetWorkState.Loading())

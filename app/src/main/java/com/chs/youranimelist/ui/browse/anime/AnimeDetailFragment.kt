@@ -67,8 +67,6 @@ class AnimeDetailFragment : BaseFragment() {
                             ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
                         this.text = "SAVED"
                     }
-
-
                 } else {
                     binding.mediaSaveList.apply {
                         this.icon = null

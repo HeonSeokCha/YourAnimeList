@@ -51,7 +51,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun getAnimeRecList() {
-        viewModel.animePagerRecommendResponse.observe(viewLifecycleOwner, {
+        viewModel.homeRecommendResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.LOADING -> {
                     binding.layoutShimmerHome.root.isVisible = true
