@@ -14,12 +14,7 @@ import kotlinx.coroutines.flow.collect
 
 class StudioRepository {
 
-    private val _studioResponse = SingleLiveEvent<NetWorkState<StudioAnimeQuery.Studio>>()
-    val studioResponse: LiveData<NetWorkState<StudioAnimeQuery.Studio>>
-        get() = _studioResponse
-
-
-    suspend fun getStudioAnime(studioId: Int, sort: MediaSort, page: Int) {
+    fun getStudioAnime(studioId: Int, sort: MediaSort, page: Int) =
         ApolloServices.apolloClient.query(
             StudioAnimeQuery(
                 studioId.toInput(),
@@ -27,14 +22,4 @@ class StudioRepository {
                 page.toInput()
             )
         ).toFlow()
-            .catch { e ->
-                _studioResponse.postValue(NetWorkState.Error(e.message.toString()))
-            }.collect {
-                if (it.data?.studio == null) {
-                    _studioResponse.postValue(NetWorkState.Error("Not Found"))
-                } else {
-                    _studioResponse.postValue(NetWorkState.Success(it.data!!.studio!!))
-                }
-            }
-    }
 }

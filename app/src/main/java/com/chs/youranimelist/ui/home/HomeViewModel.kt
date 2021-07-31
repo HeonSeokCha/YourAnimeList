@@ -1,7 +1,5 @@
 package com.chs.youranimelist.ui.home
 
-
-import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

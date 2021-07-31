@@ -9,6 +9,7 @@ import com.chs.youranimelist.AnimeRecommendQuery
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.util.SingleLiveEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -17,15 +18,20 @@ import kotlinx.coroutines.launch
 
 class AnimeRecommendViewModel(private val repository: AnimeRepository) : ViewModel() {
 
-    val animeRecommendResponse by lazy {
-        repository.animeRecommendResponse
-    }
+    private val _animeRecommendResponse = SingleLiveEvent<NetWorkState<AnimeRecommendQuery.Data>>()
+    val animeRecommendResponse: LiveData<NetWorkState<AnimeRecommendQuery.Data>>
+        get() = _animeRecommendResponse
 
     var animeRecList = ArrayList<AnimeRecommendQuery.Edge?>()
 
     fun getRecommendList(animeId: Int) {
+        _animeRecommendResponse.postValue(NetWorkState.Loading())
         viewModelScope.launch {
-            repository.getAnimeRecList(animeId.toInput())
+            repository.getAnimeRecList(animeId.toInput()).catch { e ->
+                _animeRecommendResponse.postValue(NetWorkState.Error(e.message.toString()))
+            }.collect {
+                _animeRecommendResponse.postValue(NetWorkState.Success(it.data!!))
+            }
         }
     }
 }

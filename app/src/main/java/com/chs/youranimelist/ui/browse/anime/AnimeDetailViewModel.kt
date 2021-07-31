@@ -8,22 +8,35 @@ import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.data.repository.AnimeListRepository
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.util.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class AnimeDetailViewModel(private val repository: AnimeRepository, application: Application) :
-    ViewModel() {
+class AnimeDetailViewModel(
+    private val repository: AnimeRepository,
+    application: Application
+) : ViewModel() {
+
+    private val _animeDetailResponse = SingleLiveEvent<NetWorkState<AnimeDetailQuery.Data>>()
+    val animeDetailResponse: LiveData<NetWorkState<AnimeDetailQuery.Data>>
+        get() = _animeDetailResponse
 
     private val animeRepository: AnimeListRepository by lazy { AnimeListRepository(application) }
-
-    val animeDetailResponse by lazy { repository.animeDetailResponse }
     var animeDetail: AnimeDetailQuery.Media? = null
     var initAnimeList: Anime? = null
 
     fun getAnimeDetail(animeId: Input<Int>) {
+        _animeDetailResponse.postValue(NetWorkState.Loading())
         viewModelScope.launch {
-            repository.getAnimeDetail(animeId)
+            repository.getAnimeDetail(animeId).catch { e ->
+                _animeDetailResponse.postValue(NetWorkState.Error(e.message.toString()))
+            }.collect {
+                _animeDetailResponse.postValue(NetWorkState.Success(it.data!!))
+            }
         }
     }
 

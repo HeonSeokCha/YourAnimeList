@@ -1,11 +1,16 @@
 package com.chs.youranimelist.ui.browse.studio
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.StudioAnimeQuery
 import com.chs.youranimelist.fragment.AnimeList
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.StudioRepository
 import com.chs.youranimelist.type.MediaSort
+import com.chs.youranimelist.util.SingleLiveEvent
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class StudioViewModel(private val repository: StudioRepository) : ViewModel() {
@@ -16,10 +21,23 @@ class StudioViewModel(private val repository: StudioRepository) : ViewModel() {
     var hasNextPage: Boolean = true
     var studioAnimeList: ArrayList<StudioAnimeQuery.Edge?> = ArrayList()
 
-    val studioResponse by lazy { repository.studioResponse }
+    private val _studioResponse = SingleLiveEvent<NetWorkState<StudioAnimeQuery.Studio>>()
+    val studioResponse: LiveData<NetWorkState<StudioAnimeQuery.Studio>>
+        get() = _studioResponse
 
-    fun getStudioAnime() = viewModelScope.launch {
-        repository.getStudioAnime(studioId, selectsort!!, page)
+    fun getStudioAnime() {
+        _studioResponse.value = NetWorkState.Loading()
+        viewModelScope.launch {
+            repository.getStudioAnime(studioId, selectsort!!, page).catch { e ->
+                _studioResponse.postValue(NetWorkState.Error(e.message.toString()))
+            }.collect {
+                if (it.data?.studio == null) {
+                    _studioResponse.postValue(NetWorkState.Error("Not Found"))
+                } else {
+                    _studioResponse.postValue(NetWorkState.Success(it.data!!.studio!!))
+                }
+            }
+        }
     }
 
     fun refresh() {

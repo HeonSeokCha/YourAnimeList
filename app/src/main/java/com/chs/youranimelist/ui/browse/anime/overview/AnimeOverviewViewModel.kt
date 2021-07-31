@@ -10,6 +10,7 @@ import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.network.response.AnimeDetails
+import com.chs.youranimelist.util.SingleLiveEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -18,13 +19,13 @@ import kotlinx.coroutines.launch
 
 class AnimeOverviewViewModel(private val repository: AnimeRepository) : ViewModel() {
 
-    val animeOverviewResponse by lazy {
-        repository.animeOverviewResponse
-    }
+    private val _animeOverviewResponse = SingleLiveEvent<NetWorkState<AnimeOverviewQuery.Data>>()
+    val animeOverviewResponse: LiveData<NetWorkState<AnimeOverviewQuery.Data>>
+        get() = _animeOverviewResponse
 
-    val animeThemeResponse by lazy {
-        repository.animeOverviewThemeResponse
-    }
+    private val _animeOverviewThemeResponse = SingleLiveEvent<NetWorkState<AnimeDetails>>()
+    val animeOverviewThemeResponse: LiveData<NetWorkState<AnimeDetails>>
+        get() = _animeOverviewThemeResponse
 
     var animeOverviewRelationList = ArrayList<AnimeOverviewQuery.RelationsEdge?>()
     var animeDetails: AnimeDetails? = null
@@ -35,12 +36,26 @@ class AnimeOverviewViewModel(private val repository: AnimeRepository) : ViewMode
 
     fun getAnimeOverview(animeId: Int) {
         viewModelScope.launch {
-            repository.getAnimeOverview(animeId.toInput())
+            _animeOverviewResponse.value = NetWorkState.Loading()
+            repository.getAnimeOverview(animeId.toInput()).catch { e ->
+                _animeOverviewResponse.value = NetWorkState.Error(e.message.toString())
+            }.collect {
+                _animeOverviewResponse.value = NetWorkState.Success(it.data!!)
+            }
         }
     }
 
     fun getAnimeTheme(animeId: Int) {
-        repository.getAnimeOverviewTheme(animeId)
+        _animeOverviewThemeResponse.value = NetWorkState.Loading()
+        viewModelScope.launch {
+            repository.getAnimeOverviewTheme(animeId).apply {
+                if (this.isSuccessful) {
+                    _animeOverviewThemeResponse.value = NetWorkState.Success(this.body()!!)
+                } else {
+                    _animeOverviewThemeResponse.value = NetWorkState.Error(this.message())
+                }
+            }
+        }
     }
 
     fun clearList() {
