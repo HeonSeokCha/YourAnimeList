@@ -3,6 +3,7 @@ package com.chs.youranimelist.ui.browse.anime
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.AnimeDetailQuery
@@ -40,8 +41,7 @@ class AnimeDetailViewModel(
         }
     }
 
-    fun checkAnimeList(animeId: Int): LiveData<List<Anime>> =
-        animeRepository.checkAnimeList(animeId)
+    fun checkAnimeList(animeId: Int) = animeRepository.checkAnimeList(animeId).asLiveData()
 
     fun insertAnimeList(anime: Anime) {
         viewModelScope.launch(Dispatchers.IO) {

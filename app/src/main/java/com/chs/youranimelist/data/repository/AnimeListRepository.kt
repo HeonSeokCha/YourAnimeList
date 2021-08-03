@@ -14,25 +14,11 @@ class AnimeListRepository(application: Application) {
         YourListDatabase.getInstance(application).yourListDao()
     }
 
-    private val _animeListResponse = SingleLiveEvent<List<Anime>>()
-    val animeListResponse: LiveData<List<Anime>> get() = _animeListResponse
+    fun getAllAnimeList() = dao.getAllAnimeList()
 
+    fun checkAnimeList(animeId: Int) = dao.checkAnimeList(animeId)
 
-    suspend fun getAllAnimeList() {
-        dao.getAllAnimeList().collect {
-            _animeListResponse.postValue(it)
-        }
-    }
-
-    fun checkAnimeList(animeId: Int): LiveData<List<Anime>> =
-        dao.checkAnimeList(animeId).asLiveData()
-
-    suspend fun searchAnimeList(animeTitle: String) {
-        dao.searchAnimeList(animeTitle).collect {
-            _animeListResponse.postValue(it)
-        }
-    }
-
+    fun searchAnimeList(animeTitle: String) = dao.searchAnimeList(animeTitle)
 
     suspend fun insertAnimeList(anime: Anime) {
         dao.insertAnimeList(anime)

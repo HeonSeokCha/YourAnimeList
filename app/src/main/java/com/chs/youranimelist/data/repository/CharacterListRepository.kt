@@ -15,23 +15,11 @@ class CharacterListRepository(application: Application) {
         db.yourListDao()
     }
 
-    private val _charaListResponse = SingleLiveEvent<List<Character>>()
-    val charaListResponse: LiveData<List<Character>> get() = _charaListResponse
+    fun getAllCharaList() = dao.getAllCharaList()
 
-    suspend fun getAllCharaList() {
-        dao.getAllCharaList().collect {
-            _charaListResponse.postValue(it)
-        }
-    }
+    fun checkCharaList(charaId: Int) = dao.checkCharaList(charaId)
 
-    fun checkCharaList(charaId: Int): LiveData<List<Character>> =
-        dao.checkCharaList(charaId).asLiveData()
-
-    suspend fun searchCharaList(charaName: String) {
-        dao.searchCharaList(charaName).collect {
-            _charaListResponse.postValue(it)
-        }
-    }
+    fun searchCharaList(charaName: String) = dao.searchCharaList(charaName)
 
     suspend fun insertCharaList(character: Character) {
         dao.insertCharaList(character)
