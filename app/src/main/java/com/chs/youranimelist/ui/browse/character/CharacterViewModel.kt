@@ -3,6 +3,7 @@ package com.chs.youranimelist.ui.browse.character
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.CharacterQuery
@@ -43,7 +44,7 @@ class CharacterViewModel(
     }
 
     fun checkCharaList(charaId: Int): LiveData<List<Character>> =
-        charaRepository.checkCharaList(charaId)
+        charaRepository.checkCharaList(charaId).asLiveData()
 
     fun insertCharaList(character: Character) = viewModelScope.launch {
         charaRepository.insertCharaList(character)

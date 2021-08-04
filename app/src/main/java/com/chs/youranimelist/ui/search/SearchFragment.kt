@@ -107,7 +107,9 @@ class SearchFragment : Fragment() {
 
                 ResponseState.LOADING -> {
                     if (!isLoading) {
-                        binding.layoutShimmerSearch.root.isVisible = true
+                        if (viewModel.searchList.isEmpty()) {
+                            binding.layoutShimmerSearch.root.isVisible = true
+                        }
                         binding.imgSearchError.isVisible = false
                         binding.txtSearchError.isVisible = false
                     }
