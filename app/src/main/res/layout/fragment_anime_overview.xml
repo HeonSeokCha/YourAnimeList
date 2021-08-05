@@ -19,17 +19,16 @@
             android:id="@+id/anime_overview_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
             tools:context=".ui.browse.anime.overview.AnimeOverviewFragment">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_anime_overview_genre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:nestedScrollingEnabled="false"
                 android:orientation="horizontal"
                 app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -436,8 +435,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
-                android:visibility="gone"
                 android:nestedScrollingEnabled="false"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_season"
                 app:layout_constraintTop_toBottomOf="@+id/textView14"
                 tools:layout_height="30dp"
@@ -458,8 +457,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:visibility="gone"
                 android:nestedScrollingEnabled="false"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/rv_anime_overview_studio"
                 app:layout_constraintTop_toBottomOf="@+id/rv_anime_overview_studio"
                 tools:layout_height="30dp" />
@@ -489,6 +488,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:nestedScrollingEnabled="false"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>
@@ -518,6 +518,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:nestedScrollingEnabled="false"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>
@@ -550,6 +551,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:nestedScrollingEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -581,8 +583,8 @@
                     android:id="@+id/rv_anime_overview_links"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
                     android:layout_marginTop="8dp"
+                    android:nestedScrollingEnabled="false"
                     android:orientation="horizontal"
                     app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
 

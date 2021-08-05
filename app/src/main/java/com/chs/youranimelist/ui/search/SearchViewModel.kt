@@ -18,15 +18,15 @@ import kotlinx.coroutines.launch
 class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
 
     private val _searchAnimeResponse = SingleLiveEvent<NetWorkState<SearchAnimeQuery.Page>>()
-    val searchAnimeResponse: LiveData<NetWorkState<SearchAnimeQuery.Page>>
+    private val searchAnimeResponse: LiveData<NetWorkState<SearchAnimeQuery.Page>>
         get() = _searchAnimeResponse
 
     private val _searchMangaResponse = SingleLiveEvent<NetWorkState<SearchMangaQuery.Page>>()
-    val searchMangaResponse: LiveData<NetWorkState<SearchMangaQuery.Page>>
+    private val searchMangaResponse: LiveData<NetWorkState<SearchMangaQuery.Page>>
         get() = _searchMangaResponse
 
     private val _searchCharaResponse = SingleLiveEvent<NetWorkState<SearchCharacterQuery.Page>>()
-    val searchCharaResponse: LiveData<NetWorkState<SearchCharacterQuery.Page>>
+    private val searchCharaResponse: LiveData<NetWorkState<SearchCharacterQuery.Page>>
         get() = _searchCharaResponse
 
     var page: Int = 1

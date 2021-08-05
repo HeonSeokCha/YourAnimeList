@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{model}"
-            android:maxLines="1"
+            android:maxLines="2"
             android:textColor="@color/red_500"
             android:layout_marginBottom="8dp"
             tools:text="Kyoto Animation" />
