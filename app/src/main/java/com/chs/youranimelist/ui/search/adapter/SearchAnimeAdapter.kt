@@ -17,8 +17,21 @@ class SearchAnimeAdapter(
         const val VIEW_TYPE_LOADING = 1
     }
 
-    class SearchAnimeViewHolder(val binding: ItemSearchMediaBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class SearchAnimeViewHolder(val binding: ItemSearchMediaBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickListener.invoke(
+                    list[layoutPosition]!!.animeSearchResult!!.fragments.animeList.id,
+                    list[layoutPosition]!!.animeSearchResult!!.fragments.animeList.idMal ?: 0
+                )
+            }
+        }
+
+        fun bind(item: SearchResult?) {
+            binding.model = item!!.animeSearchResult!!.fragments.animeList
+        }
+    }
 
     class LoadingViewHolder(binding: ItemLoadingBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -37,13 +50,7 @@ class SearchAnimeAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is SearchAnimeViewHolder) {
-            holder.binding.model = list[position]!!.animeSearchResult!!.fragments.animeList
-            holder.binding.root.setOnClickListener {
-                clickListener.invoke(
-                    list[position]!!.animeSearchResult!!.fragments.animeList.id,
-                    list[position]!!.animeSearchResult!!.fragments.animeList.idMal ?: 0
-                )
-            }
+            holder.bind(list[position])
         }
     }
 

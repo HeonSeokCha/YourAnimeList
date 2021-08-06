@@ -17,8 +17,18 @@ class SortedListAdapter(
         const val VIEW_TYPE_LOADING = 1
     }
 
-    class SortedListViewHolder(val binding: ItemAnimeChildBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class SortedListViewHolder(val binding: ItemAnimeChildBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickListener.invoke(items[layoutPosition]!!.id, items[layoutPosition]!!.idMal!!)
+            }
+        }
+
+        fun bind(itemAnime: AnimeList?) {
+            binding.model = itemAnime
+        }
+    }
 
     class LoadingViewHolder(binding: ItemLoadingBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -36,10 +46,7 @@ class SortedListAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is SortedListViewHolder) {
-            holder.binding.root.setOnClickListener {
-                clickListener.invoke(items[position]!!.id, items[position]!!.idMal!!)
-            }
-            holder.binding.model = items[position]
+            holder.bind(items[position])
         }
     }
 

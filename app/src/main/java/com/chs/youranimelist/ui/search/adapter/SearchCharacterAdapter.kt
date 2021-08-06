@@ -18,8 +18,18 @@ class SearchCharacterAdapter(
     }
 
 
-    class SearchCharacterViewHolder(val binding: ItemSearchCharacterBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class SearchCharacterViewHolder(val binding: ItemSearchCharacterBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickListener.invoke(list[layoutPosition]!!.charactersSearchResult!!.id)
+            }
+        }
+
+        fun bind(items: SearchResult?) {
+            binding.model = items!!.charactersSearchResult
+        }
+    }
 
     class LoadingViewHolder(binding: ItemLoadingBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -38,10 +48,7 @@ class SearchCharacterAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is SearchCharacterViewHolder) {
-            holder.binding.model = list[position]!!.charactersSearchResult
-            holder.binding.root.setOnClickListener {
-                clickListener.invoke(list[position]!!.charactersSearchResult!!.id)
-            }
+            holder.bind(list[position])
         }
     }
 

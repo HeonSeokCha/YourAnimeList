@@ -11,8 +11,18 @@ class HomeRecViewPagerAdapter(
     private val clickListener: (id: Int, idMal: Int) -> Unit
 ) : RecyclerView.Adapter<HomeRecViewPagerAdapter.ViewPagerViewHolder>() {
 
-    class ViewPagerViewHolder(val binding: ItemViewPagerBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class ViewPagerViewHolder(val binding: ItemViewPagerBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickListener.invoke(items[position]!!.id, items[position]!!.idMal!!)
+            }
+        }
+
+        fun bind(homeItem: HomeRecommendListQuery.Medium?) {
+            binding.model = homeItem
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerViewHolder {
         val view = ItemViewPagerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -20,10 +30,7 @@ class HomeRecViewPagerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
-        holder.binding.root.setOnClickListener {
-            clickListener.invoke(items[position]!!.id, items[position]!!.idMal!!)
-        }
-        holder.binding.model = items[position]
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int = items.size

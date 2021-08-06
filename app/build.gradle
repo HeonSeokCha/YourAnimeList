@@ -42,7 +42,8 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11
+        jvmTarget = '1.8'
+        useIR = true
     }
 
 }

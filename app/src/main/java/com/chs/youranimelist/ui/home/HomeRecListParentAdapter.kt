@@ -15,19 +15,39 @@ class HomeRecListParentAdapter(
     private val listener: HomeRecListener
 ) : RecyclerView.Adapter<HomeRecListParentAdapter.AnimeListRecViewHolder>() {
 
-    class AnimeListRecViewHolder(val binding: ItemAnimeParentBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    interface HomeRecListener {
+        fun clickMore(sortType: String)
+        fun clickAnime(id: Int, idMal: Int)
+    }
 
     lateinit var homeAdapter: HomeRecListChildAdapter
-
     private val listTitleList = listOf(
         "TRENDING NOW", "POPULAR THIS SEASON",
         "UPCOMING NEXT SEASON", "ALL TIME POPULAR",
     )
 
-    interface HomeRecListener {
-        fun clickMore(sortType: String)
-        fun clickAnime(id: Int, idMal: Int)
+
+    inner class AnimeListRecViewHolder(val binding: ItemAnimeParentBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.btnViewAll.setOnClickListener {
+                listener.clickMore(listTitleList[layoutPosition])
+            }
+        }
+
+        fun bind(title: String, itemList: List<AnimeList>) {
+            binding.model = title
+            binding.rvAnime.apply {
+                homeAdapter = HomeRecListChildAdapter(itemList) { id, idMal ->
+                    listener.clickAnime(id, idMal)
+                }
+                this.adapter = homeAdapter
+                this.layoutManager = LinearLayoutManager(
+                    mContext,
+                    LinearLayoutManager.HORIZONTAL, false
+                )
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeListRecViewHolder {
@@ -37,20 +57,7 @@ class HomeRecListParentAdapter(
     }
 
     override fun onBindViewHolder(holder: AnimeListRecViewHolder, position: Int) {
-        holder.binding.btnViewAll.setOnClickListener {
-            listener.clickMore(listTitleList[position])
-        }
-        holder.binding.model = listTitleList[position]
-        holder.binding.rvAnime.apply {
-            homeAdapter = HomeRecListChildAdapter(list[position]) { id, idMal ->
-                listener.clickAnime(id, idMal)
-            }
-            this.adapter = homeAdapter
-            this.layoutManager = LinearLayoutManager(
-                mContext,
-                LinearLayoutManager.HORIZONTAL, false
-            )
-        }
+        holder.bind(listTitleList[position], list[position])
     }
 
     override fun getItemCount(): Int = list.size
