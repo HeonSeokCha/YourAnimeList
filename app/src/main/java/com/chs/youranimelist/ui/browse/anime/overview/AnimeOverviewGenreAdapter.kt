@@ -12,21 +12,28 @@ class AnimeOverviewGenreAdapter(
     private val clickListener: (genre: String) -> Unit
 ) : RecyclerView.Adapter<AnimeOverviewGenreAdapter.ViewHolder>() {
 
-    class ViewHolder(val binding: ItemGenreBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: ItemGenreBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickListener.invoke(items[layoutPosition]!!)
+            }
+        }
+
+        fun bind(genreName: String?) {
+            binding.model = genreName.toString()
+            binding.genreCard
+                .setCardBackgroundColor(Color.parseColor(Constant.GENRE_COLOR[genreName]))
+        }
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemGenreBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val viewHolder = ViewHolder(view)
-        viewHolder.itemView.setOnClickListener {
-            clickListener.invoke(items[viewHolder.layoutPosition]!!)
-        }
-        return viewHolder
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.model = items[position]
-        holder.binding.genreCard
-            .setCardBackgroundColor(Color.parseColor(Constant.GENRE_COLOR[items[position]]))
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int = items.size

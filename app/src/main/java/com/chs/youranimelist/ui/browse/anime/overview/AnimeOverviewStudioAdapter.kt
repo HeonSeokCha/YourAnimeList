@@ -12,23 +12,29 @@ class AnimeOverviewStudioAdapter(
 ) :
     RecyclerView.Adapter<AnimeOverviewStudioAdapter.AnimeOverviewStudioViewHolder>() {
 
-    class AnimeOverviewStudioViewHolder(val binding: ItemStudioBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class AnimeOverviewStudioViewHolder(val binding: ItemStudioBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickListener.invoke(items[layoutPosition].id)
+            }
+        }
+
+        fun bind(studio: AnimeOverviewQuery.StudiosNode) {
+            binding.model = studio.name
+        }
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): AnimeOverviewStudioViewHolder {
         val view = ItemStudioBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val viewHolder = AnimeOverviewStudioViewHolder(view)
-        viewHolder.itemView.setOnClickListener {
-            clickListener.invoke(items[viewHolder.layoutPosition].id)
-        }
-        return viewHolder
+        return AnimeOverviewStudioViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: AnimeOverviewStudioViewHolder, position: Int) {
-        holder.binding.model = items[position].name
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int = items.size

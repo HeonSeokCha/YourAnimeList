@@ -14,27 +14,33 @@ class AnimeOverviewLinkAdapter(
     private val clickListener: (url: String) -> Unit
 ) : RecyclerView.Adapter<AnimeOverviewLinkAdapter.AnimeOverviewLinkViewHolder>() {
 
-    class AnimeOverviewLinkViewHolder(val binding: ItemLinkBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class AnimeOverviewLinkViewHolder(val binding: ItemLinkBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickListener.invoke(list[layoutPosition]!!.url)
+            }
+        }
+
+        fun bind(link: AnimeOverviewQuery.ExternalLink?) {
+            binding.model = link
+            if (Constant.EXTERNAL_LINK.containsKey(link!!.site.lowercase(Locale.getDefault()))) {
+                binding.linkCard.setCardBackgroundColor(
+                    Color.parseColor(
+                        Constant.EXTERNAL_LINK[link!!.site.lowercase(Locale.getDefault())]
+                    )
+                )
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeOverviewLinkViewHolder {
         val view = ItemLinkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val viewHolder = AnimeOverviewLinkViewHolder(view)
-        viewHolder.itemView.setOnClickListener {
-            clickListener.invoke(list[viewHolder.layoutPosition]!!.url)
-        }
-        return viewHolder
+        return AnimeOverviewLinkViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: AnimeOverviewLinkViewHolder, position: Int) {
-        holder.binding.model = list[position]
-        if (Constant.EXTERNAL_LINK.containsKey(list[position]!!.site.lowercase(Locale.getDefault()))) {
-            holder.binding.linkCard.setCardBackgroundColor(
-                Color.parseColor(
-                    Constant.EXTERNAL_LINK[list[position]!!.site.lowercase(Locale.getDefault())]
-                )
-            )
-        }
+        holder.bind(list[position])
     }
 
     override fun getItemCount(): Int = list.size

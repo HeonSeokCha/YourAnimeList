@@ -19,8 +19,21 @@ class StudioAnimeAdapter(
         const val VIEW_TYPE_LOADING = 1
     }
 
-    class StudioAnimeViewHolder(val binding: ItemAnimeChildBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class StudioAnimeViewHolder(val binding: ItemAnimeChildBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickListener.invoke(
+                    items[position]!!.node!!.fragments.animeList.id,
+                    items[position]!!.node!!.fragments.animeList.idMal ?: 0
+                )
+            }
+        }
+
+        fun bind(anime: StudioAnimeQuery.Edge?) {
+            binding.model = anime!!.node!!.fragments.animeList
+        }
+    }
 
     class LoadingViewHolder(binding: ItemLoadingBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -39,13 +52,7 @@ class StudioAnimeAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is StudioAnimeViewHolder) {
-            holder.binding.model = items[position]!!.node!!.fragments.animeList
-            holder.binding.root.setOnClickListener {
-                clickListener.invoke(
-                    items[position]!!.node!!.fragments.animeList.id,
-                    items[position]!!.node!!.fragments.animeList.idMal ?: 0
-                )
-            }
+            holder.bind(items[position])
         }
     }
 

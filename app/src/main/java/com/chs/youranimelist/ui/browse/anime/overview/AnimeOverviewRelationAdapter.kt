@@ -12,22 +12,29 @@ class AnimeOverviewRelationAdapter(
     private val clickListener: (id: Int, idMal: Int) -> Unit
 ) : RecyclerView.Adapter<AnimeOverviewRelationAdapter.ViewHolder>() {
 
-    class ViewHolder(val binding: ItemRelationBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: ItemRelationBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickListener.invoke(
+                    items[layoutPosition]!!.relationsNode!!.id,
+                    items[layoutPosition]!!.relationsNode!!.idMal ?: 0
+                )
+            }
+        }
+
+        fun bind(relation: AnimeOverviewQuery.RelationsEdge?) {
+            binding.model = relation
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ItemRelationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val viewHolder = ViewHolder(view)
-        viewHolder.itemView.setOnClickListener {
-            clickListener.invoke(
-                items[viewHolder.layoutPosition]!!.relationsNode!!.id,
-                items[viewHolder.layoutPosition]!!.relationsNode!!.idMal ?: 0
-            )
-        }
-        return viewHolder
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.model = items[position]
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int = items.size
