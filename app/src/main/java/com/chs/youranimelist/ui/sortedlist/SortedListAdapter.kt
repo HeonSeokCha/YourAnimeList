@@ -2,15 +2,15 @@ package com.chs.youranimelist.ui.sortedlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.ItemAnimeChildBinding
 import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.fragment.AnimeList
 
 class SortedListAdapter(
-    private val items: ArrayList<AnimeList?>,
     private val clickListener: (id: Int, idMal: Int) -> Unit,
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : ListAdapter<AnimeList, RecyclerView.ViewHolder>(SortedDiffUtil()) {
 
     companion object {
         const val VIEW_TYPE_ITEM = 0
@@ -21,7 +21,10 @@ class SortedListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                clickListener.invoke(items[layoutPosition]!!.id, items[layoutPosition]!!.idMal!!)
+                clickListener.invoke(
+                    getItem(layoutPosition)!!.id,
+                    getItem(layoutPosition)!!.idMal!!
+                )
             }
         }
 
@@ -46,16 +49,14 @@ class SortedListAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is SortedListViewHolder) {
-            holder.bind(items[position])
+            holder.bind(getItem(position))
         }
     }
 
 
     override fun getItemViewType(position: Int): Int {
-        return if (items[position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
+        return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
     }
 
-    override fun getItemCount(): Int = items.size
-
-    override fun getItemId(position: Int): Long = items[position]?.id?.toLong() ?: 9999L
+    override fun getItemId(position: Int): Long = getItem(position)?.id?.toLong() ?: 9999L
 }

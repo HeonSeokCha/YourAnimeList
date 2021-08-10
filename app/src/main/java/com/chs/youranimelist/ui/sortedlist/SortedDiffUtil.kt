@@ -4,20 +4,26 @@ import androidx.recyclerview.widget.DiffUtil
 import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.fragment.AnimeList
 
-class SortedDiffUtil : DiffUtil.ItemCallback<AnimeListQuery.Data>(){
+class SortedDiffUtil : DiffUtil.ItemCallback<AnimeList>() {
     override fun areItemsTheSame(
-        oldItem: AnimeListQuery.Data,
-        newItem: AnimeListQuery.Data
+        oldItem: AnimeList,
+        newItem: AnimeList
     ): Boolean {
-        return if (oldItem.nonSeason.media != null) {
-
+        return if (oldItem != null && newItem != null) {
+            oldItem.id == newItem.id
+        } else {
+            true
         }
     }
 
     override fun areContentsTheSame(
-        oldItem: AnimeListQuery.Data,
-        newItem: AnimeListQuery.Data
+        oldItem: AnimeList,
+        newItem: AnimeList
     ): Boolean {
-        TODO("Not yet implemented")
+        return if (oldItem != null && newItem != null) {
+            oldItem == newItem
+        } else {
+            true
+        }
     }
 }

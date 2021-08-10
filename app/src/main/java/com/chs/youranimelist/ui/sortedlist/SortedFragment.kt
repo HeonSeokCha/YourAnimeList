@@ -2,6 +2,7 @@ package com.chs.youranimelist.ui.sortedlist
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -80,7 +81,7 @@ class SortedFragment : BaseFragment() {
                     }
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter?.notifyDataSetChanged()
+                    animeListAdapter?.submitList(viewModel.animeResultList)
                 }
                 .show()
         }
@@ -94,7 +95,7 @@ class SortedFragment : BaseFragment() {
                     binding.animeListSeason.text = viewModel.selectedSeason?.name
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter?.notifyDataSetChanged()
+                    animeListAdapter?.submitList(viewModel.animeResultList)
                 }
                 .show()
         }
@@ -106,7 +107,7 @@ class SortedFragment : BaseFragment() {
                     binding.animeListSort.text = Constant.animeSortArray[which]
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter?.notifyDataSetChanged()
+                    animeListAdapter?.submitList(viewModel.animeResultList)
                 }
                 .show()
         }
@@ -119,7 +120,7 @@ class SortedFragment : BaseFragment() {
                     binding.animeListGenre.text = viewModel.genreList[which]
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter?.notifyDataSetChanged()
+                    animeListAdapter?.submitList(viewModel.animeResultList)
                 }
                 .show()
         }
@@ -197,7 +198,7 @@ class SortedFragment : BaseFragment() {
 
                     if (isLoading) {
                         viewModel.animeResultList.removeAt(viewModel.animeResultList.lastIndex)
-                        animeListAdapter?.notifyItemRemoved(viewModel.animeResultList.size)
+                        animeListAdapter?.submitList(viewModel.animeResultList)
                         isLoading = false
                     }
 
@@ -214,7 +215,7 @@ class SortedFragment : BaseFragment() {
                             viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
                         }
                     }
-                    animeListAdapter?.notifyDataSetChanged()
+                    animeListAdapter?.submitList(viewModel.animeResultList)
                     binding.layoutShimmerSorted.root.isVisible = false
                     binding.rvAnimeList.isVisible = true
                 }
@@ -255,7 +256,7 @@ class SortedFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
-            animeListAdapter = SortedListAdapter(viewModel.animeResultList) { id, idMal ->
+            animeListAdapter = SortedListAdapter { id, idMal ->
                 val intent = Intent(this@SortedFragment.context, BrowseActivity::class.java).apply {
                     this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                     this.putExtra(Constant.TARGET_ID, id)
@@ -284,8 +285,9 @@ class SortedFragment : BaseFragment() {
 
     private fun loadMore() {
         if (viewModel.hasNextPage) {
+            Log.e("loadMore", "loadMore")
             viewModel.animeResultList.add(null)
-            animeListAdapter?.notifyItemInserted(viewModel.animeResultList.lastIndex)
+            animeListAdapter?.submitList(viewModel.animeResultList)
             viewModel.page += 1
             viewModel.getAnimeList()
         }
