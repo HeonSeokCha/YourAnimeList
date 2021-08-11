@@ -29,7 +29,7 @@ query AnimeListQuery(
     },
     Season: Page(
         page: $page,
-        perPage: 20
+        perPage: 10
     ) {
         pageInfo {
             total

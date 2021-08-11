@@ -198,7 +198,7 @@ class SortedFragment : BaseFragment() {
 
                     if (isLoading) {
                         viewModel.animeResultList.removeAt(viewModel.animeResultList.lastIndex)
-                        animeListAdapter?.submitList(viewModel.animeResultList)
+                        animeListAdapter?.notifyItemRemoved(viewModel.animeResultList.lastIndex)
                         isLoading = false
                     }
 
@@ -206,13 +206,17 @@ class SortedFragment : BaseFragment() {
                         viewModel.hasNextPage =
                             it.data?.season?.pageInfo?.hasNextPage ?: false
                         it.data?.season?.media?.forEach { seasonAnime ->
-                            viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
+                            if (viewModel.animeResultList.last() != seasonAnime!!.fragments.animeList) {
+                                viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
+                            }
                         }
                     } else {
                         viewModel.hasNextPage =
                             it.data?.nonSeason?.pageInfo!!.hasNextPage ?: false
                         it.data.nonSeason.media?.forEach { nonSeasonAnime ->
-                            viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
+                            if (viewModel.animeResultList.last() != nonSeasonAnime!!.fragments.animeList) {
+                                viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
+                            }
                         }
                     }
                     animeListAdapter?.submitList(viewModel.animeResultList)
@@ -287,7 +291,7 @@ class SortedFragment : BaseFragment() {
         if (viewModel.hasNextPage) {
             Log.e("loadMore", "loadMore")
             viewModel.animeResultList.add(null)
-            animeListAdapter?.submitList(viewModel.animeResultList)
+            animeListAdapter?.notifyItemInserted(viewModel.animeResultList.lastIndex)
             viewModel.page += 1
             viewModel.getAnimeList()
         }
