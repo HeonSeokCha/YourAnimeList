@@ -9,21 +9,13 @@ class SortedDiffUtil : DiffUtil.ItemCallback<AnimeList>() {
         oldItem: AnimeList,
         newItem: AnimeList
     ): Boolean {
-        return if (oldItem != null && newItem != null) {
-            oldItem.id == newItem.id
-        } else {
-            true
-        }
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(
         oldItem: AnimeList,
         newItem: AnimeList
     ): Boolean {
-        return if (oldItem != null && newItem != null) {
-            oldItem == newItem
-        } else {
-            true
-        }
+        return oldItem == newItem
     }
 }

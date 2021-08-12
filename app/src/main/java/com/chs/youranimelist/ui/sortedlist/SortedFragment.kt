@@ -206,19 +206,16 @@ class SortedFragment : BaseFragment() {
                         viewModel.hasNextPage =
                             it.data?.season?.pageInfo?.hasNextPage ?: false
                         it.data?.season?.media?.forEach { seasonAnime ->
-                            if (viewModel.animeResultList.last() != seasonAnime!!.fragments.animeList) {
-                                viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
-                            }
+                            viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
                         }
                     } else {
                         viewModel.hasNextPage =
                             it.data?.nonSeason?.pageInfo!!.hasNextPage ?: false
                         it.data.nonSeason.media?.forEach { nonSeasonAnime ->
-                            if (viewModel.animeResultList.last() != nonSeasonAnime!!.fragments.animeList) {
-                                viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
-                            }
+                            viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
                         }
                     }
+                    Log.e("size", viewModel.animeResultList.size.toString())
                     animeListAdapter?.submitList(viewModel.animeResultList)
                     binding.layoutShimmerSorted.root.isVisible = false
                     binding.rvAnimeList.isVisible = true
@@ -290,8 +287,8 @@ class SortedFragment : BaseFragment() {
     private fun loadMore() {
         if (viewModel.hasNextPage) {
             Log.e("loadMore", "loadMore")
-            viewModel.animeResultList.add(null)
-            animeListAdapter?.notifyItemInserted(viewModel.animeResultList.lastIndex)
+//            viewModel.animeResultList.add(null)
+//            animeListAdapter?.notifyItemInserted(viewModel.animeResultList.lastIndex)
             viewModel.page += 1
             viewModel.getAnimeList()
         }
