@@ -13,8 +13,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
 
 class SearchActivity : AppCompatActivity() {
-    private lateinit var viewModel: SearchViewModel
-    private val repository by lazy { SearchRepository() }
     private lateinit var binding: ActivitySearchBinding
     val searchLiveData: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
@@ -23,7 +21,6 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
-        viewModel = SearchViewModel(repository)
         setContentView(binding.root)
         initView()
         initClick()

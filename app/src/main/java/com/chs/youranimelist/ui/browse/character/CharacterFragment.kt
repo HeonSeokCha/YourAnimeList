@@ -27,13 +27,12 @@ import com.chs.youranimelist.util.Constant
 class CharacterFragment : BaseFragment() {
     private var _binding: FragmentCharacterBinding? = null
     private val binding get() = _binding!!
-    private val repository by lazy { CharacterRepository() }
     private lateinit var viewModel: CharacterViewModel
     private var animeAdapter: CharacterAnimeAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = CharacterViewModel(repository, requireActivity().application)
+        viewModel = CharacterViewModel(requireActivity().application)
     }
 
     override fun onCreateView(

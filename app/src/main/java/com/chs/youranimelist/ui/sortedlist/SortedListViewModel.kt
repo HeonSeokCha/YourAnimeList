@@ -15,9 +15,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class SortedListViewModel(
-    private val animeListRepository: AnimeListRepository
-) : ViewModel() {
+class SortedListViewModel : ViewModel() {
 
     private val _animeListResponse = SingleLiveEvent<NetWorkState<AnimeListQuery.Data>>()
     val animeListResponse: LiveData<NetWorkState<AnimeListQuery.Data>>
@@ -26,7 +24,7 @@ class SortedListViewModel(
     private val _genreListResponse = SingleLiveEvent<NetWorkState<GenreQuery.Data>>()
     val genreListResponse: LiveData<NetWorkState<GenreQuery.Data>>
         get() = _genreListResponse
-
+    private val animeListRepository by lazy { AnimeListRepository() }
     var selectedYear: Int? = null
     var selectedSeason: MediaSeason? = null
     var selectedSort: MediaSort? = null

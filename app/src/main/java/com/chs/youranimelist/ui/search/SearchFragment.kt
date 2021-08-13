@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.SearchAnimeQuery
@@ -25,17 +26,12 @@ import com.chs.youranimelist.ui.search.adapter.SearchMangaAdapter
 import com.chs.youranimelist.util.Constant
 
 class SearchFragment : Fragment() {
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel by viewModels<SearchViewModel>()
     private var adapter: RecyclerView.Adapter<*>? = null
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private var isLoading: Boolean = false
     private val repository by lazy { SearchRepository() }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = SearchViewModel(repository)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

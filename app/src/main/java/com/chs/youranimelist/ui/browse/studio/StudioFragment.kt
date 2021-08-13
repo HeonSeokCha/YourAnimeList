@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,17 +21,10 @@ import com.chs.youranimelist.util.SpacesItemDecoration
 class StudioFragment : BaseFragment() {
     private var _binding: FragmentStudioBinding? = null
     private val binding get() = _binding!!
-    private val repository by lazy { StudioRepository() }
     private val args: StudioFragmentArgs by navArgs()
     private var studioAnimeAdapter: StudioAnimeAdapter? = null
     private var isLoading: Boolean = false
-    private lateinit var viewModel: StudioViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = StudioViewModel(repository)
-        viewModel.studioId = args.studioId
-    }
+    private val viewModel by viewModels<StudioViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +36,7 @@ class StudioFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.studioId = args.studioId
         viewModel.getStudioAnime()
         initClick()
         initRecyclerView()

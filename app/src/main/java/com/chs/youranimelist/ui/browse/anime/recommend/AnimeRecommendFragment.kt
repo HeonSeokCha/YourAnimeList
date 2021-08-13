@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.databinding.FragmentAnimeRecommendBinding
@@ -19,15 +20,8 @@ import com.chs.youranimelist.util.Constant
 class AnimeRecommendFragment : Fragment() {
     private var _binding: FragmentAnimeRecommendBinding? = null
     private val binding get() = _binding!!
-    private val repository by lazy { AnimeRepository() }
-    private lateinit var viewModel: AnimeRecommendViewModel
+    private val viewModel by viewModels<AnimeRecommendViewModel>()
     private var animeRecommendAdapter: AnimeRecommendAdapter? = null
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = AnimeRecommendViewModel(repository)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

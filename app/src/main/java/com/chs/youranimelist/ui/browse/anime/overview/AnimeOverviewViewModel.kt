@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class AnimeOverviewViewModel(private val repository: AnimeRepository) : ViewModel() {
+class AnimeOverviewViewModel: ViewModel() {
 
     private val _animeOverviewResponse = SingleLiveEvent<NetWorkState<AnimeOverviewQuery.Data>>()
     val animeOverviewResponse: LiveData<NetWorkState<AnimeOverviewQuery.Data>>
@@ -26,6 +26,8 @@ class AnimeOverviewViewModel(private val repository: AnimeRepository) : ViewMode
     private val _animeOverviewThemeResponse = SingleLiveEvent<NetWorkState<AnimeDetails>>()
     val animeOverviewThemeResponse: LiveData<NetWorkState<AnimeDetails>>
         get() = _animeOverviewThemeResponse
+
+    private val repository by lazy { AnimeRepository() }
 
     var animeOverviewRelationList = ArrayList<AnimeOverviewQuery.RelationsEdge?>()
     var animeDetails: AnimeDetails? = null

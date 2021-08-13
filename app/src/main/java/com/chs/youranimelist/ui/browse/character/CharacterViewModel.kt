@@ -16,14 +16,13 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class CharacterViewModel(
-    private val repository: CharacterRepository,
-    application: Application
-) : ViewModel() {
+class CharacterViewModel(application: Application) : ViewModel() {
 
     private val _characterDetailResponse = SingleLiveEvent<NetWorkState<CharacterQuery.Data>>()
     val characterDetailResponse: LiveData<NetWorkState<CharacterQuery.Data>>
         get() = _characterDetailResponse
+
+    private val repository by lazy { CharacterRepository() }
 
     private val charaRepository: CharacterListRepository by lazy {
         CharacterListRepository(application)

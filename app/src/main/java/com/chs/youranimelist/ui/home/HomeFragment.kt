@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,15 +24,9 @@ import com.chs.youranimelist.util.Constant
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel by viewModels<HomeViewModel>()
     private var viewPagerHomeRecAdapter: HomeRecViewPagerAdapter? = null
     private var homeRecListAdapter: HomeRecListParentAdapter? = null
-    private val animeRepository by lazy { AnimeRepository() }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = HomeViewModel(animeRepository)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,22 +24,16 @@ import com.chs.youranimelist.util.Constant
 
 
 class AnimeOverviewFragment : Fragment() {
-    private val repository by lazy { AnimeRepository() }
     private var _binding: FragmentAnimeOverviewBinding? = null
     private val binding get() = _binding!!
     private var seasonYear: Int = 0
-    private lateinit var viewModel: AnimeOverviewViewModel
+    private val viewModel by viewModels<AnimeOverviewViewModel>()
     private lateinit var relationAdapter: AnimeOverviewRelationAdapter
     private lateinit var genreAdapter: AnimeOverviewGenreAdapter
     private lateinit var linkAdapter: AnimeOverviewLinkAdapter
     private lateinit var studioAdapter: AnimeOverviewStudioAdapter
     private lateinit var producerAdapter: AnimeOverviewStudioAdapter
     private lateinit var season: MediaSeason
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = AnimeOverviewViewModel(repository)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

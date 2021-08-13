@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
+class SearchViewModel : ViewModel() {
 
     private val _searchAnimeResponse = SingleLiveEvent<NetWorkState<SearchAnimeQuery.Page>>()
     private val searchAnimeResponse: LiveData<NetWorkState<SearchAnimeQuery.Page>>
@@ -28,6 +28,8 @@ class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
     private val _searchCharaResponse = SingleLiveEvent<NetWorkState<SearchCharacterQuery.Page>>()
     private val searchCharaResponse: LiveData<NetWorkState<SearchCharacterQuery.Page>>
         get() = _searchCharaResponse
+
+    private val repository by lazy { SearchRepository() }
 
     var page: Int = 1
     var hasNextPage: Boolean = true

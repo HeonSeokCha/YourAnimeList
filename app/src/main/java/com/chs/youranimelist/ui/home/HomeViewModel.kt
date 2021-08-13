@@ -12,13 +12,14 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val animeRepository: AnimeRepository) : ViewModel() {
+class HomeViewModel : ViewModel() {
 
     private val _homeRecommendResponse =
         SingleLiveEvent<NetWorkState<HomeRecommendListQuery.Data>>()
     val homeRecommendResponse: LiveData<NetWorkState<HomeRecommendListQuery.Data>>
         get() = _homeRecommendResponse
 
+    private val animeRepository by lazy { AnimeRepository() }
     var pagerRecList = ArrayList<HomeRecommendListQuery.Medium>()
     var homeRecList = ArrayList<ArrayList<AnimeList>>()
 

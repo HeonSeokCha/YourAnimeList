@@ -13,17 +13,20 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class StudioViewModel(private val repository: StudioRepository) : ViewModel() {
+class StudioViewModel : ViewModel() {
+
+    private val _studioResponse = SingleLiveEvent<NetWorkState<StudioAnimeQuery.Studio>>()
+    val studioResponse: LiveData<NetWorkState<StudioAnimeQuery.Studio>>
+        get() = _studioResponse
+
+    private val repository by lazy { StudioRepository() }
 
     var page: Int = 1
     var selectsort: MediaSort = MediaSort.START_DATE_DESC
     var studioId: Int = 0
     var hasNextPage: Boolean = true
-    var studioAnimeList: ArrayList<StudioAnimeQuery.Edge?> = ArrayList()
 
-    private val _studioResponse = SingleLiveEvent<NetWorkState<StudioAnimeQuery.Studio>>()
-    val studioResponse: LiveData<NetWorkState<StudioAnimeQuery.Studio>>
-        get() = _studioResponse
+    var studioAnimeList: ArrayList<StudioAnimeQuery.Edge?> = ArrayList()
 
     fun getStudioAnime() {
         _studioResponse.value = NetWorkState.Loading()
