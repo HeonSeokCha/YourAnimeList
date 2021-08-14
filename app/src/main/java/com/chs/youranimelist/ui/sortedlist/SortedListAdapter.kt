@@ -9,8 +9,9 @@ import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.fragment.AnimeList
 
 class SortedListAdapter(
+    private val items: ArrayList<AnimeList?>,
     private val clickListener: (id: Int, idMal: Int) -> Unit,
-) : ListAdapter<AnimeList, RecyclerView.ViewHolder>(SortedDiffUtil()) {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         const val VIEW_TYPE_ITEM = 0
@@ -22,8 +23,8 @@ class SortedListAdapter(
         init {
             binding.root.setOnClickListener {
                 clickListener.invoke(
-                    getItem(layoutPosition)!!.id,
-                    getItem(layoutPosition)!!.idMal!!
+                    items[layoutPosition]!!.id,
+                    items[layoutPosition]!!.idMal!!
                 )
             }
         }
@@ -49,14 +50,14 @@ class SortedListAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is SortedListViewHolder) {
-            holder.bind(getItem(position))
+            holder.bind(items[position])
         }
     }
 
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
+        return if (items[position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
     }
 
-    override fun getItemId(position: Int): Long = getItem(position)?.id?.toLong() ?: 9999L
+    override fun getItemCount(): Int = items.size
 }
