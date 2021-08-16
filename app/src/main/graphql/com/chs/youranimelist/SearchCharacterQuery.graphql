@@ -4,7 +4,7 @@ query SearchCharacterQuery(
 ) {
     Page(
         page: $page,
-        perPage: 20
+        perPage: 10
     ) {
         pageInfo {
             total

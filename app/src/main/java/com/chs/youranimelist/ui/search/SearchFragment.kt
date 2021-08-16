@@ -27,7 +27,7 @@ import com.chs.youranimelist.util.Constant
 
 class SearchFragment : Fragment() {
     private val viewModel by viewModels<SearchViewModel>()
-    private var adapter: RecyclerView.Adapter<*>? = null
+    private var searchAdapter: RecyclerView.Adapter<*>? = null
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private var isLoading: Boolean = false
@@ -81,7 +81,7 @@ class SearchFragment : Fragment() {
                 viewModel.page = 1
                 viewModel.hasNextPage = true
 
-                adapter?.notifyDataSetChanged()
+                searchAdapter?.notifyDataSetChanged()
 
                 if (search.isNotBlank()) {
                     viewModel.search(viewModel.searchKeyword)
@@ -118,7 +118,7 @@ class SearchFragment : Fragment() {
 
                     if (isLoading) {
                         viewModel.searchList.removeAt(viewModel.searchList.lastIndex)
-                        adapter?.notifyItemRemoved(viewModel.searchList.size)
+                        searchAdapter?.notifyItemRemoved(viewModel.searchList.size)
                         isLoading = false
                     }
 
@@ -151,7 +151,7 @@ class SearchFragment : Fragment() {
                         }
                     }
 
-                    adapter?.notifyDataSetChanged()
+                    searchAdapter?.notifyDataSetChanged()
                     binding.layoutShimmerSearch.root.isVisible = false
                     binding.rvSearch.isVisible = true
                 }
@@ -166,7 +166,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = when (viewModel.searchPage) {
+        searchAdapter = when (viewModel.searchPage) {
             Constant.TARGET_ANIME -> {
                 SearchAnimeAdapter(viewModel.searchList) { id, idMal ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
@@ -200,7 +200,8 @@ class SearchFragment : Fragment() {
                 SearchMangaAdapter(listOf()) { _, _ -> }
             }
         }
-        binding.rvSearch.adapter = adapter
+        searchAdapter!!.setHasStableIds(true)
+        binding.rvSearch.adapter = searchAdapter
         binding.rvSearch.layoutManager = LinearLayoutManager(this.context)
     }
 

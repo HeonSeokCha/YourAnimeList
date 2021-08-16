@@ -1,4 +1,4 @@
-query TagQuery {
+ query TagQuery {
     MediaTagCollection {
         id
         name
