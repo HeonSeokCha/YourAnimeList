@@ -151,7 +151,7 @@ class SearchFragment : Fragment() {
                         }
                     }
 
-                    searchAdapter?.notifyDataSetChanged()
+                    searchAdapter?.notifyItemRangeInserted((viewModel.page * 10), 10)
                     binding.layoutShimmerSearch.root.isVisible = false
                     binding.rvSearch.isVisible = true
                 }

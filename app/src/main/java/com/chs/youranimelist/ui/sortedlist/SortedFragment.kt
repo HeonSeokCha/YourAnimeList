@@ -2,25 +2,20 @@ package com.chs.youranimelist.ui.sortedlist
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentSortedBinding
 import com.chs.youranimelist.network.ResponseState
-import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.type.MediaStatus
 import com.chs.youranimelist.ui.base.BaseFragment
@@ -75,21 +70,21 @@ class SortedFragment : BaseFragment() {
                     }
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter?.notifyDataSetChanged()
+                    animeListAdapter?.notifyItemRangeInserted((viewModel.page * 10), 10)
                 }
                 .show()
         }
 
         binding.animeListSeason.setOnClickListener {
-            val seasonArray = viewModel.animeSeasonList.map { it.name }.toTypedArray()
+            val seasonArray = Constant.animeSeasonList.map { it.name }.toTypedArray()
             AlertDialog.Builder(this.requireContext())
                 .setItems(seasonArray) { _, which ->
                     viewModel.isSeason = true
-                    viewModel.selectedSeason = viewModel.animeSeasonList[which]
+                    viewModel.selectedSeason = Constant.animeSeasonList[which]
                     binding.animeListSeason.text = viewModel.selectedSeason?.name
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter?.notifyDataSetChanged()
+                    animeListAdapter?.notifyItemRangeInserted((viewModel.page * 10), 10)
                 }
                 .show()
         }
@@ -101,7 +96,7 @@ class SortedFragment : BaseFragment() {
                     binding.animeListSort.text = Constant.animeSortArray[which]
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter?.notifyDataSetChanged()
+                    animeListAdapter?.notifyItemRangeInserted((viewModel.page * 10), 10)
                 }
                 .show()
         }
@@ -114,7 +109,7 @@ class SortedFragment : BaseFragment() {
                     binding.animeListGenre.text = viewModel.genreList[which]
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter?.notifyDataSetChanged()
+                    animeListAdapter?.notifyItemRangeInserted((viewModel.page * 10), 10)
                 }
                 .show()
         }
@@ -209,7 +204,7 @@ class SortedFragment : BaseFragment() {
                             viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
                         }
                     }
-                    animeListAdapter?.notifyDataSetChanged()
+                    animeListAdapter?.notifyItemRangeInserted((viewModel.page * 10), 10)
                     binding.layoutShimmerSorted.root.isVisible = false
                     binding.rvAnimeList.isVisible = true
                 }

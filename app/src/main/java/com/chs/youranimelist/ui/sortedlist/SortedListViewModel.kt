@@ -24,6 +24,7 @@ class SortedListViewModel : ViewModel() {
     private val _genreListResponse = SingleLiveEvent<NetWorkState<GenreQuery.Data>>()
     val genreListResponse: LiveData<NetWorkState<GenreQuery.Data>>
         get() = _genreListResponse
+
     private val animeListRepository by lazy { AnimeListRepository() }
     var selectedYear: Int? = null
     var selectedSeason: MediaSeason? = null
@@ -36,11 +37,6 @@ class SortedListViewModel : ViewModel() {
     var isSeason: Boolean = false
     var animeResultList: ArrayList<AnimeList?> = ArrayList()
     var genreList: ArrayList<String> = ArrayList()
-
-
-    val animeSeasonList = arrayListOf(
-        MediaSeason.WINTER, MediaSeason.SPRING, MediaSeason.SUMMER, MediaSeason.FALL
-    )
 
     fun getAnimeList() {
         _animeListResponse.postValue(NetWorkState.Loading())

@@ -1,5 +1,6 @@
 package com.chs.youranimelist.util
 
+import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 
 object Constant {
@@ -98,6 +99,13 @@ object Constant {
         "NEWEST",
         "OLDEST",
         "TITLE",
+    )
+
+    val animeSeasonList = arrayListOf(
+        MediaSeason.WINTER,
+        MediaSeason.SPRING,
+        MediaSeason.SUMMER,
+        MediaSeason.FALL
     )
 
     var animeSortList = arrayListOf(
