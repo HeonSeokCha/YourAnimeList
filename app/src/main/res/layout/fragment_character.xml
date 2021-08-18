@@ -50,7 +50,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:src="@drawable/ic_default" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/mediaSaveList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

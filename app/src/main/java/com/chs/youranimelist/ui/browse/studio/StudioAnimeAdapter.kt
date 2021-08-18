@@ -24,8 +24,8 @@ class StudioAnimeAdapter(
         init {
             binding.root.setOnClickListener {
                 clickListener.invoke(
-                    items[position]!!.node!!.fragments.animeList.id,
-                    items[position]!!.node!!.fragments.animeList.idMal ?: 0
+                    items[layoutPosition]!!.node!!.fragments.animeList.id,
+                    items[layoutPosition]!!.node!!.fragments.animeList.idMal ?: 0
                 )
             }
         }
@@ -61,4 +61,6 @@ class StudioAnimeAdapter(
     override fun getItemViewType(position: Int): Int {
         return if (items[position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
     }
+
+    override fun getItemId(position: Int): Long = items[position].hashCode().toLong()
 }

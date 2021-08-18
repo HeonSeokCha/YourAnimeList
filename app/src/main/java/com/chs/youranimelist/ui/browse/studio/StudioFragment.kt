@@ -57,7 +57,7 @@ class StudioFragment : BaseFragment() {
                     it.data!!.media!!.edges!!.forEach { edge ->
                         viewModel.studioAnimeList.add(edge!!)
                     }
-                    studioAnimeAdapter?.notifyDataSetChanged()
+                    studioAnimeAdapter?.notifyItemRangeInserted((viewModel.page * 10), 10)
                 }
                 ResponseState.ERROR -> {
                     isLoading = false
@@ -116,6 +116,7 @@ class StudioFragment : BaseFragment() {
                     )
                 findNavController().navigate(action)
             }
+            studioAnimeAdapter?.setHasStableIds(true)
             this.adapter = studioAnimeAdapter
             this.layoutManager = GridLayoutManager(this@StudioFragment.context, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
@@ -124,8 +125,8 @@ class StudioFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        studioAnimeAdapter = null
         viewModel.clear()
+        studioAnimeAdapter = null
         _binding = null
     }
 }

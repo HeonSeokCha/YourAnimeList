@@ -136,12 +136,14 @@ class CharacterFragment : BaseFragment() {
                 if (it.size == 1 && it[0].charaId == arguments?.getInt(Constant.TARGET_ID)!!) {
                     viewModel.initCharaList = it[0]
                     binding.mediaSaveList.apply {
-                        val animatedDrawable =
-                            ContextCompat.getDrawable(this.context!!, R.drawable.ic_check)!!
-                        animatedDrawable.setBounds(0, 0, 50, 50)
+                        this.icon =
+                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
+                        this.text = "SAVED"
                     }
                 } else {
                     binding.mediaSaveList.apply {
+                        this.icon = null
+                        this.text = "ADD MY LIST"
                     }
                 }
             })
