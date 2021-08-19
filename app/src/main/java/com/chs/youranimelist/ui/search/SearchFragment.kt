@@ -31,7 +31,6 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private var isLoading: Boolean = false
-    private val repository by lazy { SearchRepository() }
 
     override fun onCreateView(
         inflater: LayoutInflater,

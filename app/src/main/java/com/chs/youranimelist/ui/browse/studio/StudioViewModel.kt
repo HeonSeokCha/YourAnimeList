@@ -49,8 +49,4 @@ class StudioViewModel : ViewModel() {
         studioAnimeList.clear()
         getStudioAnime()
     }
-
-    fun clear() {
-        studioAnimeList.clear()
-    }
 }
