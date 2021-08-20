@@ -29,9 +29,8 @@ class AnimeRepository {
     fun getAnimeCharacter(animeId: Input<Int>) =
         ApolloServices.apolloClient.query(AnimeCharacterQuery(animeId)).toFlow()
 
-
-    fun getAnimeRecList(animeId: Input<Int>) =
-        ApolloServices.apolloClient.query(AnimeRecommendQuery(animeId)).toFlow()
+    fun getAnimeRecList(animeId: Input<Int>, page: Input<Int>) =
+        ApolloServices.apolloClient.query(AnimeRecommendQuery(animeId, page)).toFlow()
 
     suspend fun getAnimeOverviewTheme(animeId: Int) =
         JikanRestService().getAnimeDetails(animeId)

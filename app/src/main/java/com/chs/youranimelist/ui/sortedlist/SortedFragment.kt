@@ -197,14 +197,22 @@ class SortedFragment : BaseFragment() {
                         it.data?.season?.media?.forEach { seasonAnime ->
                             viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
                         }
+                        animeListAdapter?.notifyItemRangeInserted(
+                            (viewModel.page * 10),
+                            it.data?.season?.media?.size!!
+                        )
                     } else {
                         viewModel.hasNextPage =
                             it.data?.nonSeason?.pageInfo!!.hasNextPage ?: false
                         it.data.nonSeason.media?.forEach { nonSeasonAnime ->
                             viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
                         }
+                        animeListAdapter?.notifyItemRangeInserted(
+                            (viewModel.page * 10),
+                            it.data?.nonSeason?.media?.size!!
+                        )
                     }
-                    animeListAdapter?.notifyItemRangeInserted((viewModel.page * 10), 10)
+
                     binding.layoutShimmerSorted.root.isVisible = false
                     binding.rvAnimeList.isVisible = true
                 }

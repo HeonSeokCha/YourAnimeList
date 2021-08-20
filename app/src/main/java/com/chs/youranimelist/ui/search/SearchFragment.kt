@@ -131,6 +131,10 @@ class SearchFragment : Fragment() {
                             searchAnime.data?.media?.forEach { anime ->
                                 viewModel.searchList.add(SearchResult(animeSearchResult = anime))
                             }
+                            searchAdapter?.notifyItemRangeInserted(
+                                (viewModel.page * 10),
+                                searchAnime.data?.media?.size!!
+                            )
                         }
 
                         Constant.TARGET_MANGA -> {
@@ -139,6 +143,10 @@ class SearchFragment : Fragment() {
                             searchManga.data?.media?.forEach { manga ->
                                 viewModel.searchList.add(SearchResult(mangaSearchResult = manga))
                             }
+                            searchAdapter?.notifyItemRangeInserted(
+                                (viewModel.page * 10),
+                                searchManga.data?.media?.size!!
+                            )
                         }
 
                         Constant.TARGET_CHARA -> {
@@ -147,10 +155,14 @@ class SearchFragment : Fragment() {
                             searchChara.data?.characters?.forEach { chara ->
                                 viewModel.searchList.add(SearchResult(charactersSearchResult = chara))
                             }
+                            searchAdapter?.notifyItemRangeInserted(
+                                (viewModel.page * 10),
+                                searchChara.data?.characters?.size!!
+                            )
                         }
                     }
 
-                    searchAdapter?.notifyItemRangeInserted((viewModel.page * 10), 10)
+
                     binding.layoutShimmerSearch.root.isVisible = false
                     binding.rvSearch.isVisible = true
                 }

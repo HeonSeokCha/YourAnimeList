@@ -25,11 +25,13 @@ class AnimeRecommendViewModel : ViewModel() {
     private val repository by lazy { AnimeRepository() }
 
     var animeRecList = ArrayList<AnimeRecommendQuery.Edge?>()
+    var page: Int = 1
+    var hasNextPage: Boolean = true
 
     fun getRecommendList(animeId: Int) {
         _animeRecommendResponse.postValue(NetWorkState.Loading())
         viewModelScope.launch {
-            repository.getAnimeRecList(animeId.toInput()).catch { e ->
+            repository.getAnimeRecList(animeId.toInput(), page.toInput()).catch { e ->
                 _animeRecommendResponse.postValue(NetWorkState.Error(e.message.toString()))
             }.collect {
                 _animeRecommendResponse.postValue(NetWorkState.Success(it.data!!))

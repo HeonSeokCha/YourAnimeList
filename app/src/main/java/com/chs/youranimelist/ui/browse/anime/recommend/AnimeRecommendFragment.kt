@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentAnimeRecommendBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
@@ -21,6 +22,7 @@ class AnimeRecommendFragment : Fragment() {
     private var _binding: FragmentAnimeRecommendBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<AnimeRecommendViewModel>()
+    private var isLoading: Boolean = false
     private var animeRecommendAdapter: AnimeRecommendAdapter? = null
 
     override fun onCreateView(
@@ -49,10 +51,24 @@ class AnimeRecommendFragment : Fragment() {
             when (it.responseState) {
                 ResponseState.LOADING -> binding.progressBar.isVisible = true
                 ResponseState.SUCCESS -> {
+
+                    if (!viewModel.hasNextPage) {
+                        return@observe
+                    }
+
+                    if (isLoading) {
+                        viewModel.animeRecList.removeAt(viewModel.animeRecList.lastIndex)
+                        animeRecommendAdapter?.notifyItemRemoved(viewModel.animeRecList.lastIndex)
+                        isLoading = false
+                    }
+
                     it.data?.media?.recommendations?.edges?.forEach { recommend ->
                         viewModel.animeRecList.add(recommend)
                     }
-                    animeRecommendAdapter?.notifyDataSetChanged()
+                    animeRecommendAdapter?.notifyItemRangeInserted(
+                        (viewModel.page * 0),
+                        it.data?.media?.recommendations?.edges?.size!!
+                    )
                     binding.progressBar.isVisible = false
                 }
                 ResponseState.ERROR -> {
@@ -72,6 +88,26 @@ class AnimeRecommendFragment : Fragment() {
             }
             this.adapter = animeRecommendAdapter
             this.layoutManager = LinearLayoutManager(this@AnimeRecommendFragment.context)
+            this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE &&
+                        !recyclerView.canScrollVertically(1) && !isLoading
+                    ) {
+                        loadMore()
+                        isLoading = true
+                    }
+                }
+            })
+        }
+    }
+
+    private fun loadMore() {
+        if (viewModel.hasNextPage) {
+            viewModel.animeRecList.add(null)
+            animeRecommendAdapter?.notifyItemInserted(viewModel.animeRecList.lastIndex)
+            viewModel.page += 1
+            viewModel.getRecommendList(arguments?.getInt(Constant.TARGET_ID)!!)
         }
     }
 

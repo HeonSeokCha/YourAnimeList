@@ -1,8 +1,20 @@
 query AnimeRecommendQuery(
-    $id: Int
+    $id: Int,
+    $page: Int = 1
 ) {
     Media(id: $id) {
-        recommendations(sort: [RATING_DESC]) {
+        recommendations(
+            page: $page,
+            perPage: 10,
+            sort: [RATING_DESC]
+        ) {
+            pageInfo {
+                total
+                perPage
+                currentPage
+                lastPage
+                hasNextPage
+            }
             edges {
                 node {
                     id
