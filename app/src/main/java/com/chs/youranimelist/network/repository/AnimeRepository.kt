@@ -7,6 +7,8 @@ import com.chs.youranimelist.*
 import com.chs.youranimelist.network.services.ApolloServices
 import com.chs.youranimelist.network.services.JikanRestService
 import com.chs.youranimelist.util.ConvertDate
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 
 class AnimeRepository {
 
@@ -17,7 +19,7 @@ class AnimeRepository {
             ConvertDate.getCurrentYear(false).toInput(),
             ConvertDate.getCurrentYear(true).toInput()
         )
-    ).toFlow()
+    ).toFlow().flowOn(Dispatchers.IO)
 
 
     fun getAnimeDetail(animeId: Input<Int>) =

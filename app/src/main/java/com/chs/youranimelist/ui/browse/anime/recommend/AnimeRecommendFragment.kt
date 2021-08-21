@@ -66,7 +66,7 @@ class AnimeRecommendFragment : Fragment() {
                         viewModel.animeRecList.add(recommend)
                     }
                     animeRecommendAdapter?.notifyItemRangeInserted(
-                        (viewModel.page * 0),
+                        (viewModel.page * 10),
                         it.data?.media?.recommendations?.edges?.size!!
                     )
                     binding.progressBar.isVisible = false
