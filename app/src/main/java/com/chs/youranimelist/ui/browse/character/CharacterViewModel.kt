@@ -42,7 +42,7 @@ class CharacterViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun checkCharaList(charaId: Int): LiveData<List<Character>> =
+    fun checkCharaList(charaId: Int): LiveData<Character> =
         charaRepository.checkCharaList(charaId).asLiveData()
 
     fun insertCharaList(character: Character) = viewModelScope.launch {

@@ -41,7 +41,8 @@ class AnimeDetailViewModel(
         }
     }
 
-    fun checkAnimeList(animeId: Int) = animeRepository.checkAnimeList(animeId).asLiveData()
+    fun checkAnimeList(animeId: Int): LiveData<Anime> =
+        animeRepository.checkAnimeList(animeId).asLiveData()
 
     fun insertAnimeList(anime: Anime) {
         viewModelScope.launch(Dispatchers.IO) {

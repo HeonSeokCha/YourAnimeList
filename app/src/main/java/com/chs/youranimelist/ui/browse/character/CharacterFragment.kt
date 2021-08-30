@@ -132,9 +132,9 @@ class CharacterFragment : BaseFragment() {
 
     private fun checkCharaList() {
         viewModel.checkCharaList(arguments?.getInt(Constant.TARGET_ID)!!)
-            .observe(viewLifecycleOwner, {
-                if (it.size == 1 && it[0].charaId == arguments?.getInt(Constant.TARGET_ID)!!) {
-                    viewModel.initCharaList = it[0]
+            .observe(viewLifecycleOwner, { charaInfo ->
+                if (charaInfo != null && charaInfo.charaId == arguments?.getInt(Constant.TARGET_ID)!!) {
+                    viewModel.initCharaList = charaInfo!!
                     binding.mediaSaveList.apply {
                         this.icon =
                             ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
