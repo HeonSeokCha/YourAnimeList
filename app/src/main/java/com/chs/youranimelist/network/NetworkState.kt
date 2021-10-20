@@ -3,7 +3,7 @@ package com.chs.youranimelist.network
 sealed class NetWorkState<T>(
     val responseState: ResponseState,
     val data: T? = null,
-    val message: String? = null
+    val message: String? = null,
 ) {
     class Success<T>(data: T) : NetWorkState<T>(ResponseState.SUCCESS, data)
     class Loading<T>(data: T? = null) : NetWorkState<T>(ResponseState.LOADING, data)
@@ -14,5 +14,5 @@ sealed class NetWorkState<T>(
 enum class ResponseState {
     SUCCESS,
     LOADING,
-    ERROR
+    ERROR,
 }

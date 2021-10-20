@@ -1,35 +1,29 @@
 package com.chs.youranimelist.network.services
 
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.response.AnimeDetails
-import com.chs.youranimelist.util.Constant
-import okhttp3.OkHttpClient
-import retrofit2.Call
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
-import java.util.concurrent.TimeUnit
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
+import io.ktor.client.features.logging.*
 
 interface JikanRestService {
 
-    @GET("anime/{malId}")
-    suspend fun getAnimeDetails(@Path("malId") malId: Int): Response<AnimeDetails>
+    suspend fun getAnimeTheme(malId: Int): AnimeDetails?
 
     companion object {
-        operator fun invoke(): JikanRestService {
-            val okHttpClient = OkHttpClient.Builder()
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .build()
-
-            return Retrofit.Builder()
-                .client(okHttpClient)
-                .baseUrl(Constant.JIKAN_API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(JikanRestService::class.java)
+        fun create(): JikanRestService {
+            return JikanRestServicesImpl(
+                client = HttpClient(Android) {
+                    install(Logging) {
+                        level = LogLevel.ALL
+                    }
+                    install(JsonFeature) {
+                        serializer = KotlinxSerializer()
+                    }
+                }
+            )
         }
     }
 }

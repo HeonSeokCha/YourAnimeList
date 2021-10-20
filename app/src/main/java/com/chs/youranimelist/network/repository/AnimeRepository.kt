@@ -35,5 +35,5 @@ class AnimeRepository {
         ApolloServices.apolloClient.query(AnimeRecommendQuery(animeId, page)).toFlow()
 
     suspend fun getAnimeOverviewTheme(animeId: Int) =
-        JikanRestService().getAnimeDetails(animeId)
+        JikanRestService.create().getAnimeTheme(animeId)
 }

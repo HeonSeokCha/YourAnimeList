@@ -16,15 +16,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.*
 
-class AnimeOverviewViewModel: ViewModel() {
+class AnimeOverviewViewModel : ViewModel() {
 
     private val _animeOverviewResponse = SingleLiveEvent<NetWorkState<AnimeOverviewQuery.Data>>()
     val animeOverviewResponse: LiveData<NetWorkState<AnimeOverviewQuery.Data>>
         get() = _animeOverviewResponse
 
-    private val _animeOverviewThemeResponse = SingleLiveEvent<NetWorkState<AnimeDetails>>()
-    val animeOverviewThemeResponse: LiveData<NetWorkState<AnimeDetails>>
+    private val _animeOverviewThemeResponse = SingleLiveEvent<AnimeDetails?>()
+    val animeOverviewThemeResponse: LiveData<AnimeDetails?>
         get() = _animeOverviewThemeResponse
 
     private val repository by lazy { AnimeRepository() }
@@ -48,13 +49,12 @@ class AnimeOverviewViewModel: ViewModel() {
     }
 
     fun getAnimeTheme(animeId: Int) {
-        _animeOverviewThemeResponse.value = NetWorkState.Loading()
         viewModelScope.launch {
             repository.getAnimeOverviewTheme(animeId).apply {
-                if (this.isSuccessful) {
-                    _animeOverviewThemeResponse.value = NetWorkState.Success(this.body()!!)
+                if (this != null) {
+                    _animeOverviewThemeResponse.value = this
                 } else {
-                    _animeOverviewThemeResponse.value = NetWorkState.Error(this.message())
+                    _animeOverviewThemeResponse.value = null
                 }
             }
         }

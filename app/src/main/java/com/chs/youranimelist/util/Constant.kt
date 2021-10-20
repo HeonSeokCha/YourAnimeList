@@ -5,7 +5,7 @@ import com.chs.youranimelist.type.MediaSort
 
 object Constant {
     const val ANILIST_API_URL: String = "https://graphql.anilist.co"
-    const val JIKAN_API_URL: String = "https://api.jikan.moe/v3/"
+    const val JIKAN_API_URL: String = "https://api.jikan.moe/v3/anime"
 
     const val TARGET_MAIN: String = "main"
     const val TARGET_SORT: String = "sort"

@@ -1,12 +1,14 @@
 package com.chs.youranimelist.data
 
 import androidx.room.TypeConverter
-import com.google.gson.Gson
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class Converters {
     @TypeConverter
-    fun listToJson(value: List<String>): String = Gson().toJson(value)
+    fun listToJson(value: List<String>): String = Json.encodeToString(value)
 
     @TypeConverter
-    fun jsonToList(value: String) = Gson().fromJson(value, Array<String>::class.java).toList()
+    fun jsonToList(value: String) = Json.decodeFromString<List<String>>(value)
 }
