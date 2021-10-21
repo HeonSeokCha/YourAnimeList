@@ -18,16 +18,16 @@ class JikanRestServicesImpl(
             }
         } catch (e: RedirectResponseException) {
             // 3xx - response
-            Log.e("ERROR", "Error: ${e.response.status.description}")
+            Log.e("ERROR3", "Error: ${e.response.status.description}")
             null
 
         } catch (e: ClientRequestException) {
             // 4xx
-            Log.e("ERROR", "Error: ${e.response.status.description}")
+            Log.e("ERROR4", "Error: ${e.response.status.description}")
             null
         } catch (e: ServerResponseException) {
             // 5xx
-            Log.e("ERROR", "Error: ${e.response.status.description}")
+            Log.e("ERROR5", "Error: ${e.response.status.description}")
             null
         } catch (e: Exception) {
             Log.e("ERROR", "Error: ${e.message}")
