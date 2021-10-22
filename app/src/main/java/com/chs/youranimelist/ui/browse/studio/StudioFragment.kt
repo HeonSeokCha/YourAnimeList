@@ -26,6 +26,12 @@ class StudioFragment : BaseFragment() {
     private var isLoading: Boolean = false
     private val viewModel by viewModels<StudioViewModel>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.studioId = args.studioId
+        viewModel.getStudioAnime()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,8 +42,6 @@ class StudioFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.studioId = args.studioId
-        viewModel.getStudioAnime()
         initClick()
         initRecyclerView()
         initStudio()

@@ -26,7 +26,7 @@ class StudioViewModel : ViewModel() {
     var studioId: Int = 0
     var hasNextPage: Boolean = true
 
-    var studioAnimeList: ArrayList<StudioAnimeQuery.Edge?> = ArrayList()
+    var studioAnimeList: ArrayList<StudioAnimeQuery.Edge?> = arrayListOf()
 
     fun getStudioAnime() {
         _studioResponse.value = NetWorkState.Loading()
