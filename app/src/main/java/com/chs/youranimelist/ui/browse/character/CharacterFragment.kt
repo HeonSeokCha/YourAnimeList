@@ -11,6 +11,9 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,17 +25,25 @@ import com.chs.youranimelist.databinding.FragmentCharacterBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.CharacterRepository
 import com.chs.youranimelist.ui.base.BaseFragment
+import com.chs.youranimelist.ui.characterlist.CharacterListViewModel
 import com.chs.youranimelist.util.Constant
 
 class CharacterFragment : BaseFragment() {
     private var _binding: FragmentCharacterBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: CharacterViewModel
     private var animeAdapter: CharacterAnimeAdapter? = null
+    private val viewModel: CharacterViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return CharacterViewModel(requireActivity().application) as T
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = CharacterViewModel(requireActivity().application)
+        viewModel.getCharaInfo(arguments?.getInt(Constant.TARGET_ID).toInput())
     }
 
     override fun onCreateView(
@@ -48,10 +59,8 @@ class CharacterFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         checkCharaList()
         initRecyclerView()
-        viewModel.getCharaInfo(arguments?.getInt(Constant.TARGET_ID).toInput())
         getCharaInfo()
         initClick()
-        binding.lifecycleOwner = this
     }
 
     private fun initClick() {

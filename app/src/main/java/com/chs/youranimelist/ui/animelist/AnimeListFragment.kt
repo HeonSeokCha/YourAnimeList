@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.R
@@ -17,14 +20,16 @@ import com.chs.youranimelist.util.onQueryTextChanged
 class AnimeListFragment : Fragment() {
     private var _binding: FragmentAnimeListBinding? = null
     private val binding get() = _binding!!
-    private val repository: AnimeListRepository by lazy { AnimeListRepository(requireActivity().application) }
-    private lateinit var viewModel: AnimeListViewModel
+    private val viewModel: AnimeListViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return AnimeListViewModel(requireActivity().application) as T
+            }
+        }
+    }
+
     private lateinit var animeListAdapter: AnimeListAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = AnimeListViewModel(repository)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +42,6 @@ class AnimeListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getAllAnimeList()
         initRecyclerView()
         getAnimeList()
     }

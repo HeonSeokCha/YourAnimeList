@@ -32,6 +32,11 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private var isLoading: Boolean = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.searchPage = arguments?.getString(Constant.TARGET_SEARCH)!!
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,9 +48,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setHasOptionsMenu(false)
-        viewModel.searchPage = arguments?.getString(Constant.TARGET_SEARCH)!!
         initRecyclerView()
         initView()
         initObserver()

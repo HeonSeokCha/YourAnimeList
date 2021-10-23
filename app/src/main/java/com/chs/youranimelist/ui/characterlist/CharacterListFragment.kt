@@ -5,11 +5,15 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.R
 import com.chs.youranimelist.data.repository.CharacterListRepository
 import com.chs.youranimelist.databinding.FragmentCharacterListBinding
+import com.chs.youranimelist.ui.animelist.AnimeListViewModel
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.onQueryTextChanged
@@ -17,15 +21,14 @@ import com.chs.youranimelist.util.onQueryTextChanged
 class CharacterListFragment : Fragment() {
     private var _binding: FragmentCharacterListBinding? = null
     private val binding get() = _binding!!
-    private val repository by lazy { CharacterListRepository(requireActivity().application) }
-    private lateinit var viewModel: CharacterListViewModel
-    private lateinit var charaListAdapter: CharacterListAdapter
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = CharacterListViewModel(repository)
+    private val viewModel: CharacterListViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return CharacterListViewModel(requireActivity().application) as T
+            }
+        }
     }
+    private lateinit var charaListAdapter: CharacterListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,

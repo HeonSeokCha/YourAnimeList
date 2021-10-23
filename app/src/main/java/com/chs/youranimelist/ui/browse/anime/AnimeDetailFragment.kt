@@ -1,11 +1,5 @@
 package com.chs.youranimelist.ui.browse.anime
 
-import android.content.Context
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +9,9 @@ import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.R
 import com.chs.youranimelist.data.dto.Anime
@@ -28,14 +25,16 @@ import com.google.android.material.tabs.TabLayoutMediator
 class AnimeDetailFragment : BaseFragment() {
     private var _binding: FragmentAnimeDetailBinding? = null
     private val binding get() = _binding!!
-    private val repository by lazy { AnimeRepository() }
-    private lateinit var viewModel: AnimeDetailViewModel
+    private val viewModel: AnimeDetailViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return AnimeDetailViewModel(requireActivity().application) as T
+            }
+        }
+    }
+
     private lateinit var trailerId: String
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = AnimeDetailViewModel(repository, requireActivity().application)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

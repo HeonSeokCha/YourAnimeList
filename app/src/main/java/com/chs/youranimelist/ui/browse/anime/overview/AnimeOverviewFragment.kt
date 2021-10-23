@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentAnimeOverviewBinding
@@ -34,6 +35,13 @@ class AnimeOverviewFragment : Fragment() {
     private lateinit var studioAdapter: AnimeOverviewStudioAdapter
     private lateinit var producerAdapter: AnimeOverviewStudioAdapter
     private lateinit var season: MediaSeason
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (arguments?.getInt(Constant.TARGET_ID_MAL)!! != 0) {
+            viewModel.getAnimeTheme(arguments?.getInt(Constant.TARGET_ID_MAL)!!)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,10 +90,6 @@ class AnimeOverviewFragment : Fragment() {
     }
 
     private fun getAnimeInfo() {
-        if (arguments?.getInt(Constant.TARGET_ID_MAL)!! != 0) {
-            viewModel.getAnimeTheme(arguments?.getInt(Constant.TARGET_ID_MAL)!!)
-        }
-
         viewModel.animeOverviewResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.SUCCESS -> {

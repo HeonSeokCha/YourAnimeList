@@ -17,23 +17,23 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class AnimeDetailViewModel(
-    private val repository: AnimeRepository,
-    application: Application
-) : ViewModel() {
+class AnimeDetailViewModel(application: Application) : ViewModel() {
+
+    private val animeDetailRepository: AnimeRepository by lazy { AnimeRepository() }
+    private val animeListRepository: AnimeListRepository by lazy { AnimeListRepository(application) }
 
     private val _animeDetailResponse = SingleLiveEvent<NetWorkState<AnimeDetailQuery.Data>>()
     val animeDetailResponse: LiveData<NetWorkState<AnimeDetailQuery.Data>>
         get() = _animeDetailResponse
 
-    private val animeRepository: AnimeListRepository by lazy { AnimeListRepository(application) }
+
     var animeDetail: AnimeDetailQuery.Media? = null
     var initAnimeList: Anime? = null
 
     fun getAnimeDetail(animeId: Input<Int>) {
         _animeDetailResponse.postValue(NetWorkState.Loading())
         viewModelScope.launch {
-            repository.getAnimeDetail(animeId).catch { e ->
+            animeDetailRepository.getAnimeDetail(animeId).catch { e ->
                 _animeDetailResponse.postValue(NetWorkState.Error(e.message.toString()))
             }.collect {
                 _animeDetailResponse.postValue(NetWorkState.Success(it.data!!))
@@ -42,17 +42,17 @@ class AnimeDetailViewModel(
     }
 
     fun checkAnimeList(animeId: Int): LiveData<Anime> =
-        animeRepository.checkAnimeList(animeId).asLiveData()
+        animeListRepository.checkAnimeList(animeId).asLiveData()
 
     fun insertAnimeList(anime: Anime) {
         viewModelScope.launch(Dispatchers.IO) {
-            animeRepository.insertAnimeList(anime)
+            animeListRepository.insertAnimeList(anime)
         }
     }
 
     fun deleteAnimeList(anime: Anime) {
         viewModelScope.launch(Dispatchers.IO) {
-            animeRepository.deleteAnimeList(anime)
+            animeListRepository.deleteAnimeList(anime)
         }
     }
 }
