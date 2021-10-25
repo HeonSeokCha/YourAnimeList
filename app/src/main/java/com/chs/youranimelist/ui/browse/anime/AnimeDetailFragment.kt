@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.R
 import com.chs.youranimelist.data.dto.Anime
@@ -25,6 +26,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class AnimeDetailFragment : BaseFragment() {
     private var _binding: FragmentAnimeDetailBinding? = null
     private val binding get() = _binding!!
+    private val args: AnimeDetailFragmentArgs by navArgs()
     private val viewModel: AnimeDetailViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -46,20 +48,21 @@ class AnimeDetailFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.getAnimeDetail(arguments?.getInt(Constant.TARGET_ID).toInput())
+        viewModel.getAnimeDetail(args.id.toInput())
         checkAnimeList()
         initAnimeInfo()
         initTabView(
-            arguments?.getInt(Constant.TARGET_ID)!!,
-            arguments?.getInt(Constant.TARGET_ID_MAL)!!
+            args.id,
+            args.idMal
         )
         initClick()
     }
 
     private fun checkAnimeList() {
-        viewModel.checkAnimeList(arguments?.getInt(Constant.TARGET_ID)!!)
+        args.id
+        viewModel.checkAnimeList(args.id)
             .observe(viewLifecycleOwner, { animeInfo ->
-                if (animeInfo != null && animeInfo.animeId == arguments?.getInt(Constant.TARGET_ID)!!) {
+                if (animeInfo != null && animeInfo.animeId == args.id) {
                     viewModel.initAnimeList = animeInfo!!
                     binding.mediaSaveList.apply {
                         this.icon =

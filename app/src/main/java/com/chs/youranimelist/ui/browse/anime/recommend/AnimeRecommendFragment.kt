@@ -82,9 +82,12 @@ class AnimeRecommendFragment : Fragment() {
     private fun initRecyclerView() {
         binding.rvAnimeRecommend.apply {
             animeRecommendAdapter = AnimeRecommendAdapter(viewModel.animeRecList) { id, idMal ->
-                val action =
-                    AnimeDetailFragmentDirections.actionAnimeDetailSelf(id, idMal)
-                findNavController().navigate(action)
+                findNavController().navigate(
+                    AnimeDetailFragmentDirections.actionAnimeDetailSelf(
+                        id,
+                        idMal
+                    )
+                )
             }
             this.adapter = animeRecommendAdapter
             this.layoutManager = LinearLayoutManager(this@AnimeRecommendFragment.context)

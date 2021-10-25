@@ -78,22 +78,20 @@ class AnimeOverviewFragment : Fragment() {
         }
 
         binding.txtAnimeOverviewSeason.setOnClickListener {
-            val action =
-                AnimeDetailFragmentDirections.actionAnimeDetailToSortedSeason(
-                    Constant.TARGET_SEASON,
-                    season,
-                    seasonYear
+            findNavController().navigate(
+                AnimeDetailFragmentDirections.actionAnimeDetailToSorted(
+                    sortType = Constant.TARGET_SEASON,
+                    season = season,
+                    year = seasonYear
                 )
-            findNavController().navigate(action)
+            )
         }
-
     }
 
     private fun getAnimeInfo() {
         viewModel.animeOverviewResponse.observe(viewLifecycleOwner, {
             when (it.responseState) {
                 ResponseState.SUCCESS -> {
-
                     binding.model = it.data?.media!!
                     if (it.data?.media.season != null && it.data.media.seasonYear != null) {
                         season = it.data?.media.season
@@ -180,8 +178,8 @@ class AnimeOverviewFragment : Fragment() {
             genreAdapter = AnimeOverviewGenreAdapter(viewModel.animeGenresList) {
                 val action =
                     AnimeDetailFragmentDirections.actionAnimeDetailToSortedGenre(
-                        Constant.TARGET_GENRE,
-                        it
+                        sortType = Constant.TARGET_GENRE,
+                        genre = it
                     )
                 findNavController().navigate(action)
             }

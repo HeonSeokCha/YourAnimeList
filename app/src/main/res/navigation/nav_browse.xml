@@ -10,69 +10,36 @@
         android:label="AnimeDetailFragment"
         tools:layout="@layout/fragment_anime_detail">
 
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+        <argument
+            android:name="idMal"
+            app:argType="integer" />
+
         <action
             android:id="@+id/action_animeDetail_self"
-            app:destination="@id/animeDetailFragment">
-            <argument
-                android:name="id"
-                app:argType="integer" />
-
-            <argument
-                android:name="idMal"
-                app:argType="integer" />
-
-        </action>
+            app:destination="@id/animeDetailFragment" />
 
         <action
             android:id="@+id/action_animeDetail_to_character"
             app:destination="@id/characterFragment">
-            <argument
-                android:name="id"
-                app:argType="integer" />
+
         </action>
 
         <action
             android:id="@+id/action_animeDetail_to_sorted"
-            app:destination="@id/sortedFragment">
-            <argument
-                android:name="sortType"
-                app:argType="string" />
-
-        </action>
+            app:destination="@id/sortedFragment" />
 
         <action
             android:id="@+id/action_animeDetail_to_sorted_genre"
-            app:destination="@id/sortedFragment">
-            <argument
-                android:name="sortType"
-                app:argType="string" />
+            app:destination="@id/sortedFragment" />
 
-            <argument
-                android:name="genre"
-                app:argType="string" />
-
-
-        </action>
-
-        <action
-            android:id="@+id/action_animeDetail_to_sorted_season"
-            app:destination="@id/sortedFragment">
-            <argument
-                android:name="sortType"
-                app:argType="string" />
-
-            <argument
-                android:name="season"
-                app:argType="com.chs.youranimelist.type.MediaSeason" />
-
-            <argument
-                android:name="year"
-                app:argType="integer" />
-
-        </action>
         <action
             android:id="@+id/action_animeDetailFragment_to_studioFragment"
             app:destination="@id/studioFragment" />
+
     </fragment>
 
 
@@ -82,17 +49,15 @@
         android:name="com.chs.youranimelist.ui.browse.character.CharacterFragment"
         android:label="CharacterFragment"
         tools:layout="@layout/fragment_character">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
         <action
             android:id="@+id/action_characterFragment_to_animeDetailFragment"
-            app:destination="@id/animeDetailFragment">
-            <argument
-                android:name="id"
-                app:argType="integer" />
+            app:destination="@id/animeDetailFragment" />
 
-            <argument
-                android:name="idMal"
-                app:argType="integer" />
-        </action>
     </fragment>
 
     <fragment
@@ -100,20 +65,11 @@
         android:name="com.chs.youranimelist.ui.sortedlist.SortedFragment"
         android:label="SortedFragment"
         tools:layout="@layout/fragment_sorted">
-        <action
-            android:id="@+id/action_sortedFragment_to_animeDetailFragment"
-            app:destination="@id/animeDetailFragment">
-            <argument
-                android:name="id"
-                app:argType="integer" />
 
-            <argument
-                android:name="idMal"
-                app:argType="integer" />
-        </action>
         <argument
             android:name="sortType"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue=""/>
 
         <argument
             android:name="genre"
@@ -129,6 +85,11 @@
             android:name="year"
             app:argType="integer"
             android:defaultValue="0"/>
+
+        <action
+            android:id="@+id/action_sortedFragment_to_animeDetailFragment"
+            app:destination="@id/animeDetailFragment" />
+
     </fragment>
 
     <fragment
@@ -136,21 +97,16 @@
         android:name="com.chs.youranimelist.ui.browse.studio.StudioFragment"
         android:label="studio_fragment"
         tools:layout="@layout/fragment_studio">
-        <action
-            android:id="@+id/action_studioFragment_to_animeDetailFragment"
-            app:destination="@id/animeDetailFragment">
-            <argument
-                android:name="id"
-                app:argType="integer" />
 
-            <argument
-                android:name="idMal"
-                app:argType="integer" />
-        </action>
         <argument
             android:name="studioId"
             app:argType="integer"
             android:defaultValue="0" />
+
+        <action
+            android:id="@+id/action_studioFragment_to_animeDetailFragment"
+            app:destination="@id/animeDetailFragment" />
+
     </fragment>
 
 </navigation>
