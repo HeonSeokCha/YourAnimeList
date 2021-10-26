@@ -12,11 +12,13 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class AnimeCharaViewModel(private val repository: AnimeRepository) : ViewModel() {
+class AnimeCharaViewModel : ViewModel() {
 
     private val _animeCharacterResponse = SingleLiveEvent<NetWorkState<AnimeCharacterQuery.Data>>()
     val animeCharacterResponse: LiveData<NetWorkState<AnimeCharacterQuery.Data>>
         get() = _animeCharacterResponse
+
+    private val repository by lazy { AnimeRepository() }
 
     var animeCharacterList = ArrayList<AnimeCharacterQuery.CharactersNode>()
 

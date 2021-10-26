@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.R
@@ -32,6 +33,7 @@ class CharacterFragment : BaseFragment() {
     private var _binding: FragmentCharacterBinding? = null
     private val binding get() = _binding!!
     private var animeAdapter: CharacterAnimeAdapter? = null
+    private val args: CharacterFragmentArgs by navArgs()
     private val viewModel: CharacterViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -40,11 +42,6 @@ class CharacterFragment : BaseFragment() {
         }
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.getCharaInfo(arguments?.getInt(Constant.TARGET_ID).toInput())
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +54,7 @@ class CharacterFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getCharaInfo(args.id.toInput())
         checkCharaList()
         initRecyclerView()
         getCharaInfo()
@@ -140,7 +138,7 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun checkCharaList() {
-        viewModel.checkCharaList(arguments?.getInt(Constant.TARGET_ID)!!)
+        viewModel.checkCharaList(args.id)
             .observe(viewLifecycleOwner, { charaInfo ->
                 if (charaInfo != null && charaInfo.charaId == arguments?.getInt(Constant.TARGET_ID)!!) {
                     viewModel.initCharaList = charaInfo!!

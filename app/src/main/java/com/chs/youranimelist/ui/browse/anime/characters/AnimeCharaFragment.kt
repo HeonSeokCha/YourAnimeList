@@ -8,25 +8,25 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.ResponseState
-import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentArgs
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
-import com.chs.youranimelist.util.Constant
 
 class AnimeCharaFragment : Fragment() {
 
     private var _binding: FragmentAnimeCharaBinding? = null
     private val binding get() = _binding!!
-    private val repository by lazy { AnimeRepository() }
+    private val args: AnimeDetailFragmentArgs by navArgs()
     private lateinit var charaAdapter: AnimeCharaAdapter
     private lateinit var viewModel: AnimeCharaViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = AnimeCharaViewModel(repository)
+        viewModel = AnimeCharaViewModel()
     }
 
     override fun onCreateView(
@@ -40,7 +40,7 @@ class AnimeCharaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initRecyclerView()
-        viewModel.getAnimeCharacter(arguments?.getInt(Constant.TARGET_ID)!!)
+        viewModel.getAnimeCharacter(args.id)
         getCharacters()
     }
 
