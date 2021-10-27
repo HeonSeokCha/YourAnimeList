@@ -42,10 +42,4 @@ class CharacterListViewModel(application: Application) : ViewModel() {
             }
         }
     }
-
-    fun deleteCharaList(character: Character) {
-        viewModelScope.launch(Dispatchers.IO) {
-            listRepository.deleteCharaList(character)
-        }
-    }
 }

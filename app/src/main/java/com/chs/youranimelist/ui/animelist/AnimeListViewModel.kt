@@ -43,9 +43,4 @@ class AnimeListViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun deleteAnimeList(anime: Anime) {
-        viewModelScope.launch(Dispatchers.IO) {
-            listRepository.deleteAnimeList(anime)
-        }
-    }
 }
