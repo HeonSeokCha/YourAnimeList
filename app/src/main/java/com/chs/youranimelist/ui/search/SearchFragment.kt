@@ -165,7 +165,6 @@ class SearchFragment : Fragment() {
                         }
                     }
 
-
                     binding.layoutShimmerSearch.root.isVisible = false
                     binding.rvSearch.isVisible = true
                 }
@@ -183,7 +182,7 @@ class SearchFragment : Fragment() {
         searchAdapter = when (viewModel.searchPage) {
             Constant.TARGET_ANIME -> {
                 SearchAnimeAdapter(viewModel.searchList) { id, idMal ->
-                    val intent = Intent(this.context, BrowseActivity::class.java).apply {
+                    val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                         this.putExtra(Constant.TARGET_ID, id)
                         this.putExtra(Constant.TARGET_ID_MAL, idMal)
@@ -193,7 +192,7 @@ class SearchFragment : Fragment() {
             }
             Constant.TARGET_MANGA -> {
                 SearchMangaAdapter(viewModel.searchList) { id, idMal ->
-                    val intent = Intent(this.context, BrowseActivity::class.java).apply {
+                    val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                         this.putExtra(Constant.TARGET_ID, id)
                         this.putExtra(Constant.TARGET_ID_MAL, idMal)
@@ -203,7 +202,7 @@ class SearchFragment : Fragment() {
             }
             Constant.TARGET_CHARA -> {
                 SearchCharacterAdapter(viewModel.searchList) { id ->
-                    val intent = Intent(this.context, BrowseActivity::class.java).apply {
+                    val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_CHARA)
                         this.putExtra(Constant.TARGET_ID, id)
                     }

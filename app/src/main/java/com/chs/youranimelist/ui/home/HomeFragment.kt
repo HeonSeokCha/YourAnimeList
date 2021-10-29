@@ -104,7 +104,7 @@ class HomeFragment : Fragment() {
             viewPagerHomeRecAdapter =
                 HomeRecViewPagerAdapter(viewModel.pagerRecList) { id, idMal ->
                     startActivity(Intent(
-                        requireActivity().baseContext,
+                        requireActivity(),
                         BrowseActivity::class.java
                     ).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
@@ -129,11 +129,12 @@ class HomeFragment : Fragment() {
                         }
 
                         override fun clickAnime(id: Int, idMal: Int) {
-                            val intent = Intent(activity, BrowseActivity::class.java).apply {
-                                this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                                this.putExtra(Constant.TARGET_ID, id)
-                                this.putExtra(Constant.TARGET_ID_MAL, idMal)
-                            }
+                            val intent =
+                                Intent(requireActivity(), BrowseActivity::class.java).apply {
+                                    this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                                    this.putExtra(Constant.TARGET_ID, id)
+                                    this.putExtra(Constant.TARGET_ID_MAL, idMal)
+                                }
                             startActivity(intent)
                         }
 
@@ -152,7 +153,7 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_home_search -> {
-                startActivity(Intent(this@HomeFragment.context, SearchActivity::class.java))
+                startActivity(Intent(requireContext(), SearchActivity::class.java))
                 true
             }
             else -> {

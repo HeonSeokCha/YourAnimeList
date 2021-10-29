@@ -254,7 +254,7 @@ class SortedFragment : BaseFragment() {
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
             animeListAdapter = SortedListAdapter(viewModel.animeResultList) { id, idMal ->
-                val intent = Intent(this@SortedFragment.context, BrowseActivity::class.java).apply {
+                val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
                     this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                     this.putExtra(Constant.TARGET_ID, id)
                     this.putExtra(Constant.TARGET_ID_MAL, idMal)
