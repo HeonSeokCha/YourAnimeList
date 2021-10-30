@@ -10,23 +10,27 @@ import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.response.SearchResult
 import com.chs.youranimelist.network.repository.SearchRepository
 import com.chs.youranimelist.util.Constant
-import com.chs.youranimelist.util.SingleLiveEvent
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class SearchViewModel : ViewModel() {
 
-    private val _searchAnimeResponse = SingleLiveEvent<NetWorkState<SearchAnimeQuery.Page>>()
-    private val searchAnimeResponse: LiveData<NetWorkState<SearchAnimeQuery.Page>>
+    private val _searchAnimeResponse =
+        MutableStateFlow<NetWorkState<SearchAnimeQuery.Page>>(NetWorkState.Loading())
+    private val searchAnimeResponse: StateFlow<NetWorkState<SearchAnimeQuery.Page>>
         get() = _searchAnimeResponse
 
-    private val _searchMangaResponse = SingleLiveEvent<NetWorkState<SearchMangaQuery.Page>>()
-    private val searchMangaResponse: LiveData<NetWorkState<SearchMangaQuery.Page>>
+    private val _searchMangaResponse =
+        MutableStateFlow<NetWorkState<SearchMangaQuery.Page>>(NetWorkState.Loading())
+    private val searchMangaResponse: StateFlow<NetWorkState<SearchMangaQuery.Page>>
         get() = _searchMangaResponse
 
-    private val _searchCharaResponse = SingleLiveEvent<NetWorkState<SearchCharacterQuery.Page>>()
-    private val searchCharaResponse: LiveData<NetWorkState<SearchCharacterQuery.Page>>
+    private val _searchCharaResponse =
+        MutableStateFlow<NetWorkState<SearchCharacterQuery.Page>>(NetWorkState.Loading())
+    private val searchCharaResponse: StateFlow<NetWorkState<SearchCharacterQuery.Page>>
         get() = _searchCharaResponse
 
     private val repository by lazy { SearchRepository() }
@@ -41,34 +45,31 @@ class SearchViewModel : ViewModel() {
         viewModelScope.launch {
             when (searchPage) {
                 Constant.TARGET_ANIME -> {
-                    _searchAnimeResponse.postValue(NetWorkState.Loading())
                     repository.searchAnime(page, query).catch { e ->
-                        _searchAnimeResponse.postValue(NetWorkState.Error(e.message.toString()))
+                        _searchAnimeResponse.value = NetWorkState.Error(e.message.toString())
                     }.collect {
-                        _searchAnimeResponse.postValue(NetWorkState.Success(it.data?.page!!))
+                        _searchAnimeResponse.value = NetWorkState.Success(it.data?.page!!)
                     }
                 }
                 Constant.TARGET_MANGA -> {
-                    _searchMangaResponse.postValue(NetWorkState.Loading())
                     repository.searchManga(page, query).catch { e ->
-                        _searchMangaResponse.postValue(NetWorkState.Error(e.message.toString()))
+                        _searchMangaResponse.value = NetWorkState.Error(e.message.toString())
                     }.collect {
-                        _searchMangaResponse.postValue(NetWorkState.Success(it.data?.page!!))
+                        _searchMangaResponse.value = NetWorkState.Success(it.data?.page!!)
                     }
                 }
                 Constant.TARGET_CHARA -> {
-                    _searchCharaResponse.postValue(NetWorkState.Loading())
                     repository.searchCharacter(page, query).catch { e ->
-                        _searchCharaResponse.postValue(NetWorkState.Error(e.message.toString()))
+                        _searchCharaResponse.value = NetWorkState.Error(e.message.toString())
                     }.collect {
-                        _searchCharaResponse.postValue(NetWorkState.Success(it.data?.page!!))
+                        _searchCharaResponse.value = NetWorkState.Success(it.data?.page!!)
                     }
                 }
             }
         }
     }
 
-    fun getObserver(): LiveData<*>? {
+    fun getObserver(): StateFlow<*>? {
         return when (searchPage) {
             Constant.TARGET_ANIME -> searchAnimeResponse
             Constant.TARGET_MANGA -> searchMangaResponse

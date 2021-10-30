@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -28,6 +29,7 @@ import com.chs.youranimelist.network.repository.CharacterRepository
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.characterlist.CharacterListViewModel
 import com.chs.youranimelist.util.Constant
+import kotlinx.coroutines.flow.collectLatest
 
 class CharacterFragment : BaseFragment() {
     private var _binding: FragmentCharacterBinding? = null
@@ -82,24 +84,26 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun getCharaInfo() {
-        viewModel.characterDetailResponse.observe(viewLifecycleOwner, {
-            when (it.responseState) {
-                ResponseState.SUCCESS -> {
-                    binding.model = it.data?.character
-                    viewModel.charaDetail = it.data?.character
-                    it.data?.character?.media?.edges?.forEach { anime ->
-                        viewModel.characterAnimeList.add(anime)
+        lifecycleScope.launchWhenStarted {
+            viewModel.characterDetailResponse.collectLatest {
+                when (it.responseState) {
+                    ResponseState.SUCCESS -> {
+                        binding.model = it.data?.character
+                        viewModel.charaDetail = it.data?.character
+                        it.data?.character?.media?.edges?.forEach { anime ->
+                            viewModel.characterAnimeList.add(anime)
+                        }
+                        animeAdapter?.notifyDataSetChanged()
                     }
-                    animeAdapter?.notifyDataSetChanged()
-                }
-                ResponseState.ERROR -> {
-                    Toast.makeText(
-                        this@CharacterFragment.context,
-                        it.message, Toast.LENGTH_SHORT
-                    ).show()
+                    ResponseState.ERROR -> {
+                        Toast.makeText(
+                            requireContext(),
+                            it.message, Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
-        })
+        }
     }
 
     private fun initRecyclerView() {

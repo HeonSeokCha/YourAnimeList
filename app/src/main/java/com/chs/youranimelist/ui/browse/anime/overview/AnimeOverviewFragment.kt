@@ -10,6 +10,7 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -22,6 +23,8 @@ import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import com.chs.youranimelist.ui.browse.studio.StudioFragmentDirections
 import com.chs.youranimelist.util.Constant
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 
 
 class AnimeOverviewFragment : Fragment() {
@@ -89,71 +92,71 @@ class AnimeOverviewFragment : Fragment() {
     }
 
     private fun getAnimeInfo() {
-        viewModel.animeOverviewResponse.observe(viewLifecycleOwner, {
-            when (it.responseState) {
-                ResponseState.SUCCESS -> {
-                    binding.model = it.data?.media!!
-                    if (it.data?.media.season != null && it.data.media.seasonYear != null) {
-                        season = it.data?.media.season
-                        seasonYear = it.data.media.seasonYear
-                    }
-
-                    it.data.media.relations?.relationsEdges?.forEach { relation ->
-                        viewModel.animeOverviewRelationList.add(relation)
-                    }
-
-                    if (viewModel.animeOverviewRelationList.isEmpty()) {
-                        binding.inOverviewLayoutRelation.isVisible = false
-                    }
-
-                    it.data.media.genres?.forEach { genres ->
-                        viewModel.animeGenresList.add(genres!!)
-                    }
-
-                    it.data.media.externalLinks?.forEach { links ->
-                        viewModel.animeLinkList.add(links)
-                    }
-
-                    if (viewModel.animeLinkList.isEmpty()) {
-                        binding.inOverviewLayoutLinks.isVisible = false
-                    }
-
-
-                    it.data.media.studios?.studiosEdges?.forEach { studiosEdge ->
-                        if (studiosEdge?.isMain == true) {
-                            viewModel.animeStudioList.add(studiosEdge.studiosNode!!)
-                        } else {
-                            viewModel.animeProducerList.add(studiosEdge?.studiosNode!!)
+        lifecycleScope.launchWhenStarted {
+            viewModel.animeOverviewResponse.collectLatest {
+                when (it.responseState) {
+                    ResponseState.SUCCESS -> {
+                        binding.model = it.data?.media!!
+                        if (it.data?.media.season != null && it.data.media.seasonYear != null) {
+                            season = it.data?.media.season
+                            seasonYear = it.data.media.seasonYear
                         }
-                    }
 
-                    if (viewModel.animeStudioList.isNotEmpty()) {
-                        binding.txtAnimeStudio.isVisible = true
-                        binding.rvAnimeOverviewStudio.isVisible = true
-                        if (viewModel.animeProducerList.isNotEmpty()) {
-                            binding.txtAnimeProducer.isVisible = true
-                            binding.rvAnimeOverviewProducer.isVisible = true
+                        it.data.media.relations?.relationsEdges?.forEach { relation ->
+                            viewModel.animeOverviewRelationList.add(relation)
                         }
-                    }
 
-                    relationAdapter?.notifyDataSetChanged()
-                    genreAdapter?.notifyDataSetChanged()
-                    linkAdapter?.notifyDataSetChanged()
-                    studioAdapter?.notifyDataSetChanged()
-                    producerAdapter?.notifyDataSetChanged()
-                }
-                ResponseState.ERROR -> {
-                    Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
+                        if (viewModel.animeOverviewRelationList.isEmpty()) {
+                            binding.inOverviewLayoutRelation.isVisible = false
+                        }
+
+                        it.data.media.genres?.forEach { genres ->
+                            viewModel.animeGenresList.add(genres!!)
+                        }
+
+                        it.data.media.externalLinks?.forEach { links ->
+                            viewModel.animeLinkList.add(links)
+                        }
+
+                        if (viewModel.animeLinkList.isEmpty()) {
+                            binding.inOverviewLayoutLinks.isVisible = false
+                        }
+
+
+                        it.data.media.studios?.studiosEdges?.forEach { studiosEdge ->
+                            if (studiosEdge?.isMain == true) {
+                                viewModel.animeStudioList.add(studiosEdge.studiosNode!!)
+                            } else {
+                                viewModel.animeProducerList.add(studiosEdge?.studiosNode!!)
+                            }
+                        }
+
+                        if (viewModel.animeStudioList.isNotEmpty()) {
+                            binding.txtAnimeStudio.isVisible = true
+                            binding.rvAnimeOverviewStudio.isVisible = true
+                            if (viewModel.animeProducerList.isNotEmpty()) {
+                                binding.txtAnimeProducer.isVisible = true
+                                binding.rvAnimeOverviewProducer.isVisible = true
+                            }
+                        }
+
+                        relationAdapter?.notifyDataSetChanged()
+                        genreAdapter?.notifyDataSetChanged()
+                        linkAdapter?.notifyDataSetChanged()
+                        studioAdapter?.notifyDataSetChanged()
+                        producerAdapter?.notifyDataSetChanged()
+                    }
+                    ResponseState.ERROR -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
-        })
 
-        viewModel.animeOverviewThemeResponse.observe(viewLifecycleOwner, {
-            if (it != null) {
+            viewModel.animeOverviewThemeResponse.collectLatest {
                 viewModel.animeDetails = it
                 initAnimeTheme()
             }
-        })
+        }
     }
 
     private fun initRecyclerView() {

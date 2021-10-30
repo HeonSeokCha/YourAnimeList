@@ -10,19 +10,22 @@ import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.type.MediaStatus
-import com.chs.youranimelist.util.SingleLiveEvent
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class SortedListViewModel : ViewModel() {
 
-    private val _animeListResponse = SingleLiveEvent<NetWorkState<AnimeListQuery.Data>>()
-    val animeListResponse: LiveData<NetWorkState<AnimeListQuery.Data>>
+    private val _animeListResponse =
+        MutableStateFlow<NetWorkState<AnimeListQuery.Data>>(NetWorkState.Loading())
+    val animeListResponse: StateFlow<NetWorkState<AnimeListQuery.Data>>
         get() = _animeListResponse
 
-    private val _genreListResponse = SingleLiveEvent<NetWorkState<GenreQuery.Data>>()
-    val genreListResponse: LiveData<NetWorkState<GenreQuery.Data>>
+    private val _genreListResponse =
+        MutableStateFlow<NetWorkState<GenreQuery.Data>>(NetWorkState.Loading())
+    val genreListResponse: StateFlow<NetWorkState<GenreQuery.Data>>
         get() = _genreListResponse
 
     private val animeListRepository by lazy { AnimeListRepository() }
@@ -39,7 +42,6 @@ class SortedListViewModel : ViewModel() {
     var genreList: ArrayList<String> = ArrayList()
 
     fun getAnimeList() {
-        _animeListResponse.postValue(NetWorkState.Loading())
         viewModelScope.launch {
             animeListRepository.getAnimeList(
                 page.toInput(),
@@ -49,19 +51,18 @@ class SortedListViewModel : ViewModel() {
                 selectStatus.toInput(),
                 selectGenre.toInput()
             ).catch { e ->
-                _animeListResponse.postValue(NetWorkState.Error(e.message.toString()))
+                _animeListResponse.value = NetWorkState.Error(e.message.toString())
             }.collect {
-                _animeListResponse.postValue(NetWorkState.Success(it.data!!))
+                _animeListResponse.value = NetWorkState.Success(it.data!!)
             }
         }
     }
 
     fun getGenreList() {
-        _genreListResponse.postValue(NetWorkState.Loading())
         viewModelScope.launch {
             animeListRepository.getGenre().catch { e ->
-                _genreListResponse.postValue(NetWorkState.Error(e.message.toString()))
-            }.collect { _genreListResponse.postValue(NetWorkState.Success(it.data!!)) }
+                _genreListResponse.value = NetWorkState.Error(e.message.toString())
+            }.collect { _genreListResponse.value = NetWorkState.Success(it.data!!) }
         }
     }
 

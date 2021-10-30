@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.R
@@ -17,6 +18,7 @@ import com.chs.youranimelist.ui.animelist.AnimeListViewModel
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.onQueryTextChanged
+import kotlinx.coroutines.flow.collectLatest
 
 class CharacterListFragment : Fragment() {
     private var _binding: FragmentCharacterListBinding? = null
@@ -54,9 +56,11 @@ class CharacterListFragment : Fragment() {
     }
 
     private fun getCharaList() {
-        viewModel.charaListResponse.observe(viewLifecycleOwner, {
-            charaListAdapter.submitList(it)
-        })
+        lifecycleScope.launchWhenStarted {
+            viewModel.charaListResponse.collectLatest {
+                charaListAdapter.submitList(it)
+            }
+        }
     }
 
     private fun initRecyclerView() {

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import com.chs.youranimelist.util.Constant
+import kotlinx.coroutines.flow.collectLatest
 
 
 class AnimeRecommendFragment : Fragment() {
@@ -47,36 +49,37 @@ class AnimeRecommendFragment : Fragment() {
     }
 
     private fun getRecommendList() {
-        viewModel.animeRecommendResponse.observe(viewLifecycleOwner, {
-            when (it.responseState) {
-                ResponseState.LOADING -> binding.progressBar.isVisible = true
-                ResponseState.SUCCESS -> {
+        lifecycleScope.launchWhenStarted {
+            viewModel.animeRecommendResponse.collectLatest {
+                when (it.responseState) {
+                    ResponseState.LOADING -> binding.progressBar.isVisible = true
+                    ResponseState.SUCCESS -> {
+                        if (!viewModel.hasNextPage) {
+                            return@collectLatest
+                        }
 
-                    if (!viewModel.hasNextPage) {
-                        return@observe
-                    }
+                        if (isLoading) {
+                            viewModel.animeRecList.removeAt(viewModel.animeRecList.lastIndex)
+                            animeRecommendAdapter?.notifyItemRemoved(viewModel.animeRecList.lastIndex)
+                            isLoading = false
+                        }
 
-                    if (isLoading) {
-                        viewModel.animeRecList.removeAt(viewModel.animeRecList.lastIndex)
-                        animeRecommendAdapter?.notifyItemRemoved(viewModel.animeRecList.lastIndex)
-                        isLoading = false
+                        it.data?.media?.recommendations?.edges?.forEach { recommend ->
+                            viewModel.animeRecList.add(recommend)
+                        }
+                        animeRecommendAdapter?.notifyItemRangeInserted(
+                            (viewModel.page * 10),
+                            it.data?.media?.recommendations?.edges?.size!!
+                        )
+                        binding.progressBar.isVisible = false
                     }
-
-                    it.data?.media?.recommendations?.edges?.forEach { recommend ->
-                        viewModel.animeRecList.add(recommend)
+                    ResponseState.ERROR -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                        binding.progressBar.isVisible = false
                     }
-                    animeRecommendAdapter?.notifyItemRangeInserted(
-                        (viewModel.page * 10),
-                        it.data?.media?.recommendations?.edges?.size!!
-                    )
-                    binding.progressBar.isVisible = false
-                }
-                ResponseState.ERROR -> {
-                    Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
-                    binding.progressBar.isVisible = false
                 }
             }
-        })
+        }
     }
 
     private fun initRecyclerView() {

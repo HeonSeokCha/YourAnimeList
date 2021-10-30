@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.R
@@ -22,6 +23,7 @@ import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.flow.collectLatest
 
 class AnimeDetailFragment : BaseFragment() {
     private var _binding: FragmentAnimeDetailBinding? = null
@@ -93,27 +95,29 @@ class AnimeDetailFragment : BaseFragment() {
     }
 
     private fun initAnimeInfo() {
-        viewModel.animeDetailResponse.observe(viewLifecycleOwner, {
-            when (it.responseState) {
-                ResponseState.LOADING -> {
-                    binding.progressBar.isVisible = true
-                }
-                ResponseState.SUCCESS -> {
-                    binding.model = it.data!!.media
-                    trailerId = it.data.media?.trailer?.id.toString()
-                    viewModel.animeDetail = it.data.media
-                    binding.progressBar.isVisible = false
-                    binding.btnTrailerPlay.isVisible = true
-                }
-                ResponseState.ERROR -> {
-                    Toast.makeText(
-                        this@AnimeDetailFragment.context,
-                        it.message, Toast.LENGTH_LONG
-                    ).show()
-                    binding.progressBar.isVisible = false
+        lifecycleScope.launchWhenStarted {
+            viewModel.animeDetailResponse.collectLatest {
+                when (it.responseState) {
+                    ResponseState.LOADING -> {
+                        binding.progressBar.isVisible = true
+                    }
+                    ResponseState.SUCCESS -> {
+                        binding.model = it.data!!.media
+                        trailerId = it.data.media?.trailer?.id.toString()
+                        viewModel.animeDetail = it.data.media
+                        binding.progressBar.isVisible = false
+                        binding.btnTrailerPlay.isVisible = true
+                    }
+                    ResponseState.ERROR -> {
+                        Toast.makeText(
+                            requireContext(),
+                            it.message, Toast.LENGTH_LONG
+                        ).show()
+                        binding.progressBar.isVisible = false
+                    }
                 }
             }
-        })
+        }
     }
 
     private fun initTabView(animeId: Int, idMal: Int) {

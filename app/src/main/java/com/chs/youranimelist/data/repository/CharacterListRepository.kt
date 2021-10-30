@@ -1,14 +1,10 @@
 package com.chs.youranimelist.data.repository
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.data.YourListDao
 import com.chs.youranimelist.data.YourListDatabase
-import com.chs.youranimelist.util.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 
 class CharacterListRepository(application: Application) {

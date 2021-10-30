@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,6 +18,7 @@ import com.chs.youranimelist.network.repository.StudioRepository
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.SpacesItemDecoration
+import kotlinx.coroutines.flow.collectLatest
 
 class StudioFragment : BaseFragment() {
     private var _binding: FragmentStudioBinding? = null
@@ -48,27 +50,29 @@ class StudioFragment : BaseFragment() {
     }
 
     private fun initStudio() {
-        viewModel.studioResponse.observe(viewLifecycleOwner, {
-            when (it.responseState) {
-                ResponseState.SUCCESS -> {
-                    if (isLoading) {
-                        viewModel.studioAnimeList.removeAt(viewModel.studioAnimeList.lastIndex)
-                        studioAnimeAdapter?.notifyItemRemoved(viewModel.studioAnimeList.size)
+        lifecycleScope.launchWhenStarted {
+            viewModel.studioResponse.collectLatest {
+                when (it.responseState) {
+                    ResponseState.SUCCESS -> {
+                        if (isLoading) {
+                            viewModel.studioAnimeList.removeAt(viewModel.studioAnimeList.lastIndex)
+                            studioAnimeAdapter?.notifyItemRemoved(viewModel.studioAnimeList.size)
+                            isLoading = false
+                        }
+                        binding.model = it.data
+                        viewModel.hasNextPage = it.data?.media?.pageInfo?.hasNextPage ?: false
+                        it.data!!.media!!.edges!!.forEach { edge ->
+                            viewModel.studioAnimeList.add(edge!!)
+                        }
+                        studioAnimeAdapter?.notifyItemRangeInserted((viewModel.page * 10), 10)
+                    }
+                    ResponseState.ERROR -> {
                         isLoading = false
+                        Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_SHORT).show()
                     }
-                    binding.model = it.data
-                    viewModel.hasNextPage = it.data?.media?.pageInfo?.hasNextPage ?: false
-                    it.data!!.media!!.edges!!.forEach { edge ->
-                        viewModel.studioAnimeList.add(edge!!)
-                    }
-                    studioAnimeAdapter?.notifyItemRangeInserted((viewModel.page * 10), 10)
-                }
-                ResponseState.ERROR -> {
-                    isLoading = false
-                    Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_SHORT).show()
                 }
             }
-        })
+        }
     }
 
     private fun loadMore() {

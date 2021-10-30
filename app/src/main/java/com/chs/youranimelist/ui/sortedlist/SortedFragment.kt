@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,7 @@ import com.chs.youranimelist.ui.main.MainActivity
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.ConvertDate
 import com.chs.youranimelist.util.SpacesItemDecoration
+import kotlinx.coroutines.flow.collectLatest
 
 class SortedFragment : BaseFragment() {
     private var _binding: FragmentSortedBinding? = null
@@ -174,81 +176,85 @@ class SortedFragment : BaseFragment() {
     }
 
     private fun getAnimeList() {
-        viewModel.animeListResponse.observe(viewLifecycleOwner, {
-            when (it.responseState) {
-                ResponseState.LOADING -> {
-                    if (!isLoading)
-                        binding.layoutShimmerSorted.root.isVisible = true
-                }
-                ResponseState.SUCCESS -> {
-                    if (!viewModel.hasNextPage) {
-                        return@observe
+        lifecycleScope.launchWhenStarted {
+            viewModel.animeListResponse.collectLatest {
+                when (it.responseState) {
+                    ResponseState.LOADING -> {
+                        if (!isLoading)
+                            binding.layoutShimmerSorted.root.isVisible = true
                     }
+                    ResponseState.SUCCESS -> {
+                        if (!viewModel.hasNextPage) {
+                            return@collectLatest
+                        }
 
-                    if (isLoading) {
-                        viewModel.animeResultList.removeAt(viewModel.animeResultList.lastIndex)
-                        animeListAdapter?.notifyItemRemoved(viewModel.animeResultList.lastIndex)
+                        if (isLoading) {
+                            viewModel.animeResultList.removeAt(viewModel.animeResultList.lastIndex)
+                            animeListAdapter?.notifyItemRemoved(viewModel.animeResultList.lastIndex)
+                            isLoading = false
+                        }
+
+                        if (viewModel.isSeason) {
+                            viewModel.hasNextPage =
+                                it.data?.season?.pageInfo?.hasNextPage ?: false
+                            it.data?.season?.media?.forEach { seasonAnime ->
+                                viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
+                            }
+                            animeListAdapter?.notifyItemRangeInserted(
+                                (viewModel.page * 10),
+                                it.data?.season?.media?.size!!
+                            )
+                        } else {
+                            viewModel.hasNextPage =
+                                it.data?.nonSeason?.pageInfo!!.hasNextPage ?: false
+                            it.data.nonSeason.media?.forEach { nonSeasonAnime ->
+                                viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
+                            }
+                            animeListAdapter?.notifyItemRangeInserted(
+                                (viewModel.page * 10),
+                                it.data?.nonSeason?.media?.size!!
+                            )
+                        }
+
+                        binding.layoutShimmerSorted.root.isVisible = false
+                        binding.rvAnimeList.isVisible = true
+                    }
+                    ResponseState.ERROR -> {
+                        Toast.makeText(
+                            requireContext(),
+                            it.message,
+                            Toast.LENGTH_LONG
+                        ).show()
                         isLoading = false
+                        binding.layoutShimmerSorted.root.isVisible = false
                     }
-
-                    if (viewModel.isSeason) {
-                        viewModel.hasNextPage =
-                            it.data?.season?.pageInfo?.hasNextPage ?: false
-                        it.data?.season?.media?.forEach { seasonAnime ->
-                            viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
-                        }
-                        animeListAdapter?.notifyItemRangeInserted(
-                            (viewModel.page * 10),
-                            it.data?.season?.media?.size!!
-                        )
-                    } else {
-                        viewModel.hasNextPage =
-                            it.data?.nonSeason?.pageInfo!!.hasNextPage ?: false
-                        it.data.nonSeason.media?.forEach { nonSeasonAnime ->
-                            viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
-                        }
-                        animeListAdapter?.notifyItemRangeInserted(
-                            (viewModel.page * 10),
-                            it.data?.nonSeason?.media?.size!!
-                        )
-                    }
-
-                    binding.layoutShimmerSorted.root.isVisible = false
-                    binding.rvAnimeList.isVisible = true
-                }
-                ResponseState.ERROR -> {
-                    Toast.makeText(
-                        this@SortedFragment.context,
-                        it.message,
-                        Toast.LENGTH_LONG
-                    ).show()
-                    isLoading = false
-                    binding.layoutShimmerSorted.root.isVisible = false
                 }
             }
-        })
+        }
     }
 
     private fun getGenre() {
-        viewModel.genreListResponse.observe(viewLifecycleOwner, {
-            when (it.responseState) {
-                ResponseState.SUCCESS -> {
-                    it.data?.genreCollection?.forEach { genre ->
-                        if (genre != null) {
-                            viewModel.genreList.add(genre)
+        lifecycleScope.launchWhenStarted {
+            viewModel.genreListResponse.collectLatest {
+                when (it.responseState) {
+                    ResponseState.SUCCESS -> {
+                        it.data?.genreCollection?.forEach { genre ->
+                            if (genre != null) {
+                                viewModel.genreList.add(genre)
+                            }
                         }
                     }
-                }
 
-                ResponseState.ERROR -> {
-                    Toast.makeText(
-                        this@SortedFragment.context,
-                        it.message,
-                        Toast.LENGTH_LONG
-                    ).show()
+                    ResponseState.ERROR -> {
+                        Toast.makeText(
+                            requireContext(),
+                            it.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
-        })
+        }
     }
 
     private fun initRecyclerView() {

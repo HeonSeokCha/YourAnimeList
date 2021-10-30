@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.R
@@ -16,6 +17,7 @@ import com.chs.youranimelist.databinding.FragmentAnimeListBinding
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.onQueryTextChanged
+import kotlinx.coroutines.flow.collectLatest
 
 class AnimeListFragment : Fragment() {
     private var _binding: FragmentAnimeListBinding? = null
@@ -55,9 +57,11 @@ class AnimeListFragment : Fragment() {
     }
 
     private fun getAnimeList() {
-        viewModel.animeListResponse.observe(viewLifecycleOwner, {
-            animeListAdapter.submitList(it)
-        })
+        lifecycleScope.launchWhenStarted {
+            viewModel.animeListResponse.collectLatest {
+                animeListAdapter.submitList(it)
+            }
+        }
     }
 
     private fun initRecyclerView() {

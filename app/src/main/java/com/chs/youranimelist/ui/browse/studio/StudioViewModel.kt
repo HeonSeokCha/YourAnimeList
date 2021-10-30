@@ -1,22 +1,22 @@
 package com.chs.youranimelist.ui.browse.studio
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.StudioAnimeQuery
-import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.StudioRepository
 import com.chs.youranimelist.type.MediaSort
-import com.chs.youranimelist.util.SingleLiveEvent
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class StudioViewModel : ViewModel() {
 
-    private val _studioResponse = SingleLiveEvent<NetWorkState<StudioAnimeQuery.Studio>>()
-    val studioResponse: LiveData<NetWorkState<StudioAnimeQuery.Studio>>
+    private val _studioResponse =
+        MutableStateFlow<NetWorkState<StudioAnimeQuery.Studio>>(NetWorkState.Loading())
+    val studioResponse: StateFlow<NetWorkState<StudioAnimeQuery.Studio>>
         get() = _studioResponse
 
     private val repository by lazy { StudioRepository() }
@@ -32,12 +32,12 @@ class StudioViewModel : ViewModel() {
         _studioResponse.value = NetWorkState.Loading()
         viewModelScope.launch {
             repository.getStudioAnime(studioId, selectsort!!, page).catch { e ->
-                _studioResponse.postValue(NetWorkState.Error(e.message.toString()))
+                _studioResponse.value = NetWorkState.Error(e.message.toString())
             }.collect {
                 if (it.data?.studio == null) {
-                    _studioResponse.postValue(NetWorkState.Error("Not Found"))
+                    _studioResponse.value = NetWorkState.Error("Not Found")
                 } else {
-                    _studioResponse.postValue(NetWorkState.Success(it.data!!.studio!!))
+                    _studioResponse.value = NetWorkState.Success(it.data!!.studio!!)
                 }
             }
         }
