@@ -24,7 +24,7 @@ class AnimeListFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: AnimeListViewModel by viewModels {
         object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return AnimeListViewModel(requireActivity().application) as T
             }
         }

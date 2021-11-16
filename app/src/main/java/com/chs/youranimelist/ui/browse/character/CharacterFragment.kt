@@ -38,7 +38,7 @@ class CharacterFragment : BaseFragment() {
     private val args: CharacterFragmentArgs by navArgs()
     private val viewModel: CharacterViewModel by viewModels {
         object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return CharacterViewModel(requireActivity().application) as T
             }
         }

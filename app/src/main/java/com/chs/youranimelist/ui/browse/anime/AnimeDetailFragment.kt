@@ -31,7 +31,7 @@ class AnimeDetailFragment : BaseFragment() {
     private val args: AnimeDetailFragmentArgs by navArgs()
     private val viewModel: AnimeDetailViewModel by viewModels {
         object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return AnimeDetailViewModel(requireActivity().application) as T
             }
         }

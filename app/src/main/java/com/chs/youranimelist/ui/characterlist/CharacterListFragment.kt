@@ -25,7 +25,7 @@ class CharacterListFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: CharacterListViewModel by viewModels {
         object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return CharacterListViewModel(requireActivity().application) as T
             }
         }
