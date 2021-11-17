@@ -1,19 +1,22 @@
 package com.chs.youranimelist.ui.home
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.HomeRecommendListQuery
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.util.SingleLiveEvent
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
 
     private val _homeRecommendResponse =
-        MutableStateFlow<NetWorkState<HomeRecommendListQuery.Data>>(NetWorkState.Loading())
-    val homeRecommendResponse: StateFlow<NetWorkState<HomeRecommendListQuery.Data>>
+        SingleLiveEvent<NetWorkState<HomeRecommendListQuery.Data>>()
+    val homeRecommendResponse: LiveData<NetWorkState<HomeRecommendListQuery.Data>>
         get() = _homeRecommendResponse
 
     private val animeRepository by lazy { AnimeRepository() }
@@ -23,6 +26,7 @@ class HomeViewModel : ViewModel() {
 
     fun getHomeRecList() {
         viewModelScope.launch {
+            _homeRecommendResponse.value = NetWorkState.Loading()
             animeRepository.getHomeRecList()
                 .catch { e ->
                     _homeRecommendResponse.value = NetWorkState.Error(e.message.toString())
