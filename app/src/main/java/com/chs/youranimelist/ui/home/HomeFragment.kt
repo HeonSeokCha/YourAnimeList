@@ -32,7 +32,6 @@ class HomeFragment : Fragment() {
     private val viewModel by viewModels<HomeViewModel>()
     private var viewPagerHomeRecAdapter: HomeRecViewPagerAdapter? = null
     private var homeRecListAdapter: HomeRecListParentAdapter? = null
-    private var a = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,

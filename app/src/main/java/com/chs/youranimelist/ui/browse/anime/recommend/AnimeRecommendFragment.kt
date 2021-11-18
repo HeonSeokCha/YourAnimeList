@@ -60,14 +60,13 @@ class AnimeRecommendFragment : Fragment() {
 
                         if (isLoading) {
                             viewModel.animeRecList.removeAt(viewModel.animeRecList.lastIndex)
-                            animeRecommendAdapter?.notifyItemRemoved(viewModel.animeRecList.lastIndex)
                             isLoading = false
                         }
 
                         it.data?.media?.recommendations?.edges?.forEach { recommend ->
                             viewModel.animeRecList.add(recommend)
                         }
-                        animeRecommendAdapter?.notifyItemRangeInserted(
+                        animeRecommendAdapter?.notifyItemRangeChanged(
                             (viewModel.page * 10),
                             it.data?.media?.recommendations?.edges?.size!!
                         )

@@ -11,6 +11,7 @@ import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.data.repository.CharacterListRepository
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.CharacterRepository
+import com.chs.youranimelist.util.SingleLiveEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -20,8 +21,8 @@ import kotlinx.coroutines.launch
 class CharacterViewModel(application: Application) : ViewModel() {
 
     private val _characterDetailResponse =
-        MutableStateFlow<NetWorkState<CharacterQuery.Data>>(NetWorkState.Loading())
-    val characterDetailResponse: StateFlow<NetWorkState<CharacterQuery.Data>>
+        SingleLiveEvent<NetWorkState<CharacterQuery.Data>>()
+    val characterDetailResponse: LiveData<NetWorkState<CharacterQuery.Data>>
         get() = _characterDetailResponse
 
     private val repository by lazy { CharacterRepository() }
@@ -36,6 +37,7 @@ class CharacterViewModel(application: Application) : ViewModel() {
 
     fun getCharaInfo(charaId: Input<Int>) {
         viewModelScope.launch {
+            _characterDetailResponse.value = NetWorkState.Loading()
             repository.getCharacterDetail(charaId).catch { e ->
                 _characterDetailResponse.value = NetWorkState.Error(e.message.toString())
             }.collect {

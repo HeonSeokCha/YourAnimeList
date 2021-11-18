@@ -122,7 +122,6 @@ class SearchFragment : Fragment() {
 
                         if (isLoading) {
                             viewModel.searchList.removeAt(viewModel.searchList.lastIndex)
-                            searchAdapter?.notifyItemRemoved(viewModel.searchList.size)
                             isLoading = false
                         }
 
@@ -132,11 +131,12 @@ class SearchFragment : Fragment() {
 
                             Constant.TARGET_ANIME -> {
                                 val searchAnime = it as NetWorkState<SearchAnimeQuery.Page>
-                                viewModel.hasNextPage = searchAnime.data?.pageInfo?.hasNextPage ?: false
+                                viewModel.hasNextPage =
+                                    searchAnime.data?.pageInfo?.hasNextPage ?: false
                                 searchAnime.data?.media?.forEach { anime ->
                                     viewModel.searchList.add(SearchResult(animeSearchResult = anime))
                                 }
-                                searchAdapter?.notifyItemRangeInserted(
+                                searchAdapter?.notifyItemRangeChanged(
                                     (viewModel.page * 10),
                                     searchAnime.data?.media?.size!!
                                 )
@@ -144,11 +144,12 @@ class SearchFragment : Fragment() {
 
                             Constant.TARGET_MANGA -> {
                                 val searchManga = it as NetWorkState<SearchMangaQuery.Page>
-                                viewModel.hasNextPage = searchManga.data?.pageInfo?.hasNextPage ?: false
+                                viewModel.hasNextPage =
+                                    searchManga.data?.pageInfo?.hasNextPage ?: false
                                 searchManga.data?.media?.forEach { manga ->
                                     viewModel.searchList.add(SearchResult(mangaSearchResult = manga))
                                 }
-                                searchAdapter?.notifyItemRangeInserted(
+                                searchAdapter?.notifyItemRangeChanged(
                                     (viewModel.page * 10),
                                     searchManga.data?.media?.size!!
                                 )
@@ -156,11 +157,12 @@ class SearchFragment : Fragment() {
 
                             Constant.TARGET_CHARA -> {
                                 val searchChara = it as NetWorkState<SearchCharacterQuery.Page>
-                                viewModel.hasNextPage = searchChara.data?.pageInfo?.hasNextPage ?: false
+                                viewModel.hasNextPage =
+                                    searchChara.data?.pageInfo?.hasNextPage ?: false
                                 searchChara.data?.characters?.forEach { chara ->
                                     viewModel.searchList.add(SearchResult(charactersSearchResult = chara))
                                 }
-                                searchAdapter?.notifyItemRangeInserted(
+                                searchAdapter?.notifyItemRangeChanged(
                                     (viewModel.page * 10),
                                     searchChara.data?.characters?.size!!
                                 )

@@ -84,23 +84,21 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun getCharaInfo() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.characterDetailResponse.collectLatest {
-                when (it.responseState) {
-                    ResponseState.SUCCESS -> {
-                        binding.model = it.data?.character
-                        viewModel.charaDetail = it.data?.character
-                        it.data?.character?.media?.edges?.forEach { anime ->
-                            viewModel.characterAnimeList.add(anime)
-                        }
-                        animeAdapter?.notifyDataSetChanged()
+        viewModel.characterDetailResponse.observe(viewLifecycleOwner) {
+            when (it.responseState) {
+                ResponseState.SUCCESS -> {
+                    binding.model = it.data?.character
+                    viewModel.charaDetail = it.data?.character
+                    it.data?.character?.media?.edges?.forEach { anime ->
+                        viewModel.characterAnimeList.add(anime)
                     }
-                    ResponseState.ERROR -> {
-                        Toast.makeText(
-                            requireContext(),
-                            it.message, Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    animeAdapter?.notifyDataSetChanged()
+                }
+                ResponseState.ERROR -> {
+                    Toast.makeText(
+                        requireContext(),
+                        it.message, Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

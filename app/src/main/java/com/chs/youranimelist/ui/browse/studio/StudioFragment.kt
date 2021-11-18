@@ -64,7 +64,7 @@ class StudioFragment : BaseFragment() {
                         it.data!!.media!!.edges!!.forEach { edge ->
                             viewModel.studioAnimeList.add(edge!!)
                         }
-                        studioAnimeAdapter?.notifyItemRangeInserted((viewModel.page * 10), 10)
+                        studioAnimeAdapter?.notifyItemRangeChanged((viewModel.page * 10), 10)
                     }
                     ResponseState.ERROR -> {
                         isLoading = false
