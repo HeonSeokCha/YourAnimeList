@@ -150,7 +150,8 @@ class AnimeDetailFragment : BaseFragment() {
                         bannerImage = this.bannerImage,
                         averageScore = this.averageScore ?: 0,
                         favorites = this.favourites,
-                        studio = this.studios!!.edges?.get(0)!!.node!!.name,
+                        studio = if (viewModel.animeDetail?.studios?.edges?.isEmpty()!!) ""
+                        else this.studios?.edges?.get(0)?.node?.name,
                         genre = this.genres ?: listOf(),
                     )
                 )

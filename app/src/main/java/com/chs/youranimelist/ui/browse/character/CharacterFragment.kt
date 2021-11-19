@@ -93,6 +93,10 @@ class CharacterFragment : BaseFragment() {
                         viewModel.characterAnimeList.add(anime)
                     }
                     animeAdapter?.notifyDataSetChanged()
+                    Log.e("getCharaInfo", it.data?.character?.description!!.length.toString())
+                    if (it.data?.character?.description!!.length < 200) {
+                        binding.btnExpand.isVisible = false
+                    }
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(
