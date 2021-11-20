@@ -10,6 +10,7 @@ import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.response.SearchResult
 import com.chs.youranimelist.network.repository.SearchRepository
 import com.chs.youranimelist.util.Constant
+import com.chs.youranimelist.util.SingleLiveEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -35,11 +36,20 @@ class SearchViewModel : ViewModel() {
 
     private val repository by lazy { SearchRepository() }
 
+    private val _searchKeywordLiveData = SingleLiveEvent<String>()
+    val searchKeywordLiveData: LiveData<String>
+        get() = _searchKeywordLiveData
+
+
     var page: Int = 1
     var hasNextPage: Boolean = true
-    var searchKeyword: String = ""
+
     var searchList: ArrayList<SearchResult?> = ArrayList()
     lateinit var searchPage: String
+
+    fun setSearchKeyword(keyword: String) {
+        _searchKeywordLiveData.value = keyword
+    }
 
     fun search(query: String) {
         viewModelScope.launch {

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.lifecycle.MutableLiveData
 import com.chs.youranimelist.databinding.ActivitySearchBinding
 import com.chs.youranimelist.network.repository.SearchRepository
@@ -14,6 +15,7 @@ import java.util.*
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
+    private val viewModel: SearchViewModel by viewModels()
     val searchLiveData: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
     }
@@ -42,7 +44,7 @@ class SearchActivity : AppCompatActivity() {
         binding.searchBarEditText.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 closeKeyboard()
-                searchLiveData.value = textView.text.toString()
+                viewModel.setSearchKeyword(textView.toString())
                 return@setOnEditorActionListener true
             }
             false

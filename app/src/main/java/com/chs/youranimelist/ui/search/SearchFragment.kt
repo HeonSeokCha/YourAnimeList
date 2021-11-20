@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +29,7 @@ import com.chs.youranimelist.util.Constant
 import kotlinx.coroutines.flow.collectLatest
 
 class SearchFragment : Fragment() {
-    private val viewModel by viewModels<SearchViewModel>()
+    private val viewModel: SearchViewModel by activityViewModels()
     private var searchAdapter: RecyclerView.Adapter<*>? = null
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -75,28 +76,24 @@ class SearchFragment : Fragment() {
             }
         })
 
-        if (activity is SearchActivity) {
-            (activity as SearchActivity).searchLiveData.observe(viewLifecycleOwner, { search ->
-                viewModel.searchKeyword = search
-                viewModel.searchList.clear()
+        viewModel.searchKeywordLiveData.observe(viewLifecycleOwner) {
+            viewModel.searchList.clear()
+            isLoading = false
+            viewModel.page = 1
+            viewModel.hasNextPage = true
+            searchAdapter?.notifyDataSetChanged()
 
-                isLoading = false
-                viewModel.page = 1
-                viewModel.hasNextPage = true
-
-                searchAdapter?.notifyDataSetChanged()
-
-                if (search.isNotBlank()) {
-                    viewModel.search(viewModel.searchKeyword)
-                }
-            })
+            if (it.isNotBlank()) {
+                viewModel.search(it)
+            }
         }
+
     }
 
     private fun loadMore() {
         if (viewModel.hasNextPage) {
             viewModel.loading()
-            viewModel.search(viewModel.searchKeyword)
+//            viewModel.search()
         }
     }
 
