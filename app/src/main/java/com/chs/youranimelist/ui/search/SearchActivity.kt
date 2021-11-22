@@ -15,10 +15,7 @@ import java.util.*
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
-    private val viewModel: SearchViewModel by viewModels()
-    val searchLiveData: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
-    }
+    private val viewModel: SearchKeywordViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +41,7 @@ class SearchActivity : AppCompatActivity() {
         binding.searchBarEditText.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 closeKeyboard()
-                viewModel.setSearchKeyword(textView.toString())
+                viewModel.setSearchKeyword(binding.searchBarEditText.text.trim().toString())
                 return@setOnEditorActionListener true
             }
             false

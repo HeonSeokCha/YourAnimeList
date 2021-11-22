@@ -29,7 +29,8 @@ import com.chs.youranimelist.util.Constant
 import kotlinx.coroutines.flow.collectLatest
 
 class SearchFragment : Fragment() {
-    private val viewModel: SearchViewModel by activityViewModels()
+    private val viewModel by viewModels<SearchViewModel>()
+    private val searchKeywordViewModel: SearchKeywordViewModel by activityViewModels()
     private var searchAdapter: RecyclerView.Adapter<*>? = null
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -75,106 +76,109 @@ class SearchFragment : Fragment() {
                 }
             }
         })
-
-        viewModel.searchKeywordLiveData.observe(viewLifecycleOwner) {
-            viewModel.searchList.clear()
-            isLoading = false
-            viewModel.page = 1
-            viewModel.hasNextPage = true
-            searchAdapter?.notifyDataSetChanged()
-
-            if (it.isNotBlank()) {
-                viewModel.search(it)
-            }
-        }
-
+        viewModel.searchQuery = "angel"
+        viewModel.searchList.clear()
+        isLoading = false
+        viewModel.page = 1
+        viewModel.hasNextPage = true
+        viewModel.search()
+        Log.e("SearchFragment", viewModel.searchPage)
+//        searchKeywordViewModel.searchKeywordLiveData.observe(viewLifecycleOwner) {
+//            viewModel.searchQuery = it
+//            viewModel.searchList.clear()
+//            isLoading = false
+//            viewModel.page = 1
+//            viewModel.hasNextPage = true
+//            searchAdapter?.notifyDataSetChanged()
+//            if (it.isNotBlank()) {
+//                viewModel.search()
+//            }
+//        }
     }
 
     private fun loadMore() {
         if (viewModel.hasNextPage) {
             viewModel.loading()
-//            viewModel.search()
+            viewModel.search()
         }
     }
 
     private fun initObserver() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.getObserver()?.collectLatest {
-                when ((it as NetWorkState<*>?)?.responseState) {
+        viewModel.getObserver()?.observe(viewLifecycleOwner) {
+            when ((it as NetWorkState<*>?)?.responseState) {
 
-                    ResponseState.LOADING -> {
-                        if (!isLoading) {
-                            if (viewModel.searchList.isEmpty()) {
-                                binding.layoutShimmerSearch.root.isVisible = true
-                            }
-                            binding.imgSearchError.isVisible = false
-                            binding.txtSearchError.isVisible = false
+                ResponseState.LOADING -> {
+                    if (!isLoading) {
+                        if (viewModel.searchList.isEmpty()) {
+                            binding.layoutShimmerSearch.root.isVisible = true
                         }
+                        binding.imgSearchError.isVisible = false
+                        binding.txtSearchError.isVisible = false
+                    }
+                }
+
+                ResponseState.SUCCESS -> {
+                    if (!viewModel.hasNextPage) {
+                        return@observe
                     }
 
-                    ResponseState.SUCCESS -> {
-                        if (!viewModel.hasNextPage) {
-                            return@collectLatest
-                        }
-
-                        if (isLoading) {
-                            viewModel.searchList.removeAt(viewModel.searchList.lastIndex)
-                            isLoading = false
-                        }
-
-                        viewModel.page += 1
-
-                        when (viewModel.searchPage) {
-
-                            Constant.TARGET_ANIME -> {
-                                val searchAnime = it as NetWorkState<SearchAnimeQuery.Page>
-                                viewModel.hasNextPage =
-                                    searchAnime.data?.pageInfo?.hasNextPage ?: false
-                                searchAnime.data?.media?.forEach { anime ->
-                                    viewModel.searchList.add(SearchResult(animeSearchResult = anime))
-                                }
-                                searchAdapter?.notifyItemRangeChanged(
-                                    (viewModel.page * 10),
-                                    searchAnime.data?.media?.size!!
-                                )
-                            }
-
-                            Constant.TARGET_MANGA -> {
-                                val searchManga = it as NetWorkState<SearchMangaQuery.Page>
-                                viewModel.hasNextPage =
-                                    searchManga.data?.pageInfo?.hasNextPage ?: false
-                                searchManga.data?.media?.forEach { manga ->
-                                    viewModel.searchList.add(SearchResult(mangaSearchResult = manga))
-                                }
-                                searchAdapter?.notifyItemRangeChanged(
-                                    (viewModel.page * 10),
-                                    searchManga.data?.media?.size!!
-                                )
-                            }
-
-                            Constant.TARGET_CHARA -> {
-                                val searchChara = it as NetWorkState<SearchCharacterQuery.Page>
-                                viewModel.hasNextPage =
-                                    searchChara.data?.pageInfo?.hasNextPage ?: false
-                                searchChara.data?.characters?.forEach { chara ->
-                                    viewModel.searchList.add(SearchResult(charactersSearchResult = chara))
-                                }
-                                searchAdapter?.notifyItemRangeChanged(
-                                    (viewModel.page * 10),
-                                    searchChara.data?.characters?.size!!
-                                )
-                            }
-                        }
-
-                        binding.layoutShimmerSearch.root.isVisible = false
-                        binding.rvSearch.isVisible = true
-                    }
-                    ResponseState.ERROR -> {
+                    if (isLoading) {
+                        viewModel.searchList.removeAt(viewModel.searchList.lastIndex)
                         isLoading = false
-                        binding.layoutShimmerSearch.root.isVisible = false
-                        binding.imgSearchError.isVisible = true
-                        binding.txtSearchError.isVisible = true
                     }
+
+                    viewModel.page += 1
+
+                    when (viewModel.searchPage) {
+
+                        Constant.TARGET_ANIME -> {
+                            val searchAnime = it as NetWorkState<SearchAnimeQuery.Page>
+                            viewModel.hasNextPage =
+                                searchAnime.data?.pageInfo?.hasNextPage ?: false
+                            searchAnime.data?.media?.forEach { anime ->
+                                viewModel.searchList.add(SearchResult(animeSearchResult = anime))
+                            }
+                            searchAdapter?.notifyItemRangeChanged(
+                                (viewModel.page * 10),
+                                searchAnime.data?.media?.size!!
+                            )
+                        }
+
+                        Constant.TARGET_MANGA -> {
+                            val searchManga = it as NetWorkState<SearchMangaQuery.Page>
+                            viewModel.hasNextPage =
+                                searchManga.data?.pageInfo?.hasNextPage ?: false
+                            searchManga.data?.media?.forEach { manga ->
+                                viewModel.searchList.add(SearchResult(mangaSearchResult = manga))
+                            }
+                            searchAdapter?.notifyItemRangeChanged(
+                                (viewModel.page * 10),
+                                searchManga.data?.media?.size!!
+                            )
+                        }
+
+                        Constant.TARGET_CHARA -> {
+                            val searchChara = it as NetWorkState<SearchCharacterQuery.Page>
+                            viewModel.hasNextPage =
+                                searchChara.data?.pageInfo?.hasNextPage ?: false
+                            searchChara.data?.characters?.forEach { chara ->
+                                viewModel.searchList.add(SearchResult(charactersSearchResult = chara))
+                            }
+                            searchAdapter?.notifyItemRangeChanged(
+                                (viewModel.page * 10),
+                                searchChara.data?.characters?.size!!
+                            )
+                        }
+                    }
+
+                    binding.layoutShimmerSearch.root.isVisible = false
+                    binding.rvSearch.isVisible = true
+                }
+                ResponseState.ERROR -> {
+                    isLoading = false
+                    binding.layoutShimmerSearch.root.isVisible = false
+                    binding.imgSearchError.isVisible = true
+                    binding.txtSearchError.isVisible = true
                 }
             }
         }
@@ -217,7 +221,7 @@ class SearchFragment : Fragment() {
         }
         searchAdapter!!.setHasStableIds(true)
         binding.rvSearch.adapter = searchAdapter
-        binding.rvSearch.layoutManager = LinearLayoutManager(this.context)
+        binding.rvSearch.layoutManager = LinearLayoutManager(requireContext())
     }
 
     override fun onDestroyView() {
