@@ -76,24 +76,17 @@ class SearchFragment : Fragment() {
                 }
             }
         })
-        viewModel.searchQuery = "angel"
-        viewModel.searchList.clear()
-        isLoading = false
-        viewModel.page = 1
-        viewModel.hasNextPage = true
-        viewModel.search()
-        Log.e("SearchFragment", viewModel.searchPage)
-//        searchKeywordViewModel.searchKeywordLiveData.observe(viewLifecycleOwner) {
-//            viewModel.searchQuery = it
-//            viewModel.searchList.clear()
-//            isLoading = false
-//            viewModel.page = 1
-//            viewModel.hasNextPage = true
-//            searchAdapter?.notifyDataSetChanged()
-//            if (it.isNotBlank()) {
-//                viewModel.search()
-//            }
-//        }
+        searchKeywordViewModel.searchKeywordLiveData.observe(viewLifecycleOwner) {
+            viewModel.searchQuery = it
+            viewModel.searchList.clear()
+            isLoading = false
+            viewModel.page = 1
+            viewModel.hasNextPage = true
+            searchAdapter?.notifyDataSetChanged()
+            if (it.isNotBlank()) {
+                viewModel.search()
+            }
+        }
     }
 
     private fun loadMore() {
