@@ -8,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.SearchAnimeQuery
@@ -26,11 +24,9 @@ import com.chs.youranimelist.ui.search.adapter.SearchAnimeAdapter
 import com.chs.youranimelist.ui.search.adapter.SearchCharacterAdapter
 import com.chs.youranimelist.ui.search.adapter.SearchMangaAdapter
 import com.chs.youranimelist.util.Constant
-import kotlinx.coroutines.flow.collectLatest
 
 class SearchFragment : Fragment() {
     private val viewModel by viewModels<SearchViewModel>()
-    private val searchKeywordViewModel: SearchKeywordViewModel by activityViewModels()
     private var searchAdapter: RecyclerView.Adapter<*>? = null
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -60,6 +56,7 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        Log.d("SearchFragment", arguments?.getString(Constant.TARGET_SEARCH)!!)
         binding.root.requestLayout()
     }
 
@@ -76,28 +73,34 @@ class SearchFragment : Fragment() {
                 }
             }
         })
-        searchKeywordViewModel.searchKeywordLiveData.observe(viewLifecycleOwner) {
-            viewModel.searchQuery = it
-            viewModel.searchList.clear()
-            isLoading = false
-            viewModel.page = 1
-            viewModel.hasNextPage = true
-            searchAdapter?.notifyDataSetChanged()
-            if (it.isNotBlank()) {
-                viewModel.search()
-            }
+
+        if (activity is SearchActivity) {
+            (activity as SearchActivity).searchLiveData.observe(viewLifecycleOwner, { search ->
+                viewModel.searchKeyword = search
+                viewModel.searchList.clear()
+
+                isLoading = false
+                viewModel.page = 1
+                viewModel.hasNextPage = true
+
+                searchAdapter?.notifyDataSetChanged()
+
+                if (search.isNotBlank()) {
+                    viewModel.search(viewModel.searchKeyword)
+                }
+            })
         }
     }
 
     private fun loadMore() {
         if (viewModel.hasNextPage) {
             viewModel.loading()
-            viewModel.search()
+            viewModel.search(viewModel.searchKeyword)
         }
     }
 
     private fun initObserver() {
-        viewModel.getObserver()?.observe(viewLifecycleOwner) {
+        viewModel.getObserver()?.observe(viewLifecycleOwner, {
             when ((it as NetWorkState<*>?)?.responseState) {
 
                 ResponseState.LOADING -> {
@@ -117,6 +120,7 @@ class SearchFragment : Fragment() {
 
                     if (isLoading) {
                         viewModel.searchList.removeAt(viewModel.searchList.lastIndex)
+                        searchAdapter?.notifyItemRemoved(viewModel.searchList.size)
                         isLoading = false
                     }
 
@@ -126,12 +130,11 @@ class SearchFragment : Fragment() {
 
                         Constant.TARGET_ANIME -> {
                             val searchAnime = it as NetWorkState<SearchAnimeQuery.Page>
-                            viewModel.hasNextPage =
-                                searchAnime.data?.pageInfo?.hasNextPage ?: false
+                            viewModel.hasNextPage = searchAnime.data?.pageInfo?.hasNextPage ?: false
                             searchAnime.data?.media?.forEach { anime ->
                                 viewModel.searchList.add(SearchResult(animeSearchResult = anime))
                             }
-                            searchAdapter?.notifyItemRangeChanged(
+                            searchAdapter?.notifyItemRangeInserted(
                                 (viewModel.page * 10),
                                 searchAnime.data?.media?.size!!
                             )
@@ -139,12 +142,11 @@ class SearchFragment : Fragment() {
 
                         Constant.TARGET_MANGA -> {
                             val searchManga = it as NetWorkState<SearchMangaQuery.Page>
-                            viewModel.hasNextPage =
-                                searchManga.data?.pageInfo?.hasNextPage ?: false
+                            viewModel.hasNextPage = searchManga.data?.pageInfo?.hasNextPage ?: false
                             searchManga.data?.media?.forEach { manga ->
                                 viewModel.searchList.add(SearchResult(mangaSearchResult = manga))
                             }
-                            searchAdapter?.notifyItemRangeChanged(
+                            searchAdapter?.notifyItemRangeInserted(
                                 (viewModel.page * 10),
                                 searchManga.data?.media?.size!!
                             )
@@ -152,17 +154,17 @@ class SearchFragment : Fragment() {
 
                         Constant.TARGET_CHARA -> {
                             val searchChara = it as NetWorkState<SearchCharacterQuery.Page>
-                            viewModel.hasNextPage =
-                                searchChara.data?.pageInfo?.hasNextPage ?: false
+                            viewModel.hasNextPage = searchChara.data?.pageInfo?.hasNextPage ?: false
                             searchChara.data?.characters?.forEach { chara ->
                                 viewModel.searchList.add(SearchResult(charactersSearchResult = chara))
                             }
-                            searchAdapter?.notifyItemRangeChanged(
+                            searchAdapter?.notifyItemRangeInserted(
                                 (viewModel.page * 10),
                                 searchChara.data?.characters?.size!!
                             )
                         }
                     }
+
 
                     binding.layoutShimmerSearch.root.isVisible = false
                     binding.rvSearch.isVisible = true
@@ -174,14 +176,14 @@ class SearchFragment : Fragment() {
                     binding.txtSearchError.isVisible = true
                 }
             }
-        }
+        })
     }
 
     private fun initRecyclerView() {
         searchAdapter = when (viewModel.searchPage) {
             Constant.TARGET_ANIME -> {
                 SearchAnimeAdapter(viewModel.searchList) { id, idMal ->
-                    val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
+                    val intent = Intent(this.context, BrowseActivity::class.java).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                         this.putExtra(Constant.TARGET_ID, id)
                         this.putExtra(Constant.TARGET_ID_MAL, idMal)
@@ -191,7 +193,7 @@ class SearchFragment : Fragment() {
             }
             Constant.TARGET_MANGA -> {
                 SearchMangaAdapter(viewModel.searchList) { id, idMal ->
-                    val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
+                    val intent = Intent(this.context, BrowseActivity::class.java).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                         this.putExtra(Constant.TARGET_ID, id)
                         this.putExtra(Constant.TARGET_ID_MAL, idMal)
@@ -201,7 +203,7 @@ class SearchFragment : Fragment() {
             }
             Constant.TARGET_CHARA -> {
                 SearchCharacterAdapter(viewModel.searchList) { id ->
-                    val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
+                    val intent = Intent(this.context, BrowseActivity::class.java).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_CHARA)
                         this.putExtra(Constant.TARGET_ID, id)
                     }
@@ -214,7 +216,7 @@ class SearchFragment : Fragment() {
         }
         searchAdapter!!.setHasStableIds(true)
         binding.rvSearch.adapter = searchAdapter
-        binding.rvSearch.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvSearch.layoutManager = LinearLayoutManager(this.context)
     }
 
     override fun onDestroyView() {
