@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +27,7 @@ import com.chs.youranimelist.ui.search.adapter.SearchMangaAdapter
 import com.chs.youranimelist.util.Constant
 
 class SearchFragment : Fragment() {
-    private val viewModel by viewModels<SearchViewModel>()
+    private val viewModel by activityViewModels<SearchViewModel>()
     private var searchAdapter: RecyclerView.Adapter<*>? = null
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -35,6 +36,7 @@ class SearchFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.searchPage = arguments?.getString(Constant.TARGET_SEARCH)!!
+        Log.d("SearchFragment", arguments?.getString(Constant.TARGET_SEARCH)!!)
     }
 
     override fun onCreateView(
@@ -56,7 +58,7 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.d("SearchFragment", arguments?.getString(Constant.TARGET_SEARCH)!!)
+
         binding.root.requestLayout()
     }
 
@@ -74,21 +76,16 @@ class SearchFragment : Fragment() {
             }
         })
 
-        if (activity is SearchActivity) {
-            (activity as SearchActivity).searchLiveData.observe(viewLifecycleOwner, { search ->
-                viewModel.searchKeyword = search
-                viewModel.searchList.clear()
 
-                isLoading = false
-                viewModel.page = 1
-                viewModel.hasNextPage = true
+        if (viewModel.searchKeyword.isNotBlank()) {
+            viewModel.searchList.clear()
 
-                searchAdapter?.notifyDataSetChanged()
+            isLoading = false
+            viewModel.page = 1
+            viewModel.hasNextPage = true
 
-                if (search.isNotBlank()) {
-                    viewModel.search(viewModel.searchKeyword)
-                }
-            })
+            searchAdapter?.notifyDataSetChanged()
+            viewModel.search(viewModel.searchKeyword)
         }
     }
 
