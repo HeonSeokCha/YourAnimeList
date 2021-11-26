@@ -15,7 +15,7 @@ import java.util.*
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
-    private val viewModel: SearchViewModel by viewModels()
+    private val viewModel: SearchKeywordViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +41,7 @@ class SearchActivity : AppCompatActivity() {
         binding.searchBarEditText.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 closeKeyboard()
-                viewModel.searchKeyword = textView.text.toString()
+                viewModel.onKeyWordChanged(textView.text.trim().toString())
                 return@setOnEditorActionListener true
             }
             false

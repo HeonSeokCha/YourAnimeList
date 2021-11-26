@@ -1,6 +1,7 @@
 package com.chs.youranimelist.ui.search
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.SearchAnimeQuery
@@ -17,6 +18,8 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel : ViewModel() {
 
+    private val repository by lazy { SearchRepository() }
+
     private val _searchAnimeResponse = SingleLiveEvent<NetWorkState<SearchAnimeQuery.Page>>()
     private val searchAnimeResponse: LiveData<NetWorkState<SearchAnimeQuery.Page>>
         get() = _searchAnimeResponse
@@ -29,13 +32,12 @@ class SearchViewModel : ViewModel() {
     private val searchCharaResponse: LiveData<NetWorkState<SearchCharacterQuery.Page>>
         get() = _searchCharaResponse
 
-    private val repository by lazy { SearchRepository() }
 
+    lateinit var searchPage: String
+    var searchKeyword: String = ""
     var page: Int = 1
     var hasNextPage: Boolean = true
-    var searchKeyword: String = ""
     var searchList: ArrayList<SearchResult?> = ArrayList()
-    lateinit var searchPage: String
 
     fun search(query: String) {
         viewModelScope.launch {

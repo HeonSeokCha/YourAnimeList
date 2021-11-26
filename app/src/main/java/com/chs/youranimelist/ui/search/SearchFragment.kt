@@ -27,7 +27,8 @@ import com.chs.youranimelist.ui.search.adapter.SearchMangaAdapter
 import com.chs.youranimelist.util.Constant
 
 class SearchFragment : Fragment() {
-    private val viewModel by activityViewModels<SearchViewModel>()
+    private val viewModel by viewModels<SearchViewModel>()
+    private val searchKeywordViewModel by activityViewModels<SearchKeywordViewModel>()
     private var searchAdapter: RecyclerView.Adapter<*>? = null
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -53,12 +54,12 @@ class SearchFragment : Fragment() {
         setHasOptionsMenu(false)
         initRecyclerView()
         initView()
+        initSearchObserver()
         initObserver()
     }
 
     override fun onResume() {
         super.onResume()
-
         binding.root.requestLayout()
     }
 
@@ -84,7 +85,7 @@ class SearchFragment : Fragment() {
             viewModel.page = 1
             viewModel.hasNextPage = true
 
-            searchAdapter?.notifyDataSetChanged()
+
             viewModel.search(viewModel.searchKeyword)
         }
     }
@@ -94,6 +95,18 @@ class SearchFragment : Fragment() {
             viewModel.loading()
             viewModel.search(viewModel.searchKeyword)
         }
+    }
+
+    private fun initSearchObserver() {
+        searchKeywordViewModel.searchKeyword.observe(this) {
+            viewModel.searchKeyword = it
+            viewModel.searchList.clear()
+            isLoading = false
+            viewModel.page = 1
+            viewModel.hasNextPage = true
+            viewModel.search(it)
+        }
+        searchAdapter?.notifyDataSetChanged()
     }
 
     private fun initObserver() {
@@ -117,7 +130,6 @@ class SearchFragment : Fragment() {
 
                     if (isLoading) {
                         viewModel.searchList.removeAt(viewModel.searchList.lastIndex)
-                        searchAdapter?.notifyItemRemoved(viewModel.searchList.size)
                         isLoading = false
                     }
 
@@ -131,7 +143,7 @@ class SearchFragment : Fragment() {
                             searchAnime.data?.media?.forEach { anime ->
                                 viewModel.searchList.add(SearchResult(animeSearchResult = anime))
                             }
-                            searchAdapter?.notifyItemRangeInserted(
+                            searchAdapter?.notifyItemRangeChanged(
                                 (viewModel.page * 10),
                                 searchAnime.data?.media?.size!!
                             )
@@ -143,7 +155,7 @@ class SearchFragment : Fragment() {
                             searchManga.data?.media?.forEach { manga ->
                                 viewModel.searchList.add(SearchResult(mangaSearchResult = manga))
                             }
-                            searchAdapter?.notifyItemRangeInserted(
+                            searchAdapter?.notifyItemRangeChanged(
                                 (viewModel.page * 10),
                                 searchManga.data?.media?.size!!
                             )
@@ -155,7 +167,7 @@ class SearchFragment : Fragment() {
                             searchChara.data?.characters?.forEach { chara ->
                                 viewModel.searchList.add(SearchResult(charactersSearchResult = chara))
                             }
-                            searchAdapter?.notifyItemRangeInserted(
+                            searchAdapter?.notifyItemRangeChanged(
                                 (viewModel.page * 10),
                                 searchChara.data?.characters?.size!!
                             )
