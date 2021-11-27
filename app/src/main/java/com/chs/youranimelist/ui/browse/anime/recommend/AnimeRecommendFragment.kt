@@ -91,6 +91,7 @@ class AnimeRecommendFragment : Fragment() {
                     )
                 )
             }
+            this.setHasFixedSize(true)
             this.adapter = animeRecommendAdapter
             this.layoutManager = LinearLayoutManager(this@AnimeRecommendFragment.context)
             this.addOnScrollListener(object : RecyclerView.OnScrollListener() {

@@ -46,11 +46,11 @@ class SortedFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getAnimeList()
+        viewModel.getGenreList()
         initClick()
         initSortType(args.sortType)
         initRecyclerView()
-        viewModel.getAnimeList()
-        viewModel.getGenreList()
         getAnimeList()
         getGenre()
         setHasOptionsMenu(true)
@@ -265,6 +265,7 @@ class SortedFragment : BaseFragment() {
                 startActivity(intent)
             }
             animeListAdapter?.setHasStableIds(true)
+            this.setHasFixedSize(true)
             this.adapter = animeListAdapter
             this.layoutManager = GridLayoutManager(this@SortedFragment.context, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))

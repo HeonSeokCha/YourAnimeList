@@ -146,6 +146,7 @@ class HomeFragment : Fragment() {
             homeRecListAdapter!!.stateRestorationPolicy = StateRestorationPolicy.ALLOW
             this.adapter = homeRecListAdapter
             this.layoutManager = LinearLayoutManager(this@HomeFragment.context)
+            this.setHasFixedSize(true)
         }
     }
 

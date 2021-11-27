@@ -226,6 +226,7 @@ class SearchFragment : Fragment() {
         searchAdapter!!.setHasStableIds(true)
         binding.rvSearch.adapter = searchAdapter
         binding.rvSearch.layoutManager = LinearLayoutManager(this.context)
+        binding.rvSearch.setHasFixedSize(true)
     }
 
     override fun onDestroyView() {
