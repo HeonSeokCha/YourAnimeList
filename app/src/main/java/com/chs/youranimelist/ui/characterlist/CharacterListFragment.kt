@@ -74,8 +74,9 @@ class CharacterListFragment : Fragment() {
         charaListAdapter!!.stateRestorationPolicy =
             RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding.rvCharaList.apply {
-            adapter = charaListAdapter
-            layoutManager = LinearLayoutManager(this.context)
+            this.setHasFixedSize(true)
+            this.adapter = charaListAdapter
+            this.layoutManager = LinearLayoutManager(this.context)
         }
     }
 

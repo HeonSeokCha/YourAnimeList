@@ -61,7 +61,6 @@ class AnimeDetailFragment : BaseFragment() {
     }
 
     private fun checkAnimeList() {
-        args.id
         viewModel.checkAnimeList(args.id)
             .observe(viewLifecycleOwner, { animeInfo ->
                 if (animeInfo != null && animeInfo.animeId == args.id) {
