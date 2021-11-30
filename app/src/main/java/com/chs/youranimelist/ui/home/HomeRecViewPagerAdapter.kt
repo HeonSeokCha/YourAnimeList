@@ -15,7 +15,10 @@ class HomeRecViewPagerAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                clickListener.invoke(items[position]!!.id, items[position]!!.idMal!!)
+                clickListener.invoke(
+                    items[layoutPosition]!!.id,
+                    items[layoutPosition]!!.idMal ?: 0
+                )
             }
         }
 

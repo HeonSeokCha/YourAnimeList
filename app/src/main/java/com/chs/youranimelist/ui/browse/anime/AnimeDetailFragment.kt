@@ -138,7 +138,7 @@ class AnimeDetailFragment : BaseFragment() {
                 viewModel.insertAnimeList(
                     Anime(
                         animeId = this.id,
-                        idMal = this.idMal!!,
+                        idMal = this.idMal ?: 0,
                         title = this.title!!.english ?: this.title.romaji!!,
                         format = this.format.toString(),
                         status = this.status.toString(),

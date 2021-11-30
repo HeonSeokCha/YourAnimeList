@@ -24,7 +24,7 @@ class SortedListAdapter(
             binding.root.setOnClickListener {
                 clickListener.invoke(
                     items[layoutPosition]!!.id,
-                    items[layoutPosition]!!.idMal!!
+                    items[layoutPosition]!!.idMal ?: 0
                 )
             }
         }

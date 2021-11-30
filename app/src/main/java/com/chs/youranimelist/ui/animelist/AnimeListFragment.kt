@@ -57,10 +57,8 @@ class AnimeListFragment : Fragment() {
     }
 
     private fun getAnimeList() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.animeListResponse.collectLatest {
-                animeListAdapter.submitList(it)
-            }
+        viewModel.animeListResponse.observe(viewLifecycleOwner) {
+            animeListAdapter.submitList(it)
         }
     }
 
@@ -76,7 +74,6 @@ class AnimeListFragment : Fragment() {
         animeListAdapter!!.stateRestorationPolicy =
             RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding.rvAnimeList.apply {
-            this.setHasFixedSize(true)
             this.adapter = animeListAdapter
             this.layoutManager = LinearLayoutManager(this.context)
         }

@@ -25,7 +25,7 @@ class AnimeRecommendAdapter(
             binding.root.setOnClickListener {
                 clickListener.invoke(
                     items[layoutPosition]!!.node!!.mediaRecommendation!!.id,
-                    items[layoutPosition]!!.node!!.mediaRecommendation!!.idMal!!
+                    items[layoutPosition]!!.node!!.mediaRecommendation!!.idMal ?: 0
                 )
             }
         }

@@ -56,15 +56,13 @@ class CharacterListFragment : Fragment() {
     }
 
     private fun getCharaList() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.charaListResponse.collectLatest {
-                charaListAdapter.submitList(it)
-            }
+        viewModel.charaListResponse.observe(viewLifecycleOwner) {
+            charaListAdapter.submitList(it)
         }
     }
 
     private fun initRecyclerView() {
-        charaListAdapter = CharacterListAdapter() { id ->
+        charaListAdapter = CharacterListAdapter { id ->
             val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
                 this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_CHARA)
                 this.putExtra(Constant.TARGET_ID, id)
@@ -74,7 +72,6 @@ class CharacterListFragment : Fragment() {
         charaListAdapter!!.stateRestorationPolicy =
             RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding.rvCharaList.apply {
-            this.setHasFixedSize(true)
             this.adapter = charaListAdapter
             this.layoutManager = LinearLayoutManager(this.context)
         }
