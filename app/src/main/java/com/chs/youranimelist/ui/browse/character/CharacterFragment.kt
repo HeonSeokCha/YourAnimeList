@@ -1,22 +1,16 @@
 package com.chs.youranimelist.ui.browse.character
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.TranslateAnimation
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.apollographql.apollo.api.toInput
@@ -25,11 +19,8 @@ import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.databinding.FragmentCharacterBinding
 import com.chs.youranimelist.network.ResponseState
-import com.chs.youranimelist.network.repository.CharacterRepository
 import com.chs.youranimelist.ui.base.BaseFragment
-import com.chs.youranimelist.ui.characterlist.CharacterListViewModel
 import com.chs.youranimelist.util.Constant
-import kotlinx.coroutines.flow.collectLatest
 
 class CharacterFragment : BaseFragment() {
     private var _binding: FragmentCharacterBinding? = null
@@ -93,10 +84,6 @@ class CharacterFragment : BaseFragment() {
                         viewModel.characterAnimeList.add(anime)
                     }
                     animeAdapter?.notifyDataSetChanged()
-                    Log.e("getCharaInfo", it.data?.character?.description!!.length.toString())
-                    if (it.data?.character?.description!!.length < 200) {
-                        binding.btnExpand.isVisible = false
-                    }
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(

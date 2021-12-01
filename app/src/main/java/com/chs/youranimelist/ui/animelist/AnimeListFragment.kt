@@ -46,6 +46,7 @@ class AnimeListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         getAnimeList()
+        setHasOptionsMenu(true)
     }
 
     override fun onResume() {
@@ -53,7 +54,6 @@ class AnimeListFragment : Fragment() {
         if (::animeListAdapter.isInitialized) {
             viewModel.getAllAnimeList()
         }
-        setHasOptionsMenu(true)
     }
 
     private fun getAnimeList() {

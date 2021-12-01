@@ -164,7 +164,10 @@ class AnimeDetailFragment : BaseFragment() {
     private fun trailerPlay(videoId: String) {
         CustomTabsIntent.Builder()
             .build()
-            .launchUrl(requireActivity(), Uri.parse("https://www.youtube.com/watch?v=$videoId"))
+            .launchUrl(
+                requireActivity(),
+                Uri.parse("https://www.youtube.com/watch?v=$videoId")
+            )
     }
 
     override fun onDestroyView() {

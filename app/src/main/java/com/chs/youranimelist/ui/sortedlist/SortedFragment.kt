@@ -52,7 +52,7 @@ class SortedFragment : BaseFragment() {
         initSortType(args.sortType)
         initRecyclerView()
         getAnimeList()
-        getGenre()
+//        getGenre()
         setHasOptionsMenu(true)
     }
 
@@ -176,55 +176,53 @@ class SortedFragment : BaseFragment() {
     }
 
     private fun getAnimeList() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.animeListResponse.collectLatest {
-                when (it.responseState) {
-                    ResponseState.LOADING -> {
-                        if (!isLoading)
-                            binding.layoutShimmerSorted.root.isVisible = true
+        viewModel.animeListResponse.observe(viewLifecycleOwner) {
+            when (it.responseState) {
+                ResponseState.LOADING -> {
+                    if (!isLoading)
+                        binding.layoutShimmerSorted.root.isVisible = true
+                }
+                ResponseState.SUCCESS -> {
+                    if (!viewModel.hasNextPage) {
+                        return@observe
                     }
-                    ResponseState.SUCCESS -> {
-                        if (!viewModel.hasNextPage) {
-                            return@collectLatest
-                        }
 
-                        if (isLoading) {
-                            viewModel.animeResultList.removeAt(viewModel.animeResultList.lastIndex)
-                            isLoading = false
-                        }
-
-                        if (viewModel.isSeason) {
-                            viewModel.hasNextPage =
-                                it.data?.season?.pageInfo?.hasNextPage ?: false
-                            it.data?.season?.media?.forEach { seasonAnime ->
-                                viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
-                            }
-                            animeListAdapter?.notifyItemRangeChanged(
-                                ((viewModel.page * 10)), it.data?.season?.media?.size!!
-                            )
-                        } else {
-                            viewModel.hasNextPage =
-                                it.data?.nonSeason?.pageInfo!!.hasNextPage ?: false
-                            it.data.nonSeason.media?.forEach { nonSeasonAnime ->
-                                viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
-                            }
-                            animeListAdapter?.notifyItemRangeChanged(
-                                ((viewModel.page * 10)), it.data?.nonSeason?.media?.size!!
-                            )
-                        }
-
-                        binding.layoutShimmerSorted.root.isVisible = false
-                        binding.rvAnimeList.isVisible = true
-                    }
-                    ResponseState.ERROR -> {
-                        Toast.makeText(
-                            requireContext(),
-                            it.message,
-                            Toast.LENGTH_LONG
-                        ).show()
+                    if (isLoading) {
+                        viewModel.animeResultList.removeAt(viewModel.animeResultList.lastIndex)
                         isLoading = false
-                        binding.layoutShimmerSorted.root.isVisible = false
                     }
+
+                    if (viewModel.isSeason) {
+                        viewModel.hasNextPage =
+                            it.data?.season?.pageInfo?.hasNextPage ?: false
+                        it.data?.season?.media?.forEach { seasonAnime ->
+                            viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
+                        }
+                        animeListAdapter?.notifyItemRangeChanged(
+                            ((viewModel.page * 10)), it.data?.season?.media?.size!!
+                        )
+                    } else {
+                        viewModel.hasNextPage =
+                            it.data?.nonSeason?.pageInfo!!.hasNextPage ?: false
+                        it.data.nonSeason.media?.forEach { nonSeasonAnime ->
+                            viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
+                        }
+                        animeListAdapter?.notifyItemRangeChanged(
+                            ((viewModel.page * 10)), it.data?.nonSeason?.media?.size!!
+                        )
+                    }
+
+                    binding.layoutShimmerSorted.root.isVisible = false
+                    binding.rvAnimeList.isVisible = true
+                }
+                ResponseState.ERROR -> {
+                    Toast.makeText(
+                        requireContext(),
+                        it.message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    isLoading = false
+                    binding.layoutShimmerSorted.root.isVisible = false
                 }
             }
         }
@@ -232,7 +230,7 @@ class SortedFragment : BaseFragment() {
 
     private fun getGenre() {
         lifecycleScope.launchWhenStarted {
-            viewModel.genreListResponse.collectLatest {
+            viewModel.genreListResponse.observe(viewLifecycleOwner) {
                 when (it.responseState) {
                     ResponseState.SUCCESS -> {
                         it.data?.genreCollection?.forEach { genre ->

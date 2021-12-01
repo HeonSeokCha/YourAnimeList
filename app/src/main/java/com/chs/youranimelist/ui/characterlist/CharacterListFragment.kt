@@ -45,6 +45,7 @@ class CharacterListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         getCharaList()
+        setHasOptionsMenu(true)
     }
 
     override fun onResume() {
@@ -52,7 +53,6 @@ class CharacterListFragment : Fragment() {
         if (::charaListAdapter.isInitialized) {
             viewModel.getAllCharaList()
         }
-        setHasOptionsMenu(true)
     }
 
     private fun getCharaList() {
