@@ -1,5 +1,6 @@
 package com.chs.youranimelist.ui.sortedlist
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.apollographql.apollo.api.toInput
 import com.apollographql.apollo.exception.ApolloException
@@ -14,6 +15,7 @@ import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.type.MediaStatus
 import com.chs.youranimelist.util.SingleLiveEvent
 import io.ktor.client.features.*
+import io.ktor.util.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -46,6 +48,7 @@ class SortedListViewModel : ViewModel() {
     fun getAnimeList() {
         viewModelScope.launch {
             _animeListResponse.value = NetWorkState.Loading()
+            Log.e("getAnimeList","$selectedSort, $selectedSeason, $selectedYear, $selectStatus, $selectGenre")
             animeListRepository.getAnimeList(
                 page.toInput(),
                 selectedSort.toInput(),
@@ -54,7 +57,7 @@ class SortedListViewModel : ViewModel() {
                 selectStatus.toInput(),
                 selectGenre.toInput()
             ).catch { e ->
-                _animeListResponse.value = NetWorkState.Error(e.localizedMessage.toString())
+                _animeListResponse.value = NetWorkState.Error(e.message.toString())
             }.collect {
                 _animeListResponse.value = NetWorkState.Success(it.data!!)
             }

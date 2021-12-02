@@ -1,6 +1,7 @@
 package com.chs.youranimelist.network.repository
 
 import com.apollographql.apollo.api.Input
+import com.apollographql.apollo.api.toInput
 import com.apollographql.apollo.coroutines.toFlow
 import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.GenreQuery

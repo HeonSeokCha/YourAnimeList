@@ -46,20 +46,20 @@ class SortedFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getAnimeList()
-        viewModel.getGenreList()
-        initClick()
         initSortType(args.sortType)
+        initClick()
         initRecyclerView()
         getAnimeList()
-//        getGenre()
+        getGenre()
+        viewModel.getAnimeList()
+        viewModel.getGenreList()
         setHasOptionsMenu(true)
     }
 
     private fun initClick() {
         binding.animeListYear.setOnClickListener {
             val yearList =
-                ArrayList((ConvertDate.getCurrentYear(false) + 1 downTo 1970).map { it.toString() })
+                ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
             AlertDialog.Builder(this.requireContext())
                 .setItems(yearList.toTypedArray()) { _, which ->
                     if (which == 0) {
@@ -68,7 +68,7 @@ class SortedFragment : BaseFragment() {
                     } else {
                         viewModel.selectedYear = yearList[which].toInt()
                         viewModel.selectStatus = null
-                        binding.animeListYear.text = viewModel.selectedYear?.toString()
+                        binding.animeListYear.text = yearList[which]
                     }
                     isLoading = false
                     viewModel.refresh()
@@ -140,6 +140,7 @@ class SortedFragment : BaseFragment() {
                 viewModel.selectedSort = MediaSort.POPULARITY_DESC
                 viewModel.selectedSeason = ConvertDate.getNextSeason()
                 viewModel.selectedYear = ConvertDate.getCurrentYear(true)
+                viewModel.selectStatus = MediaStatus.NOT_YET_RELEASED
                 viewModel.isSeason = true
                 binding.animeListYear.text = ConvertDate.getCurrentYear(true).toString()
                 binding.animeListSeason.text = ConvertDate.getNextSeason().toString()
@@ -214,6 +215,7 @@ class SortedFragment : BaseFragment() {
 
                     binding.layoutShimmerSorted.root.isVisible = false
                     binding.rvAnimeList.isVisible = true
+                    animeListAdapter?.notifyDataSetChanged()
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(
@@ -229,24 +231,22 @@ class SortedFragment : BaseFragment() {
     }
 
     private fun getGenre() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.genreListResponse.observe(viewLifecycleOwner) {
-                when (it.responseState) {
-                    ResponseState.SUCCESS -> {
-                        it.data?.genreCollection?.forEach { genre ->
-                            if (genre != null) {
-                                viewModel.genreList.add(genre)
-                            }
+        viewModel.genreListResponse.observe(viewLifecycleOwner) {
+            when (it.responseState) {
+                ResponseState.SUCCESS -> {
+                    it.data?.genreCollection?.forEach { genre ->
+                        if (genre != null) {
+                            viewModel.genreList.add(genre)
                         }
                     }
+                }
 
-                    ResponseState.ERROR -> {
-                        Toast.makeText(
-                            requireContext(),
-                            it.message,
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
+                ResponseState.ERROR -> {
+                    Toast.makeText(
+                        requireContext(),
+                        it.message,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
@@ -263,7 +263,6 @@ class SortedFragment : BaseFragment() {
                 startActivity(intent)
             }
             animeListAdapter?.setHasStableIds(true)
-            this.setHasFixedSize(true)
             this.adapter = animeListAdapter
             this.layoutManager = GridLayoutManager(this@SortedFragment.context, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
