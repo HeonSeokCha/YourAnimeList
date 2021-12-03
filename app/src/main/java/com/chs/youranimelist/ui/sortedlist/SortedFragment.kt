@@ -67,7 +67,7 @@ class SortedFragment : BaseFragment() {
                         viewModel.selectStatus = MediaStatus.NOT_YET_RELEASED
                     } else {
                         viewModel.selectedYear = yearList[which].toInt()
-                        viewModel.selectStatus = null
+                        viewModel.selectStatus = MediaStatus.RELEASING
                         binding.animeListYear.text = yearList[which]
                     }
                     isLoading = false

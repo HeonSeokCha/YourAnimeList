@@ -20,6 +20,7 @@ query AnimeListQuery(
         media(
             sort: [$sort],
             type: ANIME,
+            seasonYear: $seasonYear,
             status: $status,
             genre: $genre,
             isAdult: false
@@ -42,8 +43,6 @@ query AnimeListQuery(
             sort: [$sort],
             season: $season,
             seasonYear: $seasonYear,
-            status: $status,
-            genre: $genre,
             type: ANIME,
             isAdult: false
         ) {

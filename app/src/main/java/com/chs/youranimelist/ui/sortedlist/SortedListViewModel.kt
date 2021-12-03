@@ -48,7 +48,6 @@ class SortedListViewModel : ViewModel() {
     fun getAnimeList() {
         viewModelScope.launch {
             _animeListResponse.value = NetWorkState.Loading()
-            Log.e("getAnimeList","$selectedSort, $selectedSeason, $selectedYear, $selectStatus, $selectGenre")
             animeListRepository.getAnimeList(
                 page.toInput(),
                 selectedSort.toInput(),
