@@ -8,7 +8,7 @@
 
         <variable
             name="model"
-            type="com.chs.youranimelist.AnimeDetailQuery.Media" />
+            type="com.chs.youranimelist.browse.anime.AnimeDetailQuery.Media" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

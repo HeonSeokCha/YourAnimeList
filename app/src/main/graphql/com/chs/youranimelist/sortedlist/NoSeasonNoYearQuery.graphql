@@ -1,0 +1,26 @@
+query NoSeasonNoYearQuery(
+    $page: Int = 1,
+    $sort: MediaSort,
+    $genre: String
+) {
+    Page(
+        page: $page,
+        perPage: 10,
+    ) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        media(
+            sort: [$sort],
+            type: ANIME,
+            genre: $genre,
+            isAdult: false
+        ) {
+            ... animeList
+        }
+    }
+}

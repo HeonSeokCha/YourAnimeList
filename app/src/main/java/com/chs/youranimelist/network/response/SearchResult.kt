@@ -1,8 +1,8 @@
 package com.chs.youranimelist.network.response
 
-import com.chs.youranimelist.SearchAnimeQuery
-import com.chs.youranimelist.SearchCharacterQuery
-import com.chs.youranimelist.SearchMangaQuery
+import com.chs.youranimelist.search.SearchAnimeQuery
+import com.chs.youranimelist.search.SearchCharacterQuery
+import com.chs.youranimelist.search.SearchMangaQuery
 
 class SearchResult(
     var animeSearchResult: SearchAnimeQuery.Medium? = null,

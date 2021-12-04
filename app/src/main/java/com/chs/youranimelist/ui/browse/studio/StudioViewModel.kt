@@ -2,7 +2,7 @@ package com.chs.youranimelist.ui.browse.studio
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.youranimelist.StudioAnimeQuery
+import com.chs.youranimelist.browse.studio.StudioAnimeQuery
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.StudioRepository
 import com.chs.youranimelist.type.MediaSort

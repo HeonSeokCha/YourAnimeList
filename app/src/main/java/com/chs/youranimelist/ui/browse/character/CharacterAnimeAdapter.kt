@@ -3,7 +3,7 @@ package com.chs.youranimelist.ui.browse.character
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.CharacterQuery
+import com.chs.youranimelist.browse.character.CharacterQuery
 import com.chs.youranimelist.databinding.ItemAnimeChildBinding
 
 class CharacterAnimeAdapter(

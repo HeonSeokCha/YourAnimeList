@@ -3,32 +3,9 @@ query AnimeListQuery(
     $sort: MediaSort,
     $season: MediaSeason,
     $seasonYear: Int,
-    $status: MediaStatus,
     $genre: String
 ) {
-    NonSeason: Page(
-        page: $page,
-        perPage: 10,
-    ) {
-        pageInfo {
-            total
-            perPage
-            currentPage
-            lastPage
-            hasNextPage
-        }
-        media(
-            sort: [$sort],
-            type: ANIME,
-            seasonYear: $seasonYear,
-            status: $status,
-            genre: $genre,
-            isAdult: false
-        ) {
-            ... animeList
-        }
-    },
-    Season: Page(
+    Page(
         page: $page,
         perPage: 10
     ) {
@@ -43,6 +20,7 @@ query AnimeListQuery(
             sort: [$sort],
             season: $season,
             seasonYear: $seasonYear,
+            genre: $genre,
             type: ANIME,
             isAdult: false
         ) {

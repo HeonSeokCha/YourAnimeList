@@ -6,14 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.Input
-import com.chs.youranimelist.CharacterQuery
+import com.chs.youranimelist.browse.character.CharacterQuery
 import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.data.repository.CharacterListRepository
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.CharacterRepository
 import com.chs.youranimelist.util.SingleLiveEvent
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

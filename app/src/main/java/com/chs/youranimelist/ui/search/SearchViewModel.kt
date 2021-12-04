@@ -1,15 +1,14 @@
 package com.chs.youranimelist.ui.search
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.youranimelist.SearchAnimeQuery
-import com.chs.youranimelist.SearchCharacterQuery
-import com.chs.youranimelist.SearchMangaQuery
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.response.SearchResult
 import com.chs.youranimelist.network.repository.SearchRepository
+import com.chs.youranimelist.search.SearchAnimeQuery
+import com.chs.youranimelist.search.SearchCharacterQuery
+import com.chs.youranimelist.search.SearchMangaQuery
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.SingleLiveEvent
 import kotlinx.coroutines.flow.catch

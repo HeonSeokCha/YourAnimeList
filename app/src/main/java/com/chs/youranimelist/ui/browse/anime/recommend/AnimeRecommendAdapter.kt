@@ -3,11 +3,9 @@ package com.chs.youranimelist.ui.browse.anime.recommend
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.AnimeRecommendQuery
+import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
 import com.chs.youranimelist.databinding.ItemAnimeRecommendBinding
 import com.chs.youranimelist.databinding.ItemLoadingBinding
-import com.chs.youranimelist.ui.search.adapter.SearchAnimeAdapter
-import com.chs.youranimelist.ui.sortedlist.SortedListAdapter
 
 class AnimeRecommendAdapter(
     private val items: List<AnimeRecommendQuery.Edge?>,

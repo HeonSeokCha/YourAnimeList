@@ -3,8 +3,8 @@ package com.chs.youranimelist.ui.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.HomeRecommendListQuery
 import com.chs.youranimelist.databinding.ItemViewPagerBinding
+import com.chs.youranimelist.home.HomeRecommendListQuery
 
 class HomeRecViewPagerAdapter(
     private val items: List<HomeRecommendListQuery.Medium?>,

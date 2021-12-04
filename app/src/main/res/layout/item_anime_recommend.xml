@@ -3,7 +3,7 @@
     <data>
         <variable
             name="model"
-            type="com.chs.youranimelist.AnimeRecommendQuery.Node" />
+            type="com.chs.youranimelist.browse.anime.AnimeRecommendQuery.Node" />
     </data>
     <com.google.android.material.card.MaterialCardView
         xmlns:android="http://schemas.android.com/apk/res/android"

@@ -3,7 +3,7 @@ package com.chs.youranimelist.ui.browse.anime.overview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.AnimeOverviewQuery
+import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
 import com.chs.youranimelist.databinding.ItemStudioBinding
 
 class AnimeOverviewStudioAdapter(

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="model"
-            type="com.chs.youranimelist.CharacterQuery.Character" />
+            type="com.chs.youranimelist.browse.character.CharacterQuery.Character" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

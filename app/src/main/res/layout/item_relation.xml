@@ -5,7 +5,7 @@
     <data>
         <variable
             name="model"
-            type="com.chs.youranimelist.AnimeOverviewQuery.RelationsEdge" />
+            type="com.chs.youranimelist.browse.anime.AnimeOverviewQuery.RelationsEdge" />
     </data>
 
     <androidx.cardview.widget.CardView

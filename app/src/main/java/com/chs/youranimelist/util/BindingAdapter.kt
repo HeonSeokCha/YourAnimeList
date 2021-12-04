@@ -13,7 +13,11 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.chs.youranimelist.*
+import com.chs.youranimelist.browse.anime.AnimeDetailQuery
+import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
+import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
 import com.chs.youranimelist.fragment.AnimeList
+import com.chs.youranimelist.home.HomeRecommendListQuery
 import com.chs.youranimelist.util.ConvertDate.secondsToDateTime
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*

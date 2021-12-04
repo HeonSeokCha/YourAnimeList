@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.Input
-import com.chs.youranimelist.AnimeDetailQuery
+import com.chs.youranimelist.browse.anime.AnimeDetailQuery
 import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.data.repository.AnimeListRepository
 import com.chs.youranimelist.network.NetWorkState

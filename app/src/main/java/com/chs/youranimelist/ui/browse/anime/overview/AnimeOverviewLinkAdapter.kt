@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.AnimeOverviewQuery
+import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
 import com.chs.youranimelist.databinding.ItemLinkBinding
 import com.chs.youranimelist.util.Constant
 import java.util.*

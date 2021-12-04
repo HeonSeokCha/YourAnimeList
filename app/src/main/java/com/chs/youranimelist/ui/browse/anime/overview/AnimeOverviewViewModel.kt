@@ -3,7 +3,7 @@ package com.chs.youranimelist.ui.browse.anime.overview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.toInput
-import com.chs.youranimelist.AnimeOverviewQuery
+import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.network.response.AnimeDetails

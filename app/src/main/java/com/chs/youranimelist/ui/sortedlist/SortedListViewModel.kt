@@ -1,23 +1,18 @@
 package com.chs.youranimelist.ui.sortedlist
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.apollographql.apollo.api.toInput
-import com.apollographql.apollo.exception.ApolloException
-import com.apollographql.apollo.exception.ApolloHttpException
-import com.chs.youranimelist.AnimeListQuery
-import com.chs.youranimelist.GenreQuery
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.AnimeListRepository
+import com.chs.youranimelist.sortedlist.AnimeListQuery
+import com.chs.youranimelist.sortedlist.GenreQuery
+import com.chs.youranimelist.sortedlist.NoSeasonNoYearQuery
+import com.chs.youranimelist.sortedlist.NoSeasonQuery
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.type.MediaStatus
 import com.chs.youranimelist.util.SingleLiveEvent
-import io.ktor.client.features.*
-import io.ktor.util.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -28,6 +23,16 @@ class SortedListViewModel : ViewModel() {
     val animeListResponse: LiveData<NetWorkState<AnimeListQuery.Data>>
         get() = _animeListResponse
 
+    private val _noSeasonNoYearListResponse =
+        SingleLiveEvent<NetWorkState<NoSeasonNoYearQuery.Data>>()
+    val noSeasonNoYearListResponse: LiveData<NetWorkState<NoSeasonNoYearQuery.Data>>
+        get() = _noSeasonNoYearListResponse
+
+    private val _noSeasonListResponse =
+        SingleLiveEvent<NetWorkState<NoSeasonQuery.Data>>()
+    val noSeasonListResponse: LiveData<NetWorkState<NoSeasonQuery.Data>>
+        get() = _noSeasonListResponse
+
     private val _genreListResponse = SingleLiveEvent<NetWorkState<GenreQuery.Data>>()
     val genreListResponse: LiveData<NetWorkState<GenreQuery.Data>>
         get() = _genreListResponse
@@ -36,10 +41,10 @@ class SortedListViewModel : ViewModel() {
     var selectedYear: Int? = null
     var selectedSeason: MediaSeason? = null
     var selectedSort: MediaSort? = null
-    var selectStatus: MediaStatus? = MediaStatus.RELEASING
     var selectGenre: String? = null
 
     var page: Int = 1
+    var selectType = ""
     var hasNextPage: Boolean = true
     var isSeason: Boolean = false
     var animeResultList: ArrayList<AnimeList?> = ArrayList()
@@ -53,13 +58,26 @@ class SortedListViewModel : ViewModel() {
                 selectedSort.toInput(),
                 selectedSeason.toInput(),
                 selectedYear.toInput(),
-                selectStatus.toInput(),
                 selectGenre.toInput()
             ).catch { e ->
                 _animeListResponse.value = NetWorkState.Error(e.message.toString())
             }.collect {
                 _animeListResponse.value = NetWorkState.Success(it.data!!)
             }
+        }
+    }
+
+    fun getNoSeasonList() {
+        _animeListResponse.value = NetWorkState.Loading()
+        viewModelScope.launch {
+
+        }
+    }
+
+    fun getNoSeasonNoYearList() {
+        _animeListResponse.value = NetWorkState.Loading()
+        viewModelScope.launch {
+
         }
     }
 

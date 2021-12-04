@@ -12,14 +12,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.SearchAnimeQuery
-import com.chs.youranimelist.SearchCharacterQuery
-import com.chs.youranimelist.SearchMangaQuery
 import com.chs.youranimelist.databinding.FragmentSearchBinding
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.response.SearchResult
-import com.chs.youranimelist.network.repository.SearchRepository
+import com.chs.youranimelist.search.SearchAnimeQuery
+import com.chs.youranimelist.search.SearchCharacterQuery
+import com.chs.youranimelist.search.SearchMangaQuery
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.adapter.SearchAnimeAdapter
 import com.chs.youranimelist.ui.search.adapter.SearchCharacterAdapter

@@ -3,11 +3,9 @@ package com.chs.youranimelist.ui.browse.studio
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.StudioAnimeQuery
+import com.chs.youranimelist.browse.studio.StudioAnimeQuery
 import com.chs.youranimelist.databinding.ItemAnimeChildBinding
 import com.chs.youranimelist.databinding.ItemLoadingBinding
-import com.chs.youranimelist.databinding.ItemRelationBinding
-import com.chs.youranimelist.fragment.AnimeList
 
 class StudioAnimeAdapter(
     private val items: List<StudioAnimeQuery.Edge?>,

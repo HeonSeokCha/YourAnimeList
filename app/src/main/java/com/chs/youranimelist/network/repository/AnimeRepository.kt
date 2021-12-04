@@ -4,6 +4,11 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.toInput
 import com.apollographql.apollo.coroutines.toFlow
 import com.chs.youranimelist.*
+import com.chs.youranimelist.browse.anime.AnimeCharacterQuery
+import com.chs.youranimelist.browse.anime.AnimeDetailQuery
+import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
+import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
+import com.chs.youranimelist.home.HomeRecommendListQuery
 import com.chs.youranimelist.network.services.ApolloServices
 import com.chs.youranimelist.network.services.JikanRestService
 import com.chs.youranimelist.util.ConvertDate

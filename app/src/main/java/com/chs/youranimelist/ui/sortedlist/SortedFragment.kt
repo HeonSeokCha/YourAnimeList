@@ -64,10 +64,8 @@ class SortedFragment : BaseFragment() {
                 .setItems(yearList.toTypedArray()) { _, which ->
                     if (which == 0) {
                         binding.animeListYear.text = yearList[which]
-                        viewModel.selectStatus = MediaStatus.NOT_YET_RELEASED
                     } else {
                         viewModel.selectedYear = yearList[which].toInt()
-                        viewModel.selectStatus = MediaStatus.RELEASING
                         binding.animeListYear.text = yearList[which]
                     }
                     isLoading = false
@@ -140,7 +138,6 @@ class SortedFragment : BaseFragment() {
                 viewModel.selectedSort = MediaSort.POPULARITY_DESC
                 viewModel.selectedSeason = ConvertDate.getNextSeason()
                 viewModel.selectedYear = ConvertDate.getCurrentYear(true)
-                viewModel.selectStatus = MediaStatus.NOT_YET_RELEASED
                 viewModel.isSeason = true
                 binding.animeListYear.text = ConvertDate.getCurrentYear(true).toString()
                 binding.animeListSeason.text = ConvertDate.getNextSeason().toString()
@@ -195,21 +192,21 @@ class SortedFragment : BaseFragment() {
 
                     if (viewModel.isSeason) {
                         viewModel.hasNextPage =
-                            it.data?.season?.pageInfo?.hasNextPage ?: false
-                        it.data?.season?.media?.forEach { seasonAnime ->
+                            it.data?.page?.pageInfo?.hasNextPage ?: false
+                        it.data?.page?.media?.forEach { seasonAnime ->
                             viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
                         }
                         animeListAdapter?.notifyItemRangeChanged(
-                            ((viewModel.page * 10)), it.data?.season?.media?.size!!
+                            ((viewModel.page * 10)), it.data?.page?.media?.size!!
                         )
                     } else {
                         viewModel.hasNextPage =
-                            it.data?.nonSeason?.pageInfo!!.hasNextPage ?: false
-                        it.data.nonSeason.media?.forEach { nonSeasonAnime ->
+                            it.data?.page?.pageInfo!!.hasNextPage ?: false
+                        it.data.page.media?.forEach { nonSeasonAnime ->
                             viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
                         }
                         animeListAdapter?.notifyItemRangeChanged(
-                            ((viewModel.page * 10)), it.data?.nonSeason?.media?.size!!
+                            ((viewModel.page * 10)), it.data?.page?.media?.size!!
                         )
                     }
 
