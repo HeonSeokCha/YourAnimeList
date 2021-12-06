@@ -20,6 +20,13 @@ object Constant {
     const val TARGET_TYPE: String = "type"
     const val TARGET_GENRE: String = "genre"
     const val TARGET_SEASON: String = "season"
+    const val TRENDING_NOW: String = "TRENDING NOW"
+    const val POPULAR_THIS_SEASON: String = "POPULAR THIS SEASON"
+    const val UPCOMING_NEXT_SEASON: String = "UPCOMING NEXT SEASON"
+    const val ALL_TIME_POPULAR: String = "ALL TIME POPULAR"
+    const val NO_SEASON_NO_YEAR: String = "noSeasonNoYear"
+    const val NO_SEASON: String = "noSeason"
+    const val SEASON_YEAR: String = "seasonYear"
 
 
     val DEFAULT_GENRE_COLOR = "#727272"

@@ -12,6 +12,7 @@ import com.chs.youranimelist.sortedlist.NoSeasonQuery
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.type.MediaStatus
+import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.SingleLiveEvent
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -52,32 +53,49 @@ class SortedListViewModel : ViewModel() {
 
     fun getAnimeList() {
         viewModelScope.launch {
-            _animeListResponse.value = NetWorkState.Loading()
-            animeListRepository.getAnimeList(
-                page.toInput(),
-                selectedSort.toInput(),
-                selectedSeason.toInput(),
-                selectedYear.toInput(),
-                selectGenre.toInput()
-            ).catch { e ->
-                _animeListResponse.value = NetWorkState.Error(e.message.toString())
-            }.collect {
-                _animeListResponse.value = NetWorkState.Success(it.data!!)
+            when (selectType) {
+                Constant.SEASON_YEAR -> {
+                    _animeListResponse.value = NetWorkState.Loading()
+                    animeListRepository.getAnimeList(
+                        page.toInput(),
+                        selectedSort.toInput(),
+                        selectedSeason.toInput(),
+                        selectedYear.toInput(),
+                        selectGenre.toInput()
+                    ).catch { e ->
+                        _animeListResponse.value = NetWorkState.Error(e.message.toString())
+                    }.collect {
+                        _animeListResponse.value = NetWorkState.Success(it.data!!)
+                    }
+                }
+
+                Constant.NO_SEASON -> {
+                    _noSeasonListResponse.value = NetWorkState.Loading()
+                    animeListRepository.getNoSeasonList(
+                        page.toInput(),
+                        selectedSort.toInput(),
+                        selectedYear.toInput(),
+                        selectGenre.toInput()
+                    ).catch { e ->
+                        _noSeasonListResponse.value = NetWorkState.Error(e.message.toString())
+                    }.collect {
+                        _noSeasonListResponse.value = NetWorkState.Success(it.data!!)
+                    }
+                }
+
+                Constant.NO_SEASON_NO_YEAR -> {
+                    _noSeasonNoYearListResponse.value = NetWorkState.Loading()
+                    animeListRepository.getNoSeasonNoYearList(
+                        page.toInput(),
+                        selectedSort.toInput(),
+                        selectGenre.toInput()
+                    ).catch { e ->
+                        _noSeasonNoYearListResponse.value = NetWorkState.Error(e.message.toString())
+                    }.collect {
+                        _noSeasonNoYearListResponse.value = NetWorkState.Success(it.data!!)
+                    }
+                }
             }
-        }
-    }
-
-    fun getNoSeasonList() {
-        _animeListResponse.value = NetWorkState.Loading()
-        viewModelScope.launch {
-
-        }
-    }
-
-    fun getNoSeasonNoYearList() {
-        _animeListResponse.value = NetWorkState.Loading()
-        viewModelScope.launch {
-
         }
     }
 

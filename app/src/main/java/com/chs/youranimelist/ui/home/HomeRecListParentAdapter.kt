@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.ItemAnimeListBinding
 import com.chs.youranimelist.databinding.ItemAnimeParentBinding
 import com.chs.youranimelist.fragment.AnimeList
+import com.chs.youranimelist.util.Constant
 
 class HomeRecListParentAdapter(
     private val list: List<List<AnimeList>>,
@@ -23,8 +24,10 @@ class HomeRecListParentAdapter(
 
     lateinit var homeAdapter: HomeRecListChildAdapter
     private val listTitleList = listOf(
-        "TRENDING NOW", "POPULAR THIS SEASON",
-        "UPCOMING NEXT SEASON", "ALL TIME POPULAR",
+        Constant.TRENDING_NOW,
+        Constant.POPULAR_THIS_SEASON,
+        Constant.UPCOMING_NEXT_SEASON,
+        Constant.ALL_TIME_POPULAR
     )
 
 
