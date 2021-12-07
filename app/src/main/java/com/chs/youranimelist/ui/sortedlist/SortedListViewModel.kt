@@ -20,18 +20,18 @@ import kotlinx.coroutines.launch
 
 class SortedListViewModel : ViewModel() {
 
-    private val _animeListResponse = SingleLiveEvent<NetWorkState<AnimeListQuery.Data>>()
-    val animeListResponse: LiveData<NetWorkState<AnimeListQuery.Data>>
+    private val _animeListResponse = SingleLiveEvent<NetWorkState<AnimeListQuery.Page>>()
+    val animeListResponse: LiveData<NetWorkState<AnimeListQuery.Page>>
         get() = _animeListResponse
 
     private val _noSeasonNoYearListResponse =
-        SingleLiveEvent<NetWorkState<NoSeasonNoYearQuery.Data>>()
-    val noSeasonNoYearListResponse: LiveData<NetWorkState<NoSeasonNoYearQuery.Data>>
+        SingleLiveEvent<NetWorkState<NoSeasonNoYearQuery.Page>>()
+    val noSeasonNoYearListResponse: LiveData<NetWorkState<NoSeasonNoYearQuery.Page>>
         get() = _noSeasonNoYearListResponse
 
     private val _noSeasonListResponse =
-        SingleLiveEvent<NetWorkState<NoSeasonQuery.Data>>()
-    val noSeasonListResponse: LiveData<NetWorkState<NoSeasonQuery.Data>>
+        SingleLiveEvent<NetWorkState<NoSeasonQuery.Page>>()
+    val noSeasonListResponse: LiveData<NetWorkState<NoSeasonQuery.Page>>
         get() = _noSeasonListResponse
 
     private val _genreListResponse = SingleLiveEvent<NetWorkState<GenreQuery.Data>>()
@@ -63,9 +63,9 @@ class SortedListViewModel : ViewModel() {
                         selectedYear.toInput(),
                         selectGenre.toInput()
                     ).catch { e ->
-                        _animeListResponse.value = NetWorkState.Error(e.message.toString())
+                        _animeListResponse.postValue(NetWorkState.Error(e.message.toString()))
                     }.collect {
-                        _animeListResponse.value = NetWorkState.Success(it.data!!)
+                        _animeListResponse.postValue(NetWorkState.Success(it.data?.page!!))
                     }
                 }
 
@@ -77,9 +77,9 @@ class SortedListViewModel : ViewModel() {
                         selectedYear.toInput(),
                         selectGenre.toInput()
                     ).catch { e ->
-                        _noSeasonListResponse.value = NetWorkState.Error(e.message.toString())
+                        _noSeasonListResponse.postValue(NetWorkState.Error(e.message.toString()))
                     }.collect {
-                        _noSeasonListResponse.value = NetWorkState.Success(it.data!!)
+                        _noSeasonListResponse.postValue(NetWorkState.Success(it.data?.page!!))
                     }
                 }
 
@@ -90,9 +90,9 @@ class SortedListViewModel : ViewModel() {
                         selectedSort.toInput(),
                         selectGenre.toInput()
                     ).catch { e ->
-                        _noSeasonNoYearListResponse.value = NetWorkState.Error(e.message.toString())
+                        _noSeasonNoYearListResponse.postValue(NetWorkState.Error(e.message.toString()))
                     }.collect {
-                        _noSeasonNoYearListResponse.value = NetWorkState.Success(it.data!!)
+                        _noSeasonNoYearListResponse.postValue(NetWorkState.Success(it.data?.page!!))
                     }
                 }
             }
@@ -105,6 +105,15 @@ class SortedListViewModel : ViewModel() {
             animeListRepository.getGenre().catch { e ->
                 _genreListResponse.value = NetWorkState.Error(e.message.toString())
             }.collect { _genreListResponse.value = NetWorkState.Success(it.data!!) }
+        }
+    }
+
+    fun getObserver(): LiveData<*>? {
+        return when (selectType) {
+            Constant.SEASON_YEAR -> animeListResponse
+            Constant.NO_SEASON_NO_YEAR -> noSeasonNoYearListResponse
+            Constant.NO_SEASON -> noSeasonListResponse
+            else -> null
         }
     }
 

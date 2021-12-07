@@ -14,7 +14,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentSortedBinding
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.ResponseState
+import com.chs.youranimelist.sortedlist.AnimeListQuery
+import com.chs.youranimelist.sortedlist.NoSeasonNoYearQuery
+import com.chs.youranimelist.sortedlist.NoSeasonQuery
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.ui.browse.BrowseActivity
@@ -64,6 +68,7 @@ class SortedFragment : BaseFragment() {
                         viewModel.selectedYear = yearList[which].toInt()
                         binding.animeListYear.text = yearList[which]
                     }
+                    viewModel.selectType = Constant.NO_SEASON
                     isLoading = false
                     viewModel.refresh()
                     animeListAdapter?.notifyDataSetChanged()
@@ -77,6 +82,7 @@ class SortedFragment : BaseFragment() {
                 .setItems(seasonArray) { _, which ->
                     viewModel.isSeason = true
                     viewModel.selectedSeason = Constant.animeSeasonList[which]
+                    viewModel.selectType = Constant.SEASON_YEAR
                     binding.animeListSeason.text = viewModel.selectedSeason?.name
                     isLoading = false
                     viewModel.refresh()
@@ -170,8 +176,8 @@ class SortedFragment : BaseFragment() {
     }
 
     private fun getAnimeList() {
-        viewModel.animeListResponse.observe(viewLifecycleOwner) {
-            when (it.responseState) {
+        viewModel.getObserver()?.observe(viewLifecycleOwner) {
+            when ((it as NetWorkState<*>?)?.responseState) {
                 ResponseState.LOADING -> {
                     if (!isLoading)
                         binding.layoutShimmerSorted.root.isVisible = true
@@ -186,29 +192,43 @@ class SortedFragment : BaseFragment() {
                         isLoading = false
                     }
 
-                    if (viewModel.isSeason) {
-                        viewModel.hasNextPage =
-                            it.data?.page?.pageInfo?.hasNextPage ?: false
-                        it.data?.page?.media?.forEach { seasonAnime ->
-                            viewModel.animeResultList.add(seasonAnime!!.fragments.animeList)
+                    when (viewModel.selectType) {
+                        Constant.SEASON_YEAR -> {
+                            val seasonYear = it as NetWorkState<AnimeListQuery.Page>
+                            viewModel.hasNextPage = seasonYear.data?.pageInfo?.hasNextPage ?: false
+                            seasonYear.data?.media?.forEach { anime ->
+                                viewModel.animeResultList.add(anime?.fragments?.animeList)
+                            }
+                            animeListAdapter?.notifyItemRangeChanged(
+                                ((viewModel.page * 10)), it.data?.media!!.size
+                            )
                         }
-                        animeListAdapter?.notifyItemRangeChanged(
-                            ((viewModel.page * 10)), it.data?.page?.media?.size!!
-                        )
-                    } else {
-                        viewModel.hasNextPage =
-                            it.data?.page?.pageInfo!!.hasNextPage ?: false
-                        it.data.page.media?.forEach { nonSeasonAnime ->
-                            viewModel.animeResultList.add(nonSeasonAnime!!.fragments.animeList)
+                        Constant.NO_SEASON_NO_YEAR -> {
+                            val noSeasonNoYear = it as NetWorkState<NoSeasonNoYearQuery.Page>
+                            viewModel.hasNextPage =
+                                noSeasonNoYear.data?.pageInfo?.hasNextPage ?: false
+                            noSeasonNoYear.data?.media?.forEach { anime ->
+                                viewModel.animeResultList.add(anime?.fragments?.animeList)
+                            }
+                            animeListAdapter?.notifyItemRangeChanged(
+                                ((viewModel.page * 10)), it.data?.media!!.size
+                            )
                         }
-                        animeListAdapter?.notifyItemRangeChanged(
-                            ((viewModel.page * 10)), it.data?.page?.media?.size!!
-                        )
+                        Constant.NO_SEASON -> {
+                            val noSeason = it as NetWorkState<NoSeasonQuery.Page>
+                            viewModel.hasNextPage =
+                                noSeason.data?.pageInfo?.hasNextPage ?: false
+                            noSeason.data?.media?.forEach { anime ->
+                                viewModel.animeResultList.add(anime?.fragments?.animeList)
+                            }
+                            animeListAdapter?.notifyItemRangeChanged(
+                                ((viewModel.page * 10)), it.data?.media!!.size
+                            )
+                        }
                     }
 
                     binding.layoutShimmerSorted.root.isVisible = false
                     binding.rvAnimeList.isVisible = true
-                    animeListAdapter?.notifyDataSetChanged()
                 }
                 ResponseState.ERROR -> {
                     Toast.makeText(
@@ -259,7 +279,6 @@ class SortedFragment : BaseFragment() {
             this.adapter = animeListAdapter
             this.layoutManager = GridLayoutManager(this@SortedFragment.context, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
-
             this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
