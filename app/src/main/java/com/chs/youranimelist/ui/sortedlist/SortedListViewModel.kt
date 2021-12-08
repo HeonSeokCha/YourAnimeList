@@ -55,7 +55,7 @@ class SortedListViewModel : ViewModel() {
         viewModelScope.launch {
             when (selectType) {
                 Constant.SEASON_YEAR -> {
-                    _animeListResponse.value = NetWorkState.Loading()
+                    _animeListResponse.postValue(NetWorkState.Loading())
                     animeListRepository.getAnimeList(
                         page.toInput(),
                         selectedSort.toInput(),
@@ -70,7 +70,7 @@ class SortedListViewModel : ViewModel() {
                 }
 
                 Constant.NO_SEASON -> {
-                    _noSeasonListResponse.value = NetWorkState.Loading()
+                    _noSeasonListResponse.postValue(NetWorkState.Loading())
                     animeListRepository.getNoSeasonList(
                         page.toInput(),
                         selectedSort.toInput(),
@@ -84,7 +84,7 @@ class SortedListViewModel : ViewModel() {
                 }
 
                 Constant.NO_SEASON_NO_YEAR -> {
-                    _noSeasonNoYearListResponse.value = NetWorkState.Loading()
+                    _noSeasonNoYearListResponse.postValue(NetWorkState.Loading())
                     animeListRepository.getNoSeasonNoYearList(
                         page.toInput(),
                         selectedSort.toInput(),

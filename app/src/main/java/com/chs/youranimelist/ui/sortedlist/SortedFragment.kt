@@ -62,16 +62,13 @@ class SortedFragment : BaseFragment() {
                 ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
             AlertDialog.Builder(this.requireContext())
                 .setItems(yearList.toTypedArray()) { _, which ->
-                    if (which == 0) {
-                        binding.animeListYear.text = yearList[which]
-                    } else {
-                        viewModel.selectedYear = yearList[which].toInt()
-                        binding.animeListYear.text = yearList[which]
-                    }
+                    viewModel.selectedYear = yearList[which].toInt()
+                    binding.animeListYear.text = yearList[which]
                     viewModel.selectType = Constant.NO_SEASON
                     isLoading = false
                     viewModel.refresh()
                     animeListAdapter?.notifyDataSetChanged()
+                    getAnimeList()
                 }
                 .show()
         }
@@ -81,12 +78,17 @@ class SortedFragment : BaseFragment() {
             AlertDialog.Builder(this.requireContext())
                 .setItems(seasonArray) { _, which ->
                     viewModel.isSeason = true
+                    if (viewModel.selectedYear == null) {
+                        viewModel.selectedYear = ConvertDate.getCurrentYear(false)
+                        binding.animeListYear.text = viewModel.selectedYear!!.toString()
+                    }
                     viewModel.selectedSeason = Constant.animeSeasonList[which]
                     viewModel.selectType = Constant.SEASON_YEAR
                     binding.animeListSeason.text = viewModel.selectedSeason?.name
                     isLoading = false
                     viewModel.refresh()
                     animeListAdapter?.notifyDataSetChanged()
+                    getAnimeList()
                 }
                 .show()
         }
@@ -99,6 +101,7 @@ class SortedFragment : BaseFragment() {
                     isLoading = false
                     viewModel.refresh()
                     animeListAdapter?.notifyDataSetChanged()
+                    getAnimeList()
                 }
                 .show()
         }
@@ -112,6 +115,7 @@ class SortedFragment : BaseFragment() {
                     isLoading = false
                     viewModel.refresh()
                     animeListAdapter?.notifyDataSetChanged()
+                    getAnimeList()
                 }
                 .show()
         }
