@@ -64,7 +64,11 @@ class SortedFragment : BaseFragment() {
                 .setItems(yearList.toTypedArray()) { _, which ->
                     viewModel.selectedYear = yearList[which].toInt()
                     binding.animeListYear.text = yearList[which]
-                    viewModel.selectType = Constant.NO_SEASON
+                    if (viewModel.selectedSeason != null) {
+                        viewModel.selectType = Constant.SEASON_YEAR
+                    } else {
+                        viewModel.selectType = Constant.NO_SEASON
+                    }
                     isLoading = false
                     viewModel.refresh()
                     animeListAdapter?.notifyDataSetChanged()
