@@ -13,17 +13,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentAnimeOverviewBinding
 import com.chs.youranimelist.network.ResponseState
-import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
-import com.chs.youranimelist.ui.browse.studio.StudioFragmentDirections
 import com.chs.youranimelist.util.Constant
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -83,7 +79,7 @@ class AnimeOverviewFragment : Fragment() {
         binding.txtAnimeOverviewSeason.setOnClickListener {
             findNavController().navigate(
                 AnimeDetailFragmentDirections.actionAnimeDetailToSorted(
-                    sortType = Constant.TARGET_SEASON,
+                    sortType = Constant.SEASON_YEAR,
                     season = season,
                     year = seasonYear
                 )
@@ -93,7 +89,7 @@ class AnimeOverviewFragment : Fragment() {
 
     private fun getAnimeInfo() {
         lifecycleScope.launchWhenStarted {
-            viewModel.animeOverviewResponse.collectLatest {
+            viewModel.animeOverviewResponse.`collectLatest` {
                 when (it.responseState) {
                     ResponseState.SUCCESS -> {
                         binding.model = it.data?.media!!

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentAnimeRecommendBinding
 import com.chs.youranimelist.network.ResponseState
-import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import com.chs.youranimelist.util.Constant
 import kotlinx.coroutines.flow.collectLatest

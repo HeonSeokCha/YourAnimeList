@@ -19,9 +19,7 @@ import com.chs.youranimelist.R
 import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
 import com.chs.youranimelist.network.ResponseState
-import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.base.BaseFragment
-import com.chs.youranimelist.util.Constant
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.flow.collectLatest
 

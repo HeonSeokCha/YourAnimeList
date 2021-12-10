@@ -2,14 +2,11 @@ package com.chs.youranimelist.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
@@ -18,13 +15,9 @@ import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentHomeBinding
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.network.ResponseState
-import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.SearchActivity
 import com.chs.youranimelist.util.Constant
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
