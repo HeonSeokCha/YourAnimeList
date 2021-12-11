@@ -79,7 +79,7 @@ class AnimeOverviewFragment : Fragment() {
         binding.txtAnimeOverviewSeason.setOnClickListener {
             findNavController().navigate(
                 AnimeDetailFragmentDirections.actionAnimeDetailToSorted(
-                    sortType = Constant.SEASON_YEAR,
+                    sortType = Constant.TARGET_SEASON,
                     season = season,
                     year = seasonYear
                 )
@@ -88,67 +88,65 @@ class AnimeOverviewFragment : Fragment() {
     }
 
     private fun getAnimeInfo() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.animeOverviewResponse.`collectLatest` {
-                when (it.responseState) {
-                    ResponseState.SUCCESS -> {
-                        binding.model = it.data?.media!!
-                        if (it.data?.media.season != null && it.data.media.seasonYear != null) {
-                            season = it.data?.media.season
-                            seasonYear = it.data.media.seasonYear
-                        }
-
-                        it.data.media.relations?.relationsEdges?.forEach { relation ->
-                            viewModel.animeOverviewRelationList.add(relation)
-                        }
-
-                        if (viewModel.animeOverviewRelationList.isEmpty()) {
-                            binding.inOverviewLayoutRelation.isVisible = false
-                        }
-
-                        it.data.media.genres?.forEach { genres ->
-                            viewModel.animeGenresList.add(genres!!)
-                        }
-
-                        it.data.media.externalLinks?.forEach { links ->
-                            viewModel.animeLinkList.add(links)
-                        }
-
-                        if (viewModel.animeLinkList.isEmpty()) {
-                            binding.inOverviewLayoutLinks.isVisible = false
-                        }
-
-
-                        it.data.media.studios?.studiosEdges?.forEach { studiosEdge ->
-                            if (studiosEdge?.isMain == true) {
-                                viewModel.animeStudioList.add(studiosEdge.studiosNode!!)
-                            } else {
-                                viewModel.animeProducerList.add(studiosEdge?.studiosNode!!)
-                            }
-                        }
-
-                        if (viewModel.animeStudioList.isNotEmpty()) {
-                            binding.txtAnimeStudio.isVisible = true
-                            binding.rvAnimeOverviewStudio.isVisible = true
-                            if (viewModel.animeProducerList.isNotEmpty()) {
-                                binding.txtAnimeProducer.isVisible = true
-                                binding.rvAnimeOverviewProducer.isVisible = true
-                            }
-                        }
-
-                        relationAdapter?.notifyDataSetChanged()
-                        genreAdapter?.notifyDataSetChanged()
-                        linkAdapter?.notifyDataSetChanged()
-                        studioAdapter?.notifyDataSetChanged()
-                        producerAdapter?.notifyDataSetChanged()
+        viewModel.animeOverviewResponse.observe(viewLifecycleOwner) {
+            when (it.responseState) {
+                ResponseState.SUCCESS -> {
+                    binding.model = it.data?.media!!
+                    if (it.data?.media.season != null && it.data.media.seasonYear != null) {
+                        season = it.data?.media.season
+                        seasonYear = it.data.media.seasonYear
                     }
-                    ResponseState.ERROR -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+
+                    it.data.media.relations?.relationsEdges?.forEach { relation ->
+                        viewModel.animeOverviewRelationList.add(relation)
                     }
+
+                    if (viewModel.animeOverviewRelationList.isEmpty()) {
+                        binding.inOverviewLayoutRelation.isVisible = false
+                    }
+
+                    it.data.media.genres?.forEach { genres ->
+                        viewModel.animeGenresList.add(genres!!)
+                    }
+
+                    it.data.media.externalLinks?.forEach { links ->
+                        viewModel.animeLinkList.add(links)
+                    }
+
+                    if (viewModel.animeLinkList.isEmpty()) {
+                        binding.inOverviewLayoutLinks.isVisible = false
+                    }
+
+
+                    it.data.media.studios?.studiosEdges?.forEach { studiosEdge ->
+                        if (studiosEdge?.isMain == true) {
+                            viewModel.animeStudioList.add(studiosEdge.studiosNode!!)
+                        } else {
+                            viewModel.animeProducerList.add(studiosEdge?.studiosNode!!)
+                        }
+                    }
+
+                    if (viewModel.animeStudioList.isNotEmpty()) {
+                        binding.txtAnimeStudio.isVisible = true
+                        binding.rvAnimeOverviewStudio.isVisible = true
+                        if (viewModel.animeProducerList.isNotEmpty()) {
+                            binding.txtAnimeProducer.isVisible = true
+                            binding.rvAnimeOverviewProducer.isVisible = true
+                        }
+                    }
+
+                    relationAdapter?.notifyDataSetChanged()
+                    genreAdapter?.notifyDataSetChanged()
+                    linkAdapter?.notifyDataSetChanged()
+                    studioAdapter?.notifyDataSetChanged()
+                    producerAdapter?.notifyDataSetChanged()
+                }
+                ResponseState.ERROR -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }
             }
 
-            viewModel.animeOverviewThemeResponse.collectLatest {
+            viewModel.animeOverviewThemeResponse.observe(viewLifecycleOwner) {
                 viewModel.animeDetails = it
                 initAnimeTheme()
             }

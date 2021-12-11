@@ -1,5 +1,6 @@
 package com.chs.youranimelist.ui.browse.anime.overview
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.toInput
@@ -7,6 +8,7 @@ import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.network.response.AnimeDetails
+import com.chs.youranimelist.util.SingleLiveEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -17,12 +19,12 @@ import java.util.*
 class AnimeOverviewViewModel : ViewModel() {
 
     private val _animeOverviewResponse =
-        MutableStateFlow<NetWorkState<AnimeOverviewQuery.Data>>(NetWorkState.Loading())
-    val animeOverviewResponse: StateFlow<NetWorkState<AnimeOverviewQuery.Data>>
+        SingleLiveEvent<NetWorkState<AnimeOverviewQuery.Data>>()
+    val animeOverviewResponse: LiveData<NetWorkState<AnimeOverviewQuery.Data>>
         get() = _animeOverviewResponse
 
-    private val _animeOverviewThemeResponse = MutableStateFlow<AnimeDetails?>(null)
-    val animeOverviewThemeResponse: StateFlow<AnimeDetails?>
+    private val _animeOverviewThemeResponse = SingleLiveEvent<AnimeDetails?>()
+    val animeOverviewThemeResponse: LiveData<AnimeDetails?>
         get() = _animeOverviewThemeResponse
 
     private val repository by lazy { AnimeRepository() }
@@ -35,6 +37,7 @@ class AnimeOverviewViewModel : ViewModel() {
     var animeProducerList = ArrayList<AnimeOverviewQuery.StudiosNode>()
 
     fun getAnimeOverview(animeId: Int) {
+        _animeOverviewResponse.value = NetWorkState.Loading()
         viewModelScope.launch {
             repository.getAnimeOverview(animeId.toInput()).catch { e ->
                 _animeOverviewResponse.value = NetWorkState.Error(e.message.toString())
