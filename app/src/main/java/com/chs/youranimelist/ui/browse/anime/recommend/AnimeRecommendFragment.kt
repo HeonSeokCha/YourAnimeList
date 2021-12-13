@@ -16,8 +16,6 @@ import com.chs.youranimelist.databinding.FragmentAnimeRecommendBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import com.chs.youranimelist.util.Constant
-import kotlinx.coroutines.flow.collectLatest
-
 
 class AnimeRecommendFragment : Fragment() {
     private var _binding: FragmentAnimeRecommendBinding? = null
@@ -48,33 +46,31 @@ class AnimeRecommendFragment : Fragment() {
     }
 
     private fun getRecommendList() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.animeRecommendResponse.collectLatest {
-                when (it.responseState) {
-                    ResponseState.LOADING -> binding.progressBar.isVisible = true
-                    ResponseState.SUCCESS -> {
-                        if (!viewModel.hasNextPage) {
-                            return@collectLatest
-                        }
-
-                        if (isLoading) {
-                            viewModel.animeRecList.removeAt(viewModel.animeRecList.lastIndex)
-                            isLoading = false
-                        }
-
-                        it.data?.media?.recommendations?.edges?.forEach { recommend ->
-                            viewModel.animeRecList.add(recommend)
-                        }
-                        animeRecommendAdapter?.notifyItemRangeChanged(
-                            (viewModel.page * 10),
-                            it.data?.media?.recommendations?.edges?.size!!
-                        )
-                        binding.progressBar.isVisible = false
+        viewModel.animeRecommendResponse.observe(viewLifecycleOwner) {
+            when (it.responseState) {
+                ResponseState.LOADING -> binding.progressBar.isVisible = true
+                ResponseState.SUCCESS -> {
+                    if (!viewModel.hasNextPage) {
+                        return@observe
                     }
-                    ResponseState.ERROR -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                        binding.progressBar.isVisible = false
+
+                    if (isLoading) {
+                        viewModel.animeRecList.removeAt(viewModel.animeRecList.lastIndex)
+                        isLoading = false
                     }
+
+                    it.data?.media?.recommendations?.edges?.forEach { recommend ->
+                        viewModel.animeRecList.add(recommend)
+                    }
+                    animeRecommendAdapter?.notifyItemRangeChanged(
+                        (viewModel.page * 10),
+                        it.data?.media?.recommendations?.edges?.size!!
+                    )
+                    binding.progressBar.isVisible = false
+                }
+                ResponseState.ERROR -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    binding.progressBar.isVisible = false
                 }
             }
         }

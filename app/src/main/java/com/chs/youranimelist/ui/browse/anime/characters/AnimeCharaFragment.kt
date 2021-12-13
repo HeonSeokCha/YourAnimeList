@@ -16,7 +16,6 @@ import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentArgs
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
-import kotlinx.coroutines.flow.collectLatest
 
 class AnimeCharaFragment : Fragment() {
 
@@ -52,22 +51,20 @@ class AnimeCharaFragment : Fragment() {
     }
 
     private fun getCharacters() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.animeCharacterResponse.collectLatest {
-                when (it.responseState) {
-                    ResponseState.LOADING -> binding.shimmerAnimeChara.root.isVisible = true
-                    ResponseState.SUCCESS -> {
-                        it.data?.media?.characters?.charactersNode?.forEach { animeChara ->
-                            viewModel.animeCharacterList.add(animeChara!!)
-                        }
-                        charaAdapter.notifyDataSetChanged()
-                        binding.rvAnimeChara.isVisible = true
-                        binding.shimmerAnimeChara.root.isVisible = false
+        viewModel.animeCharacterResponse.observe(viewLifecycleOwner) {
+            when (it.responseState) {
+                ResponseState.LOADING -> binding.shimmerAnimeChara.root.isVisible = true
+                ResponseState.SUCCESS -> {
+                    it.data?.media?.characters?.charactersNode?.forEach { animeChara ->
+                        viewModel.animeCharacterList.add(animeChara!!)
                     }
-                    ResponseState.ERROR -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                        binding.shimmerAnimeChara.root.isVisible = false
-                    }
+                    charaAdapter.notifyDataSetChanged()
+                    binding.rvAnimeChara.isVisible = true
+                    binding.shimmerAnimeChara.root.isVisible = false
+                }
+                ResponseState.ERROR -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    binding.shimmerAnimeChara.root.isVisible = false
                 }
             }
         }

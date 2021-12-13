@@ -11,6 +11,7 @@ import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.data.repository.AnimeListRepository
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.util.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,9 +24,8 @@ class AnimeDetailViewModel(application: Application) : ViewModel() {
     private val animeDetailRepository: AnimeRepository by lazy { AnimeRepository() }
     private val animeListRepository: AnimeListRepository by lazy { AnimeListRepository(application) }
 
-    private val _animeDetailResponse =
-        MutableStateFlow<NetWorkState<AnimeDetailQuery.Data>>(NetWorkState.Loading())
-    val animeDetailResponse: StateFlow<NetWorkState<AnimeDetailQuery.Data>>
+    private val _animeDetailResponse = SingleLiveEvent<NetWorkState<AnimeDetailQuery.Data>>()
+    val animeDetailResponse: LiveData<NetWorkState<AnimeDetailQuery.Data>>
         get() = _animeDetailResponse
 
 
@@ -33,6 +33,7 @@ class AnimeDetailViewModel(application: Application) : ViewModel() {
     var initAnimeList: Anime? = null
 
     fun getAnimeDetail(animeId: Input<Int>) {
+        _animeDetailResponse.value = NetWorkState.Loading()
         viewModelScope.launch {
             animeDetailRepository.getAnimeDetail(animeId).catch { e ->
                 _animeDetailResponse.value = NetWorkState.Error(e.message.toString())

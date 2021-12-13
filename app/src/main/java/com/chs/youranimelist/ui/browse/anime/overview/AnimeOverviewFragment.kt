@@ -20,7 +20,6 @@ import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import com.chs.youranimelist.util.Constant
-import kotlinx.coroutines.flow.collectLatest
 
 
 class AnimeOverviewFragment : Fragment() {
