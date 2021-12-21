@@ -26,6 +26,7 @@ class AnimeDetailFragment : BaseFragment() {
     private var _binding: FragmentAnimeDetailBinding? = null
     private val binding get() = _binding!!
     private val args: AnimeDetailFragmentArgs by navArgs()
+    private lateinit var trailerId: String
     private val viewModel: AnimeDetailViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -33,8 +34,6 @@ class AnimeDetailFragment : BaseFragment() {
             }
         }
     }
-
-    private lateinit var trailerId: String
 
 
     override fun onCreateView(
