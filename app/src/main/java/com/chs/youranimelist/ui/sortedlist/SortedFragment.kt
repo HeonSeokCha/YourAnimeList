@@ -208,7 +208,7 @@ class SortedFragment : BaseFragment() {
                                 viewModel.animeResultList.add(anime?.fragments?.animeList)
                             }
                             animeListAdapter?.notifyItemRangeChanged(
-                                ((viewModel.page * 10)), it.data?.media!!.size
+                                (viewModel.page * 10), it.data?.media!!.size
                             )
                         }
                         Constant.NO_SEASON_NO_YEAR -> {
@@ -219,7 +219,7 @@ class SortedFragment : BaseFragment() {
                                 viewModel.animeResultList.add(anime?.fragments?.animeList)
                             }
                             animeListAdapter?.notifyItemRangeChanged(
-                                ((viewModel.page * 10)), it.data?.media!!.size
+                                (viewModel.page * 10), it.data?.media!!.size
                             )
                         }
                         Constant.NO_SEASON -> {
@@ -230,7 +230,7 @@ class SortedFragment : BaseFragment() {
                                 viewModel.animeResultList.add(anime?.fragments?.animeList)
                             }
                             animeListAdapter?.notifyItemRangeChanged(
-                                ((viewModel.page * 10)), it.data?.media!!.size
+                                (viewModel.page * 10), it.data?.media!!.size
                             )
                         }
                     }

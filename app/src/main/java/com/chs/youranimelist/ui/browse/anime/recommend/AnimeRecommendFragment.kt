@@ -58,7 +58,8 @@ class AnimeRecommendFragment : Fragment() {
                         viewModel.animeRecList.removeAt(viewModel.animeRecList.lastIndex)
                         isLoading = false
                     }
-
+                    viewModel.hasNextPage =
+                        it.data?.media?.recommendations?.pageInfo?.hasNextPage ?: false
                     it.data?.media?.recommendations?.edges?.forEach { recommend ->
                         viewModel.animeRecList.add(recommend)
                     }
@@ -86,7 +87,6 @@ class AnimeRecommendFragment : Fragment() {
                     )
                 )
             }
-            this.setHasFixedSize(true)
             this.adapter = animeRecommendAdapter
             this.layoutManager = LinearLayoutManager(this@AnimeRecommendFragment.context)
             this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
