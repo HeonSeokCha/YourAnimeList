@@ -224,7 +224,7 @@ class SearchFragment : Fragment() {
         }
         searchAdapter!!.setHasStableIds(true)
         binding.rvSearch.adapter = searchAdapter
-        binding.rvSearch.layoutManager = LinearLayoutManager(this.context)
+        binding.rvSearch.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSearch.setHasFixedSize(true)
     }
 

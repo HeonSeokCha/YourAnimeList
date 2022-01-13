@@ -72,7 +72,7 @@ class AnimeListFragment : Fragment() {
             RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding.rvAnimeList.apply {
             this.adapter = animeListAdapter
-            this.layoutManager = LinearLayoutManager(this.context)
+            this.layoutManager = LinearLayoutManager(requireContext())
         }
     }
 

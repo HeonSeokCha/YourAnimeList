@@ -69,7 +69,7 @@ class CharacterListFragment : Fragment() {
             RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding.rvCharaList.apply {
             this.adapter = charaListAdapter
-            this.layoutManager = LinearLayoutManager(this.context)
+            this.layoutManager = LinearLayoutManager(requireContext())
         }
     }
 

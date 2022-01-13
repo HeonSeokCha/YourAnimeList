@@ -88,7 +88,7 @@ class AnimeRecommendFragment : Fragment() {
                 )
             }
             this.adapter = animeRecommendAdapter
-            this.layoutManager = LinearLayoutManager(this@AnimeRecommendFragment.context)
+            this.layoutManager = LinearLayoutManager(requireContext())
             this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)

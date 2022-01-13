@@ -166,7 +166,7 @@ class AnimeOverviewFragment : Fragment() {
             this.setHasFixedSize(true)
             this.adapter = relationAdapter
             this.layoutManager = LinearLayoutManager(
-                this@AnimeOverviewFragment.context,
+                requireContext(),
                 LinearLayoutManager.HORIZONTAL, false
             )
         }
@@ -202,7 +202,7 @@ class AnimeOverviewFragment : Fragment() {
             }
             this.adapter = studioAdapter
             this.layoutManager = LinearLayoutManager(
-                this@AnimeOverviewFragment.context,
+                requireContext(),
                 LinearLayoutManager.VERTICAL, false
             )
         }
@@ -217,7 +217,7 @@ class AnimeOverviewFragment : Fragment() {
             }
             this.adapter = producerAdapter
             this.layoutManager = LinearLayoutManager(
-                this@AnimeOverviewFragment.context,
+                requireContext(),
                 LinearLayoutManager.VERTICAL, false
             )
         }
