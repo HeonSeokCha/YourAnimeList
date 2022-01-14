@@ -163,7 +163,6 @@ class AnimeOverviewFragment : Fragment() {
                         )
                     findNavController().navigate(action)
                 }
-            this.setHasFixedSize(true)
             this.adapter = relationAdapter
             this.layoutManager = LinearLayoutManager(
                 requireContext(),

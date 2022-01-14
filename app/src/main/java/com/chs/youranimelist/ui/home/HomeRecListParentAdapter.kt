@@ -46,7 +46,6 @@ class HomeRecListParentAdapter(
                     listener.clickAnime(id, idMal)
                 }
                 this.adapter = homeAdapter
-                this.setHasFixedSize(true)
                 this.layoutManager = LinearLayoutManager(
                     mContext,
                     LinearLayoutManager.HORIZONTAL, false

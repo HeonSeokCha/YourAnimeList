@@ -105,7 +105,6 @@ class CharacterFragment : BaseFragment() {
                     )
                 findNavController().navigate(action)
             }
-            this.setHasFixedSize(true)
             this.adapter = animeAdapter
             this.layoutManager = GridLayoutManager(this@CharacterFragment.context, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
