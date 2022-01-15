@@ -42,6 +42,7 @@ class HomeRecListParentAdapter(
         fun bind(title: String, itemList: List<AnimeList>) {
             binding.model = title
             binding.rvAnime.apply {
+                this.setRecycledViewPool(recycledViewPool)
                 homeAdapter = HomeRecListChildAdapter(itemList) { id, idMal ->
                     listener.clickAnime(id, idMal)
                 }

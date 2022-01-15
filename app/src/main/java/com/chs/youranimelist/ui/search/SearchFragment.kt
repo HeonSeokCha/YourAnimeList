@@ -222,7 +222,6 @@ class SearchFragment : Fragment() {
                 SearchMangaAdapter(listOf()) { _, _ -> }
             }
         }
-        searchAdapter!!.setHasStableIds(true)
         binding.rvSearch.adapter = searchAdapter
         binding.rvSearch.layoutManager = LinearLayoutManager(requireContext())
     }

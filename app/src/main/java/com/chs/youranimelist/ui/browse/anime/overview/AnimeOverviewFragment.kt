@@ -87,7 +87,7 @@ class AnimeOverviewFragment : Fragment() {
     }
 
     private fun getAnimeInfo() {
-        viewModel.animeOverviewResponse.observe(viewLifecycleOwner) {
+        viewModel.animeOverviewResponse.observe(viewLifecycleOwner) { it ->
             when (it.responseState) {
                 ResponseState.SUCCESS -> {
                     binding.model = it.data?.media!!
@@ -163,6 +163,7 @@ class AnimeOverviewFragment : Fragment() {
                         )
                     findNavController().navigate(action)
                 }
+            this.setHasFixedSize(true)
             this.adapter = relationAdapter
             this.layoutManager = LinearLayoutManager(
                 requireContext(),

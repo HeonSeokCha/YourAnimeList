@@ -59,6 +59,4 @@ class SearchMangaAdapter(
 
     override fun getItemCount(): Int = list.size
 
-    override fun getItemId(position: Int): Long = list[position].hashCode().toLong()
-
 }

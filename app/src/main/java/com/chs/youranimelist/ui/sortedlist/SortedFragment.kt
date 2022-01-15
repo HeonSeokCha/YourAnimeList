@@ -283,7 +283,6 @@ class SortedFragment : BaseFragment() {
                 }
                 startActivity(intent)
             }
-            animeListAdapter?.setHasStableIds(true)
             this.adapter = animeListAdapter
             this.layoutManager = GridLayoutManager(this@SortedFragment.context, 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
