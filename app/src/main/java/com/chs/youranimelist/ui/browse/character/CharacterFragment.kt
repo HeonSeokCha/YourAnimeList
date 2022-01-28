@@ -113,41 +113,41 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun saveList() {
-        if (viewModel.charaDetail != null && viewModel.initCharaList == null) {
-            with(viewModel.charaDetail!!) {
-                viewModel.insertCharaList(
-                    Character(
-                        charaId = this.id,
-                        name = this.name?.full ?: "",
-                        nativeName = this.name?.native_ ?: "",
-                        image = this.image?.large ?: "",
-                        favourites = this.favourites,
-                    )
-                )
-            }
-        } else if (viewModel.initCharaList != null) {
-            viewModel.deleteCharaList(viewModel.initCharaList!!)
-            viewModel.initCharaList = null
-        }
+//        if (viewModel.charaDetail != null && viewModel.initCharaList == null) {
+//            with(viewModel.charaDetail!!) {
+//                viewModel.insertCharaList(
+//                    Character(
+//                        charaId = this.id,
+//                        name = this.name?.full ?: "",
+//                        nativeName = this.name?.native_ ?: "",
+//                        image = this.image?.large ?: "",
+//                        favourites = this.favourites,
+//                    )
+//                )
+//            }
+//        } else if (viewModel.initCharaList != null) {
+//            viewModel.deleteCharaList(viewModel.initCharaList!!)
+//            viewModel.initCharaList = null
+//        }
     }
 
     private fun checkCharaList() {
-        viewModel.checkCharaList(args.id)
-            .observe(viewLifecycleOwner, { charaInfo ->
-                if (charaInfo != null && charaInfo.charaId == arguments?.getInt(Constant.TARGET_ID)!!) {
-                    viewModel.initCharaList = charaInfo!!
-                    binding.mediaSaveList.apply {
-                        this.icon =
-                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
-                        this.text = "SAVED"
-                    }
-                } else {
-                    binding.mediaSaveList.apply {
-                        this.icon = null
-                        this.text = "ADD MY LIST"
-                    }
-                }
-            })
+//        viewModel.checkCharaList(args.id)
+//            .observe(viewLifecycleOwner) { charaInfo ->
+//                if (charaInfo != null && charaInfo.charaId == arguments?.getInt(Constant.TARGET_ID)!!) {
+//                    viewModel.initCharaList = charaInfo!!
+//                    binding.mediaSaveList.apply {
+//                        this.icon =
+//                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
+//                        this.text = "SAVED"
+//                    }
+//                } else {
+//                    binding.mediaSaveList.apply {
+//                        this.icon = null
+//                        this.text = "ADD MY LIST"
+//                    }
+//                }
+//            }
     }
 
     override fun onDestroyView() {

@@ -18,23 +18,23 @@ import com.chs.youranimelist.data.dto.Character
 @TypeConverters(Converters::class)
 abstract class YourListDatabase : RoomDatabase() {
 
-    abstract fun yourListDao(): YourListDao
-
-    companion object {
-        @Volatile
-        private var INSTANCE: YourListDatabase? = null
-
-        fun getInstance(context: Context): YourListDatabase {
-            synchronized(this) {
-                var instance = INSTANCE
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        YourListDatabase::class.java, "yourList_db"
-                    ).build()
-                }
-                return instance
-            }
-        }
-    }
+    abstract val yourListDao: YourListDao
+//
+//    companion object {
+//        @Volatile
+//        private var INSTANCE: YourListDatabase? = null
+//
+//        fun getInstance(context: Context): YourListDatabase {
+//            synchronized(this) {
+//                var instance = INSTANCE
+//                if (instance == null) {
+//                    instance = Room.databaseBuilder(
+//                        context.applicationContext,
+//                        YourListDatabase::class.java, "yourList_db"
+//                    ).build()
+//                }
+//                return instance
+//            }
+//        }
+//    }
 }

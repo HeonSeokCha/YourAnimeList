@@ -97,7 +97,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun initSearchObserver() {
-        searchKeywordViewModel.searchKeyword.observe(this) {
+        searchKeywordViewModel.searchKeyword.observe(viewLifecycleOwner) {
             viewModel.searchKeyword = it
             viewModel.searchList.clear()
             isLoading = false
@@ -109,7 +109,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun initObserver() {
-        viewModel.getObserver()?.observe(viewLifecycleOwner, {
+        viewModel.getObserver()?.observe(viewLifecycleOwner) {
             when ((it as NetWorkState<*>?)?.responseState) {
 
                 ResponseState.LOADING -> {
@@ -184,7 +184,7 @@ class SearchFragment : Fragment() {
                     binding.txtSearchError.isVisible = true
                 }
             }
-        })
+        }
     }
 
     private fun initRecyclerView() {

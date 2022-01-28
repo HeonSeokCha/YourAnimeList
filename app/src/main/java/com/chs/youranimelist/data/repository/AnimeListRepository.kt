@@ -1,16 +1,11 @@
 package com.chs.youranimelist.data.repository
 
-import android.app.Application
 import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.data.YourListDao
-import com.chs.youranimelist.data.YourListDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 
-class AnimeListRepository(application: Application) {
-    private val dao: YourListDao by lazy {
-        YourListDatabase.getInstance(application).yourListDao()
-    }
+class AnimeListRepository(private val dao: YourListDao) {
 
     fun getAllAnimeList() = dao.getAllAnimeList().flowOn(Dispatchers.IO)
 

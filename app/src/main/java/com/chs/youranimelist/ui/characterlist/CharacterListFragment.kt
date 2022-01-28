@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -15,17 +16,13 @@ import com.chs.youranimelist.databinding.FragmentCharacterListBinding
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.onQueryTextChanged
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharacterListFragment : Fragment() {
     private var _binding: FragmentCharacterListBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: CharacterListViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return CharacterListViewModel(requireActivity().application) as T
-            }
-        }
-    }
+    private val viewModel: CharacterListViewModel by activityViewModels()
     private lateinit var charaListAdapter: CharacterListAdapter
 
     override fun onCreateView(

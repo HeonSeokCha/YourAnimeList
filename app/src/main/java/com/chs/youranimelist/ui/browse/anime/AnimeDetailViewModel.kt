@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 class AnimeDetailViewModel(application: Application) : ViewModel() {
 
     private val animeDetailRepository: AnimeRepository by lazy { AnimeRepository() }
-    private val animeListRepository: AnimeListRepository by lazy { AnimeListRepository(application) }
+//    private val animeListRepository: AnimeListRepository by lazy { AnimeListRepository(application) }
 
     private val _animeDetailResponse = SingleLiveEvent<NetWorkState<AnimeDetailQuery.Data>>()
     val animeDetailResponse: LiveData<NetWorkState<AnimeDetailQuery.Data>>
@@ -41,18 +41,18 @@ class AnimeDetailViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun checkAnimeList(animeId: Int): LiveData<Anime> =
-        animeListRepository.checkAnimeList(animeId).asLiveData()
-
-    fun insertAnimeList(anime: Anime) {
-        viewModelScope.launch(Dispatchers.IO) {
-            animeListRepository.insertAnimeList(anime)
-        }
-    }
-
-    fun deleteAnimeList(anime: Anime) {
-        viewModelScope.launch(Dispatchers.IO) {
-            animeListRepository.deleteAnimeList(anime)
-        }
-    }
+//    fun checkAnimeList(animeId: Int): LiveData<Anime> =
+//        animeListRepository.checkAnimeList(animeId).asLiveData()
+//
+//    fun insertAnimeList(anime: Anime) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            animeListRepository.insertAnimeList(anime)
+//        }
+//    }
+//
+//    fun deleteAnimeList(anime: Anime) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            animeListRepository.deleteAnimeList(anime)
+//        }
+//    }
 }

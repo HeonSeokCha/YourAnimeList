@@ -57,22 +57,22 @@ class AnimeDetailFragment : BaseFragment() {
     }
 
     private fun checkAnimeList() {
-        viewModel.checkAnimeList(args.id)
-            .observe(viewLifecycleOwner, { animeInfo ->
-                if (animeInfo != null && animeInfo.animeId == args.id) {
-                    viewModel.initAnimeList = animeInfo!!
-                    binding.mediaSaveList.apply {
-                        this.icon =
-                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
-                        this.text = "SAVED"
-                    }
-                } else {
-                    binding.mediaSaveList.apply {
-                        this.icon = null
-                        this.text = "ADD MY LIST"
-                    }
-                }
-            })
+//        viewModel.checkAnimeList(args.id)
+//            .observe(viewLifecycleOwner, { animeInfo ->
+//                if (animeInfo != null && animeInfo.animeId == args.id) {
+//                    viewModel.initAnimeList = animeInfo!!
+//                    binding.mediaSaveList.apply {
+//                        this.icon =
+//                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
+//                        this.text = "SAVED"
+//                    }
+//                } else {
+//                    binding.mediaSaveList.apply {
+//                        this.icon = null
+//                        this.text = "ADD MY LIST"
+//                    }
+//                }
+//            })
     }
 
     private fun initClick() {
@@ -127,32 +127,32 @@ class AnimeDetailFragment : BaseFragment() {
     }
 
     private fun saveList() {
-        if (viewModel.animeDetail != null && viewModel.initAnimeList == null) {
-            with(viewModel.animeDetail!!) {
-                viewModel.insertAnimeList(
-                    Anime(
-                        animeId = this.id,
-                        idMal = this.idMal ?: 0,
-                        title = this.title!!.english ?: this.title.romaji!!,
-                        format = this.format.toString(),
-                        status = this.status.toString(),
-                        season = this.season.toString(),
-                        seasonYear = this.seasonYear ?: 0,
-                        episode = this.episodes ?: 0,
-                        coverImage = this.coverImage?.extraLarge,
-                        bannerImage = this.bannerImage,
-                        averageScore = this.averageScore ?: 0,
-                        favorites = this.favourites,
-                        studio = if (viewModel.animeDetail?.studios?.edges?.isEmpty()!!) ""
-                        else this.studios?.edges?.get(0)?.node?.name,
-                        genre = this.genres ?: listOf(),
-                    )
-                )
-            }
-        } else if (viewModel.initAnimeList != null) {
-            viewModel.deleteAnimeList(viewModel.initAnimeList!!)
-            viewModel.initAnimeList = null
-        }
+//        if (viewModel.animeDetail != null && viewModel.initAnimeList == null) {
+//            with(viewModel.animeDetail!!) {
+//                viewModel.insertAnimeList(
+//                    Anime(
+//                        animeId = this.id,
+//                        idMal = this.idMal ?: 0,
+//                        title = this.title!!.english ?: this.title.romaji!!,
+//                        format = this.format.toString(),
+//                        status = this.status.toString(),
+//                        season = this.season.toString(),
+//                        seasonYear = this.seasonYear ?: 0,
+//                        episode = this.episodes ?: 0,
+//                        coverImage = this.coverImage?.extraLarge,
+//                        bannerImage = this.bannerImage,
+//                        averageScore = this.averageScore ?: 0,
+//                        favorites = this.favourites,
+//                        studio = if (viewModel.animeDetail?.studios?.edges?.isEmpty()!!) ""
+//                        else this.studios?.edges?.get(0)?.node?.name,
+//                        genre = this.genres ?: listOf(),
+//                    )
+//                )
+//            }
+//        } else if (viewModel.initAnimeList != null) {
+//            viewModel.deleteAnimeList(viewModel.initAnimeList!!)
+//            viewModel.initAnimeList = null
+//        }
     }
 
     private fun trailerPlay(videoId: String) {

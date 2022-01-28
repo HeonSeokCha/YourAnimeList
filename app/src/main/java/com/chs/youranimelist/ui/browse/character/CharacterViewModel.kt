@@ -25,9 +25,9 @@ class CharacterViewModel(application: Application) : ViewModel() {
 
     private val repository by lazy { CharacterRepository() }
 
-    private val charaListRepository: CharacterListRepository by lazy {
-        CharacterListRepository(application)
-    }
+//    private val charaListRepository: CharacterListRepository by lazy {
+//        CharacterListRepository(application)
+//    }
 
     var characterAnimeList = ArrayList<CharacterQuery.Edge?>()
     var charaDetail: CharacterQuery.Character? = null
@@ -44,14 +44,14 @@ class CharacterViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun checkCharaList(charaId: Int): LiveData<Character> =
-        charaListRepository.checkCharaList(charaId).asLiveData()
-
-    fun insertCharaList(character: Character) = viewModelScope.launch {
-        charaListRepository.insertCharaList(character)
-    }
-
-    fun deleteCharaList(character: Character) = viewModelScope.launch {
-        charaListRepository.deleteCharaList(character)
-    }
+//    fun checkCharaList(charaId: Int): LiveData<Character> =
+//        charaListRepository.checkCharaList(charaId).asLiveData()
+//
+//    fun insertCharaList(character: Character) = viewModelScope.launch {
+//        charaListRepository.insertCharaList(character)
+//    }
+//
+//    fun deleteCharaList(character: Character) = viewModelScope.launch {
+//        charaListRepository.deleteCharaList(character)
+//    }
 }
