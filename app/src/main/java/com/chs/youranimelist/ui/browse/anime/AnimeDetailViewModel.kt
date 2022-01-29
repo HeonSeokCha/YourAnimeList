@@ -1,6 +1,5 @@
 package com.chs.youranimelist.ui.browse.anime
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -8,19 +7,22 @@ import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.browse.anime.AnimeDetailQuery
 import com.chs.youranimelist.data.dto.Anime
-import com.chs.youranimelist.data.repository.AnimeListRepository
+import com.chs.youranimelist.data.repository.YourAnimeListRepository
 import com.chs.youranimelist.network.NetWorkState
+import com.chs.youranimelist.network.repository.AnimeListRepository
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.util.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AnimeDetailViewModel(application: Application) : ViewModel() {
-
-    private val animeDetailRepository: AnimeRepository by lazy { AnimeRepository() }
-//    private val animeListRepository: AnimeListRepository by lazy { AnimeListRepository(application) }
+@HiltViewModel
+class AnimeDetailViewModel @Inject constructor(
+    private val animeRepository: AnimeRepository,
+    private val animeListRepository: YourAnimeListRepository
+) : ViewModel() {
 
     private val _animeDetailResponse = SingleLiveEvent<NetWorkState<AnimeDetailQuery.Data>>()
     val animeDetailResponse: LiveData<NetWorkState<AnimeDetailQuery.Data>>
@@ -33,7 +35,7 @@ class AnimeDetailViewModel(application: Application) : ViewModel() {
     fun getAnimeDetail(animeId: Input<Int>) {
         _animeDetailResponse.value = NetWorkState.Loading()
         viewModelScope.launch {
-            animeDetailRepository.getAnimeDetail(animeId).catch { e ->
+            animeRepository.getAnimeDetail(animeId).catch { e ->
                 _animeDetailResponse.value = NetWorkState.Error(e.message.toString())
             }.collect {
                 _animeDetailResponse.value = NetWorkState.Success(it.data!!)
@@ -41,18 +43,18 @@ class AnimeDetailViewModel(application: Application) : ViewModel() {
         }
     }
 
-//    fun checkAnimeList(animeId: Int): LiveData<Anime> =
-//        animeListRepository.checkAnimeList(animeId).asLiveData()
-//
-//    fun insertAnimeList(anime: Anime) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            animeListRepository.insertAnimeList(anime)
-//        }
-//    }
-//
-//    fun deleteAnimeList(anime: Anime) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            animeListRepository.deleteAnimeList(anime)
-//        }
-//    }
+    fun checkAnimeList(animeId: Int): LiveData<Anime> =
+        animeListRepository.checkAnimeList(animeId).asLiveData()
+
+    fun insertAnimeList(anime: Anime) {
+        viewModelScope.launch(Dispatchers.IO) {
+            animeListRepository.insertAnimeList(anime)
+        }
+    }
+
+    fun deleteAnimeList(anime: Anime) {
+        viewModelScope.launch(Dispatchers.IO) {
+            animeListRepository.deleteAnimeList(anime)
+        }
+    }
 }

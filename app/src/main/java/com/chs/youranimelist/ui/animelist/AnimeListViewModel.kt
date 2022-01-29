@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.data.dto.Anime
-import com.chs.youranimelist.data.repository.AnimeListRepository
+import com.chs.youranimelist.data.repository.YourAnimeListRepository
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimeListViewModel @Inject constructor(
-    private val repository: AnimeListRepository
+    private val repositoryYour: YourAnimeListRepository
 ) : ViewModel() {
 
     var animeList: List<Anime> = listOf()
@@ -22,7 +22,7 @@ class AnimeListViewModel @Inject constructor(
 
     fun getAllAnimeList() {
         viewModelScope.launch {
-            repository.getAllAnimeList().catch {
+            repositoryYour.getAllAnimeList().catch {
                 _animeListResponse.value = listOf()
             }.collect {
                 _animeListResponse.value = it
@@ -32,7 +32,7 @@ class AnimeListViewModel @Inject constructor(
 
     fun searchAnimeList(animeTitle: String) {
         viewModelScope.launch {
-            repository.searchAnimeList(animeTitle).catch {
+            repositoryYour.searchAnimeList(animeTitle).catch {
                 _animeListResponse.value = listOf()
             }.collect {
                 _animeListResponse.value = it

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -21,20 +22,15 @@ import com.chs.youranimelist.databinding.FragmentCharacterBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharacterFragment : BaseFragment() {
     private var _binding: FragmentCharacterBinding? = null
     private val binding get() = _binding!!
     private var animeAdapter: CharacterAnimeAdapter? = null
     private val args: CharacterFragmentArgs by navArgs()
-    private val viewModel: CharacterViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return CharacterViewModel(requireActivity().application) as T
-            }
-        }
-    }
-
+    private val viewModel: CharacterViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -113,41 +109,41 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun saveList() {
-//        if (viewModel.charaDetail != null && viewModel.initCharaList == null) {
-//            with(viewModel.charaDetail!!) {
-//                viewModel.insertCharaList(
-//                    Character(
-//                        charaId = this.id,
-//                        name = this.name?.full ?: "",
-//                        nativeName = this.name?.native_ ?: "",
-//                        image = this.image?.large ?: "",
-//                        favourites = this.favourites,
-//                    )
-//                )
-//            }
-//        } else if (viewModel.initCharaList != null) {
-//            viewModel.deleteCharaList(viewModel.initCharaList!!)
-//            viewModel.initCharaList = null
-//        }
+        if (viewModel.charaDetail != null && viewModel.initCharaList == null) {
+            with(viewModel.charaDetail!!) {
+                viewModel.insertCharaList(
+                    Character(
+                        charaId = this.id,
+                        name = this.name?.full ?: "",
+                        nativeName = this.name?.native_ ?: "",
+                        image = this.image?.large ?: "",
+                        favourites = this.favourites,
+                    )
+                )
+            }
+        } else if (viewModel.initCharaList != null) {
+            viewModel.deleteCharaList(viewModel.initCharaList!!)
+            viewModel.initCharaList = null
+        }
     }
 
     private fun checkCharaList() {
-//        viewModel.checkCharaList(args.id)
-//            .observe(viewLifecycleOwner) { charaInfo ->
-//                if (charaInfo != null && charaInfo.charaId == arguments?.getInt(Constant.TARGET_ID)!!) {
-//                    viewModel.initCharaList = charaInfo!!
-//                    binding.mediaSaveList.apply {
-//                        this.icon =
-//                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
-//                        this.text = "SAVED"
-//                    }
-//                } else {
-//                    binding.mediaSaveList.apply {
-//                        this.icon = null
-//                        this.text = "ADD MY LIST"
-//                    }
-//                }
-//            }
+        viewModel.checkCharaList(args.id)
+            .observe(viewLifecycleOwner) { charaInfo ->
+                if (charaInfo != null && charaInfo.charaId == arguments?.getInt(Constant.TARGET_ID)!!) {
+                    viewModel.initCharaList = charaInfo!!
+                    binding.mediaSaveList.apply {
+                        this.icon =
+                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
+                        this.text = "SAVED"
+                    }
+                } else {
+                    binding.mediaSaveList.apply {
+                        this.icon = null
+                        this.text = "ADD MY LIST"
+                    }
+                }
+            }
     }
 
     override fun onDestroyView() {

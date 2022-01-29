@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -17,14 +18,16 @@ import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.SpacesItemDecoration
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StudioFragment : BaseFragment() {
     private var _binding: FragmentStudioBinding? = null
     private val binding get() = _binding!!
     private val args: StudioFragmentArgs by navArgs()
     private var studioAnimeAdapter: StudioAnimeAdapter? = null
     private var isLoading: Boolean = false
-    private val viewModel by viewModels<StudioViewModel>()
+    private val viewModel: StudioViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

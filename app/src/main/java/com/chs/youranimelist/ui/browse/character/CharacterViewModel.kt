@@ -1,6 +1,5 @@
 package com.chs.youranimelist.ui.browse.character
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -8,26 +7,23 @@ import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.browse.character.CharacterQuery
 import com.chs.youranimelist.data.dto.Character
-import com.chs.youranimelist.data.repository.CharacterListRepository
+import com.chs.youranimelist.data.repository.YourCharacterListRepository
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.CharacterRepository
 import com.chs.youranimelist.util.SingleLiveEvent
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CharacterViewModel(application: Application) : ViewModel() {
+class CharacterViewModel @Inject constructor(
+    private val repository: CharacterRepository,
+    private val charaListRepository: YourCharacterListRepository
+) : ViewModel() {
 
     private val _characterDetailResponse =
         SingleLiveEvent<NetWorkState<CharacterQuery.Data>>()
     val characterDetailResponse: LiveData<NetWorkState<CharacterQuery.Data>>
         get() = _characterDetailResponse
-
-    private val repository by lazy { CharacterRepository() }
-
-//    private val charaListRepository: CharacterListRepository by lazy {
-//        CharacterListRepository(application)
-//    }
 
     var characterAnimeList = ArrayList<CharacterQuery.Edge?>()
     var charaDetail: CharacterQuery.Character? = null
@@ -44,14 +40,14 @@ class CharacterViewModel(application: Application) : ViewModel() {
         }
     }
 
-//    fun checkCharaList(charaId: Int): LiveData<Character> =
-//        charaListRepository.checkCharaList(charaId).asLiveData()
-//
-//    fun insertCharaList(character: Character) = viewModelScope.launch {
-//        charaListRepository.insertCharaList(character)
-//    }
-//
-//    fun deleteCharaList(character: Character) = viewModelScope.launch {
-//        charaListRepository.deleteCharaList(character)
-//    }
+    fun checkCharaList(charaId: Int): LiveData<Character> =
+        charaListRepository.checkCharaList(charaId).asLiveData()
+
+    fun insertCharaList(character: Character) = viewModelScope.launch {
+        charaListRepository.insertCharaList(character)
+    }
+
+    fun deleteCharaList(character: Character) = viewModelScope.launch {
+        charaListRepository.deleteCharaList(character)
+    }
 }

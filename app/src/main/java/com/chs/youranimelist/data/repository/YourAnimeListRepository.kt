@@ -1,11 +1,11 @@
 package com.chs.youranimelist.data.repository
 
+import com.chs.youranimelist.data.AnimeListDao
 import com.chs.youranimelist.data.dto.Anime
-import com.chs.youranimelist.data.YourListDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 
-class AnimeListRepository(private val dao: YourListDao) {
+class YourAnimeListRepository(private val dao: AnimeListDao) {
 
     fun getAllAnimeList() = dao.getAllAnimeList().flowOn(Dispatchers.IO)
 

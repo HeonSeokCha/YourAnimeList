@@ -1,13 +1,16 @@
 package com.chs.youranimelist.network.repository
 
+import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.coroutines.toFlow
 import com.chs.youranimelist.browse.character.CharacterQuery
-import com.chs.youranimelist.network.services.ApolloServices
+import javax.inject.Inject
 
-class CharacterRepository {
+class CharacterRepository(
+    private val apolloClient: ApolloClient
+) {
 
     fun getCharacterDetail(charaId: Input<Int>) =
-        ApolloServices.apolloClient.query(CharacterQuery(charaId)).toFlow()
+        apolloClient.query(CharacterQuery(charaId)).toFlow()
 
 }

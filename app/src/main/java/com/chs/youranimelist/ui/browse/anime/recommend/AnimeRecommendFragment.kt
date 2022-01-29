@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,11 +16,13 @@ import com.chs.youranimelist.databinding.FragmentAnimeRecommendBinding
 import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import com.chs.youranimelist.util.Constant
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AnimeRecommendFragment : Fragment() {
     private var _binding: FragmentAnimeRecommendBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<AnimeRecommendViewModel>()
+    private val viewModel: AnimeRecommendViewModel by viewModels()
     private var isLoading: Boolean = false
     private var animeRecommendAdapter: AnimeRecommendAdapter? = null
 

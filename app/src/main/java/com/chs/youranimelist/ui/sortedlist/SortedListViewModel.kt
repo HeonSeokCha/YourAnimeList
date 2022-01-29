@@ -14,11 +14,16 @@ import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.type.MediaStatus
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SortedListViewModel : ViewModel() {
+@HiltViewModel
+class SortedListViewModel @Inject constructor(
+    private val repository: AnimeListRepository
+) : ViewModel() {
 
     private val _animeListResponse = SingleLiveEvent<NetWorkState<AnimeListQuery.Page>>()
     val animeListResponse: LiveData<NetWorkState<AnimeListQuery.Page>>
@@ -38,7 +43,6 @@ class SortedListViewModel : ViewModel() {
     val genreListResponse: LiveData<NetWorkState<GenreQuery.Data>>
         get() = _genreListResponse
 
-    private val animeListRepository by lazy { AnimeListRepository() }
     var selectedYear: Int? = null
     var selectedSeason: MediaSeason? = null
     var selectedSort: MediaSort? = null
@@ -56,7 +60,7 @@ class SortedListViewModel : ViewModel() {
             when (selectType) {
                 Constant.SEASON_YEAR -> {
                     _animeListResponse.postValue(NetWorkState.Loading())
-                    animeListRepository.getAnimeList(
+                    repository.getAnimeList(
                         page.toInput(),
                         selectedSort.toInput(),
                         selectedSeason.toInput(),
@@ -71,7 +75,7 @@ class SortedListViewModel : ViewModel() {
 
                 Constant.NO_SEASON -> {
                     _noSeasonListResponse.postValue(NetWorkState.Loading())
-                    animeListRepository.getNoSeasonList(
+                    repository.getNoSeasonList(
                         page.toInput(),
                         selectedSort.toInput(),
                         selectedYear.toInput(),
@@ -85,7 +89,7 @@ class SortedListViewModel : ViewModel() {
 
                 Constant.NO_SEASON_NO_YEAR -> {
                     _noSeasonNoYearListResponse.postValue(NetWorkState.Loading())
-                    animeListRepository.getNoSeasonNoYearList(
+                    repository.getNoSeasonNoYearList(
                         page.toInput(),
                         selectedSort.toInput(),
                         selectGenre.toInput()
@@ -102,7 +106,7 @@ class SortedListViewModel : ViewModel() {
     fun getGenreList() {
         viewModelScope.launch {
             _genreListResponse.value = NetWorkState.Loading()
-            animeListRepository.getGenre().catch { e ->
+            repository.getGenre().catch { e ->
                 _genreListResponse.value = NetWorkState.Error(e.message.toString())
             }.collect { _genreListResponse.value = NetWorkState.Success(it.data!!) }
         }

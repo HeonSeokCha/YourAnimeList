@@ -8,8 +8,9 @@ import androidx.navigation.fragment.findNavController
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.ActivityBrowseBinding
 import com.chs.youranimelist.util.Constant
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class BrowseActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBrowseBinding

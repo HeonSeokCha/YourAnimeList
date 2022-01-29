@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -26,13 +27,15 @@ import com.chs.youranimelist.ui.main.MainActivity
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.ConvertDate
 import com.chs.youranimelist.util.SpacesItemDecoration
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SortedFragment : BaseFragment() {
     private var _binding: FragmentSortedBinding? = null
     private val binding get() = _binding!!
     private var isLoading: Boolean = false
     private var animeListAdapter: SortedListAdapter? = null
-    private val viewModel by viewModels<SortedListViewModel>()
+    private val viewModel: SortedListViewModel by viewModels()
     private val args: SortedFragmentArgs by navArgs()
 
     override fun onCreateView(

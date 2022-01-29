@@ -24,9 +24,11 @@ import com.chs.youranimelist.ui.search.adapter.SearchAnimeAdapter
 import com.chs.youranimelist.ui.search.adapter.SearchCharacterAdapter
 import com.chs.youranimelist.ui.search.adapter.SearchMangaAdapter
 import com.chs.youranimelist.util.Constant
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
-    private val viewModel by viewModels<SearchViewModel>()
+    private val viewModel: SearchViewModel by viewModels()
     private val searchKeywordViewModel by activityViewModels<SearchKeywordViewModel>()
     private var searchAdapter: RecyclerView.Adapter<*>? = null
     private var _binding: FragmentSearchBinding? = null
@@ -36,7 +38,6 @@ class SearchFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.searchPage = arguments?.getString(Constant.TARGET_SEARCH)!!
-        Log.d("SearchFragment", arguments?.getString(Constant.TARGET_SEARCH)!!)
     }
 
     override fun onCreateView(

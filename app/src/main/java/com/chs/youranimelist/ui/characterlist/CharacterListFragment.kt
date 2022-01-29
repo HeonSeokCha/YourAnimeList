@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class CharacterListFragment : Fragment() {
     private var _binding: FragmentCharacterListBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: CharacterListViewModel by activityViewModels()
+    private val viewModel: CharacterListViewModel by viewModels()
     private lateinit var charaListAdapter: CharacterListAdapter
 
     override fun onCreateView(

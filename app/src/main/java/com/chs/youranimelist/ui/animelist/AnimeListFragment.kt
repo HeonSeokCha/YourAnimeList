@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class AnimeListFragment : Fragment() {
     private var _binding: FragmentAnimeListBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: AnimeListViewModel by activityViewModels()
+    private val viewModel: AnimeListViewModel by viewModels()
 
     private lateinit var animeListAdapter: AnimeListAdapter
 

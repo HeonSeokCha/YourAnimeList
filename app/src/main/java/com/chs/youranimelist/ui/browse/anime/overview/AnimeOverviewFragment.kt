@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -20,13 +21,14 @@ import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import com.chs.youranimelist.util.Constant
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class AnimeOverviewFragment : Fragment() {
     private var _binding: FragmentAnimeOverviewBinding? = null
     private val binding get() = _binding!!
     private var seasonYear: Int = 0
-    private val viewModel by viewModels<AnimeOverviewViewModel>()
+    private val viewModel: AnimeOverviewViewModel by viewModels()
     private lateinit var relationAdapter: AnimeOverviewRelationAdapter
     private lateinit var genreAdapter: AnimeOverviewGenreAdapter
     private lateinit var linkAdapter: AnimeOverviewLinkAdapter

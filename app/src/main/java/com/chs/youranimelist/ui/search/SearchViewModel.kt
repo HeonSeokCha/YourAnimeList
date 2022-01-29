@@ -11,13 +11,17 @@ import com.chs.youranimelist.search.SearchCharacterQuery
 import com.chs.youranimelist.search.SearchMangaQuery
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SearchViewModel : ViewModel() {
+@HiltViewModel
+class SearchViewModel @Inject constructor(
+    private val repository: SearchRepository
+) : ViewModel() {
 
-    private val repository by lazy { SearchRepository() }
 
     private val _searchAnimeResponse = SingleLiveEvent<NetWorkState<SearchAnimeQuery.Page>>()
     private val searchAnimeResponse: LiveData<NetWorkState<SearchAnimeQuery.Page>>

@@ -9,14 +9,19 @@ import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.AnimeRepository
 import com.chs.youranimelist.network.response.AnimeDetails
 import com.chs.youranimelist.util.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class AnimeOverviewViewModel : ViewModel() {
+@HiltViewModel
+class AnimeOverviewViewModel @Inject constructor(
+    private val repository: AnimeRepository
+) : ViewModel() {
 
     private val _animeOverviewResponse =
         SingleLiveEvent<NetWorkState<AnimeOverviewQuery.Data>>()
@@ -26,8 +31,6 @@ class AnimeOverviewViewModel : ViewModel() {
     private val _animeOverviewThemeResponse = SingleLiveEvent<AnimeDetails?>()
     val animeOverviewThemeResponse: LiveData<AnimeDetails?>
         get() = _animeOverviewThemeResponse
-
-    private val repository by lazy { AnimeRepository() }
 
     var animeOverviewRelationList = ArrayList<AnimeOverviewQuery.RelationsEdge?>()
     var animeDetails: AnimeDetails? = null
