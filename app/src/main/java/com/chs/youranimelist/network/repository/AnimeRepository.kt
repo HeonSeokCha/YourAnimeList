@@ -12,12 +12,14 @@ import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
 import com.chs.youranimelist.home.HomeRecommendListQuery
 import com.chs.youranimelist.network.services.JikanRestService
 import com.chs.youranimelist.util.ConvertDate
+import io.ktor.client.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class AnimeRepository(
-    private val apolloClient: ApolloClient
+    private val apolloClient: ApolloClient,
+    private val jikanClient: JikanRestService
 ) {
 
     fun getHomeRecList() = apolloClient.query(
@@ -43,5 +45,5 @@ class AnimeRepository(
         apolloClient.query(AnimeRecommendQuery(animeId, page)).toFlow()
 
     suspend fun getAnimeOverviewTheme(animeId: Int) =
-        JikanRestService.create().getAnimeTheme(animeId)
+        jikanClient.getAnimeTheme(animeId)
 }

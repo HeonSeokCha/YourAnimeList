@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AnimeRecommendViewModel @Inject constructor(
     private val repository: AnimeRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _animeRecommendResponse = SingleLiveEvent<NetWorkState<AnimeRecommendQuery.Data>>()
     val animeRecommendResponse: LiveData<NetWorkState<AnimeRecommendQuery.Data>>

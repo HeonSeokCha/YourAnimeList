@@ -133,6 +133,5 @@ class StudioFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         studioAnimeAdapter = null
-        _binding = null
     }
 }

@@ -1,6 +1,7 @@
 package com.chs.youranimelist.di
 
 import android.app.Application
+import android.util.Log
 import androidx.room.Room
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.cache.normalized.lru.EvictionPolicy
@@ -9,16 +10,28 @@ import com.chs.youranimelist.BuildConfig
 import com.chs.youranimelist.data.YourListDatabase
 import com.chs.youranimelist.data.repository.YourAnimeListRepository
 import com.chs.youranimelist.data.repository.YourCharacterListRepository
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.*
+import com.chs.youranimelist.network.response.AnimeDetails
+import com.chs.youranimelist.network.services.JikanRestServicesImpl
 import com.chs.youranimelist.util.Constant
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
+import io.ktor.client.features.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
+import io.ktor.client.features.logging.*
+import io.ktor.client.request.*
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import kotlin.text.get
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -78,14 +91,35 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideKtor(): JikanRestServicesImpl {
+        return JikanRestServicesImpl(
+            HttpClient(Android) {
+                install(Logging) {
+                    level = LogLevel.ALL
+                }
+                install(JsonFeature) {
+                    serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
+                        this.ignoreUnknownKeys = true
+                    })
+                }
+            }
+        )
+    }
+
+
+    @Provides
+    @Singleton
     fun providesAnimeListRepository(apollo: ApolloClient): AnimeListRepository {
         return AnimeListRepository(apollo)
     }
 
     @Provides
     @Singleton
-    fun providesAnimeRepository(apollo: ApolloClient): AnimeRepository {
-        return AnimeRepository(apollo)
+    fun providesAnimeRepository(
+        apollo: ApolloClient,
+        jikan: JikanRestServicesImpl
+    ): AnimeRepository {
+        return AnimeRepository(apollo, jikan)
     }
 
     @Provides
@@ -105,6 +139,4 @@ object AppModule {
     fun providesStudioRepository(apollo: ApolloClient): StudioRepository {
         return StudioRepository(apollo)
     }
-
-
 }
