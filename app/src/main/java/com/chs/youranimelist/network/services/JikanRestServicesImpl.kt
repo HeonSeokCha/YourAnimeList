@@ -7,6 +7,7 @@ import com.chs.youranimelist.util.Constant
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
+import javax.inject.Singleton
 
 class JikanRestServicesImpl(
     private val client: HttpClient
