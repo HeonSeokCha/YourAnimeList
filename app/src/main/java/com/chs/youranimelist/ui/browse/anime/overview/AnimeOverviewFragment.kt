@@ -148,7 +148,14 @@ class AnimeOverviewFragment : Fragment() {
             }
 
             viewModel.animeOverviewThemeResponse.observe(viewLifecycleOwner) {
-                viewModel.animeDetails = it
+                when (it.responseState) {
+                    ResponseState.SUCCESS -> {
+                        viewModel.animeDetails = it.data
+                    }
+                    ResponseState.ERROR -> {
+                        viewModel.animeDetails = null
+                    }
+                }
                 initAnimeTheme()
             }
         }

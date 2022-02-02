@@ -11,10 +11,12 @@ import com.chs.youranimelist.data.repository.YourCharacterListRepository
 import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.CharacterRepository
 import com.chs.youranimelist.util.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class CharacterViewModel @Inject constructor(
     private val repository: CharacterRepository,
     private val charaListRepository: YourCharacterListRepository

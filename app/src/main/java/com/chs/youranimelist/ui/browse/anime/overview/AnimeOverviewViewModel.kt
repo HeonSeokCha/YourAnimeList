@@ -28,8 +28,8 @@ class AnimeOverviewViewModel @Inject constructor(
     val animeOverviewResponse: LiveData<NetWorkState<AnimeOverviewQuery.Data>>
         get() = _animeOverviewResponse
 
-    private val _animeOverviewThemeResponse = SingleLiveEvent<AnimeDetails?>()
-    val animeOverviewThemeResponse: LiveData<AnimeDetails?>
+    private val _animeOverviewThemeResponse = SingleLiveEvent<NetWorkState<AnimeDetails?>>()
+    val animeOverviewThemeResponse: LiveData<NetWorkState<AnimeDetails?>>
         get() = _animeOverviewThemeResponse
 
     var animeOverviewRelationList = ArrayList<AnimeOverviewQuery.RelationsEdge?>()
@@ -53,9 +53,7 @@ class AnimeOverviewViewModel @Inject constructor(
     fun getAnimeTheme(animeId: Int) {
         viewModelScope.launch {
             repository.getAnimeOverviewTheme(animeId).apply {
-                if (this != null) {
-                    _animeOverviewThemeResponse.value = this
-                }
+                _animeOverviewThemeResponse.value = this
             }
         }
     }

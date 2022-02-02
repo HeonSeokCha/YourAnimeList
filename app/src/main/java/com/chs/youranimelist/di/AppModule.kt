@@ -1,7 +1,6 @@
 package com.chs.youranimelist.di
 
 import android.app.Application
-import android.util.Log
 import androidx.room.Room
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.cache.normalized.lru.EvictionPolicy
@@ -10,9 +9,7 @@ import com.chs.youranimelist.BuildConfig
 import com.chs.youranimelist.data.YourListDatabase
 import com.chs.youranimelist.data.repository.YourAnimeListRepository
 import com.chs.youranimelist.data.repository.YourCharacterListRepository
-import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.network.repository.*
-import com.chs.youranimelist.network.response.AnimeDetails
 import com.chs.youranimelist.network.services.JikanRestServicesImpl
 import com.chs.youranimelist.util.Constant
 import dagger.Module
@@ -26,12 +23,10 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
-import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import kotlin.text.get
 
 @Module
 @InstallIn(SingletonComponent::class)

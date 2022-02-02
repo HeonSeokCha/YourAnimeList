@@ -12,7 +12,7 @@ import javax.inject.Singleton
 class JikanRestServicesImpl(
     private val client: HttpClient
 ) : JikanRestService {
-    override suspend fun getAnimeTheme(malId: Int): AnimeDetails? {
+    override suspend fun getAnimeTheme(malId: Int): NetWorkState<AnimeDetails?> {
         return try {
             client.get {
                 NetWorkState.Success(url("${Constant.JIKAN_API_URL}/$malId"))
@@ -20,19 +20,18 @@ class JikanRestServicesImpl(
         } catch (e: RedirectResponseException) {
             // 3xx - response
             Log.e("ERROR3", "Error: ${e.response.status.description}")
-            null
-
+            NetWorkState.Error(message = e.response.status.description)
         } catch (e: ClientRequestException) {
             // 4xx
             Log.e("ERROR4", "Error: ${e.response.status.description}")
-            null
+            NetWorkState.Error(message = e.response.status.description)
         } catch (e: ServerResponseException) {
             // 5xx
             Log.e("ERROR5", "Error: ${e.response.status.description}")
-            null
+            NetWorkState.Error(message = e.response.status.description)
         } catch (e: Exception) {
             Log.e("ERROR", "Error: ${e.message}")
-            null
+            NetWorkState.Error(message = e.message.toString())
         }
     }
 }

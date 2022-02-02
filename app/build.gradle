@@ -11,7 +11,6 @@ plugins {
 
 android {
     compileSdkVersion 31
-    buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.chs.youranimelist"
@@ -55,7 +54,6 @@ android {
 kotlin_version
 dependencies {
     def ktor_version = '1.6.7'
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     kapt 'org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.4.1'
     implementation 'androidx.core:core-ktx:1.7.0'
