@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentAnimeRecommendBinding
-import com.chs.youranimelist.network.ResponseState
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import com.chs.youranimelist.util.Constant
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,9 +48,11 @@ class AnimeRecommendFragment : Fragment() {
 
     private fun getRecommendList() {
         viewModel.animeRecommendResponse.observe(viewLifecycleOwner) {
-            when (it.responseState) {
-                ResponseState.LOADING -> binding.progressBar.isVisible = true
-                ResponseState.SUCCESS -> {
+            when (it) {
+                is NetWorkState.Loading -> {
+                    binding.progressBar.isVisible = true
+                }
+                is NetWorkState.Success -> {
                     if (!viewModel.hasNextPage) {
                         return@observe
                     }
@@ -71,7 +72,7 @@ class AnimeRecommendFragment : Fragment() {
                     )
                     binding.progressBar.isVisible = false
                 }
-                ResponseState.ERROR -> {
+                is NetWorkState.Error -> {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     binding.progressBar.isVisible = false
                 }

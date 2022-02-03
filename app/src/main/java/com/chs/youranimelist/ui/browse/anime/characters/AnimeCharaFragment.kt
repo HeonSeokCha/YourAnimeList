@@ -1,5 +1,6 @@
 package com.chs.youranimelist.ui.browse.anime.characters
 
+import android.net.Network
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,15 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
-import com.chs.youranimelist.network.ResponseState
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentArgs
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,9 +50,11 @@ class AnimeCharaFragment : Fragment() {
 
     private fun getCharacters() {
         viewModel.animeCharacterResponse.observe(viewLifecycleOwner) {
-            when (it.responseState) {
-                ResponseState.LOADING -> binding.shimmerAnimeChara.root.isVisible = true
-                ResponseState.SUCCESS -> {
+            when (it) {
+                is NetWorkState.Loading -> {
+                    binding.shimmerAnimeChara.root.isVisible = true
+                }
+                is NetWorkState.Success -> {
                     it.data?.media?.characters?.charactersNode?.forEach { animeChara ->
                         viewModel.animeCharacterList.add(animeChara!!)
                     }
@@ -61,7 +62,7 @@ class AnimeCharaFragment : Fragment() {
                     binding.rvAnimeChara.isVisible = true
                     binding.shimmerAnimeChara.root.isVisible = false
                 }
-                ResponseState.ERROR -> {
+                is NetWorkState.Error -> {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     binding.shimmerAnimeChara.root.isVisible = false
                 }

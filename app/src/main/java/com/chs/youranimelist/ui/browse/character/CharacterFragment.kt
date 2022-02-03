@@ -7,10 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,7 +16,7 @@ import com.chs.youranimelist.R
 import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.databinding.FragmentCharacterBinding
-import com.chs.youranimelist.network.ResponseState
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,8 +69,8 @@ class CharacterFragment : BaseFragment() {
 
     private fun getCharaInfo() {
         viewModel.characterDetailResponse.observe(viewLifecycleOwner) {
-            when (it.responseState) {
-                ResponseState.SUCCESS -> {
+            when (it) {
+                is NetWorkState.Success -> {
                     binding.model = it.data?.character
                     viewModel.charaDetail = it.data?.character
                     it.data?.character?.media?.edges?.forEach { anime ->
@@ -81,7 +78,7 @@ class CharacterFragment : BaseFragment() {
                     }
                     animeAdapter?.notifyDataSetChanged()
                 }
-                ResponseState.ERROR -> {
+                is NetWorkState.Error -> {
                     Toast.makeText(
                         requireContext(),
                         it.message, Toast.LENGTH_SHORT

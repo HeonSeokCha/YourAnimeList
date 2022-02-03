@@ -6,7 +6,6 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +14,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentHomeBinding
 import com.chs.youranimelist.fragment.AnimeList
-import com.chs.youranimelist.network.ResponseState
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.SearchActivity
 import com.chs.youranimelist.util.Constant
@@ -48,12 +47,12 @@ class HomeFragment : Fragment() {
 
     private fun getAnimeRecList() {
         viewModel.homeRecommendResponse.observe(viewLifecycleOwner) {
-            when (it.responseState) {
-                ResponseState.LOADING -> {
+            when (it) {
+                is NetWorkState.Loading -> {
                     binding.layoutShimmerHome.root.isVisible = true
                 }
 
-                ResponseState.SUCCESS -> {
+                is NetWorkState.Success -> {
                     it.data?.viewPager?.media?.forEach { viewPager ->
                         viewModel.pagerRecList.add(viewPager!!)
                     }
@@ -92,7 +91,7 @@ class HomeFragment : Fragment() {
                     binding.rvAnimeRecList.isVisible = true
                     binding.viewPager2.isVisible = true
                 }
-                ResponseState.ERROR -> {
+                is NetWorkState.Error -> {
                     binding.layoutShimmerHome.root.isVisible = false
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }

@@ -2,6 +2,7 @@ package com.chs.youranimelist.ui.sortedlist
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -9,14 +10,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentSortedBinding
 import com.chs.youranimelist.network.NetWorkState
-import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.sortedlist.AnimeListQuery
 import com.chs.youranimelist.sortedlist.NoSeasonNoYearQuery
 import com.chs.youranimelist.sortedlist.NoSeasonQuery
@@ -63,6 +62,7 @@ class SortedFragment : BaseFragment() {
         binding.animeListYear.setOnClickListener {
             val yearList =
                 ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
+            Log.e("yearList", yearList[0])
             AlertDialog.Builder(this.requireContext())
                 .setItems(yearList.toTypedArray()) { _, which ->
                     viewModel.selectedYear = yearList[which].toInt()
@@ -188,12 +188,12 @@ class SortedFragment : BaseFragment() {
 
     private fun getAnimeList() {
         viewModel.getObserver()?.observe(viewLifecycleOwner) {
-            when ((it as NetWorkState<*>?)?.responseState) {
-                ResponseState.LOADING -> {
+            when (it as NetWorkState<*>?) {
+                is NetWorkState.Loading -> {
                     if (!isLoading)
                         binding.layoutShimmerSorted.root.isVisible = true
                 }
-                ResponseState.SUCCESS -> {
+                is NetWorkState.Success -> {
                     if (!viewModel.hasNextPage) {
                         return@observe
                     }
@@ -241,7 +241,7 @@ class SortedFragment : BaseFragment() {
                     binding.layoutShimmerSorted.root.isVisible = false
                     binding.rvAnimeList.isVisible = true
                 }
-                ResponseState.ERROR -> {
+                is NetWorkState.Error -> {
                     Toast.makeText(
                         requireContext(),
                         it.message,
@@ -256,8 +256,8 @@ class SortedFragment : BaseFragment() {
 
     private fun getGenre() {
         viewModel.genreListResponse.observe(viewLifecycleOwner) {
-            when (it.responseState) {
-                ResponseState.SUCCESS -> {
+            when (it) {
+                is NetWorkState.Success -> {
                     it.data?.genreCollection?.forEach { genre ->
                         if (genre != null) {
                             viewModel.genreList.add(genre)
@@ -265,7 +265,7 @@ class SortedFragment : BaseFragment() {
                     }
                 }
 
-                ResponseState.ERROR -> {
+                is NetWorkState.Error -> {
                     Toast.makeText(
                         requireContext(),
                         it.message,

@@ -16,7 +16,7 @@ import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.R
 import com.chs.youranimelist.data.dto.Anime
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
-import com.chs.youranimelist.network.ResponseState
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -85,18 +85,18 @@ class AnimeDetailFragment : BaseFragment() {
 
     private fun initAnimeInfo() {
         viewModel.animeDetailResponse.observe(viewLifecycleOwner) {
-            when (it.responseState) {
-                ResponseState.LOADING -> {
+            when (it) {
+                is NetWorkState.Loading -> {
                     binding.progressBar.isVisible = true
                 }
-                ResponseState.SUCCESS -> {
+                is NetWorkState.Success -> {
                     binding.model = it.data!!.media
                     trailerId = it.data.media?.trailer?.id.toString()
                     viewModel.animeDetail = it.data.media
                     binding.progressBar.isVisible = false
                     binding.btnTrailerPlay.isVisible = true
                 }
-                ResponseState.ERROR -> {
+                is NetWorkState.Error -> {
                     Toast.makeText(
                         requireContext(),
                         it.message, Toast.LENGTH_LONG

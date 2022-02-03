@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentSearchBinding
 import com.chs.youranimelist.network.NetWorkState
-import com.chs.youranimelist.network.ResponseState
 import com.chs.youranimelist.network.response.SearchResult
 import com.chs.youranimelist.search.SearchAnimeQuery
 import com.chs.youranimelist.search.SearchCharacterQuery
@@ -111,9 +110,9 @@ class SearchFragment : Fragment() {
 
     private fun initObserver() {
         viewModel.getObserver()?.observe(viewLifecycleOwner) {
-            when ((it as NetWorkState<*>?)?.responseState) {
+            when (it as NetWorkState<*>?) {
 
-                ResponseState.LOADING -> {
+                is NetWorkState.Loading -> {
                     if (!isLoading) {
                         if (viewModel.searchList.isEmpty()) {
                             binding.layoutShimmerSearch.root.isVisible = true
@@ -123,7 +122,7 @@ class SearchFragment : Fragment() {
                     }
                 }
 
-                ResponseState.SUCCESS -> {
+                is NetWorkState.Success -> {
                     if (!viewModel.hasNextPage) {
                         return@observe
                     }
@@ -174,11 +173,10 @@ class SearchFragment : Fragment() {
                         }
                     }
 
-
                     binding.layoutShimmerSearch.root.isVisible = false
                     binding.rvSearch.isVisible = true
                 }
-                ResponseState.ERROR -> {
+                is NetWorkState.Error -> {
                     isLoading = false
                     binding.layoutShimmerSearch.root.isVisible = false
                     binding.imgSearchError.isVisible = true

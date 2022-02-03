@@ -6,15 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentStudioBinding
-import com.chs.youranimelist.network.ResponseState
+import com.chs.youranimelist.network.NetWorkState
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.SpacesItemDecoration
@@ -52,8 +50,8 @@ class StudioFragment : BaseFragment() {
 
     private fun initStudio() {
         viewModel.studioResponse.observe(viewLifecycleOwner) {
-            when (it.responseState) {
-                ResponseState.SUCCESS -> {
+            when (it) {
+                is NetWorkState.Success -> {
                     if (isLoading) {
                         viewModel.studioAnimeList.removeAt(viewModel.studioAnimeList.lastIndex)
                         studioAnimeAdapter?.notifyItemRemoved(viewModel.studioAnimeList.size)
@@ -66,7 +64,7 @@ class StudioFragment : BaseFragment() {
                     }
                     studioAnimeAdapter?.notifyItemRangeChanged((viewModel.page * 10), 10)
                 }
-                ResponseState.ERROR -> {
+                is NetWorkState.Error -> {
                     isLoading = false
                     Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_SHORT).show()
                 }
