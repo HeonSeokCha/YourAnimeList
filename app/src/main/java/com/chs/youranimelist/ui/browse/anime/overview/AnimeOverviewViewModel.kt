@@ -5,15 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
-import com.chs.youranimelist.network.NetWorkState
-import com.chs.youranimelist.network.repository.AnimeRepository
-import com.chs.youranimelist.network.response.AnimeDetails
+import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.repository.AnimeRepository
+import com.chs.youranimelist.data.remote.dto.AnimeDetails
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -50,13 +47,13 @@ class AnimeOverviewViewModel @Inject constructor(
         }
     }
 
-    fun getAnimeTheme(animeId: Int) {
-        viewModelScope.launch {
-            repository.getAnimeOverviewTheme(animeId).apply {
-                _animeOverviewThemeResponse.value = this
-            }
-        }
-    }
+//    fun getAnimeTheme(animeId: Int) {
+//        viewModelScope.launch {
+//            repository.getAnimeOverviewTheme(animeId).apply {
+//                _animeOverviewThemeResponse.value = this
+//            }
+//        }
+//    }
 
     fun clearList() {
         animeDetails = null

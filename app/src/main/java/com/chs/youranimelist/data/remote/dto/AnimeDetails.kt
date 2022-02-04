@@ -1,4 +1,4 @@
-package com.chs.youranimelist.network.response
+package com.chs.youranimelist.data.remote.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -6,11 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AnimeDetails(
     @SerialName("mal_id")
-    val malId: Int,
+    val malId: Int = 0,
     @SerialName("title")
-    val title: String,
+    val title: String = "",
     @SerialName("opening_themes")
-    val openingThemes: List<String>?,
+    val openingThemes: List<String> = listOf(),
     @SerialName("ending_themes")
-    val endingThemes: List<String>?
+    val endingThemes: List<String> = listOf()
 )

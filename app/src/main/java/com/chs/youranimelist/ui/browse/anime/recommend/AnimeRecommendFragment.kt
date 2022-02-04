@@ -12,7 +12,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentAnimeRecommendBinding
-import com.chs.youranimelist.network.NetWorkState
+import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import com.chs.youranimelist.util.Constant
 import dagger.hilt.android.AndroidEntryPoint

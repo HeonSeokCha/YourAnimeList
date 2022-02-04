@@ -6,11 +6,11 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.cache.normalized.lru.EvictionPolicy
 import com.apollographql.apollo.cache.normalized.lru.LruNormalizedCacheFactory
 import com.chs.youranimelist.BuildConfig
-import com.chs.youranimelist.data.YourListDatabase
-import com.chs.youranimelist.data.repository.YourAnimeListRepository
-import com.chs.youranimelist.data.repository.YourCharacterListRepository
-import com.chs.youranimelist.network.repository.*
-import com.chs.youranimelist.network.services.JikanRestServicesImpl
+import com.chs.youranimelist.data.domain.YourListDatabase
+import com.chs.youranimelist.data.domain.repository.YourAnimeListRepository
+import com.chs.youranimelist.data.domain.repository.YourCharacterListRepository
+import com.chs.youranimelist.data.remote.repository.*
+import com.chs.youranimelist.data.remote.services.JikanService
 import com.chs.youranimelist.util.Constant
 import dagger.Module
 import dagger.Provides
@@ -18,11 +18,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
-import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
-import io.ktor.client.request.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
@@ -84,22 +82,20 @@ object AppModule {
             ).build()
     }
 
-    @Provides
-    @Singleton
-    fun provideKtor(): JikanRestServicesImpl {
-        return JikanRestServicesImpl(
-            HttpClient(Android) {
-                install(Logging) {
-                    level = LogLevel.ALL
-                }
-                install(JsonFeature) {
-                    serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
-                        this.ignoreUnknownKeys = true
-                    })
-                }
-            }
-        )
-    }
+//    @Provides
+//    @Singleton
+//    fun provideKtorHttpClient(): HttpClient {
+//        return HttpClient(Android) {
+//            install(Logging) {
+//                level = LogLevel.ALL
+//            }
+//            install(JsonFeature) {
+//                serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
+//                    this.ignoreUnknownKeys = true
+//                })
+//            }
+//        }
+//    }
 
 
     @Provides
@@ -112,9 +108,8 @@ object AppModule {
     @Singleton
     fun providesAnimeRepository(
         apollo: ApolloClient,
-        jikan: JikanRestServicesImpl
     ): AnimeRepository {
-        return AnimeRepository(apollo, jikan)
+        return AnimeRepositoryImpl(apollo)
     }
 
     @Provides

@@ -8,15 +8,15 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.R
+import com.chs.youranimelist.data.domain.model.Character
 import com.chs.youranimelist.util.SpacesItemDecoration
-import com.chs.youranimelist.data.dto.Character
 import com.chs.youranimelist.databinding.FragmentCharacterBinding
-import com.chs.youranimelist.network.NetWorkState
+import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 import dagger.hilt.android.AndroidEntryPoint
@@ -100,7 +100,7 @@ class CharacterFragment : BaseFragment() {
             }
             this.setHasFixedSize(true)
             this.adapter = animeAdapter
-            this.layoutManager = GridLayoutManager(this@CharacterFragment.context, 3)
+            this.layoutManager = GridLayoutManager(requireContext(), 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
         }
     }

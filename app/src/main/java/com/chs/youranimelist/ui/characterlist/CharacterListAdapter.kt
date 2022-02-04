@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.data.dto.Character
+import com.chs.youranimelist.data.domain.model.Character
 import com.chs.youranimelist.databinding.ItemCharacterListBinding
 
 class CharacterListAdapter(

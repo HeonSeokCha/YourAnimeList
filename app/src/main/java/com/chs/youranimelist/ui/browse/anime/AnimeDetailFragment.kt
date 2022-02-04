@@ -9,14 +9,13 @@ import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.R
-import com.chs.youranimelist.data.dto.Anime
+import com.chs.youranimelist.data.domain.model.Anime
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
-import com.chs.youranimelist.network.NetWorkState
+import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint

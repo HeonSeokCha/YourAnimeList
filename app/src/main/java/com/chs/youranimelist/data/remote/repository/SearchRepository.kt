@@ -1,4 +1,4 @@
-package com.chs.youranimelist.network.repository
+package com.chs.youranimelist.data.remote.repository
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.toInput
@@ -6,7 +6,6 @@ import com.apollographql.apollo.coroutines.toFlow
 import com.chs.youranimelist.search.SearchAnimeQuery
 import com.chs.youranimelist.search.SearchCharacterQuery
 import com.chs.youranimelist.search.SearchMangaQuery
-import javax.inject.Inject
 
 class SearchRepository(
     private val apolloClient: ApolloClient

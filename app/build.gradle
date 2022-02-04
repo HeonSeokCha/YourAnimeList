@@ -85,7 +85,7 @@ dependencies {
     //Apollo
     implementation 'com.apollographql.apollo:apollo-runtime:2.5.11'
     implementation 'com.apollographql.apollo:apollo-coroutines-support:2.5.11'
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.4'
     //Ktor
     implementation "io.ktor:ktor-client-core:$ktor_version"
     implementation "io.ktor:ktor-client-android:$ktor_version"

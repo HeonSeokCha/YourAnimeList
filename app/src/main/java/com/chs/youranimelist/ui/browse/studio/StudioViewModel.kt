@@ -4,13 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.browse.studio.StudioAnimeQuery
-import com.chs.youranimelist.network.NetWorkState
-import com.chs.youranimelist.network.repository.StudioRepository
+import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.repository.StudioRepository
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

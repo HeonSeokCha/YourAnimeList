@@ -3,20 +3,18 @@ package com.chs.youranimelist.ui.sortedlist
 import androidx.lifecycle.*
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.fragment.AnimeList
-import com.chs.youranimelist.network.NetWorkState
-import com.chs.youranimelist.network.repository.AnimeListRepository
+import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.repository.AnimeListRepository
 import com.chs.youranimelist.sortedlist.AnimeListQuery
 import com.chs.youranimelist.sortedlist.GenreQuery
 import com.chs.youranimelist.sortedlist.NoSeasonNoYearQuery
 import com.chs.youranimelist.sortedlist.NoSeasonQuery
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
-import com.chs.youranimelist.type.MediaStatus
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

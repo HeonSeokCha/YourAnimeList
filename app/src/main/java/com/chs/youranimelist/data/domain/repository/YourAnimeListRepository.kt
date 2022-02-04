@@ -1,7 +1,7 @@
-package com.chs.youranimelist.data.repository
+package com.chs.youranimelist.data.domain.repository
 
-import com.chs.youranimelist.data.AnimeListDao
-import com.chs.youranimelist.data.dto.Anime
+import com.chs.youranimelist.data.domain.AnimeListDao
+import com.chs.youranimelist.data.domain.model.Anime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 

@@ -1,6 +1,5 @@
 package com.chs.youranimelist.ui.browse.anime.characters
 
-import android.net.Network
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
-import com.chs.youranimelist.network.NetWorkState
+import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentArgs
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
@@ -82,7 +81,7 @@ class AnimeCharaFragment : Fragment() {
                 }
             this.setHasFixedSize(true)
             this.adapter = charaAdapter
-            this.layoutManager = GridLayoutManager(this@AnimeCharaFragment.context, 3)
+            this.layoutManager = GridLayoutManager(requireContext(), 3)
             this.addItemDecoration(SpacesItemDecoration(3, 50, true))
         }
     }

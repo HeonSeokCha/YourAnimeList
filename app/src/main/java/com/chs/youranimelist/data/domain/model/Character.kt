@@ -1,4 +1,4 @@
-package com.chs.youranimelist.data.dto
+package com.chs.youranimelist.data.domain.model
 
 import android.os.Parcelable
 import androidx.room.Entity

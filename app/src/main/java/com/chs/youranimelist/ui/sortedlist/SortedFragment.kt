@@ -15,7 +15,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentSortedBinding
-import com.chs.youranimelist.network.NetWorkState
+import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.sortedlist.AnimeListQuery
 import com.chs.youranimelist.sortedlist.NoSeasonNoYearQuery
 import com.chs.youranimelist.sortedlist.NoSeasonQuery
@@ -287,7 +287,7 @@ class SortedFragment : BaseFragment() {
                 startActivity(intent)
             }
             this.adapter = animeListAdapter
-            this.layoutManager = GridLayoutManager(this@SortedFragment.context, 3)
+            this.layoutManager = GridLayoutManager(requireContext(), 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
             this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

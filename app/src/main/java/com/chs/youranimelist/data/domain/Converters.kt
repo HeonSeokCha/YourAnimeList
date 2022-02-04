@@ -1,4 +1,4 @@
-package com.chs.youranimelist.data
+package com.chs.youranimelist.data.domain
 
 import androidx.room.TypeConverter
 import kotlinx.serialization.decodeFromString

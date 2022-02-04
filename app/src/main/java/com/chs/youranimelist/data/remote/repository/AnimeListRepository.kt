@@ -1,4 +1,4 @@
-package com.chs.youranimelist.network.repository
+package com.chs.youranimelist.data.remote.repository
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input

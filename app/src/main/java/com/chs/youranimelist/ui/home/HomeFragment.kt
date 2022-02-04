@@ -14,7 +14,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentHomeBinding
 import com.chs.youranimelist.fragment.AnimeList
-import com.chs.youranimelist.network.NetWorkState
+import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.SearchActivity
 import com.chs.youranimelist.util.Constant
@@ -120,7 +120,7 @@ class HomeFragment : Fragment() {
 
         binding.rvAnimeRecList.apply {
             homeRecListAdapter =
-                HomeRecListParentAdapter(viewModel.homeRecList, this@HomeFragment.requireContext(),
+                HomeRecListParentAdapter(viewModel.homeRecList, requireContext(),
                     object : HomeRecListParentAdapter.HomeRecListener {
                         override fun clickMore(sortType: String) {
                             val action =

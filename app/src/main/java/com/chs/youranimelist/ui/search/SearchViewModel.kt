@@ -3,9 +3,9 @@ package com.chs.youranimelist.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.youranimelist.network.NetWorkState
-import com.chs.youranimelist.network.response.SearchResult
-import com.chs.youranimelist.network.repository.SearchRepository
+import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.dto.SearchResult
+import com.chs.youranimelist.data.remote.repository.SearchRepository
 import com.chs.youranimelist.search.SearchAnimeQuery
 import com.chs.youranimelist.search.SearchCharacterQuery
 import com.chs.youranimelist.search.SearchMangaQuery
@@ -13,7 +13,6 @@ import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

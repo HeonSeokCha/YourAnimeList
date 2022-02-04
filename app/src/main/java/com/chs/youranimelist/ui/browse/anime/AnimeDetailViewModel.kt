@@ -6,11 +6,10 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.browse.anime.AnimeDetailQuery
-import com.chs.youranimelist.data.dto.Anime
-import com.chs.youranimelist.data.repository.YourAnimeListRepository
-import com.chs.youranimelist.network.NetWorkState
-import com.chs.youranimelist.network.repository.AnimeListRepository
-import com.chs.youranimelist.network.repository.AnimeRepository
+import com.chs.youranimelist.data.domain.model.Anime
+import com.chs.youranimelist.data.domain.repository.YourAnimeListRepository
+import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.repository.AnimeRepository
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

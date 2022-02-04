@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentAnimeOverviewBinding
-import com.chs.youranimelist.network.NetWorkState
+import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import com.chs.youranimelist.util.Constant
@@ -36,9 +36,9 @@ class AnimeOverviewFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments?.getInt(Constant.TARGET_ID_MAL)!! != 0) {
-            viewModel.getAnimeTheme(arguments?.getInt(Constant.TARGET_ID_MAL)!!)
-        }
+//        if (arguments?.getInt(Constant.TARGET_ID_MAL)!! != 0) {
+//            viewModel.getAnimeTheme(arguments?.getInt(Constant.TARGET_ID_MAL)!!)
+//        }
     }
 
     override fun onCreateView(
@@ -87,7 +87,7 @@ class AnimeOverviewFragment : Fragment() {
     }
 
     private fun getAnimeInfo() {
-        viewModel.animeOverviewResponse.observe(viewLifecycleOwner) {
+        viewModel.animeOverviewResponse.observe(viewLifecycleOwner) { it ->
             when (it) {
                 is NetWorkState.Success -> {
                     binding.model = it.data?.media!!
@@ -194,7 +194,7 @@ class AnimeOverviewFragment : Fragment() {
             linkAdapter = AnimeOverviewLinkAdapter(viewModel.animeLinkList) {
                 CustomTabsIntent.Builder()
                     .build()
-                    .launchUrl(this@AnimeOverviewFragment.requireContext(), Uri.parse(it))
+                    .launchUrl(requireContext(), Uri.parse(it))
             }
             this.adapter = linkAdapter
         }

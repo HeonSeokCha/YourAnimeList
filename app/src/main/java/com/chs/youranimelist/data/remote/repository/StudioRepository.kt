@@ -1,11 +1,10 @@
-package com.chs.youranimelist.network.repository
+package com.chs.youranimelist.data.remote.repository
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.toInput
 import com.apollographql.apollo.coroutines.toFlow
 import com.chs.youranimelist.browse.studio.StudioAnimeQuery
 import com.chs.youranimelist.type.MediaSort
-import javax.inject.Inject
 
 class StudioRepository(
     private val apolloClient: ApolloClient

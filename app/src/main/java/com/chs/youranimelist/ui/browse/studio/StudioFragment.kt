@@ -12,7 +12,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentStudioBinding
-import com.chs.youranimelist.network.NetWorkState
+import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.SpacesItemDecoration
@@ -123,7 +123,7 @@ class StudioFragment : BaseFragment() {
             }
             this.setHasFixedSize(true)
             this.adapter = studioAnimeAdapter
-            this.layoutManager = GridLayoutManager(this@StudioFragment.context, 3)
+            this.layoutManager = GridLayoutManager(requireContext(), 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
         }
     }

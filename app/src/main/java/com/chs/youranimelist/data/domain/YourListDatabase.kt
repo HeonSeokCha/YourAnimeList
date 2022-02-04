@@ -1,10 +1,10 @@
-package com.chs.youranimelist.data
+package com.chs.youranimelist.data.domain
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.chs.youranimelist.data.dto.Anime
-import com.chs.youranimelist.data.dto.Character
+import com.chs.youranimelist.data.domain.model.Anime
+import com.chs.youranimelist.data.domain.model.Character
 
 
 @Database(

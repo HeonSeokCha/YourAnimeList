@@ -1,12 +1,11 @@
 package com.chs.youranimelist.ui.animelist
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.data.dto.Anime
+import com.chs.youranimelist.data.domain.model.Anime
 import com.chs.youranimelist.databinding.ItemAnimeListBinding
 import com.chs.youranimelist.ui.browse.anime.overview.AnimeOverviewGenreAdapter
 

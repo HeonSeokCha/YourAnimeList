@@ -1,4 +1,4 @@
-package com.chs.youranimelist.network
+package com.chs.youranimelist.data.remote
 
 sealed class NetWorkState<T>(
     val data: T? = null,

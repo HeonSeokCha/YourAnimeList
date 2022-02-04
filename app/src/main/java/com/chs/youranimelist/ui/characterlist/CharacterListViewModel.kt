@@ -3,8 +3,8 @@ package com.chs.youranimelist.ui.characterlist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.youranimelist.data.dto.Character
-import com.chs.youranimelist.data.repository.YourCharacterListRepository
+import com.chs.youranimelist.data.domain.model.Character
+import com.chs.youranimelist.data.domain.repository.YourCharacterListRepository
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch

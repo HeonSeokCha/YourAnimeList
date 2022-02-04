@@ -6,14 +6,10 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
 import com.chs.youranimelist.databinding.ActivitySearchBinding
-import com.chs.youranimelist.network.repository.SearchRepository
 import com.chs.youranimelist.util.Constant
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
