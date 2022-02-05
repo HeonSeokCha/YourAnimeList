@@ -8,6 +8,7 @@ import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.browse.character.CharacterQuery
 import com.chs.youranimelist.data.domain.model.Character
 import com.chs.youranimelist.data.domain.repository.YourCharacterListRepository
+import com.chs.youranimelist.data.domain.repository.YourCharacterListRepositoryImpl
 import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.data.remote.repository.CharacterRepository
 import com.chs.youranimelist.util.SingleLiveEvent
@@ -19,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CharacterViewModel @Inject constructor(
     private val repository: CharacterRepository,
-    private val charaListRepository: YourCharacterListRepository
+    private val charaListRepositoryImpl: YourCharacterListRepository
 ) : ViewModel() {
 
     private val _characterDetailResponse =
@@ -43,13 +44,13 @@ class CharacterViewModel @Inject constructor(
     }
 
     fun checkCharaList(charaId: Int): LiveData<Character> =
-        charaListRepository.checkCharaList(charaId).asLiveData()
+        charaListRepositoryImpl.checkCharaList(charaId).asLiveData()
 
     fun insertCharaList(character: Character) = viewModelScope.launch {
-        charaListRepository.insertCharaList(character)
+        charaListRepositoryImpl.insertCharaList(character)
     }
 
     fun deleteCharaList(character: Character) = viewModelScope.launch {
-        charaListRepository.deleteCharaList(character)
+        charaListRepositoryImpl.deleteCharaList(character)
     }
 }

@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimeListViewModel @Inject constructor(
-    private val repositoryYour: YourAnimeListRepository
+    private val repositoryYourImpl: YourAnimeListRepository
 ) : ViewModel() {
 
     var animeList: List<Anime> = listOf()
@@ -22,7 +22,7 @@ class AnimeListViewModel @Inject constructor(
 
     fun getAllAnimeList() {
         viewModelScope.launch {
-            repositoryYour.getAllAnimeList().catch {
+            repositoryYourImpl.getAllAnimeList().catch {
                 _animeListResponse.value = listOf()
             }.collect {
                 _animeListResponse.value = it
@@ -32,7 +32,7 @@ class AnimeListViewModel @Inject constructor(
 
     fun searchAnimeList(animeTitle: String) {
         viewModelScope.launch {
-            repositoryYour.searchAnimeList(animeTitle).catch {
+            repositoryYourImpl.searchAnimeList(animeTitle).catch {
                 _animeListResponse.value = listOf()
             }.collect {
                 _animeListResponse.value = it

@@ -8,9 +8,12 @@ import com.apollographql.apollo.cache.normalized.lru.LruNormalizedCacheFactory
 import com.chs.youranimelist.BuildConfig
 import com.chs.youranimelist.data.domain.YourListDatabase
 import com.chs.youranimelist.data.domain.repository.YourAnimeListRepository
+import com.chs.youranimelist.data.domain.repository.YourAnimeListRepositoryImpl
 import com.chs.youranimelist.data.domain.repository.YourCharacterListRepository
+import com.chs.youranimelist.data.domain.repository.YourCharacterListRepositoryImpl
 import com.chs.youranimelist.data.remote.repository.*
 import com.chs.youranimelist.data.remote.services.JikanService
+import com.chs.youranimelist.data.remote.services.KtorJikanService
 import com.chs.youranimelist.util.Constant
 import dagger.Module
 import dagger.Provides
@@ -43,13 +46,13 @@ object AppModule {
     @Provides
     @Singleton
     fun provideYourAnimeListRepository(db: YourListDatabase): YourAnimeListRepository {
-        return YourAnimeListRepository(db.animeListDao)
+        return YourAnimeListRepositoryImpl(db.animeListDao)
     }
 
     @Provides
     @Singleton
     fun provideYourCharaListRepository(db: YourListDatabase): YourCharacterListRepository {
-        return YourCharacterListRepository(db.charaListDao)
+        return YourCharacterListRepositoryImpl(db.charaListDao)
     }
 
     @Provides
@@ -82,20 +85,22 @@ object AppModule {
             ).build()
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideKtorHttpClient(): HttpClient {
-//        return HttpClient(Android) {
-//            install(Logging) {
-//                level = LogLevel.ALL
-//            }
-//            install(JsonFeature) {
-//                serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
-//                    this.ignoreUnknownKeys = true
-//                })
-//            }
-//        }
-//    }
+    @Provides
+    @Singleton
+    fun provideKtorHttpClient(): JikanService {
+        return KtorJikanService(
+            HttpClient(Android) {
+                install(Logging) {
+                    level = LogLevel.ALL
+                }
+                install(JsonFeature) {
+                    serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
+                        this.ignoreUnknownKeys = true
+                    })
+                }
+            }
+        )
+    }
 
 
     @Provides
@@ -108,8 +113,12 @@ object AppModule {
     @Singleton
     fun providesAnimeRepository(
         apollo: ApolloClient,
+        jikan: JikanService
     ): AnimeRepository {
-        return AnimeRepositoryImpl(apollo)
+        return AnimeRepositoryImpl(
+            apollo,
+            jikan
+        )
     }
 
     @Provides

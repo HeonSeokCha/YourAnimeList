@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterListViewModel @Inject constructor(
-    private val repository: YourCharacterListRepository
+    private val repositoryImpl: YourCharacterListRepository
 ) : ViewModel() {
 
     private val _charaListResponse = SingleLiveEvent<List<Character>>()
@@ -21,7 +21,7 @@ class CharacterListViewModel @Inject constructor(
 
     fun getAllCharaList() {
         viewModelScope.launch {
-            repository.getAllCharaList().catch { e ->
+            repositoryImpl.getAllCharaList().catch { e ->
                 _charaListResponse.value = listOf()
                 e.printStackTrace()
             }.collect {
@@ -32,7 +32,7 @@ class CharacterListViewModel @Inject constructor(
 
     fun searchCharaList(charaName: String) {
         viewModelScope.launch {
-            repository.searchCharaList(charaName).catch { e ->
+            repositoryImpl.searchCharaList(charaName).catch { e ->
                 _charaListResponse.value = listOf()
                 e.printStackTrace()
             }.collect {

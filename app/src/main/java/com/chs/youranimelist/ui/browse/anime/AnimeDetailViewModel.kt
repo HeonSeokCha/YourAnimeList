@@ -8,15 +8,16 @@ import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.browse.anime.AnimeDetailQuery
 import com.chs.youranimelist.data.domain.model.Anime
 import com.chs.youranimelist.data.domain.repository.YourAnimeListRepository
+import com.chs.youranimelist.data.domain.repository.YourAnimeListRepositoryImpl
 import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.data.remote.repository.AnimeRepository
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 @HiltViewModel
 class AnimeDetailViewModel @Inject constructor(
     private val animeRepository: AnimeRepository,
@@ -57,3 +58,4 @@ class AnimeDetailViewModel @Inject constructor(
         }
     }
 }
+

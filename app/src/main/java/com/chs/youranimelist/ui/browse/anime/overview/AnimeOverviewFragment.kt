@@ -2,6 +2,7 @@ package com.chs.youranimelist.ui.browse.anime.overview
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,9 +37,9 @@ class AnimeOverviewFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        if (arguments?.getInt(Constant.TARGET_ID_MAL)!! != 0) {
-//            viewModel.getAnimeTheme(arguments?.getInt(Constant.TARGET_ID_MAL)!!)
-//        }
+        if (arguments?.getInt(Constant.TARGET_ID_MAL)!! != 0) {
+            viewModel.getAnimeTheme(arguments?.getInt(Constant.TARGET_ID_MAL)!!)
+        }
     }
 
     override fun onCreateView(
@@ -231,7 +232,7 @@ class AnimeOverviewFragment : Fragment() {
     }
 
     private fun initAnimeTheme() {
-        if (viewModel.animeDetails?.openingThemes?.isNullOrEmpty() == false) {
+        if (viewModel.animeDetails?.openingThemes != null) {
             binding.inOverviewLayoutThemeOp.isVisible = true
             binding.rvAnimeThemeOp.apply {
                 adapter =
@@ -239,7 +240,7 @@ class AnimeOverviewFragment : Fragment() {
             }
         }
 
-        if (viewModel.animeDetails?.endingThemes?.isNullOrEmpty() == false) {
+        if (viewModel.animeDetails?.endingThemes != null) {
             binding.inOverviewLayoutThemeEd.isVisible = true
             binding.rvAnimeThemeEd.apply {
                 adapter =

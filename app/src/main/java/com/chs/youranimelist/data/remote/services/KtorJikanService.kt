@@ -13,22 +13,9 @@ import javax.inject.Singleton
 class KtorJikanService(
     private val client: HttpClient
 ) : JikanService {
-    override suspend fun getAnimeTheme(malId: Int): NetWorkState<AnimeDetails> {
-        return try {
-            client.get {
-                NetWorkState.Success(url("${Constant.JIKAN_API_URL}/$malId"))
-            }
-        } catch (e: RedirectResponseException) {
-            // 3xx - response
-            NetWorkState.Error(message = e.response.status.description)
-        } catch (e: ClientRequestException) {
-            // 4xx
-            NetWorkState.Error(message = e.response.status.description)
-        } catch (e: ServerResponseException) {
-            // 5xx
-            NetWorkState.Error(message = e.response.status.description)
-        } catch (e: Exception) {
-            NetWorkState.Error(message = e.message.toString())
+    override suspend fun getAnimeTheme(malId: Int): AnimeDetails? {
+        return client.get {
+            url("${Constant.JIKAN_API_URL}/$malId")
         }
     }
 }

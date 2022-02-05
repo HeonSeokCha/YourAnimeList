@@ -27,5 +27,5 @@ interface AnimeRepository {
         page: Input<Int>
     ): Flow<Response<AnimeRecommendQuery.Data>>
 
-//    suspend fun getAnimeOverviewTheme(animeId: Int): AnimeDetails
+    suspend fun getAnimeOverviewTheme(animeId: Int): AnimeDetails?
 }

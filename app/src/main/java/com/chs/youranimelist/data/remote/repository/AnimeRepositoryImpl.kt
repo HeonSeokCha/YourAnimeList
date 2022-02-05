@@ -1,5 +1,6 @@
 package com.chs.youranimelist.data.remote.repository
 
+import android.util.Log
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
@@ -23,7 +24,7 @@ import javax.inject.Singleton
 @Singleton
 class AnimeRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
-//    private val jikanClient: JikanService
+    private val jikanClient: JikanService
 ) : AnimeRepository {
 
     override fun getHomeRecommendList(): Flow<Response<HomeRecommendListQuery.Data>> {
@@ -60,7 +61,7 @@ class AnimeRepositoryImpl @Inject constructor(
             .flowOn(Dispatchers.IO)
     }
 
-//    override suspend fun getAnimeOverviewTheme(animeId: Int): NetWorkState<AnimeDetails> {
-//        return jikanClient.getAnimeTheme(animeId)
-//    }
+    override suspend fun getAnimeOverviewTheme(animeId: Int): AnimeDetails? {
+        return jikanClient.getAnimeTheme(animeId)
+    }
 }

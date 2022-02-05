@@ -1,23 +1,19 @@
 package com.chs.youranimelist.data.domain.repository
 
-import com.chs.youranimelist.data.domain.AnimeListDao
 import com.chs.youranimelist.data.domain.model.Anime
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 
-class YourAnimeListRepository(private val dao: AnimeListDao) {
+interface YourAnimeListRepository {
 
-    fun getAllAnimeList() = dao.getAllAnimeList().flowOn(Dispatchers.IO)
+    fun getAllAnimeList(): Flow<List<Anime>>
 
-    fun checkAnimeList(animeId: Int) = dao.checkAnimeList(animeId).flowOn(Dispatchers.IO)
+    fun checkAnimeList(animeId: Int): Flow<Anime>
 
-    fun searchAnimeList(animeTitle: String) = dao.searchAnimeList(animeTitle).flowOn(Dispatchers.IO)
+    fun searchAnimeList(animeTitle: String): Flow<List<Anime>>
 
-    suspend fun insertAnimeList(anime: Anime) {
-        dao.insertAnimeList(anime)
-    }
+    suspend fun insertAnimeList(anime: Anime)
 
-    suspend fun deleteAnimeList(anime: Anime) {
-        dao.deleteAnimeList(anime)
-    }
+    suspend fun deleteAnimeList(anime: Anime)
 }
