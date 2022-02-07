@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val repository: SearchRepository
+    private val repositoryImpl: SearchRepository
 ) : ViewModel() {
 
 
@@ -46,7 +46,7 @@ class SearchViewModel @Inject constructor(
             when (searchPage) {
                 Constant.TARGET_ANIME -> {
                     _searchAnimeResponse.postValue(NetWorkState.Loading())
-                    repository.searchAnime(page, query).catch { e ->
+                    repositoryImpl.searchAnime(page, query).catch { e ->
                         _searchAnimeResponse.postValue(NetWorkState.Error(e.message.toString()))
                     }.collect {
                         _searchAnimeResponse.postValue(NetWorkState.Success(it.data?.page!!))
@@ -54,7 +54,7 @@ class SearchViewModel @Inject constructor(
                 }
                 Constant.TARGET_MANGA -> {
                     _searchMangaResponse.postValue(NetWorkState.Loading())
-                    repository.searchManga(page, query).catch { e ->
+                    repositoryImpl.searchManga(page, query).catch { e ->
                         _searchMangaResponse.postValue(NetWorkState.Error(e.message.toString()))
                     }.collect {
                         _searchMangaResponse.postValue(NetWorkState.Success(it.data?.page!!))
@@ -62,7 +62,7 @@ class SearchViewModel @Inject constructor(
                 }
                 Constant.TARGET_CHARA -> {
                     _searchCharaResponse.postValue(NetWorkState.Loading())
-                    repository.searchCharacter(page, query).catch { e ->
+                    repositoryImpl.searchCharacter(page, query).catch { e ->
                         _searchCharaResponse.postValue(NetWorkState.Error(e.message.toString()))
                     }.collect {
                         _searchCharaResponse.postValue(NetWorkState.Success(it.data?.page!!))

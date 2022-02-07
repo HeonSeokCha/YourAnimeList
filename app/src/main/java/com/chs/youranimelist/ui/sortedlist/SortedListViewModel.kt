@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SortedListViewModel @Inject constructor(
-    private val repository: AnimeListRepository
+    private val repositoryImpl: AnimeListRepository
 ) : ViewModel() {
 
     private val _animeListResponse = SingleLiveEvent<NetWorkState<AnimeListQuery.Page>>()
@@ -58,7 +58,7 @@ class SortedListViewModel @Inject constructor(
             when (selectType) {
                 Constant.SEASON_YEAR -> {
                     _animeListResponse.postValue(NetWorkState.Loading())
-                    repository.getAnimeList(
+                    repositoryImpl.getAnimeList(
                         page.toInput(),
                         selectedSort.toInput(),
                         selectedSeason.toInput(),
@@ -73,7 +73,7 @@ class SortedListViewModel @Inject constructor(
 
                 Constant.NO_SEASON -> {
                     _noSeasonListResponse.postValue(NetWorkState.Loading())
-                    repository.getNoSeasonList(
+                    repositoryImpl.getNoSeasonList(
                         page.toInput(),
                         selectedSort.toInput(),
                         selectedYear.toInput(),
@@ -87,7 +87,7 @@ class SortedListViewModel @Inject constructor(
 
                 Constant.NO_SEASON_NO_YEAR -> {
                     _noSeasonNoYearListResponse.postValue(NetWorkState.Loading())
-                    repository.getNoSeasonNoYearList(
+                    repositoryImpl.getNoSeasonNoYearList(
                         page.toInput(),
                         selectedSort.toInput(),
                         selectGenre.toInput()
@@ -104,7 +104,7 @@ class SortedListViewModel @Inject constructor(
     fun getGenreList() {
         viewModelScope.launch {
             _genreListResponse.value = NetWorkState.Loading()
-            repository.getGenre().catch { e ->
+            repositoryImpl.getGenre().catch { e ->
                 _genreListResponse.value = NetWorkState.Error(e.message.toString())
             }.collect { _genreListResponse.value = NetWorkState.Success(it.data!!) }
         }

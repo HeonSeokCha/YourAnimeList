@@ -1,6 +1,5 @@
 package com.chs.youranimelist.data.remote.repository
 
-import android.util.Log
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
@@ -10,7 +9,6 @@ import com.chs.youranimelist.browse.anime.AnimeCharacterQuery
 import com.chs.youranimelist.browse.anime.AnimeDetailQuery
 import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
 import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
-import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.data.remote.dto.AnimeDetails
 import com.chs.youranimelist.data.remote.services.JikanService
 import com.chs.youranimelist.home.HomeRecommendListQuery

@@ -62,7 +62,6 @@ class SortedFragment : BaseFragment() {
         binding.animeListYear.setOnClickListener {
             val yearList =
                 ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
-            Log.e("yearList", yearList[0])
             AlertDialog.Builder(this.requireContext())
                 .setItems(yearList.toTypedArray()) { _, which ->
                     viewModel.selectedYear = yearList[which].toInt()

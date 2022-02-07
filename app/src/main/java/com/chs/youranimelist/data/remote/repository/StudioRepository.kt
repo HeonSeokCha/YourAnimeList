@@ -1,21 +1,16 @@
 package com.chs.youranimelist.data.remote.repository
 
-import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.api.toInput
-import com.apollographql.apollo.coroutines.toFlow
+import com.apollographql.apollo.api.Response
 import com.chs.youranimelist.browse.studio.StudioAnimeQuery
 import com.chs.youranimelist.type.MediaSort
+import kotlinx.coroutines.flow.Flow
 
-class StudioRepository(
-    private val apolloClient: ApolloClient
-) {
+interface StudioRepository {
 
-    fun getStudioAnime(studioId: Int, sort: MediaSort, page: Int) =
-        apolloClient.query(
-            StudioAnimeQuery(
-                studioId.toInput(),
-                sort.toInput(),
-                page.toInput()
-            )
-        ).toFlow()
+    fun getStudioAnime(
+        studioId: Int,
+        sort: MediaSort,
+        page: Int
+    ): Flow<Response<StudioAnimeQuery.Data>>
+
 }

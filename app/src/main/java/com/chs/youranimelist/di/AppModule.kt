@@ -106,7 +106,7 @@ object AppModule {
     @Provides
     @Singleton
     fun providesAnimeListRepository(apollo: ApolloClient): AnimeListRepository {
-        return AnimeListRepository(apollo)
+        return AnimeListRepositoryImpl(apollo)
     }
 
     @Provides
@@ -124,18 +124,18 @@ object AppModule {
     @Provides
     @Singleton
     fun providesCharacterRepository(apollo: ApolloClient): CharacterRepository {
-        return CharacterRepository(apollo)
+        return CharacterRepositoryImpl(apollo)
     }
 
     @Provides
     @Singleton
     fun providesSearchRepository(apollo: ApolloClient): SearchRepository {
-        return SearchRepository(apollo)
+        return SearchRepositoryImpl(apollo)
     }
 
     @Provides
     @Singleton
     fun providesStudioRepository(apollo: ApolloClient): StudioRepository {
-        return StudioRepository(apollo)
+        return StudioRepositoryImpl(apollo)
     }
 }

@@ -8,7 +8,6 @@ import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.browse.character.CharacterQuery
 import com.chs.youranimelist.data.domain.model.Character
 import com.chs.youranimelist.data.domain.repository.YourCharacterListRepository
-import com.chs.youranimelist.data.domain.repository.YourCharacterListRepositoryImpl
 import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.data.remote.repository.CharacterRepository
 import com.chs.youranimelist.util.SingleLiveEvent
@@ -19,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterViewModel @Inject constructor(
-    private val repository: CharacterRepository,
+    private val repositoryImpl: CharacterRepository,
     private val charaListRepositoryImpl: YourCharacterListRepository
 ) : ViewModel() {
 
@@ -35,7 +34,7 @@ class CharacterViewModel @Inject constructor(
     fun getCharaInfo(charaId: Input<Int>) {
         viewModelScope.launch {
             _characterDetailResponse.value = NetWorkState.Loading()
-            repository.getCharacterDetail(charaId).catch { e ->
+            repositoryImpl.getCharacterDetail(charaId).catch { e ->
                 _characterDetailResponse.value = NetWorkState.Error(e.message.toString())
             }.collect {
                 _characterDetailResponse.value = NetWorkState.Success(it.data!!)

@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StudioViewModel @Inject constructor(
-    private val repository: StudioRepository
+    private val repositoryImpl: StudioRepository
 ) : ViewModel() {
 
     private val _studioResponse = SingleLiveEvent<NetWorkState<StudioAnimeQuery.Studio>>()
@@ -31,7 +31,7 @@ class StudioViewModel @Inject constructor(
     fun getStudioAnime() {
         _studioResponse.value = NetWorkState.Loading()
         viewModelScope.launch {
-            repository.getStudioAnime(studioId, selectsort!!, page).catch { e ->
+            repositoryImpl.getStudioAnime(studioId, selectsort!!, page).catch { e ->
                 _studioResponse.value = NetWorkState.Error(e.message.toString())
             }.collect {
                 if (it.data?.studio == null) {

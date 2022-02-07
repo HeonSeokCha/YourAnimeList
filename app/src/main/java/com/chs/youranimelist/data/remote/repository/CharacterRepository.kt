@@ -1,15 +1,11 @@
 package com.chs.youranimelist.data.remote.repository
 
-import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.coroutines.toFlow
+import com.apollographql.apollo.api.Response
 import com.chs.youranimelist.browse.character.CharacterQuery
+import kotlinx.coroutines.flow.Flow
 
-class CharacterRepository(
-    private val apolloClient: ApolloClient
-) {
-
-    fun getCharacterDetail(charaId: Input<Int>) =
-        apolloClient.query(CharacterQuery(charaId)).toFlow()
+interface CharacterRepository {
+    fun getCharacterDetail(charaId: Input<Int>): Flow<Response<CharacterQuery.Data>>
 
 }
