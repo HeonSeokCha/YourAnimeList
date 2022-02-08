@@ -2,19 +2,16 @@ package com.chs.youranimelist.ui.browse.anime.overview
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
-import com.chs.youranimelist.data.remote.GetAnimeThemeUseCase
+import com.chs.youranimelist.data.remote.usecase.GetAnimeThemeUseCase
 import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.data.remote.repository.AnimeRepository
 import com.chs.youranimelist.data.remote.dto.AnimeDetails
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject

@@ -38,7 +38,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:animeRecommendImageCover="@{model.coverImage}"
-                app:layout_constraintDimensionRatio="2:3"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/exploreImageGuideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

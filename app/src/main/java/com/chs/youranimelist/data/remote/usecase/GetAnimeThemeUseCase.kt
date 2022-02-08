@@ -1,5 +1,6 @@
-package com.chs.youranimelist.data.remote
+package com.chs.youranimelist.data.remote.usecase
 
+import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.data.remote.dto.AnimeDetails
 import com.chs.youranimelist.data.remote.repository.AnimeRepository
 import io.ktor.client.features.*
@@ -15,7 +16,7 @@ class GetAnimeThemeUseCase @Inject constructor(
             emit(NetWorkState.Loading())
             emit(NetWorkState.Success(repository.getAnimeOverviewTheme(malId)))
         } catch (e: RedirectResponseException) {
-            // 3xx - response
+            // 3xx
             emit(NetWorkState.Error(message = e.response.status.description))
         } catch (e: ClientRequestException) {
             // 4xx

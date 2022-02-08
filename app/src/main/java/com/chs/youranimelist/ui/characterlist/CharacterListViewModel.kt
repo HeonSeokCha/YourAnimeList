@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.data.domain.model.Character
 import com.chs.youranimelist.data.domain.repository.YourCharacterListRepository
+import com.chs.youranimelist.data.domain.usecase.GetYourCharaListUseCase
+import com.chs.youranimelist.data.domain.usecase.SearchYourCharListUseCase
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -13,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterListViewModel @Inject constructor(
-    private val repositoryImpl: YourCharacterListRepository
+    private val getCharaUseCase: GetYourCharaListUseCase,
+    private val searchCharaUseCase: SearchYourCharListUseCase
 ) : ViewModel() {
 
     private val _charaListResponse = SingleLiveEvent<List<Character>>()
@@ -21,7 +24,7 @@ class CharacterListViewModel @Inject constructor(
 
     fun getAllCharaList() {
         viewModelScope.launch {
-            repositoryImpl.getAllCharaList().catch { e ->
+            getCharaUseCase().catch { e ->
                 _charaListResponse.value = listOf()
                 e.printStackTrace()
             }.collect {
@@ -32,7 +35,7 @@ class CharacterListViewModel @Inject constructor(
 
     fun searchCharaList(charaName: String) {
         viewModelScope.launch {
-            repositoryImpl.searchCharaList(charaName).catch { e ->
+            searchCharaUseCase(charaName).catch { e ->
                 _charaListResponse.value = listOf()
                 e.printStackTrace()
             }.collect {
