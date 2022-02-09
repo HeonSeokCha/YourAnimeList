@@ -2,11 +2,13 @@ package com.chs.youranimelist.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.home.HomeRecommendListQuery
 import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.data.remote.repository.AnimeRepository
+import com.chs.youranimelist.data.remote.usecase.GetHomeRecListUseCase
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -15,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val animeRepository: AnimeRepository
+    private val getHomeRecListUseCase: GetHomeRecListUseCase
 ) : ViewModel() {
 
     private val _homeRecommendResponse =
@@ -29,13 +31,9 @@ class HomeViewModel @Inject constructor(
 
     fun getHomeRecList() {
         viewModelScope.launch {
-            _homeRecommendResponse.value = NetWorkState.Loading()
-            animeRepository.getHomeRecommendList()
-                .catch { e ->
-                    _homeRecommendResponse.value = NetWorkState.Error(e.message.toString())
-                }.collect {
-                    _homeRecommendResponse.value = NetWorkState.Success(it.data!!)
-                }
+            getHomeRecListUseCase().collect {
+                _homeRecommendResponse.value = it
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository {
 
-    fun getHomeRecommendList(): Flow<Response<HomeRecommendListQuery.Data>>
+    suspend fun getHomeRecommendList(): Response<HomeRecommendListQuery.Data>
 
     fun getAnimeDetail(animeId: Input<Int>): Flow<Response<AnimeDetailQuery.Data>>
 

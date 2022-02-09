@@ -26,7 +26,6 @@ class CharacterListViewModel @Inject constructor(
         viewModelScope.launch {
             getCharaUseCase().catch { e ->
                 _charaListResponse.value = listOf()
-                e.printStackTrace()
             }.collect {
                 _charaListResponse.value = it
             }
@@ -37,7 +36,6 @@ class CharacterListViewModel @Inject constructor(
         viewModelScope.launch {
             searchCharaUseCase(charaName).catch { e ->
                 _charaListResponse.value = listOf()
-                e.printStackTrace()
             }.collect {
                 _charaListResponse.value = it
             }

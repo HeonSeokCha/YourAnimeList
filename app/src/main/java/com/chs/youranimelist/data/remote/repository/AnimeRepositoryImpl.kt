@@ -4,6 +4,7 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.api.toInput
+import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.coroutines.toFlow
 import com.chs.youranimelist.browse.anime.AnimeCharacterQuery
 import com.chs.youranimelist.browse.anime.AnimeDetailQuery
@@ -25,7 +26,7 @@ class AnimeRepositoryImpl @Inject constructor(
     private val jikanClient: JikanService
 ) : AnimeRepository {
 
-    override fun getHomeRecommendList(): Flow<Response<HomeRecommendListQuery.Data>> {
+    override suspend fun getHomeRecommendList(): Response<HomeRecommendListQuery.Data> {
         return apolloClient.query(
             HomeRecommendListQuery(
                 ConvertDate.getCurrentSeason().toInput(),
@@ -33,7 +34,7 @@ class AnimeRepositoryImpl @Inject constructor(
                 ConvertDate.getCurrentYear(false).toInput(),
                 ConvertDate.getCurrentYear(true).toInput()
             )
-        ).toFlow().flowOn(Dispatchers.IO)
+        ).await()
     }
 
     override fun getAnimeDetail(animeId: Input<Int>): Flow<Response<AnimeDetailQuery.Data>> {
