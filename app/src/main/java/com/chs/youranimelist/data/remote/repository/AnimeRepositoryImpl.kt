@@ -37,9 +37,8 @@ class AnimeRepositoryImpl @Inject constructor(
         ).await()
     }
 
-    override fun getAnimeDetail(animeId: Input<Int>): Flow<Response<AnimeDetailQuery.Data>> {
-        return apolloClient.query(AnimeDetailQuery(animeId)).toFlow()
-            .flowOn(Dispatchers.IO)
+    override suspend fun getAnimeDetail(animeId: Input<Int>): Response<AnimeDetailQuery.Data> {
+        return apolloClient.query(AnimeDetailQuery(animeId)).await()
     }
 
     override fun getAnimeOverview(animeId: Input<Int>): Flow<Response<AnimeOverviewQuery.Data>> {

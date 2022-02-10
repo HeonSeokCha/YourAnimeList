@@ -7,7 +7,7 @@ interface YourCharacterListRepository {
 
     fun getAllCharaList(): Flow<List<Character>>
 
-    fun checkCharaList(charaId: Int): Flow<Character>
+    fun checkCharaList(charaId: Int): Flow<Character?>
 
     fun searchCharaList(charaName: String): Flow<List<Character>>
 

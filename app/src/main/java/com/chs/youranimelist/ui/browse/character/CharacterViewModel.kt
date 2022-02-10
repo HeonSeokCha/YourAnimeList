@@ -8,18 +8,22 @@ import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.browse.character.CharacterQuery
 import com.chs.youranimelist.data.domain.model.Character
 import com.chs.youranimelist.data.domain.repository.YourCharacterListRepository
+import com.chs.youranimelist.data.domain.usecase.CheckSaveCharaUseCase
+import com.chs.youranimelist.data.domain.usecase.DeleteCharaUseCase
+import com.chs.youranimelist.data.domain.usecase.InsertCharaUseCase
 import com.chs.youranimelist.data.remote.NetWorkState
-import com.chs.youranimelist.data.remote.repository.CharacterRepository
+import com.chs.youranimelist.data.remote.usecase.GetCharacterInfoUseCase
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CharacterViewModel @Inject constructor(
-    private val repositoryImpl: CharacterRepository,
-    private val charaListRepositoryImpl: YourCharacterListRepository
+    private val checkSaveCharaUseCase: CheckSaveCharaUseCase,
+    private val insertCharaUseCase: InsertCharaUseCase,
+    private val deleteCharaUseCase: DeleteCharaUseCase,
+    private val getCharacterInfoUseCase: GetCharacterInfoUseCase
 ) : ViewModel() {
 
     private val _characterDetailResponse =
@@ -33,23 +37,24 @@ class CharacterViewModel @Inject constructor(
 
     fun getCharaInfo(charaId: Input<Int>) {
         viewModelScope.launch {
-            _characterDetailResponse.value = NetWorkState.Loading()
-            repositoryImpl.getCharacterDetail(charaId).catch { e ->
-                _characterDetailResponse.value = NetWorkState.Error(e.message.toString())
-            }.collect {
-                _characterDetailResponse.value = NetWorkState.Success(it.data!!)
+            getCharacterInfoUseCase(charaId).collect {
+                _characterDetailResponse.value = it
             }
         }
     }
 
-    fun checkCharaList(charaId: Int): LiveData<Character> =
-        charaListRepositoryImpl.checkCharaList(charaId).asLiveData()
+    fun checkCharaList(charaId: Int): LiveData<Character?> =
+        checkSaveCharaUseCase(charaId).asLiveData()
 
-    fun insertCharaList(character: Character) = viewModelScope.launch {
-        charaListRepositoryImpl.insertCharaList(character)
+    fun insertCharaList(character: Character) {
+        viewModelScope.launch {
+            insertCharaUseCase(character)
+        }
     }
 
-    fun deleteCharaList(character: Character) = viewModelScope.launch {
-        charaListRepositoryImpl.deleteCharaList(character)
+    fun deleteCharaList(character: Character) {
+        viewModelScope.launch {
+            deleteCharaUseCase(character)
+        }
     }
 }

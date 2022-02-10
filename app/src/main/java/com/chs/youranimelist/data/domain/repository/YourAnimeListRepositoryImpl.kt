@@ -13,7 +13,7 @@ class YourAnimeListRepositoryImpl(
         return dao.getAllAnimeList()
     }
 
-    override fun checkAnimeList(animeId: Int): Flow<Anime> {
+    override fun checkAnimeList(animeId: Int): Flow<Anime?> {
         return dao.checkAnimeList(animeId)
     }
 

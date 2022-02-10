@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class SearchYourAnimeListUseCase @Inject constructor(
+class CheckSaveAnimeUseCase @Inject constructor(
     private val repository: YourAnimeListRepository
 ) {
-    operator fun invoke(searchTitle: String): Flow<List<Anime>> =
-        repository.searchAnimeList(searchTitle)
+    operator fun invoke(animeId: Int): Flow<Anime?> =
+        repository.checkAnimeList(animeId)
 }

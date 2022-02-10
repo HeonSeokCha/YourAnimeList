@@ -13,7 +13,7 @@ class YourCharacterListRepositoryImpl(
         return dao.getAllCharaList().flowOn(Dispatchers.IO)
     }
 
-    override fun checkCharaList(charaId: Int): Flow<Character> {
+    override fun checkCharaList(charaId: Int): Flow<Character?> {
         return dao.checkCharaList(charaId)
     }
 

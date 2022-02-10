@@ -9,7 +9,7 @@ interface YourAnimeListRepository {
 
     fun getAllAnimeList(): Flow<List<Anime>>
 
-    fun checkAnimeList(animeId: Int): Flow<Anime>
+    fun checkAnimeList(animeId: Int): Flow<Anime?>
 
     fun searchAnimeList(animeTitle: String): Flow<List<Anime>>
 

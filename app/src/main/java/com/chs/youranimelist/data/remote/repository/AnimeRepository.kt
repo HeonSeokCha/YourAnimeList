@@ -16,7 +16,7 @@ interface AnimeRepository {
 
     suspend fun getHomeRecommendList(): Response<HomeRecommendListQuery.Data>
 
-    fun getAnimeDetail(animeId: Input<Int>): Flow<Response<AnimeDetailQuery.Data>>
+    suspend fun getAnimeDetail(animeId: Input<Int>): Response<AnimeDetailQuery.Data>
 
     fun getAnimeOverview(animeId: Input<Int>): Flow<Response<AnimeOverviewQuery.Data>>
 
