@@ -18,14 +18,14 @@ interface AnimeRepository {
 
     suspend fun getAnimeDetail(animeId: Input<Int>): Response<AnimeDetailQuery.Data>
 
-    fun getAnimeOverview(animeId: Input<Int>): Flow<Response<AnimeOverviewQuery.Data>>
+    suspend fun getAnimeOverview(animeId: Input<Int>): Response<AnimeOverviewQuery.Data>
 
-    fun getAnimeCharacter(animeId: Input<Int>): Flow<Response<AnimeCharacterQuery.Data>>
+    suspend fun getAnimeCharacter(animeId: Input<Int>): Response<AnimeCharacterQuery.Data>
 
-    fun getAnimeRecList(
+    suspend fun getAnimeRecList(
         animeId: Input<Int>,
         page: Input<Int>
-    ): Flow<Response<AnimeRecommendQuery.Data>>
+    ): Response<AnimeRecommendQuery.Data>
 
     suspend fun getAnimeOverviewTheme(animeId: Int): AnimeDetails?
 }

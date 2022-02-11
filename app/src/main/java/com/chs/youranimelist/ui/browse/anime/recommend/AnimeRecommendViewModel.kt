@@ -7,6 +7,7 @@ import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
 import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.data.remote.repository.AnimeRepository
+import com.chs.youranimelist.data.remote.usecase.GetAnimeRecUseCase
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimeRecommendViewModel @Inject constructor(
-    private val repository: AnimeRepository
+    private val getAnimeRecUseCase: GetAnimeRecUseCase
 ) : ViewModel() {
 
     private val _animeRecommendResponse = SingleLiveEvent<NetWorkState<AnimeRecommendQuery.Data>>()
@@ -27,12 +28,9 @@ class AnimeRecommendViewModel @Inject constructor(
     var hasNextPage: Boolean = true
 
     fun getRecommendList(animeId: Int) {
-        _animeRecommendResponse.value = NetWorkState.Loading()
         viewModelScope.launch {
-            repository.getAnimeRecList(animeId.toInput(), page.toInput()).catch { e ->
-                _animeRecommendResponse.value = NetWorkState.Error(e.message.toString())
-            }.collect {
-                _animeRecommendResponse.value = NetWorkState.Success(it.data!!)
+            getAnimeRecUseCase(animeId.toInput(), page.toInput()).collect {
+                _animeRecommendResponse.value = it
             }
         }
     }

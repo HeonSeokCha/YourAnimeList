@@ -41,22 +41,19 @@ class AnimeRepositoryImpl @Inject constructor(
         return apolloClient.query(AnimeDetailQuery(animeId)).await()
     }
 
-    override fun getAnimeOverview(animeId: Input<Int>): Flow<Response<AnimeOverviewQuery.Data>> {
-        return apolloClient.query(AnimeOverviewQuery(animeId)).toFlow()
-            .flowOn(Dispatchers.IO)
+    override suspend fun getAnimeOverview(animeId: Input<Int>): Response<AnimeOverviewQuery.Data> {
+        return apolloClient.query(AnimeOverviewQuery(animeId)).await()
     }
 
-    override fun getAnimeCharacter(animeId: Input<Int>): Flow<Response<AnimeCharacterQuery.Data>> {
-        return apolloClient.query(AnimeCharacterQuery(animeId)).toFlow()
-            .flowOn(Dispatchers.IO)
+    override suspend fun getAnimeCharacter(animeId: Input<Int>): Response<AnimeCharacterQuery.Data> {
+        return apolloClient.query(AnimeCharacterQuery(animeId)).await()
     }
 
-    override fun getAnimeRecList(
+    override suspend fun getAnimeRecList(
         animeId: Input<Int>,
         page: Input<Int>
-    ): Flow<Response<AnimeRecommendQuery.Data>> {
-        return apolloClient.query(AnimeRecommendQuery(animeId, page)).toFlow()
-            .flowOn(Dispatchers.IO)
+    ): Response<AnimeRecommendQuery.Data> {
+        return apolloClient.query(AnimeRecommendQuery(animeId, page)).await()
     }
 
     override suspend fun getAnimeOverviewTheme(animeId: Int): AnimeDetails? {

@@ -9,6 +9,7 @@ import com.chs.youranimelist.data.remote.usecase.GetAnimeThemeUseCase
 import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.data.remote.repository.AnimeRepository
 import com.chs.youranimelist.data.remote.dto.AnimeDetails
+import com.chs.youranimelist.data.remote.usecase.GetAnimeOverViewUseCase
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -18,8 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimeOverviewViewModel @Inject constructor(
-    private val repository: AnimeRepository,
-    private val useCase: GetAnimeThemeUseCase
+    private val getAnimeOverViewUseCase: GetAnimeOverViewUseCase,
+    private val getAnimeThemeUseCase: GetAnimeThemeUseCase
 ) : ViewModel() {
 
     private val _animeOverviewResponse =
@@ -39,19 +40,16 @@ class AnimeOverviewViewModel @Inject constructor(
     var animeProducerList = ArrayList<AnimeOverviewQuery.StudiosNode>()
 
     fun getAnimeOverview(animeId: Int) {
-        _animeOverviewResponse.value = NetWorkState.Loading()
         viewModelScope.launch {
-            repository.getAnimeOverview(animeId.toInput()).catch { e ->
-                _animeOverviewResponse.value = NetWorkState.Error(e.message.toString())
-            }.collect {
-                _animeOverviewResponse.value = NetWorkState.Success(it.data!!)
+            getAnimeOverViewUseCase(animeId.toInput()).collect {
+                _animeOverviewResponse.value = it
             }
         }
     }
 
     fun getAnimeTheme(animeId: Int) {
         viewModelScope.launch {
-            useCase.invoke(animeId).collect {
+            getAnimeThemeUseCase.invoke(animeId).collect {
                 _animeOverviewThemeResponse.value = it
             }
         }

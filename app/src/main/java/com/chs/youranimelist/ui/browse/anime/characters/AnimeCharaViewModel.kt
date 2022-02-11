@@ -7,6 +7,7 @@ import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.browse.anime.AnimeCharacterQuery
 import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.data.remote.repository.AnimeRepository
+import com.chs.youranimelist.data.remote.usecase.GetAnimeCharaUseCase
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimeCharaViewModel @Inject constructor(
-    private val repository: AnimeRepository
+    private val getAnimeCharaUseCase: GetAnimeCharaUseCase
 ) : ViewModel() {
 
     private val _animeCharacterResponse = SingleLiveEvent<NetWorkState<AnimeCharacterQuery.Data>>()
@@ -27,10 +28,8 @@ class AnimeCharaViewModel @Inject constructor(
     fun getAnimeCharacter(animeId: Int) {
         _animeCharacterResponse.value = NetWorkState.Loading()
         viewModelScope.launch {
-            repository.getAnimeCharacter(animeId.toInput()).catch { e ->
-                _animeCharacterResponse.value = NetWorkState.Error(e.message.toString())
-            }.collect {
-                _animeCharacterResponse.value = NetWorkState.Success(it.data!!)
+            getAnimeCharaUseCase(animeId.toInput()).collect {
+                _animeCharacterResponse.value = it
             }
         }
     }
