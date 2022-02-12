@@ -6,10 +6,8 @@ import com.chs.youranimelist.browse.anime.AnimeCharacterQuery
 import com.chs.youranimelist.browse.anime.AnimeDetailQuery
 import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
 import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
-import com.chs.youranimelist.data.remote.NetWorkState
 import com.chs.youranimelist.data.remote.dto.AnimeDetails
 import com.chs.youranimelist.home.HomeRecommendListQuery
-import kotlinx.coroutines.flow.Flow
 
 
 interface AnimeRepository {

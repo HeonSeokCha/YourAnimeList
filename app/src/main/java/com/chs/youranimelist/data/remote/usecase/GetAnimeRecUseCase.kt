@@ -2,7 +2,7 @@ package com.chs.youranimelist.data.remote.usecase
 
 import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
-import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.repository.AnimeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -14,13 +14,13 @@ class GetAnimeRecUseCase @Inject constructor(
     suspend operator fun invoke(
         animeId: Input<Int>,
         page: Input<Int>
-    ): Flow<NetWorkState<AnimeRecommendQuery.Data>> =
+    ): Flow<NetworkState<AnimeRecommendQuery.Data>> =
         flow {
             try {
-                emit(NetWorkState.Loading())
-                emit(NetWorkState.Success(repository.getAnimeRecList(animeId, page).data!!))
+                emit(NetworkState.Loading())
+                emit(NetworkState.Success(repository.getAnimeRecList(animeId, page).data!!))
             } catch(e: Exception) {
-                emit(NetWorkState.Error(e.message.toString()))
+                emit(NetworkState.Error(e.message.toString()))
             }
         }
 }

@@ -6,13 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
 import com.chs.youranimelist.data.remote.usecase.GetAnimeThemeUseCase
-import com.chs.youranimelist.data.remote.NetWorkState
-import com.chs.youranimelist.data.remote.repository.AnimeRepository
+import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.dto.AnimeDetails
 import com.chs.youranimelist.data.remote.usecase.GetAnimeOverViewUseCase
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -24,12 +22,12 @@ class AnimeOverviewViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _animeOverviewResponse =
-        SingleLiveEvent<NetWorkState<AnimeOverviewQuery.Data>>()
-    val animeOverviewResponse: LiveData<NetWorkState<AnimeOverviewQuery.Data>>
+        SingleLiveEvent<NetworkState<AnimeOverviewQuery.Data>>()
+    val animeOverviewResponse: LiveData<NetworkState<AnimeOverviewQuery.Data>>
         get() = _animeOverviewResponse
 
-    private val _animeOverviewThemeResponse = SingleLiveEvent<NetWorkState<AnimeDetails?>>()
-    val animeOverviewThemeResponse: LiveData<NetWorkState<AnimeDetails?>>
+    private val _animeOverviewThemeResponse = SingleLiveEvent<NetworkState<AnimeDetails?>>()
+    val animeOverviewThemeResponse: LiveData<NetworkState<AnimeDetails?>>
         get() = _animeOverviewThemeResponse
 
     var animeOverviewRelationList = ArrayList<AnimeOverviewQuery.RelationsEdge?>()

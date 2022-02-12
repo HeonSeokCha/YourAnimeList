@@ -3,7 +3,7 @@ package com.chs.youranimelist.ui.sortedlist
 import androidx.lifecycle.*
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.fragment.AnimeList
-import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.repository.AnimeListRepository
 import com.chs.youranimelist.sortedlist.AnimeListQuery
 import com.chs.youranimelist.sortedlist.GenreQuery
@@ -23,22 +23,22 @@ class SortedListViewModel @Inject constructor(
     private val repositoryImpl: AnimeListRepository
 ) : ViewModel() {
 
-    private val _animeListResponse = SingleLiveEvent<NetWorkState<AnimeListQuery.Page>>()
-    val animeListResponse: LiveData<NetWorkState<AnimeListQuery.Page>>
+    private val _animeListResponse = SingleLiveEvent<NetworkState<AnimeListQuery.Page>>()
+    val animeListResponse: LiveData<NetworkState<AnimeListQuery.Page>>
         get() = _animeListResponse
 
     private val _noSeasonNoYearListResponse =
-        SingleLiveEvent<NetWorkState<NoSeasonNoYearQuery.Page>>()
-    val noSeasonNoYearListResponse: LiveData<NetWorkState<NoSeasonNoYearQuery.Page>>
+        SingleLiveEvent<NetworkState<NoSeasonNoYearQuery.Page>>()
+    val noSeasonNoYearListResponse: LiveData<NetworkState<NoSeasonNoYearQuery.Page>>
         get() = _noSeasonNoYearListResponse
 
     private val _noSeasonListResponse =
-        SingleLiveEvent<NetWorkState<NoSeasonQuery.Page>>()
-    val noSeasonListResponse: LiveData<NetWorkState<NoSeasonQuery.Page>>
+        SingleLiveEvent<NetworkState<NoSeasonQuery.Page>>()
+    val noSeasonListResponse: LiveData<NetworkState<NoSeasonQuery.Page>>
         get() = _noSeasonListResponse
 
-    private val _genreListResponse = SingleLiveEvent<NetWorkState<GenreQuery.Data>>()
-    val genreListResponse: LiveData<NetWorkState<GenreQuery.Data>>
+    private val _genreListResponse = SingleLiveEvent<NetworkState<GenreQuery.Data>>()
+    val genreListResponse: LiveData<NetworkState<GenreQuery.Data>>
         get() = _genreListResponse
 
     var selectedYear: Int? = null
@@ -57,7 +57,7 @@ class SortedListViewModel @Inject constructor(
         viewModelScope.launch {
             when (selectType) {
                 Constant.SEASON_YEAR -> {
-                    _animeListResponse.postValue(NetWorkState.Loading())
+                    _animeListResponse.postValue(NetworkState.Loading())
                     repositoryImpl.getAnimeList(
                         page.toInput(),
                         selectedSort.toInput(),
@@ -65,36 +65,36 @@ class SortedListViewModel @Inject constructor(
                         selectedYear.toInput(),
                         selectGenre.toInput()
                     ).catch { e ->
-                        _animeListResponse.postValue(NetWorkState.Error(e.message.toString()))
+                        _animeListResponse.postValue(NetworkState.Error(e.message.toString()))
                     }.collect {
-                        _animeListResponse.postValue(NetWorkState.Success(it.data?.page!!))
+                        _animeListResponse.postValue(NetworkState.Success(it.data?.page!!))
                     }
                 }
 
                 Constant.NO_SEASON -> {
-                    _noSeasonListResponse.postValue(NetWorkState.Loading())
+                    _noSeasonListResponse.postValue(NetworkState.Loading())
                     repositoryImpl.getNoSeasonList(
                         page.toInput(),
                         selectedSort.toInput(),
                         selectedYear.toInput(),
                         selectGenre.toInput()
                     ).catch { e ->
-                        _noSeasonListResponse.postValue(NetWorkState.Error(e.message.toString()))
+                        _noSeasonListResponse.postValue(NetworkState.Error(e.message.toString()))
                     }.collect {
-                        _noSeasonListResponse.postValue(NetWorkState.Success(it.data?.page!!))
+                        _noSeasonListResponse.postValue(NetworkState.Success(it.data?.page!!))
                     }
                 }
 
                 Constant.NO_SEASON_NO_YEAR -> {
-                    _noSeasonNoYearListResponse.postValue(NetWorkState.Loading())
+                    _noSeasonNoYearListResponse.postValue(NetworkState.Loading())
                     repositoryImpl.getNoSeasonNoYearList(
                         page.toInput(),
                         selectedSort.toInput(),
                         selectGenre.toInput()
                     ).catch { e ->
-                        _noSeasonNoYearListResponse.postValue(NetWorkState.Error(e.message.toString()))
+                        _noSeasonNoYearListResponse.postValue(NetworkState.Error(e.message.toString()))
                     }.collect {
-                        _noSeasonNoYearListResponse.postValue(NetWorkState.Success(it.data?.page!!))
+                        _noSeasonNoYearListResponse.postValue(NetworkState.Success(it.data?.page!!))
                     }
                 }
             }
@@ -103,10 +103,10 @@ class SortedListViewModel @Inject constructor(
 
     fun getGenreList() {
         viewModelScope.launch {
-            _genreListResponse.value = NetWorkState.Loading()
+            _genreListResponse.value = NetworkState.Loading()
             repositoryImpl.getGenre().catch { e ->
-                _genreListResponse.value = NetWorkState.Error(e.message.toString())
-            }.collect { _genreListResponse.value = NetWorkState.Success(it.data!!) }
+                _genreListResponse.value = NetworkState.Error(e.message.toString())
+            }.collect { _genreListResponse.value = NetworkState.Success(it.data!!) }
         }
     }
 

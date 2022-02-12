@@ -16,7 +16,7 @@ import com.chs.youranimelist.R
 import com.chs.youranimelist.data.domain.model.Character
 import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentCharacterBinding
-import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,7 +70,7 @@ class CharacterFragment : BaseFragment() {
     private fun getCharaInfo() {
         viewModel.characterDetailResponse.observe(viewLifecycleOwner) {
             when (it) {
-                is NetWorkState.Success -> {
+                is NetworkState.Success -> {
                     binding.model = it.data?.character
                     viewModel.charaDetail = it.data?.character
                     it.data?.character?.media?.edges?.forEach { anime ->
@@ -78,7 +78,7 @@ class CharacterFragment : BaseFragment() {
                     }
                     animeAdapter?.notifyDataSetChanged()
                 }
-                is NetWorkState.Error -> {
+                is NetworkState.Error -> {
                     Toast.makeText(
                         requireContext(),
                         it.message, Toast.LENGTH_SHORT

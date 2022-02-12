@@ -14,7 +14,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentHomeBinding
 import com.chs.youranimelist.fragment.AnimeList
-import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.ui.browse.BrowseActivity
 import com.chs.youranimelist.ui.search.SearchActivity
 import com.chs.youranimelist.util.Constant
@@ -48,11 +48,11 @@ class HomeFragment : Fragment() {
     private fun getAnimeRecList() {
         viewModel.homeRecommendResponse.observe(viewLifecycleOwner) {
             when (it) {
-                is NetWorkState.Loading -> {
+                is NetworkState.Loading -> {
                     binding.layoutShimmerHome.root.isVisible = true
                 }
 
-                is NetWorkState.Success -> {
+                is NetworkState.Success -> {
                     it.data?.viewPager?.media?.forEach { viewPager ->
                         viewModel.pagerRecList.add(viewPager!!)
                     }
@@ -91,7 +91,7 @@ class HomeFragment : Fragment() {
                     binding.rvAnimeRecList.isVisible = true
                     binding.viewPager2.isVisible = true
                 }
-                is NetWorkState.Error -> {
+                is NetworkState.Error -> {
                     binding.layoutShimmerHome.root.isVisible = false
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }

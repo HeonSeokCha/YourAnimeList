@@ -5,12 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.toInput
 import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
-import com.chs.youranimelist.data.remote.NetWorkState
-import com.chs.youranimelist.data.remote.repository.AnimeRepository
+import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.usecase.GetAnimeRecUseCase
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,8 +17,8 @@ class AnimeRecommendViewModel @Inject constructor(
     private val getAnimeRecUseCase: GetAnimeRecUseCase
 ) : ViewModel() {
 
-    private val _animeRecommendResponse = SingleLiveEvent<NetWorkState<AnimeRecommendQuery.Data>>()
-    val animeRecommendResponse: LiveData<NetWorkState<AnimeRecommendQuery.Data>>
+    private val _animeRecommendResponse = SingleLiveEvent<NetworkState<AnimeRecommendQuery.Data>>()
+    val animeRecommendResponse: LiveData<NetworkState<AnimeRecommendQuery.Data>>
         get() = _animeRecommendResponse
 
     var animeRecList = ArrayList<AnimeRecommendQuery.Edge?>()
