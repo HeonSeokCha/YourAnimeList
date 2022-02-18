@@ -13,7 +13,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chs.youranimelist.util.SpacesItemDecoration
 import com.chs.youranimelist.databinding.FragmentAnimeCharaBinding
-import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentArgs
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,10 +50,10 @@ class AnimeCharaFragment : Fragment() {
     private fun getCharacters() {
         viewModel.animeCharacterResponse.observe(viewLifecycleOwner) {
             when (it) {
-                is NetWorkState.Loading -> {
+                is NetworkState.Loading -> {
                     binding.shimmerAnimeChara.root.isVisible = true
                 }
-                is NetWorkState.Success -> {
+                is NetworkState.Success -> {
                     it.data?.media?.characters?.charactersNode?.forEach { animeChara ->
                         viewModel.animeCharacterList.add(animeChara!!)
                     }
@@ -61,7 +61,7 @@ class AnimeCharaFragment : Fragment() {
                     binding.rvAnimeChara.isVisible = true
                     binding.shimmerAnimeChara.root.isVisible = false
                 }
-                is NetWorkState.Error -> {
+                is NetworkState.Error -> {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     binding.shimmerAnimeChara.root.isVisible = false
                 }

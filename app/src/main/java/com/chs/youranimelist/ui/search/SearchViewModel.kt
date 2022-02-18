@@ -3,9 +3,13 @@ package com.chs.youranimelist.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.youranimelist.data.remote.NetWorkState
+import com.apollographql.apollo.api.toInput
+import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.dto.SearchResult
 import com.chs.youranimelist.data.remote.repository.SearchRepository
+import com.chs.youranimelist.data.remote.usecase.SearchAnimeUseCase
+import com.chs.youranimelist.data.remote.usecase.SearchCharaUseCase
+import com.chs.youranimelist.data.remote.usecase.SearchMangaUseCase
 import com.chs.youranimelist.search.SearchAnimeQuery
 import com.chs.youranimelist.search.SearchCharacterQuery
 import com.chs.youranimelist.search.SearchMangaQuery
@@ -18,20 +22,22 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val repositoryImpl: SearchRepository
+    private val searchAnimeUseCase: SearchAnimeUseCase,
+    private val searchMangaUseCase: SearchMangaUseCase,
+    private val searchCharaUseCase: SearchCharaUseCase
 ) : ViewModel() {
 
 
-    private val _searchAnimeResponse = SingleLiveEvent<NetWorkState<SearchAnimeQuery.Page>>()
-    private val searchAnimeResponse: LiveData<NetWorkState<SearchAnimeQuery.Page>>
+    private val _searchAnimeResponse = SingleLiveEvent<NetworkState<SearchAnimeQuery.Page>>()
+    private val searchAnimeResponse: LiveData<NetworkState<SearchAnimeQuery.Page>>
         get() = _searchAnimeResponse
 
-    private val _searchMangaResponse = SingleLiveEvent<NetWorkState<SearchMangaQuery.Page>>()
-    private val searchMangaResponse: LiveData<NetWorkState<SearchMangaQuery.Page>>
+    private val _searchMangaResponse = SingleLiveEvent<NetworkState<SearchMangaQuery.Page>>()
+    private val searchMangaResponse: LiveData<NetworkState<SearchMangaQuery.Page>>
         get() = _searchMangaResponse
 
-    private val _searchCharaResponse = SingleLiveEvent<NetWorkState<SearchCharacterQuery.Page>>()
-    private val searchCharaResponse: LiveData<NetWorkState<SearchCharacterQuery.Page>>
+    private val _searchCharaResponse = SingleLiveEvent<NetworkState<SearchCharacterQuery.Page>>()
+    private val searchCharaResponse: LiveData<NetworkState<SearchCharacterQuery.Page>>
         get() = _searchCharaResponse
 
 
@@ -45,27 +51,18 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             when (searchPage) {
                 Constant.TARGET_ANIME -> {
-                    _searchAnimeResponse.postValue(NetWorkState.Loading())
-                    repositoryImpl.searchAnime(page, query).catch { e ->
-                        _searchAnimeResponse.postValue(NetWorkState.Error(e.message.toString()))
-                    }.collect {
-                        _searchAnimeResponse.postValue(NetWorkState.Success(it.data?.page!!))
+                    searchAnimeUseCase(page.toInput(), query.toInput()).collect {
+                        _searchAnimeResponse.value = it
                     }
                 }
                 Constant.TARGET_MANGA -> {
-                    _searchMangaResponse.postValue(NetWorkState.Loading())
-                    repositoryImpl.searchManga(page, query).catch { e ->
-                        _searchMangaResponse.postValue(NetWorkState.Error(e.message.toString()))
-                    }.collect {
-                        _searchMangaResponse.postValue(NetWorkState.Success(it.data?.page!!))
+                    searchMangaUseCase(page.toInput(), query.toInput()).collect {
+                        _searchMangaResponse.value = it
                     }
                 }
                 Constant.TARGET_CHARA -> {
-                    _searchCharaResponse.postValue(NetWorkState.Loading())
-                    repositoryImpl.searchCharacter(page, query).catch { e ->
-                        _searchCharaResponse.postValue(NetWorkState.Error(e.message.toString()))
-                    }.collect {
-                        _searchCharaResponse.postValue(NetWorkState.Success(it.data?.page!!))
+                    searchCharaUseCase(page.toInput(), query.toInput()).collect {
+                        _searchCharaResponse.value = it
                     }
                 }
             }

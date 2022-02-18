@@ -2,7 +2,6 @@ package com.chs.youranimelist.ui.browse.anime.overview
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chs.youranimelist.R
 import com.chs.youranimelist.databinding.FragmentAnimeOverviewBinding
-import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import com.chs.youranimelist.util.Constant
@@ -90,7 +89,7 @@ class AnimeOverviewFragment : Fragment() {
     private fun getAnimeInfo() {
         viewModel.animeOverviewResponse.observe(viewLifecycleOwner) { it ->
             when (it) {
-                is NetWorkState.Success -> {
+                is NetworkState.Success -> {
                     binding.model = it.data?.media!!
                     if (it.data?.media.season != null && it.data.media.seasonYear != null) {
                         season = it.data?.media.season
@@ -141,17 +140,17 @@ class AnimeOverviewFragment : Fragment() {
                     studioAdapter?.notifyDataSetChanged()
                     producerAdapter?.notifyDataSetChanged()
                 }
-                is NetWorkState.Error -> {
+                is NetworkState.Error -> {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }
             }
 
             viewModel.animeOverviewThemeResponse.observe(viewLifecycleOwner) {
                 when (it) {
-                    is NetWorkState.Success -> {
+                    is NetworkState.Success -> {
                         viewModel.animeDetails = it.data
                     }
-                    is NetWorkState.Error -> {
+                    is NetworkState.Error -> {
                         viewModel.animeDetails = null
                     }
                 }

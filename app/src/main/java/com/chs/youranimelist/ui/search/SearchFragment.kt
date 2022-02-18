@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentSearchBinding
-import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.dto.SearchResult
 import com.chs.youranimelist.search.SearchAnimeQuery
 import com.chs.youranimelist.search.SearchCharacterQuery
@@ -109,9 +109,9 @@ class SearchFragment : Fragment() {
 
     private fun initObserver() {
         viewModel.getObserver()?.observe(viewLifecycleOwner) {
-            when (it as NetWorkState<*>?) {
+            when (it as NetworkState<*>?) {
 
-                is NetWorkState.Loading -> {
+                is NetworkState.Loading -> {
                     if (!isLoading) {
                         if (viewModel.searchList.isEmpty()) {
                             binding.layoutShimmerSearch.root.isVisible = true
@@ -121,7 +121,7 @@ class SearchFragment : Fragment() {
                     }
                 }
 
-                is NetWorkState.Success -> {
+                is NetworkState.Success -> {
                     if (!viewModel.hasNextPage) {
                         return@observe
                     }
@@ -136,7 +136,7 @@ class SearchFragment : Fragment() {
                     when (viewModel.searchPage) {
 
                         Constant.TARGET_ANIME -> {
-                            val searchAnime = it as NetWorkState<SearchAnimeQuery.Page>
+                            val searchAnime = it as NetworkState<SearchAnimeQuery.Page>
                             viewModel.hasNextPage = searchAnime.data?.pageInfo?.hasNextPage ?: false
                             searchAnime.data?.media?.forEach { anime ->
                                 viewModel.searchList.add(SearchResult(animeSearchResult = anime))
@@ -148,7 +148,7 @@ class SearchFragment : Fragment() {
                         }
 
                         Constant.TARGET_MANGA -> {
-                            val searchManga = it as NetWorkState<SearchMangaQuery.Page>
+                            val searchManga = it as NetworkState<SearchMangaQuery.Page>
                             viewModel.hasNextPage = searchManga.data?.pageInfo?.hasNextPage ?: false
                             searchManga.data?.media?.forEach { manga ->
                                 viewModel.searchList.add(SearchResult(mangaSearchResult = manga))
@@ -160,7 +160,7 @@ class SearchFragment : Fragment() {
                         }
 
                         Constant.TARGET_CHARA -> {
-                            val searchChara = it as NetWorkState<SearchCharacterQuery.Page>
+                            val searchChara = it as NetworkState<SearchCharacterQuery.Page>
                             viewModel.hasNextPage = searchChara.data?.pageInfo?.hasNextPage ?: false
                             searchChara.data?.characters?.forEach { chara ->
                                 viewModel.searchList.add(SearchResult(charactersSearchResult = chara))
@@ -175,7 +175,7 @@ class SearchFragment : Fragment() {
                     binding.layoutShimmerSearch.root.isVisible = false
                     binding.rvSearch.isVisible = true
                 }
-                is NetWorkState.Error -> {
+                is NetworkState.Error -> {
                     isLoading = false
                     binding.layoutShimmerSearch.root.isVisible = false
                     binding.imgSearchError.isVisible = true

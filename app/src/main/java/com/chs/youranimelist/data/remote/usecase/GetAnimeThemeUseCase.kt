@@ -1,6 +1,6 @@
 package com.chs.youranimelist.data.remote.usecase
 
-import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.dto.AnimeDetails
 import com.chs.youranimelist.data.remote.repository.AnimeRepository
 import io.ktor.client.features.*
@@ -11,21 +11,21 @@ import javax.inject.Inject
 class GetAnimeThemeUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
-    operator fun invoke(malId: Int): Flow<NetWorkState<AnimeDetails?>> = flow {
+    operator fun invoke(malId: Int): Flow<NetworkState<AnimeDetails?>> = flow {
         try {
-            emit(NetWorkState.Loading())
-            emit(NetWorkState.Success(repository.getAnimeOverviewTheme(malId)))
+            emit(NetworkState.Loading())
+            emit(NetworkState.Success(repository.getAnimeOverviewTheme(malId)))
         } catch (e: RedirectResponseException) {
             // 3xx
-            emit(NetWorkState.Error(message = e.response.status.description))
+            emit(NetworkState.Error(message = e.response.status.description))
         } catch (e: ClientRequestException) {
             // 4xx
-            emit(NetWorkState.Error(message = e.response.status.description))
+            emit(NetworkState.Error(message = e.response.status.description))
         } catch (e: ServerResponseException) {
             // 5xx
-            emit(NetWorkState.Error(message = e.response.status.description))
+            emit(NetworkState.Error(message = e.response.status.description))
         } catch (e: Exception) {
-            emit(NetWorkState.Error(message = e.message.toString()))
+            emit(NetworkState.Error(message = e.message.toString()))
         }
     }
 }

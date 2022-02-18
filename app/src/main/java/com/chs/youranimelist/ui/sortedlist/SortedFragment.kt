@@ -2,7 +2,6 @@ package com.chs.youranimelist.ui.sortedlist
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -15,7 +14,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentSortedBinding
-import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.sortedlist.AnimeListQuery
 import com.chs.youranimelist.sortedlist.NoSeasonNoYearQuery
 import com.chs.youranimelist.sortedlist.NoSeasonQuery
@@ -187,12 +186,12 @@ class SortedFragment : BaseFragment() {
 
     private fun getAnimeList() {
         viewModel.getObserver()?.observe(viewLifecycleOwner) {
-            when (it as NetWorkState<*>?) {
-                is NetWorkState.Loading -> {
+            when (it as NetworkState<*>?) {
+                is NetworkState.Loading -> {
                     if (!isLoading)
                         binding.layoutShimmerSorted.root.isVisible = true
                 }
-                is NetWorkState.Success -> {
+                is NetworkState.Success -> {
                     if (!viewModel.hasNextPage) {
                         return@observe
                     }
@@ -204,7 +203,7 @@ class SortedFragment : BaseFragment() {
 
                     when (viewModel.selectType) {
                         Constant.SEASON_YEAR -> {
-                            val seasonYear = it as NetWorkState<AnimeListQuery.Page>
+                            val seasonYear = it as NetworkState<AnimeListQuery.Page>
                             viewModel.hasNextPage = seasonYear.data?.pageInfo?.hasNextPage ?: false
                             seasonYear.data?.media?.forEach { anime ->
                                 viewModel.animeResultList.add(anime?.fragments?.animeList)
@@ -214,7 +213,7 @@ class SortedFragment : BaseFragment() {
                             )
                         }
                         Constant.NO_SEASON_NO_YEAR -> {
-                            val noSeasonNoYear = it as NetWorkState<NoSeasonNoYearQuery.Page>
+                            val noSeasonNoYear = it as NetworkState<NoSeasonNoYearQuery.Page>
                             viewModel.hasNextPage =
                                 noSeasonNoYear.data?.pageInfo?.hasNextPage ?: false
                             noSeasonNoYear.data?.media?.forEach { anime ->
@@ -225,7 +224,7 @@ class SortedFragment : BaseFragment() {
                             )
                         }
                         Constant.NO_SEASON -> {
-                            val noSeason = it as NetWorkState<NoSeasonQuery.Page>
+                            val noSeason = it as NetworkState<NoSeasonQuery.Page>
                             viewModel.hasNextPage =
                                 noSeason.data?.pageInfo?.hasNextPage ?: false
                             noSeason.data?.media?.forEach { anime ->
@@ -240,7 +239,7 @@ class SortedFragment : BaseFragment() {
                     binding.layoutShimmerSorted.root.isVisible = false
                     binding.rvAnimeList.isVisible = true
                 }
-                is NetWorkState.Error -> {
+                is NetworkState.Error -> {
                     Toast.makeText(
                         requireContext(),
                         it.message,
@@ -256,7 +255,7 @@ class SortedFragment : BaseFragment() {
     private fun getGenre() {
         viewModel.genreListResponse.observe(viewLifecycleOwner) {
             when (it) {
-                is NetWorkState.Success -> {
+                is NetworkState.Success -> {
                     it.data?.genreCollection?.forEach { genre ->
                         if (genre != null) {
                             viewModel.genreList.add(genre)
@@ -264,7 +263,7 @@ class SortedFragment : BaseFragment() {
                     }
                 }
 
-                is NetWorkState.Error -> {
+                is NetworkState.Error -> {
                     Toast.makeText(
                         requireContext(),
                         it.message,

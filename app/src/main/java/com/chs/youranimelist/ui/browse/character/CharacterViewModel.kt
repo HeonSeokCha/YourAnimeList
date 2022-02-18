@@ -7,11 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.Input
 import com.chs.youranimelist.browse.character.CharacterQuery
 import com.chs.youranimelist.data.domain.model.Character
-import com.chs.youranimelist.data.domain.repository.YourCharacterListRepository
 import com.chs.youranimelist.data.domain.usecase.CheckSaveCharaUseCase
 import com.chs.youranimelist.data.domain.usecase.DeleteCharaUseCase
 import com.chs.youranimelist.data.domain.usecase.InsertCharaUseCase
-import com.chs.youranimelist.data.remote.NetWorkState
+import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.usecase.GetCharacterInfoUseCase
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,8 +26,8 @@ class CharacterViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _characterDetailResponse =
-        SingleLiveEvent<NetWorkState<CharacterQuery.Data>>()
-    val characterDetailResponse: LiveData<NetWorkState<CharacterQuery.Data>>
+        SingleLiveEvent<NetworkState<CharacterQuery.Data>>()
+    val characterDetailResponse: LiveData<NetworkState<CharacterQuery.Data>>
         get() = _characterDetailResponse
 
     var characterAnimeList = ArrayList<CharacterQuery.Edge?>()
