@@ -4,15 +4,15 @@ package com.chs.youranimelist.ui.search.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.databinding.ItemSearchCharacterBinding
 import com.chs.youranimelist.data.remote.dto.SearchResult
 
 class SearchCharacterAdapter(
-    private val list: List<SearchResult?>,
     private val clickListener: (id: Int) -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : ListAdapter<SearchResult, RecyclerView.ViewHolder>(SearchAnimeAdapter.diffUtil) {
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1
@@ -39,7 +39,7 @@ class SearchCharacterAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                clickListener.invoke(list[layoutPosition]!!.charactersSearchResult!!.id)
+                clickListener.invoke(getItem(layoutPosition)!!.charactersSearchResult!!.id)
             }
         }
 
@@ -65,14 +65,12 @@ class SearchCharacterAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is SearchCharacterViewHolder) {
-            holder.bind(list[position])
+            holder.bind(getItem(position))
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (list[position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
+        return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
     }
-
-    override fun getItemCount(): Int = list.size
 
 }
