@@ -9,27 +9,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.databinding.ItemSearchMediaBinding
 import com.chs.youranimelist.data.remote.dto.SearchResult
+import com.chs.youranimelist.search.SearchMangaQuery
 
 class SearchMangaAdapter(
     private val clickListener: (id: Int, idMal: Int) -> Unit
-) : ListAdapter<SearchResult, RecyclerView.ViewHolder>(SearchAnimeAdapter.diffUtil) {
+) : ListAdapter<SearchMangaQuery.Medium, RecyclerView.ViewHolder>(diffUtil) {
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1
 
-        val diffUtil = object : DiffUtil.ItemCallback<SearchResult>() {
-            override fun areItemsTheSame(oldItem: SearchResult, newItem: SearchResult): Boolean {
-                return if (oldItem.mangaSearchResult != null && newItem.mangaSearchResult != null) {
-                    oldItem.mangaSearchResult!!.fragments.animeList.id ==
-                            newItem.mangaSearchResult!!.fragments.animeList.id
-                } else false
+        val diffUtil = object : DiffUtil.ItemCallback<SearchMangaQuery.Medium>() {
+            override fun areItemsTheSame(
+                oldItem: SearchMangaQuery.Medium,
+                newItem: SearchMangaQuery.Medium
+            ): Boolean {
+                return oldItem.fragments.animeList.id == newItem.fragments.animeList.id
             }
 
-            override fun areContentsTheSame(oldItem: SearchResult, newItem: SearchResult): Boolean {
-                return if (oldItem.mangaSearchResult != null && newItem.mangaSearchResult != null) {
-                    oldItem.mangaSearchResult!!.fragments.animeList.id ==
-                            newItem.mangaSearchResult!!.fragments.animeList.id
-                } else false
+            override fun areContentsTheSame(
+                oldItem: SearchMangaQuery.Medium,
+                newItem: SearchMangaQuery.Medium
+            ): Boolean {
+                return oldItem.fragments.animeList == newItem.fragments.animeList
             }
         }
     }
@@ -39,14 +40,14 @@ class SearchMangaAdapter(
         init {
             binding.root.setOnClickListener {
                 clickListener.invoke(
-                    getItem(layoutPosition)!!.mangaSearchResult!!.fragments.animeList.id,
-                    getItem(layoutPosition)!!.mangaSearchResult!!.fragments.animeList.idMal ?: 0
+                    getItem(layoutPosition).fragments.animeList.id,
+                    getItem(layoutPosition).fragments.animeList.idMal ?: 0
                 )
             }
         }
 
-        fun bind(items: SearchResult?) {
-            binding.model = items!!.mangaSearchResult!!.fragments.animeList
+        fun bind(items: SearchMangaQuery.Medium) {
+            binding.model = items.fragments.animeList
         }
     }
 
@@ -73,5 +74,4 @@ class SearchMangaAdapter(
     override fun getItemViewType(position: Int): Int {
         return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
     }
-
 }

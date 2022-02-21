@@ -9,27 +9,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.databinding.ItemSearchCharacterBinding
 import com.chs.youranimelist.data.remote.dto.SearchResult
+import com.chs.youranimelist.search.SearchCharacterQuery
 
 class SearchCharacterAdapter(
     private val clickListener: (id: Int) -> Unit
-) : ListAdapter<SearchResult, RecyclerView.ViewHolder>(SearchAnimeAdapter.diffUtil) {
+) : ListAdapter<SearchCharacterQuery.Character, RecyclerView.ViewHolder>(diffUtil) {
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1
 
-        val diffUtil = object : DiffUtil.ItemCallback<SearchResult>() {
-            override fun areItemsTheSame(oldItem: SearchResult, newItem: SearchResult): Boolean {
-                return if (oldItem.charactersSearchResult != null && newItem.charactersSearchResult != null) {
-                    oldItem.charactersSearchResult!!.id ==
-                            newItem.charactersSearchResult!!.id
-                } else false
+        val diffUtil = object : DiffUtil.ItemCallback<SearchCharacterQuery.Character>() {
+            override fun areItemsTheSame(
+                oldItem: SearchCharacterQuery.Character,
+                newItem: SearchCharacterQuery.Character
+            ): Boolean {
+                return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: SearchResult, newItem: SearchResult): Boolean {
-                return if (oldItem.charactersSearchResult != null && newItem.charactersSearchResult != null) {
-                    oldItem.charactersSearchResult!!.id ==
-                            newItem.charactersSearchResult!!.id
-                } else false
+            override fun areContentsTheSame(
+                oldItem: SearchCharacterQuery.Character,
+                newItem: SearchCharacterQuery.Character
+            ): Boolean {
+                return oldItem == newItem
             }
         }
     }
@@ -39,12 +40,12 @@ class SearchCharacterAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                clickListener.invoke(getItem(layoutPosition)!!.charactersSearchResult!!.id)
+                clickListener.invoke(getItem(layoutPosition).id)
             }
         }
 
-        fun bind(items: SearchResult?) {
-            binding.model = items!!.charactersSearchResult
+        fun bind(items: SearchCharacterQuery.Character) {
+            binding.model = items
         }
     }
 

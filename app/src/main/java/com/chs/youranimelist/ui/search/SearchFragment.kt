@@ -28,10 +28,12 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by viewModels()
     private val searchKeywordViewModel by activityViewModels<SearchKeywordViewModel>()
-    private var searchAdapter: RecyclerView.Adapter<*>? = null
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private var isLoading: Boolean = false
+    private lateinit var searchAnimeAdapter: SearchAnimeAdapter
+    private lateinit var searchMangaAdapter: SearchMangaAdapter
+    private lateinit var searchCharaAdapter: SearchCharacterAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,6 +99,17 @@ class SearchFragment : Fragment() {
 
     private fun initSearchObserver() {
         searchKeywordViewModel.searchKeyword.observe(viewLifecycleOwner) {
+            when {
+                ::searchAnimeAdapter.isInitialized -> {
+                    searchAnimeAdapter.submitList(emptyList<SearchAnimeQuery.Medium?>().toMutableList())
+                }
+                ::searchMangaAdapter.isInitialized -> {
+                    searchMangaAdapter.submitList(emptyList<SearchMangaQuery.Medium?>().toMutableList())
+                }
+                ::searchCharaAdapter.isInitialized -> {
+                    searchCharaAdapter.submitList(emptyList<SearchCharacterQuery.Character?>().toMutableList())
+                }
+            }
             viewModel.searchKeyword = it
             viewModel.searchList.clear()
             isLoading = false
@@ -104,7 +117,6 @@ class SearchFragment : Fragment() {
             viewModel.hasNextPage = true
             viewModel.search(it)
         }
-        searchAdapter?.notifyDataSetChanged()
     }
 
     private fun initObserver() {
@@ -141,10 +153,7 @@ class SearchFragment : Fragment() {
                             searchAnime.data?.media?.forEach { anime ->
                                 viewModel.searchList.add(SearchResult(animeSearchResult = anime))
                             }
-                            searchAdapter?.notifyItemRangeChanged(
-                                (viewModel.page * 10),
-                                searchAnime.data?.media?.size!!
-                            )
+                            searchAnimeAdapter.submitList(searchAnime.data?.media?.toMutableList())
                         }
 
                         Constant.TARGET_MANGA -> {
@@ -153,10 +162,7 @@ class SearchFragment : Fragment() {
                             searchManga.data?.media?.forEach { manga ->
                                 viewModel.searchList.add(SearchResult(mangaSearchResult = manga))
                             }
-                            searchAdapter?.notifyItemRangeChanged(
-                                (viewModel.page * 10),
-                                searchManga.data?.media?.size!!
-                            )
+                            searchMangaAdapter.submitList(searchManga.data?.media?.toMutableList())
                         }
 
                         Constant.TARGET_CHARA -> {
@@ -165,10 +171,7 @@ class SearchFragment : Fragment() {
                             searchChara.data?.characters?.forEach { chara ->
                                 viewModel.searchList.add(SearchResult(charactersSearchResult = chara))
                             }
-                            searchAdapter?.notifyItemRangeChanged(
-                                (viewModel.page * 10),
-                                searchChara.data?.characters?.size!!
-                            )
+                            searchCharaAdapter.submitList(searchChara.data?.characters?.toMutableList())
                         }
                     }
 
@@ -186,9 +189,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        searchAdapter = when (viewModel.searchPage) {
+        binding.rvSearch.adapter = when (viewModel.searchPage) {
             Constant.TARGET_ANIME -> {
-                SearchAnimeAdapter(viewModel.searchList) { id, idMal ->
+                searchAnimeAdapter = SearchAnimeAdapter { id, idMal ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                         this.putExtra(Constant.TARGET_ID, id)
@@ -196,9 +199,10 @@ class SearchFragment : Fragment() {
                     }
                     startActivity(intent)
                 }
+                searchAnimeAdapter
             }
             Constant.TARGET_MANGA -> {
-                SearchMangaAdapter(viewModel.searchList) { id, idMal ->
+                searchMangaAdapter = SearchMangaAdapter { id, idMal ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                         this.putExtra(Constant.TARGET_ID, id)
@@ -206,21 +210,23 @@ class SearchFragment : Fragment() {
                     }
                     startActivity(intent)
                 }
+                searchMangaAdapter
             }
             Constant.TARGET_CHARA -> {
-                SearchCharacterAdapter(viewModel.searchList) { id ->
+                searchCharaAdapter = SearchCharacterAdapter { id ->
                     val intent = Intent(this.context, BrowseActivity::class.java).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_CHARA)
                         this.putExtra(Constant.TARGET_ID, id)
                     }
                     startActivity(intent)
                 }
+                searchCharaAdapter
             }
             else -> {
-                SearchMangaAdapter(listOf()) { _, _ -> }
+                SearchMangaAdapter { _, _ -> }
             }
         }
-        binding.rvSearch.adapter = searchAdapter
+
         binding.rvSearch.layoutManager = LinearLayoutManager(requireContext())
     }
 
