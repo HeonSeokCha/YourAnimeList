@@ -121,7 +121,6 @@ class StudioFragment : BaseFragment() {
                     )
                 findNavController().navigate(action)
             }
-            this.setHasFixedSize(true)
             this.adapter = studioAnimeAdapter
             this.layoutManager = GridLayoutManager(requireContext(), 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
