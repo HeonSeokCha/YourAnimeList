@@ -62,13 +62,13 @@ class AnimeRecommendFragment : Fragment() {
                         isLoading = false
                     }
                     viewModel.hasNextPage =
-                        it.data?.media?.recommendations?.pageInfo?.hasNextPage ?: false
-                    it.data?.media?.recommendations?.edges?.forEach { recommend ->
+                        it.data?.animeRecommend?.recommendations?.pageInfo?.hasNextPage ?: false
+                    it.data?.animeRecommend?.recommendations?.edges?.forEach { recommend ->
                         viewModel.animeRecList.add(recommend)
                     }
                     animeRecommendAdapter?.notifyItemRangeChanged(
                         (viewModel.page * 10),
-                        it.data?.media?.recommendations?.edges?.size!!
+                        it.data?.animeRecommend?.recommendations?.edges?.size!!
                     )
                     binding.progressBar.isVisible = false
                 }

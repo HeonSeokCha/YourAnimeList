@@ -70,14 +70,14 @@ class HomeFragment : Fragment() {
                         }
                         viewModel.homeRecList.add(anime)
                     }
-                    it.data?.upcomming?.upcommingMedia.apply {
+                    it.data?.upComming?.upCommingMedia.apply {
                         val anime: ArrayList<AnimeList> = ArrayList()
                         this!!.forEach { upComming ->
                             anime.add(upComming!!.fragments.animeList)
                         }
                         viewModel.homeRecList.add(anime)
                     }
-                    it.data?.alltime?.alltimeMedia.apply {
+                    it.data?.allTime?.allTimeMedia.apply {
                         val anime: ArrayList<AnimeList> = ArrayList()
                         this!!.forEach { allTime ->
                             anime.add(allTime!!.fragments.animeList)

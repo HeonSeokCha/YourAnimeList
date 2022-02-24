@@ -1,6 +1,6 @@
 package com.chs.youranimelist.data.remote.usecase
 
-import com.apollographql.apollo.api.Input
+import com.apollographql.apollo3.api.Input
 import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
 import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.repository.AnimeRepository
@@ -12,8 +12,8 @@ class GetAnimeRecUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
     suspend operator fun invoke(
-        animeId: Input<Int>,
-        page: Input<Int>
+        animeId: Int,
+        page: Int
     ): Flow<NetworkState<AnimeRecommendQuery.Data>> =
         flow {
             try {

@@ -3,7 +3,7 @@ package com.chs.youranimelist.ui.browse.studio
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo.api.toInput
+import com.apollographql.apollo3.api.toInput
 import com.chs.youranimelist.browse.studio.StudioAnimeQuery
 import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.repository.StudioRepository
@@ -34,9 +34,9 @@ class StudioViewModel @Inject constructor(
     fun getStudioAnime() {
         viewModelScope.launch {
             useCase.invoke(
-                studioId.toInput(),
-                selectsort.toInput(),
-                page.toInput()
+                studioId,
+                selectsort,
+                page
             ).collect {
                 _studioResponse.value = it
             }

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo.api.Input
+import com.apollographql.apollo3.api.Input
 import com.chs.youranimelist.browse.anime.AnimeDetailQuery
 import com.chs.youranimelist.data.domain.model.Anime
 import com.chs.youranimelist.data.domain.usecase.CheckSaveAnimeUseCase
@@ -33,7 +33,7 @@ class AnimeDetailViewModel @Inject constructor(
     var animeDetail: AnimeDetailQuery.Media? = null
     var initAnimeList: Anime? = null
 
-    fun getAnimeDetail(animeId: Input<Int>) {
+    fun getAnimeDetail(animeId: Int) {
         viewModelScope.launch {
             getAnimeDetailUseCase(animeId).collect {
                 _animeDetailResponse.value = it

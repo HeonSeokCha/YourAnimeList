@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo.api.Input
+import com.apollographql.apollo3.api.Input
 import com.chs.youranimelist.browse.character.CharacterQuery
 import com.chs.youranimelist.data.domain.model.Character
 import com.chs.youranimelist.data.domain.usecase.CheckSaveCharaUseCase
@@ -34,7 +34,7 @@ class CharacterViewModel @Inject constructor(
     var charaDetail: CharacterQuery.Character? = null
     var initCharaList: Character? = null
 
-    fun getCharaInfo(charaId: Input<Int>) {
+    fun getCharaInfo(charaId: Int) {
         viewModelScope.launch {
             getCharacterInfoUseCase(charaId).collect {
                 _characterDetailResponse.value = it

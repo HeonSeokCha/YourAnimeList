@@ -1,7 +1,7 @@
 query AnimeOverviewQuery(
     $id: Int
 ) {
-    Media(id: $id) {
+    media: Media(id: $id) {
         id
         idMal
         title {

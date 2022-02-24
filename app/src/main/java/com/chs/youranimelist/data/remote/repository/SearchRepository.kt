@@ -1,27 +1,25 @@
 package com.chs.youranimelist.data.remote.repository
 
-import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.api.Response
+import com.apollographql.apollo3.api.ApolloResponse
 import com.chs.youranimelist.search.SearchAnimeQuery
 import com.chs.youranimelist.search.SearchCharacterQuery
 import com.chs.youranimelist.search.SearchMangaQuery
-import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
 
     suspend fun searchAnime(
-        page: Input<Int>,
-        search: Input<String>
-    ): Response<SearchAnimeQuery.Data>
+        page: Int,
+        search: String
+    ): ApolloResponse<SearchAnimeQuery.Data>
 
     suspend fun searchManga(
-        page: Input<Int>,
-        search: Input<String>
-    ): Response<SearchMangaQuery.Data>
+        page: Int,
+        search: String
+    ): ApolloResponse<SearchMangaQuery.Data>
 
     suspend fun searchCharacter(
-        page: Input<Int>,
-        search: Input<String>
-    ): Response<SearchCharacterQuery.Data>
+        page: Int,
+        search: String
+    ): ApolloResponse<SearchCharacterQuery.Data>
 
 }

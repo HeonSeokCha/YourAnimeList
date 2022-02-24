@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.apollographql.apollo.api.toInput
+import com.apollographql.apollo3.api.toInput
 import com.chs.youranimelist.R
 import com.chs.youranimelist.data.domain.model.Anime
 import com.chs.youranimelist.databinding.FragmentAnimeDetailBinding
@@ -39,7 +39,7 @@ class AnimeDetailFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.getAnimeDetail(args.id.toInput())
+        viewModel.getAnimeDetail(args.id)
         checkAnimeList()
         initAnimeInfo()
         initTabView(

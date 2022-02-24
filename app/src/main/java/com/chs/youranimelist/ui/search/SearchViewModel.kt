@@ -3,7 +3,7 @@ package com.chs.youranimelist.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo.api.toInput
+import com.apollographql.apollo3.api.toInput
 import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.dto.SearchResult
 import com.chs.youranimelist.data.remote.repository.SearchRepository
@@ -51,17 +51,17 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             when (searchPage) {
                 Constant.TARGET_ANIME -> {
-                    searchAnimeUseCase(page.toInput(), query.toInput()).collect {
+                    searchAnimeUseCase(page, query).collect {
                         _searchAnimeResponse.value = it
                     }
                 }
                 Constant.TARGET_MANGA -> {
-                    searchMangaUseCase(page.toInput(), query.toInput()).collect {
+                    searchMangaUseCase(page, query).collect {
                         _searchMangaResponse.value = it
                     }
                 }
                 Constant.TARGET_CHARA -> {
-                    searchCharaUseCase(page.toInput(), query.toInput()).collect {
+                    searchCharaUseCase(page, query).collect {
                         _searchCharaResponse.value = it
                     }
                 }

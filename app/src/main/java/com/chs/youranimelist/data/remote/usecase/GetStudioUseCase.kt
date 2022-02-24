@@ -1,6 +1,6 @@
 package com.chs.youranimelist.data.remote.usecase
 
-import com.apollographql.apollo.api.Input
+import com.apollographql.apollo3.api.Input
 import com.chs.youranimelist.browse.studio.StudioAnimeQuery
 import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.repository.StudioRepository
@@ -13,9 +13,9 @@ class GetStudioUseCase @Inject constructor(
     private val repository: StudioRepository
 ) {
     suspend operator fun invoke(
-        studioId: Input<Int>,
-        sort: Input<MediaSort>,
-        page: Input<Int>
+        studioId: Int,
+        sort: MediaSort,
+        page: Int
     ): Flow<NetworkState<StudioAnimeQuery.Studio>> = flow {
         try {
             emit(NetworkState.Loading())

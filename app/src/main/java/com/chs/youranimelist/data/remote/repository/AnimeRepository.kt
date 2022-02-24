@@ -1,7 +1,6 @@
 package com.chs.youranimelist.data.remote.repository
 
-import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.api.Response
+import com.apollographql.apollo3.api.ApolloResponse
 import com.chs.youranimelist.browse.anime.AnimeCharacterQuery
 import com.chs.youranimelist.browse.anime.AnimeDetailQuery
 import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
@@ -12,18 +11,18 @@ import com.chs.youranimelist.home.HomeRecommendListQuery
 
 interface AnimeRepository {
 
-    suspend fun getHomeRecommendList(): Response<HomeRecommendListQuery.Data>
+    suspend fun getHomeRecommendList(): ApolloResponse<HomeRecommendListQuery.Data>
 
-    suspend fun getAnimeDetail(animeId: Input<Int>): Response<AnimeDetailQuery.Data>
+    suspend fun getAnimeDetail(animeId: Int): ApolloResponse<AnimeDetailQuery.Data>
 
-    suspend fun getAnimeOverview(animeId: Input<Int>): Response<AnimeOverviewQuery.Data>
+    suspend fun getAnimeOverview(animeId: Int): ApolloResponse<AnimeOverviewQuery.Data>
 
-    suspend fun getAnimeCharacter(animeId: Input<Int>): Response<AnimeCharacterQuery.Data>
+    suspend fun getAnimeCharacter(animeId: Int): ApolloResponse<AnimeCharacterQuery.Data>
 
     suspend fun getAnimeRecList(
-        animeId: Input<Int>,
-        page: Input<Int>
-    ): Response<AnimeRecommendQuery.Data>
+        animeId: Int,
+        page: Int
+    ): ApolloResponse<AnimeRecommendQuery.Data>
 
     suspend fun getAnimeOverviewTheme(animeId: Int): AnimeDetails?
 }

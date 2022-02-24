@@ -1,6 +1,6 @@
 package com.chs.youranimelist.data.remote.usecase
 
-import com.apollographql.apollo.api.Input
+import com.apollographql.apollo3.api.Input
 import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.repository.SearchRepository
 import com.chs.youranimelist.search.SearchAnimeQuery
@@ -13,8 +13,8 @@ class SearchMangaUseCase @Inject constructor(
     private val repository: SearchRepository
 ) {
     suspend operator fun invoke(
-        page: Input<Int>,
-        search: Input<String>
+        page: Int,
+        search: String
     ): Flow<NetworkState<SearchMangaQuery.Page>> = flow {
         try {
             emit(NetworkState.Loading())

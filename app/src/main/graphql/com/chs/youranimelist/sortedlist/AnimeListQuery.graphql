@@ -1,11 +1,11 @@
 query AnimeListQuery(
-    $page: Int = 1,
+    $page: Int,
     $sort: MediaSort,
     $season: MediaSeason,
     $seasonYear: Int,
     $genre: String
 ) {
-    Page(
+   page: Page(
         page: $page,
         perPage: 10
     ) {

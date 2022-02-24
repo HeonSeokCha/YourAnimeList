@@ -6,7 +6,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlinx-serialization'
     id 'dagger.hilt.android.plugin'
-    id("com.apollographql.apollo").version("2.5.11")
+    id("com.apollographql.apollo3").version("3.1.0")
 }
 
 android {
@@ -29,7 +29,8 @@ android {
     }
 
     apollo {
-        generateKotlinModels.set(true)
+        useVersion2Compat()
+        generateOptionalOperationVariables.set(false)
     }
 
     viewBinding {
@@ -83,9 +84,10 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
     //Apollo
-    implementation 'com.apollographql.apollo:apollo-runtime:2.5.11'
-    implementation 'com.apollographql.apollo:apollo-coroutines-support:2.5.11'
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.4'
+    implementation 'com.apollographql.apollo3:apollo-runtime:3.1.0'
+    implementation 'com.apollographql.apollo3:apollo-api:3.1.0'
+    implementation 'com.apollographql.apollo3:apollo-normalized-cache:3.1.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.5'
     //Ktor
     implementation "io.ktor:ktor-client-core:$ktor_version"
     implementation "io.ktor:ktor-client-android:$ktor_version"
@@ -99,7 +101,7 @@ dependencies {
     //Browser
     implementation 'androidx.browser:browser:1.4.0'
     //Room
-    implementation 'androidx.room:room-runtime:2.4.1'
-    implementation 'androidx.room:room-ktx:2.4.1'
-    kapt 'androidx.room:room-compiler:2.4.1'
+    implementation 'androidx.room:room-runtime:2.4.2'
+    implementation 'androidx.room:room-ktx:2.4.2'
+    kapt 'androidx.room:room-compiler:2.4.2'
 }

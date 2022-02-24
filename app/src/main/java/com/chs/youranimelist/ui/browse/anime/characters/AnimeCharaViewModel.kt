@@ -3,7 +3,7 @@ package com.chs.youranimelist.ui.browse.anime.characters
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo.api.toInput
+import com.apollographql.apollo3.api.toInput
 import com.chs.youranimelist.browse.anime.AnimeCharacterQuery
 import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.usecase.GetAnimeCharaUseCase
@@ -26,7 +26,7 @@ class AnimeCharaViewModel @Inject constructor(
     fun getAnimeCharacter(animeId: Int) {
         _animeCharacterResponse.value = NetworkState.Loading()
         viewModelScope.launch {
-            getAnimeCharaUseCase(animeId.toInput()).collect {
+            getAnimeCharaUseCase(animeId).collect {
                 _animeCharacterResponse.value = it
             }
         }

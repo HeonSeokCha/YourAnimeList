@@ -1,8 +1,7 @@
 package com.chs.youranimelist.data.remote.repository
 
-import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.coroutines.toFlow
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.Optional
 import com.chs.youranimelist.sortedlist.AnimeListQuery
 import com.chs.youranimelist.sortedlist.GenreQuery
 import com.chs.youranimelist.sortedlist.NoSeasonNoYearQuery
@@ -17,12 +16,12 @@ class AnimeListRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient
 ) : AnimeListRepository{
 
-    override fun getAnimeList(
-        page: Input<Int>,
-        sort: Input<MediaSort>,
-        season: Input<MediaSeason>,
-        seasonYear: Input<Int>,
-        genre: Input<String>
+    override suspend fun getAnimeList(
+        page: Int,
+        sort: MediaSort,
+        season: MediaSeason,
+        seasonYear: Int,
+        genre: String
     ) = apolloClient.query(
         AnimeListQuery(
             page,
@@ -31,26 +30,26 @@ class AnimeListRepositoryImpl @Inject constructor(
             seasonYear,
             genre
         )
-    ).toFlow()
+    ).execute()
 
-    override fun getNoSeasonNoYearList(
-        page: Input<Int>,
-        sort: Input<MediaSort>,
-        genre: Input<String>
+    override suspend fun getNoSeasonNoYearList(
+        page: Int,
+        sort: MediaSort,
+        genre: String
     ) = apolloClient.query(
         NoSeasonNoYearQuery(
             page,
             sort,
             genre
         )
-    ).toFlow()
+    ).execute()
 
 
-    override fun getNoSeasonList(
-        page: Input<Int>,
-        sort: Input<MediaSort>,
-        seasonYear: Input<Int>,
-        genre: Input<String>
+    override suspend fun getNoSeasonList(
+        page: Int,
+        sort: MediaSort,
+        seasonYear: Int,
+        genre: String
     ) = apolloClient.query(
         NoSeasonQuery(
             page,
@@ -58,10 +57,10 @@ class AnimeListRepositoryImpl @Inject constructor(
             seasonYear,
             genre
         )
-    ).toFlow()
+    ).execute()
 
 
-    override fun getGenre() =
-        apolloClient.query(GenreQuery()).toFlow()
+    override suspend fun getGenre() =
+        apolloClient.query(GenreQuery()).execute()
 
 }

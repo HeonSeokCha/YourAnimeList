@@ -4,7 +4,7 @@ query HomeRecommendListQuery(
     $currentYear: Int,
     $nexrYear: Int
 ) {
-    ViewPager: Page(
+    viewPager: Page(
         page: 1,
         perPage: 6
     ) {
@@ -37,24 +37,24 @@ query HomeRecommendListQuery(
             bannerImage
         }
     },
-    Trending: Page(
+    trending: Page(
         page: 1,
         perPage: 6
     ) {
         ... pageInfo
-        TrendingMedia: media(
+        trendingMedia: media(
             sort: [TRENDING_DESC],
             type: ANIME
         ) {
             ... animeList
         }
     },
-    Popular: Page(
+    popular: Page(
         page: 1,
         perPage: 6
     ) {
         ... pageInfo
-        PopularMedia: media(
+        popularMedia: media(
             sort: [POPULARITY_DESC],
             season: $currentSeason,
             seasonYear: $currentYear,
@@ -63,12 +63,12 @@ query HomeRecommendListQuery(
             ... animeList
         }
     },
-    Upcomming: Page(
+    upComming: Page(
         page: 1,
         perPage: 6
     ) {
         ... pageInfo
-        UpcommingMedia: media(
+        upCommingMedia: media(
             sort: [POPULARITY_DESC],
             season: $nextSeason,
             seasonYear: $nexrYear,
@@ -77,12 +77,12 @@ query HomeRecommendListQuery(
             ... animeList
         }
     },
-    Alltime : Page(
+    allTime : Page(
         page: 1,
         perPage: 6
     ) {
         ... pageInfo
-        AlltimeMedia: media(
+        allTimeMedia: media(
             sort: [POPULARITY_DESC],
             type: ANIME
         ) {

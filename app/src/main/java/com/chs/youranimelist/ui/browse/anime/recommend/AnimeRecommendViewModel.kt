@@ -3,7 +3,7 @@ package com.chs.youranimelist.ui.browse.anime.recommend
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo.api.toInput
+import com.apollographql.apollo3.api.toInput
 import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
 import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.usecase.GetAnimeRecUseCase
@@ -27,7 +27,7 @@ class AnimeRecommendViewModel @Inject constructor(
 
     fun getRecommendList(animeId: Int) {
         viewModelScope.launch {
-            getAnimeRecUseCase(animeId.toInput(), page.toInput()).collect {
+            getAnimeRecUseCase(animeId, page).collect {
                 _animeRecommendResponse.value = it
             }
         }

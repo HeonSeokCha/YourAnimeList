@@ -3,7 +3,7 @@ query StudioAnimeQuery(
     $sort: MediaSort,
     $page: Int
 ){
-    Studio(id: $id) {
+    studio: Studio(id: $id) {
         id
         name
         favourites

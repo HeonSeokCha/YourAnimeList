@@ -1,10 +1,10 @@
 query NoSeasonQuery(
-    $page: Int = 1,
+    $page: Int,
     $sort: MediaSort,
     $seasonYear: Int,
     $genre: String
 ) {
-    Page(
+    page: Page(
         page: $page,
         perPage: 10,
     ) {

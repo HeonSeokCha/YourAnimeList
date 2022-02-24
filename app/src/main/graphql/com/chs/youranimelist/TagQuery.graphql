@@ -1,5 +1,5 @@
  query TagQuery {
-    MediaTagCollection {
+     mediaTagCollection: MediaTagCollection {
         id
         name
     }

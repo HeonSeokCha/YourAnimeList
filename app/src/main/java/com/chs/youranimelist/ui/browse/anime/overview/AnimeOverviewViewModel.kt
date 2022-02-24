@@ -3,7 +3,7 @@ package com.chs.youranimelist.ui.browse.anime.overview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo.api.toInput
+import com.apollographql.apollo3.api.toInput
 import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
 import com.chs.youranimelist.data.remote.usecase.GetAnimeThemeUseCase
 import com.chs.youranimelist.data.remote.NetworkState
@@ -39,7 +39,7 @@ class AnimeOverviewViewModel @Inject constructor(
 
     fun getAnimeOverview(animeId: Int) {
         viewModelScope.launch {
-            getAnimeOverViewUseCase(animeId.toInput()).collect {
+            getAnimeOverViewUseCase(animeId).collect {
                 _animeOverviewResponse.value = it
             }
         }

@@ -1,8 +1,6 @@
 package com.chs.youranimelist.data.remote.repository
 
-import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.coroutines.await
+import com.apollographql.apollo3.ApolloClient
 import com.chs.youranimelist.search.SearchAnimeQuery
 import com.chs.youranimelist.search.SearchCharacterQuery
 import com.chs.youranimelist.search.SearchMangaQuery
@@ -15,24 +13,24 @@ class SearchRepositoryImpl @Inject constructor(
 ) : SearchRepository {
 
     override suspend fun searchAnime(
-        page: Input<Int>,
-        search: Input<String>
+        page: Int,
+        search: String
     ) = apolloClient.query(
         SearchAnimeQuery(page, search)
-    ).await()
+    ).execute()
 
     override suspend fun searchManga(
-        page: Input<Int>,
-        search: Input<String>
+        page: Int,
+        search: String
     ) = apolloClient.query(
         SearchMangaQuery(page, search)
-    ).await()
+    ).execute()
 
     override suspend fun searchCharacter(
-        page: Input<Int>,
-        search: Input<String>
+        page: Int,
+        search: String
     ) = apolloClient.query(
         SearchCharacterQuery(page, search)
-    ).await()
+    ).execute()
 
 }

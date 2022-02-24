@@ -1,8 +1,8 @@
 query AnimeRecommendQuery(
     $id: Int,
-    $page: Int = 1
+    $page: Int
 ) {
-    Media(id: $id) {
+    animeRecommend: Media(id: $id) {
         recommendations(
             page: $page,
             perPage: 10,

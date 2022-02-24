@@ -2,9 +2,10 @@ package com.chs.youranimelist.di
 
 import android.app.Application
 import androidx.room.Room
-import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.cache.normalized.lru.EvictionPolicy
-import com.apollographql.apollo.cache.normalized.lru.LruNormalizedCacheFactory
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
+import com.apollographql.apollo3.cache.normalized.normalizedCache
+import com.apollographql.apollo3.network.okHttpClient
 import com.chs.youranimelist.BuildConfig
 import com.chs.youranimelist.data.domain.YourListDatabase
 import com.chs.youranimelist.data.domain.repository.YourAnimeListRepository
@@ -75,14 +76,15 @@ object AppModule {
     @Provides
     @Singleton
     fun providesApollo(okHttpClient: OkHttpClient): ApolloClient {
-        return ApolloClient.builder()
+        return ApolloClient.Builder()
             .serverUrl(Constant.ANILIST_API_URL)
             .okHttpClient(okHttpClient)
             .normalizedCache(
-                LruNormalizedCacheFactory(
-                    EvictionPolicy.builder().maxSizeBytes(10 * 1024 * 1024).build()
+                MemoryCacheFactory(
+                    maxSizeBytes = 10 * 1024 * 1024
                 )
-            ).build()
+            )
+            .build()
     }
 
     @Provides

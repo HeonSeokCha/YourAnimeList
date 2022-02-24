@@ -1,5 +1,5 @@
 query CharacterQuery($id: Int) {
-    Character(id: $id) {
+    character: Character(id: $id) {
         id
         name {
             first

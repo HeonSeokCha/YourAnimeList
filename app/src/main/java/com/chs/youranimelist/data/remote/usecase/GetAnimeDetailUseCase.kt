@@ -1,6 +1,6 @@
 package com.chs.youranimelist.data.remote.usecase
 
-import com.apollographql.apollo.api.Input
+import com.apollographql.apollo3.api.Input
 import com.chs.youranimelist.browse.anime.AnimeDetailQuery
 import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.repository.AnimeRepository
@@ -11,7 +11,7 @@ import javax.inject.Inject
 class GetAnimeDetailUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
-    operator fun invoke(animeId: Input<Int>): Flow<NetworkState<AnimeDetailQuery.Data>> = flow {
+    operator fun invoke(animeId: Int): Flow<NetworkState<AnimeDetailQuery.Data>> = flow {
         try {
             emit(NetworkState.Loading())
             emit(NetworkState.Success(repository.getAnimeDetail(animeId).data!!))

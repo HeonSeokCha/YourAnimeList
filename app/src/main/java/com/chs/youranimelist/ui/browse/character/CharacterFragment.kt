@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import com.apollographql.apollo.api.toInput
+import com.apollographql.apollo3.api.toInput
 import com.chs.youranimelist.R
 import com.chs.youranimelist.data.domain.model.Character
 import com.chs.youranimelist.util.SpacesItemDecoration
@@ -40,7 +40,7 @@ class CharacterFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getCharaInfo(args.id.toInput())
+        viewModel.getCharaInfo(args.id)
         checkCharaList()
         initRecyclerView()
         getCharaInfo()
@@ -112,7 +112,7 @@ class CharacterFragment : BaseFragment() {
                     Character(
                         charaId = this.id,
                         name = this.name?.full ?: "",
-                        nativeName = this.name?.native_ ?: "",
+                        nativeName = this.name?.native ?: "",
                         image = this.image?.large ?: "",
                         favourites = this.favourites,
                     )
