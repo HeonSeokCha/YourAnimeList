@@ -3,10 +3,8 @@ package com.chs.youranimelist.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo3.api.toInput
 import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.dto.SearchResult
-import com.chs.youranimelist.data.remote.repository.SearchRepository
 import com.chs.youranimelist.data.remote.usecase.SearchAnimeUseCase
 import com.chs.youranimelist.data.remote.usecase.SearchCharaUseCase
 import com.chs.youranimelist.data.remote.usecase.SearchMangaUseCase
@@ -16,7 +14,6 @@ import com.chs.youranimelist.search.SearchMangaQuery
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

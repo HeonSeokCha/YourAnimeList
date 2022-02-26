@@ -6,6 +6,8 @@ import com.chs.youranimelist.sortedlist.AnimeListQuery
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -17,24 +19,20 @@ class GetSeasonYearUseCase @Inject constructor(
         selectedSort: MediaSort,
         selectedSeason: MediaSeason,
         selectedYear: Int,
-        selectGenre: String
-    ): Flow<NetworkState<AnimeListQuery.Data>> = flow {
-        try {
-            emit(NetworkState.Loading())
-            emit(
-                NetworkState.Success(
-                    repository.getAnimeList(
-                        page,
-                        selectedSort,
-                        selectedSeason,
-                        selectedYear,
-                        selectGenre
-                    ).data!!
-                )
-            )
+        selectGenre: String?
+    ): Flow<NetworkState<AnimeListQuery.Page>> = flow {
+        emit(NetworkState.Loading())
 
-        } catch (e: Exception) {
+        repository.getAnimeList(
+            page,
+            selectedSort,
+            selectedSeason,
+            selectedYear,
+            selectGenre
+        ).catch { e ->
             emit(NetworkState.Error(e.message.toString()))
+        }.collect {
+            emit(NetworkState.Success(it.data!!.page!!))
         }
     }
 }

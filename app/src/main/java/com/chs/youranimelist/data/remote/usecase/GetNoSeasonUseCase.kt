@@ -5,6 +5,7 @@ import com.chs.youranimelist.data.remote.repository.AnimeListRepository
 import com.chs.youranimelist.sortedlist.NoSeasonQuery
 import com.chs.youranimelist.type.MediaSort
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -15,23 +16,19 @@ class GetNoSeasonUseCase @Inject constructor(
         page: Int,
         selectedSort: MediaSort,
         selectedYear: Int,
-        selectGenre: String
+        selectGenre: String?
     ): Flow<NetworkState<NoSeasonQuery.Page>> = flow {
-        try {
-            emit(NetworkState.Loading())
-            emit(
-                NetworkState.Success(
-                    repository.getNoSeasonList(
-                        page,
-                        selectedSort,
-                        selectedYear,
-                        selectGenre
-                    ).data!!.page!!
-                )
-            )
 
-        } catch (e: Exception) {
+        emit(NetworkState.Loading())
+        repository.getNoSeasonList(
+            page,
+            selectedSort,
+            selectedYear,
+            selectGenre
+        ).catch { e ->
             emit(NetworkState.Error(e.message.toString()))
+        }.collect {
+            emit(NetworkState.Success(it.data!!.page!!))
         }
     }
 }

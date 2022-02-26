@@ -7,6 +7,7 @@ import com.chs.youranimelist.sortedlist.NoSeasonNoYearQuery
 import com.chs.youranimelist.sortedlist.NoSeasonQuery
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
+import kotlinx.coroutines.flow.Flow
 
 interface AnimeListRepository {
     suspend fun getAnimeList(
@@ -14,24 +15,24 @@ interface AnimeListRepository {
         sort: MediaSort,
         season: MediaSeason,
         seasonYear: Int,
-        genre: String
-    ): ApolloResponse<AnimeListQuery.Data>
+        genre: String?
+    ): Flow<ApolloResponse<AnimeListQuery.Data>>
 
 
     suspend fun getNoSeasonNoYearList(
         page: Int,
         sort: MediaSort,
-        genre: String
-    ): ApolloResponse<NoSeasonNoYearQuery.Data>
+        genre: String?
+    ): Flow<ApolloResponse<NoSeasonNoYearQuery.Data>>
 
 
     suspend fun getNoSeasonList(
         page: Int,
         sort: MediaSort,
         seasonYear: Int,
-        genre: String
-    ): ApolloResponse<NoSeasonQuery.Data>
+        genre: String?
+    ): Flow<ApolloResponse<NoSeasonQuery.Data>>
 
 
-    suspend fun getGenre(): ApolloResponse<GenreQuery.Data>
+    suspend fun getGenre(): Flow<ApolloResponse<GenreQuery.Data>>
 }

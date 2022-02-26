@@ -14,14 +14,14 @@ import javax.inject.Singleton
 @Singleton
 class AnimeListRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient
-) : AnimeListRepository{
+) : AnimeListRepository {
 
     override suspend fun getAnimeList(
         page: Int,
         sort: MediaSort,
         season: MediaSeason,
         seasonYear: Int,
-        genre: String
+        genre: String?
     ) = apolloClient.query(
         AnimeListQuery(
             page,
@@ -30,26 +30,26 @@ class AnimeListRepositoryImpl @Inject constructor(
             seasonYear,
             genre
         )
-    ).execute()
+    ).toFlow()
 
     override suspend fun getNoSeasonNoYearList(
         page: Int,
         sort: MediaSort,
-        genre: String
+        genre: String?
     ) = apolloClient.query(
         NoSeasonNoYearQuery(
             page,
             sort,
             genre
         )
-    ).execute()
+    ).toFlow()
 
 
     override suspend fun getNoSeasonList(
         page: Int,
         sort: MediaSort,
         seasonYear: Int,
-        genre: String
+        genre: String?
     ) = apolloClient.query(
         NoSeasonQuery(
             page,
@@ -57,10 +57,9 @@ class AnimeListRepositoryImpl @Inject constructor(
             seasonYear,
             genre
         )
-    ).execute()
+    ).toFlow()
 
 
     override suspend fun getGenre() =
-        apolloClient.query(GenreQuery()).execute()
-
+        apolloClient.query(GenreQuery()).toFlow()
 }

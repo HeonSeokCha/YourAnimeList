@@ -69,9 +69,9 @@ class SortedListViewModel @Inject constructor(
                         selectedSort!!,
                         selectedSeason!!,
                         selectedYear!!,
-                        selectGenre!!
+                        selectGenre
                     ).collect {
-                        _animeListResponse.postValue(NetworkState.Success(it.data?.page!!))
+                        _animeListResponse.postValue(it)
                     }
                 }
 
@@ -80,9 +80,9 @@ class SortedListViewModel @Inject constructor(
                         page,
                         selectedSort!!,
                         selectedYear!!,
-                        selectGenre!!
+                        selectGenre
                     ).collect {
-                        _noSeasonListResponse.postValue(NetworkState.Success(it.data!!))
+                        _noSeasonListResponse.postValue(it)
                     }
                 }
 
@@ -90,9 +90,9 @@ class SortedListViewModel @Inject constructor(
                     noSeasonNoYearUseCase(
                         page,
                         selectedSort!!,
-                        selectGenre!!
+                        selectGenre
                     ).collect {
-                        _noSeasonNoYearListResponse.postValue(NetworkState.Success(it.data!!))
+                        _noSeasonNoYearListResponse.postValue(it)
                     }
                 }
             }
@@ -102,7 +102,7 @@ class SortedListViewModel @Inject constructor(
     fun getGenreList() {
         viewModelScope.launch {
             genreUseCase().collect {
-                _genreListResponse.value = NetworkState.Success(it.data!!)
+                _genreListResponse.value = it
             }
         }
     }
