@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_anime_detail.xml" value="0.17980072463768115" />
-        <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_anime_list.xml" value="0.17980072463768115" />
+        <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_anime_detail.xml" value="0.536" />
+        <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_anime_overview.xml" value="0.4327217125382263" />
+        <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_anime_child.xml" value="0.39947916666666666" />
+        <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_anime_list.xml" value="0.536" />
+        <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_anime_recommend.xml" value="0.39947916666666666" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_character_list.xml" value="0.17980072463768115" />
         <entry key="..\:/Users/hs960/Work_Repository/Android/YourAnimeList/app/src/main/res/drawable/background_gradient.xml" value="0.415625" />
         <entry key="..\:/Users/hs960/Work_Repository/Android/YourAnimeList/app/src/main/res/drawable/background_skeleton_cir.xml" value="0.415625" />

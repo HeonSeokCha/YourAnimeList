@@ -10,8 +10,7 @@ class SpacesItemDecoration(
     private val spanCount: Int,
     private val spacing: Int,
     private val includeEdge: Boolean
-) :
-    ItemDecoration() {
+) : ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect,
         view: View,
