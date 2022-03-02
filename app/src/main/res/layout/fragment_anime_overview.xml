@@ -380,7 +380,7 @@
                 android:id="@+id/txt_anime_overview_start_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:animeOverviewDateText="@{model.startDate}"
+                app:animeOverviewStartDateText="@{model.startDate}"
                 app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_status"
                 app:layout_constraintTop_toTopOf="@+id/textView12"
                 tools:text="TextView" />
@@ -398,7 +398,7 @@
                 android:id="@+id/txt_anime_overview_end_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:animeOverviewDateText="@{model.endDate}"
+                app:animeOverviewEndDateText="@{model.endDate}"
                 app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_start_date"
                 app:layout_constraintTop_toTopOf="@+id/textView13"
                 tools:text="TextView" />

@@ -22,282 +22,249 @@ import com.chs.youranimelist.util.ConvertDate.secondsToDateTime
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
-object BindingAdapter {
 
-    @SuppressLint("ResourceType")
-    @BindingAdapter("animeRecImageBanner")
-    @JvmStatic
-    fun animeRecImageBanner(imageView: ImageView, anime: HomeRecommendListQuery.Medium) {
-        imageView.load(anime.bannerImage) {
-            crossfade(true)
-            crossfade(400)
-            size(400, 250)
-        }
+@BindingAdapter("animeRecImageBanner")
+fun ImageView.animeRecImageBanner(anime: HomeRecommendListQuery.Medium) {
+    this.load(anime.bannerImage) {
+        crossfade(true)
+        crossfade(400)
+        size(400, 250)
     }
+}
 
-    @BindingAdapter("animeImageCover")
-    @JvmStatic
-    fun animeImageCover(imageView: ImageView, path: String?) {
-        imageView.load(path) {
-            crossfade(true)
-            crossfade(400)
-            size(250, 350)
-            transformations(RoundedCornersTransformation(15f))
-        }
+@BindingAdapter("animeImageCover")
+fun ImageView.animeImageCover(path: String?) {
+    this.load(path) {
+        crossfade(true)
+        crossfade(400)
+        size(250, 350)
+        transformations(RoundedCornersTransformation(15f))
     }
+}
 
-    @BindingAdapter("animeFormatYear")
-    @JvmStatic
-    fun animeFormatYear(textView: TextView, anime: AnimeList?) {
-        textView.text = ""
-        if (anime != null) {
-            textView.text = if (anime?.seasonYear != null && anime?.format != null) {
-                "${anime.format}" + " ⦁ ${anime.seasonYear}"
-            } else {
-                "${anime.format}"
-            }
-        }
-    }
-
-    @BindingAdapter("animeStatusValue")
-    @JvmStatic
-    fun animeStatusValue(textView: TextView, status: String) {
-        when (status) {
-            "RELEASING" -> {
-                textView.text = "Releasing"
-                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.releasing))
-            }
-            "FINISHED" -> {
-                textView.text = "Finished"
-                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.finished))
-            }
-            "NOT_YET_RELEASED" -> {
-                textView.text = "Up Coming"
-                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.notYet))
-            }
-        }
-    }
-
-    @BindingAdapter("animeScoreVisible")
-    @JvmStatic
-    fun animeScoreVisible(textView: TextView, score: Int?) {
-        if (score == null) {
-            textView.isVisible = false
-        } else {
-            textView.text = score.toString()
-        }
-    }
-
-    @BindingAdapter("animeDetailFormatYear")
-    @JvmStatic
-    fun animeDetailFormatYear(textView: TextView, anime: AnimeDetailQuery.Media?) {
-        textView.text = ""
-        textView.text = if (anime?.seasonYear != null) {
-            "${anime.format}" + " ⦁ ${anime.seasonYear}"
-        } else {
-            "${anime?.format}"
-        }
-    }
-
-    @BindingAdapter("animeRecFormatYear")
-    @JvmStatic
-    fun animeRecFormatYear(textView: TextView, anime: AnimeRecommendQuery.MediaRecommendation) {
-        textView.text = ""
-        textView.text = if (anime.seasonYear != null && anime.format != null) {
+@BindingAdapter("animeFormatYear")
+fun TextView.animeFormatYear(anime: AnimeList?) {
+    this.text = if (anime != null) {
+        if (anime?.seasonYear != null && anime?.format != null) {
             "${anime.format}" + " ⦁ ${anime.seasonYear}"
         } else {
             "${anime.format}"
         }
-    }
+    } else ""
+}
 
-    @SuppressLint("ResourceType")
-    @BindingAdapter("animeDetailImageBanner")
-    @JvmStatic
-    fun animeDetailImageBanner(imageView: ImageView, anime: AnimeDetailQuery.Media?) {
-        imageView.load(anime?.bannerImage) {
-            placeholder(ColorDrawable(Color.parseColor(anime?.coverImage?.color ?: "#D9666F")))
-            crossfade(true)
-            crossfade(400)
-            size(400, 250)
+@BindingAdapter("animeStatusValue")
+fun TextView.animeStatusValue(status: String) {
+    this.text = when (status) {
+        "RELEASING" -> {
+            this.setTextColor(ContextCompat.getColor(this.context, R.color.releasing))
+            "Releasing"
+        }
+        "FINISHED" -> {
+            this.setTextColor(ContextCompat.getColor(this.context, R.color.finished))
+            "Finished"
+        }
+        "NOT_YET_RELEASED" -> {
+            this.setTextColor(ContextCompat.getColor(this.context, R.color.notYet))
+            "Up Coming"
+        }
+        else -> ""
+    }
+}
+
+@BindingAdapter("animeScoreVisible")
+fun TextView.animeScoreVisible(score: Int?) {
+    if (score == null) {
+        this.isVisible = false
+    } else {
+        this.text = score.toString()
+    }
+}
+
+@BindingAdapter("animeDetailFormatYear")
+fun TextView.animeDetailFormatYear(anime: AnimeDetailQuery.Media?) {
+    this.text = if (anime?.seasonYear != null) {
+        "${anime.format}" + " ⦁ ${anime.seasonYear}"
+    } else {
+        "${anime?.format}"
+    }
+}
+
+@BindingAdapter("animeRecFormatYear")
+fun TextView.animeRecFormatYear(anime: AnimeRecommendQuery.MediaRecommendation) {
+    this.text = if (anime.seasonYear != null && anime.format != null) {
+        "${anime.format}" + " ⦁ ${anime.seasonYear}"
+    } else {
+        "${anime.format}"
+    }
+}
+
+@BindingAdapter("animeDetailImageBanner")
+fun ImageView.animeDetailImageBanner(anime: AnimeDetailQuery.Media?) {
+    this.load(anime?.bannerImage) {
+        placeholder(ColorDrawable(Color.parseColor(anime?.coverImage?.color ?: "#D9666F")))
+        crossfade(true)
+        crossfade(400)
+        size(400, 250)
+    }
+}
+
+@BindingAdapter("animeDetailTrailerVisible")
+fun FloatingActionButton.animeDetailTrailerVisible(trailer: AnimeDetailQuery.Trailer?) {
+    this.isVisible = trailer != null
+}
+
+@BindingAdapter("animeDetailImageCover")
+fun ImageView.animeDetailImageCover(path: String?) {
+    this.load(path) {
+        crossfade(true)
+        crossfade(400)
+        size(250, 350)
+        transformations(RoundedCornersTransformation(15f))
+    }
+}
+
+@BindingAdapter("animeRecommendImageCover")
+fun ImageView.animeRecommendImageCover(path: String?) {
+    this.load(path) {
+        crossfade(true)
+        crossfade(400)
+        size(300, 450)
+        transformations(RoundedCornersTransformation(topLeft = 15f, bottomLeft = 15f))
+    }
+}
+
+@BindingAdapter("animeDetailScoreVisible")
+fun TextView.animeDetailScoreVisible(score: Int?) {
+    if (score == null) {
+        this.isVisible = false
+    } else {
+        this.apply {
+            this.isVisible = true
+            this.text = score.toString()
         }
     }
+}
 
-    @BindingAdapter("animeDetailTrailerVisible")
-    @JvmStatic
-    fun animeDetailTrailerVisible(
-        floatingActionButton: FloatingActionButton, trailer: AnimeDetailQuery.Trailer?
-    ) {
-        floatingActionButton.isVisible = trailer != null
+@BindingAdapter("animeDetailRelationFormat")
+fun TextView.animeDetailRelationFormat(string: String) {
+    var temp = string.replace("_", " ")
+    this.text = temp[0].uppercase() + temp.substring(1, string.length)
+        .lowercase(Locale.getDefault())
+}
+
+@BindingAdapter("animeDetailAiring")
+fun TextView.animeDetailAiring(airingEpisode: AnimeDetailQuery.NextAiringEpisode?) {
+    this.text = if (airingEpisode != null) {
+        this.isVisible = true
+        "Ep ${airingEpisode.episode} on ${airingEpisode.airingAt.secondsToDateTime()}"
+    } else ""
+}
+
+@BindingAdapter("animeOverviewHtmlConvert")
+fun TextView.animeOverviewHtmlConvert(string: String?) {
+    this.text = if (string?.isNotEmpty() == true) {
+        Html.fromHtml(string, Html.FROM_HTML_MODE_LEGACY).toString()
+    } else ""
+}
+
+@BindingAdapter("animeOverviewScoreConvert")
+fun TextView.animeOverviewScoreConvert(string: String?) {
+    this.text = if (string.isNullOrEmpty()) {
+        "0%"
+    } else {
+        "$string%"
     }
+}
 
-    @BindingAdapter("animeDetailImageCover")
-    @JvmStatic
-    fun animeDetailImageCover(imageView: ImageView, path: String?) {
-        imageView.load(path) {
-            crossfade(true)
-            crossfade(400)
-            size(250, 350)
-            transformations(RoundedCornersTransformation(15f))
-        }
+@BindingAdapter("animeOverviewEpisode")
+fun TextView.animeOverviewEpisode(episode: Int?) {
+    this.text = episode?.toString() ?: "?"
+}
+
+@BindingAdapter("animeOverviewDurationVisible")
+fun TextView.animeOverviewDurationVisible(duration: Int?) {
+    this.isVisible = duration != null
+}
+
+@BindingAdapter("animeOverviewDurationValue")
+fun TextView.animeOverviewDurationValue(duration: Int?) {
+    this.text = "${duration ?: 0} mins"
+}
+
+@BindingAdapter("animeOverviewStatusValue")
+fun TextView.animeOverviewStatusValue(status: String?) {
+    this.text = status?.replace("_", " ") ?: ""
+}
+
+@BindingAdapter("animeOverviewEnglishNull")
+fun TextView.animeOverviewEnglishNull(title: AnimeOverviewQuery.Title?) {
+    this.text = if (title?.english.isNullOrEmpty()) {
+        "${title?.romaji}"
+    } else {
+        "${title?.english}"
     }
+}
 
-    @BindingAdapter("animeRecommendImageCover")
-    @JvmStatic
-    fun animeRecommendImageCover(imageView: ImageView, path: String?) {
-        imageView.load(path) {
-            crossfade(true)
-            crossfade(400)
-            size(300, 450)
-            transformations(RoundedCornersTransformation(topLeft = 15f, bottomLeft = 15f))
-        }
+@BindingAdapter("animeOverviewSeasonValue")
+fun TextView.animeOverviewSeasonValue(anime: AnimeOverviewQuery.Media?) {
+    this.text = if (anime?.seasonYear != null) {
+        "${anime?.season} ${anime?.seasonYear}"
+    } else {
+        "${anime?.format}"
     }
+}
 
-    @BindingAdapter("animeDetailScoreVisible")
-    @JvmStatic
-    fun animeDetailScoreVisible(textView: TextView, score: Int?) {
-        if (score == null) {
-            textView.isVisible = false
-        } else {
-            textView.apply {
-                this.isVisible = true
-                this.text = score.toString()
-            }
-        }
+@BindingAdapter("animeOverviewStartDateText")
+fun TextView.animeOverviewStartDateText(date: AnimeOverviewQuery.StartDate?) {
+    this.text = if (date != null) {
+        ConvertDate.convertToDateFormat(
+            date.year,
+            date.month,
+            date.day
+        )
+    } else "?"
+}
+
+@BindingAdapter("animeOverviewEndDateText")
+fun TextView.animeOverviewEndDateText(date: AnimeOverviewQuery.EndDate?) {
+    this.text = if (date != null) {
+        ConvertDate.convertToDateFormat(
+            date.year,
+            date.month,
+            date.day
+        )
+    } else "?"
+}
+
+
+@BindingAdapter("animeOverviewCoverImage")
+fun ImageView.animeOverviewCoverImage(path: String?) {
+    this.load(path) {
+        crossfade(true)
+        crossfade(400)
+        size(260, 540)
+        transformations(RoundedCornersTransformation(15f))
     }
+}
 
-    @SuppressLint("SetTextI18n")
-    @ExperimentalStdlibApi
-    @BindingAdapter("animeDetailRelationFormat")
-    @JvmStatic
-    fun animeDetailRelationFormat(textView: TextView, string: String) {
-        var temp = string.replace("_", " ")
-        textView.text = temp[0].uppercase() + temp.substring(1, string.length)
-            .lowercase(Locale.getDefault())
+@BindingAdapter("animeCharaCircle")
+fun ImageView.animeCharaCircle(path: String?) {
+    this.load(path) {
+        crossfade(true)
+        crossfade(400)
+        size(200, 200)
+        transformations(CircleCropTransformation())
     }
+}
 
-    @BindingAdapter("animeDetailAiring")
-    @JvmStatic
-    fun animeDetailAiring(textView: TextView, airingEpisode: AnimeDetailQuery.NextAiringEpisode?) {
-        if (airingEpisode != null) {
-            textView.text =
-                "Ep ${airingEpisode.episode} on ${airingEpisode.airingAt.secondsToDateTime()}"
-            textView.isVisible = true
-        }
-    }
-
-    @BindingAdapter("animeOverviewHtmlConvert")
-    @JvmStatic
-    fun animeOverviewHtmlConvert(textView: TextView, string: String?) {
-        if (string?.isNotEmpty() == true)
-            textView.text = Html.fromHtml(string, Html.FROM_HTML_MODE_LEGACY).toString()
-    }
-
-    @BindingAdapter("animeOverviewScoreConvert")
-    @JvmStatic
-    fun animeOverviewScoreConvert(textView: TextView, string: String?) {
-        if (string.isNullOrEmpty()) {
-            textView.text = "0%"
-        } else {
-            textView.text = "$string%"
-        }
-    }
-
-    @BindingAdapter("animeOverviewEpisode")
-    @JvmStatic
-    fun animeOverviewEpisode(textView: TextView, episode: Int?) {
-        if (episode == null) textView.text = "?"
-        else textView.text = episode.toString()
-    }
-
-    @BindingAdapter("animeOverviewDurationVisible")
-    @JvmStatic
-    fun animeOverviewDurationVisible(textView: TextView, duration: Int?) {
-        if (duration == null) {
-            textView.isVisible = false
-        }
-    }
-
-    @BindingAdapter("animeOverviewDurationValue")
-    @JvmStatic
-    fun animeOverviewDurationValue(textView: TextView, duration: Int?) {
-        textView.text = "$duration mins"
-    }
-
-    @BindingAdapter("animeOverviewStatusValue")
-    @JvmStatic
-    fun animeOverviewStatusValue(textView: TextView, status: String?) {
-        textView.text = status?.replace("_", " ") ?: ""
-    }
-
-    @BindingAdapter("animeOverviewEnglishNull")
-    @JvmStatic
-    fun animeOverviewEnglishNull(textView: TextView, title: AnimeOverviewQuery.Title?) {
-        if (title?.english.isNullOrEmpty()) {
-            textView.text = "${title?.romaji}"
-        } else {
-            textView.text = "${title?.english}"
-        }
-    }
-
-    @BindingAdapter("animeOverviewSeasonValue")
-    @JvmStatic
-    fun animeOverviewSeasonValue(textView: TextView, anime: AnimeOverviewQuery.Media?) {
-        textView.text = if (anime?.seasonYear != null) {
-            "${anime?.season} ${anime?.seasonYear}"
-        } else {
-            "${anime?.format}"
-        }
-    }
-
-    @BindingAdapter("animeOverviewDateText")
-    @JvmStatic
-    fun animeOverviewDateText(textView: TextView, date: Any?) {
-        when (date) {
-            is AnimeDetailQuery.StartDate -> {
-                textView.text = if (date.day != null) {
-                    ConvertDate.convertToDateFormat(date.year, date.month, date.day)
-                } else "?"
-            }
-            is AnimeDetailQuery.EndDate -> {
-                textView.text = if (date.day != null) {
-                    ConvertDate.convertToDateFormat(date.year, date.month, date.day)
-                } else "?"
-            }
-        }
-    }
-
-
-    @BindingAdapter("animeOverviewCoverImage")
-    @JvmStatic
-    fun animeOverviewCoverImage(imageView: ImageView, path: String?) {
-        imageView.load(path) {
-            crossfade(true)
-            crossfade(400)
-            size(260, 540)
-            transformations(RoundedCornersTransformation(15f))
-        }
-    }
-
-    @BindingAdapter("animeCharaCircle")
-    @JvmStatic
-    fun animeCharaCircle(imageView: ImageView, path: String?) {
-        imageView.load(path) {
-            crossfade(true)
-            crossfade(400)
-            size(200, 200)
-            transformations(CircleCropTransformation())
-        }
-    }
-
-    @BindingAdapter("studioMain")
-    @JvmStatic
-    fun studioMain(textView: TextView, studioList: List<AnimeOverviewQuery.StudiosEdge?>?) {
-        if (studioList != null) {
-            for (i in studioList.indices) {
-                if (studioList[i]!!.isMain) {
-                    textView.text = studioList[i]!!.studiosNode!!.name
-                    break
-                }
+@BindingAdapter("studioMain")
+fun TextView.studioMain(studioList: List<AnimeOverviewQuery.StudiosEdge?>?) {
+    if (studioList != null) {
+        for (i in studioList.indices) {
+            if (studioList[i]!!.isMain) {
+                this.text = studioList[i]!!.studiosNode!!.name
+                break
             }
         }
     }
