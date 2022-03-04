@@ -208,9 +208,7 @@ class SortedFragment : BaseFragment() {
                             seasonYear.data?.media?.forEach { anime ->
                                 viewModel.animeResultList.add(anime?.fragments?.animeList)
                             }
-                            animeListAdapter?.notifyItemRangeChanged(
-                                (viewModel.page * 10), it.data?.media!!.size
-                            )
+                            animeListAdapter?.submitList(viewModel.animeResultList.toMutableList())
                         }
                         Constant.NO_SEASON_NO_YEAR -> {
                             val noSeasonNoYear = it as NetworkState<NoSeasonNoYearQuery.Page>
@@ -219,9 +217,7 @@ class SortedFragment : BaseFragment() {
                             noSeasonNoYear.data?.media?.forEach { anime ->
                                 viewModel.animeResultList.add(anime?.fragments?.animeList)
                             }
-                            animeListAdapter?.notifyItemRangeChanged(
-                                (viewModel.page * 10), it.data?.media!!.size
-                            )
+                            animeListAdapter?.submitList(viewModel.animeResultList.toMutableList())
                         }
                         Constant.NO_SEASON -> {
                             val noSeason = it as NetworkState<NoSeasonQuery.Page>
@@ -230,9 +226,7 @@ class SortedFragment : BaseFragment() {
                             noSeason.data?.media?.forEach { anime ->
                                 viewModel.animeResultList.add(anime?.fragments?.animeList)
                             }
-                            animeListAdapter?.notifyItemRangeChanged(
-                                (viewModel.page * 10), it.data?.media!!.size
-                            )
+                            animeListAdapter?.submitList(viewModel.animeResultList.toMutableList())
                         }
                     }
 
@@ -276,7 +270,7 @@ class SortedFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
-            animeListAdapter = SortedListAdapter(viewModel.animeResultList) { id, idMal ->
+            animeListAdapter = SortedListAdapter { id, idMal ->
                 val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
                     this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                     this.putExtra(Constant.TARGET_ID, id)

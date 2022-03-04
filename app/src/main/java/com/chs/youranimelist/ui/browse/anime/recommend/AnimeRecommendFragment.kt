@@ -66,10 +66,7 @@ class AnimeRecommendFragment : Fragment() {
                     it.data?.animeRecommend?.recommendations?.edges?.forEach { recommend ->
                         viewModel.animeRecList.add(recommend)
                     }
-                    animeRecommendAdapter?.notifyItemRangeChanged(
-                        (viewModel.page * 10),
-                        it.data?.animeRecommend?.recommendations?.edges?.size!!
-                    )
+                    animeRecommendAdapter?.submitList(viewModel.animeRecList.toMutableList())
                     binding.progressBar.isVisible = false
                 }
                 is NetworkState.Error -> {
@@ -82,7 +79,7 @@ class AnimeRecommendFragment : Fragment() {
 
     private fun initRecyclerView() {
         binding.rvAnimeRecommend.apply {
-            animeRecommendAdapter = AnimeRecommendAdapter(viewModel.animeRecList) { id, idMal ->
+            animeRecommendAdapter = AnimeRecommendAdapter { id, idMal ->
                 findNavController().navigate(
                     AnimeDetailFragmentDirections.actionAnimeDetailSelf(
                         id,

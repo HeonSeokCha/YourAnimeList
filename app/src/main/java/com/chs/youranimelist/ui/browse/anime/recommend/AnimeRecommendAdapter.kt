@@ -2,19 +2,36 @@ package com.chs.youranimelist.ui.browse.anime.recommend
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
 import com.chs.youranimelist.databinding.ItemAnimeRecommendBinding
 import com.chs.youranimelist.databinding.ItemLoadingBinding
 
 class AnimeRecommendAdapter(
-    private val items: List<AnimeRecommendQuery.Edge?>,
     private val clickListener: (id: Int, idMal: Int) -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : ListAdapter<AnimeRecommendQuery.Edge,RecyclerView.ViewHolder>(diffUtil) {
 
     companion object {
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1
+
+        val diffUtil = object : DiffUtil.ItemCallback<AnimeRecommendQuery.Edge>() {
+            override fun areItemsTheSame(
+                oldItem: AnimeRecommendQuery.Edge,
+                newItem: AnimeRecommendQuery.Edge
+            ): Boolean {
+                return oldItem.node!!.id == newItem.node!!.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: AnimeRecommendQuery.Edge,
+                newItem: AnimeRecommendQuery.Edge
+            ): Boolean {
+                return oldItem.node == oldItem.node
+            }
+        }
     }
 
     inner class ViewHolder(val binding: ItemAnimeRecommendBinding) :
@@ -22,8 +39,8 @@ class AnimeRecommendAdapter(
         init {
             binding.root.setOnClickListener {
                 clickListener.invoke(
-                    items[layoutPosition]!!.node!!.mediaRecommendation!!.id,
-                    items[layoutPosition]!!.node!!.mediaRecommendation!!.idMal ?: 0
+                    getItem(layoutPosition)!!.node!!.mediaRecommendation!!.id,
+                    getItem(layoutPosition)!!.node!!.mediaRecommendation!!.idMal ?: 0
                 )
             }
         }
@@ -50,13 +67,11 @@ class AnimeRecommendAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
-            holder.bind(items[position])
+            holder.bind(getItem(position))
         }
     }
 
-    override fun getItemCount(): Int = items.size
-
     override fun getItemViewType(position: Int): Int {
-        return if (items[position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
+        return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
     }
 }
