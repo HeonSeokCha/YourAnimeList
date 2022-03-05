@@ -62,7 +62,7 @@ class StudioFragment : BaseFragment() {
                     it.data!!.media!!.edges!!.forEach { edge ->
                         viewModel.studioAnimeList.add(edge!!)
                     }
-                    studioAnimeAdapter?.notifyItemRangeChanged((viewModel.page * 10), 10)
+                    studioAnimeAdapter?.submitList(viewModel.studioAnimeList.toMutableList())
                 }
                 is NetworkState.Error -> {
                     isLoading = false
@@ -92,9 +92,7 @@ class StudioFragment : BaseFragment() {
                     viewModel.selectsort = Constant.animeSortList[which]
                     binding.txtStudioSort.text = Constant.animeSortArray[which]
                     viewModel.refresh()
-                    studioAnimeAdapter?.notifyDataSetChanged()
-                }
-                .show()
+                }.show()
         }
     }
 
@@ -113,7 +111,7 @@ class StudioFragment : BaseFragment() {
                 }
             })
 
-            studioAnimeAdapter = StudioAnimeAdapter(viewModel.studioAnimeList) { id, idMal ->
+            studioAnimeAdapter = StudioAnimeAdapter { id, idMal ->
                 val action =
                     StudioFragmentDirections.actionStudioFragmentToAnimeDetailFragment(
                         id,

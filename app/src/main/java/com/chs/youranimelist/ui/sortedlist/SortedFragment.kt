@@ -72,7 +72,6 @@ class SortedFragment : BaseFragment() {
                     }
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter?.notifyDataSetChanged()
                     getAnimeList()
                 }
                 .show()
@@ -92,7 +91,6 @@ class SortedFragment : BaseFragment() {
                     binding.animeListSeason.text = viewModel.selectedSeason?.name
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter?.notifyDataSetChanged()
                     getAnimeList()
                 }
                 .show()
@@ -105,7 +103,6 @@ class SortedFragment : BaseFragment() {
                     binding.animeListSort.text = Constant.animeSortArray[which]
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter?.notifyDataSetChanged()
                     getAnimeList()
                 }
                 .show()
@@ -119,7 +116,6 @@ class SortedFragment : BaseFragment() {
                     binding.animeListGenre.text = viewModel.genreList[which]
                     isLoading = false
                     viewModel.refresh()
-                    animeListAdapter?.notifyDataSetChanged()
                     getAnimeList()
                 }
                 .show()
