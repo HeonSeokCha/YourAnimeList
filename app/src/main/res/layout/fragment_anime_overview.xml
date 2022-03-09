@@ -237,13 +237,13 @@
                 android:id="@+id/txt_anime_overview_romaji"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="88dp"
                 android:layout_marginEnd="16dp"
                 android:maxLines="2"
                 android:text="@{model.title.romaji}"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView3"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_episode_duration"
                 app:layout_constraintTop_toTopOf="@+id/textView3"
                 tools:text="TextView" />
 
@@ -343,9 +343,12 @@
                 android:id="@+id/txt_anime_overview_episode_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:layout_constrainedHeight="true"
                 app:animeOverviewDurationValue="@{model.duration}"
                 app:animeOverviewDurationVisible="@{model.duration}"
-                app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_episode"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView10"
                 app:layout_constraintTop_toTopOf="@+id/textView10"
                 tools:text="TextView" />
 
@@ -434,12 +437,16 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_anime_overview_studio"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:nestedScrollingEnabled="false"
                 android:visibility="gone"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/txt_anime_overview_season"
                 app:layout_constraintTop_toBottomOf="@+id/textView14"
                 tools:layout_height="30dp"
@@ -457,11 +464,15 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_anime_overview_producer"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:nestedScrollingEnabled="false"
                 android:visibility="gone"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/rv_anime_overview_studio"
                 app:layout_constraintTop_toBottomOf="@+id/rv_anime_overview_studio"
                 tools:layout_height="30dp" />
