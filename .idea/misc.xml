@@ -37,12 +37,15 @@
         <entry key="..\:/Users/hs960/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_studio.xml" value="0.39947916666666666" />
         <entry key="..\:/Users/hs960/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_view_pager.xml" value="0.39947916666666666" />
         <entry key="app/src/main/res/layout/fragment_anime_detail.xml" value="0.2" />
-        <entry key="app/src/main/res/layout/fragment_anime_overview.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/fragment_anime_overview.xml" value="0.4449722290039062" />
         <entry key="app/src/main/res/layout/fragment_character.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/item_anime_child.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/item_anime_list.xml" value="0.16111111111111112" />
+        <entry key="app/src/main/res/layout/item_anime_theme.xml" value="0.11666666666666667" />
         <entry key="app/src/main/res/layout/item_search_character.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/item_search_media.xml" value="0.37604166666666666" />
+        <entry key="app/src/main/res/layout/item_studio.xml" value="0.29292929292929293" />
         <entry key="app/src/main/res/menu/menu_home.xml" value="0.275" />
         <entry key="app/src/main/res/menu/menu_lists.xml" value="0.275" />
         <entry key="app/src/main/res/menu/menu_main_bottom_nav.xml" value="0.275" />
@@ -54,5 +57,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.4449722290039062" />
+      </ProjectState>
+    </option>
   </component>
 </project>

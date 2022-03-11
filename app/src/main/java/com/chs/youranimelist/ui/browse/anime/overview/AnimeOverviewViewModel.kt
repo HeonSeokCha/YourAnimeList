@@ -47,7 +47,7 @@ class AnimeOverviewViewModel @Inject constructor(
 
     fun getAnimeTheme(animeId: Int) {
         viewModelScope.launch {
-            getAnimeThemeUseCase.invoke(animeId).collect {
+            getAnimeThemeUseCase(animeId).collect {
                 _animeOverviewThemeResponse.value = it
             }
         }
