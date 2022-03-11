@@ -42,17 +42,6 @@ fun ImageView.animeImageCover(path: String?) {
     }
 }
 
-@BindingAdapter("animeFormatYear")
-fun TextView.animeFormatYear(anime: AnimeList?) {
-    this.text = if (anime != null) {
-        if (anime?.seasonYear != null && anime?.format != null) {
-            "${anime.format}" + " ⦁ ${anime.seasonYear}"
-        } else {
-            "${anime.format}"
-        }
-    } else ""
-}
-
 @BindingAdapter("animeStatusValue")
 fun TextView.animeStatusValue(status: String) {
     this.text = when (status) {

@@ -41,7 +41,7 @@
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     app:animeImageCover="@{model.coverImage.extraLarge}"
-                    app:layout_constraintDimensionRatio="1:1.25"
+                    app:layout_constraintDimensionRatio="1:1.4"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -65,6 +65,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/img_animeList"
+                    app:layout_constraintVertical_bias="0.0"
                     tools:text="TextView" />
 
                 <TextView
@@ -84,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:textSize="12dp"
-                    app:animeFormatYear="@{model}"
+                    android:text="@{model.seasonYear.toString()}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/txt_anime_status"
                     tools:text="TextView" />

@@ -30,7 +30,6 @@ class StudioFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.studioId = args.studioId
-        viewModel.getStudioAnime()
     }
 
     override fun onCreateView(
@@ -43,6 +42,7 @@ class StudioFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getStudioAnime()
         initClick()
         initRecyclerView()
         initStudio()
