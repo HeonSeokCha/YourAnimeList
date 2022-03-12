@@ -107,17 +107,7 @@ class CharacterFragment : BaseFragment() {
 
     private fun saveList() {
         if (viewModel.charaDetail != null && viewModel.initCharaList == null) {
-            with(viewModel.charaDetail!!) {
-                viewModel.insertCharaList(
-                    Character(
-                        charaId = this.id,
-                        name = this.name?.full ?: "",
-                        nativeName = this.name?.native ?: "",
-                        image = this.image?.large ?: "",
-                        favourites = this.favourites,
-                    )
-                )
-            }
+            viewModel.insertCharaList(viewModel.charaDetail!!)
         } else if (viewModel.initCharaList != null) {
             viewModel.deleteCharaList(viewModel.initCharaList!!)
             viewModel.initCharaList = null
