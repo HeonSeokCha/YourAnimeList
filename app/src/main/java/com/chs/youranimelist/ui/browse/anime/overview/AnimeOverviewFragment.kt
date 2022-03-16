@@ -19,6 +19,7 @@ import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.ui.browse.anime.AnimeDetailFragmentDirections
 import com.chs.youranimelist.util.Constant
+import com.chs.youranimelist.util.ConvertDate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -91,10 +92,8 @@ class AnimeOverviewFragment : Fragment() {
             when (it) {
                 is NetworkState.Success -> {
                     binding.model = it.data?.media!!
-                    if (it.data?.media.season != null && it.data.media.seasonYear != null) {
-                        season = it.data.media.season
-                        seasonYear = it.data.media.seasonYear
-                    }
+                    season = it.data?.media!!.season ?: ConvertDate.getCurrentSeason()
+                    seasonYear = it.data?.media!!.seasonYear ?: ConvertDate.getCurrentYear()
 
                     it.data.media.relations?.relationsEdges?.forEach { relation ->
                         viewModel.animeOverviewRelationList.add(relation)
