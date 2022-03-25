@@ -200,7 +200,7 @@ fun TextView.animeOverviewSeasonValue(anime: AnimeOverviewQuery.Media?) {
     this.text = if (anime?.seasonYear != null) {
         "${anime?.season} ${anime?.seasonYear}"
     } else {
-        "${anime?.format}"
+        "${anime?.season}"
     }
 }
 

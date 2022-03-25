@@ -45,9 +45,26 @@ class AnimeDetailViewModel @Inject constructor(
         checkSaveAnimeUseCase(animeId).asLiveData()
 
 
-    fun insertAnimeList(anime: Anime) {
+    fun insertAnimeList(anime: AnimeDetailQuery.Media) {
         viewModelScope.launch(Dispatchers.IO) {
-            insertAnimeUseCase(anime)
+            insertAnimeUseCase(
+                Anime(
+                    animeId = anime.id,
+                    idMal = anime.idMal ?: 0,
+                    title = anime.title!!.english ?: anime.title.romaji!!,
+                    format = anime.format.toString(),
+                    status = anime.status.toString(),
+                    season = anime.season.toString(),
+                    seasonYear = anime.seasonYear ?: 0,
+                    episode = anime.episodes ?: 0,
+                    coverImage = anime.coverImage?.extraLarge,
+                    bannerImage = anime.bannerImage,
+                    averageScore = anime.averageScore ?: 0,
+                    favorites = anime.favourites,
+                    studio = anime.studios?.edges?.get(0)?.node?.name ?: "",
+                    genre = anime.genres ?: listOf()
+                )
+            )
         }
     }
 

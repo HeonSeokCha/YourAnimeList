@@ -42,10 +42,7 @@ class AnimeDetailFragment : BaseFragment() {
         viewModel.getAnimeDetail(args.id)
         checkAnimeList()
         initAnimeInfo()
-        initTabView(
-            args.id,
-            args.idMal
-        )
+        initTabView(args.id, args.idMal)
         initClick()
     }
 
@@ -121,27 +118,7 @@ class AnimeDetailFragment : BaseFragment() {
 
     private fun saveList() {
         if (viewModel.animeDetail != null && viewModel.initAnimeList == null) {
-            with(viewModel.animeDetail!!) {
-                viewModel.insertAnimeList(
-                    Anime(
-                        animeId = this.id,
-                        idMal = this.idMal ?: 0,
-                        title = this.title!!.english ?: this.title.romaji!!,
-                        format = this.format.toString(),
-                        status = this.status.toString(),
-                        season = this.season.toString(),
-                        seasonYear = this.seasonYear ?: 0,
-                        episode = this.episodes ?: 0,
-                        coverImage = this.coverImage?.extraLarge,
-                        bannerImage = this.bannerImage,
-                        averageScore = this.averageScore ?: 0,
-                        favorites = this.favourites,
-                        studio = if (viewModel.animeDetail?.studios?.edges?.isEmpty()!!) ""
-                        else this.studios?.edges?.get(0)?.node?.name,
-                        genre = this.genres ?: listOf(),
-                    )
-                )
-            }
+            viewModel.insertAnimeList(viewModel.animeDetail!!)
         } else if (viewModel.initAnimeList != null) {
             viewModel.deleteAnimeList(viewModel.initAnimeList!!)
             viewModel.initAnimeList = null

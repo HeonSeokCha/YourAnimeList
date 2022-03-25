@@ -45,9 +45,17 @@ class CharacterViewModel @Inject constructor(
     fun checkCharaList(charaId: Int): LiveData<Character?> =
         checkSaveCharaUseCase(charaId).asLiveData()
 
-    fun insertCharaList(character: Character) {
+    fun insertCharaList(character: CharacterQuery.Character) {
         viewModelScope.launch {
-            insertCharaUseCase(character)
+            insertCharaUseCase(
+                Character(
+                    charaId = character.id,
+                    name = character.name?.full ?: "",
+                    nativeName = character.name?.native ?: "",
+                    image = character.image?.large ?: "",
+                    favourites = character.favourites,
+                )
+            )
         }
     }
 
