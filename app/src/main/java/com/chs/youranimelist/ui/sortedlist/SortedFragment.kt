@@ -275,6 +275,7 @@ class SortedFragment : BaseFragment() {
                 startActivity(intent)
             }
             this.adapter = animeListAdapter
+            this.setHasFixedSize(true)
             this.layoutManager = GridLayoutManager(requireContext(), 3)
             this.addItemDecoration(SpacesItemDecoration(3, 8, true))
             this.addOnScrollListener(object : RecyclerView.OnScrollListener() {

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentSearchBinding
 import com.chs.youranimelist.data.remote.NetworkState
 import com.chs.youranimelist.data.remote.dto.SearchResult
-import com.chs.youranimelist.data.remote.paging.AnimeRemoteMediator
 import com.chs.youranimelist.search.SearchAnimeQuery
 import com.chs.youranimelist.search.SearchCharacterQuery
 import com.chs.youranimelist.search.SearchMangaQuery
