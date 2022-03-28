@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentSortedBinding
 import com.chs.youranimelist.data.remote.NetworkState
+import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.sortedlist.AnimeListQuery
 import com.chs.youranimelist.sortedlist.NoSeasonNoYearQuery
 import com.chs.youranimelist.sortedlist.NoSeasonQuery
@@ -194,6 +195,8 @@ class SortedFragment : BaseFragment() {
 
                     if (isLoading) {
                         viewModel.animeResultList.removeAt(viewModel.animeResultList.lastIndex)
+                        animeListAdapter?.notifyItemRemoved(viewModel.animeResultList.lastIndex)
+
                         isLoading = false
                     }
 
@@ -204,7 +207,11 @@ class SortedFragment : BaseFragment() {
                             seasonYear.data?.media?.forEach { anime ->
                                 viewModel.animeResultList.add(anime?.fragments?.animeList)
                             }
-                            animeListAdapter?.submitList(viewModel.animeResultList.toMutableList())
+                            animeListAdapter?.notifyItemRangeInserted(
+                                viewModel.page - 1,
+                                viewModel.animeResultList.size
+                            )
+//                            animeListAdapter?.submitList(viewModel.animeResultList.toMutableList())
                         }
                         Constant.NO_SEASON_NO_YEAR -> {
                             val noSeasonNoYear = it as NetworkState<NoSeasonNoYearQuery.Page>
@@ -266,7 +273,7 @@ class SortedFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
-            animeListAdapter = SortedListAdapter { id, idMal ->
+            animeListAdapter = SortedListAdapter(viewModel.animeResultList) { id, idMal ->
                 val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
                     this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                     this.putExtra(Constant.TARGET_ID, id)

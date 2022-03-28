@@ -11,6 +11,7 @@ import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.fragment.AnimeList
 
 class SortedListAdapter(
+    private val items: ArrayList<AnimeList?>,
     private val clickListener: (id: Int, idMal: Int) -> Unit,
 ) : ListAdapter<AnimeList?, RecyclerView.ViewHolder>(diffUtil) {
 
@@ -47,7 +48,7 @@ class SortedListAdapter(
         }
 
         fun bind(itemAnime: AnimeList?) {
-//            binding.model = itemAnime
+            binding.model = itemAnime
         }
     }
 
@@ -55,7 +56,7 @@ class SortedListAdapter(
 
     var holderSize: Int = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType != VIEW_TYPE_ITEM) {
+        return if (viewType == VIEW_TYPE_ITEM) {
             val view =
                 ItemAnimeChildBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             Log.e("viewHolder", "onCreateViewHolder ${holderSize++}")

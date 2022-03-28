@@ -1,22 +1,16 @@
 package com.chs.youranimelist.util
 
-import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.text.Html
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
-import coil.load
-import coil.transform.CircleCropTransformation
-import coil.transform.RoundedCornersTransformation
+import com.bumptech.glide.Glide
 import com.chs.youranimelist.*
 import com.chs.youranimelist.browse.anime.AnimeDetailQuery
 import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
 import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
-import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.home.HomeRecommendListQuery
 import com.chs.youranimelist.util.ConvertDate.secondsToDateTime
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -25,21 +19,18 @@ import java.util.*
 
 @BindingAdapter("animeRecImageBanner")
 fun ImageView.animeRecImageBanner(anime: HomeRecommendListQuery.Medium) {
-    this.load(anime.bannerImage) {
-        crossfade(true)
-        crossfade(400)
-        size(400, 250)
-    }
+    Glide.with(this.context)
+        .load(anime.bannerImage)
+        .override(400, 250)
+        .into(this)
 }
 
 @BindingAdapter("animeImageCover")
 fun ImageView.animeImageCover(path: String?) {
-    this.load(path) {
-        crossfade(true)
-        crossfade(400)
-        size(250, 350)
-        transformations(RoundedCornersTransformation(15f))
-    }
+    Glide.with(this.context)
+        .load(path)
+        .override(250, 350)
+        .into(this)
 }
 
 @BindingAdapter("animeStatusValue")
@@ -90,12 +81,10 @@ fun TextView.animeRecFormatYear(anime: AnimeRecommendQuery.MediaRecommendation) 
 
 @BindingAdapter("animeDetailImageBanner")
 fun ImageView.animeDetailImageBanner(anime: AnimeDetailQuery.Media?) {
-    this.load(anime?.bannerImage) {
-        placeholder(ColorDrawable(Color.parseColor(anime?.coverImage?.color ?: "#D9666F")))
-        crossfade(true)
-        crossfade(400)
-        size(400, 250)
-    }
+    Glide.with(this.context)
+        .load(anime?.bannerImage)
+        .override(400, 250)
+        .into(this)
 }
 
 @BindingAdapter("animeDetailTrailerVisible")
@@ -105,22 +94,18 @@ fun FloatingActionButton.animeDetailTrailerVisible(trailer: AnimeDetailQuery.Tra
 
 @BindingAdapter("animeDetailImageCover")
 fun ImageView.animeDetailImageCover(path: String?) {
-    this.load(path) {
-        crossfade(true)
-        crossfade(400)
-        size(250, 350)
-        transformations(RoundedCornersTransformation(15f))
-    }
+    Glide.with(this.context)
+        .load(path)
+        .override(250, 350)
+        .into(this)
 }
 
 @BindingAdapter("animeRecommendImageCover")
 fun ImageView.animeRecommendImageCover(path: String?) {
-    this.load(path) {
-        crossfade(true)
-        crossfade(400)
-        size(300, 450)
-        transformations(RoundedCornersTransformation(topLeft = 15f, bottomLeft = 15f))
-    }
+    Glide.with(this.context)
+        .load(path)
+        .override(300, 450)
+        .into(this)
 }
 
 @BindingAdapter("animeDetailScoreVisible")
@@ -229,22 +214,18 @@ fun TextView.animeOverviewEndDateText(date: AnimeOverviewQuery.EndDate?) {
 
 @BindingAdapter("animeOverviewCoverImage")
 fun ImageView.animeOverviewCoverImage(path: String?) {
-    this.load(path) {
-        crossfade(true)
-        crossfade(400)
-        size(260, 540)
-        transformations(RoundedCornersTransformation(15f))
-    }
+    Glide.with(this.context)
+        .load(path)
+        .override(260, 540)
+        .into(this)
 }
 
 @BindingAdapter("animeCharaCircle")
 fun ImageView.animeCharaCircle(path: String?) {
-    this.load(path) {
-        crossfade(true)
-        crossfade(400)
-        size(200, 200)
-        transformations(CircleCropTransformation())
-    }
+    Glide.with(this.context)
+        .load(path)
+        .override(200, 200)
+        .into(this)
 }
 
 @BindingAdapter("studioMain")

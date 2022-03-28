@@ -226,7 +226,6 @@ class SearchFragment : Fragment() {
                 SearchMangaAdapter { _, _ -> }
             }
         }
-
         binding.rvSearch.layoutManager = LinearLayoutManager(requireContext())
     }
 
