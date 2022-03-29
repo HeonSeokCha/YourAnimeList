@@ -5,166 +5,159 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
+    <HorizontalScrollView
+        android:id="@+id/horizontalFilterScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/sorted_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="center_vertical"
+            android:paddingStart="28dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="28dp"
+            android:paddingBottom="8dp">
 
-            <HorizontalScrollView
-                android:id="@+id/horizontalFilterScrollView"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"
-                android:scrollbars="none"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_marginEnd="8dp"
+                android:text="Year" />
 
-                <LinearLayout
-                    android:id="@+id/sorted_filter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:paddingStart="28dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="28dp"
-                    android:paddingBottom="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="Year" />
-
-                    <TextView
-                        android:id="@+id/anime_list_year"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="28dp"
-                        android:clickable="true"
-                        android:foreground="?selectableItemBackground"
-                        android:padding="8dp"
-                        android:text="2021"
-                        android:textColor="@color/red_500"
-                        tools:text="2021" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="Season" />
-
-                    <TextView
-                        android:id="@+id/anime_list_season"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="28dp"
-                        android:clickable="true"
-                        android:foreground="?selectableItemBackground"
-                        android:padding="8dp"
-                        android:text="SPRING"
-                        android:textColor="@color/red_500" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="Sort" />
-
-                    <TextView
-                        android:id="@+id/anime_list_sort"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="28dp"
-                        android:clickable="true"
-                        android:foreground="?selectableItemBackground"
-                        android:padding="8dp"
-                        android:text="Popular"
-                        android:textColor="@color/red_500" />
-
-                </LinearLayout>
-
-
-            </HorizontalScrollView>
-
-            <HorizontalScrollView
-                android:id="@+id/horizontalTagScrollView"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/anime_list_year"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"
-                android:scrollbars="none"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_marginEnd="28dp"
+                android:clickable="true"
+                android:foreground="?selectableItemBackground"
+                android:padding="8dp"
+                android:text="2021"
+                android:textColor="@color/red_500"
+                tools:text="2021" />
 
-                <LinearLayout
-                    android:id="@+id/sorted_other"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:paddingStart="28dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="28dp"
-                    android:paddingBottom="8dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Season" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="TAG" />
+            <TextView
+                android:id="@+id/anime_list_season"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:clickable="true"
+                android:foreground="?selectableItemBackground"
+                android:padding="8dp"
+                android:text="SPRING"
+                android:textColor="@color/red_500" />
 
-                    <TextView
-                        android:id="@+id/anime_list_genre"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="28dp"
-                        android:clickable="true"
-                        android:foreground="?selectableItemBackground"
-                        android:padding="8dp"
-                        android:text="Action"
-                        android:textColor="@color/red_500"
-                        tools:text="Action" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Sort" />
 
-
-                </LinearLayout>
-
-
-            </HorizontalScrollView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_animeList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:visibility="gone"
-                android:clipToPadding="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
-
-            <include
-                android:id="@+id/layout_shimmerSorted"
-                layout="@layout/shimmer_media_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
+                android:id="@+id/anime_list_sort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:clickable="true"
+                android:foreground="?selectableItemBackground"
+                android:padding="8dp"
+                android:text="Popular"
+                android:textColor="@color/red_500" />
 
         </LinearLayout>
 
+
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalTagScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:scrollbars="none"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/sorted_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingStart="28dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="28dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="TAG" />
+
+            <TextView
+                android:id="@+id/anime_list_genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:clickable="true"
+                android:foreground="?selectableItemBackground"
+                android:padding="8dp"
+                android:text="Action"
+                android:textColor="@color/red_500"
+                tools:text="Action" />
+
+
+        </LinearLayout>
+
+
+    </HorizontalScrollView>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalFilterScrollView">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_animeList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:clipToPadding="false"
+            android:visibility="gone" />
+
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/layout_shimmerSorted"
+        layout="@layout/shimmer_media_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalFilterScrollView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

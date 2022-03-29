@@ -6,12 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.Coil
+import coil.clear
+import coil.dispose
 import com.chs.youranimelist.databinding.ItemAnimeChildBinding
 import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.fragment.AnimeList
 
 class SortedListAdapter(
-    private val items: ArrayList<AnimeList?>,
     private val clickListener: (id: Int, idMal: Int) -> Unit,
 ) : ListAdapter<AnimeList?, RecyclerView.ViewHolder>(diffUtil) {
 
@@ -92,11 +94,17 @@ class SortedListAdapter(
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
+        if (holder is SortedListViewHolder) {
+            holder.binding.imgAnimeList.dispose()
+        }
         Log.e("onViewRecycled", "${holder.layoutPosition}")
     }
 
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
         super.onViewDetachedFromWindow(holder)
+        if (holder is SortedListViewHolder) {
+            holder.binding.imgAnimeList.dispose()
+        }
         Log.e("onViewDetachedFromWindow", "${holder.layoutPosition}")
     }
 
