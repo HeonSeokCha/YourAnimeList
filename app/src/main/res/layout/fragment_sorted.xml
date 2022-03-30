@@ -126,29 +126,20 @@
 
         </LinearLayout>
 
-
     </HorizontalScrollView>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView2"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_animeList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:clipToPadding="false"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalFilterScrollView">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_animeList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:clipToPadding="false"
-            android:visibility="gone" />
-
-    </androidx.core.widget.NestedScrollView>
+        app:layout_constraintTop_toBottomOf="@+id/horizontalFilterScrollView"/>
 
     <include
         android:id="@+id/layout_shimmerSorted"

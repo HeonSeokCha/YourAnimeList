@@ -1,5 +1,6 @@
 package com.chs.youranimelist.ui.characterlist
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -31,6 +32,9 @@ class CharacterListAdapter(
         holder.bind()
     }
 
-    override fun getItemId(position: Int): Long = getItem(position).id.toLong()
+    override fun onViewRecycled(holder: CharacterListViewHolder) {
+        super.onViewRecycled(holder)
+        Log.e("onViewRecycled", holder.layoutPosition.toString())
+    }
 
 }

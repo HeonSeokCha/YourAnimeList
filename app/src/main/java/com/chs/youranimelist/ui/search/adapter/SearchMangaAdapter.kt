@@ -1,6 +1,7 @@
 package com.chs.youranimelist.ui.search.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -73,5 +74,10 @@ class SearchMangaAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
+    }
+
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        super.onViewRecycled(holder)
+        Log.e("onViewDetachedFromWindow", holder.layoutPosition.toString())
     }
 }

@@ -1,5 +1,6 @@
 package com.chs.youranimelist.ui.browse.character
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -38,4 +39,9 @@ class CharacterAnimeAdapter(
     }
 
     override fun getItemCount(): Int = items.size
+
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        Log.e("onViewDetachedFromWindow", holder.layoutPosition.toString())
+    }
 }

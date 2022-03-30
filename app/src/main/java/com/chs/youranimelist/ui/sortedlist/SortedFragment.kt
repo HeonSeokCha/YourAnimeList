@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentSortedBinding
 import com.chs.youranimelist.data.remote.NetworkState
-import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.sortedlist.AnimeListQuery
 import com.chs.youranimelist.sortedlist.NoSeasonNoYearQuery
 import com.chs.youranimelist.sortedlist.NoSeasonQuery
@@ -195,8 +194,6 @@ class SortedFragment : BaseFragment() {
 
                     if (isLoading) {
                         viewModel.animeResultList.removeAt(viewModel.animeResultList.lastIndex)
-                        animeListAdapter?.notifyItemRemoved(viewModel.animeResultList.lastIndex)
-
                         isLoading = false
                     }
 
@@ -207,11 +204,6 @@ class SortedFragment : BaseFragment() {
                             seasonYear.data?.media?.forEach { anime ->
                                 viewModel.animeResultList.add(anime?.fragments?.animeList)
                             }
-                            animeListAdapter?.notifyItemRangeInserted(
-                                viewModel.page - 1,
-                                viewModel.animeResultList.size
-                            )
-//                            animeListAdapter?.submitList(viewModel.animeResultList.toMutableList())
                         }
                         Constant.NO_SEASON_NO_YEAR -> {
                             val noSeasonNoYear = it as NetworkState<NoSeasonNoYearQuery.Page>
@@ -220,7 +212,6 @@ class SortedFragment : BaseFragment() {
                             noSeasonNoYear.data?.media?.forEach { anime ->
                                 viewModel.animeResultList.add(anime?.fragments?.animeList)
                             }
-                            animeListAdapter?.submitList(viewModel.animeResultList.toMutableList())
                         }
                         Constant.NO_SEASON -> {
                             val noSeason = it as NetworkState<NoSeasonQuery.Page>
@@ -229,10 +220,10 @@ class SortedFragment : BaseFragment() {
                             noSeason.data?.media?.forEach { anime ->
                                 viewModel.animeResultList.add(anime?.fragments?.animeList)
                             }
-                            animeListAdapter?.submitList(viewModel.animeResultList.toMutableList())
                         }
                     }
 
+                    animeListAdapter?.submitList(viewModel.animeResultList.toMutableList())
                     binding.layoutShimmerSorted.root.isVisible = false
                     binding.rvAnimeList.isVisible = true
                 }
@@ -273,7 +264,7 @@ class SortedFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         binding.rvAnimeList.apply {
-            animeListAdapter = SortedListAdapter(viewModel.animeResultList) { id, idMal ->
+            animeListAdapter = SortedListAdapter { id, idMal ->
                 val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
                     this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                     this.putExtra(Constant.TARGET_ID, id)
