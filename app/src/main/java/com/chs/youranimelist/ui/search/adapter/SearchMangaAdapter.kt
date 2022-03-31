@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.databinding.ItemSearchMediaBinding
-import com.chs.youranimelist.data.remote.dto.SearchResult
 import com.chs.youranimelist.search.SearchMangaQuery
 
 class SearchMangaAdapter(
@@ -78,6 +77,6 @@ class SearchMangaAdapter(
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
-        Log.e("onViewDetachedFromWindow", holder.layoutPosition.toString())
+        Log.e("onViewRecycled", holder.layoutPosition.toString())
     }
 }

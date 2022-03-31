@@ -5,13 +5,16 @@
       <map>
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/activity_search.xml" value="0.39947916666666666" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_anime_chara.xml" value="0.39947916666666666" />
-        <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_anime_detail.xml" value="0.17980072463768115" />
+        <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_anime_detail.xml" value="0.4" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_anime_list.xml" value="0.39947916666666666" />
+        <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_anime_overview.xml" value="0.34814814814814815" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_anime_recommend.xml" value="0.1266490765171504" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_character.xml" value="0.39947916666666666" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_character_list.xml" value="0.39947916666666666" />
+        <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_home.xml" value="0.39947916666666666" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_search.xml" value="0.39947916666666666" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_sorted.xml" value="0.39947916666666666" />
+        <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_studio.xml" value="0.264" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_anime_child.xml" value="0.8" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_anime_list.xml" value="0.17980072463768115" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_anime_recommend.xml" value="0.19427558257345492" />

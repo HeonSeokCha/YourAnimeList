@@ -26,10 +26,5 @@ class AnimeCharaAdapter(
         }
     }
 
-    override fun onViewRecycled(holder: CharaViewHolder) {
-        super.onViewRecycled(holder)
-        Log.e("onViewDetachedFromWindow", holder.layoutPosition.toString())
-    }
-
     override fun getItemCount(): Int = items.size
 }

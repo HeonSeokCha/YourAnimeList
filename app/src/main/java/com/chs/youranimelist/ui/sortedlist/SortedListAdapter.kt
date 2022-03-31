@@ -82,11 +82,6 @@ class SortedListAdapter(
         Log.e("onDetachedFromRecyclerView", "onDetachedFromRecyclerView")
     }
 
-    override fun onFailedToRecycleView(holder: RecyclerView.ViewHolder): Boolean {
-        return super.onFailedToRecycleView(holder)
-        Log.e("onFailedToRecycleView", "${holder.layoutPosition}")
-    }
-
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
         Log.e("onViewAttachedToWindow", "${holder.layoutPosition}")

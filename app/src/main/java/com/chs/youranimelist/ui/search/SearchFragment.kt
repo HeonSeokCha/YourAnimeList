@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentSearchBinding
 import com.chs.youranimelist.data.remote.NetworkState
-import com.chs.youranimelist.data.remote.dto.SearchResult
 import com.chs.youranimelist.search.SearchAnimeQuery
 import com.chs.youranimelist.search.SearchCharacterQuery
 import com.chs.youranimelist.search.SearchMangaQuery
@@ -79,13 +78,10 @@ class SearchFragment : Fragment() {
 
 
         if (viewModel.searchKeyword.isNotBlank()) {
-            viewModel.searchList.clear()
-
+            viewModel.clear()
             isLoading = false
             viewModel.page = 1
             viewModel.hasNextPage = true
-
-
             viewModel.search(viewModel.searchKeyword)
         }
     }
@@ -111,7 +107,7 @@ class SearchFragment : Fragment() {
                 }
             }
             viewModel.searchKeyword = it
-            viewModel.searchList.clear()
+            viewModel.clear()
             isLoading = false
             viewModel.page = 1
             viewModel.hasNextPage = true
@@ -125,7 +121,7 @@ class SearchFragment : Fragment() {
 
                 is NetworkState.Loading -> {
                     if (!isLoading) {
-                        if (viewModel.searchList.isEmpty()) {
+                        if (viewModel.isSearchEmpty()) {
                             binding.layoutShimmerSearch.root.isVisible = true
                         }
                         binding.imgSearchError.isVisible = false
@@ -139,7 +135,7 @@ class SearchFragment : Fragment() {
                     }
 
                     if (isLoading) {
-                        viewModel.searchList.removeAt(viewModel.searchList.lastIndex)
+                        viewModel.finishLoading()
                         isLoading = false
                     }
 
@@ -151,27 +147,27 @@ class SearchFragment : Fragment() {
                             val searchAnime = it as NetworkState<SearchAnimeQuery.Page>
                             viewModel.hasNextPage = searchAnime.data?.pageInfo?.hasNextPage ?: false
                             searchAnime.data?.media?.forEach { anime ->
-                                viewModel.searchList.add(SearchResult(animeSearchResult = anime))
+                                viewModel.searchAnimeList.add(anime)
                             }
-                            searchAnimeAdapter.submitList(searchAnime.data?.media?.toMutableList())
+                            searchAnimeAdapter.submitList(viewModel.searchAnimeList.toMutableList())
                         }
 
                         Constant.TARGET_MANGA -> {
                             val searchManga = it as NetworkState<SearchMangaQuery.Page>
                             viewModel.hasNextPage = searchManga.data?.pageInfo?.hasNextPage ?: false
                             searchManga.data?.media?.forEach { manga ->
-                                viewModel.searchList.add(SearchResult(mangaSearchResult = manga))
+                                viewModel.searchMangaList.add(manga)
                             }
-                            searchMangaAdapter.submitList(searchManga.data?.media?.toMutableList())
+                            searchMangaAdapter.submitList(viewModel.searchMangaList.toMutableList())
                         }
 
                         Constant.TARGET_CHARA -> {
                             val searchChara = it as NetworkState<SearchCharacterQuery.Page>
                             viewModel.hasNextPage = searchChara.data?.pageInfo?.hasNextPage ?: false
                             searchChara.data?.characters?.forEach { chara ->
-                                viewModel.searchList.add(SearchResult(charactersSearchResult = chara))
+                                viewModel.searchCharaList.add(chara)
                             }
-                            searchCharaAdapter.submitList(searchChara.data?.characters?.toMutableList())
+                            searchCharaAdapter.submitList(viewModel.searchCharaList.toMutableList())
                         }
                     }
 

@@ -42,6 +42,6 @@ class CharacterAnimeAdapter(
 
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
-        Log.e("onViewDetachedFromWindow", holder.layoutPosition.toString())
+        Log.e("onViewRecycled", holder.layoutPosition.toString())
     }
 }

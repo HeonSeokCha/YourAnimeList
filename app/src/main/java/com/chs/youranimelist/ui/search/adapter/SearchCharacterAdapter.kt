@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.ItemLoadingBinding
 import com.chs.youranimelist.databinding.ItemSearchCharacterBinding
-import com.chs.youranimelist.data.remote.dto.SearchResult
 import com.chs.youranimelist.search.SearchCharacterQuery
 
 class SearchCharacterAdapter(

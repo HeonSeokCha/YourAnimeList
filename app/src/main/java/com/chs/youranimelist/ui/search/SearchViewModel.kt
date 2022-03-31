@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.data.remote.NetworkState
-import com.chs.youranimelist.data.remote.dto.SearchResult
 import com.chs.youranimelist.data.remote.usecase.SearchAnimeUseCase
 import com.chs.youranimelist.data.remote.usecase.SearchCharaUseCase
 import com.chs.youranimelist.data.remote.usecase.SearchMangaUseCase
@@ -42,7 +41,9 @@ class SearchViewModel @Inject constructor(
     var searchKeyword: String = ""
     var page: Int = 1
     var hasNextPage: Boolean = true
-    var searchList: ArrayList<SearchResult?> = ArrayList()
+    var searchAnimeList: ArrayList<SearchAnimeQuery.Medium?> = ArrayList()
+    var searchMangaList: ArrayList<SearchMangaQuery.Medium?> = ArrayList()
+    var searchCharaList: ArrayList<SearchCharacterQuery.Character?> = ArrayList()
 
     fun search(query: String) {
         viewModelScope.launch {
@@ -76,6 +77,35 @@ class SearchViewModel @Inject constructor(
     }
 
     fun loading() {
-        searchList.add(null)
+        when (searchPage) {
+            Constant.TARGET_ANIME -> searchAnimeList.add(null)
+            Constant.TARGET_MANGA -> searchMangaList.add(null)
+            Constant.TARGET_CHARA -> searchCharaList.add(null)
+        }
+    }
+
+    fun isSearchEmpty(): Boolean {
+        return when (searchPage) {
+            Constant.TARGET_ANIME -> searchAnimeList.isEmpty()
+            Constant.TARGET_MANGA -> searchMangaList.isEmpty()
+            Constant.TARGET_CHARA -> searchCharaList.isEmpty()
+            else -> true
+        }
+    }
+
+    fun finishLoading() {
+        when (searchPage) {
+            Constant.TARGET_ANIME -> searchAnimeList.removeAt(searchAnimeList.lastIndex)
+            Constant.TARGET_MANGA -> searchMangaList.removeAt(searchMangaList.lastIndex)
+            Constant.TARGET_CHARA -> searchCharaList.removeAt(searchCharaList.lastIndex)
+        }
+    }
+
+    fun clear() {
+        when (searchPage) {
+            Constant.TARGET_ANIME -> searchAnimeList.clear()
+            Constant.TARGET_MANGA -> searchMangaList.clear()
+            Constant.TARGET_CHARA -> searchCharaList.clear()
+        }
     }
 }
