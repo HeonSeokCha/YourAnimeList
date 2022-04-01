@@ -11,14 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import com.apollographql.apollo3.api.toInput
 import com.chs.youranimelist.R
-import com.chs.youranimelist.data.domain.model.Character
-import com.chs.youranimelist.util.SpacesItemDecoration
-import com.chs.youranimelist.databinding.FragmentCharacterBinding
 import com.chs.youranimelist.data.remote.NetworkState
+import com.chs.youranimelist.databinding.FragmentCharacterBinding
 import com.chs.youranimelist.ui.base.BaseFragment
 import com.chs.youranimelist.util.Constant
+import com.chs.youranimelist.util.SpacesItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

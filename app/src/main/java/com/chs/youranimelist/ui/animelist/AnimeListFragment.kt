@@ -52,12 +52,12 @@ class AnimeListFragment : Fragment() {
 
     private fun getAnimeList() {
         viewModel.animeListResponse.observe(viewLifecycleOwner) {
-            animeListAdapter.submitList(it)
+            animeListAdapter.submitList(it.toMutableList())
         }
     }
 
     private fun initRecyclerView() {
-        animeListAdapter = AnimeListAdapter() { id, idMal ->
+        animeListAdapter = AnimeListAdapter { id, idMal ->
             val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
                 this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                 this.putExtra(Constant.TARGET_ID, id)
@@ -65,8 +65,7 @@ class AnimeListFragment : Fragment() {
             }
             startActivity(intent)
         }
-        animeListAdapter!!.stateRestorationPolicy =
-            RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+
         binding.rvAnimeList.apply {
             this.adapter = animeListAdapter
             this.layoutManager = LinearLayoutManager(requireContext())

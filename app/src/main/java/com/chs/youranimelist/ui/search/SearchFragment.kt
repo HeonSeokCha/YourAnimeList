@@ -188,7 +188,7 @@ class SearchFragment : Fragment() {
         binding.rvSearch.adapter = when (viewModel.searchPage) {
             Constant.TARGET_ANIME -> {
                 searchAnimeAdapter = SearchAnimeAdapter { id, idMal ->
-                    val intent = Intent(this.context, BrowseActivity::class.java).apply {
+                    val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                         this.putExtra(Constant.TARGET_ID, id)
                         this.putExtra(Constant.TARGET_ID_MAL, idMal)
@@ -199,7 +199,7 @@ class SearchFragment : Fragment() {
             }
             Constant.TARGET_MANGA -> {
                 searchMangaAdapter = SearchMangaAdapter { id, idMal ->
-                    val intent = Intent(this.context, BrowseActivity::class.java).apply {
+                    val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                         this.putExtra(Constant.TARGET_ID, id)
                         this.putExtra(Constant.TARGET_ID_MAL, idMal)
@@ -210,7 +210,7 @@ class SearchFragment : Fragment() {
             }
             Constant.TARGET_CHARA -> {
                 searchCharaAdapter = SearchCharacterAdapter { id ->
-                    val intent = Intent(this.context, BrowseActivity::class.java).apply {
+                    val intent = Intent(requireContext(), BrowseActivity::class.java).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_CHARA)
                         this.putExtra(Constant.TARGET_ID, id)
                     }

@@ -131,51 +131,54 @@
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" >
 
 
-                <LinearLayout
-                    android:id="@+id/description_layout"
+            <LinearLayout
+                android:id="@+id/description_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/txt_character_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:lineSpacingExtra="5dp"
+                    android:visibility="gone"
+                    app:animeOverviewHtmlConvert="@{model.description}"
+                    app:layout_constrainedWidth="true"
+                    tools:text="@string/loerm" />
 
-                    <TextView
-                        android:id="@+id/txt_character_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:visibility="gone"
-                        android:layout_marginBottom="8dp"
-                        android:lineSpacingExtra="5dp"
-                        app:animeOverviewHtmlConvert="@{model.description}"
-                        app:layout_constrainedWidth="true"
-                        tools:text="@string/loerm" />
+                <TextView
+                    android:id="@+id/txt_character_description_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="5dp"
+                    android:lines="5"
+                    android:maxLines="5"
+                    app:animeOverviewHtmlConvert="@{model.description}"
+                    tools:text="@string/loerm" />
 
-                    <TextView
-                        android:id="@+id/txt_character_description_preview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="8dp"
-                        android:ellipsize="end"
-                        android:lineSpacingExtra="5dp"
-                        android:lines="5"
-                        android:maxLines="5"
-                        app:animeOverviewHtmlConvert="@{model.description}"
-                        tools:text="@string/loerm" />
+                <ImageButton
+                    android:id="@+id/btn_expand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_arrow_down"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless" />
 
-                    <ImageButton
-                        android:id="@+id/btn_expand"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ic_arrow_down"
-                        android:clickable="true"
-                        android:layout_gravity="center"
-                        android:foreground="?android:attr/selectableItemBackgroundBorderless" />
-
-                </LinearLayout>
+            </LinearLayout>
 
                 <TextView
                     android:id="@+id/textView27"
@@ -194,7 +197,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

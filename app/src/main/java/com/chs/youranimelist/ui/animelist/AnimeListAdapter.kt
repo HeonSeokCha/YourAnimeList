@@ -45,9 +45,4 @@ class AnimeListAdapter(
     override fun onBindViewHolder(holder: AnimeListViewHolder, position: Int) {
         holder.bind()
     }
-
-    override fun onViewRecycled(holder: AnimeListViewHolder) {
-        super.onViewRecycled(holder)
-        Log.e("onViewDetachedFromWindow", holder.layoutPosition.toString())
-    }
 }
