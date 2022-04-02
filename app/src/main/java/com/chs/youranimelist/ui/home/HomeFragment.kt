@@ -129,16 +129,17 @@ class HomeFragment : Fragment() {
                         }
 
                         override fun clickAnime(id: Int, idMal: Int) {
-                            val intent =
-                                Intent(requireActivity(), BrowseActivity::class.java).apply {
+                            startActivity(
+                                Intent(
+                                    requireActivity(),
+                                    BrowseActivity::class.java
+                                ).apply {
                                     this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                                     this.putExtra(Constant.TARGET_ID, id)
                                     this.putExtra(Constant.TARGET_ID_MAL, idMal)
-                                }
-                            startActivity(intent)
+                                })
                         }
                     })
-            homeRecListAdapter!!.stateRestorationPolicy = StateRestorationPolicy.ALLOW
             this.adapter = homeRecListAdapter
             this.layoutManager = LinearLayoutManager(requireContext())
         }

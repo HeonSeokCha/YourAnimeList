@@ -6,7 +6,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlinx-serialization'
     id 'dagger.hilt.android.plugin'
-    id("com.apollographql.apollo3").version("3.1.0")
+    id("com.apollographql.apollo3").version("3.2.0")
 }
 
 android {
@@ -70,10 +70,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     //Apollo
-    implementation 'com.apollographql.apollo3:apollo-runtime:3.1.0'
-    implementation 'com.apollographql.apollo3:apollo-api:3.1.0'
-    implementation 'com.apollographql.apollo3:apollo-normalized-cache:3.1.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.5'
+    implementation 'com.apollographql.apollo3:apollo-runtime:3.2.0'
+    implementation 'com.apollographql.apollo3:apollo-api:3.2.0'
+    implementation 'com.apollographql.apollo3:apollo-normalized-cache:3.2.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6'
 
     //Browser
     implementation 'androidx.browser:browser:1.4.0'

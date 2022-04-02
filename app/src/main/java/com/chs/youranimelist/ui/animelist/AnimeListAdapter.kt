@@ -17,21 +17,23 @@ class AnimeListAdapter(
 
     inner class AnimeListViewHolder(private val binding: ItemAnimeListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind() {
-            binding.model = getItem(layoutPosition)
+        init {
             binding.root.setOnClickListener {
                 clickListener.invoke(
                     getItem(layoutPosition).animeId,
                     getItem(layoutPosition).idMal
                 )
             }
+        }
+
+        fun bind() {
+            binding.model = getItem(layoutPosition)
+
             if (!getItem(layoutPosition).genre.isNullOrEmpty()) {
                 binding.rvAnimeListGenre.apply {
                     isVisible = true
-                    binding.rvAnimeListGenre.adapter =
-                        AnimeOverviewGenreAdapter(getItem(layoutPosition).genre!!) {
-
-                        }
+                    this.setRecycledViewPool(recycledViewPool)
+                    this.adapter = AnimeOverviewGenreAdapter(getItem(layoutPosition).genre!!) {}
                 }
             } else binding.rvAnimeListGenre.isVisible = false
         }

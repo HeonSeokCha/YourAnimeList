@@ -50,22 +50,6 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:src="@drawable/ic_default" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/mediaSaveList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="ADD MY LIST"
-                        app:iconGravity="textStart"
-                        app:iconPadding="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/character_CoverImage" />
-
                     <TextView
                         android:id="@+id/textView24"
                         android:layout_width="wrap_content"
@@ -108,6 +92,72 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView25"
                         tools:text="TextView" />
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/mediaSaveList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="ADD MY LIST"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/character_CoverImage" />
+
+                    <LinearLayout
+                        android:id="@+id/description_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mediaSaveList">
+
+                        <TextView
+                            android:id="@+id/txt_character_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:lineSpacingExtra="5dp"
+                            android:visibility="gone"
+                            app:animeOverviewHtmlConvert="@{model.description}"
+                            app:layout_constrainedWidth="true"
+                            tools:text="@string/loerm" />
+
+                        <TextView
+                            android:id="@+id/txt_character_description_preview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:ellipsize="end"
+                            android:lineSpacingExtra="5dp"
+                            android:lines="5"
+                            android:maxLines="5"
+                            app:animeOverviewHtmlConvert="@{model.description}"
+                            tools:text="@string/loerm" />
+
+                        <ImageButton
+                            android:id="@+id/btn_expand"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_arrow_down"
+                            android:clickable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless" />
+
+                    </LinearLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.Toolbar
@@ -125,86 +175,12 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_chara_anime_series"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" >
-
-
-            <LinearLayout
-                android:id="@+id/description_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/txt_character_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:lineSpacingExtra="5dp"
-                    android:visibility="gone"
-                    app:animeOverviewHtmlConvert="@{model.description}"
-                    app:layout_constrainedWidth="true"
-                    tools:text="@string/loerm" />
-
-                <TextView
-                    android:id="@+id/txt_character_description_preview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:ellipsize="end"
-                    android:lineSpacingExtra="5dp"
-                    android:lines="5"
-                    android:maxLines="5"
-                    app:animeOverviewHtmlConvert="@{model.description}"
-                    tools:text="@string/loerm" />
-
-                <ImageButton
-                    android:id="@+id/btn_expand"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_arrow_down"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackgroundBorderless" />
-
-            </LinearLayout>
-
-                <TextView
-                    android:id="@+id/textView27"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:lineSpacingExtra="5dp"
-                    android:text="Series"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/description_layout" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_chara_anime_series"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="16dp"
-                android:nestedScrollingEnabled="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView27" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginTop="16dp"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
