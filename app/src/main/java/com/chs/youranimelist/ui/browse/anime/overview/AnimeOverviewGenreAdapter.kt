@@ -21,8 +21,6 @@ class AnimeOverviewGenreAdapter(
 
         fun bind(genreName: String?) {
             binding.model = genreName.toString()
-            binding.genreCard
-                .setCardBackgroundColor(Color.parseColor(Constant.GENRE_COLOR[genreName]))
         }
     }
 

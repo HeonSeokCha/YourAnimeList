@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         app:cardElevation="0dp"
         app:contentPadding="4dp"
+        app:backgroundHexColor="@{model}"
         app:rippleColor="@android:color/transparent"
         tools:cardBackgroundColor="@color/red_500">
 

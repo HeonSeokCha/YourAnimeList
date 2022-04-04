@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -161,8 +162,8 @@ class SortedFragment : BaseFragment() {
                 viewModel.selectType = Constant.NO_SEASON_NO_YEAR
                 viewModel.selectedSort = MediaSort.SCORE_DESC
                 viewModel.selectGenre = args.genre
-                binding.horizontalFilterScrollView.isVisible = false
-                binding.horizontalTagScrollView.isVisible = true
+                binding.sortedFilter.isVisible = false
+                binding.sortedGenre.isVisible = true
                 binding.animeListGenre.text = args.genre
                 binding.animeListYear.text = "Any"
                 binding.animeListSeason.text = "Any"

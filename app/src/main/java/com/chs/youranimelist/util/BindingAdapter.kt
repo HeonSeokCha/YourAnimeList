@@ -1,6 +1,5 @@
 package com.chs.youranimelist.util
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.text.Html
@@ -16,9 +15,9 @@ import com.chs.youranimelist.*
 import com.chs.youranimelist.browse.anime.AnimeDetailQuery
 import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
 import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
-import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.home.HomeRecommendListQuery
 import com.chs.youranimelist.util.ConvertDate.secondsToDateTime
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
@@ -257,4 +256,9 @@ fun TextView.studioMain(studioList: List<AnimeOverviewQuery.StudiosEdge?>?) {
             }
         }
     }
+}
+
+@BindingAdapter("backgroundHexColor")
+fun MaterialCardView.backgroundHexColor(genreName: String) {
+    this.setCardBackgroundColor(Color.parseColor(Constant.GENRE_COLOR[genreName]))
 }
