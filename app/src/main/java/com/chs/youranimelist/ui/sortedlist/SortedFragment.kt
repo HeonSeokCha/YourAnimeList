@@ -59,6 +59,10 @@ class SortedFragment : BaseFragment() {
     }
 
     private fun initClick() {
+
+    }
+
+    private fun initFilterClick(filterName: String) {
         binding.animeListYear.setOnClickListener {
             val yearList =
                 ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
@@ -129,54 +133,61 @@ class SortedFragment : BaseFragment() {
             Constant.TRENDING_NOW -> {
                 viewModel.selectedSort = MediaSort.TRENDING_DESC
                 viewModel.selectType = Constant.NO_SEASON_NO_YEAR
-                binding.animeListYear.text = "Any"
-                binding.animeListSeason.text = "Any"
-                binding.animeListSort.text = "Trending"
+                viewModel.getFilterList(
+                    "Any",
+                    "Any",
+                    "Trending"
+                )
             }
             Constant.POPULAR_THIS_SEASON -> {
                 viewModel.selectedSort = MediaSort.POPULARITY_DESC
                 viewModel.selectedSeason = ConvertDate.getCurrentSeason()
                 viewModel.selectedYear = ConvertDate.getCurrentYear(false)
                 viewModel.selectType = Constant.SEASON_YEAR
-                binding.animeListYear.text = ConvertDate.getCurrentYear(false).toString()
-                binding.animeListSeason.text = ConvertDate.getCurrentSeason().toString()
-                binding.animeListSort.text = "Popularity"
+                viewModel.getFilterList(
+                    ConvertDate.getCurrentYear(false).toString(),
+                    ConvertDate.getCurrentSeason().toString(),
+                    "Popularity"
+                )
             }
             Constant.UPCOMING_NEXT_SEASON -> {
                 viewModel.selectedSort = MediaSort.POPULARITY_DESC
                 viewModel.selectedSeason = ConvertDate.getNextSeason()
                 viewModel.selectedYear = ConvertDate.getCurrentYear(true)
                 viewModel.selectType = Constant.SEASON_YEAR
-                binding.animeListYear.text = ConvertDate.getCurrentYear(true).toString()
-                binding.animeListSeason.text = ConvertDate.getNextSeason().toString()
-                binding.animeListSort.text = "Popularity"
+                viewModel.getFilterList(
+                    ConvertDate.getCurrentYear(true).toString(),
+                    ConvertDate.getCurrentSeason().toString(),
+                    "Popularity"
+                )
             }
             Constant.ALL_TIME_POPULAR -> {
                 viewModel.selectedSort = MediaSort.POPULARITY_DESC
                 viewModel.selectType = Constant.NO_SEASON_NO_YEAR
-                binding.animeListYear.text = "Any"
-                binding.animeListSeason.text = "Any"
-                binding.animeListSort.text = "Popularity"
+                viewModel.getFilterList(
+                    "Any",
+                    "Any",
+                    "Popularity"
+                )
             }
             Constant.TARGET_GENRE -> {
                 viewModel.selectType = Constant.NO_SEASON_NO_YEAR
                 viewModel.selectedSort = MediaSort.SCORE_DESC
                 viewModel.selectGenre = args.genre
-                binding.sortedFilter.isVisible = false
-                binding.sortedGenre.isVisible = true
-                binding.animeListGenre.text = args.genre
-                binding.animeListYear.text = "Any"
-                binding.animeListSeason.text = "Any"
-                binding.animeListSort.text = "AverageScore"
+                viewModel.getFilterList(
+                    genre = args.genre
+                )
             }
             Constant.TARGET_SEASON -> {
                 viewModel.selectedSort = MediaSort.POPULARITY_DESC
                 viewModel.selectedSeason = args.season
                 viewModel.selectedYear = args.year
                 viewModel.selectType = Constant.SEASON_YEAR
-                binding.animeListYear.text = args.year.toString()
-                binding.animeListSeason.text = args.season.toString()
-                binding.animeListSort.text = "Popularity"
+                viewModel.getFilterList(
+                    args.year.toString(),
+                    args.season.toString(),
+                    "Popularity"
+                )
             }
         }
     }

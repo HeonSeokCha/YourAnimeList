@@ -72,20 +72,10 @@ class SortedListAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is SortedListViewHolder) {
-            Log.e("viewHolder", "onBindViewHolder $position")
             holder.bind(getItem(position))
         }
     }
 
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        Log.e("onDetachedFromRecyclerView", "onDetachedFromRecyclerView")
-    }
-
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
-        super.onViewAttachedToWindow(holder)
-        Log.e("onViewAttachedToWindow", "${holder.layoutPosition}")
-    }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
@@ -103,10 +93,6 @@ class SortedListAdapter(
         Log.e("onViewDetachedFromWindow", "${holder.layoutPosition}")
     }
 
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        Log.e("onAttachedToRecyclerView", "onAttachedToRecyclerView")
-    }
 
     override fun getItemViewType(position: Int): Int {
         return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM

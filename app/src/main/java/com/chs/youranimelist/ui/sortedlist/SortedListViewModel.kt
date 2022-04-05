@@ -60,6 +60,23 @@ class SortedListViewModel @Inject constructor(
     var animeResultList: ArrayList<AnimeList?> = ArrayList()
     var genreList: ArrayList<String> = ArrayList()
 
+    fun getFilterList(
+        year: String = "",
+        season: String = "",
+        sort: String = "",
+        genre: String = ""
+    ): List<Pair<String, String>> {
+        return if (genre.isNotEmpty()) {
+            listOf(Pair("Genre", ""))
+        } else {
+            listOf(
+                Pair("Year", year),
+                Pair("Season", season),
+                Pair("Sort", sort)
+            )
+        }
+    }
+
     fun getAnimeList() {
         viewModelScope.launch {
             when (selectType) {
