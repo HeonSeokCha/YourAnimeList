@@ -26,6 +26,7 @@ import com.chs.youranimelist.ui.main.MainActivity
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.ConvertDate
 import com.chs.youranimelist.util.SpacesItemDecoration
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -63,67 +64,62 @@ class SortedFragment : BaseFragment() {
     }
 
     private fun initFilterClick(filterName: String) {
-        binding.animeListYear.setOnClickListener {
-            val yearList =
-                ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
-            AlertDialog.Builder(this.requireContext())
-                .setItems(yearList.toTypedArray()) { _, which ->
-                    viewModel.selectedYear = yearList[which].toInt()
-                    binding.animeListYear.text = yearList[which]
-                    if (viewModel.selectedSeason != null) {
+        when (filterName) {
+            "Year" -> {
+                val yearList =
+                    ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
+                MaterialAlertDialogBuilder(this.requireContext())
+                    .setItems(yearList.toTypedArray()) { _, which ->
+                        viewModel.selectedYear = yearList[which].toInt()
+                        if (viewModel.selectedSeason != null) {
+                            viewModel.selectType = Constant.SEASON_YEAR
+                        } else {
+                            viewModel.selectType = Constant.NO_SEASON
+                        }
+                        isLoading = false
+                        viewModel.refresh()
+                        getAnimeList()
+                    }
+                    .show()
+            }
+
+            "Season" -> {
+                val seasonArray = Constant.animeSeasonList.map { it.name }.toTypedArray()
+                MaterialAlertDialogBuilder(this.requireContext())
+                    .setItems(seasonArray) { _, which ->
+                        viewModel.isSeason = true
+                        if (viewModel.selectedYear == null) {
+                            viewModel.selectedYear = ConvertDate.getCurrentYear(false)
+                        }
+                        viewModel.selectedSeason = Constant.animeSeasonList[which]
                         viewModel.selectType = Constant.SEASON_YEAR
-                    } else {
-                        viewModel.selectType = Constant.NO_SEASON
+                        isLoading = false
+                        viewModel.refresh()
+                        getAnimeList()
                     }
-                    isLoading = false
-                    viewModel.refresh()
-                    getAnimeList()
-                }
-                .show()
-        }
+                    .show()
+            }
 
-        binding.animeListSeason.setOnClickListener {
-            val seasonArray = Constant.animeSeasonList.map { it.name }.toTypedArray()
-            AlertDialog.Builder(this.requireContext())
-                .setItems(seasonArray) { _, which ->
-                    viewModel.isSeason = true
-                    if (viewModel.selectedYear == null) {
-                        viewModel.selectedYear = ConvertDate.getCurrentYear(false)
-                        binding.animeListYear.text = viewModel.selectedYear!!.toString()
-                    }
-                    viewModel.selectedSeason = Constant.animeSeasonList[which]
-                    viewModel.selectType = Constant.SEASON_YEAR
-                    binding.animeListSeason.text = viewModel.selectedSeason?.name
-                    isLoading = false
-                    viewModel.refresh()
-                    getAnimeList()
-                }
-                .show()
-        }
+            "Sort" -> {
+                MaterialAlertDialogBuilder(this.requireContext())
+                    .setItems(Constant.animeSortArray) { _, which ->
+                        viewModel.selectedSort = Constant.animeSortList[which]
+                        isLoading = false
+                        viewModel.refresh()
+                        getAnimeList()
+                    }.show()
+            }
 
-        binding.animeListSort.setOnClickListener {
-            AlertDialog.Builder(this.requireContext())
-                .setItems(Constant.animeSortArray) { _, which ->
-                    viewModel.selectedSort = Constant.animeSortList[which]
-                    binding.animeListSort.text = Constant.animeSortArray[which]
-                    isLoading = false
-                    viewModel.refresh()
-                    getAnimeList()
-                }
-                .show()
-        }
-
-        binding.animeListGenre.setOnClickListener {
-            AlertDialog.Builder(this.requireContext())
-                .setItems(viewModel.genreList.toTypedArray()) { _, which ->
-                    viewModel.selectedSort = MediaSort.POPULARITY_DESC
-                    viewModel.selectGenre = viewModel.genreList[which]
-                    binding.animeListGenre.text = viewModel.genreList[which]
-                    isLoading = false
-                    viewModel.refresh()
-                    getAnimeList()
-                }
-                .show()
+            "Genre" -> {
+                MaterialAlertDialogBuilder(this.requireContext())
+                    .setItems(viewModel.genreList.toTypedArray()) { _, which ->
+                        viewModel.selectedSort = MediaSort.POPULARITY_DESC
+                        viewModel.selectGenre = viewModel.genreList[which]
+                        isLoading = false
+                        viewModel.refresh()
+                        getAnimeList()
+                    }.show()
+            }
         }
     }
 

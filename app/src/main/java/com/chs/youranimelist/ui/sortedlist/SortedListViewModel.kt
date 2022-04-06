@@ -48,6 +48,20 @@ class SortedListViewModel @Inject constructor(
     val genreListResponse: LiveData<NetworkState<GenreQuery.Data>>
         get() = _genreListResponse
 
+    val filterList: MutableList<HashMap<String, String>> by lazy {
+        if (genreList.isEmpty()) {
+            mutableListOf(
+                hashMapOf("Year" to "year"),
+                hashMapOf("Season" to "season"),
+                hashMapOf("Sort" to "sort")
+            )
+        } else {
+            mutableListOf(
+                hashMapOf("Genre" to "sort")
+            )
+        }
+    }
+
     var selectedYear: Int? = null
     var selectedSeason: MediaSeason? = null
     var selectedSort: MediaSort? = null
@@ -67,9 +81,9 @@ class SortedListViewModel @Inject constructor(
         genre: String = ""
     ): List<Pair<String, String>> {
         return if (genre.isNotEmpty()) {
-            listOf(Pair("Genre", ""))
+            mutableListOf(Pair("Genre", ""))
         } else {
-            listOf(
+            mutableListOf(
                 Pair("Year", year),
                 Pair("Season", season),
                 Pair("Sort", sort)
