@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chs.youranimelist.databinding.FragmentSortedBinding
 import com.chs.youranimelist.data.remote.NetworkState
@@ -35,6 +36,7 @@ class SortedFragment : BaseFragment() {
     private val binding get() = _binding!!
     private var isLoading: Boolean = false
     private var animeListAdapter: SortedListAdapter? = null
+    private var filterListAdapter: SortedFilterAdapter? = null
     private val viewModel: SortedListViewModel by viewModels()
     private val args: SortedFragmentArgs by navArgs()
 
@@ -230,7 +232,7 @@ class SortedFragment : BaseFragment() {
                             }
                         }
                     }
-
+                    filterListAdapter?.notifyDataSetChanged()
                     animeListAdapter?.submitList(viewModel.animeResultList.toMutableList())
                     binding.layoutShimmerSorted.root.isVisible = false
                     binding.rvAnimeList.isVisible = true
@@ -295,6 +297,17 @@ class SortedFragment : BaseFragment() {
                     }
                 }
             })
+        }
+
+        binding.rvSortedFilter.apply {
+            filterListAdapter = SortedFilterAdapter(viewModel.filterList) {
+                initFilterClick(it)
+            }
+            this.adapter = filterListAdapter
+            this.layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.HORIZONTAL, false
+            )
         }
     }
 
