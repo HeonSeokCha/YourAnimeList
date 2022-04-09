@@ -188,6 +188,7 @@ class SortedFragment : BaseFragment() {
                 )
             }
         }
+        filterListAdapter?.notifyDataSetChanged()
     }
 
     private fun getAnimeList() {
@@ -300,7 +301,7 @@ class SortedFragment : BaseFragment() {
         }
 
         binding.rvSortedFilter.apply {
-            filterListAdapter = SortedFilterAdapter(viewModel.filterList) {
+            filterListAdapter = SortedFilterAdapter(viewModel.testList) {
                 initFilterClick(it)
             }
             this.adapter = filterListAdapter

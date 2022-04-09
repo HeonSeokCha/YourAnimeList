@@ -48,20 +48,6 @@ class SortedListViewModel @Inject constructor(
     val genreListResponse: LiveData<NetworkState<GenreQuery.Data>>
         get() = _genreListResponse
 
-    val filterList: MutableList<HashMap<String, String>> by lazy {
-        if (genreList.isEmpty()) {
-            mutableListOf(
-                hashMapOf("Year" to "year"),
-                hashMapOf("Season" to "season"),
-                hashMapOf("Sort" to "sort")
-            )
-        } else {
-            mutableListOf(
-                hashMapOf("Genre" to "sort")
-            )
-        }
-    }
-
     var selectedYear: Int? = null
     var selectedSeason: MediaSeason? = null
     var selectedSort: MediaSort? = null
@@ -73,21 +59,18 @@ class SortedListViewModel @Inject constructor(
     var isSeason: Boolean = false
     var animeResultList: ArrayList<AnimeList?> = ArrayList()
     var genreList: ArrayList<String> = ArrayList()
+    var testList: List<String> = listOf()
 
     fun getFilterList(
         year: String = "",
         season: String = "",
         sort: String = "",
         genre: String = ""
-    ): List<Pair<String, String>> {
-        return if (genre.isNotEmpty()) {
-            mutableListOf(Pair("Genre", ""))
+    ) {
+        testList = if (genre.isNotEmpty()) {
+            listOf(genre)
         } else {
-            mutableListOf(
-                Pair("Year", year),
-                Pair("Season", season),
-                Pair("Sort", sort)
-            )
+            listOf(year, season, sort)
         }
     }
 
