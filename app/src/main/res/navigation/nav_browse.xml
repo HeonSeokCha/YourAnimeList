@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/animeDetailFragment"
-        android:name="com.chs.youranimelist.ui.browse.anime.AnimeDetailFragment"
+        android:name="com.chs.youranimelist.presentation.browse.anime.AnimeDetailFragment"
         android:label="AnimeDetailFragment"
         tools:layout="@layout/fragment_anime_detail">
 
@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/characterFragment"
-        android:name="com.chs.youranimelist.ui.browse.character.CharacterFragment"
+        android:name="com.chs.youranimelist.presentation.browse.character.CharacterFragment"
         android:label="CharacterFragment"
         tools:layout="@layout/fragment_character">
 
@@ -62,7 +62,7 @@
 
     <fragment
         android:id="@+id/sortedFragment"
-        android:name="com.chs.youranimelist.ui.sortedlist.SortedFragment"
+        android:name="com.chs.youranimelist.presentation.sortedlist.SortedFragment"
         android:label="SortedFragment"
         tools:layout="@layout/fragment_sorted">
 
@@ -94,7 +94,7 @@
 
     <fragment
         android:id="@+id/studioFragment"
-        android:name="com.chs.youranimelist.ui.browse.studio.StudioFragment"
+        android:name="com.chs.youranimelist.presentation.browse.studio.StudioFragment"
         android:label="studio_fragment"
         tools:layout="@layout/fragment_studio">
 

@@ -1,20 +1,14 @@
 package com.chs.youranimelist.di
 
-import android.app.Application
-import androidx.room.Room
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
 import com.apollographql.apollo3.cache.normalized.normalizedCache
 import com.apollographql.apollo3.network.okHttpClient
 import com.chs.youranimelist.BuildConfig
-import com.chs.youranimelist.data.domain.YourListDatabase
-import com.chs.youranimelist.data.domain.repository.YourAnimeListRepository
-import com.chs.youranimelist.data.domain.repository.YourAnimeListRepositoryImpl
-import com.chs.youranimelist.data.domain.repository.YourCharacterListRepository
-import com.chs.youranimelist.data.domain.repository.YourCharacterListRepositoryImpl
-import com.chs.youranimelist.data.remote.repository.*
-import com.chs.youranimelist.data.remote.services.JikanService
-import com.chs.youranimelist.data.remote.services.KtorJikanService
+import com.chs.youranimelist.data.datasource.JikanService
+import com.chs.youranimelist.data.datasource.KtorJikanService
+import com.chs.youranimelist.data.repository.*
+import com.chs.youranimelist.domain.repository.*
 import com.chs.youranimelist.util.Constant
 import dagger.Module
 import dagger.Provides
@@ -33,28 +27,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-    @Provides
-    @Singleton
-    fun provideYourListDatabases(app: Application): YourListDatabase {
-        return Room.databaseBuilder(
-            app,
-            YourListDatabase::class.java,
-            "yourList_db"
-        ).build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideYourAnimeListRepository(db: YourListDatabase): YourAnimeListRepository {
-        return YourAnimeListRepositoryImpl(db.animeListDao)
-    }
-
-    @Provides
-    @Singleton
-    fun provideYourCharaListRepository(db: YourListDatabase): YourCharacterListRepository {
-        return YourCharacterListRepositoryImpl(db.charaListDao)
-    }
 
     @Provides
     @Singleton

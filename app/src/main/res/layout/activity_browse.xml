@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context=".ui.browse.BrowseActivity">
+    tools:context=".presentation.browse.BrowseActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_container"

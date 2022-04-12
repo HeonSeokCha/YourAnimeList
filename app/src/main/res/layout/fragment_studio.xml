@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".ui.browse.character.CharacterFragment">
+        tools:context=".presentation.browse.character.CharacterFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/studio_AppbarLayout"

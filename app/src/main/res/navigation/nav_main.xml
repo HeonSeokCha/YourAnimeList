@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.chs.youranimelist.ui.home.HomeFragment"
+        android:name="com.chs.youranimelist.presentation.home.HomeFragment"
         android:label="Your AnimeList"
         tools:layout="@layout/fragment_home">
 
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/sortedFragment"
-        android:name="com.chs.youranimelist.ui.sortedlist.SortedFragment"
+        android:name="com.chs.youranimelist.presentation.sortedlist.SortedFragment"
         android:label="Your AnimeList"
         tools:layout="@layout/fragment_sorted">
         <argument
@@ -53,12 +53,12 @@
     </fragment>
     <fragment
         android:id="@+id/animeListFragment"
-        android:name="com.chs.youranimelist.ui.animelist.AnimeListFragment"
+        android:name="com.chs.youranimelist.presentation.animelist.AnimeListFragment"
         android:label="Your AnimeList"
         tools:layout="@layout/fragment_anime_list"/>
     <fragment
         android:id="@+id/characterListFragment"
-        android:name="com.chs.youranimelist.ui.characterlist.CharacterListFragment"
+        android:name="com.chs.youranimelist.presentation.characterlist.CharacterListFragment"
         android:label="Your AnimeList"
         tools:layout="@layout/fragment_character_list"/>
 </navigation>

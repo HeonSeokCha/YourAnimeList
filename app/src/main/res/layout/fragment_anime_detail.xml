@@ -15,7 +15,7 @@
         android:id="@+id/anime_detail_coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.browse.anime.AnimeDetailFragment">
+        tools:context=".presentation.browse.anime.AnimeDetailFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/anime_detail_AppBarLayout"
