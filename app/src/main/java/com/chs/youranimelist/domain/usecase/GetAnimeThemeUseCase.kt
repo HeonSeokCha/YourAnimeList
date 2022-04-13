@@ -3,7 +3,7 @@ package com.chs.youranimelist.domain.usecase
 import com.chs.youranimelist.data.NetworkState
 import com.chs.youranimelist.data.model.AnimeDetails
 import com.chs.youranimelist.domain.repository.AnimeRepository
-import io.ktor.client.features.*
+import io.ktor.client.plugins.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

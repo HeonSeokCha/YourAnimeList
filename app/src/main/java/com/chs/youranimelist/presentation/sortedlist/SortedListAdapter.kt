@@ -54,12 +54,10 @@ class SortedListAdapter(
 
     class LoadingViewHolder(binding: ItemLoadingBinding) : RecyclerView.ViewHolder(binding.root)
 
-    var holderSize: Int = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_ITEM) {
             val view =
                 ItemAnimeChildBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            Log.e("viewHolder", "onCreateViewHolder ${holderSize++}")
             SortedListViewHolder(view)
         } else {
             val view =
@@ -72,23 +70,6 @@ class SortedListAdapter(
         if (holder is SortedListViewHolder) {
             holder.bind(getItem(position))
         }
-    }
-
-
-    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        super.onViewRecycled(holder)
-        if (holder is SortedListViewHolder) {
-            holder.binding.imgAnimeList.dispose()
-        }
-        Log.e("onViewRecycled", "${holder.layoutPosition}")
-    }
-
-    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
-        super.onViewDetachedFromWindow(holder)
-        if (holder is SortedListViewHolder) {
-            holder.binding.imgAnimeList.dispose()
-        }
-        Log.e("onViewDetachedFromWindow", "${holder.layoutPosition}")
     }
 
 

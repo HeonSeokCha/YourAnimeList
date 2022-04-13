@@ -2,6 +2,7 @@ package com.chs.youranimelist.presentation.browse.anime.overview
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -151,6 +152,7 @@ class AnimeOverviewFragment : Fragment() {
                     }
                     is NetworkState.Error -> {
                         viewModel.animeDetails = null
+                        Log.e("ERROR", it.message.toString())
                     }
                 }
                 initAnimeTheme()
