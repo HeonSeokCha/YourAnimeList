@@ -51,7 +51,6 @@ object AppModule {
     fun providesApollo(okHttpClient: OkHttpClient): ApolloClient {
         return ApolloClient.Builder()
             .serverUrl(Constant.ANILIST_API_URL)
-            .okHttpClient(okHttpClient)
             .normalizedCache(
                 MemoryCacheFactory(
                     maxSizeBytes = 10 * 1024 * 1024
@@ -69,10 +68,7 @@ object AppModule {
                     level = LogLevel.ALL
                 }
                 install(ContentNegotiation) {
-                    json(Json {
-                        ignoreUnknownKeys = true
-                    }
-                    )
+                    json(Json { ignoreUnknownKeys = true })
                 }
             }
         )

@@ -232,19 +232,19 @@ class AnimeOverviewFragment : Fragment() {
     }
 
     private fun initAnimeTheme() {
-        if (viewModel.animeDetails?.openingThemes != null) {
+        if (!viewModel.animeDetails?.openingThemes.isNullOrEmpty()) {
             binding.inOverviewLayoutThemeOp.isVisible = true
             binding.rvAnimeThemeOp.apply {
                 adapter =
-                    AnimeOverviewThemeAdapter(viewModel.animeDetails?.openingThemes ?: listOf())
+                    AnimeOverviewThemeAdapter(viewModel.animeDetails?.openingThemes!!)
             }
         }
 
-        if (viewModel.animeDetails?.endingThemes != null) {
+        if (!viewModel.animeDetails?.endingThemes.isNullOrEmpty()) {
             binding.inOverviewLayoutThemeEd.isVisible = true
             binding.rvAnimeThemeEd.apply {
                 adapter =
-                    AnimeOverviewThemeAdapter(viewModel.animeDetails?.endingThemes ?: listOf())
+                    AnimeOverviewThemeAdapter(viewModel.animeDetails?.endingThemes!!)
             }
         }
     }
