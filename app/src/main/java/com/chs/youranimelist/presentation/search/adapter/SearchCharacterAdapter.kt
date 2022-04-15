@@ -74,9 +74,5 @@ class SearchCharacterAdapter(
         return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
     }
 
-    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        super.onViewRecycled(holder)
-        Log.e("onViewDetachedFromWindow", holder.layoutPosition.toString())
-    }
 
 }

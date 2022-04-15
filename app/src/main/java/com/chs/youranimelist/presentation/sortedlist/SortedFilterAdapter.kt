@@ -22,7 +22,7 @@ class SortedFilterAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.txtSortedFilterValue.setOnClickListener {
-                clickListener.invoke(filterList[layoutPosition])
+                clickListener.invoke(itemTitleList[layoutPosition])
             }
         }
 

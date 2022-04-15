@@ -68,9 +68,10 @@ class SortedFragment : BaseFragment() {
             "Year" -> {
                 val yearList =
                     ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
-                MaterialAlertDialogBuilder(this.requireContext())
+                MaterialAlertDialogBuilder(requireContext())
                     .setItems(yearList.toTypedArray()) { _, which ->
                         viewModel.selectedYear = yearList[which].toInt()
+                        viewModel.testList[0] = yearList[which].toString()
                         if (viewModel.selectedSeason != null) {
                             viewModel.selectType = Constant.SEASON_YEAR
                         } else {
@@ -78,14 +79,16 @@ class SortedFragment : BaseFragment() {
                         }
                         isLoading = false
                         viewModel.refresh()
+                        filterListAdapter?.notifyDataSetChanged()
+                        animeListAdapter?.submitList(mutableListOf())
+
                         getAnimeList()
-                    }
-                    .show()
+                    }.show()
             }
 
             "Season" -> {
                 val seasonArray = Constant.animeSeasonList.map { it.name }.toTypedArray()
-                MaterialAlertDialogBuilder(this.requireContext())
+                MaterialAlertDialogBuilder(requireContext())
                     .setItems(seasonArray) { _, which ->
                         viewModel.isSeason = true
                         if (viewModel.selectedYear == null) {
@@ -95,28 +98,37 @@ class SortedFragment : BaseFragment() {
                         viewModel.selectType = Constant.SEASON_YEAR
                         isLoading = false
                         viewModel.refresh()
+                        viewModel.testList[1] = Constant.animeSeasonList[which].toString()
+                        filterListAdapter?.notifyDataSetChanged()
+                        animeListAdapter?.submitList(mutableListOf())
                         getAnimeList()
                     }
                     .show()
             }
 
             "Sort" -> {
-                MaterialAlertDialogBuilder(this.requireContext())
+                MaterialAlertDialogBuilder(requireContext())
                     .setItems(Constant.animeSortArray) { _, which ->
                         viewModel.selectedSort = Constant.animeSortList[which]
                         isLoading = false
                         viewModel.refresh()
+                        viewModel.testList[2] = Constant.animeSortList[which].toString()
+                        filterListAdapter?.notifyDataSetChanged()
+                        animeListAdapter?.submitList(mutableListOf())
                         getAnimeList()
                     }.show()
             }
 
             "Genre" -> {
-                MaterialAlertDialogBuilder(this.requireContext())
+                MaterialAlertDialogBuilder(requireContext())
                     .setItems(viewModel.genreList.toTypedArray()) { _, which ->
                         viewModel.selectedSort = MediaSort.POPULARITY_DESC
                         viewModel.selectGenre = viewModel.genreList[which]
                         isLoading = false
                         viewModel.refresh()
+                        viewModel.testList[0] = viewModel.genreList[which]
+                        filterListAdapter?.notifyDataSetChanged()
+                        animeListAdapter?.submitList(mutableListOf())
                         getAnimeList()
                     }.show()
             }

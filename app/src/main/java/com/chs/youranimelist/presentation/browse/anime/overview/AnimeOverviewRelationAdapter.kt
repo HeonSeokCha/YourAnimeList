@@ -39,9 +39,5 @@ class AnimeOverviewRelationAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    override fun onViewRecycled(holder: ViewHolder) {
-        super.onViewRecycled(holder)
-        Log.e("onViewDetachedFromWindow", holder.layoutPosition.toString())
-    }
 
 }
