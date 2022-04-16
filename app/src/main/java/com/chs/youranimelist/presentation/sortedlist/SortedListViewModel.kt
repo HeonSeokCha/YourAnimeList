@@ -28,18 +28,12 @@ class SortedListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _animeListResponse = SingleLiveEvent<NetworkState<AnimeListQuery.Page>>()
-    val animeListResponse: LiveData<NetworkState<AnimeListQuery.Page>>
-        get() = _animeListResponse
 
     private val _noSeasonNoYearListResponse =
         SingleLiveEvent<NetworkState<NoSeasonNoYearQuery.Page>>()
-    val noSeasonNoYearListResponse: LiveData<NetworkState<NoSeasonNoYearQuery.Page>>
-        get() = _noSeasonNoYearListResponse
 
     private val _noSeasonListResponse =
         SingleLiveEvent<NetworkState<NoSeasonQuery.Page>>()
-    val noSeasonListResponse: LiveData<NetworkState<NoSeasonQuery.Page>>
-        get() = _noSeasonListResponse
 
     private val _genreListResponse = SingleLiveEvent<NetworkState<GenreQuery.Data>>()
     val genreListResponse: LiveData<NetworkState<GenreQuery.Data>>
@@ -58,7 +52,7 @@ class SortedListViewModel @Inject constructor(
     var genreList: ArrayList<String> = ArrayList()
     var testList: MutableList<String> = mutableListOf()
 
-    fun getFilterList(
+    fun initFilterList(
         year: String = "",
         season: String = "",
         sort: String = "",
@@ -120,9 +114,9 @@ class SortedListViewModel @Inject constructor(
 
     fun getObserver(): LiveData<*>? {
         return when (selectType) {
-            Constant.SEASON_YEAR -> animeListResponse
-            Constant.NO_SEASON_NO_YEAR -> noSeasonNoYearListResponse
-            Constant.NO_SEASON -> noSeasonListResponse
+            Constant.SEASON_YEAR -> _animeListResponse
+            Constant.NO_SEASON_NO_YEAR -> _noSeasonNoYearListResponse
+            Constant.NO_SEASON -> _noSeasonListResponse
             else -> null
         }
     }

@@ -50,17 +50,12 @@ class SortedFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSortType(args.sortType)
-        initClick()
         initRecyclerView()
         getAnimeList()
         getGenre()
         viewModel.getAnimeList()
         viewModel.getGenreList()
         setHasOptionsMenu(true)
-    }
-
-    private fun initClick() {
-
     }
 
     private fun initFilterClick(filterName: String) {
@@ -141,7 +136,7 @@ class SortedFragment : BaseFragment() {
             Constant.TRENDING_NOW -> {
                 viewModel.selectedSort = MediaSort.TRENDING_DESC
                 viewModel.selectType = Constant.NO_SEASON_NO_YEAR
-                viewModel.getFilterList(
+                viewModel.initFilterList(
                     "Any",
                     "Any",
                     "Trending"
@@ -152,7 +147,7 @@ class SortedFragment : BaseFragment() {
                 viewModel.selectedSeason = ConvertDate.getCurrentSeason()
                 viewModel.selectedYear = ConvertDate.getCurrentYear(false)
                 viewModel.selectType = Constant.SEASON_YEAR
-                viewModel.getFilterList(
+                viewModel.initFilterList(
                     ConvertDate.getCurrentYear(false).toString(),
                     ConvertDate.getCurrentSeason().toString(),
                     "Popularity"
@@ -163,7 +158,7 @@ class SortedFragment : BaseFragment() {
                 viewModel.selectedSeason = ConvertDate.getNextSeason()
                 viewModel.selectedYear = ConvertDate.getCurrentYear(true)
                 viewModel.selectType = Constant.SEASON_YEAR
-                viewModel.getFilterList(
+                viewModel.initFilterList(
                     ConvertDate.getCurrentYear(true).toString(),
                     ConvertDate.getCurrentSeason().toString(),
                     "Popularity"
@@ -172,7 +167,7 @@ class SortedFragment : BaseFragment() {
             Constant.ALL_TIME_POPULAR -> {
                 viewModel.selectedSort = MediaSort.POPULARITY_DESC
                 viewModel.selectType = Constant.NO_SEASON_NO_YEAR
-                viewModel.getFilterList(
+                viewModel.initFilterList(
                     "Any",
                     "Any",
                     "Popularity"
@@ -182,7 +177,7 @@ class SortedFragment : BaseFragment() {
                 viewModel.selectType = Constant.NO_SEASON_NO_YEAR
                 viewModel.selectedSort = MediaSort.SCORE_DESC
                 viewModel.selectGenre = args.genre
-                viewModel.getFilterList(
+                viewModel.initFilterList(
                     genre = args.genre
                 )
             }
@@ -191,7 +186,7 @@ class SortedFragment : BaseFragment() {
                 viewModel.selectedSeason = args.season
                 viewModel.selectedYear = args.year
                 viewModel.selectType = Constant.SEASON_YEAR
-                viewModel.getFilterList(
+                viewModel.initFilterList(
                     args.year.toString(),
                     args.season.toString(),
                     "Popularity"
