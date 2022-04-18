@@ -50,7 +50,7 @@ class SortedListViewModel @Inject constructor(
     var isSeason: Boolean = false
     var animeResultList: ArrayList<AnimeList?> = ArrayList()
     var genreList: ArrayList<String> = ArrayList()
-    var testList: MutableList<String> = mutableListOf()
+    var filterList: MutableList<String> = mutableListOf()
 
     fun initFilterList(
         year: String = "",
@@ -58,7 +58,7 @@ class SortedListViewModel @Inject constructor(
         sort: String = "",
         genre: String = ""
     ) {
-        testList = if (genre.isNotEmpty()) {
+        filterList = if (genre.isNotEmpty()) {
             mutableListOf(genre)
         } else {
             mutableListOf(year, season, sort)

@@ -29,8 +29,6 @@ object Constant {
     const val SEASON_YEAR: String = "seasonYear"
 
 
-    val DEFAULT_GENRE_COLOR = "#727272"
-
     val GENRE_COLOR = hashMapOf(
         Pair("Action", "#24687B"),
         Pair("Adventure", "#014037"),

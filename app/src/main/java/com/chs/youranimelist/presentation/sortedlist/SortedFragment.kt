@@ -66,7 +66,7 @@ class SortedFragment : BaseFragment() {
                 MaterialAlertDialogBuilder(requireContext())
                     .setItems(yearList.toTypedArray()) { _, which ->
                         viewModel.selectedYear = yearList[which].toInt()
-                        viewModel.testList[0] = yearList[which].toString()
+                        viewModel.filterList[0] = yearList[which].toString()
                         if (viewModel.selectedSeason != null) {
                             viewModel.selectType = Constant.SEASON_YEAR
                         } else {
@@ -74,9 +74,8 @@ class SortedFragment : BaseFragment() {
                         }
                         isLoading = false
                         viewModel.refresh()
-                        filterListAdapter?.notifyDataSetChanged()
+                        filterListAdapter?.notifyItemChanged(0)
                         animeListAdapter?.submitList(mutableListOf())
-
                         getAnimeList()
                     }.show()
             }
@@ -93,8 +92,8 @@ class SortedFragment : BaseFragment() {
                         viewModel.selectType = Constant.SEASON_YEAR
                         isLoading = false
                         viewModel.refresh()
-                        viewModel.testList[1] = Constant.animeSeasonList[which].toString()
-                        filterListAdapter?.notifyDataSetChanged()
+                        viewModel.filterList[1] = Constant.animeSeasonList[which].toString()
+                        filterListAdapter?.notifyItemChanged(1)
                         animeListAdapter?.submitList(mutableListOf())
                         getAnimeList()
                     }
@@ -107,8 +106,8 @@ class SortedFragment : BaseFragment() {
                         viewModel.selectedSort = Constant.animeSortList[which]
                         isLoading = false
                         viewModel.refresh()
-                        viewModel.testList[2] = Constant.animeSortList[which].toString()
-                        filterListAdapter?.notifyDataSetChanged()
+                        viewModel.filterList[2] = Constant.animeSortList[which].toString()
+                        filterListAdapter?.notifyItemChanged(2)
                         animeListAdapter?.submitList(mutableListOf())
                         getAnimeList()
                     }.show()
@@ -121,8 +120,8 @@ class SortedFragment : BaseFragment() {
                         viewModel.selectGenre = viewModel.genreList[which]
                         isLoading = false
                         viewModel.refresh()
-                        viewModel.testList[0] = viewModel.genreList[which]
-                        filterListAdapter?.notifyDataSetChanged()
+                        viewModel.filterList[0] = viewModel.genreList[which]
+                        filterListAdapter?.notifyItemChanged(0)
                         animeListAdapter?.submitList(mutableListOf())
                         getAnimeList()
                     }.show()
@@ -238,10 +237,10 @@ class SortedFragment : BaseFragment() {
                             }
                         }
                     }
-                    filterListAdapter?.notifyDataSetChanged()
-                    animeListAdapter?.submitList(viewModel.animeResultList.toMutableList())
                     binding.layoutShimmerSorted.root.isVisible = false
                     binding.rvAnimeList.isVisible = true
+                    filterListAdapter?.notifyDataSetChanged()
+                    animeListAdapter?.submitList(viewModel.animeResultList.toMutableList())
                 }
                 is NetworkState.Error -> {
                     Toast.makeText(
@@ -306,7 +305,7 @@ class SortedFragment : BaseFragment() {
         }
 
         binding.rvSortedFilter.apply {
-            filterListAdapter = SortedFilterAdapter(viewModel.testList) {
+            filterListAdapter = SortedFilterAdapter(viewModel.filterList) {
                 initFilterClick(it)
             }
             this.adapter = filterListAdapter
