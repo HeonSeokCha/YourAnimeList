@@ -113,7 +113,7 @@ object Constant {
         MediaSeason.FALL
     )
 
-    var animeSortList = arrayListOf(
+    val animeSortList = arrayListOf(
         MediaSort.POPULARITY_DESC,
         MediaSort.SCORE_DESC,
         MediaSort.FAVOURITES_DESC,

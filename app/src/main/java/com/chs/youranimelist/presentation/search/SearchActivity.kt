@@ -27,11 +27,12 @@ class SearchActivity : AppCompatActivity() {
 
     private fun initClick() {
         binding.searchBackButton.setOnClickListener {
-            onBackPressed()
+            this.finish()
         }
 
         binding.searchClear.setOnClickListener {
             binding.searchBarEditText.text.clear()
+            binding.searchBarEditText
         }
     }
 

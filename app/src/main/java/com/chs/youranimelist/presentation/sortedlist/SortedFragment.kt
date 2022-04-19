@@ -106,7 +106,7 @@ class SortedFragment : BaseFragment() {
                         viewModel.selectedSort = Constant.animeSortList[which]
                         isLoading = false
                         viewModel.refresh()
-                        viewModel.filterList[2] = Constant.animeSortList[which].toString()
+                        viewModel.filterList[2] = Constant.animeSortArray[which]
                         filterListAdapter?.notifyItemChanged(2)
                         animeListAdapter?.submitList(mutableListOf())
                         getAnimeList()
