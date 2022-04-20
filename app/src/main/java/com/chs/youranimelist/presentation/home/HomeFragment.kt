@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.chs.youranimelist.R
@@ -15,7 +16,6 @@ import com.chs.youranimelist.databinding.FragmentHomeBinding
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.data.NetworkState
 import com.chs.youranimelist.presentation.browse.BrowseActivity
-import com.chs.youranimelist.presentation.search.SearchActivity
 import com.chs.youranimelist.util.Constant
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -152,7 +152,9 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_home_search -> {
-                startActivity(Intent(requireContext(), SearchActivity::class.java))
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToSearchFragment()
+                )
                 true
             }
             else -> {
