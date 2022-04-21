@@ -54,8 +54,10 @@ class SearchFragment : Fragment() {
             this.onQueryTextChanged {
 
             }
+            this.setOnSearchClickListener {
+                closeKeyboard()
+            }
         }
-
     }
 
 

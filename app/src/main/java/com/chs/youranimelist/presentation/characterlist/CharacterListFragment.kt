@@ -1,8 +1,10 @@
 package com.chs.youranimelist.presentation.characterlist
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -72,10 +74,28 @@ class CharacterListFragment : Fragment() {
         inflater.inflate(R.menu.menu_lists, menu)
 
         val searchItem = menu.findItem(R.id.menu_list_search)
-        val searchView = searchItem.actionView as SearchView
+        (searchItem.actionView as SearchView).setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                closeKeyboard()
+                return false
+            }
 
-        searchView.onQueryTextChanged {
-            viewModel.searchCharaList(it)
+            override fun onQueryTextChange(query: String): Boolean {
+                viewModel.searchCharaList(query)
+                return false
+            }
+        })
+    }
+
+    private fun closeKeyboard() {
+        if (requireActivity().currentFocus != null) {
+            val inputMethodManager = requireActivity().getSystemService(
+                Context.INPUT_METHOD_SERVICE
+            ) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(
+                requireActivity().currentFocus!!.windowToken, 0
+            )
         }
     }
 
