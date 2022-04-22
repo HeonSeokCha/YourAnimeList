@@ -22,9 +22,8 @@ import com.chs.youranimelist.search.SearchMangaQuery
 import com.chs.youranimelist.util.Constant
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class SearchMediaFragment : BaseFragment() {
-    private val viewModel: SearchViewModel by viewModels()
+    private val viewModel: SearchViewModel by viewModels(ownerProducer = { requireParentFragment() })
     private var _binding: FragmentSearchMediaBinding? = null
     private val binding get() = _binding!!
     private var isLoading: Boolean = false
@@ -63,7 +62,6 @@ class SearchMediaFragment : BaseFragment() {
         binding.rvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-
                 if (newState == RecyclerView.SCROLL_STATE_IDLE &&
                     !recyclerView.canScrollVertically(1) && !isLoading
                 ) {

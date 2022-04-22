@@ -7,9 +7,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.chs.youranimelist.util.Constant
 
 class SearchViewPagerAdapter(
-    fa: FragmentActivity,
+    parentFragment: Fragment,
     private val list: List<String>
-) : FragmentStateAdapter(fa) {
+) : FragmentStateAdapter(parentFragment) {
     override fun createFragment(position: Int): Fragment {
         val fragment: Fragment = SearchMediaFragment()
         val bundle: Bundle = Bundle().apply {

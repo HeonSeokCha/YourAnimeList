@@ -10,10 +10,10 @@ import com.chs.youranimelist.presentation.browse.anime.recommend.AnimeRecommendF
 import com.chs.youranimelist.util.Constant
 
 class AnimeDetailViewPagerAdapter(
-    fa: FragmentActivity,
+    parentFragment: Fragment,
     private val animeId: Int,
     private val idMal: Int
-) : FragmentStateAdapter(fa) {
+) : FragmentStateAdapter(parentFragment) {
     override fun createFragment(position: Int): Fragment {
         val bundle = Bundle().apply {
             this.putInt(Constant.TARGET_ID, animeId)

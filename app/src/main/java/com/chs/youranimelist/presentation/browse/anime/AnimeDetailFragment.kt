@@ -103,7 +103,7 @@ class AnimeDetailFragment : BaseFragment() {
 
     private fun initTabView(animeId: Int, idMal: Int) {
         binding.viewPagerAnimeDetail.adapter =
-            AnimeDetailViewPagerAdapter(requireActivity(), animeId, idMal)
+            AnimeDetailViewPagerAdapter(this, animeId, idMal)
         binding.viewPagerAnimeDetail.isUserInputEnabled = false
         TabLayoutMediator(binding.tabAnimeDetail, binding.viewPagerAnimeDetail) { tab, position ->
             var tabArr: List<String> = listOf("Overview", "Characters", "Recommend")
