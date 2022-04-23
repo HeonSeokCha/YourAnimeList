@@ -22,8 +22,10 @@ import com.chs.youranimelist.search.SearchMangaQuery
 import com.chs.youranimelist.util.Constant
 import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchMediaFragment : BaseFragment() {
-    private val viewModel: SearchViewModel by viewModels(ownerProducer = { requireParentFragment() })
+    private val viewModel: SearchViewModel by viewModels()
+    private val parentViewModel: SearchKeywordViewModel by viewModels(ownerProducer = { requireParentFragment() })
     private var _binding: FragmentSearchMediaBinding? = null
     private val binding get() = _binding!!
     private var isLoading: Boolean = false
@@ -33,7 +35,7 @@ class SearchMediaFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.searchPage = requireArguments().getString(Constant.TARGET_SEARCH)!!
+
     }
 
     override fun onCreateView(
@@ -47,15 +49,11 @@ class SearchMediaFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.searchPage = requireArguments().getString(Constant.TARGET_SEARCH)!!
         setHasOptionsMenu(false)
         initRecyclerView()
         initView()
         initObserver()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.root.requestLayout()
     }
 
     private fun initView() {
@@ -70,15 +68,6 @@ class SearchMediaFragment : BaseFragment() {
                 }
             }
         })
-
-
-        if (viewModel.searchKeyword.isNotBlank()) {
-            viewModel.clear()
-            isLoading = false
-            viewModel.page = 1
-            viewModel.hasNextPage = true
-            viewModel.search(viewModel.searchKeyword)
-        }
     }
 
     private fun loadMore() {
@@ -89,6 +78,17 @@ class SearchMediaFragment : BaseFragment() {
     }
 
     private fun initObserver() {
+        parentViewModel.searchKeyword.observe(viewLifecycleOwner) {
+            if (!it.isNullOrBlank()) {
+                viewModel.searchKeyword = it
+                viewModel.clear()
+                isLoading = false
+                viewModel.page = 1
+                viewModel.hasNextPage = true
+                viewModel.search(viewModel.searchKeyword)
+            }
+        }
+
         viewModel.getObserver()?.observe(viewLifecycleOwner) {
             when (it as NetworkState<*>?) {
 
@@ -115,7 +115,6 @@ class SearchMediaFragment : BaseFragment() {
                     viewModel.page += 1
 
                     when (viewModel.searchPage) {
-
                         Constant.TARGET_ANIME -> {
                             val searchAnime = it as NetworkState<SearchAnimeQuery.Page>
                             viewModel.hasNextPage = searchAnime.data?.pageInfo?.hasNextPage ?: false

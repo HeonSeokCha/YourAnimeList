@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: SearchViewModel by viewModels()
+    private val viewModel: SearchKeywordViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,13 +53,12 @@ class SearchFragment : Fragment() {
         inflater.inflate(R.menu.menu_lists, menu)
         val searchItem = menu.findItem(R.id.menu_list_search)
         (searchItem.actionView as SearchView).apply {
-            this.isFocusable = false
-            this.isIconified = false
-            this.clearFocus()
             this.setOnQueryTextListener(object :
                 SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    viewModel.search(query!!)
+                    if (!query.isNullOrBlank()) {
+                        viewModel.onKeyWordChanged(query)
+                    }
                     closeKeyboard()
                     return false
                 }
