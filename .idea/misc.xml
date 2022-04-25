@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.3964102564102564" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/fragment_anime_detail.xml" value="0.17980072463768115" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_anime_child.xml" value="0.8" />
         <entry key="..\:/Users/HyeonSeokCha/Work_Repository/Android/YourAnimeList/app/src/main/res/layout/item_anime_list.xml" value="0.17980072463768115" />
@@ -43,10 +44,13 @@
         <entry key="app/src/main/res/layout/fragment_studio.xml" value="0.3323076923076923" />
         <entry key="app/src/main/res/layout/item_anime_child.xml" value="0.2" />
         <entry key="app/src/main/res/layout/item_anime_list.xml" value="0.16111111111111112" />
+        <entry key="app/src/main/res/layout/item_anime_parent.xml" value="0.17395833333333333" />
+        <entry key="app/src/main/res/layout/item_anime_recommend.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/layout/item_anime_theme.xml" value="0.11666666666666667" />
         <entry key="app/src/main/res/layout/item_search_character.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/item_search_media.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/item_studio.xml" value="0.29292929292929293" />
+        <entry key="app/src/main/res/layout/shimmer_itme_anime_parent.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/menu/menu_home.xml" value="0.275" />
         <entry key="app/src/main/res/menu/menu_lists.xml" value="0.275" />
         <entry key="app/src/main/res/menu/menu_main_bottom_nav.xml" value="0.275" />

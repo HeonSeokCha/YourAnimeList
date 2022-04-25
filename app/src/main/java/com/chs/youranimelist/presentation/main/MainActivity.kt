@@ -37,7 +37,8 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.bottomNavigationView.isVisible =
-                destination.id != R.id.sortedFragment
+                destination.id != R.id.sortedFragment &&
+                        destination.id != R.id.searchFragment
         }
     }
 

@@ -52,6 +52,7 @@ class SearchFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_lists, menu)
         val searchItem = menu.findItem(R.id.menu_list_search)
+        searchItem.expandActionView()
         (searchItem.actionView as SearchView).apply {
             this.setOnQueryTextListener(object :
                 SearchView.OnQueryTextListener {
