@@ -51,6 +51,7 @@ object AppModule {
     fun providesApollo(okHttpClient: OkHttpClient): ApolloClient {
         return ApolloClient.Builder()
             .serverUrl(Constant.ANILIST_API_URL)
+            .okHttpClient(okHttpClient)
             .normalizedCache(
                 MemoryCacheFactory(
                     maxSizeBytes = 10 * 1024 * 1024

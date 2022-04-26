@@ -32,9 +32,4 @@ class CharacterListAdapter(
         holder.bind()
     }
 
-    override fun onViewRecycled(holder: CharacterListViewHolder) {
-        super.onViewRecycled(holder)
-        Log.e("onViewRecycled", holder.layoutPosition.toString())
-    }
-
 }

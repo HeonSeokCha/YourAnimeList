@@ -74,9 +74,4 @@ class SearchMangaAdapter(
     override fun getItemViewType(position: Int): Int {
         return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
     }
-
-    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        super.onViewRecycled(holder)
-        Log.e("onViewRecycled", holder.layoutPosition.toString())
-    }
 }

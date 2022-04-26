@@ -39,9 +39,4 @@ class CharacterAnimeAdapter(
     }
 
     override fun getItemCount(): Int = items.size
-
-    override fun onViewRecycled(holder: ViewHolder) {
-        super.onViewRecycled(holder)
-        Log.e("onViewRecycled_CHARA", holder.layoutPosition.toString())
-    }
 }

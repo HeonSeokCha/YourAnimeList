@@ -80,6 +80,11 @@ class SearchMediaFragment : BaseFragment() {
     private fun initObserver() {
         parentViewModel.searchKeyword.observe(viewLifecycleOwner) {
             if (!it.isNullOrBlank()) {
+                when (viewModel.searchPage) {
+                    Constant.TARGET_ANIME -> searchAnimeAdapter.submitList(emptyList())
+                    Constant.TARGET_MANGA -> searchMangaAdapter.submitList(emptyList())
+                    Constant.TARGET_CHARA -> searchCharaAdapter.submitList(emptyList())
+                }
                 viewModel.searchKeyword = it
                 viewModel.clear()
                 isLoading = false
