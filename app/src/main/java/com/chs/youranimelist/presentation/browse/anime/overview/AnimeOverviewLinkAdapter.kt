@@ -27,7 +27,7 @@ class AnimeOverviewLinkAdapter(
             if (Constant.EXTERNAL_LINK.containsKey(link!!.site.lowercase(Locale.getDefault()))) {
                 binding.linkCard.setCardBackgroundColor(
                     Color.parseColor(
-                        Constant.EXTERNAL_LINK[link!!.site.lowercase(Locale.getDefault())]
+                        Constant.EXTERNAL_LINK[link.site.lowercase(Locale.getDefault())]
                     )
                 )
             }

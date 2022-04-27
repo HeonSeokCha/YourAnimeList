@@ -113,22 +113,21 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun checkCharaList() {
-        viewModel.checkCharaList(args.id)
-            .observe(viewLifecycleOwner) { charaInfo ->
-                if (charaInfo != null && charaInfo.charaId == arguments?.getInt(Constant.TARGET_ID)!!) {
-                    viewModel.initCharaList = charaInfo!!
-                    binding.mediaSaveList.apply {
-                        this.icon =
-                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
-                        this.text = "SAVED"
-                    }
-                } else {
-                    binding.mediaSaveList.apply {
-                        this.icon = null
-                        this.text = "ADD MY LIST"
-                    }
+        viewModel.checkCharaList(args.id).observe(viewLifecycleOwner) { charaInfo ->
+            if (charaInfo != null && charaInfo.charaId == arguments?.getInt(Constant.TARGET_ID)!!) {
+                viewModel.initCharaList = charaInfo
+                binding.mediaSaveList.apply {
+                    this.icon =
+                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
+                    this.text = "SAVED"
+                }
+            } else {
+                binding.mediaSaveList.apply {
+                    this.icon = null
+                    this.text = "ADD MY LIST"
                 }
             }
+        }
     }
 
     override fun onDestroyView() {

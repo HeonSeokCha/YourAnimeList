@@ -15,5 +15,5 @@ data class Character(
     val nativeName: String? = null,
     val image: String? = null,
     val favourites: Int? = null,
-    val created: String = ""
+    val created: Long = System.currentTimeMillis(),
 ) : Parcelable

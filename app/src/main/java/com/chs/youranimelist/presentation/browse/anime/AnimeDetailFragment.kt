@@ -48,7 +48,7 @@ class AnimeDetailFragment : BaseFragment() {
         viewModel.checkAnimeList(args.id)
             .observe(viewLifecycleOwner) { animeInfo ->
                 if (animeInfo != null && animeInfo.animeId == args.id) {
-                    viewModel.initAnimeList = animeInfo!!
+                    viewModel.initAnimeList = animeInfo
                     binding.mediaSaveList.apply {
                         this.icon =
                             ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)

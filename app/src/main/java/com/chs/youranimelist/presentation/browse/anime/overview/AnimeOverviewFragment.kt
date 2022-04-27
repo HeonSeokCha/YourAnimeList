@@ -93,8 +93,8 @@ class AnimeOverviewFragment : Fragment() {
             when (it) {
                 is NetworkState.Success -> {
                     binding.model = it.data?.media!!
-                    season = it.data?.media!!.season ?: ConvertDate.getCurrentSeason()
-                    seasonYear = it.data?.media!!.seasonYear ?: ConvertDate.getCurrentYear()
+                    season = it.data.media.season ?: ConvertDate.getCurrentSeason()
+                    seasonYear = it.data.media.seasonYear ?: ConvertDate.getCurrentYear()
 
                     it.data.media.relations?.relationsEdges?.forEach { relation ->
                         viewModel.animeOverviewRelationList.add(relation)
@@ -134,11 +134,11 @@ class AnimeOverviewFragment : Fragment() {
                         }
                     }
 
-                    relationAdapter?.notifyDataSetChanged()
-                    genreAdapter?.notifyDataSetChanged()
-                    linkAdapter?.notifyDataSetChanged()
-                    studioAdapter?.notifyDataSetChanged()
-                    producerAdapter?.notifyDataSetChanged()
+                    relationAdapter.notifyDataSetChanged()
+                    genreAdapter.notifyDataSetChanged()
+                    linkAdapter.notifyDataSetChanged()
+                    studioAdapter.notifyDataSetChanged()
+                    producerAdapter.notifyDataSetChanged()
                 }
                 is NetworkState.Error -> {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
