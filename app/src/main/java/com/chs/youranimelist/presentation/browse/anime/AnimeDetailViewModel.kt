@@ -57,7 +57,7 @@ class AnimeDetailViewModel @Inject constructor(
                     coverImage = anime.coverImage?.extraLarge,
                     averageScore = anime.averageScore ?: 0,
                     favorites = anime.favourites,
-                    studio = anime.studios?.edges?.get(0)?.node?.name ?: "",
+                    studio = if (!anime.studios?.edges.isNullOrEmpty()) anime.studios?.edges?.get(0)?.node?.name else "",
                     genre = anime.genres ?: listOf()
                 )
             )
