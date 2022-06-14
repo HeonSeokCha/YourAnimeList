@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "character")
 @Parcelize
-data class Character(
+data class CharacterDto(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val charaId: Int,

@@ -14,7 +14,7 @@ query HomeRecommendListQuery(
             type: ANIME,
             format: TV,
             seasonYear: $currentYear
-        ){
+        ) {
             id
             idMal
             title {
