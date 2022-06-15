@@ -1,34 +1,60 @@
 package com.chs.youranimelist.presentation
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.twotone.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.chs.youranimelist.HomeRecommendListQuery
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.chs.youranimelist.R
+import com.chs.youranimelist.presentation.destinations.AnimeListScreenDestination
+import com.chs.youranimelist.presentation.destinations.CharaListScreenDestination
+import com.chs.youranimelist.presentation.destinations.HomeScreenDestination
 import com.chs.youranimelist.ui.theme.YourAnimeListTheme
+import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.navigation.navigate
+import com.ramcosta.composedestinations.navigation.popBackStack
+import com.ramcosta.composedestinations.navigation.popUpTo
+import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
+import com.ramcosta.composedestinations.utils.isRouteOnBackStack
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-@ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             YourAnimeListTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                val navController = rememberNavController()
+                Scaffold(
+                    topBar = {
+                        AppBar()
+                    },
+                    bottomBar = {
+                        BottomBar(navController)
+                    },
                 ) {
-                    Greeting("Android")
+                    DestinationsNavHost(
+                        modifier = Modifier
+                            .padding(
+                                top = it.calculateTopPadding(),
+                                bottom = it.calculateBottomPadding()
+                            ),
+                        navController = navController,
+                        navGraph = NavGraphs.root
+                    )
                 }
             }
         }
@@ -36,14 +62,66 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun AppBar() {
+    TopAppBar(
+        title = {
+            Text(text = stringResource(R.string.app_name))
+        },
+        actions = {
+            IconButton(onClick = { }) {
+                Icon(imageVector = Icons.TwoTone.Search, contentDescription = null)
+            }
+        }
+    )
 }
 
-@Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    YourAnimeListTheme {
-        Greeting("Android")
+fun BottomBar(
+    navController: NavHostController
+) {
+    BottomNavigation(
+    ) {
+        BottomBarDestination.values().forEach { destination ->
+            val isCurrentDestOnBackStack = navController.isRouteOnBackStack(destination.direction)
+            BottomNavigationItem(
+                selected = isCurrentDestOnBackStack,
+                onClick = {
+                    if (isCurrentDestOnBackStack) {
+                        navController.popBackStack(destination.direction, false)
+                        return@BottomNavigationItem
+                    }
+
+                    navController.navigate(destination.direction) {
+                        popUpTo(NavGraphs.root) {
+                            saveState = true
+                        }
+
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                icon = {
+                    Icon(
+                        destination.icon,
+                        contentDescription = stringResource(destination.label)
+                    )
+                },
+                label = {
+                    Text(
+                        text = stringResource(destination.label),
+                    )
+                }
+            )
+        }
     }
+}
+
+enum class BottomBarDestination(
+    val direction: DirectionDestinationSpec,
+    val icon: ImageVector,
+    @StringRes val label: Int
+) {
+    Home(HomeScreenDestination, Icons.Default.Home, R.string.home),
+    AnimeList(AnimeListScreenDestination, Icons.Default.LocalMovies, R.string.anime_list),
+    CharaList(CharaListScreenDestination, Icons.Default.TagFaces, R.string.chara_list),
 }
