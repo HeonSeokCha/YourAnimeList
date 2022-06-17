@@ -1,5 +1,6 @@
 package com.chs.youranimelist.di
 
+import com.apollographql.apollo3.ApolloClient
 import com.chs.youranimelist.data.repository.AnimeListRepositoryImpl
 import com.chs.youranimelist.data.source.AnimeListDatabase
 import com.chs.youranimelist.domain.repository.AnimeListRepository
@@ -19,8 +20,11 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideAnimeRepository(db: AnimeListDatabase): AnimeListRepository {
-        return AnimeListRepositoryImpl(db.animeListDao)
+    fun provideAnimeRepository(
+        client: ApolloClient,
+        db: AnimeListDatabase
+    ): AnimeListRepository {
+        return AnimeListRepositoryImpl(client, db.animeListDao)
     }
 
     @Provides

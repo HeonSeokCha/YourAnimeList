@@ -26,7 +26,7 @@ fun AnimeListScreen(
 }
 
 @Composable
-fun ItemAnimeList(anime: Anime) {
+fun ItemAnimeLarge(anime: Anime) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,16 +47,16 @@ fun ItemAnimeList(anime: Anime) {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            Text()
-            Text()
-            Text()
-            Row {
-                Icon()
-                Text()
-                Icon()
-                Text()
-            }
-            LazyRow()
+//            Text()
+//            Text()
+//            Text()
+//            Row {
+//                Icon()
+//                Text()
+//                Icon()
+//                Text()
+//            }
+//            LazyRow()
         }
     }
 }
