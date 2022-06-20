@@ -1,6 +1,5 @@
 package com.chs.youranimelist.presentation.home
 
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -58,9 +57,14 @@ class HomeViewModel @Inject constructor(
                             }
                             state.nestedList.add(anime)
                         }
+                        state = state.copy(
+                            isLoading = false
+                        )
                     }
                     is Resource.Error -> {
-
+                        state = state.copy(
+                            isLoading = false
+                        )
                     }
                     is Resource.Loading -> {
                         state = state.copy(

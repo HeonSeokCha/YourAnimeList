@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.chs.youranimelist.HomeRecommendListQuery
 import com.chs.youranimelist.fragment.AnimeList
+import com.chs.youranimelist.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -41,37 +42,45 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
-    Column(
+    val pagerState = rememberPagerState()
+
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
     ) {
-        val pagerState = rememberPagerState()
-
-        LazyColumn {
-            item {
-                HorizontalPager(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp),
-                    state = pagerState,
-                    count = state.pagerList.size
-                ) { idx ->
-                    ItemHomeBanner(banner = state.pagerList[idx])
-                }
-                HorizontalPagerIndicator(
-                    pagerState = pagerState,
-                    activeColor = Color.DarkGray,
-                    inactiveColor = Color.LightGray,
-                    modifier = Modifier
-                        .padding(16.dp),
-                )
-                Spacer(modifier = Modifier.padding(bottom = 8.dp))
+        item {
+            HorizontalPager(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                state = pagerState,
+                count = state.pagerList.size
+            ) { idx ->
+                ItemHomeBanner(banner = state.pagerList[idx])
             }
+            HorizontalPagerIndicator(
+                pagerState = pagerState,
+                activeColor = Color.DarkGray,
+                inactiveColor = Color.LightGray,
+                modifier = Modifier
+                    .padding(16.dp),
+            )
+            Spacer(modifier = Modifier.padding(bottom = 8.dp))
+        }
 
-            items(state.nestedList.size) { idx ->
-                ItemAnimeSort(Constant.HOME_SORT_TILE[idx], state.nestedList[idx])
-            }
+        items(state.nestedList.size, key = { it }) { idx ->
+            ItemAnimeSort(Constant.HOME_SORT_TILE[idx], state.nestedList[idx])
+        }
+
+    }
+
+    if (state.isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(color = Color.Magenta)
         }
     }
 }
@@ -80,7 +89,8 @@ fun HomeScreen(
 fun ItemHomeBanner(banner: HomeRecommendListQuery.Medium?) {
     AsyncImage(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxWidth()
+            .height(250.dp),
         model = banner?.bannerImage,
         contentDescription = null,
         contentScale = ContentScale.Crop
@@ -155,11 +165,17 @@ fun ItemAnimeSort(
 
         LazyRow(
             contentPadding = PaddingValues(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(list.size) { idx ->
-                ItemAnimeSmall(item = list[idx])
-            }
+            items(
+                count = list.size,
+                key = {
+                    list[it].id
+                },
+                itemContent = {
+                    ItemAnimeSmall(item = list[it])
+                }
+            )
         }
     }
 }
@@ -199,7 +215,6 @@ fun ItemAnimeSmall(item: AnimeList) {
                 color = Color.Gray,
                 fontSize = 12.sp
             )
-
         }
     }
 }
