@@ -20,3 +20,4 @@ fun AnimeDetailScreen() {
 fun DetailBanner() {
 
 }
+

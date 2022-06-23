@@ -28,6 +28,53 @@ class AnimeListRepositoryImpl(
         ).execute()
     }
 
+    override suspend fun getAnimeList(
+        page: Int,
+        sort: MediaSort,
+        season: MediaSeason,
+        seasonYear: Int,
+        genre: String?
+    ) = apollo.query(
+        AnimeListQuery(
+            page,
+            sort,
+            season,
+            seasonYear,
+            genre
+        )
+    ).execute()
+
+    override suspend fun getNoSeasonNoYearList(
+        page: Int,
+        sort: MediaSort,
+        genre: String?
+    ) = apollo.query(
+        NoSeasonNoYearQuery(
+            page,
+            sort,
+            genre
+        )
+    ).execute()
+
+
+    override suspend fun getNoSeasonList(
+        page: Int,
+        sort: MediaSort,
+        seasonYear: Int,
+        genre: String?
+    ) = apollo.query(
+        NoSeasonQuery(
+            page,
+            sort,
+            seasonYear,
+            genre
+        )
+    ).execute()
+
+
+    override suspend fun getGenre() =
+        apollo.query(GenreQuery()).execute()
+
 
     override fun getAnimeLists(): Flow<List<AnimeDto>> = dao.getAllAnimeList()
 

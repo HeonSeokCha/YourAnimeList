@@ -13,6 +13,32 @@ interface AnimeListRepository {
 
     suspend fun getHomeRecommendList(): ApolloResponse<HomeRecommendListQuery.Data>
 
+    suspend fun getAnimeList(
+        page: Int,
+        sort: MediaSort,
+        season: MediaSeason,
+        seasonYear: Int,
+        genre: String?
+    ): ApolloResponse<AnimeListQuery.Data>
+
+
+    suspend fun getNoSeasonNoYearList(
+        page: Int,
+        sort: MediaSort,
+        genre: String?
+    ): ApolloResponse<NoSeasonNoYearQuery.Data>
+
+
+    suspend fun getNoSeasonList(
+        page: Int,
+        sort: MediaSort,
+        seasonYear: Int,
+        genre: String?
+    ): ApolloResponse<NoSeasonQuery.Data>
+
+
+    suspend fun getGenre(): ApolloResponse<GenreQuery.Data>
+
     fun getAnimeLists(): Flow<List<AnimeDto>>
 
     suspend fun insertAnime(anime: AnimeDto)
