@@ -1,4 +1,4 @@
-package com.chs.youranimelist.presentation.animeDetail
+package com.chs.youranimelist.presentation.browse.anime
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +14,6 @@ fun AnimeDetailScreen() {
 
     }
 }
-
 
 @Composable
 fun DetailBanner() {

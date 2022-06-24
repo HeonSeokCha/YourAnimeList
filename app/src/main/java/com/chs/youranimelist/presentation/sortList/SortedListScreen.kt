@@ -10,10 +10,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
+import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.util.ConvertDate
 
 @Composable
-fun SortedListScreen() {
+fun SortedListScreen(
+    sortType: String,
+) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

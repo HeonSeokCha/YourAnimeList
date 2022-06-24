@@ -4,10 +4,10 @@ import com.apollographql.apollo3.ApolloClient
 import com.chs.youranimelist.data.repository.AnimeListRepositoryImpl
 import com.chs.youranimelist.data.source.AnimeListDatabase
 import com.chs.youranimelist.domain.repository.AnimeListRepository
-import com.chs.youranimelist.domain.usecase.AddAnime
+import com.chs.youranimelist.domain.usecase.AddYourAnime
 import com.chs.youranimelist.domain.usecase.AnimeUseCases
-import com.chs.youranimelist.domain.usecase.DeleteAnime
-import com.chs.youranimelist.domain.usecase.GetAnimes
+import com.chs.youranimelist.domain.usecase.DeleteYourAnime
+import com.chs.youranimelist.domain.usecase.GetYourAnimes
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,9 +31,9 @@ object RepositoryModule {
     @Singleton
     fun provideNoteUseCases(repository: AnimeListRepository): AnimeUseCases {
         return AnimeUseCases(
-            getAnime = GetAnimes(repository),
-            deleteAnime = DeleteAnime(repository),
-            addAnime = AddAnime(repository),
+            getAnime = GetYourAnimes(repository),
+            deleteAnime = DeleteYourAnime(repository),
+            addYourAnime = AddYourAnime(repository),
         )
     }
 }
