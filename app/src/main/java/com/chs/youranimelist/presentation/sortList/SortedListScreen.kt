@@ -9,11 +9,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.chs.youranimelist.presentation.home.ItemAnimeSmall
-import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.util.ConvertDate
+import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
+@Destination
 fun SortedListScreen(
     sortType: String,
 ) {

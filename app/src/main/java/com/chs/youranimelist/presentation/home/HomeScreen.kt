@@ -1,5 +1,8 @@
 package com.chs.youranimelist.presentation.home
 
+import android.content.Context
+import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -13,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -21,6 +25,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.chs.youranimelist.HomeRecommendListQuery
 import com.chs.youranimelist.fragment.AnimeList
+import com.chs.youranimelist.presentation.browse.BrowswActivity
+import com.chs.youranimelist.presentation.destinations.HomeScreenDestination
+import com.chs.youranimelist.presentation.destinations.SortedListScreenDestination
 import com.chs.youranimelist.util.Constant
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -39,6 +46,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
+    val context = LocalContext.current
     val pagerState = rememberPagerState()
 
     LazyColumn(
@@ -46,7 +54,7 @@ fun HomeScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        item() {
+        item {
             HorizontalPager(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -54,7 +62,10 @@ fun HomeScreen(
                 state = pagerState,
                 count = state.pagerList.size
             ) { idx ->
-                ItemHomeBanner(banner = state.pagerList[idx])
+                ItemHomeBanner(
+                    context = context,
+                    banner = state.pagerList[idx]
+                )
             }
             HorizontalPagerIndicator(
                 pagerState = pagerState,
@@ -67,7 +78,12 @@ fun HomeScreen(
         }
 
         items(state.nestedList.size, key = { it }) { idx ->
-            ItemAnimeSort(Constant.HOME_SORT_TILE[idx], state.nestedList[idx])
+            ItemAnimeSort(
+                Constant.HOME_SORT_TILE[idx],
+                state.nestedList[idx],
+                navigator,
+                context
+            )
         }
 
     }
@@ -84,7 +100,10 @@ fun HomeScreen(
 }
 
 @Composable
-fun ItemHomeBanner(banner: HomeRecommendListQuery.Medium?) {
+fun ItemHomeBanner(
+    context: Context,
+    banner: HomeRecommendListQuery.Medium?
+) {
     AsyncImage(
         modifier = Modifier
             .fillMaxWidth()
@@ -93,7 +112,15 @@ fun ItemHomeBanner(banner: HomeRecommendListQuery.Medium?) {
         contentDescription = null,
         contentScale = ContentScale.Crop
     )
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable {
+                context.startActivity(
+                    Intent(context, BrowswActivity::class.java)
+                )
+            }
+    ) {
         Text(
             text = banner?.title?.english ?: banner?.title?.romaji.toString(),
             color = Color.White,
@@ -133,7 +160,9 @@ fun ItemHomeBanner(banner: HomeRecommendListQuery.Medium?) {
 @Composable
 fun ItemAnimeSort(
     title: String,
-    list: List<AnimeList>
+    list: List<AnimeList>,
+    navigator: DestinationsNavigator,
+    context: Context
 ) {
     Column {
         Row(
@@ -152,7 +181,11 @@ fun ItemAnimeSort(
                 color = Color.Gray,
                 fontWeight = FontWeight.Bold
             )
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(
+                onClick = {
+                    navigator.navigate(SortedListScreenDestination(title))
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
                     tint = Color.Gray,
@@ -171,8 +204,15 @@ fun ItemAnimeSort(
                     list[it].id
                 },
                 itemContent = {
-                    ItemAnimeSmall(item = list[it])
-                }
+                    ItemAnimeSmall(
+                        item = list[it],
+                        onClick = {
+                            context.startActivity(
+                                Intent(context, BrowswActivity::class.java)
+                            )
+                        }
+                    )
+                },
             )
         }
     }
@@ -180,13 +220,16 @@ fun ItemAnimeSort(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ItemAnimeSmall(item: AnimeList) {
+fun ItemAnimeSmall(
+    item: AnimeList,
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .width(130.dp)
             .height(260.dp),
         elevation = 1.dp,
-        onClick = { }
+        onClick = onClick
     ) {
         Column(
             modifier = Modifier
