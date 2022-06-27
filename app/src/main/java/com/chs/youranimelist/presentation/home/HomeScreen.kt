@@ -26,7 +26,6 @@ import coil.compose.AsyncImage
 import com.chs.youranimelist.HomeRecommendListQuery
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.presentation.browse.BrowswActivity
-import com.chs.youranimelist.presentation.destinations.HomeScreenDestination
 import com.chs.youranimelist.presentation.destinations.SortedListScreenDestination
 import com.chs.youranimelist.util.Constant
 import com.google.accompanist.pager.ExperimentalPagerApi

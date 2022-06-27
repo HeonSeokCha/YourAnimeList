@@ -1,35 +1,75 @@
 package com.chs.youranimelist.presentation.sortList
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.util.ConvertDate
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 @Destination
 fun SortedListScreen(
+    navigator: DestinationsNavigator,
     sortType: String,
+    viewModel: SortedViewModel = hiltViewModel()
 ) {
+
+    val state = viewModel.state
+    val context = LocalContext.current
+
+    viewModel.selectType = sortType
+    LaunchedEffect(viewModel, context) {
+        viewModel.getSortedAnime()
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Row {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(text = "Year")
             Text(text = "Season")
             Text(text = "Sort")
             Text(text = "Genre")
         }
         LazyVerticalGrid(
+            modifier = Modifier.fillMaxSize(),
             columns = GridCells.Fixed(3),
         ) {
-//            ItemAnimeSmall(item = )
+            items(state.animeSortList.size) {
+                ItemAnimeSmall(
+                    item = state.animeSortList[it],
+                    onClick = {
+
+                    }
+                )
+            }
+        }
+    }
+
+    if (state.isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(color = Color.Magenta)
         }
     }
 }
