@@ -1,5 +1,6 @@
 package com.chs.youranimelist.presentation.sortList
 
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -12,7 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.chs.youranimelist.presentation.browse.BrowswActivity
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.util.ConvertDate
 import com.ramcosta.composedestinations.annotation.Destination
@@ -50,13 +53,18 @@ fun SortedListScreen(
         }
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
-            columns = GridCells.Fixed(3),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp),
+            columns = GridCells.Adaptive(100.dp),
         ) {
             items(state.animeSortList.size) {
                 ItemAnimeSmall(
                     item = state.animeSortList[it],
                     onClick = {
-
+                        context.startActivity(
+                            Intent(context, BrowswActivity::class.java)
+                        )
                     }
                 )
             }

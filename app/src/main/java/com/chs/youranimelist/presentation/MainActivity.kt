@@ -1,6 +1,7 @@
 package com.chs.youranimelist.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
@@ -19,12 +20,14 @@ import com.chs.youranimelist.R
 import com.chs.youranimelist.presentation.destinations.AnimeListScreenDestination
 import com.chs.youranimelist.presentation.destinations.CharaListScreenDestination
 import com.chs.youranimelist.presentation.destinations.HomeScreenDestination
+import com.chs.youranimelist.presentation.destinations.SortedListScreenDestination
 import com.chs.youranimelist.ui.theme.YourAnimeListTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.navigation.popBackStack
 import com.ramcosta.composedestinations.navigation.popUpTo
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
+import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import com.ramcosta.composedestinations.utils.isRouteOnBackStack
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,7 +40,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 Scaffold(
                     topBar = {
-                        AppBar()
+                        AppBar(navController)
                     },
                     bottomBar = {
                         BottomBar(navController)
@@ -59,17 +62,31 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AppBar() {
-    TopAppBar(
-        title = {
-            Text(text = stringResource(R.string.app_name))
-        },
-        actions = {
-            IconButton(onClick = { }) {
-                Icon(imageVector = Icons.TwoTone.Search, contentDescription = null)
-            }
+fun AppBar(navController: NavHostController) {
+    when (navController.currentDestinationAsState().value?.route) {
+        HomeScreenDestination.route, AnimeListScreenDestination.route, CharaListScreenDestination.route -> {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(R.string.app_name))
+                },
+                actions = {
+                    IconButton(onClick = { }) {
+                        Icon(imageVector = Icons.TwoTone.Search, contentDescription = null)
+                    }
+                }
+            )
         }
-    )
+        SortedListScreenDestination.route -> {
+            TopAppBar(
+                title = {},
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(Icons.Filled.ArrowBack, null)
+                    }
+                }
+            )
+        }
+    }
 }
 
 @Composable

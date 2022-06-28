@@ -111,7 +111,7 @@ fun ItemHomeBanner(
         contentDescription = null,
         contentScale = ContentScale.Crop
     )
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .clickable {
@@ -120,7 +120,14 @@ fun ItemHomeBanner(
                 )
             }
     ) {
+
         Text(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(
+                    start = 8.dp,
+                    bottom = 32.dp
+                ),
             text = banner?.title?.english ?: banner?.title?.romaji.toString(),
             color = Color.White,
             fontWeight = FontWeight.Bold,
@@ -128,7 +135,14 @@ fun ItemHomeBanner(
             overflow = TextOverflow.Ellipsis
         )
 
-        Row {
+        Row(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(
+                    start = 8.dp,
+                    bottom = 8.dp
+                ),
+        ) {
             Icon(
                 Icons.Default.Star,
                 contentDescription = null,
@@ -137,6 +151,7 @@ fun ItemHomeBanner(
             Spacer(modifier = Modifier.padding(end = 8.dp))
             Text(
                 text = banner?.averageScore.toString(),
+                fontWeight = FontWeight.Bold,
                 color = Color.White,
                 fontSize = 12.sp,
             )
@@ -149,6 +164,7 @@ fun ItemHomeBanner(
             Spacer(modifier = Modifier.padding(end = 8.dp))
             Text(
                 text = banner?.favourites.toString(),
+                fontWeight = FontWeight.Bold,
                 color = Color.White,
                 fontSize = 12.sp
             )
