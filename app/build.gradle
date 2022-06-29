@@ -117,6 +117,7 @@ dependencies {
     implementation 'com.apollographql.apollo3:apollo-runtime:3.3.2'
     implementation 'com.apollographql.apollo3:apollo-api:3.3.2'
     implementation 'com.apollographql.apollo3:apollo-normalized-cache:3.3.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6'
 
     // Pager
     implementation 'com.google.accompanist:accompanist-pager:0.24.12-rc'

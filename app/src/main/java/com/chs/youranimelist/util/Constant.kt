@@ -29,10 +29,10 @@ object Constant {
     const val SEASON_YEAR: String = "seasonYear"
 
     val HOME_SORT_TILE = listOf(
-        "TRENDING NOW",
-        "POPULAR THIS SEASON",
-        "UPCOMING NEXT SEASON",
-        "ALL TIME POPULAR"
+        TRENDING_NOW,
+        POPULAR_THIS_SEASON,
+        UPCOMING_NEXT_SEASON,
+        ALL_TIME_POPULAR,
     )
 
 

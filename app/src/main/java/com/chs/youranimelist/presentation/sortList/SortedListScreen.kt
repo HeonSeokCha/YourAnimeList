@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.chs.youranimelist.presentation.browse.BrowswActivity
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
+import com.chs.youranimelist.type.MediaSort
+import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.ConvertDate
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -31,8 +33,28 @@ fun SortedListScreen(
 
     val state = viewModel.state
     val context = LocalContext.current
-
-    viewModel.selectType = sortType
+    when (sortType) {
+        Constant.TRENDING_NOW -> {
+            viewModel.selectedSort = MediaSort.TRENDING_DESC
+            viewModel.selectType = Constant.NO_SEASON_NO_YEAR
+        }
+        Constant.POPULAR_THIS_SEASON -> {
+            viewModel.selectedSort = MediaSort.POPULARITY_DESC
+            viewModel.selectedSeason = ConvertDate.getCurrentSeason()
+            viewModel.selectedYear = ConvertDate.getCurrentYear(false)
+            viewModel.selectType = Constant.SEASON_YEAR
+        }
+        Constant.UPCOMING_NEXT_SEASON -> {
+            viewModel.selectedSort = MediaSort.POPULARITY_DESC
+            viewModel.selectedSeason = ConvertDate.getNextSeason()
+            viewModel.selectedYear = ConvertDate.getCurrentYear(true)
+            viewModel.selectType = Constant.SEASON_YEAR
+        }
+        Constant.ALL_TIME_POPULAR -> {
+            viewModel.selectedSort = MediaSort.POPULARITY_DESC
+            viewModel.selectType = Constant.NO_SEASON_NO_YEAR
+        }
+    }
     LaunchedEffect(viewModel, context) {
         viewModel.getSortedAnime()
     }
@@ -79,13 +101,5 @@ fun SortedListScreen(
         ) {
             CircularProgressIndicator(color = Color.Magenta)
         }
-    }
-}
-
-@Composable
-private fun FilterList() {
-    val yearList =
-        ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
-    LazyRow {
     }
 }
