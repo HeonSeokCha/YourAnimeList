@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +34,8 @@ fun SortedListScreen(
 
     val state = viewModel.state
     val context = LocalContext.current
+    val lazyGridScrollState = rememberLazyGridState()
+
     when (sortType) {
         Constant.TRENDING_NOW -> {
             viewModel.selectedSort = MediaSort.TRENDING_DESC
@@ -55,6 +58,7 @@ fun SortedListScreen(
             viewModel.selectType = Constant.NO_SEASON_NO_YEAR
         }
     }
+
     LaunchedEffect(viewModel, context) {
         viewModel.getSortedAnime()
     }
@@ -78,6 +82,7 @@ fun SortedListScreen(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
             contentPadding = PaddingValues(horizontal = 8.dp),
+            state = lazyGridScrollState,
             columns = GridCells.Adaptive(100.dp),
         ) {
             items(state.animeSortList.size) {
@@ -92,6 +97,18 @@ fun SortedListScreen(
             }
         }
     }
+
+    if (lazyGridScrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+        == lazyGridScrollState.layoutInfo.totalItemsCount - 1
+    ) {
+        if (viewModel.hasNextPage) {
+            viewModel.page++
+            viewModel.getSortedAnime()
+        } else {
+            return
+        }
+    }
+
 
     if (state.isLoading) {
         Box(
