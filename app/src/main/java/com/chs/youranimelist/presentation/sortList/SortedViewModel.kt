@@ -48,6 +48,7 @@ class SortedViewModel @Inject constructor(
                     ).collect { result ->
                         when (result) {
                             is Resource.Success -> {
+                                hasNextPage = result.data?.pageInfo?.hasNextPage!!
                                 result.data?.media?.forEach { anime ->
                                     state.animeSortList.add(anime!!.animeList)
                                 }
@@ -78,6 +79,7 @@ class SortedViewModel @Inject constructor(
                     ).collect { result ->
                         when (result) {
                             is Resource.Success -> {
+                                hasNextPage = result.data?.pageInfo?.hasNextPage!!
                                 result.data?.media?.forEach { anime ->
                                     state.animeSortList.add(anime!!.animeList)
                                 }
@@ -107,7 +109,8 @@ class SortedViewModel @Inject constructor(
                     ).collect { result ->
                         when (result) {
                             is Resource.Success -> {
-                                result.data?.media?.forEach { anime ->
+                                hasNextPage = result.data?.pageInfo?.hasNextPage!!
+                                result.data.media?.forEach { anime ->
                                     state.animeSortList.add(anime!!.animeList)
                                 }
                                 state = state.copy(
@@ -130,5 +133,4 @@ class SortedViewModel @Inject constructor(
             }
         }
     }
-
 }

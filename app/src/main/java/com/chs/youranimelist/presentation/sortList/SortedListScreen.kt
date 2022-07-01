@@ -2,7 +2,6 @@ package com.chs.youranimelist.presentation.sortList
 
 import android.content.Intent
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -16,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.chs.youranimelist.presentation.browse.BrowswActivity
+import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.util.Constant
@@ -90,7 +89,7 @@ fun SortedListScreen(
                     item = state.animeSortList[it],
                     onClick = {
                         context.startActivity(
-                            Intent(context, BrowswActivity::class.java)
+                            Intent(context, BrowseActivity::class.java)
                         )
                     }
                 )

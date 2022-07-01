@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.chs.youranimelist.HomeRecommendListQuery
 import com.chs.youranimelist.fragment.AnimeList
-import com.chs.youranimelist.presentation.browse.BrowswActivity
+import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.destinations.SortedListScreenDestination
 import com.chs.youranimelist.util.Constant
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -116,7 +116,7 @@ fun ItemHomeBanner(
             .fillMaxSize()
             .clickable {
                 context.startActivity(
-                    Intent(context, BrowswActivity::class.java)
+                    Intent(context, BrowseActivity::class.java)
                 )
             }
     ) {
@@ -223,7 +223,7 @@ fun ItemAnimeSort(
                         item = list[it],
                         onClick = {
                             context.startActivity(
-                                Intent(context, BrowswActivity::class.java)
+                                Intent(context, BrowseActivity::class.java)
                             )
                         }
                     )

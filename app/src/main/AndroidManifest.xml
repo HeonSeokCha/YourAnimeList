@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.YourAnimeList">
         <activity
-            android:name="com.chs.youranimelist.presentation.browse.BrowswActivity"
+            android:name="com.chs.youranimelist.presentation.browse.BrowseActivity"
             android:exported="false"
             android:label="@string/title_activity_anime_detail"
             android:theme="@style/Theme.YourAnimeList" />
