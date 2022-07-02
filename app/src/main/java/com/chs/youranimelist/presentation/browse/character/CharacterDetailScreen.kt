@@ -1,12 +1,17 @@
 package com.chs.youranimelist.presentation.browse.character
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import com.chs.youranimelist.presentation.browse.CharacterNavGraph
-import com.ramcosta.composedestinations.annotation.Destination
+import androidx.compose.ui.Modifier
 
-@CharacterNavGraph
-@Destination
 @Composable
 fun CharacterDetailScreen() {
-
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Text(text = "CharacterDetailScreen")
+    }
 }

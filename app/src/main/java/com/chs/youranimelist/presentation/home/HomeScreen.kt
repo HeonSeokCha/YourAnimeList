@@ -22,26 +22,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.youranimelist.HomeRecommendListQuery
 import com.chs.youranimelist.fragment.AnimeList
+import com.chs.youranimelist.presentation.Screen
 import com.chs.youranimelist.presentation.browse.BrowseActivity
-import com.chs.youranimelist.presentation.destinations.SortedListScreenDestination
 import com.chs.youranimelist.util.Constant
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalPagerApi::class)
-@RootNavGraph(start = true)
-@Destination
 @Composable
 fun HomeScreen(
-    navigator: DestinationsNavigator,
+    navigator: NavController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
@@ -116,7 +112,13 @@ fun ItemHomeBanner(
             .fillMaxSize()
             .clickable {
                 context.startActivity(
-                    Intent(context, BrowseActivity::class.java)
+                    Intent(
+                        context, BrowseActivity::class.java
+                    ).apply {
+                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                        this.putExtra(Constant.TARGET_ID, banner?.id)
+                        this.putExtra(Constant.TARGET_ID_MAL, banner?.idMal)
+                    }
                 )
             }
     ) {
@@ -176,7 +178,7 @@ fun ItemHomeBanner(
 fun ItemAnimeSort(
     title: String,
     list: List<AnimeList>,
-    navigator: DestinationsNavigator,
+    navigator: NavController,
     context: Context
 ) {
     Column {
@@ -198,7 +200,7 @@ fun ItemAnimeSort(
             )
             IconButton(
                 onClick = {
-                    navigator.navigate(SortedListScreenDestination(title))
+                    navigator.navigate(Screen.SortListScreen.route)
                 }
             ) {
                 Icon(
@@ -223,7 +225,13 @@ fun ItemAnimeSort(
                         item = list[it],
                         onClick = {
                             context.startActivity(
-                                Intent(context, BrowseActivity::class.java)
+                                Intent(
+                                    context, BrowseActivity::class.java
+                                ).apply {
+                                    this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                                    this.putExtra(Constant.TARGET_ID, list[it].id)
+                                    this.putExtra(Constant.TARGET_ID_MAL, list[it].idMal)
+                                }
                             )
                         }
                     )

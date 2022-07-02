@@ -11,9 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.chs.youranimelist.domain.model.Anime
-import com.ramcosta.composedestinations.annotation.Destination
 
-@Destination
 @Composable
 fun AnimeListScreen(
 ) {

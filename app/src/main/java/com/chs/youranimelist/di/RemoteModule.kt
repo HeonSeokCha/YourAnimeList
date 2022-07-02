@@ -4,9 +4,9 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
 import com.apollographql.apollo3.cache.normalized.normalizedCache
 import com.apollographql.apollo3.network.okHttpClient
+import com.chs.youranimelist.BuildConfig
 import com.chs.youranimelist.data.source.KtorJikanService
 import com.chs.youranimelist.util.Constant
-import com.ramcosta.composedestinations.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

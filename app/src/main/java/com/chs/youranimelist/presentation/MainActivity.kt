@@ -1,10 +1,8 @@
 package com.chs.youranimelist.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -12,20 +10,15 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.twotone.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.chs.youranimelist.R
-import com.chs.youranimelist.presentation.destinations.*
+import com.chs.youranimelist.presentation.home.HomeScreen
 import com.chs.youranimelist.ui.theme.YourAnimeListTheme
-import com.ramcosta.composedestinations.DestinationsNavHost
-import com.ramcosta.composedestinations.navigation.navigate
-import com.ramcosta.composedestinations.navigation.popBackStack
-import com.ramcosta.composedestinations.navigation.popUpTo
-import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
-import com.ramcosta.composedestinations.utils.currentDestinationAsState
-import com.ramcosta.composedestinations.utils.isRouteOnBackStack
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,15 +36,15 @@ class MainActivity : ComponentActivity() {
                         BottomBar(navController)
                     },
                 ) {
-                    DestinationsNavHost(
-                        modifier = Modifier
-                            .padding(
-                                top = it.calculateTopPadding(),
-                                bottom = it.calculateBottomPadding()
-                            ),
+                    NavHost(
                         navController = navController,
-                        navGraph = NavGraphs.root
-                    )
+                        modifier = Modifier.padding(it),
+                        startDestination = BottomNavScreen.HomeScreen.route
+                    ) {
+                        composable(route = BottomNavScreen.HomeScreen.route) {
+                            HomeScreen(navigator = navController)
+                        }
+                    }
                 }
             }
         }
@@ -60,16 +53,16 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AppBar(navController: NavHostController) {
-    when (navController.currentDestinationAsState().value?.route) {
-        HomeScreenDestination.route, AnimeListScreenDestination.route, CharaListScreenDestination.route -> {
+    when (navController.currentDestination?.route) {
+        BottomNavScreen.HomeScreen.route, BottomNavScreen.AnimeListScreen.route, BottomNavScreen.CharaListScreen.route -> {
             TopAppBar(
                 title = {
                     Text(text = stringResource(R.string.app_name))
                 },
                 actions = {
-                    if (navController.currentDestinationAsState().value?.route == HomeScreenDestination.route) {
+                    if (navController.currentDestination?.route == BottomNavScreen.HomeScreen.route) {
                         IconButton(onClick = {
-                            navController.navigate(SearchScreenDestination.route)
+                            navController.navigate(Screen.SearchScreen.route)
                         }) {
                             Icon(imageVector = Icons.TwoTone.Search, contentDescription = null)
                         }
@@ -83,7 +76,7 @@ fun AppBar(navController: NavHostController) {
                 }
             )
         }
-        SortedListScreenDestination.route -> {
+        Screen.SortListScreen.route -> {
             TopAppBar(
                 title = {},
                 navigationIcon = {
@@ -93,7 +86,7 @@ fun AppBar(navController: NavHostController) {
                 }
             )
         }
-        SearchScreenDestination.route -> {
+        Screen.SearchScreen.route -> {
             TopAppBar(
                 title = {},
                 navigationIcon = {
@@ -110,28 +103,27 @@ fun AppBar(navController: NavHostController) {
 fun BottomBar(
     navController: NavHostController
 ) {
-    if (navController.currentDestinationAsState().value?.route != SortedListScreenDestination.route
-        && navController.currentDestinationAsState().value?.route != SearchScreenDestination.route
+    if (navController.currentDestination?.route == Screen.SortListScreen.route
+        && navController.currentDestination?.route != Screen.SearchScreen.route
     ) {
+        val items = listOf(
+            BottomNavScreen.HomeScreen,
+            BottomNavScreen.AnimeListScreen,
+            BottomNavScreen.CharaListScreen,
+        )
         BottomNavigation {
-            BottomBarDestination.values().forEach { destination ->
-                val isCurrentDestOnBackStack =
-                    navController.isRouteOnBackStack(destination.direction)
+            items.forEach { destination ->
                 BottomNavigationItem(
-                    selected = isCurrentDestOnBackStack,
+                    selected = false,
+                    selectedContentColor = Color.White,
+                    unselectedContentColor = Color.White.copy(0.4f),
                     onClick = {
-                        if (isCurrentDestOnBackStack) {
-                            navController.popBackStack(destination.direction, false)
-                            return@BottomNavigationItem
-                        }
-
-                        navController.navigate(destination.direction) {
-                            popUpTo(NavGraphs.root) {
-                                saveState = true
+                        if (destination.route != navController.currentDestination?.route) {
+                            navController.navigate(destination.route) {
+                                popUpTo(0)
+                                launchSingleTop = true
+                                restoreState = true
                             }
-
-                            launchSingleTop = true
-                            restoreState = true
                         }
                     },
                     icon = {
@@ -149,15 +141,4 @@ fun BottomBar(
             }
         }
     }
-
-}
-
-enum class BottomBarDestination(
-    val direction: DirectionDestinationSpec,
-    val icon: ImageVector,
-    @StringRes val label: Int
-) {
-    Home(HomeScreenDestination, Icons.Default.Home, R.string.home),
-    AnimeList(AnimeListScreenDestination, Icons.Default.LocalMovies, R.string.anime_list),
-    CharaList(CharaListScreenDestination, Icons.Default.TagFaces, R.string.chara_list),
 }

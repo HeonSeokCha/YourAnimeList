@@ -20,13 +20,9 @@ import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.ConvertDate
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
-@Destination
 fun SortedListScreen(
-    navigator: DestinationsNavigator,
     sortType: String,
     viewModel: SortedViewModel = hiltViewModel()
 ) {
@@ -89,7 +85,13 @@ fun SortedListScreen(
                     item = state.animeSortList[it],
                     onClick = {
                         context.startActivity(
-                            Intent(context, BrowseActivity::class.java)
+                            Intent(
+                                context, BrowseActivity::class.java
+                            ).apply {
+                                this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                                this.putExtra(Constant.TARGET_ID, state.animeSortList[it].id)
+                                this.putExtra(Constant.TARGET_ID_MAL, state.animeSortList[it].idMal)
+                            }
                         )
                     }
                 )
