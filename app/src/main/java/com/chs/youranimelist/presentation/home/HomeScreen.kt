@@ -201,7 +201,7 @@ fun ItemAnimeSort(
             )
             IconButton(
                 onClick = {
-                    navigator.navigate(Screen.SortListScreen.route)
+                    navigator.navigate("${Screen.SortListScreen.route}/$title")
                 }
             ) {
                 Icon(
@@ -273,11 +273,11 @@ fun ItemAnimeSmall(
                 color = Color.Gray,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                fontSize = 12.sp
+                fontSize = 13.sp
             )
             Text(
-                text = item.status.toString(),
-                color = Color.Gray,
+                text = Constant.mediaStatus[item.status] ?: "",
+                color = Color(Constant.mediaStatusColor[item.status] ?: 0xFF888888),
                 fontSize = 12.sp
             )
         }

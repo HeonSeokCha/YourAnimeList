@@ -2,6 +2,7 @@ package com.chs.youranimelist.util
 
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
+import com.chs.youranimelist.type.MediaStatus
 
 object Constant {
     const val ANILIST_API_URL: String = "https://graphql.anilist.co"
@@ -127,5 +128,17 @@ object Constant {
         MediaSort.START_DATE_DESC,
         MediaSort.START_DATE,
         MediaSort.TITLE_ENGLISH_DESC,
+    )
+
+    val mediaStatus = hashMapOf(
+        Pair(MediaStatus.RELEASING, "Up Releasing"),
+        Pair(MediaStatus.FINISHED, "FINISHED"),
+        Pair(MediaStatus.NOT_YET_RELEASED, "Up Coming")
+    )
+
+    val mediaStatusColor = hashMapOf(
+        Pair(MediaStatus.RELEASING, 0xFF4CAF50),
+        Pair(MediaStatus.FINISHED, 0xFF00BCD4),
+        Pair(MediaStatus.NOT_YET_RELEASED, 0xFF673AB7)
     )
 }

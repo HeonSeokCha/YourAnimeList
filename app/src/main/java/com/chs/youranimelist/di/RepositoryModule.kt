@@ -1,8 +1,11 @@
 package com.chs.youranimelist.di
 
 import com.apollographql.apollo3.ApolloClient
+import com.chs.youranimelist.data.repository.AnimeDetailRepositoryImpl
 import com.chs.youranimelist.data.repository.AnimeListRepositoryImpl
 import com.chs.youranimelist.data.source.AnimeListDatabase
+import com.chs.youranimelist.data.source.KtorJikanService
+import com.chs.youranimelist.domain.repository.AnimeDetailRepository
 import com.chs.youranimelist.domain.repository.AnimeListRepository
 import com.chs.youranimelist.domain.usecase.AddYourAnime
 import com.chs.youranimelist.domain.usecase.AnimeUseCases
@@ -25,6 +28,15 @@ object RepositoryModule {
         db: AnimeListDatabase
     ): AnimeListRepository {
         return AnimeListRepositoryImpl(client, db.animeListDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAnimeDetailRepository(
+        client: ApolloClient,
+        jikanService: KtorJikanService
+    ): AnimeDetailRepository {
+        return AnimeDetailRepositoryImpl(client, jikanService)
     }
 
     @Provides

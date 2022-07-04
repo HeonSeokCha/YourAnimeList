@@ -28,6 +28,7 @@ import com.chs.youranimelist.presentation.charaList.CharaListScreen
 import com.chs.youranimelist.presentation.home.HomeScreen
 import com.chs.youranimelist.presentation.sortList.SortedListScreen
 import com.chs.youranimelist.ui.theme.YourAnimeListTheme
+import com.chs.youranimelist.util.Constant
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,7 +56,12 @@ class MainActivity : ComponentActivity() {
                         composable(BottomNavScreen.AnimeListScreen.route) { AnimeListScreen() }
                         composable(BottomNavScreen.CharaListScreen.route) { CharaListScreen() }
                         composable(Screen.SearchScreen.route) { CharaListScreen() }
-                        composable(Screen.SortListScreen.route) { SortedListScreen("") }
+                        composable("${Screen.SortListScreen.route}/{title}") { backStackEntry ->
+                            SortedListScreen(
+                                backStackEntry.arguments?.getString("title")
+                                    ?: Constant.TRENDING_NOW
+                            )
+                        }
                     }
                 }
             }
@@ -117,7 +123,7 @@ fun BottomBar(
     navController: NavHostController
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    if (navBackStackEntry?.destination?.route != Screen.SortListScreen.route
+    if (navBackStackEntry?.destination?.route?.contains(Screen.SortListScreen.route) == false
         && navBackStackEntry?.destination?.route != Screen.SearchScreen.route
     ) {
         val items = listOf(
