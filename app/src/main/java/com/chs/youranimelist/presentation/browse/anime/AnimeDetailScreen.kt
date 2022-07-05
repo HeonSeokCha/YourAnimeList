@@ -2,14 +2,21 @@ package com.chs.youranimelist.presentation.browse.anime
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -49,14 +56,27 @@ fun AnimeDetailScreen(
 
 @Composable
 fun DetailBanner(animeInfo: AnimeDetailQuery.Data?) {
-    AsyncImage(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(250.dp),
-        model = animeInfo?.media?.bannerImage,
-        contentDescription = null,
-        contentScale = ContentScale.Crop
-    )
+            .height(250.dp)
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .fillMaxSize(),
+            model = animeInfo?.media?.bannerImage,
+            contentDescription = null,
+            contentScale = ContentScale.Crop
+        )
+        FloatingActionButton(
+            modifier = Modifier
+                .align(Alignment.Center),
+            onClick = { /*TODO*/ }
+        ) {
+            Icon(Icons.Filled.PlayArrow, null)
+        }
+    }
+
 
     AsyncImage(
         modifier = Modifier

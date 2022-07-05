@@ -26,6 +26,7 @@ import com.chs.youranimelist.R
 import com.chs.youranimelist.presentation.animeList.AnimeListScreen
 import com.chs.youranimelist.presentation.charaList.CharaListScreen
 import com.chs.youranimelist.presentation.home.HomeScreen
+import com.chs.youranimelist.presentation.search.SearchScreen
 import com.chs.youranimelist.presentation.sortList.SortedListScreen
 import com.chs.youranimelist.ui.theme.YourAnimeListTheme
 import com.chs.youranimelist.util.Constant
@@ -55,7 +56,7 @@ class MainActivity : ComponentActivity() {
                         composable(BottomNavScreen.HomeScreen.route) { HomeScreen(navigator = navController) }
                         composable(BottomNavScreen.AnimeListScreen.route) { AnimeListScreen() }
                         composable(BottomNavScreen.CharaListScreen.route) { CharaListScreen() }
-                        composable(Screen.SearchScreen.route) { CharaListScreen() }
+                        composable(Screen.SearchScreen.route) { SearchScreen() }
                         composable("${Screen.SortListScreen.route}/{title}") { backStackEntry ->
                             SortedListScreen(
                                 backStackEntry.arguments?.getString("title")
