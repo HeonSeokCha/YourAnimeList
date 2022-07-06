@@ -1,31 +1,28 @@
 package com.chs.youranimelist.presentation.browse.anime
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.youranimelist.AnimeDetailQuery
+import com.chs.youranimelist.presentation.browse.BrowseScreen
 
 @Composable
 fun AnimeDetailScreen(
     id: Int,
     idMal: Int,
+    navController: NavController,
     viewModel: AnimeDetailViewModel = hiltViewModel()
 ) {
 
@@ -41,6 +38,36 @@ fun AnimeDetailScreen(
             .fillMaxSize()
     ) {
         DetailBanner(state.animeDetailInfo)
+
+        Button(
+            onClick = {
+                navController.navigate(
+                    "${BrowseScreen.AnimeDetailScreen.route}/$id/$idMal"
+                )
+            }
+        ) {
+            Text("AnimeDetail")
+        }
+
+        Button(
+            onClick = {
+                navController.navigate(
+                    "${BrowseScreen.CharacterDetailScreen.route}/$id"
+                )
+            }
+        ) {
+            Text("Character")
+        }
+
+        Button(
+            onClick = {
+                navController.navigate(
+                    "${BrowseScreen.StudioDetailScreen.route}/$id"
+                )
+            }
+        ) {
+            Text("Studio")
+        }
     }
 
     if (state.isLoading) {

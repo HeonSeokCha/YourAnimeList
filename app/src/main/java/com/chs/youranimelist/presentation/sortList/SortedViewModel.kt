@@ -49,7 +49,7 @@ class SortedViewModel @Inject constructor(
                         when (result) {
                             is Resource.Success -> {
                                 hasNextPage = result.data?.pageInfo?.hasNextPage!!
-                                result.data?.media?.forEach { anime ->
+                                result.data.media?.forEach { anime ->
                                     state.animeSortList.add(anime!!.animeList)
                                 }
                                 state = state.copy(
@@ -80,7 +80,7 @@ class SortedViewModel @Inject constructor(
                         when (result) {
                             is Resource.Success -> {
                                 hasNextPage = result.data?.pageInfo?.hasNextPage!!
-                                result.data?.media?.forEach { anime ->
+                                result.data.media?.forEach { anime ->
                                     state.animeSortList.add(anime!!.animeList)
                                 }
                                 state = state.copy(

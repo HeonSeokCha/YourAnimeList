@@ -60,7 +60,8 @@ class BrowseActivity : ComponentActivity() {
                         ) { backStackEntry ->
                             AnimeDetailScreen(
                                 id = backStackEntry.arguments?.getInt("id")!!,
-                                idMal = backStackEntry.arguments?.getInt("idMal")!!
+                                idMal = backStackEntry.arguments?.getInt("idMal")!!,
+                                navController
                             )
                         }
 
