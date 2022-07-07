@@ -1,14 +1,20 @@
 package com.chs.youranimelist.presentation.browse
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,10 +34,22 @@ class BrowseActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
+            val activity = (LocalContext.current as? Activity)
             YourAnimeListTheme {
-                Surface(
+                Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    topBar = {
+                        TopAppBar(
+                            title = {},
+                            navigationIcon = {
+                                IconButton(onClick = {
+                                    activity?.finish()
+                                }) {
+                                    Icon(Icons.Filled.Close, null)
+                                }
+                            }
+                        )
+                    }
                 ) {
                     val startMediaDestination =
                         if (intent?.getStringExtra(Constant.TARGET_TYPE) == Constant.TARGET_MEDIA) {
@@ -42,7 +60,7 @@ class BrowseActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        modifier = Modifier,
+                        modifier = Modifier.padding(it),
                         startDestination = startMediaDestination
                     ) {
                         composable(
