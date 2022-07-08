@@ -1,5 +1,6 @@
 package com.chs.youranimelist.presentation.browse
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
