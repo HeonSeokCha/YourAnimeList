@@ -157,6 +157,7 @@ class SearchMediaFragment : BaseFragment() {
                     binding.imgSearchError.isVisible = true
                     binding.txtSearchError.isVisible = true
                 }
+                else -> {}
             }
         }
     }

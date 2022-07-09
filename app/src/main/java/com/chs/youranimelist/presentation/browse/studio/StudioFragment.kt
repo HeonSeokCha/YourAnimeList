@@ -68,6 +68,7 @@ class StudioFragment : BaseFragment() {
                     isLoading = false
                     Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_SHORT).show()
                 }
+                else -> {}
             }
         }
     }

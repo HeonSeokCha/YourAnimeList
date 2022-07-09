@@ -251,6 +251,7 @@ class SortedFragment : BaseFragment() {
                     isLoading = false
                     binding.layoutShimmerSorted.root.isVisible = false
                 }
+                else -> {}
             }
         }
     }
@@ -273,6 +274,7 @@ class SortedFragment : BaseFragment() {
                         Toast.LENGTH_LONG
                     ).show()
                 }
+                else -> {}
             }
         }
     }

@@ -82,6 +82,7 @@ class CharacterFragment : BaseFragment() {
                         it.message, Toast.LENGTH_SHORT
                     ).show()
                 }
+                else -> {}
             }
         }
     }

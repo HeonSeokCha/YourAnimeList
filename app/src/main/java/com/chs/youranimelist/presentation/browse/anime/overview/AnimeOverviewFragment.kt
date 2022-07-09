@@ -143,6 +143,7 @@ class AnimeOverviewFragment : Fragment() {
                 is NetworkState.Error -> {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }
+                else -> {}
             }
 
             viewModel.animeOverviewThemeResponse.observe(viewLifecycleOwner) {
@@ -154,6 +155,7 @@ class AnimeOverviewFragment : Fragment() {
                         viewModel.animeDetails = null
                         Log.e("ERROR", it.message.toString())
                     }
+                    else -> {}
                 }
                 initAnimeTheme()
             }
