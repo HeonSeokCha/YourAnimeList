@@ -1,6 +1,5 @@
 package com.chs.youranimelist.presentation.browse
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,19 +8,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.chs.youranimelist.presentation.BottomNavScreen
 import com.chs.youranimelist.presentation.browse.anime.AnimeDetailScreen
 import com.chs.youranimelist.presentation.browse.character.CharacterDetailScreen
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailScreen
@@ -43,9 +37,9 @@ class BrowseActivity : ComponentActivity() {
                         TopAppBar(
                             title = {},
                             navigationIcon = {
-                                IconButton(onClick = {
-                                    activity?.finish()
-                                }) {
+                                IconButton(
+                                    onClick = { activity?.finish() }
+                                ) {
                                     Icon(Icons.Filled.Close, null)
                                 }
                             }

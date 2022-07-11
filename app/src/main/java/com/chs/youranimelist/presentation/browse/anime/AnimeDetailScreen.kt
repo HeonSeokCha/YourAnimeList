@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.presentation.browse.BrowseScreen
+import com.chs.youranimelist.presentation.ui.theme.Purple200
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
@@ -43,6 +44,11 @@ fun AnimeDetailScreen(
     val context = LocalContext.current
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
+    val tabList = listOf(
+        "OVERVIEW",
+        "CHARACTER",
+        "RECOMMEND"
+    )
 
     LaunchedEffect(viewModel, context) {
         viewModel.getAnimeDetailInfo(id)
@@ -52,13 +58,8 @@ fun AnimeDetailScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        DetailBanner(state.animeDetailInfo)
 
-        val tabList = listOf(
-            "OVERVIEW",
-            "CHARACTER",
-            "RECOMMEND"
-        )
+        AnimeDetailHeadBanner(state.animeDetailInfo)
 
         Spacer(
             modifier = Modifier
@@ -71,7 +72,7 @@ fun AnimeDetailScreen(
                 TabRowDefaults.Indicator(
                     modifier = Modifier
                         .pagerTabIndicatorOffset(pagerState, tabPositions),
-                    color = Color.Blue
+                    color = Purple200
                 )
             }
         ) {
@@ -79,7 +80,8 @@ fun AnimeDetailScreen(
                 Tab(
                     text = {
                         Text(
-                            text = tabList[index]
+                            text = tabList[index],
+                            color = Purple200
                         )
                     },
                     selected = pagerState.currentPage == index,
@@ -121,7 +123,7 @@ fun AnimeDetailScreen(
 }
 
 @Composable
-fun DetailBanner(animeInfo: AnimeDetailQuery.Data?) {
+fun AnimeDetailHeadBanner(animeInfo: AnimeDetailQuery.Data?) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -162,32 +164,39 @@ fun DetailBanner(animeInfo: AnimeDetailQuery.Data?) {
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .padding(
-                    start = 154.dp,
-                    bottom = 8.dp
-                )
+                .padding(start = 154.dp)
         ) {
             Text(
                 text = animeInfo?.media?.title?.english
-                    ?: animeInfo?.media?.title?.romaji.toString()
+                    ?: animeInfo?.media?.title?.romaji.toString(),
+                fontSize = 18.sp
             )
 
-            Text(text = animeInfo?.media?.format?.name ?: "")
+            if (animeInfo?.media?.seasonYear != null) {
+                Text(text = "${animeInfo.media.format?.name} ⦁ ${animeInfo.media.seasonYear}")
+            } else {
+                Text(text = animeInfo?.media?.format?.name ?: "")
+            }
 
-            Row {
-                Icon(
-                    Icons.Default.Star,
-                    contentDescription = null,
-                    tint = Color.Yellow
-                )
-                Spacer(modifier = Modifier.padding(end = 8.dp))
-                Text(
-                    text = animeInfo?.media?.averageScore.toString(),
-                    fontWeight = FontWeight.Bold,
+            Row(
+                modifier = Modifier.padding(top = 8.dp)
+            ) {
+                if (animeInfo?.media?.averageScore != null) {
+                    Icon(
+                        Icons.Default.Star,
+                        contentDescription = null,
+                        tint = Color.Yellow
+                    )
+                    Spacer(modifier = Modifier.padding(end = 8.dp))
+                    Text(
+                        text = animeInfo.media.averageScore.toString(),
+                        fontWeight = FontWeight.Bold,
 
-                    fontSize = 12.sp,
-                )
-                Spacer(modifier = Modifier.padding(end = 8.dp))
+                        fontSize = 12.sp,
+                    )
+                    Spacer(modifier = Modifier.padding(end = 8.dp))
+                }
+
                 Icon(
                     Icons.Default.Favorite,
                     contentDescription = null,
@@ -200,6 +209,15 @@ fun DetailBanner(animeInfo: AnimeDetailQuery.Data?) {
                     fontSize = 12.sp
                 )
             }
+        }
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter),
+            onClick = { /*TODO*/ }
+        ) {
+            Text("ADD MY LIST")
         }
     }
 }

@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
 fun AppBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     when (navBackStackEntry?.destination?.route) {
-        Screen.SortListScreen.route -> {
+        "${Screen.SortListScreen.route}/{title}" -> {
             TopAppBar(
                 title = {},
                 navigationIcon = {
