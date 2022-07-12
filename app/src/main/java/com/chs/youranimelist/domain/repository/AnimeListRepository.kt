@@ -43,5 +43,5 @@ interface AnimeListRepository {
 
     suspend fun insertAnime(anime: AnimeDto)
 
-    suspend fun deleteAnime(anime: AnimeDto)
+    suspend fun deleteAnime(animeId: AnimeDto)
 }

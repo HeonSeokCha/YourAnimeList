@@ -6,7 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.AnimeDetailQuery
-import com.chs.youranimelist.data.mapper.toAnime
+import com.chs.youranimelist.data.mapper.toAnimeDto
+import com.chs.youranimelist.data.model.AnimeDto
 import com.chs.youranimelist.domain.model.Anime
 import com.chs.youranimelist.domain.usecase.CheckSaveAnimeUseCase
 import com.chs.youranimelist.domain.usecase.DeleteAnimeUseCase
@@ -57,7 +58,7 @@ class AnimeDetailViewModel @Inject constructor(
             checkSaveAnimeUseCase(animeId).collect {
                 if (it != null && it.animeId == animeId) {
                     state = state.copy(
-                        isSaveAnime = it.toAnime()
+                        isSaveAnime = it
                     )
                 }
             }
@@ -66,27 +67,28 @@ class AnimeDetailViewModel @Inject constructor(
 
     fun insertAnime(anime: AnimeDetailQuery.Media) {
         viewModelScope.launch {
-            insertAnimeUseCase(
-                Anime(
-                    animeId = anime.id,
-                    idMal = anime.idMal ?: 0,
-                    title = anime.title!!.english ?: anime.title.romaji!!,
-                    format = anime.format.toString(),
-                    seasonYear = anime.seasonYear ?: 0,
-                    episode = anime.episodes ?: 0,
-                    coverImage = anime.coverImage?.extraLarge,
-                    averageScore = anime.averageScore ?: 0,
-                    favorites = anime.favourites,
-                    studio = if (!anime.studios?.edges.isNullOrEmpty()) anime.studios?.edges?.get(0)?.node?.name else "",
-                    genre = anime.genres ?: listOf()
-                )
+            val animeObj = Anime(
+                animeId = anime.id,
+                idMal = anime.idMal ?: 0,
+                title = anime.title!!.english ?: anime.title.romaji!!,
+                format = anime.format.toString(),
+                seasonYear = anime.seasonYear ?: 0,
+                episode = anime.episodes ?: 0,
+                coverImage = anime.coverImage?.extraLarge,
+                averageScore = anime.averageScore ?: 0,
+                favorites = anime.favourites,
+                studio = if (!anime.studios?.edges.isNullOrEmpty()) anime.studios?.edges?.get(0)?.node?.name else "",
+                genre = anime.genres ?: listOf()
             )
+            insertAnimeUseCase(animeObj)
+            state = state.copy(isSaveAnime = animeObj.toAnimeDto())
         }
     }
 
-    fun deleteAnime(anime: Anime) {
+    fun deleteAnime(anime: AnimeDto) {
         viewModelScope.launch {
             deleteAnimeUseCase(anime)
+            state = state.copy(isSaveAnime = null)
         }
     }
 }
