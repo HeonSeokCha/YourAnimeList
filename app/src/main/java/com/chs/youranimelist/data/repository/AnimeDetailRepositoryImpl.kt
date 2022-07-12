@@ -19,6 +19,7 @@ class AnimeDetailRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
     private val jikanClient: KtorJikanService
 ) : AnimeDetailRepository {
+
     override suspend fun getAnimeDetail(animeId: Int): Flow<Resource<AnimeDetailQuery.Data>> {
         return flow {
             emit(Resource.Loading(true))

@@ -39,7 +39,7 @@ interface AnimeListRepository {
 
     suspend fun getGenre(): ApolloResponse<GenreQuery.Data>
 
-    fun getAnimeLists(): Flow<List<AnimeDto>>
+    fun checkAnimeList(animeId: Int): Flow<AnimeDto?>
 
     suspend fun insertAnime(anime: AnimeDto)
 

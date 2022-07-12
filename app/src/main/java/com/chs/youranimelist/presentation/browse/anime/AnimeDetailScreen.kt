@@ -44,6 +44,7 @@ fun AnimeDetailScreen(
     val context = LocalContext.current
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
+
     val tabList = listOf(
         "OVERVIEW",
         "CHARACTER",
@@ -52,6 +53,7 @@ fun AnimeDetailScreen(
 
     LaunchedEffect(viewModel, context) {
         viewModel.getAnimeDetailInfo(id)
+        viewModel.isSaveAnime(id)
     }
 
     Column(
@@ -59,7 +61,9 @@ fun AnimeDetailScreen(
             .fillMaxSize()
     ) {
 
-        AnimeDetailHeadBanner(state.animeDetailInfo)
+        AnimeDetailHeadBanner(
+            viewModel
+        )
 
         Spacer(
             modifier = Modifier
@@ -123,7 +127,10 @@ fun AnimeDetailScreen(
 }
 
 @Composable
-fun AnimeDetailHeadBanner(animeInfo: AnimeDetailQuery.Data?) {
+fun AnimeDetailHeadBanner(
+    viewModel: AnimeDetailViewModel
+) {
+    val state = viewModel.state
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -133,11 +140,11 @@ fun AnimeDetailHeadBanner(animeInfo: AnimeDetailQuery.Data?) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(250.dp),
-            model = animeInfo?.media?.bannerImage,
+            model = state.animeDetailInfo?.media?.bannerImage,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
-        if (animeInfo?.media?.trailer != null) {
+        if (state.animeDetailInfo?.media?.trailer != null) {
             FloatingActionButton(
                 modifier = Modifier
                     .align(Alignment.Center),
@@ -156,7 +163,7 @@ fun AnimeDetailHeadBanner(animeInfo: AnimeDetailQuery.Data?) {
                 )
                 .align(Alignment.BottomStart)
                 .clip(RoundedCornerShape(5.dp)),
-            model = animeInfo?.media?.coverImage?.extraLarge,
+            model = state.animeDetailInfo?.media?.coverImage?.extraLarge,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
@@ -167,21 +174,21 @@ fun AnimeDetailHeadBanner(animeInfo: AnimeDetailQuery.Data?) {
                 .padding(start = 154.dp)
         ) {
             Text(
-                text = animeInfo?.media?.title?.english
-                    ?: animeInfo?.media?.title?.romaji.toString(),
+                text = state.animeDetailInfo?.media?.title?.english
+                    ?: state.animeDetailInfo?.media?.title?.romaji.toString(),
                 fontSize = 18.sp
             )
 
-            if (animeInfo?.media?.seasonYear != null) {
-                Text(text = "${animeInfo.media.format?.name} ⦁ ${animeInfo.media.seasonYear}")
+            if (state.animeDetailInfo?.media?.seasonYear != null) {
+                Text(text = "${state.animeDetailInfo.media.format?.name} ⦁ ${state.animeDetailInfo.media.seasonYear}")
             } else {
-                Text(text = animeInfo?.media?.format?.name ?: "")
+                Text(text = state.animeDetailInfo?.media?.format?.name ?: "")
             }
 
             Row(
                 modifier = Modifier.padding(top = 8.dp)
             ) {
-                if (animeInfo?.media?.averageScore != null) {
+                if (state.animeDetailInfo?.media?.averageScore != null) {
                     Icon(
                         Icons.Default.Star,
                         contentDescription = null,
@@ -189,7 +196,7 @@ fun AnimeDetailHeadBanner(animeInfo: AnimeDetailQuery.Data?) {
                     )
                     Spacer(modifier = Modifier.padding(end = 8.dp))
                     Text(
-                        text = animeInfo.media.averageScore.toString(),
+                        text = state.animeDetailInfo.media.averageScore.toString(),
                         fontWeight = FontWeight.Bold,
 
                         fontSize = 12.sp,
@@ -204,7 +211,7 @@ fun AnimeDetailHeadBanner(animeInfo: AnimeDetailQuery.Data?) {
                 )
                 Spacer(modifier = Modifier.padding(end = 8.dp))
                 Text(
-                    text = animeInfo?.media?.favourites.toString(),
+                    text = state.animeDetailInfo?.media?.favourites.toString(),
                     fontWeight = FontWeight.Bold,
                     fontSize = 12.sp
                 )
@@ -215,9 +222,19 @@ fun AnimeDetailHeadBanner(animeInfo: AnimeDetailQuery.Data?) {
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter),
-            onClick = { /*TODO*/ }
+            onClick = {
+                if (state.isSaveAnime != null) {
+                    viewModel.deleteAnime(state.isSaveAnime)
+                } else {
+                    viewModel.insertAnime(state.animeDetailInfo?.media!!)
+                }
+            }
         ) {
-            Text("ADD MY LIST")
+            if (state.isSaveAnime != null) {
+                Text("SAVED")
+            } else {
+                Text("ADD MY LIST")
+            }
         }
     }
 }
