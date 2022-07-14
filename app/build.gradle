@@ -4,8 +4,8 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
-    id 'com.google.devtools.ksp' version '1.6.21-1.0.6'
-    id 'com.apollographql.apollo3' version '3.3.2'
+    id 'com.google.devtools.ksp' version '1.7.0-1.0.6'
+    id 'com.apollographql.apollo3' version '3.4.0'
 }
 
 kotlin {
@@ -53,7 +53,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion '1.2.0'
     }
     packagingOptions {
         resources {
@@ -85,7 +85,7 @@ dependencies {
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation 'androidx.activity:activity-compose:1.5.0'
     implementation 'androidx.navigation:navigation-compose:2.5.0'
-    implementation 'com.google.accompanist:accompanist-swiperefresh:0.24.11-rc'
+    implementation 'com.google.accompanist:accompanist-swiperefresh:0.24.13-rc'
 
     //Dagger - Hilt
     implementation "com.google.dagger:hilt-android:2.42"
@@ -104,14 +104,18 @@ dependencies {
     kapt "androidx.room:room-compiler:2.4.2"
 
     //Apollo
-    implementation 'com.apollographql.apollo3:apollo-runtime:3.3.2'
-    implementation 'com.apollographql.apollo3:apollo-api:3.3.2'
-    implementation 'com.apollographql.apollo3:apollo-normalized-cache:3.3.2'
+    implementation 'com.apollographql.apollo3:apollo-runtime:3.4.0'
+    implementation 'com.apollographql.apollo3:apollo-api:3.4.0'
+    implementation 'com.apollographql.apollo3:apollo-normalized-cache:3.4.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6'
 
     // Pager
     implementation 'com.google.accompanist:accompanist-pager:0.24.13-rc'
     implementation 'com.google.accompanist:accompanist-pager-indicators:0.24.11-rc'
+
+    //
+    // Flowlayout
+    implementation "com.google.accompanist:accompanist-flowlayout:0.24.11-rc"
 
     // Coil
     implementation "io.coil-kt:coil-compose:2.1.0"

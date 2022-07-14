@@ -33,13 +33,6 @@ query AnimeOverviewQuery(
         countryOfOrigin
         source
         hashtag
-        trailer {
-            id
-            site
-        }
-        coverImage {
-            extraLarge
-        }
         bannerImage
         genres
         synonyms
@@ -47,15 +40,6 @@ query AnimeOverviewQuery(
         meanScore
         popularity
         favourites
-        tags {
-            id
-            name
-            description
-            rank
-            isGeneralSpoiler
-            isMediaSpoiler
-            isAdult
-        }
         relations {
             relationsEdges: edges {
                 relationsNode: node {
@@ -85,7 +69,6 @@ query AnimeOverviewQuery(
                 isMain
             }
         }
-        isFavourite
         nextAiringEpisode {
             airingAt
             episode
@@ -104,6 +87,5 @@ query AnimeOverviewQuery(
             url
             site
         }
-        siteUrl
     }
 }

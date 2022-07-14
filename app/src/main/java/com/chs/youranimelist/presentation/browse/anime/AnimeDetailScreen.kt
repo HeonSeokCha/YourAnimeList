@@ -1,6 +1,10 @@
 package com.chs.youranimelist.presentation.browse.anime
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -22,9 +26,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.chs.youranimelist.AnimeDetailQuery
-import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.ui.theme.Purple200
+import com.chs.youranimelist.util.color
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
@@ -44,6 +47,7 @@ fun AnimeDetailScreen(
     val context = LocalContext.current
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
 
     val tabList = listOf(
         "OVERVIEW",
@@ -59,6 +63,7 @@ fun AnimeDetailScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .scrollable(scrollState, Orientation.Vertical)
     ) {
 
         AnimeDetailHeadBanner(
@@ -99,14 +104,15 @@ fun AnimeDetailScreen(
         }
         HorizontalPager(
             count = tabList.size,
-            state = pagerState
+            state = pagerState,
+            userScrollEnabled = false
         ) {
             when (this.currentPage) {
                 0 -> {
-                    AnimeOverViewScreen()
+                    AnimeOverViewScreen(id)
                 }
                 1 -> {
-                    AnimeCharaScreen()
+                    AnimeCharaScreen(id)
                 }
                 2 -> {
                     AnimeRecScreen()
@@ -139,7 +145,11 @@ fun AnimeDetailHeadBanner(
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(250.dp),
+                .height(250.dp)
+                .background(
+                    color = state.animeDetailInfo?.media?.coverImage?.color?.color
+                        ?: "#ffffff".color
+                ),
             model = state.animeDetailInfo?.media?.bannerImage,
             contentDescription = null,
             contentScale = ContentScale.Crop

@@ -213,6 +213,8 @@ fun ItemAnimeSort(
         }
 
         LazyRow(
+            modifier = Modifier
+                .padding(bottom = 8.dp),
             contentPadding = PaddingValues(horizontal = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
@@ -252,7 +254,7 @@ fun ItemAnimeSmall(
         modifier = Modifier
             .width(130.dp)
             .height(260.dp),
-        elevation = 1.dp,
+        elevation = 3.dp,
         onClick = onClick
     ) {
         Column(

@@ -49,7 +49,7 @@ class AnimeDetailRepositoryImpl @Inject constructor(
                     )
                 )
             } catch (e: Exception) {
-
+                emit(Resource.Error("Couldn't load date"))
             }
         }
     }
@@ -57,6 +57,15 @@ class AnimeDetailRepositoryImpl @Inject constructor(
     override suspend fun getAnimeCharacter(animeId: Int): Flow<Resource<AnimeCharacterQuery.Data>> {
         return flow {
             emit(Resource.Loading(true))
+            try {
+                emit(
+                    Resource.Success(
+                        apolloClient.query(AnimeCharacterQuery(animeId)).execute().data
+                    )
+                )
+            } catch (e: Exception) {
+                emit(Resource.Error("Couldn't load date"))
+            }
         }
     }
 
