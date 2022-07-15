@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,7 +43,7 @@ fun AnimeCharaScreen(
     LazyVerticalGrid(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight(),
+            .height(1000.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
         contentPadding = PaddingValues(horizontal = 8.dp),
@@ -52,7 +54,7 @@ fun AnimeCharaScreen(
             Column(
                 modifier = Modifier
                     .width(100.dp)
-                    .wrapContentHeight()
+
             ) {
                 AsyncImage(
                     modifier = Modifier
@@ -67,7 +69,6 @@ fun AnimeCharaScreen(
                     modifier = Modifier
                         .padding(top = 4.dp, bottom = 4.dp)
                 )
-
                 Text(
                     modifier = Modifier.align(CenterHorizontally),
                     textAlign = TextAlign.Center,

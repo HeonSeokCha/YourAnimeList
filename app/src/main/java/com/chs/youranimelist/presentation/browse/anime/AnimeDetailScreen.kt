@@ -1,11 +1,14 @@
 package com.chs.youranimelist.presentation.browse.anime
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -13,11 +16,16 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -63,7 +71,7 @@ fun AnimeDetailScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .scrollable(scrollState, Orientation.Vertical)
+            .verticalScroll(scrollState)
     ) {
 
         AnimeDetailHeadBanner(
@@ -75,6 +83,7 @@ fun AnimeDetailScreen(
                 .padding(top = 16.dp)
         )
         TabRow(
+            modifier = Modifier.fillMaxWidth(),
             selectedTabIndex = pagerState.currentPage,
             backgroundColor = Color.White,
             indicator = { tabPositions ->
@@ -102,10 +111,26 @@ fun AnimeDetailScreen(
                 )
             }
         }
+
         HorizontalPager(
             count = tabList.size,
             state = pagerState,
-            userScrollEnabled = false
+            userScrollEnabled = false,
+            modifier = Modifier
+                .fillMaxHeight()
+                .nestedScroll(remember {
+                    object : NestedScrollConnection {
+                        override fun onPreScroll(
+                            available: Offset,
+                            source: NestedScrollSource
+                        ): Offset {
+                            return if (available.y > 0) Offset.Zero else Offset(
+                                x = 0f,
+                                y = -scrollState.dispatchRawDelta(-available.y)
+                            )
+                        }
+                    }
+                })
         ) {
             when (this.currentPage) {
                 0 -> {

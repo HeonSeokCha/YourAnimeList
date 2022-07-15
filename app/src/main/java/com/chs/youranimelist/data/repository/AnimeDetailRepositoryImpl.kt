@@ -6,6 +6,8 @@ import com.chs.youranimelist.AnimeCharacterQuery
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.AnimeOverviewQuery
 import com.chs.youranimelist.AnimeRecommendQuery
+import com.chs.youranimelist.data.mapper.toAnimDetails
+import com.chs.youranimelist.data.model.AnimeDetailDto
 import com.chs.youranimelist.data.source.KtorJikanService
 import com.chs.youranimelist.domain.model.AnimeDetails
 import com.chs.youranimelist.domain.repository.AnimeDetailRepository
@@ -75,12 +77,30 @@ class AnimeDetailRepositoryImpl @Inject constructor(
     ): Flow<Resource<AnimeRecommendQuery.Data>> {
         return flow {
             emit(Resource.Loading(true))
+            try {
+                emit(
+                    Resource.Success(
+                        apolloClient.query(AnimeRecommendQuery(animeId, page)).execute().data
+                    )
+                )
+            } catch (e: Exception) {
+                emit(Resource.Error("Couldn't load date"))
+            }
         }
     }
 
     override suspend fun getAnimeOverviewTheme(animeId: Int): Flow<Resource<AnimeDetails>> {
         return flow {
             emit(Resource.Loading(true))
+            try {
+                emit(
+                    Resource.Success(
+                        jikanClient.getAnimeTheme(malId = animeId)!!.toAnimDetails()
+                    )
+                )
+            } catch (e: Exception) {
+                emit(Resource.Error("Couldn't load date"))
+            }
         }
     }
 }
