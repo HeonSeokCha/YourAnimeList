@@ -43,7 +43,10 @@ fun AnimeCharaScreen(
     LazyVerticalGrid(
         modifier = Modifier
             .fillMaxWidth()
-            .height(1000.dp),
+            .height(
+                ((((state.animeCharaInfo?.media?.characters?.charactersNode?.size
+                    ?: 1) / 3) + 1) * 100).dp
+            ),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
         contentPadding = PaddingValues(horizontal = 8.dp),

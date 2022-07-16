@@ -71,7 +71,6 @@ fun AnimeDetailScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
     ) {
 
         AnimeDetailHeadBanner(
@@ -86,19 +85,14 @@ fun AnimeDetailScreen(
             modifier = Modifier.fillMaxWidth(),
             selectedTabIndex = pagerState.currentPage,
             backgroundColor = Color.White,
-            indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
-                    modifier = Modifier
-                        .pagerTabIndicatorOffset(pagerState, tabPositions),
-                    color = Purple200
-                )
-            }
-        ) {
+
+            ) {
             tabList.forEachIndexed { index, s ->
                 Tab(
                     text = {
                         Text(
                             text = tabList[index],
+                            maxLines = 1,
                             color = Purple200
                         )
                     },
@@ -118,19 +112,6 @@ fun AnimeDetailScreen(
             userScrollEnabled = false,
             modifier = Modifier
                 .fillMaxHeight()
-                .nestedScroll(remember {
-                    object : NestedScrollConnection {
-                        override fun onPreScroll(
-                            available: Offset,
-                            source: NestedScrollSource
-                        ): Offset {
-                            return if (available.y > 0) Offset.Zero else Offset(
-                                x = 0f,
-                                y = -scrollState.dispatchRawDelta(-available.y)
-                            )
-                        }
-                    }
-                })
         ) {
             when (this.currentPage) {
                 0 -> {
@@ -140,7 +121,7 @@ fun AnimeDetailScreen(
                     AnimeCharaScreen(id)
                 }
                 2 -> {
-                    AnimeRecScreen()
+                    AnimeRecScreen(id)
                 }
             }
         }
