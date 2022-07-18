@@ -32,10 +32,10 @@ fun AnimeRecScreen(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         items(
-            viewModel.state.animeRecInfo?.animeRecommend?.recommendations?.edges?.size ?: 0
+            state.animeRecInfo?.animeRecommend?.recommendations?.edges?.size ?: 0
         ) { idx ->
             ItemAnimeLarge(
-                viewModel.state.animeRecInfo?.animeRecommend?.recommendations?.edges?.get(idx)?.node?.mediaRecommendation!!
+                state.animeRecInfo?.animeRecommend?.recommendations?.edges?.get(idx)?.node?.mediaRecommendation!!
             )
         }
     }

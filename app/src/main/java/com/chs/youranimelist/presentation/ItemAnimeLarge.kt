@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -53,7 +54,9 @@ fun ItemAnimeLarge(
                     text = animeInfo.title?.english ?: animeInfo.title?.romaji.toString(),
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
 
                 Text(
@@ -80,7 +83,7 @@ fun ItemAnimeLarge(
                     Text(
                         text = animeInfo.averageScore.toString(),
                         fontWeight = FontWeight.Bold,
-
+                        color = Color.White,
                         fontSize = 12.sp,
                     )
                     Spacer(modifier = Modifier.padding(end = 8.dp))
@@ -94,6 +97,7 @@ fun ItemAnimeLarge(
                     Text(
                         text = animeInfo.favourites.toString(),
                         fontWeight = FontWeight.Bold,
+                        color = Color.White,
                         fontSize = 12.sp
                     )
                 }
