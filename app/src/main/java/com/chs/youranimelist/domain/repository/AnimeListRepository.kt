@@ -41,6 +41,8 @@ interface AnimeListRepository {
 
     fun checkAnimeList(animeId: Int): Flow<AnimeDto?>
 
+    fun getYourAnimeList(): Flow<List<AnimeDto>>
+
     suspend fun insertAnime(anime: AnimeDto)
 
     suspend fun deleteAnime(animeId: AnimeDto)

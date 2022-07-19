@@ -79,6 +79,8 @@ class AnimeListRepositoryImpl @Inject constructor(
     override fun checkAnimeList(animeId: Int): Flow<AnimeDto?> =
         db.animeListDao.checkAnimeList(animeId)
 
+    override fun getYourAnimeList(): Flow<List<AnimeDto>> =
+        db.animeListDao.getAllAnimeList()
 
     override suspend fun insertAnime(anime: AnimeDto) {
         db.animeListDao.insertAnimeList(anime)

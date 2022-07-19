@@ -45,7 +45,11 @@ fun AnimeCharaScreen(
             .fillMaxWidth()
             .height(
                 ((((state.animeCharaInfo?.media?.characters?.charactersNode?.size
-                    ?: 1) / 3) + 1) * 100).dp
+                    ?: 1) / 3) + 1) * 104).dp
+            )
+            .padding(
+                top = 8.dp,
+                bottom = 8.dp
             ),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),

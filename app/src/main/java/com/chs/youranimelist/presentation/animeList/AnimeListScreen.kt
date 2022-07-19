@@ -1,60 +1,33 @@
 package com.chs.youranimelist.presentation.animeList
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.chs.youranimelist.domain.model.Anime
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun AnimeListScreen(
+    viewModel: AnimeListViewModel = hiltViewModel()
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Text(text = "AnimeListScreen")
+
+    val state = viewModel.state
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel, context) {
+        viewModel.getYourAnimeList()
     }
-}
 
-@Composable
-fun ItemAnimeLarge(anime: Anime) {
-    Row(
+    LazyColumn(
         modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(anime.coverImage)
-                .crossfade(true)
-                .build(),
-            contentDescription = null,
-            modifier = Modifier
-                .wrapContentWidth()
-                .fillMaxHeight()
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-//            Text()
-//            Text()
-//            Text()
-//            Row {
-//                Icon()
-//                Text()
-//                Icon()
-//                Text()
-//            }
-//            LazyRow()
+        items(state.animeList.size) { idx ->
+            ItemYourAnime(anime = state.animeList[idx])
         }
     }
 }

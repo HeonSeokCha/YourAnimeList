@@ -2,6 +2,7 @@ package com.chs.youranimelist.presentation.browse.anime
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -62,64 +63,63 @@ fun AnimeDetailScreen(
         viewModel.isSaveAnime(id)
     }
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
     ) {
+        item {
+            AnimeDetailHeadBanner(viewModel)
 
-        AnimeDetailHeadBanner(viewModel)
-
-        Spacer(
-            modifier = Modifier
-                .padding(top = 16.dp)
-        )
-        TabRow(
-            modifier = Modifier.fillMaxWidth(),
-            selectedTabIndex = pagerState.currentPage,
-            backgroundColor = Color.White,
-            indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
-                    modifier = Modifier
-                        .pagerTabIndicatorOffset(pagerState, tabPositions),
-                    color = Purple200
-                )
-            }
-        ) {
-            tabList.forEachIndexed { index, s ->
-                Tab(
-                    text = {
-                        Text(
-                            text = tabList[index],
-                            maxLines = 1,
-                            color = Purple200
-                        )
-                    },
-                    selected = pagerState.currentPage == index,
-                    onClick = {
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(index)
-                        }
-                    },
-                )
-            }
-        }
-
-        HorizontalPager(
-            count = tabList.size,
-            state = pagerState,
-            userScrollEnabled = false,
-            modifier = Modifier
-                .fillMaxHeight()
-        ) {
-            when (this.currentPage) {
-                0 -> {
-                    AnimeOverViewScreen(id)
+            Spacer(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+            )
+            TabRow(
+                modifier = Modifier.fillMaxWidth(),
+                selectedTabIndex = pagerState.currentPage,
+                backgroundColor = Color.White,
+                indicator = { tabPositions ->
+                    TabRowDefaults.Indicator(
+                        modifier = Modifier
+                            .pagerTabIndicatorOffset(pagerState, tabPositions),
+                        color = Purple200
+                    )
                 }
-                1 -> {
-                    AnimeCharaScreen(id)
+            ) {
+                tabList.forEachIndexed { index, s ->
+                    Tab(
+                        text = {
+                            Text(
+                                text = tabList[index],
+                                maxLines = 1,
+                                color = Purple200
+                            )
+                        },
+                        selected = pagerState.currentPage == index,
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        },
+                    )
                 }
-                2 -> {
-                    AnimeRecScreen(id)
+            }
+
+            HorizontalPager(
+                count = tabList.size,
+                state = pagerState,
+                userScrollEnabled = false,
+            ) {
+                when (this.currentPage) {
+                    0 -> {
+                        AnimeOverViewScreen(id)
+                    }
+                    1 -> {
+                        AnimeCharaScreen(id)
+                    }
+                    2 -> {
+                        AnimeRecScreen(id)
+                    }
                 }
             }
         }
@@ -246,7 +246,11 @@ fun AnimeDetailHeadBanner(
 
             Button(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(
+                        start = 8.dp,
+                        end = 8.dp
+                    ),
                 onClick = {
                     if (state.isSaveAnime != null) {
                         viewModel.deleteAnime(state.isSaveAnime)

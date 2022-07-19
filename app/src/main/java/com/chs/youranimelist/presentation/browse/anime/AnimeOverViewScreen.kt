@@ -2,12 +2,17 @@ package com.chs.youranimelist.presentation.browse.anime
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.apollographql.apollo3.api.label
 import com.chs.youranimelist.util.Constant.GENRE_COLOR
@@ -31,7 +36,11 @@ fun AnimeOverViewScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        FlowRow {
+        FlowRow(
+            modifier = Modifier
+                .padding(start = 8.dp),
+            mainAxisSpacing = 4.dp
+        ) {
             state.animeOverViewInfo?.media?.genres?.forEach { genre ->
                 Chip(
                     onClick = { },
@@ -44,5 +53,18 @@ fun AnimeOverViewScreen(
                 }
             }
         }
+
+        Text(
+            text = "Description",
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+        )
+
+        Text(
+            text = state.animeOverViewInfo?.media?.description.toString(),
+            maxLines = 5,
+            overflow = TextOverflow.Ellipsis
+        )
+
     }
 }
