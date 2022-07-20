@@ -24,11 +24,11 @@ fun AnimeRecScreen(
 
     LazyColumn(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(
-                ((state.animeRecInfo?.animeRecommend?.recommendations?.edges?.size
-                    ?: 200) * 204).dp
-            )
+            .fillMaxSize()
+//            .height(
+//                ((state.animeRecInfo?.animeRecommend?.recommendations?.edges?.size
+//                    ?: 200) * 204).dp
+//            )
             .padding(
                 top = 8.dp,
                 bottom = 8.dp

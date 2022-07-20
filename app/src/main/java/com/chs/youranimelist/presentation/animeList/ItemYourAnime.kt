@@ -18,11 +18,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.youranimelist.data.model.AnimeDto
 import com.chs.youranimelist.ui.theme.Pink80
-import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.color
-import com.google.accompanist.flowlayout.FlowRow
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ItemYourAnime(anime: AnimeDto) {
     Card(
