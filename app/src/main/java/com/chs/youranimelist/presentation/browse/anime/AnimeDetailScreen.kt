@@ -3,6 +3,8 @@ package com.chs.youranimelist.presentation.browse.anime
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -11,10 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -69,6 +68,10 @@ fun AnimeDetailScreen(
     BoxWithConstraints {
         val screenHeight = maxHeight
         val scrollState = rememberScrollState()
+        val overViewScroll = rememberScrollState()
+        val charaViewScroll = rememberLazyGridState()
+        val recommendScroll = rememberLazyListState()
+        var expandDesc by remember { mutableStateOf(false) }
 
         Column(
             modifier = Modifier
@@ -128,15 +131,27 @@ fun AnimeDetailScreen(
                     state = pagerState,
                     userScrollEnabled = false,
                 ) {
+
                     when (this.currentPage) {
                         0 -> {
-                            AnimeOverViewScreen(id)
+                            AnimeOverViewScreen(
+                                animeId = id,
+                                scrollState = overViewScroll,
+                                expandDesc = expandDesc,
+                                changeExpand = { expandDesc = it }
+                            )
                         }
                         1 -> {
-                            AnimeCharaScreen(id)
+                            AnimeCharaScreen(
+                                animeId = id,
+                                lazyGridScrollState = charaViewScroll,
+                            )
                         }
                         2 -> {
-                            AnimeRecScreen(id)
+                            AnimeRecScreen(
+                                animeId = id,
+                                lazyListState = recommendScroll,
+                            )
                         }
                     }
                 }

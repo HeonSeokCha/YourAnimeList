@@ -1,21 +1,15 @@
 package com.chs.youranimelist.presentation.browse.anime
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -28,11 +22,11 @@ import coil.compose.AsyncImage
 @Composable
 fun AnimeCharaScreen(
     animeId: Int,
-    viewModel: AnimeCharaViewModel = hiltViewModel()
+    viewModel: AnimeCharaViewModel = hiltViewModel(),
+    lazyGridScrollState: LazyGridState
 ) {
     val state = viewModel.state
     val context = LocalContext.current
-    val lazyGridScrollState = rememberLazyGridState()
 
     LaunchedEffect(viewModel, context) {
         viewModel.getAnimeCharacters(animeId)
@@ -43,10 +37,6 @@ fun AnimeCharaScreen(
     LazyVerticalGrid(
         modifier = Modifier
             .fillMaxSize()
-//            .height(
-//                ((((state.animeCharaInfo?.media?.characters?.charactersNode?.size
-//                    ?: 1) / 3) + 1) * 104).dp
-//            )
             .padding(
                 top = 8.dp,
                 bottom = 8.dp
@@ -77,7 +67,7 @@ fun AnimeCharaScreen(
                         .padding(top = 4.dp, bottom = 4.dp)
                 )
                 Text(
-                    modifier = Modifier.align(CenterHorizontally),
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                     textAlign = TextAlign.Center,
                     text = state.animeCharaInfo?.media?.characters?.charactersNode?.get(idx)?.name?.full.toString()
                 )
