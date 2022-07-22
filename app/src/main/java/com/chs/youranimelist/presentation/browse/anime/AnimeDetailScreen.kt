@@ -136,6 +136,7 @@ fun AnimeDetailScreen(
                         0 -> {
                             AnimeOverViewScreen(
                                 animeId = id,
+                                navController = navController,
                                 scrollState = overViewScroll,
                                 expandDesc = expandDesc,
                                 changeExpand = { expandDesc = it }
@@ -145,12 +146,14 @@ fun AnimeDetailScreen(
                             AnimeCharaScreen(
                                 animeId = id,
                                 lazyGridScrollState = charaViewScroll,
+                                navController = navController,
                             )
                         }
                         2 -> {
                             AnimeRecScreen(
                                 animeId = id,
                                 lazyListState = recommendScroll,
+                                navController = navController,
                             )
                         }
                     }

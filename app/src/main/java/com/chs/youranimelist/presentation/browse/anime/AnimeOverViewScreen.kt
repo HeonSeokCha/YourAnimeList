@@ -6,6 +6,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.chs.youranimelist.util.Constant.GENRE_COLOR
 import com.chs.youranimelist.util.color
 import com.google.accompanist.flowlayout.FlowRow
@@ -24,10 +26,11 @@ import com.google.accompanist.flowlayout.FlowRow
 @Composable
 fun AnimeOverViewScreen(
     animeId: Int,
+    navController: NavController,
     viewModel: AnimeOverViewViewModel = hiltViewModel(),
     scrollState: ScrollState,
     expandDesc: Boolean,
-    changeExpand: (Boolean) -> Unit
+    changeExpand: (Boolean) -> Unit,
 ) {
     val state = viewModel.state
     val context = LocalContext.current
@@ -74,21 +77,28 @@ fun AnimeOverViewScreen(
             Text(
                 text = state.animeOverViewInfo?.media?.description ?: "",
             )
+            IconButton(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally),
+                onClick = {
+                    changeExpand(!expandDesc)
+                }) {
+                Icon(imageVector = Icons.Filled.ArrowDropUp, contentDescription = null)
+            }
         } else {
             Text(
                 text = state.animeOverViewInfo?.media?.description ?: "",
                 maxLines = 5,
                 overflow = TextOverflow.Ellipsis
             )
-        }
-
-        IconButton(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally),
-            onClick = {
-                changeExpand(!expandDesc)
-            }) {
-            Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null)
+            IconButton(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally),
+                onClick = {
+                    changeExpand(!expandDesc)
+                }) {
+                Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null)
+            }
         }
     }
 }

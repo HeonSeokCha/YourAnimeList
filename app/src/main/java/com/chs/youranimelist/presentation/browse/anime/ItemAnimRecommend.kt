@@ -1,6 +1,7 @@
 package com.chs.youranimelist.presentation.browse.anime
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -24,12 +25,16 @@ import com.chs.youranimelist.util.color
 
 @Composable
 fun ItemAnimeRecommend(
-    animeInfo: AnimeRecommendQuery.MediaRecommendation
+    animeInfo: AnimeRecommendQuery.MediaRecommendation,
+    clickAble: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp),
+            .height(200.dp)
+            .clickable {
+                clickAble()
+            },
         backgroundColor = Pink80,
         shape = RoundedCornerShape(5.dp)
     ) {

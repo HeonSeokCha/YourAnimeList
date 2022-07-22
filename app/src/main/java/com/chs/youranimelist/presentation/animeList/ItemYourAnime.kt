@@ -1,6 +1,7 @@
 package com.chs.youranimelist.presentation.animeList
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -21,11 +22,17 @@ import com.chs.youranimelist.ui.theme.Pink80
 import com.chs.youranimelist.util.color
 
 @Composable
-fun ItemYourAnime(anime: AnimeDto) {
+fun ItemYourAnime(
+    anime: AnimeDto,
+    clickAble: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp),
+            .height(190.dp)
+            .clickable {
+                clickAble()
+            },
         backgroundColor = Pink80,
         shape = RoundedCornerShape(5.dp)
     ) {
@@ -33,7 +40,7 @@ fun ItemYourAnime(anime: AnimeDto) {
             AsyncImage(
                 modifier = Modifier
                     .width(150.dp)
-                    .height(200.dp)
+                    .height(190.dp)
                     .background(
                         color = "#ffffff".color
                     ),
