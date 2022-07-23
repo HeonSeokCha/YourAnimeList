@@ -1,6 +1,7 @@
 package com.chs.youranimelist.presentation.browse.anime
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
@@ -19,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.chs.youranimelist.presentation.browse.BrowseScreen
+import com.chs.youranimelist.presentation.browse.character.CharacterDetailScreen
 
 @Composable
 fun AnimeCharaScreen(
@@ -53,7 +56,16 @@ fun AnimeCharaScreen(
             Column(
                 modifier = Modifier
                     .width(100.dp)
-
+                    .clickable {
+                        navController.navigate(
+                            "${BrowseScreen.CharacterDetailScreen.route}/" +
+                                    "${
+                                        state.animeCharaInfo?.media?.characters?.charactersNode?.get(
+                                            idx
+                                        )?.id ?: 0
+                                    }"
+                        )
+                    }
             ) {
                 AsyncImage(
                     modifier = Modifier

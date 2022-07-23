@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -116,6 +117,24 @@ fun AppBar(navController: NavHostController) {
                 }
             )
         }
+    }
+}
+
+@Composable
+fun SearchAppBar(
+    text: String,
+    onTextChanged: (String) -> Unit,
+    onClosedClicked: () -> Unit,
+    onSearchClicked: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        elevation = AppBarDefaults.TopAppBarElevation,
+        color = MaterialTheme.colors.primary
+    ) {
+
     }
 }
 

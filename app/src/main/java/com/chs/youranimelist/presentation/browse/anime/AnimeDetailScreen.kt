@@ -125,6 +125,13 @@ fun AnimeDetailScreen(
                                         y = -scrollState.dispatchRawDelta(-available.y)
                                     )
                                 }
+
+                                override suspend fun onPreFling(available: Velocity): Velocity {
+                                    return if (available.y > 0) Velocity.Zero else Velocity(
+                                        x = 0f,
+                                        y = -scrollState.dispatchRawDelta(-available.y)
+                                    )
+                                }
                             }
                         }),
                     count = tabList.size,
