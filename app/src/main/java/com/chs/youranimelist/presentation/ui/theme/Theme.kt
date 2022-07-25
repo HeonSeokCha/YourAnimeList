@@ -33,7 +33,7 @@ fun YourAnimeListTheme(
 ) {
 
     MaterialTheme(
-        colors = DarkColorPalette,
+        colors = LightColorPalette,
         typography = Typography,
         shapes = Shapes,
         content = content

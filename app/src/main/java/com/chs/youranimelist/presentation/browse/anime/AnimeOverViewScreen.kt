@@ -2,6 +2,7 @@ package com.chs.youranimelist.presentation.browse.anime
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -26,6 +27,7 @@ import com.google.accompanist.flowlayout.FlowRow
 @Composable
 fun AnimeOverViewScreen(
     animeId: Int,
+    animeMalId: Int,
     navController: NavController,
     viewModel: AnimeOverViewViewModel = hiltViewModel(),
     scrollState: ScrollState,
@@ -37,6 +39,7 @@ fun AnimeOverViewScreen(
 
     LaunchedEffect(viewModel, context) {
         viewModel.getAnimeOverView(animeId)
+        viewModel.getAnimeTheme(animeMalId)
     }
 
     Column(
@@ -99,6 +102,16 @@ fun AnimeOverViewScreen(
                 }) {
                 Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null)
             }
+        }
+    }
+
+    LazyColumn {
+        items(state.animeOverThemeInfo?.openingThemes?.size ?: 0) { idx ->
+            Text(text = state.animeOverThemeInfo?.openingThemes?.get(idx).toString())
+        }
+
+        items(state.animeOverThemeInfo?.openingThemes?.size ?: 0) { idx ->
+            Text(text = state.animeOverThemeInfo?.openingThemes?.get(idx).toString())
         }
     }
 }

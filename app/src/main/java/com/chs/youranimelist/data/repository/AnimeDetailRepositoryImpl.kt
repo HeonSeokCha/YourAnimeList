@@ -1,5 +1,6 @@
 package com.chs.youranimelist.data.repository
 
+import android.util.Log
 import coil.network.HttpException
 import com.apollographql.apollo3.ApolloClient
 import com.chs.youranimelist.AnimeCharacterQuery
@@ -100,6 +101,7 @@ class AnimeDetailRepositoryImpl @Inject constructor(
                 )
             } catch (e: Exception) {
                 emit(Resource.Error("Couldn't load date"))
+                Log.e("JikanError", e.message.toString())
             }
         }
     }

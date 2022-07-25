@@ -143,6 +143,7 @@ fun AnimeDetailScreen(
                         0 -> {
                             AnimeOverViewScreen(
                                 animeId = id,
+                                animeMalId = idMal,
                                 navController = navController,
                                 scrollState = overViewScroll,
                                 expandDesc = expandDesc,
