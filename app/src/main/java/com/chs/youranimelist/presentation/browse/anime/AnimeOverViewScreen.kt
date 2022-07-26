@@ -3,6 +3,7 @@ package com.chs.youranimelist.presentation.browse.anime
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -30,7 +31,7 @@ fun AnimeOverViewScreen(
     animeMalId: Int,
     navController: NavController,
     viewModel: AnimeOverViewViewModel = hiltViewModel(),
-    scrollState: ScrollState,
+    scrollState: LazyListState,
     expandDesc: Boolean,
     changeExpand: (Boolean) -> Unit,
 ) {
@@ -42,76 +43,81 @@ fun AnimeOverViewScreen(
         viewModel.getAnimeTheme(animeMalId)
     }
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(
                 start = 8.dp,
                 end = 8.dp
-            )
-            .verticalScroll(scrollState),
+            ),
+        state = scrollState
     ) {
-        FlowRow(
-            modifier = Modifier,
-            mainAxisSpacing = 4.dp
-        ) {
-            state.animeOverViewInfo?.media?.genres?.forEach { genre ->
-                Chip(
-                    onClick = { },
-                    colors = ChipDefaults.chipColors(
-                        backgroundColor = GENRE_COLOR[genre]?.color ?: Color.Black,
-                        contentColor = Color.White
-                    )
-                ) {
-                    Text(text = genre.toString())
+        item {
+            FlowRow(
+                modifier = Modifier,
+                mainAxisSpacing = 4.dp
+            ) {
+                state.animeOverViewInfo?.media?.genres?.forEach { genre ->
+                    Chip(
+                        onClick = { },
+                        colors = ChipDefaults.chipColors(
+                            backgroundColor = GENRE_COLOR[genre]?.color ?: Color.Black,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text(text = genre.toString())
+                    }
                 }
             }
         }
 
-        Text(
-            text = "Description",
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-        )
+        item {
+            Column {
+                Text(
+                    text = "Description",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                )
 
-        Spacer(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
+                Spacer(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
 
-        if (expandDesc) {
-            Text(
-                text = state.animeOverViewInfo?.media?.description ?: "",
-            )
-            IconButton(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-                onClick = {
-                    changeExpand(!expandDesc)
-                }) {
-                Icon(imageVector = Icons.Filled.ArrowDropUp, contentDescription = null)
-            }
-        } else {
-            Text(
-                text = state.animeOverViewInfo?.media?.description ?: "",
-                maxLines = 5,
-                overflow = TextOverflow.Ellipsis
-            )
-            IconButton(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-                onClick = {
-                    changeExpand(!expandDesc)
-                }) {
-                Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null)
+                if (expandDesc) {
+                    Text(
+                        text = state.animeOverViewInfo?.media?.description ?: "",
+                    )
+                    IconButton(
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally),
+                        onClick = {
+                            changeExpand(!expandDesc)
+                        }) {
+                        Icon(imageVector = Icons.Filled.ArrowDropUp, contentDescription = null)
+                    }
+                } else {
+                    Text(
+                        text = state.animeOverViewInfo?.media?.description ?: "",
+                        maxLines = 5,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    IconButton(
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally),
+                        onClick = {
+                            changeExpand(!expandDesc)
+                        }) {
+                        Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null)
+                    }
+                }
             }
         }
-    }
 
-    LazyColumn {
+
         items(state.animeOverThemeInfo?.openingThemes?.size ?: 0) { idx ->
             Text(text = state.animeOverThemeInfo?.openingThemes?.get(idx).toString())
         }
 
-        items(state.animeOverThemeInfo?.openingThemes?.size ?: 0) { idx ->
-            Text(text = state.animeOverThemeInfo?.openingThemes?.get(idx).toString())
+        items(state.animeOverThemeInfo?.endingThemes?.size ?: 0) { idx ->
+            Text(text = state.animeOverThemeInfo?.endingThemes?.get(idx).toString())
         }
     }
 }

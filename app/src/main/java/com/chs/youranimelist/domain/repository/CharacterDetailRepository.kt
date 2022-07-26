@@ -1,8 +1,9 @@
 package com.chs.youranimelist.domain.repository
 
-import com.apollographql.apollo3.api.ApolloResponse
 import com.chs.youranimelist.CharacterQuery
+import com.chs.youranimelist.util.Resource
+import kotlinx.coroutines.flow.Flow
 
 interface CharacterDetailRepository {
-    suspend fun getCharacterDetail(charaId: Int): ApolloResponse<CharacterQuery.Data>
+    suspend fun getCharacterDetail(charaId: Int): Flow<Resource<CharacterQuery.Data>>
 }

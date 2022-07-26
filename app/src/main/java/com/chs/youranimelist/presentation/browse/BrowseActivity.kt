@@ -78,8 +78,19 @@ class BrowseActivity : ComponentActivity() {
                             )
                         }
 
-                        composable("${BrowseScreen.CharacterDetailScreen.route}/{id}") { backStackEntry ->
-                            CharacterDetailScreen()
+                        composable(
+                            route = "${BrowseScreen.CharacterDetailScreen.route}/{id}",
+                            arguments = listOf(
+                                navArgument("id") {
+                                    type = NavType.IntType; defaultValue =
+                                    intent?.getIntExtra(Constant.TARGET_ID, 0)!!
+                                }
+                            )
+                        ) { backStackEntry ->
+                            CharacterDetailScreen(
+                                backStackEntry.arguments?.getInt("id")!!,
+                                navController
+                            )
                         }
                         composable("${BrowseScreen.StudioDetailScreen.route}/{id}") { backStackEntry ->
                             StudioDetailScreen()

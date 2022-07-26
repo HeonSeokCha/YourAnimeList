@@ -21,7 +21,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.youranimelist.presentation.browse.BrowseScreen
-import com.chs.youranimelist.presentation.browse.character.CharacterDetailScreen
 
 @Composable
 fun AnimeCharaScreen(

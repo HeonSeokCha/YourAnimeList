@@ -68,7 +68,7 @@ fun AnimeDetailScreen(
     BoxWithConstraints {
         val screenHeight = maxHeight
         val scrollState = rememberScrollState()
-        val overViewScroll = rememberScrollState()
+        val overViewScroll = rememberLazyListState()
         val charaViewScroll = rememberLazyGridState()
         val recommendScroll = rememberLazyListState()
         var expandDesc by remember { mutableStateOf(false) }
