@@ -2,12 +2,11 @@ package com.chs.youranimelist.di
 
 import com.chs.youranimelist.data.repository.AnimeDetailRepositoryImpl
 import com.chs.youranimelist.data.repository.AnimeListRepositoryImpl
-import com.chs.youranimelist.data.repository.CharacterDetailRepositoryImpl
+import com.chs.youranimelist.data.repository.CharacterRepositoryImpl
 import com.chs.youranimelist.domain.repository.AnimeDetailRepository
 import com.chs.youranimelist.domain.repository.AnimeListRepository
-import com.chs.youranimelist.domain.repository.CharacterDetailRepository
+import com.chs.youranimelist.domain.repository.CharacterRepository
 import dagger.Binds
-import dagger.BindsInstance
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
@@ -28,7 +27,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindCharacterDetailRepository(
-        characterDetailRepositoryImpl: CharacterDetailRepositoryImpl
-    ): CharacterDetailRepository
+        characterDetailRepositoryImpl: CharacterRepositoryImpl
+    ): CharacterRepository
 
 }

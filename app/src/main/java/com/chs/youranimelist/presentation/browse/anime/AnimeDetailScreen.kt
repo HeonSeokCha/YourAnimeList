@@ -301,7 +301,7 @@ fun AnimeDetailHeadBanner(
                     if (state.isSaveAnime != null) {
                         viewModel.deleteAnime(state.isSaveAnime)
                     } else {
-                        viewModel.insertAnime(state.animeDetailInfo?.media!!)
+                        viewModel.insertAnime()
                     }
                 }
             ) {

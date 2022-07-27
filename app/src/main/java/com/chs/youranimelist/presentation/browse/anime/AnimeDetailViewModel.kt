@@ -65,7 +65,8 @@ class AnimeDetailViewModel @Inject constructor(
         }
     }
 
-    fun insertAnime(anime: AnimeDetailQuery.Media) {
+    fun insertAnime() {
+        val anime = state.animeDetailInfo?.media!!
         viewModelScope.launch {
             val animeObj = Anime(
                 animeId = anime.id,
