@@ -10,6 +10,8 @@ interface CharacterRepository {
 
     fun checkCharaList(charaId: Int): Flow<CharacterDto>
 
+    fun getYourCharaList(): Flow<List<CharacterDto>>
+
     suspend fun insertCharacter(character: CharacterDto)
 
     suspend fun deleteCharacter(character: CharacterDto)

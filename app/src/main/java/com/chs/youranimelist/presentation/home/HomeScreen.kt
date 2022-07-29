@@ -2,24 +2,32 @@ package com.chs.youranimelist.presentation.home
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -250,6 +258,24 @@ fun ItemAnimeSmall(
     item: AnimeList,
     onClick: () -> Unit
 ) {
+    val starId = "starId"
+    val inlineContent = mapOf(
+        Pair(
+            starId,
+            InlineTextContent(
+                Placeholder(
+                    width = 1.5.em,
+                    height = 1.5.em,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                )
+            ) {
+                Icon(
+                    Icons.Rounded.Star,
+                    contentDescription = null,
+                    tint = Color.Yellow,
+                )
+            })
+    )
     Card(
         modifier = Modifier
             .width(130.dp)
@@ -282,6 +308,31 @@ fun ItemAnimeSmall(
                 color = Color(Constant.mediaStatusColor[item.status] ?: 0xFF888888),
                 fontSize = 12.sp
             )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 4.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Text(
+                    text = item.seasonYear.toString(),
+                    color = Color.Gray,
+                    fontSize = 12.sp,
+                )
+
+                Text(
+                    text = buildAnnotatedString {
+                        appendInlineContent(starId, starId)
+                        append(item.averageScore.toString())
+                    },
+                    inlineContent = inlineContent,
+                    color = Color.Gray,
+                    fontSize = 12.sp,
+                )
+
+            }
         }
     }
 }

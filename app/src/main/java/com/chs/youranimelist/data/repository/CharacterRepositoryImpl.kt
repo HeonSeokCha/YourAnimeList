@@ -40,6 +40,10 @@ class CharacterRepositoryImpl @Inject constructor(
         return db.charaListDao.checkCharaList(charaId)
     }
 
+    override fun getYourCharaList(): Flow<List<CharacterDto>> {
+        return db.charaListDao.getAllCharaList()
+    }
+
     override suspend fun insertCharacter(character: CharacterDto) {
         db.charaListDao.insertCharaList(character)
     }
