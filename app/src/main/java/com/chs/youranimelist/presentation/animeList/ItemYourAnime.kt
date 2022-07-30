@@ -4,17 +4,27 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.youranimelist.data.model.AnimeDto
@@ -26,6 +36,41 @@ fun ItemYourAnime(
     anime: AnimeDto,
     clickAble: () -> Unit
 ) {
+
+    val starId = "starId"
+    val favoriteId = "favoriteId"
+    val inlineContent = mapOf(
+        Pair(
+            starId,
+            InlineTextContent(
+                Placeholder(
+                    width = 1.5.em,
+                    height = 1.5.em,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                )
+            ) {
+                Icon(
+                    Icons.Rounded.Star,
+                    contentDescription = null,
+                    tint = Color.Yellow,
+                )
+            }),
+        Pair(
+            favoriteId,
+            InlineTextContent(
+                Placeholder(
+                    width = 1.5.em,
+                    height = 1.5.em,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                )
+            ) {
+                Icon(
+                    Icons.Rounded.Favorite,
+                    contentDescription = null,
+                    tint = Color.Red,
+                )
+            })
+    )
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -81,47 +126,28 @@ fun ItemYourAnime(
                 Row(
                     modifier = Modifier.padding(top = 8.dp)
                 ) {
-                    Icon(
-                        Icons.Default.Star,
-                        contentDescription = null,
-                        tint = Color.Yellow
-                    )
-                    Spacer(modifier = Modifier.padding(end = 8.dp))
                     Text(
-                        text = anime.averageScore.toString(),
+                        text = buildAnnotatedString {
+                            appendInlineContent(starId, starId)
+                            append(anime.averageScore.toString())
+                        },
+                        inlineContent = inlineContent,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
-                        fontSize = 12.sp,
+                        fontSize = 14.sp,
                     )
-                    Spacer(modifier = Modifier.padding(end = 8.dp))
-
-                    Icon(
-                        Icons.Default.Favorite,
-                        contentDescription = null,
-                        tint = Color.Red
-                    )
-                    Spacer(modifier = Modifier.padding(end = 8.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = anime.favorites.toString(),
+                        text = buildAnnotatedString {
+                            appendInlineContent(favoriteId, favoriteId)
+                            append(anime.favorites.toString())
+                        },
+                        inlineContent = inlineContent,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
-                        fontSize = 12.sp
+                        fontSize = 14.sp,
                     )
                 }
-
-//                FlowRow {
-//                    anime.genre.forEach { genre ->
-//                        Chip(
-//                            onClick = { },
-//                            colors = ChipDefaults.chipColors(
-//                                backgroundColor = Constant.GENRE_COLOR[genre]?.color ?: Color.Black,
-//                                contentColor = Color.White
-//                            )
-//                        ) {
-//                            Text(text = genre.toString(),)
-//                        }
-//                    }
-//                }
             }
         }
     }

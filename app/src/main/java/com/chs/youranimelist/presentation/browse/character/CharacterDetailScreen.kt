@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -18,7 +20,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -42,95 +48,118 @@ fun CharacterDetailScreen(
     val state = viewModel.state
     val context = LocalContext.current
     var expandDesc by remember { mutableStateOf(false) }
+    val scrollState = rememberScrollState()
 
     LaunchedEffect(viewModel, context) {
         viewModel.getCharacterDetail(charaId)
         viewModel.isSaveCharacter(charaId)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                start = 8.dp,
-                end = 8.dp
-            ),
-    ) {
-        val characterInfo = state.characterDetailInfo?.character
-
-        CharacterBanner(state)
-
-        Button(
+    BoxWithConstraints {
+        val screenHeight = maxHeight
+        Column(
             modifier = Modifier
-                .fillMaxWidth(),
-            onClick = {
+                .fillMaxSize()
+                .padding(
+                    start = 8.dp,
+                    end = 8.dp
+                )
+                .verticalScroll(scrollState),
+        ) {
+            val characterInfo = state.characterDetailInfo?.character
+
+            CharacterBanner(state)
+
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                onClick = {
+                    if (state.isSaveChara != null) {
+                        viewModel.deleteCharacter()
+                    } else {
+                        viewModel.insertCharacter()
+                    }
+                }
+            ) {
                 if (state.isSaveChara != null) {
-                    viewModel.deleteCharacter()
+                    Text("SAVED")
                 } else {
-                    viewModel.insertCharacter()
+                    Text("ADD MY LIST")
                 }
             }
-        ) {
-            if (state.isSaveChara != null) {
-                Text("SAVED")
-            } else {
-                Text("ADD MY LIST")
-            }
-        }
 
-        Text(
-            text = "Description",
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-        )
-
-        Spacer(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
-
-        if (expandDesc) {
             Text(
-                text = state.characterDetailInfo?.character?.description ?: "",
+                text = "Description",
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
             )
-            IconButton(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-                onClick = {
-                    expandDesc = false
-                }) {
-                Icon(imageVector = Icons.Filled.ArrowDropUp, contentDescription = null)
-            }
-        } else {
-            Text(
-                text = state.characterDetailInfo?.character?.description ?: "",
-                maxLines = 5,
-                overflow = TextOverflow.Ellipsis
-            )
-            IconButton(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-                onClick = {
-                    expandDesc = true
-                }) {
-                Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null)
-            }
-        }
 
-        LazyVerticalGrid(
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            columns = GridCells.Adaptive(100.dp),
-        ) {
-            items(characterInfo?.media?.edges?.size ?: 0) { idx ->
-                ItemAnimeSmall(
-                    item = characterInfo?.media?.edges?.get(idx)?.node?.animeList!!,
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (expandDesc) {
+                Text(
+                    text = state.characterDetailInfo?.character?.description ?: "",
+                )
+                IconButton(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally),
                     onClick = {
-                        navController.navigate(
-                            "${BrowseScreen.AnimeDetailScreen.route}/" +
-                                    "${characterInfo.media.edges[idx]?.node?.animeList!!.id}" +
-                                    "/${characterInfo.media.edges[idx]?.node?.animeList!!.idMal}"
+                        expandDesc = false
+                    }) {
+                    Icon(imageVector = Icons.Filled.ArrowDropUp, contentDescription = null)
+                }
+            } else {
+                Text(
+                    text = state.characterDetailInfo?.character?.description ?: "",
+                    maxLines = 5,
+                    overflow = TextOverflow.Ellipsis
+                )
+                IconButton(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally),
+                    onClick = {
+                        expandDesc = true
+                    }) {
+                    Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null)
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .height(screenHeight)
+            ) {
+                LazyVerticalGrid(
+                    modifier = Modifier.nestedScroll(remember {
+                        object : NestedScrollConnection {
+                            override fun onPreScroll(
+                                available: Offset,
+                                source: NestedScrollSource
+                            ): Offset {
+                                return if (available.y > 0) Offset.Zero else Offset(
+                                    x = 0f,
+                                    y = -scrollState.dispatchRawDelta(-available.y)
+                                )
+                            }
+                        }
+                    }),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    columns = GridCells.Adaptive(100.dp),
+                    contentPadding = PaddingValues(vertical = 8.dp)
+                ) {
+                    items(characterInfo?.media?.edges?.size ?: 0) { idx ->
+                        ItemAnimeSmall(
+                            item = characterInfo?.media?.edges?.get(idx)?.node?.animeList!!,
+                            onClick = {
+                                navController.navigate(
+                                    "${BrowseScreen.AnimeDetailScreen.route}/" +
+                                            "${characterInfo.media.edges[idx]?.node?.animeList!!.id}" +
+                                            "/${characterInfo.media.edges[idx]?.node?.animeList!!.idMal ?: 0}"
+                                )
+                            }
                         )
                     }
-                )
+                }
             }
         }
     }

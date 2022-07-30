@@ -47,7 +47,10 @@ fun AnimeCharaScreen(
             ),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
-        contentPadding = PaddingValues(horizontal = 8.dp),
+        contentPadding = PaddingValues(
+            horizontal = 8.dp,
+            vertical = 8.dp
+        ),
         state = lazyGridScrollState,
         columns = GridCells.Fixed(3),
     ) {
@@ -75,10 +78,7 @@ fun AnimeCharaScreen(
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                 )
-                Spacer(
-                    modifier = Modifier
-                        .padding(top = 4.dp, bottom = 4.dp)
-                )
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     textAlign = TextAlign.Center,

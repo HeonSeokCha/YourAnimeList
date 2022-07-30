@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.*
@@ -14,10 +15,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -25,6 +28,7 @@ import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -75,10 +79,8 @@ fun HomeScreen(
                 pagerState = pagerState,
                 activeColor = Color.DarkGray,
                 inactiveColor = Color.LightGray,
-                modifier = Modifier
-                    .padding(16.dp),
+                modifier = Modifier.padding(8.dp),
             )
-            Spacer(modifier = Modifier.padding(bottom = 8.dp))
         }
 
         items(state.nestedList.size, key = { it }) { idx ->
@@ -108,6 +110,42 @@ fun ItemHomeBanner(
     context: Context,
     banner: HomeRecommendListQuery.Medium?
 ) {
+
+    val favoriteId = "favoriteId"
+    val scoreId = "scoreId"
+    val inlineContent = mapOf(
+        Pair(
+            scoreId,
+            InlineTextContent(
+                Placeholder(
+                    width = 1.5.em,
+                    height = 1.5.em,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                )
+            ) {
+                Icon(
+                    Icons.Rounded.Star,
+                    contentDescription = null,
+                    tint = Color.Yellow,
+                )
+            }),
+        Pair(
+            favoriteId,
+            InlineTextContent(
+                Placeholder(
+                    width = 1.5.em,
+                    height = 1.5.em,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                )
+            ) {
+                Icon(
+                    Icons.Rounded.Favorite,
+                    contentDescription = null,
+                    tint = Color.Red,
+                )
+            }),
+    )
+
     AsyncImage(
         modifier = Modifier
             .fillMaxWidth()
@@ -154,30 +192,26 @@ fun ItemHomeBanner(
                     bottom = 8.dp
                 ),
         ) {
-            Icon(
-                Icons.Default.Star,
-                contentDescription = null,
-                tint = Color.Yellow
-            )
-            Spacer(modifier = Modifier.padding(end = 8.dp))
             Text(
-                text = banner?.averageScore.toString(),
+                text = buildAnnotatedString {
+                    appendInlineContent(scoreId, scoreId)
+                    append(banner?.averageScore.toString())
+                },
+                inlineContent = inlineContent,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
-                fontSize = 12.sp,
+                fontSize = 14.sp,
             )
-            Spacer(modifier = Modifier.padding(end = 8.dp))
-            Icon(
-                Icons.Default.Favorite,
-                contentDescription = null,
-                tint = Color.Red
-            )
-            Spacer(modifier = Modifier.padding(end = 8.dp))
+            Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = banner?.favourites.toString(),
+                text = buildAnnotatedString {
+                    appendInlineContent(favoriteId, favoriteId)
+                    append(banner?.favourites.toString())
+                },
+                inlineContent = inlineContent,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
-                fontSize = 12.sp
+                fontSize = 14.sp,
             )
         }
     }
@@ -279,59 +313,76 @@ fun ItemAnimeSmall(
     Card(
         modifier = Modifier
             .width(130.dp)
-            .height(260.dp),
+            .height(280.dp),
         elevation = 3.dp,
         onClick = onClick
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(4.dp)
+                .padding(
+                    top = 4.dp,
+                    start = 8.dp,
+                    end = 8.dp,
+                    bottom = 4.dp
+                )
         ) {
             AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp),
+                    .height(180.dp)
+                    .clip(RoundedCornerShape(5.dp)),
                 model = item.coverImage?.extraLarge,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = item.title?.english ?: item.title?.romaji.toString(),
                 color = Color.Gray,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                fontSize = 13.sp
+                fontSize = 14.sp
             )
             Text(
                 text = Constant.mediaStatus[item.status] ?: "",
                 color = Color(Constant.mediaStatusColor[item.status] ?: 0xFF888888),
-                fontSize = 12.sp
+                fontSize = 13.sp
             )
 
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 4.dp),
+                    .padding(
+                        top = 4.dp,
+                    ),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Bottom
             ) {
-                Text(
-                    text = item.seasonYear.toString(),
-                    color = Color.Gray,
-                    fontSize = 12.sp,
-                )
 
-                Text(
-                    text = buildAnnotatedString {
-                        appendInlineContent(starId, starId)
-                        append(item.averageScore.toString())
-                    },
-                    inlineContent = inlineContent,
-                    color = Color.Gray,
-                    fontSize = 12.sp,
-                )
+                if (item.seasonYear != null) {
+                    Text(
+                        text = item.seasonYear.toString(),
+                        color = Color.Gray,
+                        fontSize = 14.sp,
+                    )
+                }
 
+                if (item.averageScore != null) {
+                    Text(
+                        text = buildAnnotatedString {
+                            appendInlineContent(starId, starId)
+                            append(item.averageScore.toString())
+                        },
+                        inlineContent = inlineContent,
+                        color = Color.Gray,
+                        fontSize = 14.sp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f, false),
+                        textAlign = TextAlign.End
+                    )
+                }
             }
         }
     }

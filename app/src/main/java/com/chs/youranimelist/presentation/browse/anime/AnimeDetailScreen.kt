@@ -7,12 +7,16 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,10 +28,14 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -187,6 +195,41 @@ fun AnimeDetailHeadBanner(
     viewModel: AnimeDetailViewModel
 ) {
     val state = viewModel.state
+    val starId = "starId"
+    val favoriteId = "favoriteId"
+    val inlineContent = mapOf(
+        Pair(
+            starId,
+            InlineTextContent(
+                Placeholder(
+                    width = 1.5.em,
+                    height = 1.5.em,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                )
+            ) {
+                Icon(
+                    Icons.Rounded.Star,
+                    contentDescription = null,
+                    tint = Color.Yellow,
+                )
+            }),
+        Pair(
+            favoriteId,
+            InlineTextContent(
+                Placeholder(
+                    width = 1.5.em,
+                    height = 1.5.em,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                )
+            ) {
+                Icon(
+                    Icons.Rounded.Favorite,
+                    contentDescription = null,
+                    tint = Color.Red,
+                )
+            })
+    )
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -259,34 +302,27 @@ fun AnimeDetailHeadBanner(
                         modifier = Modifier.padding(top = 8.dp)
                     ) {
                         if (state.animeDetailInfo?.media?.averageScore != null) {
-                            Icon(
-                                Icons.Default.Star,
-                                contentDescription = null,
-                                tint = Color.Yellow
-                            )
-                            Spacer(modifier = Modifier.padding(end = 8.dp))
                             Text(
-                                text = state.animeDetailInfo.media.averageScore.toString(),
+                                text = buildAnnotatedString {
+                                    appendInlineContent(starId, starId)
+                                    append(state.animeDetailInfo?.media?.averageScore.toString())
+                                },
+                                inlineContent = inlineContent,
                                 fontWeight = FontWeight.Bold,
-
-                                fontSize = 12.sp,
+                                fontSize = 13.sp,
                             )
-                            Spacer(modifier = Modifier.padding(end = 8.dp))
+                            Spacer(modifier = Modifier.width(16.dp))
                         }
-
-                        Icon(
-                            Icons.Default.Favorite,
-                            contentDescription = null,
-                            tint = Color.Red
-                        )
-                        Spacer(modifier = Modifier.padding(end = 8.dp))
                         Text(
-                            text = state.animeDetailInfo?.media?.favourites.toString(),
+                            text = buildAnnotatedString {
+                                appendInlineContent(favoriteId, favoriteId)
+                                append(state.animeDetailInfo?.media?.favourites.toString())
+                            },
+                            inlineContent = inlineContent,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 12.sp
+                            fontSize = 13.sp,
                         )
                     }
-
                 }
             }
 
@@ -294,6 +330,7 @@ fun AnimeDetailHeadBanner(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
+                        top = 8.dp,
                         start = 8.dp,
                         end = 8.dp
                     ),
