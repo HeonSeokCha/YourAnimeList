@@ -1,5 +1,7 @@
 package com.chs.youranimelist.presentation.browse.anime
 
+import android.text.TextUtils
+import android.widget.TextView
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,6 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.chs.youranimelist.util.Constant.GENRE_COLOR
@@ -82,8 +86,14 @@ fun AnimeOverViewScreen(
                 Spacer(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
 
                 if (expandDesc) {
-                    Text(
-                        text = state.animeOverViewInfo?.media?.description ?: "",
+                    AndroidView(
+                        factory = { context -> TextView(context) },
+                        update = {
+                            it.text = HtmlCompat.fromHtml(
+                                state.animeOverViewInfo?.media?.description ?: "",
+                                HtmlCompat.FROM_HTML_MODE_COMPACT
+                            )
+                        }
                     )
                     IconButton(
                         modifier = Modifier
@@ -94,10 +104,16 @@ fun AnimeOverViewScreen(
                         Icon(imageVector = Icons.Filled.ArrowDropUp, contentDescription = null)
                     }
                 } else {
-                    Text(
-                        text = state.animeOverViewInfo?.media?.description ?: "",
-                        maxLines = 5,
-                        overflow = TextOverflow.Ellipsis
+                    AndroidView(
+                        factory = { context -> TextView(context) },
+                        update = {
+                            it.text = HtmlCompat.fromHtml(
+                                state.animeOverViewInfo?.media?.description ?: "",
+                                HtmlCompat.FROM_HTML_MODE_COMPACT
+                            )
+                            it.maxLines = 5
+                            it.ellipsize = TextUtils.TruncateAt.END
+                        }
                     )
                     IconButton(
                         modifier = Modifier
