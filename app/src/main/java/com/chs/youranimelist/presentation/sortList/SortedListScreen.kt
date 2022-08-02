@@ -2,11 +2,14 @@ package com.chs.youranimelist.presentation.sortList
 
 import android.content.Intent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -35,22 +38,35 @@ fun SortedListScreen(
         Constant.TRENDING_NOW -> {
             viewModel.selectedSort = MediaSort.TRENDING_DESC
             viewModel.selectType = Constant.NO_SEASON_NO_YEAR
+            viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Trending")
         }
         Constant.POPULAR_THIS_SEASON -> {
             viewModel.selectedSort = MediaSort.POPULARITY_DESC
             viewModel.selectedSeason = ConvertDate.getCurrentSeason()
             viewModel.selectedYear = ConvertDate.getCurrentYear(false)
             viewModel.selectType = Constant.SEASON_YEAR
+            viewModel.filterList[0] =
+                viewModel.filterList[0].copy(second = ConvertDate.getCurrentYear(false).toString())
+            viewModel.filterList[1] =
+                viewModel.filterList[1].copy(second = ConvertDate.getCurrentSeason().toString())
+            viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
         }
         Constant.UPCOMING_NEXT_SEASON -> {
             viewModel.selectedSort = MediaSort.POPULARITY_DESC
             viewModel.selectedSeason = ConvertDate.getNextSeason()
             viewModel.selectedYear = ConvertDate.getCurrentYear(true)
             viewModel.selectType = Constant.SEASON_YEAR
+
+            viewModel.filterList[0] =
+                viewModel.filterList[0].copy(second = ConvertDate.getCurrentYear(true).toString())
+            viewModel.filterList[1] =
+                viewModel.filterList[1].copy(second = ConvertDate.getNextSeason().toString())
+            viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
         }
         Constant.ALL_TIME_POPULAR -> {
             viewModel.selectedSort = MediaSort.POPULARITY_DESC
             viewModel.selectType = Constant.NO_SEASON_NO_YEAR
+            viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
         }
     }
 
@@ -61,16 +77,21 @@ fun SortedListScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Row(
+
+        LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Year")
-            Text(text = "Season")
-            Text(text = "Sort")
-            Text(text = "Genre")
+            items(viewModel.filterList.size) { idx ->
+                ItemSort(
+                    title = viewModel.filterList[idx].first,
+                    subTitle = viewModel.filterList[idx].second
+                ) {
+                    // TODO: open Dialog to items..
+                }
+            }
         }
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
@@ -119,5 +140,19 @@ fun SortedListScreen(
         ) {
             CircularProgressIndicator(color = Color.Magenta)
         }
+    }
+}
+
+@Composable
+fun ItemSort(
+    title: String,
+    subTitle: String,
+    clickAble: () -> Unit
+) {
+    Text(
+        text = title
+    )
+    TextButton(onClick = { clickAble() }) {
+        Text(text = subTitle)
     }
 }

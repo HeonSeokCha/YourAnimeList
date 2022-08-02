@@ -33,6 +33,13 @@ class SortedViewModel @Inject constructor(
     var selectType = ""
     var hasNextPage: Boolean = true
 
+    val filterList = mutableListOf(
+        Pair("Year", "Any"),
+        Pair("Season", "Any"),
+        Pair("Sort", "Any"),
+        Pair("Genre", "Any"),
+    )
+
     var state by mutableStateOf(SortState())
 
     fun getSortedAnime() {

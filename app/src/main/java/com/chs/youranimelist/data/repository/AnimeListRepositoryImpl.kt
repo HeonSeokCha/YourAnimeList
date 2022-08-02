@@ -5,7 +5,6 @@ import com.apollographql.apollo3.api.ApolloResponse
 import com.chs.youranimelist.*
 import com.chs.youranimelist.data.model.AnimeDto
 import com.chs.youranimelist.data.source.AnimeListDatabase
-import com.chs.youranimelist.domain.model.Anime
 import com.chs.youranimelist.domain.repository.AnimeListRepository
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
@@ -86,7 +85,7 @@ class AnimeListRepositoryImpl @Inject constructor(
         db.animeListDao.insertAnimeList(anime)
     }
 
-    override suspend fun deleteAnime(anime: AnimeDto) {
-        db.animeListDao.deleteAnimeList(anime)
+    override suspend fun deleteAnime(animeId: AnimeDto) {
+        db.animeListDao.deleteAnimeList(animeId)
     }
 }
