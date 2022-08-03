@@ -1,17 +1,19 @@
 package com.chs.youranimelist.presentation.sortList
 
 import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +35,8 @@ fun SortedListScreen(
     val state = viewModel.state
     val context = LocalContext.current
     val lazyGridScrollState = rememberLazyGridState()
+    var list: List<String> by remember { mutableStateOf(emptyList()) }
+    var filterDilaogShow by remember { mutableStateOf(false) }
 
     when (sortType) {
         Constant.TRENDING_NOW -> {
@@ -77,19 +81,32 @@ fun SortedListScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(),
-            verticalAlignment = Alignment.CenterVertically
+                .wrapContentHeight()
+                .padding(start = 4.dp, end = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             items(viewModel.filterList.size) { idx ->
                 ItemSort(
                     title = viewModel.filterList[idx].first,
                     subTitle = viewModel.filterList[idx].second
                 ) {
-                    // TODO: open Dialog to items..
+                    when (viewModel.filterList[idx].first) {
+                        "Year" -> {
+                            list =
+                                ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
+                            filterDilaogShow = true
+                        }
+                        "Season" -> {
+                            list = Constant.animeSeasonList.map { it.name }
+                        }
+                        "Sort" -> {
+                            list = Constant.animeSortArray
+                        }
+                    }
+
                 }
             }
         }
@@ -130,6 +147,12 @@ fun SortedListScreen(
             return
         }
     }
+    
+    if (filterDilaogShow) {
+        filterDialog(list) {
+            filterDilaogShow = false
+        }
+    }
 
 
     if (state.isLoading) {
@@ -155,4 +178,28 @@ fun ItemSort(
     TextButton(onClick = { clickAble() }) {
         Text(text = subTitle)
     }
+}
+
+
+@Composable
+private fun filterDialog(
+    list: List<String>,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        text = {
+            LazyColumn() {
+                items(list.size) { idx ->
+                    Text(
+                        modifier = Modifier.clickable {
+                            onDismiss()
+                        },
+                        text = list[idx]
+                    )
+                }
+            }
+        },
+        buttons = {}
+    )
 }

@@ -105,7 +105,7 @@ object Constant {
         Pair("manman manhua (cn)", "#FF5746")
     )
 
-    val animeSortArray = arrayOf(
+    val animeSortArray = listOf(
         "POPULARITY",
         "AVERAGE SCORE",
         "FAVORITE",
