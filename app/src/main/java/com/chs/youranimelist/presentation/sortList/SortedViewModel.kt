@@ -29,7 +29,7 @@ class SortedViewModel @Inject constructor(
     var selectedSeason: MediaSeason? = null
     var selectedSort: MediaSort? = MediaSort.TRENDING_DESC
     var selectGenre: String? = null
-    var page: Int = 1
+    var page: Int = 0
     var selectType = ""
     var hasNextPage: Boolean = true
 
@@ -43,6 +43,7 @@ class SortedViewModel @Inject constructor(
     var state by mutableStateOf(SortState())
 
     fun getSortedAnime() {
+        Log.e("Sorted", page.toString())
         viewModelScope.launch {
             when (selectType) {
                 Constant.SEASON_YEAR -> {
@@ -139,5 +140,12 @@ class SortedViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun refresh() {
+        page = 1
+        hasNextPage = true
+        state = state.copy(animeSortList = arrayListOf())
+        getSortedAnime()
     }
 }

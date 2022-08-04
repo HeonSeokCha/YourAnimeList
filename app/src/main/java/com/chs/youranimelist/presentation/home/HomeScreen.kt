@@ -41,6 +41,7 @@ import com.chs.youranimelist.HomeRecommendListQuery
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.presentation.Screen
 import com.chs.youranimelist.presentation.browse.BrowseActivity
+import com.chs.youranimelist.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -100,7 +101,7 @@ fun HomeScreen(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator(color = Color.Magenta)
+            CircularProgressIndicator(color = Pink80)
         }
     }
 }

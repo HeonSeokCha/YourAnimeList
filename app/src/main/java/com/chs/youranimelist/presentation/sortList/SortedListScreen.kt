@@ -9,20 +9,19 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.type.MediaSort
+import com.chs.youranimelist.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.ConvertDate
 
@@ -36,7 +35,14 @@ fun SortedListScreen(
     val context = LocalContext.current
     val lazyGridScrollState = rememberLazyGridState()
     var list: List<String> by remember { mutableStateOf(emptyList()) }
-    var filterDilaogShow by remember { mutableStateOf(false) }
+    var filterDialogShow by remember { mutableStateOf(false) }
+
+    val endOfListReached by remember {
+        derivedStateOf {
+            (lazyGridScrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+                    == lazyGridScrollState.layoutInfo.totalItemsCount - 1)
+        }
+    }
 
     when (sortType) {
         Constant.TRENDING_NOW -> {
@@ -97,19 +103,21 @@ fun SortedListScreen(
                         "Year" -> {
                             list =
                                 ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
-                            filterDilaogShow = true
+                            filterDialogShow = true
                         }
                         "Season" -> {
                             list = Constant.animeSeasonList.map { it.name }
+                            filterDialogShow = true
                         }
                         "Sort" -> {
                             list = Constant.animeSortArray
+                            filterDialogShow = true
                         }
                     }
-
                 }
             }
         }
+
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -137,21 +145,19 @@ fun SortedListScreen(
         }
     }
 
-    if (lazyGridScrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-        == lazyGridScrollState.layoutInfo.totalItemsCount - 1
-    ) {
+    if (endOfListReached) {
         if (viewModel.hasNextPage) {
             viewModel.page++
             viewModel.getSortedAnime()
-        } else {
-            return
-        }
+        } else return
     }
-    
-    if (filterDilaogShow) {
-        filterDialog(list) {
-            filterDilaogShow = false
-        }
+
+    if (filterDialogShow) {
+        filterDialog(list, onDismiss = {
+            filterDialogShow = false
+        }, onClick = {
+
+        })
     }
 
 
@@ -161,7 +167,7 @@ fun SortedListScreen(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator(color = Color.Magenta)
+            CircularProgressIndicator(color = Pink80)
         }
     }
 }
@@ -173,9 +179,13 @@ fun ItemSort(
     clickAble: () -> Unit
 ) {
     Text(
-        text = title
+        text = title,
+        color = Pink80
     )
-    TextButton(onClick = { clickAble() }) {
+    TextButton(
+        colors = ButtonDefaults.textButtonColors(contentColor = Color.Black),
+        onClick = { clickAble() }
+    ) {
         Text(text = subTitle)
     }
 }
@@ -184,22 +194,35 @@ fun ItemSort(
 @Composable
 private fun filterDialog(
     list: List<String>,
+    onClick: (Int) -> Unit,
     onDismiss: () -> Unit
 ) {
     AlertDialog(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(
+                top = 32.dp,
+                bottom = 32.dp
+            ),
         onDismissRequest = onDismiss,
         text = {
-            LazyColumn() {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 items(list.size) { idx ->
                     Text(
-                        modifier = Modifier.clickable {
-                            onDismiss()
-                        },
-                        text = list[idx]
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onDismiss()
+                                onClick(idx)
+                            },
+                        text = list[idx],
+                        fontSize = 14.sp
                     )
                 }
             }
-        },
-        buttons = {}
+        }, buttons = {}
     )
 }

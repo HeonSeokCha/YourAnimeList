@@ -41,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.youranimelist.presentation.ui.theme.Purple200
+import com.chs.youranimelist.ui.theme.Pink80
 import com.chs.youranimelist.util.color
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -185,7 +186,7 @@ fun AnimeDetailScreen(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator(color = Color.Magenta)
+            CircularProgressIndicator(color = Pink80)
         }
     }
 }
