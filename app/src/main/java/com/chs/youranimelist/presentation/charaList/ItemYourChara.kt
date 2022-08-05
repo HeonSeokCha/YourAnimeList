@@ -54,7 +54,7 @@ fun ItemYourChara(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(190.dp)
             .clickable {
                 clickAble()
             },

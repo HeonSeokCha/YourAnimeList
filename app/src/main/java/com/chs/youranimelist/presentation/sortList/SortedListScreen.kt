@@ -1,6 +1,7 @@
 package com.chs.youranimelist.presentation.sortList
 
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
+import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
@@ -36,6 +38,11 @@ fun SortedListScreen(
     val lazyGridScrollState = rememberLazyGridState()
     var list: List<String> by remember { mutableStateOf(emptyList()) }
     var filterDialogShow by remember { mutableStateOf(false) }
+    var filterSelect by remember { mutableStateOf("") }
+    var filterYear by remember { mutableStateOf(0) }
+    var filterSeason by remember { mutableStateOf(MediaSeason) }
+    var filterSort by remember { mutableStateOf(MediaSort) }
+    var filterGenre by remember { mutableStateOf("") }
 
     val endOfListReached by remember {
         derivedStateOf {
@@ -93,6 +100,7 @@ fun SortedListScreen(
                 .wrapContentHeight()
                 .padding(start = 4.dp, end = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             items(viewModel.filterList.size) { idx ->
                 ItemSort(
@@ -101,19 +109,20 @@ fun SortedListScreen(
                 ) {
                     when (viewModel.filterList[idx].first) {
                         "Year" -> {
+                            filterSelect = "Year"
                             list =
                                 ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
-                            filterDialogShow = true
                         }
                         "Season" -> {
+                            filterSelect = "Season"
                             list = Constant.animeSeasonList.map { it.name }
-                            filterDialogShow = true
                         }
                         "Sort" -> {
+                            filterSelect = "Sort"
                             list = Constant.animeSortArray
-                            filterDialogShow = true
                         }
                     }
+                    filterDialogShow = true
                 }
             }
         }
@@ -155,8 +164,32 @@ fun SortedListScreen(
     if (filterDialogShow) {
         filterDialog(list, onDismiss = {
             filterDialogShow = false
-        }, onClick = {
-
+        }, onClick = { selectIdx ->
+            when (filterSelect) {
+                "Year" -> {
+                    if (viewModel.selectedSeason != null) {
+                        viewModel.selectType = Constant.SEASON_YEAR
+                    } else {
+                        viewModel.selectType = Constant.NO_SEASON
+                    }
+                    viewModel.selectedYear = list[selectIdx].toInt()
+                    viewModel.filterList[0] = viewModel.filterList[0].copy(second = list[selectIdx])
+                }
+                "Season" -> {
+                    if (viewModel.selectedYear == null) {
+                        viewModel.selectedYear = ConvertDate.getCurrentYear(false)
+                    }
+                    viewModel.selectType = Constant.SEASON_YEAR
+                    viewModel.selectedSeason = MediaSeason.safeValueOf(list[selectIdx])
+                    viewModel.filterList[1] = viewModel.filterList[1].copy(second = list[selectIdx])
+                }
+                "Sort" -> {
+                    viewModel.selectedSort =
+                        MediaSort.safeValueOf(Constant.animeSortList[selectIdx].name)
+                    viewModel.filterList[2] = viewModel.filterList[2].copy(second = list[selectIdx])
+                }
+            }
+            viewModel.refresh()
         })
     }
 
@@ -176,7 +209,7 @@ fun SortedListScreen(
 fun ItemSort(
     title: String,
     subTitle: String,
-    clickAble: () -> Unit
+    clickAble: (String) -> Unit
 ) {
     Text(
         text = title,
@@ -184,7 +217,7 @@ fun ItemSort(
     )
     TextButton(
         colors = ButtonDefaults.textButtonColors(contentColor = Color.Black),
-        onClick = { clickAble() }
+        onClick = { clickAble(subTitle) }
     ) {
         Text(text = subTitle)
     }
