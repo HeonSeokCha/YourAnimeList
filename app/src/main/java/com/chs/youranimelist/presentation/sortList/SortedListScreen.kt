@@ -30,19 +30,16 @@ import com.chs.youranimelist.util.ConvertDate
 @Composable
 fun SortedListScreen(
     sortType: String,
+    genre: String? = null,
     viewModel: SortedViewModel = hiltViewModel()
 ) {
 
     val state = viewModel.state
     val context = LocalContext.current
     val lazyGridScrollState = rememberLazyGridState()
-    var list: List<String> by remember { mutableStateOf(emptyList()) }
+    var list: List<String?> by remember { mutableStateOf(emptyList()) }
     var filterDialogShow by remember { mutableStateOf(false) }
     var filterSelect by remember { mutableStateOf("") }
-    var filterYear by remember { mutableStateOf(0) }
-    var filterSeason by remember { mutableStateOf(MediaSeason) }
-    var filterSort by remember { mutableStateOf(MediaSort) }
-    var filterGenre by remember { mutableStateOf("") }
 
     val endOfListReached by remember {
         derivedStateOf {
@@ -85,10 +82,17 @@ fun SortedListScreen(
             viewModel.selectType = Constant.NO_SEASON_NO_YEAR
             viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
         }
+        Constant.TARGET_GENRE -> {
+            viewModel.selectedSort = MediaSort.TRENDING_DESC
+            viewModel.selectType = Constant.NO_SEASON_NO_YEAR
+            viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Trending")
+            viewModel.filterList[3] = viewModel.filterList[3].copy(second = genre.toString())
+        }
     }
 
     LaunchedEffect(viewModel, context) {
         viewModel.getSortedAnime()
+        viewModel.getGenreList()
     }
 
     Column(
@@ -120,6 +124,10 @@ fun SortedListScreen(
                         "Sort" -> {
                             filterSelect = "Sort"
                             list = Constant.animeSortArray
+                        }
+                        "Genre" -> {
+                            filterSelect = "Genre"
+                            list = state.genreList
                         }
                     }
                     filterDialogShow = true
@@ -172,21 +180,26 @@ fun SortedListScreen(
                     } else {
                         viewModel.selectType = Constant.NO_SEASON
                     }
-                    viewModel.selectedYear = list[selectIdx].toInt()
-                    viewModel.filterList[0] = viewModel.filterList[0].copy(second = list[selectIdx])
+                    viewModel.selectedYear = list[selectIdx]!!.toInt()
+                    viewModel.filterList[0] = viewModel.filterList[0].copy(second = list[selectIdx]!!)
                 }
                 "Season" -> {
                     if (viewModel.selectedYear == null) {
                         viewModel.selectedYear = ConvertDate.getCurrentYear(false)
                     }
                     viewModel.selectType = Constant.SEASON_YEAR
-                    viewModel.selectedSeason = MediaSeason.safeValueOf(list[selectIdx])
-                    viewModel.filterList[1] = viewModel.filterList[1].copy(second = list[selectIdx])
+                    viewModel.selectedSeason = MediaSeason.safeValueOf(list[selectIdx]!!)
+                    viewModel.filterList[1] = viewModel.filterList[1].copy(second = list[selectIdx]!!)
                 }
                 "Sort" -> {
                     viewModel.selectedSort =
                         MediaSort.safeValueOf(Constant.animeSortList[selectIdx].name)
-                    viewModel.filterList[2] = viewModel.filterList[2].copy(second = list[selectIdx])
+                    viewModel.filterList[2] = viewModel.filterList[2].copy(second = list[selectIdx]!!)
+                }
+                "Genre" -> {
+                    viewModel.selectGenre = list[selectIdx]
+                    viewModel.filterList[3] =
+                        viewModel.filterList[3].copy(second = list[selectIdx]!!)
                 }
             }
             viewModel.refresh()
@@ -226,7 +239,7 @@ fun ItemSort(
 
 @Composable
 private fun filterDialog(
-    list: List<String>,
+    list: List<String?>,
     onClick: (Int) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -251,7 +264,7 @@ private fun filterDialog(
                                 onDismiss()
                                 onClick(idx)
                             },
-                        text = list[idx],
+                        text = list[idx].toString(),
                         fontSize = 14.sp
                     )
                 }

@@ -142,6 +142,22 @@ class SortedViewModel @Inject constructor(
         }
     }
 
+    fun getGenreList() {
+        viewModelScope.launch {
+            getGenreUseCase().collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        state = state.copy(
+                            genreList = result.data?.genreCollection!!
+                        )
+                    }
+                    is Resource.Loading -> { }
+                    is Resource.Error -> { }
+                }
+            }
+        }
+    }
+
     fun refresh() {
         page = 1
         hasNextPage = true

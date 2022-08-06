@@ -24,6 +24,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.chs.youranimelist.presentation.Screen
+import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.Constant.GENRE_COLOR
 import com.chs.youranimelist.util.color
 import com.google.accompanist.flowlayout.FlowRow
@@ -63,7 +65,8 @@ fun AnimeOverViewScreen(
             ) {
                 state.animeOverViewInfo?.media?.genres?.forEach { genre ->
                     Chip(
-                        onClick = { },
+                        onClick = {
+                        },
                         colors = ChipDefaults.chipColors(
                             backgroundColor = GENRE_COLOR[genre]?.color ?: Color.Black,
                             contentColor = Color.White
