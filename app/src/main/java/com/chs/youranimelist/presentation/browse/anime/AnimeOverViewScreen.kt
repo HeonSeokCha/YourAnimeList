@@ -79,7 +79,9 @@ fun AnimeOverViewScreen(
         }
 
         item {
-            Column {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(
                     text = "Description",
                     fontWeight = FontWeight.Bold,

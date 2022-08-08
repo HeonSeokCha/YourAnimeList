@@ -1,6 +1,8 @@
 package com.chs.youranimelist.presentation.animeList
 
 import android.content.Intent
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -14,6 +16,7 @@ import com.chs.youranimelist.util.Constant
 
 @Composable
 fun AnimeListScreen(
+    searchQuery: String,
     viewModel: AnimeListViewModel = hiltViewModel()
 ) {
 
@@ -22,6 +25,12 @@ fun AnimeListScreen(
 
     LaunchedEffect(viewModel, context) {
         viewModel.getYourAnimeList()
+    }
+
+    LaunchedEffect(key1 = searchQuery) {
+        if (searchQuery.isNotEmpty()) {
+            Log.e("SearchQuery", searchQuery)
+        }
     }
 
     LazyColumn(

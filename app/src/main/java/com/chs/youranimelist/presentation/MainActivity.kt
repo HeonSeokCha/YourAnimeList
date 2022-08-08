@@ -5,15 +5,22 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.twotone.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -39,10 +46,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
+            var searchQuery by mutableStateOf("")
             YourAnimeListTheme {
                 Scaffold(
                     topBar = {
-                        AppBar(navController)
+                        AppBar(navController) {
+                            searchQuery = it
+                        }
                     },
                     bottomBar = {
                         BottomBar(navController)
@@ -54,7 +64,11 @@ class MainActivity : ComponentActivity() {
                         startDestination = BottomNavScreen.HomeScreen.route
                     ) {
                         composable(BottomNavScreen.HomeScreen.route) { HomeScreen(navigator = navController) }
-                        composable(BottomNavScreen.AnimeListScreen.route) { AnimeListScreen() }
+                        composable(BottomNavScreen.AnimeListScreen.route) {
+                            AnimeListScreen(
+                                searchQuery
+                            )
+                        }
                         composable(BottomNavScreen.CharaListScreen.route) { CharaListScreen() }
                         composable(Screen.SearchScreen.route) { SearchScreen() }
                         composable("${Screen.SortListScreen.route}/{title}") { backStackEntry ->
@@ -71,7 +85,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AppBar(navController: NavHostController) {
+fun AppBar(
+    navController: NavHostController,
+    onTextChanged: (String) -> Unit,
+) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     when (navBackStackEntry?.destination?.route) {
         "${Screen.SortListScreen.route}/{title}" -> {
@@ -95,25 +112,33 @@ fun AppBar(navController: NavHostController) {
             )
         }
         else -> {
-            TopAppBar(
-                title = {
-                    Text(text = stringResource(R.string.app_name))
+//            TopAppBar(
+//                title = {
+//                    Text(text = stringResource(R.string.app_name))
+//                },
+//                actions = {
+//                    if (navBackStackEntry?.destination?.route == BottomNavScreen.HomeScreen.route) {
+//                        IconButton(onClick = {
+//                            navController.navigate(Screen.SearchScreen.route)
+//                        }) {
+//                            Icon(imageVector = Icons.TwoTone.Search, contentDescription = null)
+//                        }
+//                    } else {
+//                        IconButton(onClick = {
+//                            // search room db
+//                        }) {
+//                            Icon(imageVector = Icons.TwoTone.Search, contentDescription = null)
+//                        }
+//                    }
+//                }
+//            )
+            SearchAppBar(
+                text = "",
+                onTextChanged = {
+                    onTextChanged(it)
                 },
-                actions = {
-                    if (navBackStackEntry?.destination?.route == BottomNavScreen.HomeScreen.route) {
-                        IconButton(onClick = {
-                            navController.navigate(Screen.SearchScreen.route)
-                        }) {
-                            Icon(imageVector = Icons.TwoTone.Search, contentDescription = null)
-                        }
-                    } else {
-                        IconButton(onClick = {
-                            // search room db
-                        }) {
-                            Icon(imageVector = Icons.TwoTone.Search, contentDescription = null)
-                        }
-                    }
-                }
+                onClosedClicked = { /*TODO*/ },
+                onSearchClicked = {}
             )
         }
     }
@@ -124,7 +149,7 @@ fun SearchAppBar(
     text: String,
     onTextChanged: (String) -> Unit,
     onClosedClicked: () -> Unit,
-    onSearchClicked: () -> Unit
+    onSearchClicked: (String) -> Unit
 ) {
     Surface(
         modifier = Modifier
@@ -133,7 +158,66 @@ fun SearchAppBar(
         elevation = AppBarDefaults.TopAppBarElevation,
         color = MaterialTheme.colors.primary
     ) {
-
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth(),
+            value = text,
+            onValueChange = {
+                onTextChanged(it)
+            },
+            placeholder = {
+                Text(
+                    modifier = Modifier
+                        .alpha(ContentAlpha.medium),
+                    text = "Search here...",
+                    color = Color.White
+                )
+            },
+            textStyle = TextStyle(
+                fontSize = MaterialTheme.typography.subtitle1.fontSize
+            ),
+            singleLine = true,
+            leadingIcon = {
+                IconButton(
+                    modifier = Modifier
+                        .alpha(ContentAlpha.medium),
+                    onClick = { }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = null,
+                        tint = Color.White
+                    )
+                }
+            },
+            trailingIcon = {
+                IconButton(
+                    modifier = Modifier
+                        .alpha(ContentAlpha.medium),
+                    onClick = {
+                        if (text.isNotEmpty()) {
+                            onTextChanged("")
+                        } else {
+                            onClosedClicked()
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = null,
+                        tint = Color.White
+                    )
+                }
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Search
+            ),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    onSearchClicked(text)
+                }
+            )
+        )
     }
 }
 
