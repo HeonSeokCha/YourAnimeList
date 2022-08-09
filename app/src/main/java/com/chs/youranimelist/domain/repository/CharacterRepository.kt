@@ -15,4 +15,6 @@ interface CharacterRepository {
     suspend fun insertCharacter(character: CharacterDto)
 
     suspend fun deleteCharacter(character: CharacterDto)
+
+    fun searchCharaList(charaName: String): Flow<List<CharacterDto>>
 }

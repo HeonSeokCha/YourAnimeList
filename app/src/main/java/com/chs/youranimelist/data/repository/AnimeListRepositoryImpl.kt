@@ -88,4 +88,8 @@ class AnimeListRepositoryImpl @Inject constructor(
     override suspend fun deleteAnime(animeId: AnimeDto) {
         db.animeListDao.deleteAnimeList(animeId)
     }
+
+    override fun searchAnimeList(animeTitle: String): Flow<List<AnimeDto>> {
+        return db.animeListDao.searchAnimeList(animeTitle)
+    }
 }

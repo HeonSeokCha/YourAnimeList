@@ -51,4 +51,8 @@ class CharacterRepositoryImpl @Inject constructor(
     override suspend fun deleteCharacter(character: CharacterDto) {
         db.charaListDao.deleteCharaList(character)
     }
+
+    override fun searchCharaList(charaName: String): Flow<List<CharacterDto>> {
+        return db.charaListDao.searchCharaList(charaName)
+    }
 }

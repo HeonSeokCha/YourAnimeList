@@ -5,8 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -22,15 +21,15 @@ fun AnimeListScreen(
 
     val state = viewModel.state
     val context = LocalContext.current
+    var searchState by mutableStateOf(searchQuery)
 
     LaunchedEffect(viewModel, context) {
         viewModel.getYourAnimeList()
     }
 
-    LaunchedEffect(key1 = searchQuery) {
-        if (searchQuery.isNotEmpty()) {
-            Log.e("SearchQuery", searchQuery)
-        }
+    LaunchedEffect(searchState) {
+        Log.e("SearchQuery", searchState)
+        viewModel.getSearchResultAnime(searchState)
     }
 
     LazyColumn(

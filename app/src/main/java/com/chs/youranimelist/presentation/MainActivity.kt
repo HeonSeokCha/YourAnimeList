@@ -65,9 +65,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(BottomNavScreen.HomeScreen.route) { HomeScreen(navigator = navController) }
                         composable(BottomNavScreen.AnimeListScreen.route) {
-                            AnimeListScreen(
-                                searchQuery
-                            )
+                            AnimeListScreen(searchQuery)
                         }
                         composable(BottomNavScreen.CharaListScreen.route) { CharaListScreen() }
                         composable(Screen.SearchScreen.route) { SearchScreen() }
@@ -137,8 +135,8 @@ fun AppBar(
                 onTextChanged = {
                     onTextChanged(it)
                 },
-                onClosedClicked = { /*TODO*/ },
-                onSearchClicked = {}
+                onClosedClicked = { },
+                onSearchClicked = { }
             )
         }
     }
@@ -151,6 +149,7 @@ fun SearchAppBar(
     onClosedClicked: () -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
+    var textState by mutableStateOf("")
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -161,9 +160,10 @@ fun SearchAppBar(
         TextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            value = text,
+            value = textState,
             onValueChange = {
-                onTextChanged(it)
+                onTextChanged(textState)
+                textState = it
             },
             placeholder = {
                 Text(

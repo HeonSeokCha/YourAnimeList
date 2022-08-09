@@ -46,4 +46,6 @@ interface AnimeListRepository {
     suspend fun insertAnime(anime: AnimeDto)
 
     suspend fun deleteAnime(animeId: AnimeDto)
+
+    fun searchAnimeList(animeTitle: String): Flow<List<AnimeDto>>
 }

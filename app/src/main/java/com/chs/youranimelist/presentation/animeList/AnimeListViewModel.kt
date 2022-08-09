@@ -6,21 +6,34 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.domain.usecase.GetYourAnimeListUseCase
+import com.chs.youranimelist.domain.usecase.SearchAnimeListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AnimeListViewModel @Inject constructor(
-    private val getYourAnimeListUseCase: GetYourAnimeListUseCase
+    private val getYourAnimeListUseCase: GetYourAnimeListUseCase,
+    private val searchAnimeListUseCase: SearchAnimeListUseCase
 ) : ViewModel() {
 
     var state by mutableStateOf(AnimeListState())
 
     fun getYourAnimeList() {
-        state = state.copy(isLoading = false)
+        state = state.copy(isLoading = true)
         viewModelScope.launch {
             getYourAnimeListUseCase().collect {
+                state = state.copy(
+                    animeList = it,
+                    isLoading = false
+                )
+            }
+        }
+    }
+
+    fun getSearchResultAnime(query: String) {
+        viewModelScope.launch {
+            searchAnimeListUseCase(query).collect {
                 state = state.copy(
                     animeList = it,
                     isLoading = false
