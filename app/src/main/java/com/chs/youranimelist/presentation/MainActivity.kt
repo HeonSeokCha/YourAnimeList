@@ -47,12 +47,21 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             var searchQuery by mutableStateOf("")
+            var searchWidgetState by mutableStateOf(SearchWidgetState.CLOSED)
             YourAnimeListTheme {
                 Scaffold(
                     topBar = {
-                        AppBar(navController) {
-                            searchQuery = it
-                        }
+                        AppBar(
+                            navController,
+                            searchWidgetState,
+                            onSearchTriggered = {
+                                searchWidgetState = SearchWidgetState.OPENED
+                            }, onClosedClicked = {
+                                searchWidgetState = SearchWidgetState.CLOSED
+                            }, onTextChanged = {
+                                searchQuery = it
+                            }
+                        )
                     },
                     bottomBar = {
                         BottomBar(navController)
@@ -63,12 +72,18 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(it),
                         startDestination = BottomNavScreen.HomeScreen.route
                     ) {
-                        composable(BottomNavScreen.HomeScreen.route) { HomeScreen(navigator = navController) }
+                        composable(BottomNavScreen.HomeScreen.route) {
+                            HomeScreen(navigator = navController)
+                        }
                         composable(BottomNavScreen.AnimeListScreen.route) {
                             AnimeListScreen(searchQuery)
                         }
-                        composable(BottomNavScreen.CharaListScreen.route) { CharaListScreen() }
-                        composable(Screen.SearchScreen.route) { SearchScreen() }
+                        composable(BottomNavScreen.CharaListScreen.route) {
+                            CharaListScreen(searchQuery)
+                        }
+                        composable(Screen.SearchScreen.route) {
+                            SearchScreen()
+                        }
                         composable("${Screen.SortListScreen.route}/{title}") { backStackEntry ->
                             SortedListScreen(
                                 backStackEntry.arguments?.getString("title")
@@ -85,7 +100,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppBar(
     navController: NavHostController,
+    searchWidgetState: SearchWidgetState,
     onTextChanged: (String) -> Unit,
+    onSearchTriggered: () -> Unit,
+    onClosedClicked: () -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     when (navBackStackEntry?.destination?.route) {
@@ -110,34 +128,48 @@ fun AppBar(
             )
         }
         else -> {
-//            TopAppBar(
-//                title = {
-//                    Text(text = stringResource(R.string.app_name))
-//                },
-//                actions = {
-//                    if (navBackStackEntry?.destination?.route == BottomNavScreen.HomeScreen.route) {
-//                        IconButton(onClick = {
-//                            navController.navigate(Screen.SearchScreen.route)
-//                        }) {
-//                            Icon(imageVector = Icons.TwoTone.Search, contentDescription = null)
-//                        }
-//                    } else {
-//                        IconButton(onClick = {
-//                            // search room db
-//                        }) {
-//                            Icon(imageVector = Icons.TwoTone.Search, contentDescription = null)
-//                        }
-//                    }
-//                }
-//            )
-            SearchAppBar(
-                text = "",
-                onTextChanged = {
-                    onTextChanged(it)
-                },
-                onClosedClicked = { },
-                onSearchClicked = { }
-            )
+            when (searchWidgetState) {
+                SearchWidgetState.OPENED -> {
+                    SearchAppBar(
+                        text = "",
+                        onTextChanged = {
+                            onTextChanged(it)
+                        },
+                        onClosedClicked = {
+                            onClosedClicked()
+                        },
+                        onSearchClicked = { }
+                    )
+                }
+                SearchWidgetState.CLOSED -> {
+                    TopAppBar(
+                        title = {
+                            Text(text = stringResource(R.string.app_name))
+                        },
+                        actions = {
+                            if (navBackStackEntry?.destination?.route == BottomNavScreen.HomeScreen.route) {
+                                IconButton(onClick = {
+                                    navController.navigate(Screen.SearchScreen.route)
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.TwoTone.Search,
+                                        contentDescription = null
+                                    )
+                                }
+                            } else {
+                                IconButton(onClick = {
+                                    onSearchTriggered()
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.TwoTone.Search,
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+                        }
+                    )
+                }
+            }
         }
     }
 }
@@ -162,8 +194,8 @@ fun SearchAppBar(
                 .fillMaxWidth(),
             value = textState,
             onValueChange = {
-                onTextChanged(textState)
                 textState = it
+                onTextChanged(textState)
             },
             placeholder = {
                 Text(

@@ -1,6 +1,7 @@
 package com.chs.youranimelist.presentation.charaList
 
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,13 +16,18 @@ import com.chs.youranimelist.util.Constant
 
 @Composable
 fun CharaListScreen(
-    viewModel: CharacterListViewModel = hiltViewModel()
+    searchQuery: String,
+    viewModel: CharacterListViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state
     val context = LocalContext.current
 
     LaunchedEffect(viewModel, context) {
         viewModel.getYourCharaList()
+    }
+
+    LaunchedEffect(searchQuery) {
+        viewModel.getSearchResultChara(searchQuery)
     }
 
     LazyColumn(
