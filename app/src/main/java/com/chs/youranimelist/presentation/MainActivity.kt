@@ -118,13 +118,14 @@ fun AppBar(
             )
         }
         Screen.SearchScreen.route -> {
-            TopAppBar(
-                title = {},
-                navigationIcon = {
-                    IconButton(onClick = { navController.navigateUp() }) {
-                        Icon(Icons.Filled.ArrowBack, null)
-                    }
-                }
+            SearchAppBar(
+                text = "",
+                onTextChanged = {
+                    onTextChanged(it)
+                },
+                onClosedClicked = {
+                    onClosedClicked()
+                },
             )
         }
         else -> {
@@ -138,7 +139,6 @@ fun AppBar(
                         onClosedClicked = {
                             onClosedClicked()
                         },
-                        onSearchClicked = { }
                     )
                 }
                 SearchWidgetState.CLOSED -> {
@@ -179,7 +179,6 @@ fun SearchAppBar(
     text: String,
     onTextChanged: (String) -> Unit,
     onClosedClicked: () -> Unit,
-    onSearchClicked: (String) -> Unit
 ) {
     var textState by mutableStateOf("")
     Surface(
@@ -210,17 +209,11 @@ fun SearchAppBar(
             ),
             singleLine = true,
             leadingIcon = {
-                IconButton(
-                    modifier = Modifier
-                        .alpha(ContentAlpha.medium),
-                    onClick = { }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = null,
-                        tint = Color.White
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null,
+                    tint = Color.White
+                )
             },
             trailingIcon = {
                 IconButton(
@@ -246,7 +239,7 @@ fun SearchAppBar(
             ),
             keyboardActions = KeyboardActions(
                 onSearch = {
-                    onSearchClicked(text)
+                    // CloseKeyboard..
                 }
             )
         )
