@@ -176,7 +176,6 @@ fun AnimeDetailScreen(
                     }
                 }
             }
-
         }
     }
 
