@@ -13,9 +13,10 @@ import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class SearchMediaViewModel(
+class SearchMediaViewModel @Inject constructor(
     private val searchAnimeUseCase: SearchAnimeUseCase,
     private val searchMangaUseCase: SearchMangaUseCase,
     private val searchCharaUseCase: SearchCharaUseCase
