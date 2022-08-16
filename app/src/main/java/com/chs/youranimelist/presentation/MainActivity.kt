@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
                             CharaListScreen(searchQuery)
                         }
                         composable(Screen.SearchScreen.route) {
-                            SearchScreen()
+                            SearchScreen(searchQuery)
                         }
                         composable("${Screen.SortListScreen.route}/{title}") { backStackEntry ->
                             SortedListScreen(
