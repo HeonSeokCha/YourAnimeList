@@ -141,7 +141,7 @@ fun SortedListScreen(
             verticalArrangement = Arrangement.spacedBy(4.dp),
             contentPadding = PaddingValues(horizontal = 8.dp),
             state = lazyGridScrollState,
-            columns = GridCells.Adaptive(100.dp),
+            columns = GridCells.Fixed(3),
         ) {
             items(state.animeSortList.size) {
                 ItemAnimeSmall(

@@ -323,8 +323,6 @@ fun ItemAnimeSmall(
                 .fillMaxSize()
                 .padding(
                     top = 4.dp,
-                    start = 8.dp,
-                    end = 8.dp,
                     bottom = 4.dp
                 )
         ) {

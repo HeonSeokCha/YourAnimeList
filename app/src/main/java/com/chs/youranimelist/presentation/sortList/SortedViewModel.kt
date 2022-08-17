@@ -29,7 +29,7 @@ class SortedViewModel @Inject constructor(
     var selectedSeason: MediaSeason? = null
     var selectedSort: MediaSort? = MediaSort.TRENDING_DESC
     var selectGenre: String? = null
-    var page: Int = 0
+    var page: Int = 1
     var selectType = ""
     var hasNextPage: Boolean = true
 

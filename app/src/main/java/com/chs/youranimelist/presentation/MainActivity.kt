@@ -15,9 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -58,8 +60,10 @@ class MainActivity : ComponentActivity() {
                                 searchWidgetState = SearchWidgetState.OPENED
                             }, onClosedClicked = {
                                 searchWidgetState = SearchWidgetState.CLOSED
-                            }, onTextChanged = {
+                            }, onSearchClicked = {
                                 searchQuery = it
+                            }, onTextChanged = {
+
                             }
                         )
                     },
@@ -101,6 +105,7 @@ class MainActivity : ComponentActivity() {
 fun AppBar(
     navController: NavHostController,
     searchWidgetState: SearchWidgetState,
+    onSearchClicked: (String) -> Unit,
     onTextChanged: (String) -> Unit,
     onSearchTriggered: () -> Unit,
     onClosedClicked: () -> Unit
@@ -120,12 +125,15 @@ fun AppBar(
         Screen.SearchScreen.route -> {
             SearchAppBar(
                 text = "",
-                onTextChanged = {
-                    onTextChanged(it)
+                onSearchClicked = {
+                    onSearchClicked(it)
                 },
                 onClosedClicked = {
                     onClosedClicked()
                 },
+                onValueChanged = {
+                    onTextChanged(it)
+                }
             )
         }
         else -> {
@@ -133,12 +141,15 @@ fun AppBar(
                 SearchWidgetState.OPENED -> {
                     SearchAppBar(
                         text = "",
-                        onTextChanged = {
-                            onTextChanged(it)
+                        onSearchClicked = {
+                            onSearchClicked(it)
                         },
                         onClosedClicked = {
                             onClosedClicked()
                         },
+                        onValueChanged = {
+                            onTextChanged(it)
+                        }
                     )
                 }
                 SearchWidgetState.CLOSED -> {
@@ -174,13 +185,16 @@ fun AppBar(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchAppBar(
     text: String,
-    onTextChanged: (String) -> Unit,
+    onSearchClicked: (String) -> Unit,
+    onValueChanged: (String) -> Unit,
     onClosedClicked: () -> Unit,
 ) {
     var textState by mutableStateOf("")
+    val keyboardController = LocalSoftwareKeyboardController.current
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -194,7 +208,7 @@ fun SearchAppBar(
             value = textState,
             onValueChange = {
                 textState = it
-                onTextChanged(textState)
+                onValueChanged(textState)
             },
             placeholder = {
                 Text(
@@ -221,9 +235,10 @@ fun SearchAppBar(
                         .alpha(ContentAlpha.medium),
                     onClick = {
                         if (text.isNotEmpty()) {
-                            onTextChanged("")
+                            onSearchClicked("")
                         } else {
                             onClosedClicked()
+                            keyboardController?.hide()
                         }
                     }
                 ) {
@@ -239,7 +254,8 @@ fun SearchAppBar(
             ),
             keyboardActions = KeyboardActions(
                 onSearch = {
-                    // CloseKeyboard..
+                    onSearchClicked(textState)
+                    keyboardController?.hide()
                 }
             )
         )
