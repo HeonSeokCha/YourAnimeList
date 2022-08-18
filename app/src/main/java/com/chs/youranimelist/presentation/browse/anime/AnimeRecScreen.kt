@@ -1,6 +1,5 @@
 package com.chs.youranimelist.presentation.browse.anime
 
-import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -11,9 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.browse.BrowseScreen
-import com.chs.youranimelist.util.Constant
 
 @Composable
 fun AnimeRecScreen(

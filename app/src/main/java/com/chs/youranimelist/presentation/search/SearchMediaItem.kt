@@ -89,7 +89,7 @@ fun SearchMediaItem(
                             .background(
                                 color = "#ffffff".color
                             ),
-                        model = item.coverImage,
+                        model = item.coverImage?.extraLarge,
                         contentDescription = null,
                         contentScale = ContentScale.Crop
                     )
@@ -195,7 +195,7 @@ fun SearchMediaItem(
                         modifier = Modifier
                             .width(150.dp)
                             .height(200.dp),
-                        model = item.image,
+                        model = item.image?.large,
                         contentDescription = null,
                         contentScale = ContentScale.Crop
                     )
