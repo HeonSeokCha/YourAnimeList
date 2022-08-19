@@ -43,17 +43,7 @@ query AnimeOverviewQuery(
         relations {
             relationsEdges: edges {
                 relationsNode: node {
-                    id
-                    idMal
-                    title {
-                        english
-                        romaji
-                    }
-                    coverImage {
-                        extraLarge
-                    }
-                    type
-                    format
+                    ... animeList
                 }
                 id
                 relationType(version: 2)

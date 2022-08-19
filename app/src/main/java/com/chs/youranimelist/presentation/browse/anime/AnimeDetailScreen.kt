@@ -107,7 +107,9 @@ fun AnimeDetailScreen(
                                 Text(
                                     text = tabList[index],
                                     maxLines = 1,
-                                    color = Purple200
+                                    color = Purple200,
+                                    overflow = TextOverflow.Ellipsis,
+                                    fontSize = 13.sp
                                 )
                             },
                             selected = pagerState.currentPage == index,

@@ -323,6 +323,8 @@ fun ItemAnimeSmall(
                 .fillMaxSize()
                 .padding(
                     top = 4.dp,
+                    start = 4.dp,
+                    end = 4.dp,
                     bottom = 4.dp
                 )
         ) {
@@ -341,12 +343,12 @@ fun ItemAnimeSmall(
                 color = Color.Gray,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                fontSize = 14.sp
+                fontSize = 12.sp
             )
             Text(
                 text = Constant.mediaStatus[item.status] ?: "",
                 color = Color(Constant.mediaStatusColor[item.status] ?: 0xFF888888),
-                fontSize = 13.sp
+                fontSize = 12.sp
             )
 
             Row(
@@ -363,7 +365,7 @@ fun ItemAnimeSmall(
                     Text(
                         text = item.seasonYear.toString(),
                         color = Color.Gray,
-                        fontSize = 14.sp,
+                        fontSize = 12.sp,
                     )
                 }
 
@@ -375,7 +377,7 @@ fun ItemAnimeSmall(
                         },
                         inlineContent = inlineContent,
                         color = Color.Gray,
-                        fontSize = 14.sp,
+                        fontSize = 12.sp,
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f, false),

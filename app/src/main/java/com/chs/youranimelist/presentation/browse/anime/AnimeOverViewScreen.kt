@@ -6,6 +6,7 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -25,6 +26,8 @@ import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.chs.youranimelist.presentation.Screen
+import com.chs.youranimelist.presentation.browse.BrowseScreen
+import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.Constant.GENRE_COLOR
 import com.chs.youranimelist.util.color
@@ -139,6 +142,33 @@ fun AnimeOverViewScreen(
 
         items(state.animeOverThemeInfo?.endingThemes?.size ?: 0) { idx ->
             Text(text = state.animeOverThemeInfo?.endingThemes?.get(idx).toString())
+        }
+        item {
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(
+                        start = 8.dp,
+                        end = 8.dp
+                    ),
+            ) {
+                items(state.animeOverViewInfo?.media?.relations?.relationsEdges?.size ?: 0) { idx ->
+                    ItemAnimeSmall(
+                        item = state.animeOverViewInfo?.media?.relations?.relationsEdges?.get(idx)?.relationsNode?.animeList!!
+                    ) {
+                        navController.navigate(
+                            "${BrowseScreen.AnimeDetailScreen.route}/" +
+                                    "${
+                                        state.animeOverViewInfo.media.relations.relationsEdges[idx]?.relationsNode?.animeList!!.id
+                                    }" +
+                                    "/${
+                                        state.animeOverViewInfo.media.relations.relationsEdges[idx]?.relationsNode?.animeList!!.idMal
+                                    }"
+                        )
+                    }
+                }
+            }
         }
     }
 }
