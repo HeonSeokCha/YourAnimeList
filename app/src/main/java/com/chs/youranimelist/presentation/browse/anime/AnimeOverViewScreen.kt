@@ -2,12 +2,10 @@ package com.chs.youranimelist.presentation.browse.anime
 
 import android.text.TextUtils
 import android.widget.TextView
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -18,17 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.chs.youranimelist.presentation.Screen
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
-import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.Constant.GENRE_COLOR
 import com.chs.youranimelist.util.color
 import com.google.accompanist.flowlayout.FlowRow
@@ -103,6 +98,7 @@ fun AnimeOverViewScreen(
                             )
                         }
                     )
+
                     IconButton(
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally),
@@ -143,6 +139,7 @@ fun AnimeOverViewScreen(
         items(state.animeOverThemeInfo?.endingThemes?.size ?: 0) { idx ->
             Text(text = state.animeOverThemeInfo?.endingThemes?.get(idx).toString())
         }
+
         item {
             LazyRow(
                 modifier = Modifier

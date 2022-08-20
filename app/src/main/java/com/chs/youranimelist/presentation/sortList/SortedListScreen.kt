@@ -143,17 +143,17 @@ fun SortedListScreen(
             state = lazyGridScrollState,
             columns = GridCells.Fixed(3),
         ) {
-            items(state.animeSortList.size) {
+            items(state.animeSortList.size) { idx ->
                 ItemAnimeSmall(
-                    item = state.animeSortList[it],
+                    item = state.animeSortList[idx],
                     onClick = {
                         context.startActivity(
                             Intent(
                                 context, BrowseActivity::class.java
                             ).apply {
                                 this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                                this.putExtra(Constant.TARGET_ID, state.animeSortList[it].id)
-                                this.putExtra(Constant.TARGET_ID_MAL, state.animeSortList[it].idMal)
+                                this.putExtra(Constant.TARGET_ID, state.animeSortList[idx].id)
+                                this.putExtra(Constant.TARGET_ID_MAL, state.animeSortList[idx].idMal)
                             }
                         )
                     }

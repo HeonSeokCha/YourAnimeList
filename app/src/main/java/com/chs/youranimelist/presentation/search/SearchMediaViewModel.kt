@@ -36,12 +36,15 @@ class SearchMediaViewModel @Inject constructor(
                     searchAnimeUseCase(page, query).collect { result ->
                         when (result) {
                             is Resource.Loading -> {
-                                state = state.copy(isLoading = true)
+                                state = state.copy(isLoading = result.isLoading)
                             }
                             is Resource.Success -> {
+                                hasNextPage = result.data?.page?.pageInfo?.hasNextPage ?: false
+                                result.data?.page?.media?.forEach { anime ->
+                                    state.searchAnimeResult.add(anime)
+                                }
                                 state = state.copy(
                                     isLoading = false,
-                                    searchAnimeResult = result.data?.page?.media!!
                                 )
                             }
                             is Resource.Error -> {
@@ -52,16 +55,20 @@ class SearchMediaViewModel @Inject constructor(
                         }
                     }
                 }
+
                 Constant.TARGET_MANGA -> {
                     searchMangaUseCase(page, query).collect { result ->
                         when (result) {
                             is Resource.Loading -> {
-                                state = state.copy(isLoading = true)
+                                state = state.copy(isLoading = result.isLoading)
                             }
                             is Resource.Success -> {
+                                hasNextPage = result.data?.page?.pageInfo?.hasNextPage ?: false
+                                result.data?.page?.media?.forEach { manga ->
+                                    state.searchMangaResult.add(manga)
+                                }
                                 state = state.copy(
                                     isLoading = false,
-                                    searchMangaResult = result.data?.page?.media!!
                                 )
                             }
                             is Resource.Error -> {
@@ -72,16 +79,20 @@ class SearchMediaViewModel @Inject constructor(
                         }
                     }
                 }
+
                 Constant.TARGET_CHARA -> {
                     searchCharaUseCase(page, query).collect { result ->
                         when (result) {
                             is Resource.Loading -> {
-                                state = state.copy(isLoading = true)
+                                state = state.copy(isLoading = result.isLoading)
                             }
                             is Resource.Success -> {
+                                hasNextPage = result.data?.page?.pageInfo?.hasNextPage ?: false
+                                result.data?.page?.characters?.forEach { characters ->
+                                    state.searchCharaResult.add(characters)
+                                }
                                 state = state.copy(
                                     isLoading = false,
-                                    searchCharaResult = result.data?.page?.characters!!
                                 )
                             }
                             is Resource.Error -> {

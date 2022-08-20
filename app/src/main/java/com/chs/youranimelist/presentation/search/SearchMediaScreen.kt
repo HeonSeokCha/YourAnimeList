@@ -4,9 +4,10 @@ import android.content.Intent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,20 +26,26 @@ fun SearchMediaScreen(
 ) {
     val state = viewModel.state
     val context = LocalContext.current
+    val lazyColScrollState = rememberLazyListState()
+    val endOfListReached by remember {
+        derivedStateOf {
+            (lazyColScrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+                    == lazyColScrollState.layoutInfo.totalItemsCount - 1)
+        }
+    }
 
     viewModel.searchPage = searchType
 
     LaunchedEffect(searchKeyWord) {
-        delay(3000L)
         if (searchKeyWord.isNotEmpty()) {
             viewModel.search(searchKeyWord)
         }
     }
 
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
+        state = lazyColScrollState
     ) {
         when (searchType) {
             Constant.TARGET_ANIME -> {
@@ -101,6 +108,14 @@ fun SearchMediaScreen(
             }
         }
     }
+
+    if (endOfListReached) {
+        if (viewModel.hasNextPage) {
+            viewModel.page++
+            viewModel.search(searchKeyWord)
+        } else return
+    }
+
     if (state.isLoading) {
         Box(
             modifier = Modifier

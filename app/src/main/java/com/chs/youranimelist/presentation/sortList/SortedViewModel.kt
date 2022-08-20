@@ -43,7 +43,6 @@ class SortedViewModel @Inject constructor(
     var state by mutableStateOf(SortState())
 
     fun getSortedAnime() {
-        Log.e("Sorted", page.toString())
         viewModelScope.launch {
             when (selectType) {
                 Constant.SEASON_YEAR -> {
