@@ -160,7 +160,7 @@ fun AnimeOverViewScreen(
                                         state.animeOverViewInfo.media.relations.relationsEdges[idx]?.relationsNode?.animeList!!.id
                                     }" +
                                     "/${
-                                        state.animeOverViewInfo.media.relations.relationsEdges[idx]?.relationsNode?.animeList!!.idMal
+                                        state.animeOverViewInfo.media.relations.relationsEdges[idx]?.relationsNode?.animeList!!.idMal ?: 0
                                     }"
                         )
                     }

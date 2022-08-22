@@ -82,10 +82,23 @@ fun AnimeDetailScreen(
         val recommendScroll = rememberLazyListState()
         var expandDesc by remember { mutableStateOf(false) }
 
+        val offset = remember { mutableStateOf(0f) }
+
+        val nestedScrollConnection = remember {
+            object : NestedScrollConnection {
+                override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                    offset.value = (offset.value + available.y).coerceIn(-200f, 0f)
+                    return Offset.Zero
+                }
+            }
+        }
+
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
+                .offset(y = offset.value.dp)
         ) {
             AnimeDetailHeadBanner(viewModel)
             Column(modifier = Modifier.height(screenHeight)) {
@@ -125,26 +138,7 @@ fun AnimeDetailScreen(
                 HorizontalPager(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .nestedScroll(remember {
-                            object : NestedScrollConnection {
-                                override fun onPreScroll(
-                                    available: Offset,
-                                    source: NestedScrollSource
-                                ): Offset {
-                                    return if (available.y > 0) Offset.Zero else Offset(
-                                        x = 0f,
-                                        y = -scrollState.dispatchRawDelta(-available.y)
-                                    )
-                                }
-
-                                override suspend fun onPreFling(available: Velocity): Velocity {
-                                    return if (available.y > 0) Velocity.Zero else Velocity(
-                                        x = 0f,
-                                        y = -scrollState.dispatchRawDelta(-available.y)
-                                    )
-                                }
-                            }
-                        }),
+                        .nestedScroll(nestedScrollConnection),
                     count = tabList.size,
                     state = pagerState,
                     userScrollEnabled = false,

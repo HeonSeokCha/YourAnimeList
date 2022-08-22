@@ -137,9 +137,12 @@ fun SortedListScreen(
 
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(3.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp),
+            contentPadding = PaddingValues(
+                horizontal = 4.dp,
+                vertical = 8.dp
+            ),
             state = lazyGridScrollState,
             columns = GridCells.Fixed(3),
         ) {

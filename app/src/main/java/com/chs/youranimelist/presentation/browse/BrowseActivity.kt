@@ -62,12 +62,12 @@ class BrowseActivity : ComponentActivity() {
                             route = "${BrowseScreen.AnimeDetailScreen.route}/{id}/{idMal}",
                             arguments = listOf(
                                 navArgument("id") {
-                                    type = NavType.IntType; defaultValue =
-                                    intent?.getIntExtra(Constant.TARGET_ID, 0)!!
+                                    type = NavType.IntType
+                                    defaultValue = intent?.getIntExtra(Constant.TARGET_ID, 0)!!
                                 },
                                 navArgument("idMal") {
-                                    type = NavType.IntType; defaultValue =
-                                    intent?.getIntExtra(Constant.TARGET_ID_MAL, 0)!!
+                                    type = NavType.IntType
+                                    defaultValue = intent?.getIntExtra(Constant.TARGET_ID_MAL, 0)!!
                                 },
                             )
                         ) { backStackEntry ->
