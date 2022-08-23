@@ -48,49 +48,57 @@ fun SortedListScreen(
         }
     }
 
-    when (sortType) {
-        Constant.TRENDING_NOW -> {
-            viewModel.selectedSort = MediaSort.TRENDING_DESC
-            viewModel.selectType = Constant.NO_SEASON_NO_YEAR
-            viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Trending")
-        }
-        Constant.POPULAR_THIS_SEASON -> {
-            viewModel.selectedSort = MediaSort.POPULARITY_DESC
-            viewModel.selectedSeason = ConvertDate.getCurrentSeason()
-            viewModel.selectedYear = ConvertDate.getCurrentYear(false)
-            viewModel.selectType = Constant.SEASON_YEAR
-            viewModel.filterList[0] =
-                viewModel.filterList[0].copy(second = ConvertDate.getCurrentYear(false).toString())
-            viewModel.filterList[1] =
-                viewModel.filterList[1].copy(second = ConvertDate.getCurrentSeason().toString())
-            viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
-        }
-        Constant.UPCOMING_NEXT_SEASON -> {
-            viewModel.selectedSort = MediaSort.POPULARITY_DESC
-            viewModel.selectedSeason = ConvertDate.getNextSeason()
-            viewModel.selectedYear = ConvertDate.getCurrentYear(true)
-            viewModel.selectType = Constant.SEASON_YEAR
-
-            viewModel.filterList[0] =
-                viewModel.filterList[0].copy(second = ConvertDate.getCurrentYear(true).toString())
-            viewModel.filterList[1] =
-                viewModel.filterList[1].copy(second = ConvertDate.getNextSeason().toString())
-            viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
-        }
-        Constant.ALL_TIME_POPULAR -> {
-            viewModel.selectedSort = MediaSort.POPULARITY_DESC
-            viewModel.selectType = Constant.NO_SEASON_NO_YEAR
-            viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
-        }
-        Constant.TARGET_GENRE -> {
-            viewModel.selectedSort = MediaSort.TRENDING_DESC
-            viewModel.selectType = Constant.NO_SEASON_NO_YEAR
-            viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Trending")
-            viewModel.filterList[3] = viewModel.filterList[3].copy(second = genre.toString())
-        }
-    }
-
     LaunchedEffect(viewModel, context) {
+        when (sortType) {
+            Constant.TRENDING_NOW -> {
+                viewModel.selectedSort = MediaSort.TRENDING_DESC
+                viewModel.selectType = Constant.NO_SEASON_NO_YEAR
+                viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Trending")
+            }
+
+            Constant.POPULAR_THIS_SEASON -> {
+                viewModel.selectedSort = MediaSort.POPULARITY_DESC
+                viewModel.selectedSeason = ConvertDate.getCurrentSeason()
+                viewModel.selectedYear = ConvertDate.getCurrentYear(false)
+                viewModel.selectType = Constant.SEASON_YEAR
+                viewModel.filterList[0] =
+                    viewModel.filterList[0].copy(
+                        second = ConvertDate.getCurrentYear(false).toString()
+                    )
+                viewModel.filterList[1] =
+                    viewModel.filterList[1].copy(second = ConvertDate.getCurrentSeason().toString())
+                viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
+            }
+
+            Constant.UPCOMING_NEXT_SEASON -> {
+                viewModel.selectedSort = MediaSort.POPULARITY_DESC
+                viewModel.selectedSeason = ConvertDate.getNextSeason()
+                viewModel.selectedYear = ConvertDate.getCurrentYear(true)
+                viewModel.selectType = Constant.SEASON_YEAR
+
+                viewModel.filterList[0] =
+                    viewModel.filterList[0].copy(
+                        second = ConvertDate.getCurrentYear(true).toString()
+                    )
+                viewModel.filterList[1] =
+                    viewModel.filterList[1].copy(second = ConvertDate.getNextSeason().toString())
+                viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
+            }
+
+            Constant.ALL_TIME_POPULAR -> {
+                viewModel.selectedSort = MediaSort.POPULARITY_DESC
+                viewModel.selectType = Constant.NO_SEASON_NO_YEAR
+                viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
+            }
+
+            Constant.TARGET_GENRE -> {
+                viewModel.selectedSort = MediaSort.TRENDING_DESC
+                viewModel.selectType = Constant.NO_SEASON_NO_YEAR
+                viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Trending")
+                viewModel.filterList[3] = viewModel.filterList[3].copy(second = genre.toString())
+            }
+        }
+
         viewModel.getSortedAnime()
         viewModel.getGenreList()
     }
@@ -156,7 +164,10 @@ fun SortedListScreen(
                             ).apply {
                                 this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                                 this.putExtra(Constant.TARGET_ID, state.animeSortList[idx].id)
-                                this.putExtra(Constant.TARGET_ID_MAL, state.animeSortList[idx].idMal)
+                                this.putExtra(
+                                    Constant.TARGET_ID_MAL,
+                                    state.animeSortList[idx].idMal
+                                )
                             }
                         )
                     }
@@ -184,7 +195,8 @@ fun SortedListScreen(
                         viewModel.selectType = Constant.NO_SEASON
                     }
                     viewModel.selectedYear = list[selectIdx]!!.toInt()
-                    viewModel.filterList[0] = viewModel.filterList[0].copy(second = list[selectIdx]!!)
+                    viewModel.filterList[0] =
+                        viewModel.filterList[0].copy(second = list[selectIdx]!!)
                 }
                 "Season" -> {
                     if (viewModel.selectedYear == null) {
@@ -192,12 +204,14 @@ fun SortedListScreen(
                     }
                     viewModel.selectType = Constant.SEASON_YEAR
                     viewModel.selectedSeason = MediaSeason.safeValueOf(list[selectIdx]!!)
-                    viewModel.filterList[1] = viewModel.filterList[1].copy(second = list[selectIdx]!!)
+                    viewModel.filterList[1] =
+                        viewModel.filterList[1].copy(second = list[selectIdx]!!)
                 }
                 "Sort" -> {
                     viewModel.selectedSort =
                         MediaSort.safeValueOf(Constant.animeSortList[selectIdx].name)
-                    viewModel.filterList[2] = viewModel.filterList[2].copy(second = list[selectIdx]!!)
+                    viewModel.filterList[2] =
+                        viewModel.filterList[2].copy(second = list[selectIdx]!!)
                 }
                 "Genre" -> {
                     viewModel.selectGenre = list[selectIdx]
@@ -257,7 +271,7 @@ private fun filterDialog(
         onDismissRequest = onDismiss,
         text = {
             LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(list.size) { idx ->
                     Text(
@@ -268,7 +282,7 @@ private fun filterDialog(
                                 onClick(idx)
                             },
                         text = list[idx].toString(),
-                        fontSize = 14.sp
+                        fontSize = 16.sp
                     )
                 }
             }
