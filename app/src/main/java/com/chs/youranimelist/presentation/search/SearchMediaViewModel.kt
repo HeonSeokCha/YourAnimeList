@@ -1,5 +1,6 @@
 package com.chs.youranimelist.presentation.search
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -30,6 +31,8 @@ class SearchMediaViewModel @Inject constructor(
 
 
     fun search(query: String) {
+        Log.e(searchPage, query)
+        Log.e(searchPage, page.toString())
         viewModelScope.launch {
             when (searchPage) {
                 Constant.TARGET_ANIME -> {
@@ -102,6 +105,9 @@ class SearchMediaViewModel @Inject constructor(
                             }
                         }
                     }
+                }
+                else -> {
+                    return@launch
                 }
             }
         }

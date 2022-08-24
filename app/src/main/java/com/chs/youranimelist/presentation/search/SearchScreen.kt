@@ -9,8 +9,7 @@ import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -78,8 +77,8 @@ fun SearchScreen(
             count = tabList.size,
             state = pagerState,
             userScrollEnabled = false,
-        ) {
-            when (this.currentPage) {
+        ) { pager ->
+            when (pager) {
                 0 -> {
                     SearchMediaScreen(
                         searchType = Constant.TARGET_ANIME,

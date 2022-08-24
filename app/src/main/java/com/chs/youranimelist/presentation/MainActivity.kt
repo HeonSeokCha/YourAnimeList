@@ -49,6 +49,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             var searchQuery by mutableStateOf("")
+            var searchListQuery by mutableStateOf( "")
             var searchWidgetState by mutableStateOf(SearchWidgetState.CLOSED)
             YourAnimeListTheme {
                 Scaffold(
@@ -61,9 +62,10 @@ class MainActivity : ComponentActivity() {
                             }, onClosedClicked = {
                                 searchWidgetState = SearchWidgetState.CLOSED
                             }, onSearchClicked = {
+                                Log.e("SeachClicked", it)
                                 searchQuery = it
                             }, onTextChanged = {
-
+                                searchListQuery = it
                             }
                         )
                     },
@@ -80,10 +82,10 @@ class MainActivity : ComponentActivity() {
                             HomeScreen(navigator = navController)
                         }
                         composable(BottomNavScreen.AnimeListScreen.route) {
-                            AnimeListScreen(searchQuery)
+                            AnimeListScreen(searchListQuery)
                         }
                         composable(BottomNavScreen.CharaListScreen.route) {
-                            CharaListScreen(searchQuery)
+                            CharaListScreen(searchListQuery)
                         }
                         composable(Screen.SearchScreen.route) {
                             SearchScreen(searchQuery)
@@ -124,7 +126,7 @@ fun AppBar(
         }
         Screen.SearchScreen.route -> {
             SearchAppBar(
-                text = "",
+                navController,
                 onSearchClicked = {
                     onSearchClicked(it)
                 },
@@ -140,7 +142,7 @@ fun AppBar(
             when (searchWidgetState) {
                 SearchWidgetState.OPENED -> {
                     SearchAppBar(
-                        text = "",
+                        navController,
                         onSearchClicked = {
                             onSearchClicked(it)
                         },
@@ -188,13 +190,15 @@ fun AppBar(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchAppBar(
-    text: String,
+    navController: NavHostController,
     onSearchClicked: (String) -> Unit,
     onValueChanged: (String) -> Unit,
     onClosedClicked: () -> Unit,
 ) {
     var textState by mutableStateOf("")
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -234,8 +238,9 @@ fun SearchAppBar(
                     modifier = Modifier
                         .alpha(ContentAlpha.medium),
                     onClick = {
-                        if (text.isNotEmpty()) {
+                        if (textState.isNotEmpty()) {
                             onSearchClicked("")
+                            textState = ""
                         } else {
                             onClosedClicked()
                             keyboardController?.hide()
