@@ -1,5 +1,6 @@
 package com.chs.youranimelist.presentation.search
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import com.chs.youranimelist.presentation.ui.theme.Purple200
 import com.chs.youranimelist.util.Constant
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -52,12 +54,13 @@ fun SearchScreen(
                 )
             }
         ) {
-            tabList.forEachIndexed { index, s ->
+            tabList.forEachIndexed { index, title ->
                 Tab(
                     text = {
                         Text(
-                            text = tabList[index],
+                            text = title,
                             maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                             color = Purple200
                         )
                     },
@@ -78,23 +81,25 @@ fun SearchScreen(
             state = pagerState,
             userScrollEnabled = false,
         ) { pager ->
+            Log.e("Pager", pager.toString())
+            Log.e("Pager2", pagerState.currentPage.toString())
             when (pager) {
                 0 -> {
                     SearchMediaScreen(
                         searchType = Constant.TARGET_ANIME,
-                        searchKeyWord = searchKeyWord
+                        searchKeyWord = ""
                     )
                 }
                 1 -> {
                     SearchMediaScreen(
                         searchType = Constant.TARGET_MANGA,
-                        searchKeyWord = searchKeyWord
+                        searchKeyWord = ""
                     )
                 }
                 2 -> {
                     SearchMediaScreen(
                         searchType = Constant.TARGET_CHARA,
-                        searchKeyWord = searchKeyWord
+                        searchKeyWord = ""
                     )
                 }
             }
