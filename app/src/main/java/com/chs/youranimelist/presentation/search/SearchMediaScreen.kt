@@ -1,6 +1,7 @@
 package com.chs.youranimelist.presentation.search
 
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +35,10 @@ fun SearchMediaScreen(
             (lazyColScrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
                     == lazyColScrollState.layoutInfo.totalItemsCount - 1)
         }
+    }
+
+    var count by remember {
+        mutableStateOf(1)
     }
 
     viewModel.searchPage = searchType

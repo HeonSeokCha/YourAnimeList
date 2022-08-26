@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 fun SearchScreen(
     searchKeyWord: String
 ) {
-
+    Log.e("Recomposition", searchKeyWord)
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -73,33 +73,35 @@ fun SearchScreen(
                 )
             }
         }
+        LaunchedEffect(pagerState) {
+            snapshotFlow {
+                pagerState.currentPage
+            }.collect { page ->
+                Log.e("page", page.toString())
+            }
+        }
         HorizontalPager(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
             count = tabList.size,
             state = pagerState,
             userScrollEnabled = false,
-        ) { pager ->
-            Log.e("Pager", pager.toString())
-            Log.e("Pager2", pagerState.currentPage.toString())
-            when (pager) {
+        ) {
+            when (pagerState.currentPage) {
                 0 -> {
                     SearchMediaScreen(
                         searchType = Constant.TARGET_ANIME,
-                        searchKeyWord = ""
+                        searchKeyWord = searchKeyWord
                     )
                 }
                 1 -> {
                     SearchMediaScreen(
                         searchType = Constant.TARGET_MANGA,
-                        searchKeyWord = ""
+                        searchKeyWord = searchKeyWord
                     )
                 }
                 2 -> {
                     SearchMediaScreen(
                         searchType = Constant.TARGET_CHARA,
-                        searchKeyWord = ""
+                        searchKeyWord = searchKeyWord
                     )
                 }
             }

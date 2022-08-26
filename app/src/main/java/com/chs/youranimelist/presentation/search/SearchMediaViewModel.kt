@@ -31,8 +31,6 @@ class SearchMediaViewModel @Inject constructor(
 
 
     fun search(query: String) {
-        Log.e(searchPage, query)
-        Log.e(searchPage, page.toString())
         viewModelScope.launch {
             when (searchPage) {
                 Constant.TARGET_ANIME -> {
