@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,10 +36,6 @@ fun SearchMediaScreen(
             (lazyColScrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
                     == lazyColScrollState.layoutInfo.totalItemsCount - 1)
         }
-    }
-
-    var count by remember {
-        mutableStateOf(1)
     }
 
     viewModel.searchPage = searchType
@@ -121,7 +118,8 @@ fun SearchMediaScreen(
         if (viewModel.hasNextPage) {
             viewModel.page++
             viewModel.search(searchKeyWord)
-        } else return
+            Log.e("ENdOF", viewModel.page.toString())
+        }
     }
 
     if (state.isLoading) {

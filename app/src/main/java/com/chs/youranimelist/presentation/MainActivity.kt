@@ -62,7 +62,6 @@ class MainActivity : ComponentActivity() {
                             }, onClosedClicked = {
                                 searchWidgetState = SearchWidgetState.CLOSED
                             }, onSearchClicked = {
-                                Log.e("SeachClicked", it)
                                 searchQuery = it
                             }, onTextChanged = {
                                 searchListQuery = it

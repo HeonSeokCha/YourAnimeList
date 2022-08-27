@@ -28,14 +28,13 @@ import kotlinx.coroutines.launch
 fun SearchScreen(
     searchKeyWord: String
 ) {
-    Log.e("Recomposition", searchKeyWord)
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
 
     val tabList = listOf(
         "ANIME",
-        "MANGA",
-        "CHARACTER"
+//        "MANGA",
+//        "CHARACTER"
     )
 
     Column(
@@ -85,26 +84,27 @@ fun SearchScreen(
             state = pagerState,
             userScrollEnabled = false,
         ) {
-            when (pagerState.currentPage) {
-                0 -> {
-                    SearchMediaScreen(
-                        searchType = Constant.TARGET_ANIME,
-                        searchKeyWord = searchKeyWord
-                    )
-                }
-                1 -> {
-                    SearchMediaScreen(
-                        searchType = Constant.TARGET_MANGA,
-                        searchKeyWord = searchKeyWord
-                    )
-                }
-                2 -> {
-                    SearchMediaScreen(
-                        searchType = Constant.TARGET_CHARA,
-                        searchKeyWord = searchKeyWord
-                    )
-                }
-            }
+            SearchMediaScreen(
+                searchType = Constant.TARGET_ANIME,
+                searchKeyWord = searchKeyWord
+            )
+//            when (pagerState.currentPage) {
+//                0 -> {
+//
+//                }
+//                1 -> {
+//                    SearchMediaScreen(
+//                        searchType = Constant.TARGET_MANGA,
+//                        searchKeyWord = searchKeyWord
+//                    )
+//                }
+//                2 -> {
+//                    SearchMediaScreen(
+//                        searchType = Constant.TARGET_CHARA,
+//                        searchKeyWord = searchKeyWord
+//                    )
+//                }
+//            }
         }
     }
 }
