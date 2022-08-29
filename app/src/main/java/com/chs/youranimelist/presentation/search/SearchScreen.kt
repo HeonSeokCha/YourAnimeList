@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 fun SearchScreen(
     searchKeyWord: String
 ) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(0)
     val coroutineScope = rememberCoroutineScope()
 
     val tabList = listOf(

@@ -110,4 +110,10 @@ class SearchMediaViewModel @Inject constructor(
             }
         }
     }
+
+    fun refresh() {
+        page = 1
+        hasNextPage = false
+        state = SearchState()
+    }
 }

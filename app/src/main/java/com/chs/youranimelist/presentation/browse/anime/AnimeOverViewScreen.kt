@@ -1,5 +1,6 @@
 package com.chs.youranimelist.presentation.browse.anime
 
+import android.text.Html
 import android.text.TextUtils
 import android.widget.TextView
 import androidx.compose.foundation.layout.*
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -54,7 +56,10 @@ fun AnimeOverViewScreen(
                 start = 8.dp,
                 end = 8.dp
             ),
-        state = scrollState
+        state = scrollState,
+        contentPadding = PaddingValues(
+            vertical = 8.dp
+        )
     ) {
         item {
             FlowRow(
@@ -89,15 +94,13 @@ fun AnimeOverViewScreen(
                 Spacer(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
 
                 if (expandDesc) {
-                    AndroidView(
-                        factory = { context -> TextView(context) },
-                        update = {
-                            it.text = HtmlCompat.fromHtml(
-                                state.animeOverViewInfo?.media?.description ?: "",
-                                HtmlCompat.FROM_HTML_MODE_COMPACT
-                            )
-                        }
+                    Text(
+                        text = HtmlCompat.fromHtml(
+                            state.animeOverViewInfo?.media?.description ?: "",
+                            Html.FROM_HTML_MODE_LEGACY
+                        ).toString()
                     )
+
 
                     IconButton(
                         modifier = Modifier
@@ -108,16 +111,13 @@ fun AnimeOverViewScreen(
                         Icon(imageVector = Icons.Filled.ArrowDropUp, contentDescription = null)
                     }
                 } else {
-                    AndroidView(
-                        factory = { context -> TextView(context) },
-                        update = {
-                            it.text = HtmlCompat.fromHtml(
-                                state.animeOverViewInfo?.media?.description ?: "",
-                                HtmlCompat.FROM_HTML_MODE_COMPACT
-                            )
-                            it.maxLines = 5
-                            it.ellipsize = TextUtils.TruncateAt.END
-                        }
+                    Text(
+                        text = HtmlCompat.fromHtml(
+                            state.animeOverViewInfo?.media?.description ?: "",
+                            Html.FROM_HTML_MODE_LEGACY
+                        ).toString(),
+                        maxLines = 5,
+                        overflow = TextOverflow.Ellipsis
                     )
                     IconButton(
                         modifier = Modifier
@@ -144,11 +144,8 @@ fun AnimeOverViewScreen(
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(
-                        start = 8.dp,
-                        end = 8.dp
-                    ),
+                    .wrapContentHeight(),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 items(state.animeOverViewInfo?.media?.relations?.relationsEdges?.size ?: 0) { idx ->
                     ItemAnimeSmall(

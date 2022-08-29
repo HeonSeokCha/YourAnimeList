@@ -1,5 +1,6 @@
 package com.chs.youranimelist.presentation.browse.anime
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -75,7 +76,7 @@ fun AnimeDetailScreen(
     }
 
     BoxWithConstraints {
-        val screenHeight = maxHeight
+        val screenHeight = remember { mutableStateOf(maxHeight) }
         val scrollState = rememberScrollState()
         val overViewScroll = rememberLazyListState()
         val charaViewScroll = rememberLazyGridState()
@@ -83,15 +84,6 @@ fun AnimeDetailScreen(
         var expandDesc by remember { mutableStateOf(false) }
 
         val offset = remember { mutableStateOf(0f) }
-
-        val nestedScrollConnection = remember {
-            object : NestedScrollConnection {
-                override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                    offset.value = (offset.value + available.y).coerceIn(-200f, 0f)
-                    return Offset.Zero
-                }
-            }
-        }
 
 
         Column(
@@ -101,7 +93,7 @@ fun AnimeDetailScreen(
                 .offset(y = offset.value.dp)
         ) {
             AnimeDetailHeadBanner(viewModel)
-            Column(modifier = Modifier.height(screenHeight)) {
+            Column(modifier = Modifier.height(screenHeight.value)) {
                 TabRow(
                     modifier = Modifier.fillMaxWidth(),
                     selectedTabIndex = pagerState.currentPage,
@@ -138,12 +130,23 @@ fun AnimeDetailScreen(
                 HorizontalPager(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .nestedScroll(nestedScrollConnection),
+                        .nestedScroll(remember {
+                            object : NestedScrollConnection {
+                                override fun onPreScroll(
+                                    available: Offset,
+                                    source: NestedScrollSource
+                                ): Offset {
+                                    return if (available.y > 0) Offset.Zero else Offset(
+                                        x = 0f,
+                                        y = -scrollState.dispatchRawDelta(-available.y)
+                                    )
+                                }
+                            }
+                        }),
                     count = tabList.size,
                     state = pagerState,
-                    userScrollEnabled = false,
+                    userScrollEnabled = true,
                 ) {
-
                     when (this.currentPage) {
                         0 -> {
                             AnimeOverViewScreen(

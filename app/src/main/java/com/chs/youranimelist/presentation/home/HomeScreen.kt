@@ -388,3 +388,15 @@ fun ItemAnimeSmall(
         }
     }
 }
+
+@Composable
+fun ItemLoadingSmall() {
+    Card(
+        modifier = Modifier
+            .width(130.dp)
+            .height(280.dp),
+        elevation = 3.dp,
+    ) {
+        CircularProgressIndicator()
+    }
+}

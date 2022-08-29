@@ -1,5 +1,6 @@
 package com.chs.youranimelist.presentation.browse.character
 
+import android.text.Html
 import android.text.TextUtils
 import android.widget.TextView
 import androidx.compose.foundation.background
@@ -101,14 +102,11 @@ fun CharacterDetailScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             if (expandDesc) {
-                AndroidView(
-                    factory = { context -> TextView(context) },
-                    update = {
-                        it.text = HtmlCompat.fromHtml(
-                            state.characterDetailInfo?.character?.description ?: "",
-                            HtmlCompat.FROM_HTML_MODE_COMPACT
-                        )
-                    }
+                Text(
+                    text = HtmlCompat.fromHtml(
+                        state.characterDetailInfo?.character?.description ?: "",
+                        Html.FROM_HTML_MODE_LEGACY
+                    ).toString()
                 )
                 IconButton(
                     modifier = Modifier
@@ -119,16 +117,14 @@ fun CharacterDetailScreen(
                     Icon(imageVector = Icons.Filled.ArrowDropUp, contentDescription = null)
                 }
             } else {
-                AndroidView(
-                    factory = { context -> TextView(context) },
-                    update = {
-                        it.text = HtmlCompat.fromHtml(
-                            state.characterDetailInfo?.character?.description ?: "",
-                            HtmlCompat.FROM_HTML_MODE_COMPACT
-                        )
-                        it.maxLines = 5
-                        it.ellipsize = TextUtils.TruncateAt.END
-                    }
+
+                Text(
+                    text = HtmlCompat.fromHtml(
+                        state.characterDetailInfo?.character?.description ?: "",
+                        Html.FROM_HTML_MODE_LEGACY
+                    ).toString(),
+                    maxLines = 5,
+                    overflow = TextOverflow.Ellipsis
                 )
                 IconButton(
                     modifier = Modifier

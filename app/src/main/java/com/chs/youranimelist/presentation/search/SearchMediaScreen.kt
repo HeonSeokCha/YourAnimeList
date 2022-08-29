@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.chs.youranimelist.presentation.browse.BrowseActivity
+import com.chs.youranimelist.presentation.home.ItemLoadingSmall
+import com.chs.youranimelist.presentation.ui.theme.Purple500
 import com.chs.youranimelist.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
 import kotlinx.coroutines.delay
@@ -34,7 +36,7 @@ fun SearchMediaScreen(
     val endOfListReached by remember {
         derivedStateOf {
             (lazyColScrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-                    == lazyColScrollState.layoutInfo.totalItemsCount - 1)
+                    == state.searchAnimeResult.size - 1)
         }
     }
 
@@ -42,6 +44,7 @@ fun SearchMediaScreen(
 
     LaunchedEffect(searchKeyWord) {
         if (searchKeyWord.isNotEmpty()) {
+            viewModel.refresh()
             viewModel.search(searchKeyWord)
         }
     }
@@ -128,7 +131,7 @@ fun SearchMediaScreen(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator(color = Pink80)
+            CircularProgressIndicator(color = Purple500)
         }
     }
 }
