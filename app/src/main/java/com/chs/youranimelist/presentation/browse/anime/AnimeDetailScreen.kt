@@ -29,6 +29,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
@@ -59,10 +60,36 @@ fun AnimeDetailScreen(
     viewModel: AnimeDetailViewModel = hiltViewModel()
 ) {
 
+    val maxHeight = 200f
+    val minHeight = 60f
     val state = viewModel.state
     val context = LocalContext.current
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
+    val overViewScroll = rememberLazyListState()
+    val charaViewScroll = rememberLazyGridState()
+    val recommendScroll = rememberLazyListState()
+    var expandDesc by remember { mutableStateOf(false) }
+
+    val toolbarHeightPx = with(LocalDensity.current) {
+        maxHeight.dp.roundToPx().toFloat()
+    }
+    val toolbarMinHeightPx = with(LocalDensity.current) {
+        minHeight.dp.roundToPx().toFloat()
+    }
+    val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                val delta = available.y
+                val newOffset = toolbarOffsetHeightPx.value + delta
+                toolbarOffsetHeightPx.value =
+                    newOffset.coerceIn(toolbarMinHeightPx - toolbarHeightPx, 0f)
+                return Offset.Zero
+            }
+        }
+    }
 
     val tabList = listOf(
         "OVERVIEW",
@@ -75,104 +102,84 @@ fun AnimeDetailScreen(
         viewModel.isSaveAnime(id)
     }
 
-    BoxWithConstraints {
-        val screenHeight = remember { mutableStateOf(maxHeight) }
-        val scrollState = rememberScrollState()
-        val overViewScroll = rememberLazyListState()
-        val charaViewScroll = rememberLazyGridState()
-        val recommendScroll = rememberLazyListState()
-        var expandDesc by remember { mutableStateOf(false) }
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(Color.Gray)
+            .nestedScroll(nestedScrollConnection)
+    ) {
 
-        val offset = remember { mutableStateOf(0f) }
+        Column {
+            AnimeDetailHeadBanner(
+                ((toolbarHeightPx + toolbarOffsetHeightPx.value) / LocalDensity.current.density),
+                viewModel
+            )
 
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .offset(y = offset.value.dp)
-        ) {
-            AnimeDetailHeadBanner(viewModel)
-            Column(modifier = Modifier.height(screenHeight.value)) {
-                TabRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    selectedTabIndex = pagerState.currentPage,
-                    backgroundColor = Color.White,
-                    indicator = { tabPositions ->
-                        TabRowDefaults.Indicator(
-                            modifier = Modifier
-                                .pagerTabIndicatorOffset(pagerState, tabPositions),
-                            color = Purple200
-                        )
-                    }
-                ) {
-                    tabList.forEachIndexed { index, s ->
-                        Tab(
-                            text = {
-                                Text(
-                                    text = tabList[index],
-                                    maxLines = 1,
-                                    color = Purple200,
-                                    overflow = TextOverflow.Ellipsis,
-                                    fontSize = 13.sp
-                                )
-                            },
-                            selected = pagerState.currentPage == index,
-                            onClick = {
-                                coroutineScope.launch {
-                                    pagerState.animateScrollToPage(index)
-                                }
-                            },
-                        )
-                    }
+            TabRow(
+                modifier = Modifier.fillMaxWidth(),
+                selectedTabIndex = pagerState.currentPage,
+                backgroundColor = Color.White,
+                indicator = { tabPositions ->
+                    TabRowDefaults.Indicator(
+                        modifier = Modifier
+                            .pagerTabIndicatorOffset(pagerState, tabPositions),
+                        color = Purple200
+                    )
                 }
-
-                HorizontalPager(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .nestedScroll(remember {
-                            object : NestedScrollConnection {
-                                override fun onPreScroll(
-                                    available: Offset,
-                                    source: NestedScrollSource
-                                ): Offset {
-                                    return if (available.y > 0) Offset.Zero else Offset(
-                                        x = 0f,
-                                        y = -scrollState.dispatchRawDelta(-available.y)
-                                    )
-                                }
+            ) {
+                tabList.forEachIndexed { index, s ->
+                    Tab(
+                        text = {
+                            Text(
+                                text = tabList[index],
+                                maxLines = 1,
+                                color = Purple200,
+                                overflow = TextOverflow.Ellipsis,
+                                fontSize = 13.sp
+                            )
+                        },
+                        selected = pagerState.currentPage == index,
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
                             }
-                        }),
-                    count = tabList.size,
-                    state = pagerState,
-                    userScrollEnabled = true,
-                ) {
-                    when (this.currentPage) {
-                        0 -> {
-                            AnimeOverViewScreen(
-                                animeId = id,
-                                animeMalId = idMal,
-                                navController = navController,
-                                scrollState = overViewScroll,
-                                expandDesc = expandDesc,
-                                changeExpand = { expandDesc = it }
-                            )
-                        }
-                        1 -> {
-                            AnimeCharaScreen(
-                                animeId = id,
-                                lazyGridScrollState = charaViewScroll,
-                                navController = navController,
-                            )
-                        }
-                        2 -> {
-                            AnimeRecScreen(
-                                animeId = id,
-                                lazyListState = recommendScroll,
-                                navController = navController,
-                            )
-                        }
-                    }
+                        },
+                    )
+                }
+            }
+        }
+
+        HorizontalPager(
+            modifier = Modifier
+                .padding(top = (maxHeight + 60).dp),
+            count = tabList.size,
+            state = pagerState,
+            userScrollEnabled = false,
+        ) {
+            when (this.currentPage) {
+                0 -> {
+                    AnimeOverViewScreen(
+                        animeId = id,
+                        animeMalId = idMal,
+                        navController = navController,
+                        scrollState = overViewScroll,
+                        expandDesc = expandDesc,
+                        changeExpand = { expandDesc = it }
+                    )
+                }
+                1 -> {
+                    AnimeCharaScreen(
+                        animeId = id,
+                        lazyGridScrollState = charaViewScroll,
+                        navController = navController,
+                    )
+                }
+                2 -> {
+                    AnimeRecScreen(
+                        animeId = id,
+                        lazyListState = recommendScroll,
+                        navController = navController,
+                    )
                 }
             }
         }
@@ -191,6 +198,7 @@ fun AnimeDetailScreen(
 
 @Composable
 fun AnimeDetailHeadBanner(
+    bannerHeight: Float,
     viewModel: AnimeDetailViewModel
 ) {
     val state = viewModel.state
@@ -232,7 +240,7 @@ fun AnimeDetailHeadBanner(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(400.dp)
+            .height(bannerHeight.dp)
     ) {
         Box {
             AsyncImage(

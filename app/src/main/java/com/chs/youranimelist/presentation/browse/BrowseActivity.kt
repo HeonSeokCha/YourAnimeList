@@ -31,21 +31,7 @@ class BrowseActivity : ComponentActivity() {
             val navController = rememberNavController()
             val activity = (LocalContext.current as? Activity)
             YourAnimeListTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    topBar = {
-                        TopAppBar(
-                            title = {},
-                            navigationIcon = {
-                                IconButton(
-                                    onClick = { activity?.finish() }
-                                ) {
-                                    Icon(Icons.Filled.Close, null)
-                                }
-                            }
-                        )
-                    }
-                ) {
+                Scaffold {
                     val startMediaDestination =
                         if (intent?.getStringExtra(Constant.TARGET_TYPE) == Constant.TARGET_MEDIA) {
                             "${BrowseScreen.AnimeDetailScreen.route}/{id}/{idMal}"
