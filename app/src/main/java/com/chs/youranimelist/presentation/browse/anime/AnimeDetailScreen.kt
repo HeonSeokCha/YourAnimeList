@@ -30,6 +30,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
@@ -60,36 +61,15 @@ fun AnimeDetailScreen(
     viewModel: AnimeDetailViewModel = hiltViewModel()
 ) {
 
-    val maxHeight = 200f
-    val minHeight = 60f
     val state = viewModel.state
     val context = LocalContext.current
     val pagerState = rememberPagerState()
+    val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     val overViewScroll = rememberLazyListState()
     val charaViewScroll = rememberLazyGridState()
     val recommendScroll = rememberLazyListState()
     var expandDesc by remember { mutableStateOf(false) }
-
-    val toolbarHeightPx = with(LocalDensity.current) {
-        maxHeight.dp.roundToPx().toFloat()
-    }
-    val toolbarMinHeightPx = with(LocalDensity.current) {
-        minHeight.dp.roundToPx().toFloat()
-    }
-    val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
-
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val delta = available.y
-                val newOffset = toolbarOffsetHeightPx.value + delta
-                toolbarOffsetHeightPx.value =
-                    newOffset.coerceIn(toolbarMinHeightPx - toolbarHeightPx, 0f)
-                return Offset.Zero
-            }
-        }
-    }
 
     val tabList = listOf(
         "OVERVIEW",
@@ -102,19 +82,15 @@ fun AnimeDetailScreen(
         viewModel.isSaveAnime(id)
     }
 
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(Color.Gray)
-            .nestedScroll(nestedScrollConnection)
-    ) {
+    BoxWithConstraints {
+        val screenHeight = maxHeight
 
-        Column {
-            AnimeDetailHeadBanner(
-                ((toolbarHeightPx + toolbarOffsetHeightPx.value) / LocalDensity.current.density),
-                viewModel
-            )
-
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+        ) {
+            AnimeDetailHeadBanner(viewModel)
             TabRow(
                 modifier = Modifier.fillMaxWidth(),
                 selectedTabIndex = pagerState.currentPage,
@@ -147,39 +123,52 @@ fun AnimeDetailScreen(
                     )
                 }
             }
-        }
 
-        HorizontalPager(
-            modifier = Modifier
-                .padding(top = (maxHeight + 60).dp),
-            count = tabList.size,
-            state = pagerState,
-            userScrollEnabled = false,
-        ) {
-            when (this.currentPage) {
-                0 -> {
-                    AnimeOverViewScreen(
-                        animeId = id,
-                        animeMalId = idMal,
-                        navController = navController,
-                        scrollState = overViewScroll,
-                        expandDesc = expandDesc,
-                        changeExpand = { expandDesc = it }
-                    )
-                }
-                1 -> {
-                    AnimeCharaScreen(
-                        animeId = id,
-                        lazyGridScrollState = charaViewScroll,
-                        navController = navController,
-                    )
-                }
-                2 -> {
-                    AnimeRecScreen(
-                        animeId = id,
-                        lazyListState = recommendScroll,
-                        navController = navController,
-                    )
+            HorizontalPager(
+                modifier = Modifier
+                    .height(screenHeight)
+                    .nestedScroll(remember {
+                        object : NestedScrollConnection {
+                            override fun onPreScroll(
+                                available: Offset,
+                                source: NestedScrollSource
+                            ): Offset {
+                                return if (available.y > 0) Offset.Zero else Offset(
+                                    x = 0f,
+                                    y = -scrollState.dispatchRawDelta(-available.y)
+                                )
+                            }
+                        }
+                    }),
+                count = tabList.size,
+                state = pagerState,
+                userScrollEnabled = false,
+            ) {
+                when (this.currentPage) {
+                    0 -> {
+                        AnimeOverViewScreen(
+                            animeId = id,
+                            animeMalId = idMal,
+                            navController = navController,
+                            scrollState = overViewScroll,
+                            expandDesc = expandDesc,
+                            changeExpand = { expandDesc = it }
+                        )
+                    }
+                    1 -> {
+                        AnimeCharaScreen(
+                            animeId = id,
+                            lazyGridScrollState = charaViewScroll,
+                            navController = navController,
+                        )
+                    }
+                    2 -> {
+                        AnimeRecScreen(
+                            animeId = id,
+                            lazyListState = recommendScroll,
+                            navController = navController,
+                        )
+                    }
                 }
             }
         }
@@ -198,7 +187,6 @@ fun AnimeDetailScreen(
 
 @Composable
 fun AnimeDetailHeadBanner(
-    bannerHeight: Float,
     viewModel: AnimeDetailViewModel
 ) {
     val state = viewModel.state
@@ -240,7 +228,7 @@ fun AnimeDetailHeadBanner(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(bannerHeight.dp)
+            .height(250.dp)
     ) {
         Box {
             AsyncImage(
@@ -342,10 +330,12 @@ fun AnimeDetailHeadBanner(
                         end = 8.dp
                     ),
                 onClick = {
-                    if (state.isSaveAnime != null) {
-                        viewModel.deleteAnime(state.isSaveAnime)
-                    } else {
-                        viewModel.insertAnime()
+                    if (state.animeDetailInfo != null) {
+                        if (state.isSaveAnime != null) {
+                            viewModel.deleteAnime(state.isSaveAnime)
+                        } else {
+                            viewModel.insertAnime()
+                        }
                     }
                 }
             ) {

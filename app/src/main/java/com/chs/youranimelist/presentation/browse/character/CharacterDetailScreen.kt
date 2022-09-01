@@ -1,8 +1,7 @@
 package com.chs.youranimelist.presentation.browse.character
 
 import android.text.Html
-import android.text.TextUtils
-import android.widget.TextView
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -10,15 +9,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,13 +29,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
+import com.chs.youranimelist.ui.theme.Pink80
 import com.chs.youranimelist.util.color
 
 @Composable
@@ -62,6 +57,7 @@ fun CharacterDetailScreen(
 
     BoxWithConstraints {
         val screenHeight = maxHeight
+        Log.e("ScreenHeight", maxHeight.toString())
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -79,10 +75,12 @@ fun CharacterDetailScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 onClick = {
-                    if (state.isSaveChara != null) {
-                        viewModel.deleteCharacter()
-                    } else {
-                        viewModel.insertCharacter()
+                    if (state.characterDetailInfo != null) {
+                        if (state.isSaveChara != null) {
+                            viewModel.deleteCharacter()
+                        } else {
+                            viewModel.insertCharacter()
+                        }
                     }
                 }
             ) {
@@ -136,12 +134,10 @@ fun CharacterDetailScreen(
                 }
             }
 
-            Column(
+            LazyVerticalGrid(
                 modifier = Modifier
                     .height(screenHeight)
-            ) {
-                LazyVerticalGrid(
-                    modifier = Modifier.nestedScroll(remember {
+                    .nestedScroll(remember {
                         object : NestedScrollConnection {
                             override fun onPreScroll(
                                 available: Offset,
@@ -154,25 +150,34 @@ fun CharacterDetailScreen(
                             }
                         }
                     }),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    columns = GridCells.Adaptive(100.dp),
-                    contentPadding = PaddingValues(vertical = 8.dp)
-                ) {
-                    items(characterInfo?.media?.edges?.size ?: 0) { idx ->
-                        ItemAnimeSmall(
-                            item = characterInfo?.media?.edges?.get(idx)?.node?.animeList!!,
-                            onClick = {
-                                navController.navigate(
-                                    "${BrowseScreen.AnimeDetailScreen.route}/" +
-                                            "${characterInfo.media.edges[idx]?.node?.animeList!!.id}" +
-                                            "/${characterInfo.media.edges[idx]?.node?.animeList!!.idMal ?: 0}"
-                                )
-                            }
-                        )
-                    }
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                columns = GridCells.Adaptive(100.dp),
+                contentPadding = PaddingValues(vertical = 8.dp)
+            ) {
+                items(characterInfo?.media?.edges?.size ?: 0) { idx ->
+                    ItemAnimeSmall(
+                        item = characterInfo?.media?.edges?.get(idx)?.node?.animeList!!,
+                        onClick = {
+                            navController.navigate(
+                                "${BrowseScreen.AnimeDetailScreen.route}/" +
+                                        "${characterInfo.media.edges[idx]?.node?.animeList!!.id}" +
+                                        "/${characterInfo.media.edges[idx]?.node?.animeList!!.idMal ?: 0}"
+                            )
+                        }
+                    )
                 }
             }
+        }
+    }
+
+    if (state.isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(color = Pink80)
         }
     }
 }
