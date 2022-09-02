@@ -2,6 +2,7 @@ package com.chs.youranimelist.presentation.browse.anime
 
 import android.text.Html
 import android.text.TextUtils
+import android.util.Log
 import android.widget.TextView
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,9 +16,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -40,9 +44,11 @@ fun AnimeOverViewScreen(
     scrollState: LazyListState,
     expandDesc: Boolean,
     changeExpand: (Boolean) -> Unit,
+    calcScreenHeight: (Dp) -> Unit,
 ) {
     val state = viewModel.state
     val context = LocalContext.current
+    val density = LocalDensity.current
 
     LaunchedEffect(viewModel, context) {
         viewModel.getAnimeOverView(animeId)
@@ -55,7 +61,10 @@ fun AnimeOverViewScreen(
             .padding(
                 start = 8.dp,
                 end = 8.dp
-            ),
+            )
+            .onGloballyPositioned { coordinates ->
+                Log.e("AnimeOverViewScreen", with(density) { coordinates.size.height.toDp() }.toString())
+            },
         state = scrollState,
         contentPadding = PaddingValues(
             vertical = 8.dp

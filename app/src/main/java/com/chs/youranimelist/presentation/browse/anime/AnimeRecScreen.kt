@@ -1,5 +1,6 @@
 package com.chs.youranimelist.presentation.browse.anime
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -27,27 +28,32 @@ fun AnimeRecScreen(
         viewModel.getAnimeRecommendList(animeId)
     }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                top = 8.dp,
-                bottom = 8.dp
-            ),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        state = lazyListState
-    ) {
-        items(
-            state.animeRecInfo?.animeRecommend?.recommendations?.edges?.size ?: 0
-        ) { idx ->
-            ItemAnimeRecommend(
-                state.animeRecInfo?.animeRecommend?.recommendations?.edges?.get(idx)?.node?.mediaRecommendation!!
-            ) {
-                navController.navigate(
-                    "${BrowseScreen.AnimeDetailScreen.route}/" +
-                            "${state.animeRecInfo.animeRecommend.recommendations.edges[idx]?.node?.mediaRecommendation!!.id}" +
-                            "/${state.animeRecInfo.animeRecommend.recommendations.edges[idx]?.node?.mediaRecommendation!!.idMal}"
-                )
+    BoxWithConstraints {
+        val screenHeight = maxHeight
+        Log.e("AnimeRecScreen", screenHeight.toString())
+
+        LazyColumn(
+            modifier = Modifier
+                .height(1000.dp)
+                .padding(
+                    top = 8.dp,
+                    bottom = 8.dp
+                ),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            state = lazyListState
+        ) {
+            items(
+                state.animeRecInfo?.animeRecommend?.recommendations?.edges?.size ?: 0
+            ) { idx ->
+                ItemAnimeRecommend(
+                    state.animeRecInfo?.animeRecommend?.recommendations?.edges?.get(idx)?.node?.mediaRecommendation!!
+                ) {
+                    navController.navigate(
+                        "${BrowseScreen.AnimeDetailScreen.route}/" +
+                                "${state.animeRecInfo.animeRecommend.recommendations.edges[idx]?.node?.mediaRecommendation!!.id}" +
+                                "/${state.animeRecInfo.animeRecommend.recommendations.edges[idx]?.node?.mediaRecommendation!!.idMal}"
+                    )
+                }
             }
         }
     }

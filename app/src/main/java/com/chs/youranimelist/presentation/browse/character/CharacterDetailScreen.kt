@@ -57,7 +57,6 @@ fun CharacterDetailScreen(
 
     BoxWithConstraints {
         val screenHeight = maxHeight
-        Log.e("ScreenHeight", maxHeight.toString())
         Column(
             modifier = Modifier
                 .fillMaxSize()

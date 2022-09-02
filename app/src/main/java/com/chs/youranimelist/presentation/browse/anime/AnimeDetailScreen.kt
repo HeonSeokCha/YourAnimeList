@@ -1,9 +1,7 @@
 package com.chs.youranimelist.presentation.browse.anime
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -13,9 +11,7 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.*
@@ -29,14 +25,11 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -152,7 +145,8 @@ fun AnimeDetailScreen(
                             navController = navController,
                             scrollState = overViewScroll,
                             expandDesc = expandDesc,
-                            changeExpand = { expandDesc = it }
+                            changeExpand = { expandDesc = it },
+                            calcScreenHeight = {}
                         )
                     }
                     1 -> {
@@ -173,6 +167,7 @@ fun AnimeDetailScreen(
             }
         }
     }
+
 
     if (state.isLoading) {
         Box(
@@ -228,7 +223,7 @@ fun AnimeDetailHeadBanner(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(250.dp)
+            .height(420.dp)
     ) {
         Box {
             AsyncImage(

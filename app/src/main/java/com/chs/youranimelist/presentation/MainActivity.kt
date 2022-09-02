@@ -49,8 +49,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             var searchQuery by mutableStateOf("")
-            var searchListQuery by mutableStateOf( "")
+            var searchListQuery by mutableStateOf("")
             var searchWidgetState by mutableStateOf(SearchWidgetState.CLOSED)
+
             YourAnimeListTheme {
                 Scaffold(
                     topBar = {
@@ -69,7 +70,11 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                     bottomBar = {
-                        BottomBar(navController)
+                        BottomBar(navController) {
+                            searchQuery = ""
+                            searchListQuery = ""
+                            searchWidgetState = SearchWidgetState.CLOSED
+                        }
                     },
                 ) {
                     NavHost(
@@ -79,6 +84,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(BottomNavScreen.HomeScreen.route) {
                             HomeScreen(navigator = navController)
+                            Log.e("Navigate", "0")
                         }
                         composable(BottomNavScreen.AnimeListScreen.route) {
                             AnimeListScreen(searchListQuery)
@@ -268,7 +274,8 @@ fun SearchAppBar(
 
 @Composable
 fun BottomBar(
-    navController: NavHostController
+    navController: NavHostController,
+    onNavigate: () -> Unit,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     if (navBackStackEntry?.destination?.route?.contains(Screen.SortListScreen.route) == false
@@ -295,6 +302,7 @@ fun BottomBar(
                             launchSingleTop = true
                             restoreState = true
                         }
+                        onNavigate()
                     },
                     icon = {
                         Icon(
