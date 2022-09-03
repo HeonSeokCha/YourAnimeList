@@ -28,6 +28,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.chs.youranimelist.presentation.Screen
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.util.Constant.GENRE_COLOR
@@ -63,7 +64,10 @@ fun AnimeOverViewScreen(
                 end = 8.dp
             )
             .onGloballyPositioned { coordinates ->
-                Log.e("AnimeOverViewScreen", with(density) { coordinates.size.height.toDp() }.toString())
+                Log.e(
+                    "AnimeOverViewScreen",
+                    with(density) { coordinates.size.height.toDp() }.toString()
+                )
             },
         state = scrollState,
         contentPadding = PaddingValues(
@@ -78,6 +82,7 @@ fun AnimeOverViewScreen(
                 state.animeOverViewInfo?.media?.genres?.forEach { genre ->
                     Chip(
                         onClick = {
+                            navController.navigate("${Screen.SortListScreen.route}/$genre")
                         },
                         colors = ChipDefaults.chipColors(
                             backgroundColor = GENRE_COLOR[genre]?.color ?: Color.Black,

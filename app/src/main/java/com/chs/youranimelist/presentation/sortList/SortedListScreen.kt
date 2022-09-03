@@ -30,10 +30,10 @@ import com.chs.youranimelist.util.ConvertDate
 @Composable
 fun SortedListScreen(
     sortType: String,
-    genre: String? = null,
+    genre: String = "",
     viewModel: SortedViewModel = hiltViewModel()
 ) {
-
+    Log.e("genre", genre)
     val state = viewModel.state
     val context = LocalContext.current
     val lazyGridScrollState = rememberLazyGridState()
@@ -92,10 +92,11 @@ fun SortedListScreen(
             }
 
             Constant.TARGET_GENRE -> {
-                viewModel.selectedSort = MediaSort.TRENDING_DESC
+                viewModel.selectedSort = MediaSort.SCORE_DESC
                 viewModel.selectType = Constant.NO_SEASON_NO_YEAR
-                viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Trending")
-                viewModel.filterList[3] = viewModel.filterList[3].copy(second = genre.toString())
+                viewModel.selectGenre = genre
+                viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Average Score")
+                viewModel.filterList[3] = viewModel.filterList[3].copy(second = genre)
             }
         }
 
