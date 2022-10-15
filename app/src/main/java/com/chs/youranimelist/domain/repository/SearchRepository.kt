@@ -1,5 +1,6 @@
 package com.chs.youranimelist.domain.repository
 
+import androidx.paging.PagingData
 import com.apollographql.apollo3.api.ApolloResponse
 import com.chs.youranimelist.SearchAnimeQuery
 import com.chs.youranimelist.SearchCharacterQuery
@@ -8,18 +9,9 @@ import com.chs.youranimelist.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
-    suspend fun searchAnime(
-        page: Int,
-        search: String
-    ): Flow<Resource<SearchAnimeQuery.Data>>
+    fun searchAnime(search: String): Flow<PagingData<SearchAnimeQuery.Data>>
 
-    suspend fun searchManga(
-        page: Int,
-        search: String
-    ): Flow<Resource<SearchMangaQuery.Data>>
+    fun searchManga(search: String): Flow<PagingData<SearchMangaQuery.Data>>
 
-    suspend fun searchCharacter(
-        page: Int,
-        search: String
-    ): Flow<Resource<SearchCharacterQuery.Data>>
+    fun searchCharacter(search: String): Flow<PagingData<SearchCharacterQuery.Data>>
 }

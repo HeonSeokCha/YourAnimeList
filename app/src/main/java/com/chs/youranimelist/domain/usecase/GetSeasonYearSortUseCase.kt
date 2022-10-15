@@ -12,8 +12,7 @@ import javax.inject.Inject
 class GetSeasonYearSortUseCase @Inject constructor(
     private val repository: AnimeListRepository
 ) {
-    suspend operator fun invoke(
-        page: Int,
+    operator fun invoke(
         selectedSort: MediaSort,
         selectedSeason: MediaSeason,
         selectedYear: Int,
@@ -24,7 +23,6 @@ class GetSeasonYearSortUseCase @Inject constructor(
             emit(
                 Resource.Success(
                     repository.getAnimeList(
-                        page,
                         selectedSort,
                         selectedSeason,
                         selectedYear,

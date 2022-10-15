@@ -1,13 +1,14 @@
 package com.chs.youranimelist.domain.repository
 
+import androidx.paging.PagingData
 import com.apollographql.apollo3.api.ApolloResponse
 import com.chs.youranimelist.StudioAnimeQuery
 import com.chs.youranimelist.type.MediaSort
+import kotlinx.coroutines.flow.Flow
 
 interface StudioRepository {
-    suspend fun getStudioAnime(
+    fun getStudioAnime(
         studioId: Int,
         sort: MediaSort,
-        page: Int
-    ): ApolloResponse<StudioAnimeQuery.Data>
+    ): Flow<PagingData<StudioAnimeQuery.Data>>
 }

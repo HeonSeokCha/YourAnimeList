@@ -1,6 +1,9 @@
 package com.chs.youranimelist.data.repository
 
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import coil.network.HttpException
 import com.apollographql.apollo3.ApolloClient
 import com.chs.youranimelist.AnimeCharacterQuery
@@ -9,6 +12,7 @@ import com.chs.youranimelist.AnimeOverviewQuery
 import com.chs.youranimelist.AnimeRecommendQuery
 import com.chs.youranimelist.data.mapper.toAnimDetails
 import com.chs.youranimelist.data.model.AnimeDetailDto
+import com.chs.youranimelist.data.paging.AnimeRecPagingSource
 import com.chs.youranimelist.data.source.KtorJikanService
 import com.chs.youranimelist.domain.model.AnimeDetails
 import com.chs.youranimelist.domain.repository.AnimeDetailRepository
@@ -72,23 +76,14 @@ class AnimeDetailRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAnimeRecList(
-        animeId: Int,
-        page: Int
-    ): Flow<Resource<AnimeRecommendQuery.Data>> {
-        return flow {
-            emit(Resource.Loading(true))
-            try {
-                emit(
-                    Resource.Success(
-                        apolloClient.query(AnimeRecommendQuery(animeId, page)).execute().data
-                    )
-                )
-            } catch (e: Exception) {
-                emit(Resource.Error("Couldn't load date"))
-            }
-        }
+    override fun getAnimeRecList(animeId: Int): Flow<PagingData<AnimeRecommendQuery.Edge>> {
+        return Pager(
+            PagingConfig(pageSize = 10)
+        ) {
+            AnimeRecPagingSource(apolloClient, animeId)
+        }.flow
     }
+
 
     override suspend fun getAnimeOverviewTheme(animeId: Int): Flow<Resource<AnimeDetails>> {
         return flow {
