@@ -9,9 +9,9 @@ import com.chs.youranimelist.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
-    fun searchAnime(search: String): Flow<PagingData<SearchAnimeQuery.Data>>
+    fun searchAnime(search: String): Flow<PagingData<SearchAnimeQuery.Medium>>
 
-    fun searchManga(search: String): Flow<PagingData<SearchMangaQuery.Data>>
+    fun searchManga(search: String): Flow<PagingData<SearchMangaQuery.Medium>>
 
-    fun searchCharacter(search: String): Flow<PagingData<SearchCharacterQuery.Data>>
+    fun searchCharacter(search: String): Flow<PagingData<SearchCharacterQuery.Medium>>
 }

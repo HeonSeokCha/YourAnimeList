@@ -1,5 +1,6 @@
 package com.chs.youranimelist.domain.usecase
 
+import androidx.paging.PagingData
 import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.domain.repository.AnimeListRepository
 import com.chs.youranimelist.type.MediaSeason
@@ -17,21 +18,12 @@ class GetSeasonYearSortUseCase @Inject constructor(
         selectedSeason: MediaSeason,
         selectedYear: Int,
         selectGenre: String?
-    ): Flow<Resource<AnimeListQuery.Page>> = flow {
-        try {
-            emit(Resource.Loading())
-            emit(
-                Resource.Success(
-                    repository.getAnimeList(
-                        selectedSort,
-                        selectedSeason,
-                        selectedYear,
-                        selectGenre
-                    ).data!!.page
-                )
-            )
-        } catch (e: Exception) {
-            emit(Resource.Error(e.message.toString()))
-        }
+    ): Flow<PagingData<AnimeListQuery.Medium>> {
+        return repository.getAnimeList(
+            sort = selectedSort,
+            season = selectedSeason,
+            seasonYear = selectedYear,
+            genre = selectGenre
+        )
     }
 }

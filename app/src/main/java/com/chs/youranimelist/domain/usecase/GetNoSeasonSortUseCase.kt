@@ -1,5 +1,6 @@
 package com.chs.youranimelist.domain.usecase
 
+import androidx.paging.PagingData
 import com.chs.youranimelist.NoSeasonQuery
 import com.chs.youranimelist.domain.repository.AnimeListRepository
 import com.chs.youranimelist.type.MediaSort
@@ -11,26 +12,15 @@ import javax.inject.Inject
 class GetNoSeasonSortUseCase @Inject constructor(
     private val repository: AnimeListRepository
 ) {
-    suspend operator fun invoke(
-        page: Int,
+    operator fun invoke(
         selectedSort: MediaSort,
         selectedYear: Int,
         selectGenre: String?
-    ): Flow<Resource<NoSeasonQuery.Page>> = flow {
-        try {
-            emit(Resource.Loading())
-            emit(
-                Resource.Success(
-                    repository.getNoSeasonList(
-                        page,
-                        selectedSort,
-                        selectedYear,
-                        selectGenre
-                    ).data!!.page
-                )
-            )
-        } catch (e: Exception) {
-            emit(Resource.Error(e.message.toString()))
-        }
+    ): Flow<PagingData<NoSeasonQuery.Medium>> {
+        return repository.getNoSeasonList(
+            sort = selectedSort,
+            seasonYear = selectedYear,
+            genre = selectGenre
+        )
     }
 }

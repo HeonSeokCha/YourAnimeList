@@ -33,20 +33,12 @@ fun SortedListScreen(
     genre: String = "",
     viewModel: SortedViewModel = hiltViewModel()
 ) {
-    Log.e("genre", genre)
     val state = viewModel.state
     val context = LocalContext.current
     val lazyGridScrollState = rememberLazyGridState()
     var list: List<String?> by remember { mutableStateOf(emptyList()) }
     var filterDialogShow by remember { mutableStateOf(false) }
     var filterSelect by remember { mutableStateOf("") }
-
-    val endOfListReached by remember {
-        derivedStateOf {
-            (lazyGridScrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-                    == lazyGridScrollState.layoutInfo.totalItemsCount - 1)
-        }
-    }
 
     LaunchedEffect(viewModel, context) {
         when (sortType) {

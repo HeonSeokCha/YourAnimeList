@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.chs.youranimelist.domain.usecase.GetGenreUseCase
 import com.chs.youranimelist.domain.usecase.GetNoSeasonNoYearSortUseCase
 import com.chs.youranimelist.domain.usecase.GetNoSeasonSortUseCase
@@ -42,100 +43,36 @@ class SortedViewModel @Inject constructor(
     var state by mutableStateOf(SortState())
 
     fun getSortedAnime() {
-        viewModelScope.launch {
-            when (selectType) {
-                Constant.SEASON_YEAR -> {
-                    getSeasonYearSortUseCase(
-                        page,
+        when (selectType) {
+            Constant.SEASON_YEAR -> {
+                state = state.copy(
+                    animeSortPaging = getSeasonYearSortUseCase(
                         selectedSort!!,
                         selectedSeason!!,
                         selectedYear!!,
                         selectGenre
-                    ).collect { result ->
-                        when (result) {
-                            is Resource.Success -> {
-                                hasNextPage = result.data?.pageInfo?.hasNextPage!!
-                                result.data.media?.forEach { anime ->
-                                    state.animeSortList.add(anime!!.animeList)
-                                }
-                                state = state.copy(
-                                    isLoading = false
-                                )
-                            }
-                            is Resource.Error -> {
-                                state = state.copy(
-                                    isLoading = false
-                                )
-                            }
-                            is Resource.Loading -> {
-                                state = state.copy(
-                                    isLoading = result.isLoading
-                                )
-                            }
-                        }
-                    }
-                }
+                    ).cachedIn(viewModelScope)
+                )
+            }
 
-                Constant.NO_SEASON -> {
-                    getNoSeasonSortUseCase(
-                        page,
+            Constant.NO_SEASON -> {
+                state = state.copy(
+                    animeNoSeasonSortPaging = getNoSeasonSortUseCase(
                         selectedSort!!,
                         selectedYear!!,
                         selectGenre
-                    ).collect { result ->
-                        when (result) {
-                            is Resource.Success -> {
-                                hasNextPage = result.data?.pageInfo?.hasNextPage!!
-                                result.data.media?.forEach { anime ->
-                                    state.animeSortList.add(anime!!.animeList)
-                                }
-                                state = state.copy(
-                                    isLoading = false
-                                )
-                            }
-                            is Resource.Error -> {
-                                state = state.copy(
-                                    isLoading = false
-                                )
-                            }
-                            is Resource.Loading -> {
-                                state = state.copy(
-                                    isLoading = result.isLoading
-                                )
-                            }
-                        }
-                    }
-                }
+                    ).cachedIn(viewModelScope)
+                )
 
-                Constant.NO_SEASON_NO_YEAR -> {
-                    getNoSeasonNoYearSortUseCase(
-                        page,
+            }
+
+            Constant.NO_SEASON_NO_YEAR -> {
+                state = state.copy(
+                    animeNoSeasonNoYearSortPaging = getNoSeasonNoYearSortUseCase(
                         selectedSort!!,
                         selectGenre
-                    ).collect { result ->
-                        when (result) {
-                            is Resource.Success -> {
-                                hasNextPage = result.data?.pageInfo?.hasNextPage!!
-                                result.data.media?.forEach { anime ->
-                                    state.animeSortList.add(anime!!.animeList)
-                                }
-                                state = state.copy(
-                                    isLoading = false
-                                )
-                            }
-                            is Resource.Error -> {
-                                state = state.copy(
-                                    isLoading = false
-                                )
-                            }
-                            is Resource.Loading -> {
-                                state = state.copy(
-                                    isLoading = result.isLoading
-                                )
-                            }
-                        }
-                    }
-                }
+                    ).cachedIn(viewModelScope)
+                )
             }
         }
     }
@@ -154,12 +91,5 @@ class SortedViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun refresh() {
-        page = 1
-        hasNextPage = true
-        state = state.copy(animeSortList = arrayListOf())
-        getSortedAnime()
     }
 }

@@ -1,5 +1,6 @@
 package com.chs.youranimelist.domain.usecase
 
+import androidx.paging.PagingData
 import com.chs.youranimelist.SearchAnimeQuery
 import com.chs.youranimelist.domain.repository.SearchRepository
 import com.chs.youranimelist.util.Resource
@@ -9,8 +10,7 @@ import javax.inject.Inject
 class SearchAnimeUseCase @Inject constructor(
     private val repository: SearchRepository
 ) {
-    suspend operator fun invoke(
-        page: Int,
+    operator fun invoke(
         search: String
-    ): Flow<Resource<SearchAnimeQuery.Data>> = repository.searchAnime(page, search)
+    ): Flow<PagingData<SearchAnimeQuery.Medium>> = repository.searchAnime(search)
 }

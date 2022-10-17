@@ -4,7 +4,6 @@ package com.chs.youranimelist.domain.usecase
 import androidx.paging.PagingData
 import com.chs.youranimelist.AnimeRecommendQuery
 import com.chs.youranimelist.domain.repository.AnimeDetailRepository
-import com.chs.youranimelist.util.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

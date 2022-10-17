@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 
 import com.chs.youranimelist.domain.usecase.SearchAnimeUseCase
 import com.chs.youranimelist.domain.usecase.SearchCharaUseCase
@@ -23,10 +24,7 @@ class SearchMediaViewModel @Inject constructor(
     private val searchCharaUseCase: SearchCharaUseCase
 ) : ViewModel() {
 
-    var page: Int = 1
     var searchPage: String = ""
-    var hasNextPage: Boolean = false
-
     var state by mutableStateOf(SearchState())
 
 
@@ -34,86 +32,20 @@ class SearchMediaViewModel @Inject constructor(
         viewModelScope.launch {
             when (searchPage) {
                 Constant.TARGET_ANIME -> {
-                    searchAnimeUseCase(page, query).collect { result ->
-                        when (result) {
-                            is Resource.Loading -> {
-                                state = state.copy(isLoading = result.isLoading)
-                            }
-                            is Resource.Success -> {
-                                hasNextPage = result.data?.page?.pageInfo?.hasNextPage ?: false
-                                result.data?.page?.media?.forEach { anime ->
-                                    state.searchAnimeResult.add(anime)
-                                }
-                                state = state.copy(
-                                    isLoading = false,
-                                )
-                            }
-                            is Resource.Error -> {
-                                state = state.copy(
-                                    isLoading = false
-                                )
-                            }
-                        }
-                    }
+                    searchAnimeUseCase(query).cachedIn(viewModelScope)
                 }
 
                 Constant.TARGET_MANGA -> {
-                    searchMangaUseCase(page, query).collect { result ->
-                        when (result) {
-                            is Resource.Loading -> {
-                                state = state.copy(isLoading = result.isLoading)
-                            }
-                            is Resource.Success -> {
-                                hasNextPage = result.data?.page?.pageInfo?.hasNextPage ?: false
-                                result.data?.page?.media?.forEach { manga ->
-                                    state.searchMangaResult.add(manga)
-                                }
-                                state = state.copy(
-                                    isLoading = false,
-                                )
-                            }
-                            is Resource.Error -> {
-                                state = state.copy(
-                                    isLoading = false
-                                )
-                            }
-                        }
-                    }
+                    searchMangaUseCase(query).cachedIn(viewModelScope)
                 }
 
                 Constant.TARGET_CHARA -> {
-                    searchCharaUseCase(page, query).collect { result ->
-                        when (result) {
-                            is Resource.Loading -> {
-                                state = state.copy(isLoading = result.isLoading)
-                            }
-                            is Resource.Success -> {
-                                hasNextPage = result.data?.page?.pageInfo?.hasNextPage ?: false
-                                result.data?.page?.characters?.forEach { characters ->
-                                    state.searchCharaResult.add(characters)
-                                }
-                                state = state.copy(
-                                    isLoading = false,
-                                )
-                            }
-                            is Resource.Error -> {
-                                state = state.copy(
-                                    isLoading = false
-                                )
-                            }
-                        }
-                    }
+                    searchCharaUseCase(query).cachedIn(viewModelScope)
                 }
                 else -> {
                     return@launch
                 }
             }
         }
-    }
-
-    fun refresh() {
-        page = 1
-        hasNextPage = false
-        state = SearchState()
     }
 }
