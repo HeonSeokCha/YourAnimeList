@@ -11,6 +11,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 
 @Composable
@@ -21,16 +23,9 @@ fun AnimeRecScreen(
     navController: NavController
 ) {
 
-    val state = viewModel.state
-    val context = LocalContext.current
-
-    LaunchedEffect(viewModel, context) {
-        viewModel.getAnimeRecommendList(animeId)
-    }
+    val lazyPagingItems = viewModel.getAnimeRecommendList(animeId).collectAsLazyPagingItems()
 
     BoxWithConstraints {
-        val screenHeight = maxHeight
-        Log.e("AnimeRecScreen", screenHeight.toString())
 
         LazyColumn(
             modifier = Modifier
@@ -42,16 +37,14 @@ fun AnimeRecScreen(
             verticalArrangement = Arrangement.spacedBy(4.dp),
             state = lazyListState
         ) {
-            items(
-                state.animeRecInfo?.animeRecommend?.recommendations?.edges?.size ?: 0
-            ) { idx ->
+            items(lazyPagingItems) { recommendMedia ->
                 ItemAnimeRecommend(
-                    state.animeRecInfo?.animeRecommend?.recommendations?.edges?.get(idx)?.node?.mediaRecommendation!!
+                    recommendMedia?.node?.mediaRecommendation!!
                 ) {
                     navController.navigate(
                         "${BrowseScreen.AnimeDetailScreen.route}/" +
-                                "${state.animeRecInfo.animeRecommend.recommendations.edges[idx]?.node?.mediaRecommendation!!.id}" +
-                                "/${state.animeRecInfo.animeRecommend.recommendations.edges[idx]?.node?.mediaRecommendation!!.idMal}"
+                                "${recommendMedia.node.mediaRecommendation.id}" +
+                                "/${recommendMedia.node.mediaRecommendation.idMal}"
                     )
                 }
             }

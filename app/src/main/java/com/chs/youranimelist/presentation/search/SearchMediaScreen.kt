@@ -33,18 +33,11 @@ fun SearchMediaScreen(
     val state = viewModel.state
     val context = LocalContext.current
     val lazyColScrollState = rememberLazyListState()
-    val endOfListReached by remember {
-        derivedStateOf {
-            (lazyColScrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-                    == state.searchAnimeResult.size - 1)
-        }
-    }
 
     viewModel.searchPage = searchType
 
     LaunchedEffect(searchKeyWord) {
         if (searchKeyWord.isNotEmpty()) {
-            viewModel.refresh()
             viewModel.search(searchKeyWord)
         }
     }
@@ -114,14 +107,6 @@ fun SearchMediaScreen(
                     }
                 }
             }
-        }
-    }
-
-    if (endOfListReached) {
-        if (viewModel.hasNextPage) {
-            viewModel.page++
-            viewModel.search(searchKeyWord)
-            Log.e("ENdOF", viewModel.page.toString())
         }
     }
 

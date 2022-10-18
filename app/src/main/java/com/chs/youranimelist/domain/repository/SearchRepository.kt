@@ -13,5 +13,5 @@ interface SearchRepository {
 
     fun searchManga(search: String): Flow<PagingData<SearchMangaQuery.Medium>>
 
-    fun searchCharacter(search: String): Flow<PagingData<SearchCharacterQuery.Medium>>
+    fun searchCharacter(search: String): Flow<PagingData<SearchCharacterQuery.Character>>
 }

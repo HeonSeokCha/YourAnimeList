@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 
 import com.chs.youranimelist.domain.usecase.SearchAnimeUseCase
@@ -14,6 +15,7 @@ import com.chs.youranimelist.domain.usecase.SearchMangaUseCase
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,24 +30,20 @@ class SearchMediaViewModel @Inject constructor(
     var state by mutableStateOf(SearchState())
 
 
-    fun search(query: String) {
-        viewModelScope.launch {
-            when (searchPage) {
-                Constant.TARGET_ANIME -> {
-                    searchAnimeUseCase(query).cachedIn(viewModelScope)
-                }
-
-                Constant.TARGET_MANGA -> {
-                    searchMangaUseCase(query).cachedIn(viewModelScope)
-                }
-
-                Constant.TARGET_CHARA -> {
-                    searchCharaUseCase(query).cachedIn(viewModelScope)
-                }
-                else -> {
-                    return@launch
-                }
+    fun search(query: String): Flow<PagingData<*>> {
+        return when (searchPage) {
+            Constant.TARGET_ANIME -> {
+                searchAnimeUseCase(query).cachedIn(viewModelScope)
             }
+
+            Constant.TARGET_MANGA -> {
+                searchMangaUseCase(query).cachedIn(viewModelScope)
+            }
+
+            Constant.TARGET_CHARA -> {
+                searchCharaUseCase(query).cachedIn(viewModelScope)
+            }
+            else -> return searchAnimeUseCase(query).cachedIn(viewModelScope)
         }
     }
 }
