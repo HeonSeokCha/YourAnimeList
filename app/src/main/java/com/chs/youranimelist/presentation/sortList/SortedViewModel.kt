@@ -46,13 +46,13 @@ class SortedViewModel @Inject constructor(
         when (selectType) {
             Constant.SEASON_YEAR -> {
                 state = state.copy(
-                    animeSortPaging = getSeasonYearSortUseCase(
-                        selectedSort!!,
-                        selectedSeason!!,
-                        selectedYear!!,
-                        selectGenre
-                    ).cachedIn(viewModelScope)
-                )
+//                    animeSortPaging = getSeasonYearSortUseCase(
+//                        selectedSort!!,
+//                        selectedSeason!!,
+//                        selectedYear!!,
+//                        selectGenre
+//                    ).cachedIn(viewModelScope)
+//                )
             }
 
             Constant.NO_SEASON -> {
@@ -67,12 +67,12 @@ class SortedViewModel @Inject constructor(
             }
 
             Constant.NO_SEASON_NO_YEAR -> {
-                state = state.copy(
-                    animeNoSeasonNoYearSortPaging = getNoSeasonNoYearSortUseCase(
-                        selectedSort!!,
-                        selectGenre
-                    ).cachedIn(viewModelScope)
-                )
+//                state = state.copy(
+//                    animeNoSeasonNoYearSortPaging = getNoSeasonNoYearSortUseCase(
+//                        selectedSort!!,
+//                        selectGenre
+//                    ).cachedIn(viewModelScope)
+//                )
             }
         }
     }

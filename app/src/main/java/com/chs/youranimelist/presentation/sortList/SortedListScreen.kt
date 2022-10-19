@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -19,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.type.MediaSeason
@@ -169,13 +171,6 @@ fun SortedListScreen(
         }
     }
 
-    if (endOfListReached) {
-        if (viewModel.hasNextPage) {
-            viewModel.page++
-            viewModel.getSortedAnime()
-        } else return
-    }
-
     if (filterDialogShow) {
         filterDialog(list, onDismiss = {
             filterDialogShow = false
@@ -212,7 +207,6 @@ fun SortedListScreen(
                         viewModel.filterList[3].copy(second = list[selectIdx]!!)
                 }
             }
-            viewModel.refresh()
         })
     }
 
