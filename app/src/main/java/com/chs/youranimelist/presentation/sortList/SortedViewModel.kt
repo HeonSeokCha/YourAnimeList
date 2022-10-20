@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.youranimelist.domain.usecase.GetGenreUseCase
 import com.chs.youranimelist.domain.usecase.GetNoSeasonNoYearSortUseCase
 import com.chs.youranimelist.domain.usecase.GetNoSeasonSortUseCase
@@ -46,13 +47,13 @@ class SortedViewModel @Inject constructor(
         when (selectType) {
             Constant.SEASON_YEAR -> {
                 state = state.copy(
-//                    animeSortPaging = getSeasonYearSortUseCase(
-//                        selectedSort!!,
-//                        selectedSeason!!,
-//                        selectedYear!!,
-//                        selectGenre
-//                    ).cachedIn(viewModelScope)
-//                )
+                    animeSortPaging = getSeasonYearSortUseCase(
+                        selectedSort!!,
+                        selectedSeason!!,
+                        selectedYear!!,
+                        selectGenre
+                    ).cachedIn(viewModelScope)
+                )
             }
 
             Constant.NO_SEASON -> {
@@ -67,12 +68,12 @@ class SortedViewModel @Inject constructor(
             }
 
             Constant.NO_SEASON_NO_YEAR -> {
-//                state = state.copy(
-//                    animeNoSeasonNoYearSortPaging = getNoSeasonNoYearSortUseCase(
-//                        selectedSort!!,
-//                        selectGenre
-//                    ).cachedIn(viewModelScope)
-//                )
+                state = state.copy(
+                    animeNoSeasonNoYearSortPaging = getNoSeasonNoYearSortUseCase(
+                        selectedSort!!,
+                        selectGenre
+                    ).cachedIn(viewModelScope)
+                )
             }
         }
     }

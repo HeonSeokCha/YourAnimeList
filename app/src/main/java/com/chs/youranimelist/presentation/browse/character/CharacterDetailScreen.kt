@@ -102,7 +102,7 @@ fun CharacterDetailScreen(
                 Text(
                     text = HtmlCompat.fromHtml(
                         state.characterDetailInfo?.character?.description ?: "",
-                        Html.FROM_HTML_MODE_LEGACY
+                        HtmlCompat.FROM_HTML_MODE_LEGACY
                     ).toString()
                 )
                 IconButton(
@@ -118,7 +118,7 @@ fun CharacterDetailScreen(
                 Text(
                     text = HtmlCompat.fromHtml(
                         state.characterDetailInfo?.character?.description ?: "",
-                        Html.FROM_HTML_MODE_LEGACY
+                        HtmlCompat.FROM_HTML_MODE_LEGACY
                     ).toString(),
                     maxLines = 5,
                     overflow = TextOverflow.Ellipsis

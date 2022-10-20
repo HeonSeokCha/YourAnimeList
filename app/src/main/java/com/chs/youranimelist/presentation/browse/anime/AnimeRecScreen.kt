@@ -38,14 +38,14 @@ fun AnimeRecScreen(
             state = lazyListState
         ) {
             items(lazyPagingItems) { recommendMedia ->
-                ItemAnimeRecommend(
-                    recommendMedia?.node?.mediaRecommendation!!
-                ) {
-                    navController.navigate(
-                        "${BrowseScreen.AnimeDetailScreen.route}/" +
-                                "${recommendMedia.node.mediaRecommendation.id}" +
-                                "/${recommendMedia.node.mediaRecommendation.idMal}"
-                    )
+                recommendMedia?.node?.mediaRecommendation?.let {
+                    ItemAnimeRecommend(it) {
+                        navController.navigate(
+                            "${BrowseScreen.AnimeDetailScreen.route}/" +
+                                    "${it.id}" +
+                                    "/${it.idMal}"
+                        )
+                    }
                 }
             }
         }

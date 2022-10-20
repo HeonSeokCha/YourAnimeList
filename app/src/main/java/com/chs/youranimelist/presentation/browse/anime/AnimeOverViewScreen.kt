@@ -111,7 +111,7 @@ fun AnimeOverViewScreen(
                     Text(
                         text = HtmlCompat.fromHtml(
                             state.animeOverViewInfo?.media?.description ?: "",
-                            Html.FROM_HTML_MODE_LEGACY
+                            HtmlCompat.FROM_HTML_MODE_LEGACY
                         ).toString()
                     )
 
@@ -128,7 +128,7 @@ fun AnimeOverViewScreen(
                     Text(
                         text = HtmlCompat.fromHtml(
                             state.animeOverViewInfo?.media?.description ?: "",
-                            Html.FROM_HTML_MODE_LEGACY
+                            HtmlCompat.FROM_HTML_MODE_LEGACY
                         ).toString(),
                         maxLines = 5,
                         overflow = TextOverflow.Ellipsis

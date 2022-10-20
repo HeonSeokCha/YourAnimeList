@@ -20,7 +20,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.chs.youranimelist.AnimeListQuery
+import com.chs.youranimelist.NoSeasonNoYearQuery
+import com.chs.youranimelist.NoSeasonQuery
 import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.type.MediaSeason
@@ -41,6 +45,24 @@ fun SortedListScreen(
     var list: List<String?> by remember { mutableStateOf(emptyList()) }
     var filterDialogShow by remember { mutableStateOf(false) }
     var filterSelect by remember { mutableStateOf("") }
+
+    val pagingItems = when (viewModel.selectType) {
+        Constant.SEASON_YEAR -> {
+            state.animeSortPaging?.collectAsLazyPagingItems()
+        }
+
+        Constant.NO_SEASON_NO_YEAR -> {
+            state.animeNoSeasonNoYearSortPaging?.collectAsLazyPagingItems()
+        }
+
+        Constant.NO_SEASON -> {
+            state.animeNoSeasonSortPaging?.collectAsLazyPagingItems()
+        }
+
+        else -> {
+            state.animeSortPaging?.collectAsLazyPagingItems()
+        }
+    }
 
     LaunchedEffect(viewModel, context) {
         when (sortType) {
@@ -149,24 +171,72 @@ fun SortedListScreen(
             state = lazyGridScrollState,
             columns = GridCells.Fixed(3),
         ) {
-            items(state.animeSortList.size) { idx ->
-                ItemAnimeSmall(
-                    item = state.animeSortList[idx],
-                    onClick = {
-                        context.startActivity(
-                            Intent(
-                                context, BrowseActivity::class.java
-                            ).apply {
-                                this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                                this.putExtra(Constant.TARGET_ID, state.animeSortList[idx].id)
-                                this.putExtra(
-                                    Constant.TARGET_ID_MAL,
-                                    state.animeSortList[idx].idMal
+            when (viewModel.selectType) {
+                Constant.SEASON_YEAR -> {
+                    items(pagingItems?.itemCount ?: 0) { idx ->
+                        pagingItems?.let {
+                            val item = it as LazyPagingItems<AnimeListQuery.Medium>
+                            Log.e("ANime", item.toString())
+                            ItemAnimeSmall(
+                                item = item[idx]!!.animeList
+                            ) {
+                                context.startActivity(
+                                    Intent(
+                                        context, BrowseActivity::class.java
+                                    ).apply {
+                                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                                        this.putExtra(Constant.TARGET_ID, item[idx]!!.animeList.id)
+                                        this.putExtra(Constant.TARGET_ID_MAL, item[idx]!!.animeList.idMal)
+                                    }
                                 )
                             }
-                        )
+                        }
                     }
-                )
+                }
+
+                Constant.NO_SEASON -> {
+                    items(pagingItems?.itemCount ?: 0) { idx ->
+                        pagingItems?.let {
+                            val item = it as LazyPagingItems<NoSeasonQuery.Medium>
+                            Log.e("Noseason", item.toString())
+                            ItemAnimeSmall(
+                                item = item[idx]!!.animeList
+                            ) {
+                                context.startActivity(
+                                    Intent(
+                                        context, BrowseActivity::class.java
+                                    ).apply {
+                                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                                        this.putExtra(Constant.TARGET_ID, item[idx]!!.animeList.id)
+                                        this.putExtra(Constant.TARGET_ID_MAL, item[idx]!!.animeList.idMal)
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+
+                Constant.NO_SEASON_NO_YEAR -> {
+                    items(pagingItems?.itemCount ?: 0) { idx ->
+                        pagingItems?.let {
+                            val item = it as LazyPagingItems<NoSeasonNoYearQuery.Medium>
+                            Log.e("NoSeasonNoYear", item.toString())
+                            ItemAnimeSmall(
+                                item = item[idx]!!.animeList
+                            ) {
+                                context.startActivity(
+                                    Intent(
+                                        context, BrowseActivity::class.java
+                                    ).apply {
+                                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                                        this.putExtra(Constant.TARGET_ID, item[idx]!!.animeList.id)
+                                        this.putExtra(Constant.TARGET_ID_MAL, item[idx]!!.animeList.idMal)
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
     }
