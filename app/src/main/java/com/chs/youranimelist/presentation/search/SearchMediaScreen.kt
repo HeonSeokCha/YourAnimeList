@@ -1,28 +1,27 @@
 package com.chs.youranimelist.presentation.search
 
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
+import com.chs.youranimelist.SearchAnimeQuery
+import com.chs.youranimelist.SearchCharacterQuery
+import com.chs.youranimelist.SearchMangaQuery
 import com.chs.youranimelist.presentation.browse.BrowseActivity
-import com.chs.youranimelist.presentation.home.ItemLoadingSmall
 import com.chs.youranimelist.presentation.ui.theme.Purple500
-import com.chs.youranimelist.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
-import kotlinx.coroutines.delay
 
 @Composable
 fun SearchMediaScreen(
@@ -42,6 +41,24 @@ fun SearchMediaScreen(
         }
     }
 
+    val pagingItems = when (searchType) {
+        Constant.TARGET_ANIME -> {
+            state.searchAnimeResultPaging?.collectAsLazyPagingItems()
+        }
+
+        Constant.TARGET_MANGA -> {
+            state.searchMangaResultPaging?.collectAsLazyPagingItems()
+        }
+
+        Constant.TARGET_CHARA -> {
+            state.searchCharaResultPaging?.collectAsLazyPagingItems()
+        }
+
+        else -> {
+            state.searchAnimeResultPaging?.collectAsLazyPagingItems()
+        }
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -50,60 +67,69 @@ fun SearchMediaScreen(
     ) {
         when (searchType) {
             Constant.TARGET_ANIME -> {
-                items(state.searchAnimeResult.size) { idx ->
-                    SearchMediaItem(state.searchAnimeResult[idx]?.animeList!!) {
-                        context.startActivity(
-                            Intent(
-                                context, BrowseActivity::class.java
-                            ).apply {
-                                this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                                this.putExtra(
-                                    Constant.TARGET_ID,
-                                    state.searchAnimeResult[idx]?.animeList!!.id
-                                )
-                                this.putExtra(
-                                    Constant.TARGET_ID_MAL,
-                                    state.searchAnimeResult[idx]?.animeList!!.idMal
-                                )
-                            }
-                        )
+                pagingItems?.let {
+                    val animeItems = pagingItems as LazyPagingItems<SearchAnimeQuery.Medium>
+                    items(animeItems) { item ->
+                        SearchMediaItem(item?.animeList!!) {
+                            context.startActivity(
+                                Intent(
+                                    context, BrowseActivity::class.java
+                                ).apply {
+                                    this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                                    this.putExtra(
+                                        Constant.TARGET_ID,
+                                        item.animeList.id
+                                    )
+                                    this.putExtra(
+                                        Constant.TARGET_ID_MAL,
+                                        item.animeList.idMal
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }
 
             Constant.TARGET_MANGA -> {
-                items(state.searchMangaResult.size) { idx ->
-                    SearchMediaItem(state.searchMangaResult[idx]?.animeList!!) {
-                        context.startActivity(
-                            Intent(
-                                context, BrowseActivity::class.java
-                            ).apply {
-                                this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                                this.putExtra(
-                                    Constant.TARGET_ID,
-                                    state.searchMangaResult[idx]?.animeList!!.id
-                                )
-                                this.putExtra(
-                                    Constant.TARGET_ID_MAL,
-                                    state.searchMangaResult[idx]?.animeList!!.idMal
-                                )
-                            }
-                        )
+                pagingItems?.let {
+                    val mangaItems = pagingItems as LazyPagingItems<SearchMangaQuery.Medium>
+                    items(mangaItems) { item ->
+                        SearchMediaItem(item?.animeList!!) {
+                            context.startActivity(
+                                Intent(
+                                    context, BrowseActivity::class.java
+                                ).apply {
+                                    this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                                    this.putExtra(
+                                        Constant.TARGET_ID,
+                                        item.animeList.id
+                                    )
+                                    this.putExtra(
+                                        Constant.TARGET_ID_MAL,
+                                        item.animeList.idMal
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }
 
             Constant.TARGET_CHARA -> {
-                items(state.searchCharaResult.size) { idx ->
-                    SearchMediaItem(state.searchCharaResult[idx]!!) {
-                        context.startActivity(
-                            Intent(
-                                context, BrowseActivity::class.java
-                            ).apply {
-                                this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_CHARA)
-                                this.putExtra(Constant.TARGET_ID, state.searchCharaResult[idx]?.id)
-                            }
-                        )
+                pagingItems?.let {
+                    val charaItems = pagingItems as LazyPagingItems<SearchCharacterQuery.Character>
+                    items(charaItems) { item ->
+                        SearchMediaItem(item!!) {
+                            context.startActivity(
+                                Intent(
+                                    context, BrowseActivity::class.java
+                                ).apply {
+                                    this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_CHARA)
+                                    this.putExtra(Constant.TARGET_ID, item.id)
+                                }
+                            )
+                        }
                     }
                 }
             }

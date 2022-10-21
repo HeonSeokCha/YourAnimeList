@@ -6,7 +6,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlinx-serialization'
     id 'com.google.devtools.ksp' version '1.7.10-1.0.6'
-    id 'com.apollographql.apollo3' version '3.5.0'
+    id 'com.apollographql.apollo3' version '3.6.2'
 }
 
 kotlin {
@@ -86,7 +86,7 @@ dependencies {
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation 'androidx.activity:activity-compose:1.6.0'
     implementation 'androidx.navigation:navigation-compose:2.5.2'
-    implementation 'com.google.accompanist:accompanist-swiperefresh:0.26.2-beta'
+    implementation 'com.google.accompanist:accompanist-swiperefresh:0.26.5-rc'
 
     //Dagger - Hilt
     implementation 'com.google.dagger:hilt-android:2.44'
@@ -105,9 +105,9 @@ dependencies {
     kapt "androidx.room:room-compiler:2.4.3"
 
     //Apollo
-    implementation 'com.apollographql.apollo3:apollo-runtime:3.5.0'
-    implementation 'com.apollographql.apollo3:apollo-api:3.5.0'
-    implementation 'com.apollographql.apollo3:apollo-normalized-cache:3.5.0'
+    implementation 'com.apollographql.apollo3:apollo-runtime:3.6.2'
+    implementation 'com.apollographql.apollo3:apollo-api:3.6.2'
+    implementation 'com.apollographql.apollo3:apollo-normalized-cache:3.6.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6'
 
     // Pager
@@ -118,7 +118,7 @@ dependencies {
     implementation "androidx.paging:paging-compose:1.0.0-alpha16"
 
     // Flowlayout
-    implementation 'com.google.accompanist:accompanist-flowlayout:0.26.2-beta'
+    implementation 'com.google.accompanist:accompanist-flowlayout:0.26.5-rc'
 
     // Coil
     implementation 'io.coil-kt:coil-compose:2.2.2'
