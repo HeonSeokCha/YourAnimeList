@@ -46,7 +46,7 @@ fun SortedListScreen(
     var filterDialogShow by remember { mutableStateOf(false) }
     var filterSelect by remember { mutableStateOf("") }
 
-    val pagingItems = when (viewModel.selectType) {
+    var pagingItems = when (viewModel.selectType) {
         Constant.SEASON_YEAR -> {
             state.animeSortPaging?.collectAsLazyPagingItems()
         }
@@ -277,6 +277,7 @@ fun SortedListScreen(
                         viewModel.filterList[3].copy(second = list[selectIdx]!!)
                 }
             }
+            viewModel.getSortedAnime()
         })
     }
 
