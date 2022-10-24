@@ -146,7 +146,6 @@ fun AnimeDetailScreen(
                             scrollState = overViewScroll,
                             expandDesc = expandDesc,
                             changeExpand = { expandDesc = it },
-                            calcScreenHeight = {}
                         )
                     }
                     1 -> {
@@ -276,7 +275,7 @@ fun AnimeDetailHeadBanner(
                 ) {
                     Text(
                         text = state.animeDetailInfo?.media?.title?.english
-                            ?: state.animeDetailInfo?.media?.title?.romaji.toString(),
+                            ?: (state.animeDetailInfo?.media?.title?.romaji ?: ""),
                         fontSize = 18.sp,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
@@ -295,7 +294,7 @@ fun AnimeDetailHeadBanner(
                             Text(
                                 text = buildAnnotatedString {
                                     appendInlineContent(starId, starId)
-                                    append(state.animeDetailInfo?.media?.averageScore.toString())
+                                    append(state.animeDetailInfo.media.averageScore.toString())
                                 },
                                 inlineContent = inlineContent,
                                 fontWeight = FontWeight.Bold,
@@ -303,15 +302,18 @@ fun AnimeDetailHeadBanner(
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                         }
-                        Text(
-                            text = buildAnnotatedString {
-                                appendInlineContent(favoriteId, favoriteId)
-                                append(state.animeDetailInfo?.media?.favourites.toString())
-                            },
-                            inlineContent = inlineContent,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 13.sp,
-                        )
+
+                        if (state.animeDetailInfo?.media?.favourites != null) {
+                            Text(
+                                text = buildAnnotatedString {
+                                    appendInlineContent(favoriteId, favoriteId)
+                                    append(state.animeDetailInfo.media.favourites.toString())
+                                },
+                                inlineContent = inlineContent,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp,
+                            )
+                        }
                     }
                 }
             }

@@ -1,9 +1,6 @@
 package com.chs.youranimelist.presentation.browse.anime
 
-import android.text.Html
-import android.text.TextUtils
 import android.util.Log
-import android.widget.TextView
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -45,11 +42,9 @@ fun AnimeOverViewScreen(
     scrollState: LazyListState,
     expandDesc: Boolean,
     changeExpand: (Boolean) -> Unit,
-    calcScreenHeight: (Dp) -> Unit,
 ) {
     val state = viewModel.state
     val context = LocalContext.current
-    val density = LocalDensity.current
 
     LaunchedEffect(viewModel, context) {
         viewModel.getAnimeOverView(animeId)
@@ -62,13 +57,7 @@ fun AnimeOverViewScreen(
             .padding(
                 start = 8.dp,
                 end = 8.dp
-            )
-            .onGloballyPositioned { coordinates ->
-                Log.e(
-                    "AnimeOverViewScreen",
-                    with(density) { coordinates.size.height.toDp() }.toString()
-                )
-            },
+            ),
         state = scrollState,
         contentPadding = PaddingValues(
             vertical = 8.dp

@@ -186,7 +186,10 @@ fun SortedListScreen(
                                     ).apply {
                                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                                         this.putExtra(Constant.TARGET_ID, item[idx]!!.animeList.id)
-                                        this.putExtra(Constant.TARGET_ID_MAL, item[idx]!!.animeList.idMal)
+                                        this.putExtra(
+                                            Constant.TARGET_ID_MAL,
+                                            item[idx]!!.animeList.idMal
+                                        )
                                     }
                                 )
                             }
@@ -208,7 +211,10 @@ fun SortedListScreen(
                                     ).apply {
                                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                                         this.putExtra(Constant.TARGET_ID, item[idx]!!.animeList.id)
-                                        this.putExtra(Constant.TARGET_ID_MAL, item[idx]!!.animeList.idMal)
+                                        this.putExtra(
+                                            Constant.TARGET_ID_MAL,
+                                            item[idx]!!.animeList.idMal
+                                        )
                                     }
                                 )
                             }
@@ -230,7 +236,10 @@ fun SortedListScreen(
                                     ).apply {
                                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
                                         this.putExtra(Constant.TARGET_ID, item[idx]!!.animeList.id)
-                                        this.putExtra(Constant.TARGET_ID_MAL, item[idx]!!.animeList.idMal)
+                                        this.putExtra(
+                                            Constant.TARGET_ID_MAL,
+                                            item[idx]!!.animeList.idMal
+                                        )
                                     }
                                 )
                             }
