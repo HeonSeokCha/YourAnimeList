@@ -176,7 +176,6 @@ fun SortedListScreen(
                     items(pagingItems?.itemCount ?: 0) { idx ->
                         pagingItems?.let {
                             val item = it as LazyPagingItems<AnimeListQuery.Medium>
-                            Log.e("ANime", item.toString())
                             ItemAnimeSmall(
                                 item = item[idx]!!.animeList
                             ) {
@@ -201,7 +200,6 @@ fun SortedListScreen(
                     items(pagingItems?.itemCount ?: 0) { idx ->
                         pagingItems?.let {
                             val item = it as LazyPagingItems<NoSeasonQuery.Medium>
-                            Log.e("Noseason", item.toString())
                             ItemAnimeSmall(
                                 item = item[idx]!!.animeList
                             ) {
@@ -226,7 +224,6 @@ fun SortedListScreen(
                     items(pagingItems?.itemCount ?: 0) { idx ->
                         pagingItems?.let {
                             val item = it as LazyPagingItems<NoSeasonNoYearQuery.Medium>
-                            Log.e("NoSeasonNoYear", item.toString())
                             ItemAnimeSmall(
                                 item = item[idx]!!.animeList
                             ) {
