@@ -41,7 +41,7 @@ import com.chs.youranimelist.HomeRecommendListQuery
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.presentation.Screen
 import com.chs.youranimelist.presentation.browse.BrowseActivity
-import com.chs.youranimelist.ui.theme.Pink80
+import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -347,7 +347,7 @@ fun ItemAnimeSmall(
             )
             Text(
                 text = Constant.mediaStatus[item.status] ?: "",
-                color = Color(Constant.mediaStatusColor[item.status] ?: 0xFF888888),
+                color = Constant.mediaStatusColor[item.status] ?: Color(0xFF888888),
                 fontSize = 12.sp
             )
 

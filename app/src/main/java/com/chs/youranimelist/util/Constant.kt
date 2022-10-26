@@ -1,5 +1,9 @@
 package com.chs.youranimelist.util
 
+import androidx.compose.ui.graphics.Color
+import com.chs.youranimelist.presentation.ui.theme.MediaStatusFinishedColor
+import com.chs.youranimelist.presentation.ui.theme.MediaStatusNotYetColor
+import com.chs.youranimelist.presentation.ui.theme.MediaStatusReleasingColor
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.type.MediaStatus
@@ -137,8 +141,8 @@ object Constant {
     )
 
     val mediaStatusColor = hashMapOf(
-        Pair(MediaStatus.RELEASING, 0xFF4CAF50),
-        Pair(MediaStatus.FINISHED, 0xFF00BCD4),
-        Pair(MediaStatus.NOT_YET_RELEASED, 0xFF673AB7)
+        Pair(MediaStatus.RELEASING, MediaStatusReleasingColor),
+        Pair(MediaStatus.FINISHED, MediaStatusFinishedColor),
+        Pair(MediaStatus.NOT_YET_RELEASED, MediaStatusNotYetColor)
     )
 }

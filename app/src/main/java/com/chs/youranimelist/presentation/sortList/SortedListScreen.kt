@@ -29,7 +29,7 @@ import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
-import com.chs.youranimelist.ui.theme.Pink80
+import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.ConvertDate
 

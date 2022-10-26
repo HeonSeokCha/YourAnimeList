@@ -11,7 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
-import com.chs.youranimelist.presentation.ui.theme.Purple200
+import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -45,7 +45,7 @@ fun SearchScreen(
                 TabRowDefaults.Indicator(
                     modifier = Modifier
                         .pagerTabIndicatorOffset(pagerState, tabPositions),
-                    color = Purple200
+                    color = Pink80
                 )
             }
         ) {
@@ -56,7 +56,7 @@ fun SearchScreen(
                             text = title,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            color = Purple200
+                            color = Pink80
                         )
                     },
                     selected = pagerState.currentPage == index,

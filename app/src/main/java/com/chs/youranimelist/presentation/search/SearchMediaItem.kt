@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.youranimelist.SearchCharacterQuery
 import com.chs.youranimelist.fragment.AnimeList
-import com.chs.youranimelist.ui.theme.Pink80
+import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.color
 
 @Composable

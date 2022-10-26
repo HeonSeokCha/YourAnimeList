@@ -11,10 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.twotone.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -38,7 +35,7 @@ import com.chs.youranimelist.presentation.charaList.CharaListScreen
 import com.chs.youranimelist.presentation.home.HomeScreen
 import com.chs.youranimelist.presentation.search.SearchScreen
 import com.chs.youranimelist.presentation.sortList.SortedListScreen
-import com.chs.youranimelist.ui.theme.YourAnimeListTheme
+import com.chs.youranimelist.presentation.ui.theme.*
 import com.chs.youranimelist.util.Constant
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,9 +45,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
-            var searchQuery by mutableStateOf("")
-            var searchListQuery by mutableStateOf("")
-            var searchWidgetState by mutableStateOf(SearchWidgetState.CLOSED)
+            var searchQuery by remember { mutableStateOf("") }
+            var searchListQuery by remember { mutableStateOf("") }
+            var searchWidgetState by remember { mutableStateOf(SearchWidgetState.CLOSED) }
 
             YourAnimeListTheme {
                 Scaffold(
@@ -200,8 +197,7 @@ fun SearchAppBar(
     onValueChanged: (String) -> Unit,
     onClosedClicked: () -> Unit,
 ) {
-    var textState by mutableStateOf("")
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    var textState by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Surface(
@@ -286,14 +282,16 @@ fun BottomBar(
             BottomNavScreen.AnimeListScreen,
             BottomNavScreen.CharaListScreen,
         )
-        BottomNavigation {
+        BottomNavigation(
+            backgroundColor = Red200
+        ) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
             items.forEach { destination ->
                 BottomNavigationItem(
                     selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true,
-                    selectedContentColor = Color.White,
-                    unselectedContentColor = Color.White.copy(0.4f),
+                    selectedContentColor = Red700,
+                    unselectedContentColor = Red500,
                     onClick = {
                         navController.navigate(destination.route) {
                             popUpTo(navController.graph.findStartDestination().id) {

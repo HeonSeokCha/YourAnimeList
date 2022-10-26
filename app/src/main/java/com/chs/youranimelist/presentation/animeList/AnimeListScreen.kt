@@ -21,7 +21,6 @@ fun AnimeListScreen(
 
     val state = viewModel.state
     val context = LocalContext.current
-    var searchState by mutableStateOf(searchQuery)
 
     LaunchedEffect(viewModel, context) {
         viewModel.getYourAnimeList()

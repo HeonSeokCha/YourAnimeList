@@ -110,7 +110,7 @@ class BrowseActivity : ComponentActivity() {
                                 navController
                             )
                         }
-                        composable("${BrowseScreen.StudioDetailScreen.route}/{id}") { backStackEntry ->
+                        composable("${BrowseScreen.StudioDetailScreen.route}/{id}") {
                             StudioDetailScreen()
                         }
 
