@@ -35,7 +35,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
-import com.chs.youranimelist.ui.theme.Pink80
+import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.color
 
 @Composable

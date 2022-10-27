@@ -36,8 +36,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.chs.youranimelist.presentation.ui.theme.Purple200
-import com.chs.youranimelist.ui.theme.Pink80
+import com.chs.youranimelist.presentation.ui.theme.Pink80
+import com.chs.youranimelist.presentation.ui.theme.Red700
 import com.chs.youranimelist.util.color
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -92,19 +92,19 @@ fun AnimeDetailScreen(
                     TabRowDefaults.Indicator(
                         modifier = Modifier
                             .pagerTabIndicatorOffset(pagerState, tabPositions),
-                        color = Purple200
+                        color = Pink80
                     )
                 }
             ) {
-                tabList.forEachIndexed { index, s ->
+                tabList.forEachIndexed { index, _ ->
                     Tab(
                         text = {
                             Text(
+                                modifier = Modifier.fillMaxSize(),
                                 text = tabList[index],
                                 maxLines = 1,
-                                color = Purple200,
                                 overflow = TextOverflow.Ellipsis,
-                                fontSize = 13.sp
+                                fontSize = 12.sp
                             )
                         },
                         selected = pagerState.currentPage == index,
@@ -113,6 +113,8 @@ fun AnimeDetailScreen(
                                 pagerState.animateScrollToPage(index)
                             }
                         },
+                        selectedContentColor = Pink80,
+                        unselectedContentColor = Color.Gray
                     )
                 }
             }

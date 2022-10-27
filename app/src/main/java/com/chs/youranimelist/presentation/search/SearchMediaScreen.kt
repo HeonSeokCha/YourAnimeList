@@ -20,7 +20,7 @@ import com.chs.youranimelist.SearchAnimeQuery
 import com.chs.youranimelist.SearchCharacterQuery
 import com.chs.youranimelist.SearchMangaQuery
 import com.chs.youranimelist.presentation.browse.BrowseActivity
-import com.chs.youranimelist.presentation.ui.theme.Purple500
+import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
 
 @Composable
@@ -142,7 +142,7 @@ fun SearchMediaScreen(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator(color = Purple500)
+            CircularProgressIndicator(color = Pink80)
         }
     }
 }
