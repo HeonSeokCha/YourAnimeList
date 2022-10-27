@@ -3,6 +3,7 @@ package com.chs.youranimelist.domain.usecase
 import androidx.paging.PagingData
 import com.chs.youranimelist.AnimeListQuery
 import com.chs.youranimelist.domain.repository.AnimeListRepository
+import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.util.Resource
@@ -14,16 +15,18 @@ class GetSeasonYearSortUseCase @Inject constructor(
     private val repository: AnimeListRepository
 ) {
     operator fun invoke(
-        selectedSort: MediaSort,
-        selectedSeason: MediaSeason,
-        selectedYear: Int,
-        selectGenre: String?
-    ): Flow<PagingData<AnimeListQuery.Medium>> {
+        selectType: String,
+        sort: MediaSort,
+        season: MediaSeason?,
+        seasonYear: Int?,
+        genre: String?
+    ): Flow<PagingData<AnimeList>> {
         return repository.getAnimeList(
-            sort = selectedSort,
-            season = selectedSeason,
-            seasonYear = selectedYear,
-            genre = selectGenre
+            selectType = selectType,
+            sort = sort,
+            season = season,
+            seasonYear = seasonYear,
+            genre = genre
         )
     }
 }

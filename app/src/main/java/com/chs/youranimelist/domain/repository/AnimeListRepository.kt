@@ -5,6 +5,7 @@ import com.apollographql.apollo3.api.ApolloResponse
 import com.chs.youranimelist.*
 import com.chs.youranimelist.data.model.AnimeDto
 import com.chs.youranimelist.domain.model.Anime
+import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.util.Resource
@@ -15,25 +16,12 @@ interface AnimeListRepository {
     suspend fun getHomeRecommendList(): ApolloResponse<HomeRecommendListQuery.Data>
 
     fun getAnimeList(
+        selectType: String,
         sort: MediaSort,
-        season: MediaSeason,
-        seasonYear: Int,
+        season: MediaSeason?,
+        seasonYear: Int?,
         genre: String?
-    ): Flow<PagingData<AnimeListQuery.Medium>>
-
-
-    fun getNoSeasonNoYearList(
-        sort: MediaSort,
-        genre: String?
-    ): Flow<PagingData<NoSeasonNoYearQuery.Medium>>
-
-
-    fun getNoSeasonList(
-        sort: MediaSort,
-        seasonYear: Int,
-        genre: String?
-    ): Flow<PagingData<NoSeasonQuery.Medium>>
-
+    ): Flow<PagingData<AnimeList>>
 
     suspend fun getGenre(): ApolloResponse<GenreQuery.Data>
 

@@ -8,7 +8,7 @@ import com.chs.youranimelist.fragment.AnimeList
 import kotlinx.coroutines.flow.Flow
 
 data class SortState(
-    val animeSortPaging: Flow<PagingData<AnimeListQuery.Medium>>? = null,
+    val animeSortPaging: Flow<PagingData<AnimeList>>? = null,
     val animeNoSeasonSortPaging: Flow<PagingData<NoSeasonQuery.Medium>>? = null,
     val animeNoSeasonNoYearSortPaging: Flow<PagingData<NoSeasonNoYearQuery.Medium>>? = null,
     val genreList: List<String?> = emptyList(),

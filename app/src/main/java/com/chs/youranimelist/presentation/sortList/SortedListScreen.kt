@@ -1,16 +1,13 @@
 package com.chs.youranimelist.presentation.sortList
 
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,11 +17,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.LazyPagingItems
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.chs.youranimelist.AnimeListQuery
-import com.chs.youranimelist.NoSeasonNoYearQuery
-import com.chs.youranimelist.NoSeasonQuery
 import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.type.MediaSeason
@@ -45,24 +39,7 @@ fun SortedListScreen(
     var list: List<String?> by remember { mutableStateOf(emptyList()) }
     var filterDialogShow by remember { mutableStateOf(false) }
     var filterSelect by remember { mutableStateOf("") }
-
-    var pagingItems = when (viewModel.selectType) {
-        Constant.SEASON_YEAR -> {
-            state.animeSortPaging?.collectAsLazyPagingItems()
-        }
-
-        Constant.NO_SEASON_NO_YEAR -> {
-            state.animeNoSeasonNoYearSortPaging?.collectAsLazyPagingItems()
-        }
-
-        Constant.NO_SEASON -> {
-            state.animeNoSeasonSortPaging?.collectAsLazyPagingItems()
-        }
-
-        else -> {
-            state.animeSortPaging?.collectAsLazyPagingItems()
-        }
-    }
+    val pagingItems = viewModel.state.animeSortPaging?.collectAsLazyPagingItems()
 
     LaunchedEffect(viewModel, context) {
         when (sortType) {
@@ -171,77 +148,22 @@ fun SortedListScreen(
             state = lazyGridScrollState,
             columns = GridCells.Fixed(3),
         ) {
-            when (viewModel.selectType) {
-                Constant.SEASON_YEAR -> {
-                    items(pagingItems?.itemCount ?: 0) { idx ->
-                        pagingItems?.let {
-                            val item = it as LazyPagingItems<AnimeListQuery.Medium>
-                            ItemAnimeSmall(
-                                item = item[idx]!!.animeList
-                            ) {
-                                context.startActivity(
-                                    Intent(
-                                        context, BrowseActivity::class.java
-                                    ).apply {
-                                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                                        this.putExtra(Constant.TARGET_ID, item[idx]!!.animeList.id)
-                                        this.putExtra(
-                                            Constant.TARGET_ID_MAL,
-                                            item[idx]!!.animeList.idMal
-                                        )
-                                    }
-                                )
-                            }
+            items(pagingItems?.itemCount ?: 0) { idx ->
+                ItemAnimeSmall(
+                    item = pagingItems?.get(idx)!!
+                ) {
+                    context.startActivity(
+                        Intent(
+                            context, BrowseActivity::class.java
+                        ).apply {
+                            this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                            this.putExtra(Constant.TARGET_ID, pagingItems?.get(idx)!!.id)
+                            this.putExtra(
+                                Constant.TARGET_ID_MAL,
+                                pagingItems?.get(idx)!!.idMal
+                            )
                         }
-                    }
-                }
-
-                Constant.NO_SEASON -> {
-                    items(pagingItems?.itemCount ?: 0) { idx ->
-                        pagingItems?.let {
-                            val item = it as LazyPagingItems<NoSeasonQuery.Medium>
-                            ItemAnimeSmall(
-                                item = item[idx]!!.animeList
-                            ) {
-                                context.startActivity(
-                                    Intent(
-                                        context, BrowseActivity::class.java
-                                    ).apply {
-                                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                                        this.putExtra(Constant.TARGET_ID, item[idx]!!.animeList.id)
-                                        this.putExtra(
-                                            Constant.TARGET_ID_MAL,
-                                            item[idx]!!.animeList.idMal
-                                        )
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
-
-                Constant.NO_SEASON_NO_YEAR -> {
-                    items(pagingItems?.itemCount ?: 0) { idx ->
-                        pagingItems?.let {
-                            val item = it as LazyPagingItems<NoSeasonNoYearQuery.Medium>
-                            ItemAnimeSmall(
-                                item = item[idx]!!.animeList
-                            ) {
-                                context.startActivity(
-                                    Intent(
-                                        context, BrowseActivity::class.java
-                                    ).apply {
-                                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                                        this.putExtra(Constant.TARGET_ID, item[idx]!!.animeList.id)
-                                        this.putExtra(
-                                            Constant.TARGET_ID_MAL,
-                                            item[idx]!!.animeList.idMal
-                                        )
-                                    }
-                                )
-                            }
-                        }
-                    }
+                    )
                 }
             }
         }
@@ -288,7 +210,7 @@ fun SortedListScreen(
     }
 
 
-    if (state.isLoading) {
+    if (pagingItems?.loadState?.append == LoadState.Loading) {
         Box(
             modifier = Modifier
                 .fillMaxSize(),

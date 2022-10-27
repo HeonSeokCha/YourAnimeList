@@ -7,12 +7,10 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.chs.youranimelist.*
 import com.chs.youranimelist.data.model.AnimeDto
-import com.chs.youranimelist.data.paging.AnimeNoSeasonNoYearPagingSource
-import com.chs.youranimelist.data.paging.AnimeNoSeasonPagingSource
-import com.chs.youranimelist.data.paging.AnimeRecPagingSource
 import com.chs.youranimelist.data.paging.AnimeSortPagingSource
 import com.chs.youranimelist.data.source.AnimeListDatabase
 import com.chs.youranimelist.domain.repository.AnimeListRepository
+import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.util.ConvertDate
@@ -36,50 +34,20 @@ class AnimeListRepositoryImpl @Inject constructor(
     }
 
     override fun getAnimeList(
+        selectType: String,
         sort: MediaSort,
-        season: MediaSeason,
-        seasonYear: Int,
+        season: MediaSeason?,
+        seasonYear: Int?,
         genre: String?
-    ): Flow<PagingData<AnimeListQuery.Medium>> {
+    ): Flow<PagingData<AnimeList>> {
         return Pager(
             PagingConfig(pageSize = 10)
         ) {
             AnimeSortPagingSource(
                 apolloClient = apollo,
+                selectType = selectType,
                 sort = sort,
                 season = season,
-                seasonYear = seasonYear,
-                genre = genre
-            )
-        }.flow
-    }
-
-    override fun getNoSeasonNoYearList(
-        sort: MediaSort,
-        genre: String?
-    ): Flow<PagingData<NoSeasonNoYearQuery.Medium>> {
-        return Pager(
-            PagingConfig(pageSize = 10)
-        ) {
-            AnimeNoSeasonNoYearPagingSource(
-                apolloClient = apollo,
-                sort = sort,
-                genre = genre
-            )
-        }.flow
-    }
-
-    override fun getNoSeasonList(
-        sort: MediaSort,
-        seasonYear: Int,
-        genre: String?
-    ): Flow<PagingData<NoSeasonQuery.Medium>> {
-        return Pager(
-            PagingConfig(pageSize = 10)
-        ) {
-            AnimeNoSeasonPagingSource(
-                apolloClient = apollo,
-                sort = sort,
                 seasonYear = seasonYear,
                 genre = genre
             )
