@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.chs.youranimelist.domain.usecase.GetGenreUseCase
-import com.chs.youranimelist.domain.usecase.GetSeasonYearSortUseCase
+import com.chs.youranimelist.domain.usecase.GetSortListUseCase
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.util.Resource
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SortedViewModel @Inject constructor(
-    private val getSeasonYearSortUseCase: GetSeasonYearSortUseCase,
+    private val getSortListUseCase: GetSortListUseCase,
     private val getGenreUseCase: GetGenreUseCase
 ) : ViewModel() {
     var selectedYear: Int? = null
@@ -39,7 +39,7 @@ class SortedViewModel @Inject constructor(
 
     fun getSortedAnime() {
         state = state.copy(
-            animeSortPaging = getSeasonYearSortUseCase(
+            animeSortPaging = getSortListUseCase(
                 selectType = selectType,
                 sort = selectedSort!!,
                 season = selectedSeason,

@@ -15,7 +15,7 @@ interface AnimeListRepository {
 
     suspend fun getHomeRecommendList(): ApolloResponse<HomeRecommendListQuery.Data>
 
-    fun getAnimeList(
+    fun getSortedAnimeList(
         selectType: String,
         sort: MediaSort,
         season: MediaSeason?,

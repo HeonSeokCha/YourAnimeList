@@ -33,7 +33,7 @@ class AnimeListRepositoryImpl @Inject constructor(
         ).execute()
     }
 
-    override fun getAnimeList(
+    override fun getSortedAnimeList(
         selectType: String,
         sort: MediaSort,
         season: MediaSeason?,
