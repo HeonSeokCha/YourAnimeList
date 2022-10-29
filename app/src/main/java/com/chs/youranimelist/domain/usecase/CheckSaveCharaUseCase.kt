@@ -8,7 +8,7 @@ import javax.inject.Inject
 class CheckSaveCharaUseCase @Inject constructor(
     private val repository: CharacterRepository
 ) {
-    operator fun invoke(charaId: Int): Flow<CharacterDto> {
+    operator fun invoke(charaId: Int): Flow<CharacterDto?> {
         return repository.checkCharaList(charaId)
     }
 }

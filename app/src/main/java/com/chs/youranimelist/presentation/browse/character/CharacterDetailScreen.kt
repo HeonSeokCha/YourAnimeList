@@ -47,7 +47,6 @@ fun CharacterDetailScreen(
 
     val state = viewModel.state
     val context = LocalContext.current
-    var expandDesc by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
     LaunchedEffect(viewModel, context) {
@@ -98,40 +97,12 @@ fun CharacterDetailScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            if (expandDesc) {
-                Text(
-                    text = HtmlCompat.fromHtml(
-                        state.characterDetailInfo?.character?.description ?: "",
-                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                    ).toString()
-                )
-                IconButton(
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally),
-                    onClick = {
-                        expandDesc = false
-                    }) {
-                    Icon(imageVector = Icons.Filled.ArrowDropUp, contentDescription = null)
-                }
-            } else {
-
-                Text(
-                    text = HtmlCompat.fromHtml(
-                        state.characterDetailInfo?.character?.description ?: "",
-                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                    ).toString(),
-                    maxLines = 5,
-                    overflow = TextOverflow.Ellipsis
-                )
-                IconButton(
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally),
-                    onClick = {
-                        expandDesc = true
-                    }) {
-                    Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null)
-                }
-            }
+            Text(
+                text = HtmlCompat.fromHtml(
+                    state.characterDetailInfo?.character?.description ?: "",
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                ).toString()
+            )
 
             LazyVerticalGrid(
                 modifier = Modifier

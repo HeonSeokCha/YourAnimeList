@@ -36,7 +36,7 @@ class CharacterRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun checkCharaList(charaId: Int): Flow<CharacterDto> {
+    override fun checkCharaList(charaId: Int): Flow<CharacterDto?> {
         return db.charaListDao.checkCharaList(charaId)
     }
 

@@ -62,7 +62,6 @@ fun AnimeDetailScreen(
     val overViewScroll = rememberLazyListState()
     val charaViewScroll = rememberLazyGridState()
     val recommendScroll = rememberLazyListState()
-    var expandDesc by remember { mutableStateOf(false) }
 
     val tabList = listOf(
         "OVERVIEW",
@@ -146,8 +145,6 @@ fun AnimeDetailScreen(
                             animeMalId = idMal,
                             navController = navController,
                             scrollState = overViewScroll,
-                            expandDesc = expandDesc,
-                            changeExpand = { expandDesc = it },
                         )
                     }
                     1 -> {

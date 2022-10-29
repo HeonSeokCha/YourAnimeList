@@ -1,27 +1,17 @@
 package com.chs.youranimelist.presentation.browse.anime
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -40,8 +30,6 @@ fun AnimeOverViewScreen(
     navController: NavController,
     viewModel: AnimeOverViewViewModel = hiltViewModel(),
     scrollState: LazyListState,
-    expandDesc: Boolean,
-    changeExpand: (Boolean) -> Unit,
 ) {
     val state = viewModel.state
     val context = LocalContext.current
@@ -96,41 +84,12 @@ fun AnimeOverViewScreen(
 
                 Spacer(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
 
-                if (expandDesc) {
-                    Text(
-                        text = HtmlCompat.fromHtml(
-                            state.animeOverViewInfo?.media?.description ?: "",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY
-                        ).toString()
-                    )
-
-
-                    IconButton(
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally),
-                        onClick = {
-                            changeExpand(!expandDesc)
-                        }) {
-                        Icon(imageVector = Icons.Filled.ArrowDropUp, contentDescription = null)
-                    }
-                } else {
-                    Text(
-                        text = HtmlCompat.fromHtml(
-                            state.animeOverViewInfo?.media?.description ?: "",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY
-                        ).toString(),
-                        maxLines = 5,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    IconButton(
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally),
-                        onClick = {
-                            changeExpand(!expandDesc)
-                        }) {
-                        Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null)
-                    }
-                }
+                Text(
+                    text = HtmlCompat.fromHtml(
+                        state.animeOverViewInfo?.media?.description ?: "",
+                        HtmlCompat.FROM_HTML_MODE_LEGACY
+                    ).toString()
+                )
             }
         }
 

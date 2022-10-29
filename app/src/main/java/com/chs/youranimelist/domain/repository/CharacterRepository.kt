@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface CharacterRepository {
     suspend fun getCharacterDetail(charaId: Int): Flow<Resource<CharacterQuery.Data>>
 
-    fun checkCharaList(charaId: Int): Flow<CharacterDto>
+    fun checkCharaList(charaId: Int): Flow<CharacterDto?>
 
     fun getYourCharaList(): Flow<List<CharacterDto>>
 
