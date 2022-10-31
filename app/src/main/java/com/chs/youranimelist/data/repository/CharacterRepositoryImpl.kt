@@ -28,10 +28,10 @@ class CharacterRepositoryImpl @Inject constructor(
                 )
             } catch (e: IOException) {
                 e.printStackTrace()
-                emit(Resource.Error("Couldn't load date"))
+                emit(Resource.Error("Couldn't load data.."))
             } catch (e: HttpException) {
                 e.printStackTrace()
-                emit(Resource.Error("Couldn't load date"))
+                emit(Resource.Error("Couldn't load data.."))
             }
         }
     }

@@ -76,90 +76,92 @@ fun AnimeDetailScreen(
 
     BoxWithConstraints {
         val screenHeight = maxHeight
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
         ) {
             AnimeDetailHeadBanner(viewModel)
-            TabRow(
-                modifier = Modifier.fillMaxWidth(),
-                selectedTabIndex = pagerState.currentPage,
-                backgroundColor = Color.White,
-                indicator = { tabPositions ->
-                    TabRowDefaults.Indicator(
-                        modifier = Modifier
-                            .pagerTabIndicatorOffset(pagerState, tabPositions),
-                        color = Pink80
-                    )
-                }
+            Column(
+                modifier = Modifier.height(screenHeight)
             ) {
-                tabList.forEachIndexed { index, _ ->
-                    Tab(
-                        text = {
-                            Text(
-                                modifier = Modifier.fillMaxSize(),
-                                text = tabList[index],
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                fontSize = 12.sp
-                            )
-                        },
-                        selected = pagerState.currentPage == index,
-                        onClick = {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        },
-                        selectedContentColor = Pink80,
-                        unselectedContentColor = Color.Gray
-                    )
-                }
-            }
-
-            HorizontalPager(
-                modifier = Modifier
-                    .height(screenHeight)
-                    .nestedScroll(remember {
-                        object : NestedScrollConnection {
-                            override fun onPreScroll(
-                                available: Offset,
-                                source: NestedScrollSource
-                            ): Offset {
-                                return if (available.y > 0) Offset.Zero else Offset(
-                                    x = 0f,
-                                    y = -scrollState.dispatchRawDelta(-available.y)
+                TabRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    selectedTabIndex = pagerState.currentPage,
+                    backgroundColor = Color.White,
+                    indicator = { tabPositions ->
+                        TabRowDefaults.Indicator(
+                            modifier = Modifier
+                                .pagerTabIndicatorOffset(pagerState, tabPositions),
+                            color = Pink80
+                        )
+                    }
+                ) {
+                    tabList.forEachIndexed { index, title ->
+                        Tab(
+                            text = {
+                                Text(
+                                    text = title,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    fontSize = 12.sp,
                                 )
+                            },
+                            selected = pagerState.currentPage == index,
+                            onClick = {
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            },
+                            selectedContentColor = Pink80,
+                            unselectedContentColor = Color.Gray
+                        )
+                    }
+                }
+
+                HorizontalPager(
+                    count = tabList.size,
+                    state = pagerState,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .nestedScroll(remember {
+                            object : NestedScrollConnection {
+                                override fun onPreScroll(
+                                    available: Offset,
+                                    source: NestedScrollSource
+                                ): Offset {
+                                    return if (available.y > 0) Offset.Zero else Offset(
+                                        x = 0f,
+                                        y = -scrollState.dispatchRawDelta(-available.y)
+                                    )
+                                }
                             }
+                        })
+                ) {
+                    when (this.currentPage) {
+                        0 -> {
+                            AnimeOverViewScreen(
+                                animeId = id,
+                                animeMalId = idMal,
+                                navController = navController,
+                                scrollState = overViewScroll,
+                            )
                         }
-                    }),
-                count = tabList.size,
-                state = pagerState,
-                userScrollEnabled = false,
-            ) {
-                when (this.currentPage) {
-                    0 -> {
-                        AnimeOverViewScreen(
-                            animeId = id,
-                            animeMalId = idMal,
-                            navController = navController,
-                            scrollState = overViewScroll,
-                        )
-                    }
-                    1 -> {
-                        AnimeCharaScreen(
-                            animeId = id,
-                            lazyGridScrollState = charaViewScroll,
-                            navController = navController,
-                        )
-                    }
-                    2 -> {
-                        AnimeRecScreen(
-                            animeId = id,
-                            lazyListState = recommendScroll,
-                            navController = navController,
-                        )
+                        1 -> {
+                            AnimeCharaScreen(
+                                animeId = id,
+                                lazyGridScrollState = charaViewScroll,
+                                navController = navController,
+                            )
+                        }
+                        2 -> {
+                            AnimeRecScreen(
+                                context = context,
+                                animeId = id,
+                                lazyListState = recommendScroll,
+                                navController = navController,
+                            )
+                        }
                     }
                 }
             }

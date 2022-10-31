@@ -74,7 +74,8 @@ fun AnimeOverViewScreen(
 
         item {
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
                 Text(
                     text = "Description",

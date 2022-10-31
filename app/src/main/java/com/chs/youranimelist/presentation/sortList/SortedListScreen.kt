@@ -1,6 +1,7 @@
 package com.chs.youranimelist.presentation.sortList
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -209,14 +210,22 @@ fun SortedListScreen(
         })
     }
 
+    when (pagingItems?.loadState?.source?.refresh) {
+        is LoadState.Loading -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(color = Pink80)
+            }
+        }
 
-    if (pagingItems?.loadState?.append == LoadState.Loading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator(color = Pink80)
+        is LoadState.Error -> {
+            Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT).show()
+        }
+        else -> {
+            
         }
     }
 }

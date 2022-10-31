@@ -38,10 +38,10 @@ class AnimeDetailRepositoryImpl @Inject constructor(
                 )
             } catch (e: IOException) {
                 e.printStackTrace()
-                emit(Resource.Error("Couldn't load date"))
+                emit(Resource.Error("Couldn't load data.."))
             } catch (e: HttpException) {
                 e.printStackTrace()
-                emit(Resource.Error("Couldn't load date"))
+                emit(Resource.Error("Couldn't load data.."))
             }
         }
     }
@@ -56,7 +56,7 @@ class AnimeDetailRepositoryImpl @Inject constructor(
                     )
                 )
             } catch (e: Exception) {
-                emit(Resource.Error("Couldn't load date"))
+                emit(Resource.Error("Couldn't load data.."))
             }
         }
     }
@@ -71,7 +71,7 @@ class AnimeDetailRepositoryImpl @Inject constructor(
                     )
                 )
             } catch (e: Exception) {
-                emit(Resource.Error("Couldn't load date"))
+                emit(Resource.Error("Couldn't load data.."))
             }
         }
     }
@@ -95,7 +95,7 @@ class AnimeDetailRepositoryImpl @Inject constructor(
                     )
                 )
             } catch (e: Exception) {
-                emit(Resource.Error("Couldn't load date"))
+                emit(Resource.Error("Couldn't load data.."))
                 Log.e("JikanError", e.message.toString())
             }
         }
