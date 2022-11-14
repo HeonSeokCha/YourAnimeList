@@ -156,7 +156,6 @@ fun AnimeDetailScreen(
                         }
                         2 -> {
                             AnimeRecScreen(
-                                context = context,
                                 animeId = id,
                                 lazyListState = recommendScroll,
                                 navController = navController,

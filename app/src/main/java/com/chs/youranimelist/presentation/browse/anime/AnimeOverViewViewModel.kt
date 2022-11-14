@@ -1,5 +1,6 @@
 package com.chs.youranimelist.presentation.browse.anime
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -56,7 +57,7 @@ class AnimeOverViewViewModel @Inject constructor(
                     }
 
                     is Resource.Error -> {
-
+                        Log.e("getAnimeTheme", result.message.toString())
                     }
 
                     is Resource.Loading -> {

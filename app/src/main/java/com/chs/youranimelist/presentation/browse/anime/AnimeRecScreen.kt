@@ -1,7 +1,5 @@
 package com.chs.youranimelist.presentation.browse.anime
 
-import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,14 +21,19 @@ import com.chs.youranimelist.presentation.ui.theme.Pink80
 
 @Composable
 fun AnimeRecScreen(
-    context: Context,
     animeId: Int,
     viewModel: AnimeRecViewModel = hiltViewModel(),
     lazyListState: LazyListState,
     navController: NavController
 ) {
+    val state = viewModel.state
+    val context = LocalContext.current
 
-    val lazyPagingItems = viewModel.getAnimeRecommendList(animeId).collectAsLazyPagingItems()
+    LaunchedEffect(context, viewModel) {
+        viewModel.getAnimeRecommendList(animeId)
+    }
+
+    val lazyPagingItems = state.animeRecInfo?.collectAsLazyPagingItems()
 
     LazyColumn(
         modifier = Modifier
@@ -42,8 +45,8 @@ fun AnimeRecScreen(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         state = lazyListState
     ) {
-        items(lazyPagingItems) { recommendMedia ->
-            recommendMedia?.node?.mediaRecommendation?.let {
+        items(lazyPagingItems?.itemCount ?: 0) { idx ->
+            lazyPagingItems?.get(idx)?.node?.mediaRecommendation?.let {
                 ItemAnimeRecommend(it) {
                     navController.navigate(
                         "${BrowseScreen.AnimeDetailScreen.route}/" +
@@ -55,7 +58,7 @@ fun AnimeRecScreen(
         }
     }
 
-    when (lazyPagingItems.loadState.source.refresh) {
+    when (lazyPagingItems?.loadState?.source?.refresh) {
         is LoadState.Loading -> {
             Box(
                 modifier = Modifier

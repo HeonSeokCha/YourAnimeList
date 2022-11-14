@@ -23,6 +23,7 @@ fun Anime.toAnimeDto(): AnimeDto {
 
 fun AnimeDetailDto.toAnimDetails(): AnimeDetails {
     return AnimeDetails(
-        malId, title, openingThemes, endingThemes
+        data.openingThemes,
+        data.endingThemes
     )
 }

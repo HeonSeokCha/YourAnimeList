@@ -1,7 +1,9 @@
 package com.chs.youranimelist.di
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.cache.normalized.FetchPolicy
 import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
+import com.apollographql.apollo3.cache.normalized.fetchPolicy
 import com.apollographql.apollo3.cache.normalized.normalizedCache
 import com.apollographql.apollo3.network.okHttpClient
 import com.chs.youranimelist.BuildConfig
@@ -31,7 +33,7 @@ object RemoteModule {
     fun providesOkHttpClient(): OkHttpClient {
         val interceptor = HttpLoggingInterceptor()
         if (BuildConfig.DEBUG) {
-            interceptor.level = HttpLoggingInterceptor.Level.BODY
+            interceptor.level = HttpLoggingInterceptor.Level.HEADERS
         } else {
             interceptor.level = HttpLoggingInterceptor.Level.NONE
         }
@@ -65,10 +67,10 @@ object RemoteModule {
         return ApolloClient.Builder()
             .serverUrl(Constant.ANILIST_API_URL)
             .okHttpClient(okHttpClient)
+            .fetchPolicy(FetchPolicy.CacheAndNetwork)
             .normalizedCache(
-                MemoryCacheFactory(
-                    maxSizeBytes = 10 * 1024 * 1024
-                )
+                MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024)
+
             ).build()
     }
 }

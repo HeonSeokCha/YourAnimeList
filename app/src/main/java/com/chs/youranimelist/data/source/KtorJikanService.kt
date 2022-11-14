@@ -13,6 +13,6 @@ class KtorJikanService @Inject constructor(
     private val client: HttpClient
 ) {
     suspend fun getAnimeTheme(malId: Int): AnimeDetailDto? {
-        return client.get("${Constant.JIKAN_API_URL}/$malId").body()
+        return client.get("${Constant.JIKAN_API_URL}/$malId/themes").body()
     }
 }

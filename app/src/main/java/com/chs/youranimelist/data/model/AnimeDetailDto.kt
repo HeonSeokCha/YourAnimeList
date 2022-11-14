@@ -5,12 +5,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AnimeDetailDto(
-    @SerialName("mal_id")
-    val malId: Int = 0,
-    @SerialName("title")
-    val title: String = "",
-    @SerialName("opening_themes")
+    @SerialName("data")
+    val data: AnimeThemes
+)
+
+@Serializable
+data class AnimeThemes(
+    @SerialName("openings")
     val openingThemes: List<String> = listOf(),
-    @SerialName("ending_themes")
+    @SerialName("endings")
     val endingThemes: List<String> = listOf()
 )

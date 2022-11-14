@@ -1,6 +1,5 @@
 package com.chs.youranimelist.util
 
-import androidx.compose.ui.graphics.Color
 import com.chs.youranimelist.presentation.ui.theme.MediaStatusFinishedColor
 import com.chs.youranimelist.presentation.ui.theme.MediaStatusNotYetColor
 import com.chs.youranimelist.presentation.ui.theme.MediaStatusReleasingColor
@@ -9,8 +8,8 @@ import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.type.MediaStatus
 
 object Constant {
-    const val ANILIST_API_URL: String = "https://graphql.anilist.co"
-    const val JIKAN_API_URL: String = "https://api.jikan.moe/v3/anime"
+    const val ANILIST_API_URL: String = "https://graphql.anilist.co/v2"
+    const val JIKAN_API_URL: String = "https://api.jikan.moe/v4/anime"
 
     const val TARGET_MAIN: String = "main"
     const val TARGET_SORT: String = "sort"
