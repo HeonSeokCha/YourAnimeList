@@ -78,7 +78,7 @@ class AnimeDetailViewModel @Inject constructor(
                 coverImage = anime.coverImage?.extraLarge,
                 averageScore = anime.averageScore ?: 0,
                 favorites = anime.favourites,
-                studio = if (!anime.studios?.edges.isNullOrEmpty()) anime.studios?.edges?.get(0)?.node?.name else "",
+                studio = if (!anime.studios?.studiosEdges.isNullOrEmpty()) anime.studios?.studiosEdges?.get(0)?.studiosNode?.name else "",
                 genre = anime.genres ?: listOf()
             )
             insertAnimeUseCase(animeObj)

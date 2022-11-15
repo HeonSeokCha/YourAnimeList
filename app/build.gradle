@@ -6,7 +6,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlinx-serialization'
     id 'com.google.devtools.ksp' version '1.7.10-1.0.6'
-    id 'com.apollographql.apollo3' version '3.6.2'
+    id 'com.apollographql.apollo3' version '3.7.0'
 }
 
 kotlin {
@@ -110,9 +110,9 @@ dependencies {
     kapt "androidx.room:room-compiler:2.4.3"
 
     //Apollo
-    implementation 'com.apollographql.apollo3:apollo-runtime:3.6.2'
-    implementation 'com.apollographql.apollo3:apollo-api:3.6.2'
-    implementation 'com.apollographql.apollo3:apollo-normalized-cache:3.6.2'
+    implementation 'com.apollographql.apollo3:apollo-runtime:3.7.0'
+    implementation 'com.apollographql.apollo3:apollo-api:3.7.0'
+    implementation 'com.apollographql.apollo3:apollo-normalized-cache:3.7.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6'
 
     // Pager

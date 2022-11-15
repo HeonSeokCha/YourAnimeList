@@ -67,10 +67,8 @@ object RemoteModule {
         return ApolloClient.Builder()
             .serverUrl(Constant.ANILIST_API_URL)
             .okHttpClient(okHttpClient)
-            .fetchPolicy(FetchPolicy.CacheAndNetwork)
             .normalizedCache(
                 MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024)
-
             ).build()
     }
 }

@@ -6,12 +6,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import coil.network.HttpException
 import com.apollographql.apollo3.ApolloClient
-import com.chs.youranimelist.AnimeCharacterQuery
 import com.chs.youranimelist.AnimeDetailQuery
-import com.chs.youranimelist.AnimeOverviewQuery
 import com.chs.youranimelist.AnimeRecommendQuery
 import com.chs.youranimelist.data.mapper.toAnimDetails
-import com.chs.youranimelist.data.model.AnimeDetailDto
 import com.chs.youranimelist.data.paging.AnimeRecPagingSource
 import com.chs.youranimelist.data.source.KtorJikanService
 import com.chs.youranimelist.domain.model.AnimeDetails
@@ -41,36 +38,6 @@ class AnimeDetailRepositoryImpl @Inject constructor(
                 emit(Resource.Error("Couldn't load data.."))
             } catch (e: HttpException) {
                 e.printStackTrace()
-                emit(Resource.Error("Couldn't load data.."))
-            }
-        }
-    }
-
-    override suspend fun getAnimeOverview(animeId: Int): Flow<Resource<AnimeOverviewQuery.Data>> {
-        return flow {
-            emit(Resource.Loading(true))
-            try {
-                emit(
-                    Resource.Success(
-                        apolloClient.query(AnimeOverviewQuery(animeId)).execute().data
-                    )
-                )
-            } catch (e: Exception) {
-                emit(Resource.Error("Couldn't load data.."))
-            }
-        }
-    }
-
-    override suspend fun getAnimeCharacter(animeId: Int): Flow<Resource<AnimeCharacterQuery.Data>> {
-        return flow {
-            emit(Resource.Loading(true))
-            try {
-                emit(
-                    Resource.Success(
-                        apolloClient.query(AnimeCharacterQuery(animeId)).execute().data
-                    )
-                )
-            } catch (e: Exception) {
                 emit(Resource.Error("Couldn't load data.."))
             }
         }

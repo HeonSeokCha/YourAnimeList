@@ -5,6 +5,7 @@ query AnimeDetailQuery(
         id
         idMal
         title {
+            userPreferred
             romaji
             native
             english
@@ -30,29 +31,78 @@ query AnimeDetailQuery(
             extraLarge
             color
         }
+        type
         bannerImage
         genres
+        synonyms
         status(version: 2)
         season
         seasonYear
         episodes
         duration
+        chapters
+        volumes
+        countryOfOrigin
+        hashtag
         averageScore
         meanScore
         popularity
         favourites
         source
+
+        relations {
+            relationsEdges: edges {
+                relationsNode: node {
+                    ... animeList
+                }
+                id
+                relationType(version: 2)
+            }
+        }
+
         studios (isMain: true) {
-            edges {
-                node {
+            studiosEdges: edges {
+                studiosNode: node {
                     id
                     name
+                    isAnimationStudio
                 }
+                isMain
             }
         }
         nextAiringEpisode {
             airingAt
             episode
+        }
+
+        airingSchedule {
+            edges {
+                node {
+                    id
+                    airingAt
+                    episode
+                }
+            }
+        }
+
+        externalLinks {
+            id
+            url
+            site
+        }
+
+        characters(sort: [ROLE,ID]) {
+            charactersNode: nodes {
+                id
+                name {
+                    first
+                    last
+                    full
+                }
+                image {
+                    large
+                }
+            }
         }
     }
 }

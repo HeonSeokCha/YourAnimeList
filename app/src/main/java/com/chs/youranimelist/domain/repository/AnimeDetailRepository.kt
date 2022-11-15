@@ -10,10 +10,6 @@ interface AnimeDetailRepository {
 
     suspend fun getAnimeDetail(animeId: Int): Flow<Resource<AnimeDetailQuery.Data>>
 
-    suspend fun getAnimeOverview(animeId: Int): Flow<Resource<AnimeOverviewQuery.Data>>
-
-    suspend fun getAnimeCharacter(animeId: Int): Flow<Resource<AnimeCharacterQuery.Data>>
-
     fun getAnimeRecList(animeId: Int): Flow<PagingData<AnimeRecommendQuery.Edge>>
 
     suspend fun getAnimeOverviewTheme(animeId: Int): Flow<Resource<AnimeDetails>>

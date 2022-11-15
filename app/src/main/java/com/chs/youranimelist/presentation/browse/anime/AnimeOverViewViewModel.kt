@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.youranimelist.domain.usecase.GetAnimeOverViewUseCase
 import com.chs.youranimelist.domain.usecase.GetAnimeThemeUseCase
 import com.chs.youranimelist.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +14,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimeOverViewViewModel @Inject constructor(
-    private val getAnimeOverViewUseCase: GetAnimeOverViewUseCase,
     private val getAnimeThemeUseCase: GetAnimeThemeUseCase
 ) : ViewModel() {
 
