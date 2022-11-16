@@ -9,10 +9,7 @@ import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.data.mapper.toAnimeDto
 import com.chs.youranimelist.data.model.AnimeDto
 import com.chs.youranimelist.domain.model.Anime
-import com.chs.youranimelist.domain.usecase.CheckSaveAnimeUseCase
-import com.chs.youranimelist.domain.usecase.DeleteAnimeUseCase
-import com.chs.youranimelist.domain.usecase.GetAnimeDetailUseCase
-import com.chs.youranimelist.domain.usecase.InsertAnimeUseCase
+import com.chs.youranimelist.domain.usecase.*
 import com.chs.youranimelist.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -23,7 +20,8 @@ class AnimeDetailViewModel @Inject constructor(
     private val getAnimeDetailUseCase: GetAnimeDetailUseCase,
     private val checkSaveAnimeUseCase: CheckSaveAnimeUseCase,
     private val insertAnimeUseCase: InsertAnimeUseCase,
-    private val deleteAnimeUseCase: DeleteAnimeUseCase
+    private val deleteAnimeUseCase: DeleteAnimeUseCase,
+    private val getAnimeThemeUseCase: GetAnimeThemeUseCase,
 ) : ViewModel() {
 
     var state by mutableStateOf(AnimeDetailState())
@@ -35,6 +33,31 @@ class AnimeDetailViewModel @Inject constructor(
                     is Resource.Success -> {
                         state = state.copy(
                             animeDetailInfo = it.data,
+                            isLoading = false
+                        )
+                    }
+                    is Resource.Error -> {
+                        state = state.copy(
+                            isLoading = false
+                        )
+                    }
+                    is Resource.Loading -> {
+                        state = state.copy(
+                            isLoading = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun getAnimeTheme(idMal: Int) {
+        viewModelScope.launch {
+            getAnimeThemeUseCase(idMal).collect {
+                when (it) {
+                    is Resource.Success -> {
+                        state = state.copy(
+                            animeThemes = it.data,
                             isLoading = false
                         )
                     }

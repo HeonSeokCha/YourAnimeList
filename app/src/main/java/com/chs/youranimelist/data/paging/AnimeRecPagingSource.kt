@@ -21,7 +21,6 @@ class AnimeRecPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnimeRecommendQuery.Edge> {
         return try {
             val page = params.key ?: 1
-            Log.e("load", page.toString())
             val response = apolloClient.query(AnimeRecommendQuery(animeId, page)).execute().data
 
             LoadResult.Page(

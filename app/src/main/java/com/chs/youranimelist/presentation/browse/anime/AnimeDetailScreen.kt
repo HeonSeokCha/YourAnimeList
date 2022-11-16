@@ -1,5 +1,8 @@
 package com.chs.youranimelist.presentation.browse.anime
 
+import android.content.Context
+import android.net.Uri
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -71,6 +74,7 @@ fun AnimeDetailScreen(
 
     LaunchedEffect(viewModel, context) {
         viewModel.getAnimeDetailInfo(id)
+        viewModel.getAnimeTheme(idMal)
         viewModel.isSaveAnime(id)
     }
 
@@ -81,7 +85,7 @@ fun AnimeDetailScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
         ) {
-            AnimeDetailHeadBanner(viewModel)
+            AnimeDetailHeadBanner(context, viewModel)
             Column(
                 modifier = Modifier.height(screenHeight)
             ) {
@@ -141,15 +145,15 @@ fun AnimeDetailScreen(
                     when (this.currentPage) {
                         0 -> {
                             AnimeOverViewScreen(
-                                animeId = id,
-                                animeMalId = idMal,
+                                animeOverViewInfo = state.animeDetailInfo,
+                                animeTheme = state.animeThemes,
                                 navController = navController,
                                 scrollState = overViewScroll,
                             )
                         }
                         1 -> {
                             AnimeCharaScreen(
-                                animeId = id,
+                                animeCharaInfo = state.animeDetailInfo?.media?.characters,
                                 lazyGridScrollState = charaViewScroll,
                                 navController = navController,
                             )
@@ -181,6 +185,7 @@ fun AnimeDetailScreen(
 
 @Composable
 fun AnimeDetailHeadBanner(
+    context: Context,
     viewModel: AnimeDetailViewModel
 ) {
     val state = viewModel.state
@@ -241,7 +246,14 @@ fun AnimeDetailHeadBanner(
                 FloatingActionButton(
                     modifier = Modifier
                         .align(Alignment.Center),
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        CustomTabsIntent.Builder()
+                            .build()
+                            .launchUrl(
+                                context,
+                                Uri.parse("https://www.youtube.com/watch?v=${state.animeDetailInfo.media.trailer.id}")
+                            )
+                    }
                 ) {
                     Icon(Icons.Filled.PlayArrow, null)
                 }

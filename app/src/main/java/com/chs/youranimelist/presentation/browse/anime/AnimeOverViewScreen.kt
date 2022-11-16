@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.sp
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.chs.youranimelist.AnimeDetailQuery
+import com.chs.youranimelist.domain.model.AnimeDetails
 import com.chs.youranimelist.presentation.Screen
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
@@ -25,20 +27,11 @@ import com.google.accompanist.flowlayout.FlowRow
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AnimeOverViewScreen(
-    animeId: Int,
-    animeMalId: Int,
+    animeOverViewInfo: AnimeDetailQuery.Data?,
+    animeTheme: AnimeDetails?,
     navController: NavController,
-    viewModel: AnimeOverViewViewModel = hiltViewModel(),
     scrollState: LazyListState,
 ) {
-    val state = viewModel.state
-    val context = LocalContext.current
-
-    LaunchedEffect(viewModel, context) {
-        viewModel.getAnimeOverView(animeId)
-        viewModel.getAnimeTheme(animeMalId)
-    }
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -56,7 +49,7 @@ fun AnimeOverViewScreen(
                 modifier = Modifier,
                 mainAxisSpacing = 4.dp
             ) {
-                state.animeOverViewInfo?.media?.genres?.forEach { genre ->
+                animeOverViewInfo?.media?.genres?.forEach { genre ->
                     Chip(
                         onClick = {
                             navController.navigate("${Screen.SortListScreen.route}/$genre")
@@ -87,7 +80,7 @@ fun AnimeOverViewScreen(
 
                 Text(
                     text = HtmlCompat.fromHtml(
-                        state.animeOverViewInfo?.media?.description ?: "",
+                        animeOverViewInfo?.media?.description ?: "",
                         HtmlCompat.FROM_HTML_MODE_LEGACY
                     ).toString()
                 )
@@ -95,12 +88,12 @@ fun AnimeOverViewScreen(
         }
 
 
-        items(state.animeOverThemeInfo?.openingThemes?.size ?: 0) { idx ->
-            Text(text = state.animeOverThemeInfo?.openingThemes?.get(idx).toString())
+        items(animeTheme?.openingThemes?.size ?: 0) { idx ->
+            Text(text = animeTheme?.openingThemes?.get(idx).toString())
         }
 
-        items(state.animeOverThemeInfo?.endingThemes?.size ?: 0) { idx ->
-            Text(text = state.animeOverThemeInfo?.endingThemes?.get(idx).toString())
+        items(animeTheme?.endingThemes?.size ?: 0) { idx ->
+            Text(text = animeTheme?.endingThemes?.get(idx).toString())
         }
 
         item {
@@ -110,18 +103,14 @@ fun AnimeOverViewScreen(
                     .wrapContentHeight(),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                items(state.animeOverViewInfo?.media?.relations?.relationsEdges?.size ?: 0) { idx ->
+                items(animeOverViewInfo?.media?.relations?.relationsEdges?.size ?: 0) { idx ->
                     ItemAnimeSmall(
-                        item = state.animeOverViewInfo?.media?.relations?.relationsEdges?.get(idx)?.relationsNode?.animeList!!
+                        item = animeOverViewInfo?.media?.relations?.relationsEdges?.get(idx)?.relationsNode?.animeList!!
                     ) {
                         navController.navigate(
                             "${BrowseScreen.AnimeDetailScreen.route}/" +
-                                    "${
-                                        state.animeOverViewInfo.media.relations.relationsEdges[idx]?.relationsNode?.animeList!!.id
-                                    }" +
-                                    "/${
-                                        state.animeOverViewInfo.media.relations.relationsEdges[idx]?.relationsNode?.animeList!!.idMal ?: 0
-                                    }"
+                                    "${animeOverViewInfo.media.relations.relationsEdges[idx]?.relationsNode?.animeList!!.id}" +
+                                    "/${animeOverViewInfo.media.relations.relationsEdges[idx]?.relationsNode?.animeList!!.idMal ?: 0}"
                         )
                     }
                 }
