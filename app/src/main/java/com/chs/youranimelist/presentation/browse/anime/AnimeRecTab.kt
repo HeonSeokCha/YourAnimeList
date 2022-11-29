@@ -15,7 +15,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.ui.theme.Pink80
 

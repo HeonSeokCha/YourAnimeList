@@ -142,7 +142,7 @@ fun SearchMediaScreen(
     when (pagingItems?.loadState?.source?.refresh) {
         is LoadState.Loading -> {
             Box(
-                modifier = Modifier.wrapContentSize(),
+                modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
 
                 ) {

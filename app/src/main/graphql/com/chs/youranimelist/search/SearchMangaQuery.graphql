@@ -16,7 +16,8 @@ query SearchMangaQuery(
         media(
             search: $search,
             type: MANGA,
-            sort: [FAVOURITES_DESC]
+            sort: [FAVOURITES_DESC],
+            isAdult: false
         ) {
             ...animeList
         }

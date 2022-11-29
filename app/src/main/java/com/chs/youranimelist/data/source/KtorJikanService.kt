@@ -1,5 +1,6 @@
 package com.chs.youranimelist.data.source
 
+import android.util.Log
 import com.chs.youranimelist.data.model.AnimeDetailDto
 import com.chs.youranimelist.util.Constant
 import io.ktor.client.*
@@ -13,6 +14,10 @@ class KtorJikanService @Inject constructor(
     private val client: HttpClient
 ) {
     suspend fun getAnimeTheme(malId: Int): AnimeDetailDto? {
-        return client.get("${Constant.JIKAN_API_URL}/$malId/themes").body()
+        val a = client.get("${Constant.JIKAN_API_URL}/$malId/themes") {
+            headers.append("Content-Type", "application/json")
+        }
+        Log.e("Services$malId", a.body())
+        return a.body()
     }
 }
