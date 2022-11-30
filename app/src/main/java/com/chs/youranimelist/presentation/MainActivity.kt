@@ -128,7 +128,6 @@ fun AppBar(
         }
         Screen.SearchScreen.route -> {
             SearchAppBar(
-                navController,
                 onSearchClicked = {
                     onSearchClicked(it)
                 },
@@ -144,7 +143,6 @@ fun AppBar(
             when (searchWidgetState) {
                 SearchWidgetState.OPENED -> {
                     SearchAppBar(
-                        navController,
                         onSearchClicked = {
                             onSearchClicked(it)
                         },
@@ -192,7 +190,6 @@ fun AppBar(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchAppBar(
-    navController: NavHostController,
     onSearchClicked: (String) -> Unit,
     onValueChanged: (String) -> Unit,
     onClosedClicked: () -> Unit,

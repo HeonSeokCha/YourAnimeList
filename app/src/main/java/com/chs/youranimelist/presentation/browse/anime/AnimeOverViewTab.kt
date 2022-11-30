@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.HtmlCompat
@@ -25,6 +26,7 @@ import com.google.accompanist.flowlayout.FlowRow
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AnimeOverViewScreen(
+    height: Dp,
     animeOverViewInfo: AnimeDetailQuery.Data?,
     animeTheme: AnimeDetails?,
     navController: NavController,
@@ -32,7 +34,8 @@ fun AnimeOverViewScreen(
 ) {
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
+            .height(height)
             .padding(
                 start = 8.dp,
                 end = 8.dp

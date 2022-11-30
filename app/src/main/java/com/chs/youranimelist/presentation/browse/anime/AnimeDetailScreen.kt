@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -26,6 +27,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.consumeAllChanges
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.Placeholder
@@ -33,6 +36,7 @@ import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -47,6 +51,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -124,10 +129,10 @@ fun AnimeDetailScreen(
                 }
 
                 HorizontalPager(
-                    count = tabList.size,
                     state = pagerState,
+                    count = tabList.size,
                     modifier = Modifier
-                        .fillMaxHeight()
+                        .height(screenHeight)
                         .nestedScroll(remember {
                             object : NestedScrollConnection {
                                 override fun onPreScroll(
@@ -145,6 +150,7 @@ fun AnimeDetailScreen(
                     when (this.currentPage) {
                         0 -> {
                             AnimeOverViewScreen(
+                                height = screenHeight,
                                 animeOverViewInfo = state.animeDetailInfo,
                                 animeTheme = state.animeThemes,
                                 navController = navController,
