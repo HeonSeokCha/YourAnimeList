@@ -13,7 +13,6 @@ import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.chs.youranimelist.*
 import com.chs.youranimelist.browse.anime.AnimeDetailQuery
-import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
 import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
 import com.chs.youranimelist.home.HomeRecommendListQuery
 import com.chs.youranimelist.util.ConvertDate.secondsToDateTime
@@ -186,7 +185,7 @@ fun TextView.animeOverviewStatusValue(status: String?) {
 }
 
 @BindingAdapter("animeOverviewEnglishNull")
-fun TextView.animeOverviewEnglishNull(title: AnimeOverviewQuery.Title?) {
+fun TextView.animeOverviewEnglishNull(title: AnimeDetailQuery.Title?) {
     this.text = if (title?.english.isNullOrEmpty()) {
         "${title?.romaji}"
     } else {
@@ -195,7 +194,7 @@ fun TextView.animeOverviewEnglishNull(title: AnimeOverviewQuery.Title?) {
 }
 
 @BindingAdapter("animeOverviewSeasonValue")
-fun TextView.animeOverviewSeasonValue(anime: AnimeOverviewQuery.Media?) {
+fun TextView.animeOverviewSeasonValue(anime: AnimeDetailQuery.Media?) {
     this.text = if (anime?.seasonYear != null) {
         "${anime?.season} ${anime?.seasonYear}"
     } else {
@@ -204,7 +203,7 @@ fun TextView.animeOverviewSeasonValue(anime: AnimeOverviewQuery.Media?) {
 }
 
 @BindingAdapter("animeOverviewStartDateText")
-fun TextView.animeOverviewStartDateText(date: AnimeOverviewQuery.StartDate?) {
+fun TextView.animeOverviewStartDateText(date: AnimeDetailQuery.StartDate?) {
     this.text = if (date != null) {
         ConvertDate.convertToDateFormat(
             date.year,
@@ -215,7 +214,7 @@ fun TextView.animeOverviewStartDateText(date: AnimeOverviewQuery.StartDate?) {
 }
 
 @BindingAdapter("animeOverviewEndDateText")
-fun TextView.animeOverviewEndDateText(date: AnimeOverviewQuery.EndDate?) {
+fun TextView.animeOverviewEndDateText(date: AnimeDetailQuery.EndDate?) {
     this.text = if (date != null) {
         ConvertDate.convertToDateFormat(
             date.year,
@@ -247,7 +246,7 @@ fun ImageView.animeCharaCircle(path: String?) {
 }
 
 @BindingAdapter("studioMain")
-fun TextView.studioMain(studioList: List<AnimeOverviewQuery.StudiosEdge?>?) {
+fun TextView.studioMain(studioList: List<AnimeDetailQuery.StudiosEdge?>?) {
     if (studioList != null) {
         for (i in studioList.indices) {
             if (studioList[i]!!.isMain) {

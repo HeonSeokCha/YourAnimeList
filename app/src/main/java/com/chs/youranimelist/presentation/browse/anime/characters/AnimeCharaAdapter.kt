@@ -3,11 +3,11 @@ package com.chs.youranimelist.presentation.browse.anime.characters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.browse.anime.AnimeCharacterQuery
+import com.chs.youranimelist.browse.anime.AnimeDetailQuery
 import com.chs.youranimelist.databinding.ItemCharacterBinding
 
 class AnimeCharaAdapter(
-    private val items: List<AnimeCharacterQuery.CharactersNode?>,
+    private val items: List<AnimeDetailQuery.CharactersNode?>,
     private val clickListener: (charaId: Int) -> Unit
 ) : RecyclerView.Adapter<AnimeCharaAdapter.CharaViewHolder>() {
 

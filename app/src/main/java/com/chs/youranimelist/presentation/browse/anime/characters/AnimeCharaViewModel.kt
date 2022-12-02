@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.browse.anime.AnimeCharacterQuery
 import com.chs.youranimelist.data.NetworkState
-import com.chs.youranimelist.domain.usecase.GetAnimeCharaUseCase
 import com.chs.youranimelist.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

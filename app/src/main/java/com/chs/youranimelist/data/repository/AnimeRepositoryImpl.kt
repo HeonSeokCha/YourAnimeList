@@ -2,9 +2,7 @@ package com.chs.youranimelist.data.repository
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
-import com.chs.youranimelist.browse.anime.AnimeCharacterQuery
 import com.chs.youranimelist.browse.anime.AnimeDetailQuery
-import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
 import com.chs.youranimelist.browse.anime.AnimeRecommendQuery
 import com.chs.youranimelist.data.model.AnimeDetails
 import com.chs.youranimelist.data.datasource.JikanService
@@ -35,18 +33,6 @@ class AnimeRepositoryImpl @Inject constructor(
         animeId: Int
     ): ApolloResponse<AnimeDetailQuery.Data> {
         return apolloClient.query(AnimeDetailQuery(animeId)).execute()
-    }
-
-    override suspend fun getAnimeOverview(
-        animeId: Int
-    ): ApolloResponse<AnimeOverviewQuery.Data> {
-        return apolloClient.query(AnimeOverviewQuery(animeId)).execute()
-    }
-
-    override suspend fun getAnimeCharacter(
-        animeId: Int
-    ): ApolloResponse<AnimeCharacterQuery.Data> {
-        return apolloClient.query(AnimeCharacterQuery(animeId)).execute()
     }
 
     override suspend fun getAnimeRecList(

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="model"
-            type="com.chs.youranimelist.browse.anime.AnimeOverviewQuery.RelationsEdge" />
+            type="com.chs.youranimelist.browse.anime.AnimeDetailQuery.RelationsEdge" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -24,7 +24,7 @@
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                app:animeOverviewCoverImage="@{model.relationsNode.coverImage.extraLarge}"
+                app:animeOverviewCoverImage="@{model.relationsNode.fragments.animeList.coverImage.extraLarge}"
                 app:layout_constraintDimensionRatio="1:1.5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,7 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="2"
-                android:text="@{model.relationsNode.title.english ?? model.relationsNode.title.romaji}"
+                android:text="@{model.relationsNode.fragments.animeList.title.english ?? model.relationsNode.fragments.animeList.title.romaji}"
                 android:textSize="13sp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +73,7 @@
                 android:background="@drawable/background_text_view"
                 android:textColor="@color/white"
                 android:textSize="10dp"
-                android:text="@{model.relationsNode.format.toString()}"
+                android:text="@{model.relationsNode.fragments.animeList.format.toString()}"
                 tools:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="com.chs.youranimelist.browse.anime.AnimeCharacterQuery.CharactersNode" />
+            type="com.chs.youranimelist.browse.anime.AnimeDetailQuery.CharactersNode" />
     </data>
 
     <LinearLayout

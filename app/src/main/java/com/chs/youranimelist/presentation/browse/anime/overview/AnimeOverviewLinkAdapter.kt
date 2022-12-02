@@ -4,13 +4,13 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
+import com.chs.youranimelist.browse.anime.AnimeDetailQuery
 import com.chs.youranimelist.databinding.ItemLinkBinding
 import com.chs.youranimelist.util.Constant
 import java.util.*
 
 class AnimeOverviewLinkAdapter(
-    private val list: List<AnimeOverviewQuery.ExternalLink?>,
+    private val list: List<AnimeDetailQuery.ExternalLink?>,
     private val clickListener: (url: String) -> Unit
 ) : RecyclerView.Adapter<AnimeOverviewLinkAdapter.AnimeOverviewLinkViewHolder>() {
 
@@ -22,7 +22,7 @@ class AnimeOverviewLinkAdapter(
             }
         }
 
-        fun bind(link: AnimeOverviewQuery.ExternalLink?) {
+        fun bind(link: AnimeDetailQuery.ExternalLink?) {
             binding.model = link
             if (Constant.EXTERNAL_LINK.containsKey(link!!.site.lowercase(Locale.getDefault()))) {
                 binding.linkCard.setCardBackgroundColor(

@@ -49,7 +49,6 @@ query AnimeDetailQuery(
         popularity
         favourites
         source
-
         relations {
             relationsEdges: edges {
                 relationsNode: node {

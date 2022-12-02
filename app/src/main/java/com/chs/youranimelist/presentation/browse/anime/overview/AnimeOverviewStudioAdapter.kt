@@ -3,11 +3,11 @@ package com.chs.youranimelist.presentation.browse.anime.overview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chs.youranimelist.browse.anime.AnimeOverviewQuery
+import com.chs.youranimelist.browse.anime.AnimeDetailQuery
 import com.chs.youranimelist.databinding.ItemStudioBinding
 
 class AnimeOverviewStudioAdapter(
-    private val items: List<AnimeOverviewQuery.StudiosNode>,
+    private val items: List<AnimeDetailQuery.StudiosNode>,
     private val clickListener: (studioId: Int) -> Unit
 ) :
     RecyclerView.Adapter<AnimeOverviewStudioAdapter.AnimeOverviewStudioViewHolder>() {
@@ -20,7 +20,7 @@ class AnimeOverviewStudioAdapter(
             }
         }
 
-        fun bind(studio: AnimeOverviewQuery.StudiosNode) {
+        fun bind(studio: AnimeDetailQuery.StudiosNode) {
             binding.model = studio.name
         }
     }
