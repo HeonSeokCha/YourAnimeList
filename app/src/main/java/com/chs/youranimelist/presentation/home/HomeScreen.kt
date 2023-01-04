@@ -2,6 +2,7 @@ package com.chs.youranimelist.presentation.home
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -84,7 +85,7 @@ fun HomeScreen(
             )
         }
 
-        items(state.nestedList.size, key = { it }) { idx ->
+        items(state.nestedList.size) { idx ->
             ItemAnimeSort(
                 Constant.HOME_SORT_TILE[idx],
                 state.nestedList[idx],
@@ -111,7 +112,7 @@ fun ItemHomeBanner(
     context: Context,
     banner: HomeRecommendListQuery.Medium?
 ) {
-
+    Log.e("ItemHomeBanner", banner.toString())
     val favoriteId = "favoriteId"
     val scoreId = "scoreId"
     val inlineContent = mapOf(

@@ -56,9 +56,4 @@ object ConvertDate {
             calendar.get(Calendar.YEAR)
         }
     }
-
-    fun Int.secondsToDateTime(): String {
-        val dateFormat = SimpleDateFormat("E, dd MMM yyyy, hh:mm a", Locale.US)
-        return dateFormat.format(Date(this * 1000L))
-    }
 }
