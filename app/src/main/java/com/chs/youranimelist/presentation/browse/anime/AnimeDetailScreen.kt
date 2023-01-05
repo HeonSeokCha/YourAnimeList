@@ -2,17 +2,19 @@ package com.chs.youranimelist.presentation.browse.anime
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
@@ -51,7 +53,6 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -90,7 +91,25 @@ fun AnimeDetailScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
         ) {
-            AnimeDetailHeadBanner(context, viewModel)
+            AnimeDetailHeadBanner(
+                state = state,
+                trailerClick = { trailerId ->
+                    CustomTabsIntent.Builder()
+                        .build()
+                        .launchUrl(
+                            context,
+                            Uri.parse("https://www.youtube.com/watch?v=$trailerId")
+                        )
+                },
+                insertClick = {
+                    viewModel.insertAnime()
+                },
+                deleteClick = {
+                    if (state.isSaveAnime != null) {
+                        viewModel.deleteAnime(state.isSaveAnime)
+                    }
+                }
+            )
             Column(
                 modifier = Modifier.height(screenHeight)
             ) {
@@ -139,10 +158,7 @@ fun AnimeDetailScreen(
                                     available: Offset,
                                     source: NestedScrollSource
                                 ): Offset {
-                                    return if (available.y > 0) Offset.Zero else Offset(
-                                        x = 0f,
-                                        y = -scrollState.dispatchRawDelta(-available.y)
-                                    )
+                                    return Offset.Zero
                                 }
                             }
                         })
@@ -191,10 +207,11 @@ fun AnimeDetailScreen(
 
 @Composable
 fun AnimeDetailHeadBanner(
-    context: Context,
-    viewModel: AnimeDetailViewModel
+    state: AnimeDetailState,
+    trailerClick: (trailerId: String?) -> Unit,
+    insertClick: () -> Unit,
+    deleteClick: () -> Unit
 ) {
-    val state = viewModel.state
     val starId = "starId"
     val favoriteId = "favoriteId"
     val inlineContent = mapOf(
@@ -253,12 +270,7 @@ fun AnimeDetailHeadBanner(
                     modifier = Modifier
                         .align(Alignment.Center),
                     onClick = {
-                        CustomTabsIntent.Builder()
-                            .build()
-                            .launchUrl(
-                                context,
-                                Uri.parse("https://www.youtube.com/watch?v=${state.animeDetailInfo.media.trailer.id}")
-                            )
+                        trailerClick(state.animeDetailInfo.media.trailer.id)
                     }
                 ) {
                     Icon(Icons.Filled.PlayArrow, null)
@@ -347,9 +359,9 @@ fun AnimeDetailHeadBanner(
                 onClick = {
                     if (state.animeDetailInfo != null) {
                         if (state.isSaveAnime != null) {
-                            viewModel.deleteAnime(state.isSaveAnime)
+                            deleteClick()
                         } else {
-                            viewModel.insertAnime()
+                            insertClick()
                         }
                     }
                 }
