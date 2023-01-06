@@ -16,7 +16,7 @@ import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
 import com.chs.youranimelist.AnimeDetailQuery
 import com.chs.youranimelist.domain.model.AnimeDetails
-import com.chs.youranimelist.presentation.Screen
+import com.chs.youranimelist.presentation.main.Screen
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.util.Constant.GENRE_COLOR

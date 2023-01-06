@@ -19,7 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.chs.youranimelist.presentation.Screen
+import com.chs.youranimelist.presentation.main.Screen
 import com.chs.youranimelist.presentation.browse.anime.AnimeDetailScreen
 import com.chs.youranimelist.presentation.browse.character.CharacterDetailScreen
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailScreen

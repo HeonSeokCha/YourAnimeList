@@ -1,4 +1,4 @@
-package com.chs.youranimelist.presentation
+package com.chs.youranimelist.presentation.main
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons

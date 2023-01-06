@@ -260,8 +260,10 @@ private fun filterDialog(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(
-                top = 32.dp,
-                bottom = 32.dp
+                top = 64.dp,
+                bottom = 64.dp,
+                start = 16.dp,
+                end = 16.dp
             ),
         onDismissRequest = onDismiss,
         text = {

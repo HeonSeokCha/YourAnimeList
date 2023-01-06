@@ -1,15 +1,14 @@
-package com.chs.youranimelist.presentation
+package com.chs.youranimelist.presentation.main
 
-import android.os.Bundle
-import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.twotone.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -21,89 +20,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.chs.youranimelist.R
-import com.chs.youranimelist.presentation.animeList.AnimeListScreen
-import com.chs.youranimelist.presentation.charaList.CharaListScreen
-import com.chs.youranimelist.presentation.home.HomeScreen
-import com.chs.youranimelist.presentation.search.SearchScreen
-import com.chs.youranimelist.presentation.sortList.SortedListScreen
-import com.chs.youranimelist.presentation.ui.theme.*
-import com.chs.youranimelist.util.Constant
-import dagger.hilt.android.AndroidEntryPoint
-
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            val navController = rememberNavController()
-            var searchQuery by remember { mutableStateOf("") }
-            var searchListQuery by remember { mutableStateOf("") }
-            var searchWidgetState by remember { mutableStateOf(SearchWidgetState.CLOSED) }
-
-            YourAnimeListTheme {
-                Scaffold(
-                    topBar = {
-                        AppBar(
-                            navController,
-                            searchWidgetState,
-                            onSearchTriggered = {
-                                searchWidgetState = SearchWidgetState.OPENED
-                            }, onClosedClicked = {
-                                searchWidgetState = SearchWidgetState.CLOSED
-                            }, onSearchClicked = {
-                                searchQuery = it
-                            }, onTextChanged = {
-                                searchListQuery = it
-                            }
-                        )
-                    },
-                    bottomBar = {
-                        BottomBar(navController) {
-                            searchQuery = ""
-                            searchListQuery = ""
-                            searchWidgetState = SearchWidgetState.CLOSED
-                        }
-                    },
-                ) {
-                    NavHost(
-                        navController = navController,
-                        modifier = Modifier.padding(it),
-                        startDestination = BottomNavScreen.HomeScreen.route
-                    ) {
-                        composable(BottomNavScreen.HomeScreen.route) {
-                            HomeScreen(navigator = navController)
-                            Log.e("Navigate", "0")
-                        }
-                        composable(BottomNavScreen.AnimeListScreen.route) {
-                            AnimeListScreen(searchListQuery)
-                        }
-                        composable(BottomNavScreen.CharaListScreen.route) {
-                            CharaListScreen(searchListQuery)
-                        }
-                        composable(Screen.SearchScreen.route) {
-                            SearchScreen(searchQuery)
-                        }
-                        composable("${Screen.SortListScreen.route}/{title}") { backStackEntry ->
-                            SortedListScreen(
-                                backStackEntry.arguments?.getString("title")
-                                    ?: Constant.TRENDING_NOW
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+import com.chs.youranimelist.util.SearchWidgetState
 
 @Composable
 fun AppBar(
@@ -262,56 +182,5 @@ fun SearchAppBar(
                 }
             )
         )
-    }
-}
-
-@Composable
-fun BottomBar(
-    navController: NavHostController,
-    onNavigate: () -> Unit,
-) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    if (navBackStackEntry?.destination?.route?.contains(Screen.SortListScreen.route) == false
-        && navBackStackEntry?.destination?.route != Screen.SearchScreen.route
-    ) {
-        val items = listOf(
-            BottomNavScreen.HomeScreen,
-            BottomNavScreen.AnimeListScreen,
-            BottomNavScreen.CharaListScreen,
-        )
-        BottomNavigation(
-            backgroundColor = Red200
-        ) {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentDestination = navBackStackEntry?.destination
-            items.forEach { destination ->
-                BottomNavigationItem(
-                    selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true,
-                    selectedContentColor = Red700,
-                    unselectedContentColor = Red500,
-                    onClick = {
-                        navController.navigate(destination.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                        onNavigate()
-                    },
-                    icon = {
-                        Icon(
-                            destination.icon,
-                            contentDescription = stringResource(destination.label)
-                        )
-                    },
-                    label = {
-                        Text(
-                            text = stringResource(destination.label),
-                        )
-                    }
-                )
-            }
-        }
     }
 }

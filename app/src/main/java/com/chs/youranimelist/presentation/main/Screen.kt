@@ -1,4 +1,4 @@
-package com.chs.youranimelist.presentation
+package com.chs.youranimelist.presentation.main
 
 sealed class Screen(
     val route: String

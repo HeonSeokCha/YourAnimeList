@@ -31,7 +31,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.chs.youranimelist.CustomTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -76,23 +76,27 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.6.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("com.google.truth:truth:1.1.3")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.2")
     debugImplementation("androidx.compose.ui:ui-tooling:1.3.2")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.2")
+
 
     // Compose dependencies
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
     implementation("androidx.compose.material:material-icons-extended:1.3.1")
     implementation("androidx.activity:activity-compose:1.6.1")
     implementation("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.navigation:navigation-testing:2.5.3")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.28.0")
 
     //Dagger - Hilt
     implementation("com.google.dagger:hilt-android:2.44.2")
     kapt("com.google.dagger:hilt-android-compiler:2.44.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.44")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.44.2")
 
     //Ktor
     implementation("io.ktor:ktor-client-core:2.2.2")

@@ -8,3 +8,8 @@ val String.color
 
 val Float.toOffset
     get() = Offset(0f, this)
+
+enum class SearchWidgetState {
+    OPENED,
+    CLOSED
+}
