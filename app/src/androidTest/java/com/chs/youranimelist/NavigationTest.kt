@@ -3,11 +3,11 @@ package com.chs.youranimelist
 import android.app.Application
 import android.content.Context
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.runner.AndroidJUnitRunner
@@ -18,6 +18,7 @@ import dagger.hilt.android.testing.CustomTestApplication
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,8 +29,6 @@ class CustomTestRunner : AndroidJUnitRunner() {
     }
 }
 
-@AndroidEntryPoint
-class HiltTestActivity : ComponentActivity()
 
 @HiltAndroidTest
 class NavigationTest {
@@ -42,21 +41,91 @@ class NavigationTest {
 
     lateinit var navController: TestNavHostController
 
-    @Before
-    fun mainNavHost() {
-        composeTestRule.setContent {
-            navController = TestNavHostController(LocalContext.current)
-            navController.navigatorProvider.addNavigator(
-                ComposeNavigator()
-            )
-            MainNavHost(navController = navController, searchListQuery = "", searchQuery = "")
-        }
-    }
+//    @Before
+//    fun mainNavHost() {
+//        composeTestRule.activity.setContent {
+//            navController = TestNavHostController(LocalContext.current)
+//            navController.navigatorProvider.addNavigator(ComposeNavigator())
+//        }
+//    }
 
     @Test
     fun mainNavHost_verifyHomeStartDestination() {
         composeTestRule
-            .onNodeWithContentDescription("YourAnimeList")
-            .assertIsDisplayed()
+            .onNodeWithText("Home")
+            .assertIsSelected()
+
+//        val route = navController.currentBackStackEntry?.destination?.route
+//        assertEquals(route, "home_screen")
+    }
+
+    @Test
+    fun mainNavHost_clickAnimeTab_navigateAnimeTab() {
+        composeTestRule.onNodeWithText("Anime")
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText("Anime")
+            .assertIsSelected()
+
+//        val route = navController.currentBackStackEntry?.destination?.route
+//        assertEquals(route, "animeList_screen")
+    }
+
+    @Test
+    fun mainNavHost_clickCharaTab_navigateCharaTab() {
+        composeTestRule.onNodeWithText("Character")
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText("Character")
+            .assertIsSelected()
+
+//        val route = navController.currentBackStackEntry?.destination?.route
+//        assertEquals(route, "charaList_screen")
+    }
+
+
+    @Test
+    fun mainNavHost_clickSearch_animeTab() {
+        composeTestRule
+            .onNodeWithContentDescription("home_screen_search")
+            .performClick()
+
+        composeTestRule.onNodeWithText("ANIME")
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText("ANIME")
+            .assertIsSelected()
+    }
+
+    @Test
+    fun mainNavHost_clickSearch_mangaTab() {
+        composeTestRule
+            .onNodeWithContentDescription("home_screen_search")
+            .performClick()
+
+        composeTestRule.onNodeWithText("MANGA")
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText("MANGA")
+            .assertIsSelected()
+    }
+
+    @Test
+    fun mainNavHost_clickSearch_charaTab() {
+        composeTestRule
+            .onNodeWithContentDescription("home_screen_search")
+            .performClick()
+
+        composeTestRule.onNodeWithText("CHARACTER")
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText("CHARACTER")
+            .assertIsSelected()
+
     }
 }
