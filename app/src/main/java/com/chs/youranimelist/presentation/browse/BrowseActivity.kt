@@ -40,88 +40,35 @@ class BrowseActivity : ComponentActivity() {
             YourAnimeListTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    topBar = {
-                        if (navBackStackEntry?.destination?.route == "${Screen.SortListScreen.route}/{genre}") {
-                            TopAppBar(
-                                title = {},
-                                navigationIcon = {
-                                    IconButton(onClick = { navController.navigateUp() }) {
-                                        Icon(Icons.Filled.ArrowBack, null)
-                                    }
-                                }
-                            )
-                        } else {
-                            TopAppBar(
-                                title = {},
-                                navigationIcon = {
-                                    IconButton(
-                                        onClick = { activity?.finish() }
-                                    ) {
-                                        Icon(Icons.Filled.Close, null)
-                                    }
-                                }
-                            )
-                        }
-                    }
+//                    topBar = {
+//                        if (navBackStackEntry?.destination?.route == "${Screen.SortListScreen.route}/{genre}") {
+//                            TopAppBar(
+//                                title = {},
+//                                navigationIcon = {
+//                                    IconButton(onClick = { navController.navigateUp() }) {
+//                                        Icon(Icons.Filled.ArrowBack, null)
+//                                    }
+//                                }
+//                            )
+//                        } else {
+//                            TopAppBar(
+//                                title = {},
+//                                navigationIcon = {
+//                                    IconButton(
+//                                        onClick = { activity?.finish() }
+//                                    ) {
+//                                        Icon(Icons.Filled.Close, null)
+//                                    }
+//                                }
+//                            )
+//                        }
+//                    }
                 ) {
-                    val startMediaDestination =
-                        if (intent?.getStringExtra(Constant.TARGET_TYPE) == Constant.TARGET_MEDIA) {
-                            "${BrowseScreen.AnimeDetailScreen.route}/{id}/{idMal}"
-                        } else {
-                            "${BrowseScreen.CharacterDetailScreen.route}/{id}"
-                        }
-
-                    NavHost(
+                    BrowseNavHost(
                         navController = navController,
                         modifier = Modifier.padding(it),
-                        startDestination = startMediaDestination
-                    ) {
-                        composable(
-                            route = "${BrowseScreen.AnimeDetailScreen.route}/{id}/{idMal}",
-                            arguments = listOf(
-                                navArgument("id") {
-                                    type = NavType.IntType
-                                    defaultValue = intent?.getIntExtra(Constant.TARGET_ID, 0)!!
-                                },
-                                navArgument("idMal") {
-                                    type = NavType.IntType
-                                    defaultValue = intent?.getIntExtra(Constant.TARGET_ID_MAL, 0)!!
-                                },
-                            )
-                        ) { backStackEntry ->
-                            AnimeDetailScreen(
-                                id = backStackEntry.arguments?.getInt("id")!!,
-                                idMal = backStackEntry.arguments?.getInt("idMal")!!,
-                                navController
-                            )
-                        }
-
-                        composable(
-                            route = "${BrowseScreen.CharacterDetailScreen.route}/{id}",
-                            arguments = listOf(
-                                navArgument("id") {
-                                    type = NavType.IntType; defaultValue =
-                                    intent?.getIntExtra(Constant.TARGET_ID, 0)!!
-                                }
-                            )
-                        ) { backStackEntry ->
-                            CharacterDetailScreen(
-                                backStackEntry.arguments?.getInt("id")!!,
-                                navController
-                            )
-                        }
-                        composable("${BrowseScreen.StudioDetailScreen.route}/{id}") {
-                            StudioDetailScreen()
-                        }
-
-                        composable("${Screen.SortListScreen.route}/{genre}") { backStackEntry ->
-                            SortedListScreen(
-                                sortType = Constant.TARGET_GENRE,
-                                genre = backStackEntry.arguments?.getString("genre")
-                                    ?: "",
-                            )
-                        }
-                    }
+                        intent = intent
+                    )
                 }
             }
         }

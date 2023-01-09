@@ -26,7 +26,6 @@ import com.google.accompanist.flowlayout.FlowRow
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AnimeOverViewScreen(
-    height: Dp,
     animeOverViewInfo: AnimeDetailQuery.Data?,
     animeTheme: AnimeDetails?,
     navController: NavController,
@@ -35,7 +34,7 @@ fun AnimeOverViewScreen(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .height(height)
+            .height(2000.dp)
             .padding(
                 start = 8.dp,
                 end = 8.dp

@@ -41,7 +41,7 @@ fun AppBar(
                 title = {},
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
-                        Icon(Icons.Filled.ArrowBack, null)
+                        Icon(Icons.Filled.ArrowBack, "sort_screen_back")
                     }
                 }
             )
@@ -86,7 +86,7 @@ fun AppBar(
                                 }) {
                                     Icon(
                                         imageVector = Icons.TwoTone.Search,
-                                        contentDescription = null
+                                        contentDescription = "home_screen_search"
                                     )
                                 }
                             } else {
