@@ -72,15 +72,21 @@ fun AnimeDetailScreen(
     val overViewScroll = rememberLazyListState()
     val charaViewScroll = rememberLazyGridState()
     val recommendScroll = rememberLazyListState()
-
+    val tabList = listOf(
+        "OVERVIEW",
+        "CHARACTER",
+        "RECOMMEND"
+    )
     val maxHeight = 420f
     val minHeight = 60f
-    val d = LocalDensity.current.density
-    val toolbarHeightPx = with(LocalDensity.current) {
-        maxHeight.dp.roundToPx().toFloat()
+    val d by with(LocalDensity.current) {
+        remember { mutableStateOf(this.density) }
     }
-    val toolbarMinHeightPx = with(LocalDensity.current) {
-        minHeight.dp.roundToPx().toFloat()
+    val toolbarHeightPx by with(LocalDensity.current) {
+        remember { mutableStateOf(maxHeight.dp.roundToPx().toFloat()) }
+    }
+    val toolbarMinHeightPx by with(LocalDensity.current) {
+        remember { mutableStateOf(minHeight.dp.roundToPx().toFloat()) }
     }
     val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
     val nestedScrollConnection = remember {
@@ -95,17 +101,11 @@ fun AnimeDetailScreen(
         }
     }
     var progress by remember { mutableStateOf(0f) }
+
     LaunchedEffect(key1 = toolbarOffsetHeightPx.value) {
         progress =
             ((toolbarHeightPx + toolbarOffsetHeightPx.value) / toolbarHeightPx - minHeight / maxHeight) / (1f - minHeight / maxHeight)
     }
-
-
-    val tabList = listOf(
-        "OVERVIEW",
-        "CHARACTER",
-        "RECOMMEND"
-    )
 
     LaunchedEffect(viewModel, context) {
         viewModel.getAnimeDetailInfo(id)
@@ -118,7 +118,10 @@ fun AnimeDetailScreen(
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection)
     ) {
-        LazyColumn(contentPadding = PaddingValues(top = maxHeight.dp)) {
+        LazyColumn(
+            contentPadding = PaddingValues(top = maxHeight.dp),
+            state = overViewScroll
+        ) {
             item {
                 TabRow(
                     modifier = Modifier.fillMaxWidth(),
@@ -166,8 +169,7 @@ fun AnimeDetailScreen(
                             AnimeOverViewScreen(
                                 animeOverViewInfo = state.animeDetailInfo,
                                 animeTheme = state.animeThemes,
-                                navController = navController,
-                                scrollState = overViewScroll,
+                                navController = navController
                             )
                         }
                         1 -> {
