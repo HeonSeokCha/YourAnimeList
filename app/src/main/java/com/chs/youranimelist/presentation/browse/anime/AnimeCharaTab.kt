@@ -27,7 +27,7 @@ fun AnimeCharaScreen(
 ) {
     LazyVerticalGrid(
         modifier = Modifier
-            .fillMaxSize()
+            .height(1000.dp)
             .padding(
                 top = 8.dp,
                 bottom = 8.dp
