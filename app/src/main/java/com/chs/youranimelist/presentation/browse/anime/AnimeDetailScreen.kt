@@ -179,13 +179,13 @@ fun AnimeDetailScreen(
                                 navController = navController,
                             )
                         }
-                        2 -> {
-                            AnimeRecScreen(
-                                animeId = id,
-                                lazyListState = recommendScroll,
-                                navController = navController,
-                            )
-                        }
+//                        2 -> {
+//                            AnimeRecScreen(
+//                                animeId = id,
+//                                lazyListState = recommendScroll,
+//                                navController = navController,
+//                            )
+//                        }
                     }
                 }
             }

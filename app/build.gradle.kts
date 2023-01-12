@@ -106,8 +106,8 @@ dependencies {
     implementation("io.ktor:ktor-client-logging:2.2.2")
 
     //Room
-    implementation("androidx.room:room-ktx:2.4.3")
-    kapt("androidx.room:room-compiler:2.4.3")
+    implementation("androidx.room:room-ktx:2.5.0")
+    kapt("androidx.room:room-compiler:2.5.0")
 
     //Apollo
     implementation("com.apollographql.apollo3:apollo-runtime:3.7.3")

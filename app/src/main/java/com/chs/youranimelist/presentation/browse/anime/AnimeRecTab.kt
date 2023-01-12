@@ -36,7 +36,6 @@ fun AnimeRecScreen(
 
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
             .padding(
                 top = 8.dp,
                 bottom = 8.dp
