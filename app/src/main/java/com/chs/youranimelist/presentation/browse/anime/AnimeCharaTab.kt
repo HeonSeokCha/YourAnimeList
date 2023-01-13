@@ -22,7 +22,6 @@ import com.chs.youranimelist.presentation.browse.BrowseScreen
 @Composable
 fun AnimeCharaScreen(
     animeCharaInfo: AnimeDetailQuery.Characters?,
-    lazyGridScrollState: LazyGridState,
     navController: NavController
 ) {
     LazyVerticalGrid(
@@ -38,7 +37,6 @@ fun AnimeCharaScreen(
             horizontal = 8.dp,
             vertical = 8.dp
         ),
-        state = lazyGridScrollState,
         columns = GridCells.Fixed(3),
     ) {
         items(animeCharaInfo?.charactersNode?.size ?: 0) { idx ->

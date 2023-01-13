@@ -53,8 +53,8 @@ fun CharacterDetailScreen(
     val state = viewModel.state
     val context = LocalContext.current
 
-    val maxHeight = 420f
-    val minHeight = 60f
+    val maxHeight = 320f
+    val minHeight = 0f
     val d by with(LocalDensity.current) {
         remember { mutableStateOf(this.density) }
     }

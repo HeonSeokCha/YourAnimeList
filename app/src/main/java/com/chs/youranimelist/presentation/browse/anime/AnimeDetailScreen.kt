@@ -1,18 +1,10 @@
 package com.chs.youranimelist.presentation.browse.anime
 
 import android.app.Activity
-import android.content.Context
-import android.net.Uri
-import android.util.Log
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
@@ -25,15 +17,12 @@ import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.input.pointer.consumeAllChanges
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -47,7 +36,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.youranimelist.presentation.ui.theme.Pink80
-import com.chs.youranimelist.presentation.ui.theme.Red700
 import com.chs.youranimelist.util.color
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -67,11 +55,8 @@ fun AnimeDetailScreen(
     val state = viewModel.state
     val context = LocalContext.current
     val pagerState = rememberPagerState()
-    val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     val overViewScroll = rememberLazyListState()
-    val charaViewScroll = rememberLazyGridState()
-    val recommendScroll = rememberLazyListState()
     val tabList = listOf(
         "OVERVIEW",
         "CHARACTER",
@@ -175,7 +160,7 @@ fun AnimeDetailScreen(
                         1 -> {
                             AnimeCharaScreen(
                                 animeCharaInfo = state.animeDetailInfo?.media?.characters,
-                                lazyGridScrollState = charaViewScroll,
+
                                 navController = navController,
                             )
                         }
@@ -190,27 +175,6 @@ fun AnimeDetailScreen(
                 }
             }
         }
-        AnimeDetailHeadBanner(
-            height = ((toolbarHeightPx + toolbarOffsetHeightPx.value) / d).dp,
-            progress = progress,
-            state = state,
-            trailerClick = { trailerId ->
-                CustomTabsIntent.Builder()
-                    .build()
-                    .launchUrl(
-                        context,
-                        Uri.parse("https://www.youtube.com/watch?v=$trailerId")
-                    )
-            },
-            insertClick = {
-                viewModel.insertAnime()
-            },
-            deleteClick = {
-                if (state.isSaveAnime != null) {
-                    viewModel.deleteAnime(state.isSaveAnime)
-                }
-            }
-        )
     }
 
     if (state.isLoading) {
@@ -226,8 +190,6 @@ fun AnimeDetailScreen(
 
 @Composable
 fun AnimeDetailHeadBanner(
-    height: Dp,
-    progress: Float,
     state: AnimeDetailState,
     trailerClick: (trailerId: String?) -> Unit,
     insertClick: () -> Unit,
@@ -274,8 +236,6 @@ fun AnimeDetailHeadBanner(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(height)
-            .alpha(progress)
     ) {
         Box {
             AsyncImage(
@@ -414,26 +374,26 @@ fun AnimeDetailHeadBanner(
         }
     }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(height)
-            .alpha(1f - progress)
-            .background(MaterialTheme.colors.primarySurface),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            modifier = Modifier.padding(start = 4.dp),
-            onClick = { activity?.finish() }
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Close,
-                tint = Color.White,
-                contentDescription = null
-            )
-        }
-    }
+//    Row(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .height(height)
+//            .alpha(1f - progress)
+//            .background(MaterialTheme.colors.primarySurface),
+//        horizontalArrangement = Arrangement.Start,
+//        verticalAlignment = Alignment.CenterVertically
+//    ) {
+//        IconButton(
+//            modifier = Modifier.padding(start = 4.dp),
+//            onClick = { activity?.finish() }
+//        ) {
+//            Icon(
+//                imageVector = Icons.Filled.Close,
+//                tint = Color.White,
+//                contentDescription = null
+//            )
+//        }
+//    }
 }
 
 

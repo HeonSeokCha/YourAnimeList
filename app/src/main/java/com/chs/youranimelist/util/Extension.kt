@@ -13,3 +13,8 @@ enum class SearchWidgetState {
     OPENED,
     CLOSED
 }
+
+enum class SwipingStates {
+    EXPANDED,
+    COLLAPSED
+}
