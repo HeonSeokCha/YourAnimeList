@@ -39,6 +39,7 @@ import com.chs.youranimelist.HomeRecommendListQuery
 import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.presentation.main.Screen
 import com.chs.youranimelist.presentation.browse.BrowseActivity
+import com.chs.youranimelist.presentation.shimmerEffect
 import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -63,11 +64,18 @@ fun HomeScreen(
     ) {
         item {
             HorizontalPager(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
+                modifier = if (state.isLoading) {
+                    Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .shimmerEffect()
+                } else {
+                    Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                },
                 state = pagerState,
-                count = state.pagerList.size
+                count = state.pagerList.size,
             ) { idx ->
                 ItemHomeBanner(
                     context = context,
@@ -90,16 +98,12 @@ fun HomeScreen(
                 context
             )
         }
-
-    }
-
-    if (state.isLoading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator(color = Pink80)
+        if (state.isLoading) {
+            items(4) { idx ->
+                ItemSortShimmer(
+                    Constant.HOME_SORT_TILE[idx]
+                )
+            }
         }
     }
 }
@@ -388,13 +392,130 @@ fun ItemAnimeSmall(
 }
 
 @Composable
-fun ItemLoadingSmall() {
+fun ItemSortShimmer(
+    title: String
+) {
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 8.dp,
+                    end = 8.dp
+                ),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = title,
+                fontSize = 16.sp,
+                color = Color.Gray,
+                fontWeight = FontWeight.Bold
+            )
+            IconButton(
+                onClick = { }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowForward,
+                    tint = Color.Gray,
+                    contentDescription = null
+                )
+            }
+        }
+
+        LazyRow(
+            modifier = Modifier
+                .padding(bottom = 8.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            items(
+                count = 6,
+                itemContent = {
+                    ItemAnimeSmallShimmer()
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun ItemAnimeSmallShimmer() {
     Card(
         modifier = Modifier
             .width(130.dp)
             .height(280.dp),
-        elevation = 3.dp,
+        elevation = 3.dp
     ) {
-        CircularProgressIndicator()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = 4.dp,
+                    start = 4.dp,
+                    end = 4.dp,
+                    bottom = 4.dp
+                )
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .clip(RoundedCornerShape(5.dp))
+                    .shimmerEffect()
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(12.dp)
+                    .shimmerEffect()
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Box(
+                modifier = Modifier
+                    .width(76.dp)
+                    .height(12.dp)
+                    .padding()
+                    .shimmerEffect()
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Box(
+                modifier = Modifier
+                    .width(48.dp)
+                    .height(12.dp)
+                    .shimmerEffect()
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        top = 4.dp,
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Box(
+                    modifier = Modifier
+                        .width(32.dp)
+                        .height(12.dp)
+                        .shimmerEffect()
+                )
+
+                Box(
+                    modifier = Modifier
+                        .width(32.dp)
+                        .height(12.dp)
+                        .shimmerEffect()
+                )
+            }
+        }
     }
 }
