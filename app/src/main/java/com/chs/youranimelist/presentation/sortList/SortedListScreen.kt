@@ -22,6 +22,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
+import com.chs.youranimelist.presentation.home.ItemAnimeSmallShimmer
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.presentation.ui.theme.Pink80
@@ -167,6 +168,11 @@ fun SortedListScreen(
                     )
                 }
             }
+            if (state.isLoading) {
+                items(9) {
+                    ItemAnimeSmallShimmer()
+                }
+            }
         }
     }
 
@@ -224,9 +230,7 @@ fun SortedListScreen(
         is LoadState.Error -> {
             Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT).show()
         }
-        else -> {
-            
-        }
+        else -> { }
     }
 }
 

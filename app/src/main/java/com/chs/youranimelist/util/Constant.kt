@@ -10,6 +10,7 @@ import com.chs.youranimelist.type.MediaStatus
 object Constant {
     const val ANILIST_API_URL: String = "https://graphql.anilist.co/v2"
     const val JIKAN_API_URL: String = "https://api.jikan.moe/v4/anime"
+    const val YOUTUBE_BASE_URL: String = "https://www.youtube.com/watch?v="
 
     const val TARGET_MAIN: String = "main"
     const val TARGET_SORT: String = "sort"

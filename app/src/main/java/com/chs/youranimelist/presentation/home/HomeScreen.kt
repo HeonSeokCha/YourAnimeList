@@ -99,7 +99,7 @@ fun HomeScreen(
             )
         }
         if (state.isLoading) {
-            items(4) { idx ->
+            items(Constant.HOME_SORT_TILE.size) { idx ->
                 ItemSortShimmer(
                     Constant.HOME_SORT_TILE[idx]
                 )

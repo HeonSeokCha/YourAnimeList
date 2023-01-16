@@ -1,6 +1,8 @@
 package com.chs.youranimelist.presentation.browse.anime
 
 import android.app.Activity
+import android.net.Uri
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -35,7 +38,9 @@ import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.chs.youranimelist.presentation.shimmerEffect
 import com.chs.youranimelist.presentation.ui.theme.Pink80
+import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.color
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -64,14 +69,12 @@ fun AnimeDetailScreen(
     )
     val maxHeight = 420f
     val minHeight = 60f
-    val d by with(LocalDensity.current) {
-        remember { mutableStateOf(this.density) }
+    val d = LocalDensity.current.density
+    val toolbarHeightPx = with(LocalDensity.current) {
+        maxHeight.dp.roundToPx().toFloat()
     }
-    val toolbarHeightPx by with(LocalDensity.current) {
-        remember { mutableStateOf(maxHeight.dp.roundToPx().toFloat()) }
-    }
-    val toolbarMinHeightPx by with(LocalDensity.current) {
-        remember { mutableStateOf(minHeight.dp.roundToPx().toFloat()) }
+    val toolbarMinHeightPx = with(LocalDensity.current) {
+        minHeight.dp.roundToPx().toFloat()
     }
     val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
     val nestedScrollConnection = remember {
@@ -86,7 +89,6 @@ fun AnimeDetailScreen(
         }
     }
     var progress by remember { mutableStateOf(0f) }
-
     LaunchedEffect(key1 = toolbarOffsetHeightPx.value) {
         progress =
             ((toolbarHeightPx + toolbarOffsetHeightPx.value) / toolbarHeightPx - minHeight / maxHeight) / (1f - minHeight / maxHeight)
@@ -175,6 +177,27 @@ fun AnimeDetailScreen(
                 }
             }
         }
+        AnimeDetailHeadBanner(
+            height = ((toolbarHeightPx + toolbarOffsetHeightPx.value) / d).dp,
+            progress = progress,
+            state = state,
+            trailerClick = { trailerId ->
+                CustomTabsIntent.Builder()
+                    .build()
+                    .launchUrl(
+                        context,
+                        Uri.parse("${Constant.YOUTUBE_BASE_URL}$trailerId")
+                    )
+            },
+            insertClick = {
+                viewModel.insertAnime()
+            },
+            deleteClick = {
+                if (state.isSaveAnime != null) {
+                    viewModel.deleteAnime(state.isSaveAnime)
+                }
+            }
+        )
     }
 
     if (state.isLoading) {
@@ -190,6 +213,8 @@ fun AnimeDetailScreen(
 
 @Composable
 fun AnimeDetailHeadBanner(
+    height: Dp,
+    progress: Float,
     state: AnimeDetailState,
     trailerClick: (trailerId: String?) -> Unit,
     insertClick: () -> Unit,
@@ -236,16 +261,25 @@ fun AnimeDetailHeadBanner(
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .height(height)
+            .alpha(progress)
     ) {
         Box {
             AsyncImage(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp)
-                    .background(
-                        color = state.animeDetailInfo?.media?.coverImage?.color?.color
-                            ?: "#ffffff".color
-                    ),
+                modifier = if (state.isLoading) {
+                    Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .shimmerEffect()
+                } else {
+                    Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .background(
+                            color = state.animeDetailInfo?.media?.coverImage?.color?.color
+                                ?: "#ffffff".color
+                        )
+                },
                 model = state.animeDetailInfo?.media?.bannerImage,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
@@ -283,13 +317,23 @@ fun AnimeDetailHeadBanner(
         ) {
             Row {
                 AsyncImage(
-                    modifier = Modifier
-                        .width(130.dp)
-                        .height(180.dp)
-                        .padding(
-                            start = 8.dp,
-                        )
-                        .clip(RoundedCornerShape(5.dp)),
+                    modifier = if (state.isLoading) {
+                        Modifier
+                            .width(130.dp)
+                            .height(180.dp)
+                            .padding(
+                                start = 8.dp,
+                            )
+                            .shimmerEffect()
+                    } else {
+                        Modifier
+                            .width(130.dp)
+                            .height(180.dp)
+                            .padding(
+                                start = 8.dp,
+                            )
+                            .clip(RoundedCornerShape(5.dp))
+                    },
                     model = state.animeDetailInfo?.media?.coverImage?.extraLarge,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
@@ -374,26 +418,26 @@ fun AnimeDetailHeadBanner(
         }
     }
 
-//    Row(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(height)
-//            .alpha(1f - progress)
-//            .background(MaterialTheme.colors.primarySurface),
-//        horizontalArrangement = Arrangement.Start,
-//        verticalAlignment = Alignment.CenterVertically
-//    ) {
-//        IconButton(
-//            modifier = Modifier.padding(start = 4.dp),
-//            onClick = { activity?.finish() }
-//        ) {
-//            Icon(
-//                imageVector = Icons.Filled.Close,
-//                tint = Color.White,
-//                contentDescription = null
-//            )
-//        }
-//    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(height)
+            .alpha(1f - progress)
+            .background(MaterialTheme.colors.primarySurface),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(
+            modifier = Modifier.padding(start = 4.dp),
+            onClick = { activity?.finish() }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Close,
+                tint = Color.White,
+                contentDescription = null
+            )
+        }
+    }
 }
 
 
