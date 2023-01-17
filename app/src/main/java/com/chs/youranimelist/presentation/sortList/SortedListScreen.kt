@@ -9,7 +9,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material.*
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,12 +23,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.chs.youranimelist.presentation.LoadingIndicator
 import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.presentation.home.ItemAnimeSmallShimmer
+import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
-import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.ConvertDate
 
@@ -215,22 +219,18 @@ fun SortedListScreen(
             viewModel.getSortedAnime()
         })
     }
-
+    if (pagingItems?.loadState?.append == LoadState.Loading) {
+        LoadingIndicator()
+    }
     when (pagingItems?.loadState?.source?.refresh) {
         is LoadState.Loading -> {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(color = Pink80)
-            }
+            LoadingIndicator()
         }
 
         is LoadState.Error -> {
             Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT).show()
         }
-        else -> { }
+        else -> {}
     }
 }
 

@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.chs.youranimelist.presentation.LoadingIndicator
 import com.chs.youranimelist.presentation.shimmerEffect
 import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
@@ -103,9 +104,9 @@ fun AnimeDetailScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .nestedScroll(nestedScrollConnection)
     ) {
         LazyColumn(
+            modifier = Modifier.nestedScroll(nestedScrollConnection),
             contentPadding = PaddingValues(top = maxHeight.dp),
             state = overViewScroll
         ) {
@@ -162,17 +163,17 @@ fun AnimeDetailScreen(
                         1 -> {
                             AnimeCharaScreen(
                                 animeCharaInfo = state.animeDetailInfo?.media?.characters,
-
                                 navController = navController,
+                                nestedScroll = nestedScrollConnection
                             )
                         }
-//                        2 -> {
-//                            AnimeRecScreen(
-//                                animeId = id,
-//                                lazyListState = recommendScroll,
-//                                navController = navController,
-//                            )
-//                        }
+                        2 -> {
+                            AnimeRecScreen(
+                                animeId = id,
+                                navController = navController,
+                                nestedScrollConnection = nestedScrollConnection
+                            )
+                        }
                     }
                 }
             }
@@ -201,13 +202,7 @@ fun AnimeDetailScreen(
     }
 
     if (state.isLoading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator(color = Pink80)
-        }
+        LoadingIndicator()
     }
 }
 
@@ -439,6 +434,3 @@ fun AnimeDetailHeadBanner(
         }
     }
 }
-
-
-

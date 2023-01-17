@@ -3,14 +3,11 @@ package com.chs.youranimelist.presentation.search
 import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -22,8 +19,8 @@ import androidx.paging.compose.items
 import com.chs.youranimelist.SearchAnimeQuery
 import com.chs.youranimelist.SearchCharacterQuery
 import com.chs.youranimelist.SearchMangaQuery
+import com.chs.youranimelist.presentation.LoadingIndicator
 import com.chs.youranimelist.presentation.browse.BrowseActivity
-import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
 
 @Composable
@@ -141,13 +138,7 @@ fun SearchMediaScreen(
 
     when (pagingItems?.loadState?.source?.refresh) {
         is LoadState.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-
-                ) {
-                CircularProgressIndicator(color = Pink80)
-            }
+            LoadingIndicator()
         }
 
         is LoadState.Error -> {
