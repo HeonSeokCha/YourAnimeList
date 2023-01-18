@@ -2,6 +2,7 @@ package com.chs.youranimelist.presentation.browse.anime
 
 import android.app.Activity
 import android.net.Uri
+import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -49,7 +50,7 @@ import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun AnimeDetailScreen(
     id: Int,
@@ -62,7 +63,6 @@ fun AnimeDetailScreen(
     val context = LocalContext.current
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
-    val overViewScroll = rememberLazyListState()
     val tabList = listOf(
         "OVERVIEW",
         "CHARACTER",
@@ -104,11 +104,10 @@ fun AnimeDetailScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .nestedScroll(nestedScrollConnection)
     ) {
         LazyColumn(
-            modifier = Modifier.nestedScroll(nestedScrollConnection),
-            contentPadding = PaddingValues(top = maxHeight.dp),
-            state = overViewScroll
+            contentPadding = PaddingValues(top = maxHeight.dp)
         ) {
             item {
                 TabRow(
@@ -164,14 +163,12 @@ fun AnimeDetailScreen(
                             AnimeCharaScreen(
                                 animeCharaInfo = state.animeDetailInfo?.media?.characters,
                                 navController = navController,
-                                nestedScroll = nestedScrollConnection
                             )
                         }
                         2 -> {
                             AnimeRecScreen(
                                 animeId = id,
                                 navController = navController,
-                                nestedScrollConnection = nestedScrollConnection
                             )
                         }
                     }
@@ -298,7 +295,9 @@ fun AnimeDetailHeadBanner(
                     modifier = Modifier
                         .align(Alignment.Center),
                     onClick = {
-                        trailerClick(state.animeDetailInfo.media.trailer.id)
+                        if (progress == 1.0F) {
+                            trailerClick(state.animeDetailInfo.media.trailer.id)
+                        }
                     }
                 ) {
                     Icon(Icons.Filled.PlayArrow, null)
@@ -413,6 +412,7 @@ fun AnimeDetailHeadBanner(
         }
     }
 
+    Log.e("AnimeDetail", height.toString())
     Row(
         modifier = Modifier
             .fillMaxWidth()

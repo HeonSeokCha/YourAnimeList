@@ -155,18 +155,16 @@ fun SortedListScreen(
             columns = GridCells.Fixed(3),
         ) {
             items(pagingItems?.itemCount ?: 0) { idx ->
-                ItemAnimeSmall(
-                    item = pagingItems?.get(idx)!!
-                ) {
+                ItemAnimeSmall(item = pagingItems?.get(idx)!!) {
                     context.startActivity(
                         Intent(
                             context, BrowseActivity::class.java
                         ).apply {
                             this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                            this.putExtra(Constant.TARGET_ID, pagingItems?.get(idx)!!.id)
+                            this.putExtra(Constant.TARGET_ID, pagingItems.get(idx)!!.id)
                             this.putExtra(
                                 Constant.TARGET_ID_MAL,
-                                pagingItems?.get(idx)!!.idMal
+                                pagingItems[idx]!!.idMal
                             )
                         }
                     )

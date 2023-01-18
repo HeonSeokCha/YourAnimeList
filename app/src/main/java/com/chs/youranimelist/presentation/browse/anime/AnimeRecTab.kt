@@ -23,7 +23,6 @@ fun AnimeRecScreen(
     animeId: Int,
     viewModel: AnimeRecViewModel = hiltViewModel(),
     navController: NavController,
-    nestedScrollConnection: NestedScrollConnection
 ) {
     val state = viewModel.state
     val context = LocalContext.current
@@ -36,7 +35,7 @@ fun AnimeRecScreen(
 
     LazyColumn(
         modifier = Modifier
-            .height(420.dp)
+            .height(1020.dp)
             .padding(
                 top = 8.dp,
                 bottom = 8.dp

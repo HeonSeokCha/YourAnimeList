@@ -24,16 +24,14 @@ import com.chs.youranimelist.presentation.browse.BrowseScreen
 fun AnimeCharaScreen(
     animeCharaInfo: AnimeDetailQuery.Characters?,
     navController: NavController,
-    nestedScroll: NestedScrollConnection
 ) {
     LazyVerticalGrid(
         modifier = Modifier
-            .height(420.dp)
+            .height(1020.dp)
             .padding(
                 top = 8.dp,
                 bottom = 8.dp
-            )
-            .nestedScroll(nestedScroll),
+            ),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
         contentPadding = PaddingValues(
