@@ -68,32 +68,6 @@ fun AnimeDetailScreen(
         "CHARACTER",
         "RECOMMEND"
     )
-    val maxHeight = 420f
-    val minHeight = 60f
-    val d = LocalDensity.current.density
-    val toolbarHeightPx = with(LocalDensity.current) {
-        maxHeight.dp.roundToPx().toFloat()
-    }
-    val toolbarMinHeightPx = with(LocalDensity.current) {
-        minHeight.dp.roundToPx().toFloat()
-    }
-    val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val delta = available.y
-                val newOffset = toolbarOffsetHeightPx.value + delta
-                toolbarOffsetHeightPx.value =
-                    newOffset.coerceIn(toolbarMinHeightPx - toolbarHeightPx, 0f)
-                return Offset.Zero
-            }
-        }
-    }
-    var progress by remember { mutableStateOf(0f) }
-    LaunchedEffect(key1 = toolbarOffsetHeightPx.value) {
-        progress =
-            ((toolbarHeightPx + toolbarOffsetHeightPx.value) / toolbarHeightPx - minHeight / maxHeight) / (1f - minHeight / maxHeight)
-    }
 
     LaunchedEffect(viewModel, context) {
         viewModel.getAnimeDetailInfo(id)
@@ -104,11 +78,29 @@ fun AnimeDetailScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .nestedScroll(nestedScrollConnection)
     ) {
-        LazyColumn(
-            contentPadding = PaddingValues(top = maxHeight.dp)
-        ) {
+        LazyColumn {
+            stickyHeader {
+                AnimeDetailHeadBanner(
+                    state = state,
+                    trailerClick = { trailerId ->
+                        CustomTabsIntent.Builder()
+                            .build()
+                            .launchUrl(
+                                context,
+                                Uri.parse("${Constant.YOUTUBE_BASE_URL}$trailerId")
+                            )
+                    },
+                    insertClick = {
+                        viewModel.insertAnime()
+                    },
+                    deleteClick = {
+                        if (state.isSaveAnime != null) {
+                            viewModel.deleteAnime(state.isSaveAnime)
+                        }
+                    }
+                )
+            }
             item {
                 TabRow(
                     modifier = Modifier.fillMaxWidth(),
@@ -149,7 +141,8 @@ fun AnimeDetailScreen(
                     state = pagerState,
                     count = tabList.size,
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxSize(),
+                    userScrollEnabled = false
                 ) {
                     when (this.currentPage) {
                         0 -> {
@@ -175,27 +168,6 @@ fun AnimeDetailScreen(
                 }
             }
         }
-        AnimeDetailHeadBanner(
-            height = ((toolbarHeightPx + toolbarOffsetHeightPx.value) / d).dp,
-            progress = progress,
-            state = state,
-            trailerClick = { trailerId ->
-                CustomTabsIntent.Builder()
-                    .build()
-                    .launchUrl(
-                        context,
-                        Uri.parse("${Constant.YOUTUBE_BASE_URL}$trailerId")
-                    )
-            },
-            insertClick = {
-                viewModel.insertAnime()
-            },
-            deleteClick = {
-                if (state.isSaveAnime != null) {
-                    viewModel.deleteAnime(state.isSaveAnime)
-                }
-            }
-        )
     }
 
     if (state.isLoading) {
@@ -205,8 +177,6 @@ fun AnimeDetailScreen(
 
 @Composable
 fun AnimeDetailHeadBanner(
-    height: Dp,
-    progress: Float,
     state: AnimeDetailState,
     trailerClick: (trailerId: String?) -> Unit,
     insertClick: () -> Unit,
@@ -253,8 +223,7 @@ fun AnimeDetailHeadBanner(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(height)
-            .alpha(progress)
+            .height(420.dp)
     ) {
         Box {
             AsyncImage(
@@ -295,9 +264,7 @@ fun AnimeDetailHeadBanner(
                     modifier = Modifier
                         .align(Alignment.Center),
                     onClick = {
-                        if (progress == 1.0F) {
-                            trailerClick(state.animeDetailInfo.media.trailer.id)
-                        }
+                        trailerClick(state.animeDetailInfo.media.trailer.id)
                     }
                 ) {
                     Icon(Icons.Filled.PlayArrow, null)
@@ -411,26 +378,24 @@ fun AnimeDetailHeadBanner(
             }
         }
     }
-
-    Log.e("AnimeDetail", height.toString())
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(height)
-            .alpha(1f - progress)
-            .background(MaterialTheme.colors.primarySurface),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            modifier = Modifier.padding(start = 4.dp),
-            onClick = { activity?.finish() }
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Close,
-                tint = Color.White,
-                contentDescription = null
-            )
-        }
-    }
+//    Row(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .height(height)
+//            .alpha(1f - progress)
+//            .background(MaterialTheme.colors.primarySurface),
+//        horizontalArrangement = Arrangement.Start,
+//        verticalAlignment = Alignment.CenterVertically
+//    ) {
+//        IconButton(
+//            modifier = Modifier.padding(start = 4.dp),
+//            onClick = { activity?.finish() }
+//        ) {
+//            Icon(
+//                imageVector = Icons.Filled.Close,
+//                tint = Color.White,
+//                contentDescription = null
+//            )
+//        }
+//    }
 }

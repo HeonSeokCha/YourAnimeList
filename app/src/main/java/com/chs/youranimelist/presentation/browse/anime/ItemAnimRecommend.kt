@@ -16,10 +16,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.youranimelist.AnimeRecommendQuery
+import com.chs.youranimelist.presentation.shimmerEffect
 import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.color
 
@@ -108,6 +110,85 @@ fun ItemAnimeRecommend(
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                         fontSize = 12.sp
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+@Preview
+@Composable
+fun ItemAnimeRecShimmer() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .clickable {},
+        backgroundColor = Color(0xFFE0E0E0),
+        shape = RoundedCornerShape(5.dp)
+    ) {
+        Row {
+            Box(
+                modifier = Modifier
+                    .width(150.dp)
+                    .height(200.dp)
+                    .shimmerEffect()
+            )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        start = 8.dp,
+                        top = 8.dp
+                    )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .width(220.dp)
+                        .height(16.dp)
+                        .shimmerEffect()
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Box(
+                    modifier = Modifier
+                        .width(220.dp)
+                        .height(14.dp)
+                        .shimmerEffect()
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Box(
+                    modifier = Modifier
+                        .width(220.dp)
+                        .height(12.dp)
+                        .shimmerEffect()
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Row(
+                    modifier = Modifier.padding(top = 8.dp)
+                ) {
+
+                    Box(
+                        modifier = Modifier
+                            .width(50.dp)
+                            .height(14.dp)
+                            .shimmerEffect()
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .width(50.dp)
+                            .height(14.dp)
+                            .padding(start = 16.dp)
+                            .shimmerEffect()
                     )
                 }
             }

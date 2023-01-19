@@ -17,6 +17,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.youranimelist.presentation.LoadingIndicator
 import com.chs.youranimelist.presentation.browse.BrowseScreen
+import com.chs.youranimelist.presentation.home.ItemAnimeSmallShimmer
 
 @Composable
 fun AnimeRecScreen(
@@ -53,17 +54,23 @@ fun AnimeRecScreen(
                 }
             }
         }
+
+        if (lazyPagingItems?.loadState?.source?.refresh == LoadState.Loading) {
+            items(6) {
+                ItemAnimeRecShimmer()
+            }
+        }
     }
 
-    when (lazyPagingItems?.loadState?.source?.refresh) {
-        is LoadState.Loading -> {
-            LoadingIndicator()
-        }
-
-        is LoadState.Error -> {
-            Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT).show()
-        }
-        else -> {}
-    }
+//    when (lazyPagingItems?.loadState?.source?.refresh) {
+//        is LoadState.Loading -> {
+//            LoadingIndicator()
+//        }
+//
+//        is LoadState.Error -> {
+//            Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT).show()
+//        }
+//        else -> {}
+//    }
 
 }
