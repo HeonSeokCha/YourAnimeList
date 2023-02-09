@@ -61,16 +61,4 @@ fun AnimeRecScreen(
             }
         }
     }
-
-//    when (lazyPagingItems?.loadState?.source?.refresh) {
-//        is LoadState.Loading -> {
-//            LoadingIndicator()
-//        }
-//
-//        is LoadState.Error -> {
-//            Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT).show()
-//        }
-//        else -> {}
-//    }
-
 }

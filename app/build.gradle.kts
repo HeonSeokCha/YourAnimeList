@@ -5,8 +5,8 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
-    id("com.google.devtools.ksp") version "1.7.20-1.0.8"
-    id("com.apollographql.apollo3") version "3.7.3"
+    id("com.google.devtools.ksp") version "1.8.0-1.0.9"
+    id("com.apollographql.apollo3") version "3.7.4"
 }
 
 kotlin {
@@ -54,7 +54,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.2"
+        kotlinCompilerExtensionVersion = "1.4.0"
     }
     packagingOptions {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
@@ -69,7 +69,7 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.compose.ui:ui:1.3.3")
+    implementation("androidx.compose.ui:ui:1.4.0-beta01")
     implementation("androidx.compose.material:material:1.3.1")
     implementation("androidx.compose.ui:ui-tooling-preview:1.3.3")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
@@ -95,39 +95,32 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.44.2")
     kapt("com.google.dagger:hilt-android-compiler:2.44.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.44")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.44.2")
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.44.2")
 
     //Ktor
-    implementation("io.ktor:ktor-client-core:2.2.2")
-    implementation("io.ktor:ktor-client-android:2.2.2")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.2")
-    implementation("io.ktor:ktor-client-content-negotiation:2.2.2")
-    implementation("io.ktor:ktor-client-logging:2.2.2")
+    implementation("io.ktor:ktor-client-core:2.2.3")
+    implementation("io.ktor:ktor-client-android:2.2.3")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.3")
+    implementation("io.ktor:ktor-client-content-negotiation:2.2.3")
+    implementation("io.ktor:ktor-client-logging:2.2.3")
 
     //Room
     implementation("androidx.room:room-ktx:2.5.0")
     kapt("androidx.room:room-compiler:2.5.0")
 
     //Apollo
-    implementation("com.apollographql.apollo3:apollo-runtime:3.7.3")
-    implementation("com.apollographql.apollo3:apollo-api:3.7.3")
-    implementation("com.apollographql.apollo3:apollo-normalized-cache:3.7.3")
+    implementation("com.apollographql.apollo3:apollo-runtime:3.7.4")
+    implementation("com.apollographql.apollo3:apollo-api:3.7.4")
+    implementation("com.apollographql.apollo3:apollo-normalized-cache:3.7.4")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6")
 
-    // Pager
-    implementation("com.google.accompanist:accompanist-pager:0.28.0")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
-
     // Paging
-    implementation("androidx.paging:paging-compose:1.0.0-alpha17")
-
-    // Flowlayout
-    implementation("com.google.accompanist:accompanist-flowlayout:0.28.0")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha18")
 
     // Coil
     implementation("io.coil-kt:coil-compose:2.2.2")
 
     // CustomTabs
-    implementation("androidx.browser:browser:1.4.0")
+    implementation("androidx.browser:browser:1.5.0")
 }

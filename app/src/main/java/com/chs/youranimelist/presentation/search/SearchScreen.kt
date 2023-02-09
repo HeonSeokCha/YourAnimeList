@@ -1,11 +1,15 @@
 package com.chs.youranimelist.presentation.search
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -13,13 +17,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchScreen(
     searchKeyWord: String
@@ -43,8 +43,7 @@ fun SearchScreen(
             backgroundColor = Color.White,
             indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
-                    modifier = Modifier
-                        .pagerTabIndicatorOffset(pagerState, tabPositions),
+                    modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
                     color = Pink80
                 )
             }
@@ -69,11 +68,10 @@ fun SearchScreen(
             }
         }
         HorizontalPager(
-            count = tabList.size,
+            pageCount = tabList.size,
             state = pagerState,
             userScrollEnabled = false,
         ) {
-
             when (pagerState.currentPage) {
                 0 -> {
                     SearchMediaScreen(

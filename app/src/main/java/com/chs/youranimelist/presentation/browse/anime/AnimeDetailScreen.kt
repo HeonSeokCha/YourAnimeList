@@ -2,16 +2,18 @@ package com.chs.youranimelist.presentation.browse.anime
 
 import android.app.Activity
 import android.net.Uri
-import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.*
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PlayArrow
@@ -20,16 +22,10 @@ import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
@@ -44,13 +40,9 @@ import com.chs.youranimelist.presentation.shimmerEffect
 import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
 import com.chs.youranimelist.util.color
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AnimeDetailScreen(
     id: Int,
@@ -108,8 +100,7 @@ fun AnimeDetailScreen(
                     backgroundColor = Color.White,
                     indicator = { tabPositions ->
                         TabRowDefaults.Indicator(
-                            modifier = Modifier
-                                .pagerTabIndicatorOffset(pagerState, tabPositions),
+                            modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
                             color = Pink80
                         )
                     }
@@ -139,12 +130,12 @@ fun AnimeDetailScreen(
             item {
                 HorizontalPager(
                     state = pagerState,
-                    count = tabList.size,
+                    pageCount = tabList.size,
                     modifier = Modifier
                         .fillMaxSize(),
                     userScrollEnabled = false
                 ) {
-                    when (this.currentPage) {
+                    when (pagerState.currentPage) {
                         0 -> {
                             AnimeOverViewScreen(
                                 animeOverViewInfo = state.animeDetailInfo,

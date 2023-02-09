@@ -3,10 +3,13 @@ package com.chs.youranimelist.presentation.home
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
@@ -40,14 +43,9 @@ import com.chs.youranimelist.fragment.AnimeList
 import com.chs.youranimelist.presentation.main.Screen
 import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.shimmerEffect
-import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.Constant
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.google.accompanist.pager.rememberPagerState
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     navigator: NavHostController,
@@ -75,19 +73,13 @@ fun HomeScreen(
                         .height(200.dp)
                 },
                 state = pagerState,
-                count = state.pagerList.size,
+                pageCount = state.pagerList.size,
             ) { idx ->
                 ItemHomeBanner(
                     context = context,
                     banner = state.pagerList[idx]
                 )
             }
-            HorizontalPagerIndicator(
-                pagerState = pagerState,
-                activeColor = Color.DarkGray,
-                inactiveColor = Color.LightGray,
-                modifier = Modifier.padding(8.dp),
-            )
         }
 
         items(state.nestedList.size) { idx ->
