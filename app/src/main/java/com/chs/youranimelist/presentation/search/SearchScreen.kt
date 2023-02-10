@@ -22,7 +22,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchScreen(
-    searchKeyWord: String
+    searchKeyWord: String,
+    onBack: () -> Unit
 ) {
     val pagerState = rememberPagerState(0)
     val coroutineScope = rememberCoroutineScope()
@@ -32,6 +33,12 @@ fun SearchScreen(
         "MANGA",
         "CHARACTER"
     )
+
+    DisposableEffect(Unit) {
+        onDispose {
+            onBack()
+        }
+    }
 
     Column(
         modifier = Modifier

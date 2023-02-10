@@ -19,7 +19,8 @@ fun MainNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     searchListQuery: String,
-    searchQuery: String
+    searchQuery: String,
+    onBack: () -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -36,7 +37,10 @@ fun MainNavHost(
             CharaListScreen(searchListQuery)
         }
         composable(Screen.SearchScreen.route) {
-            SearchScreen(searchQuery)
+            SearchScreen(
+                searchQuery,
+                onBack
+            )
         }
         composable("${Screen.SortListScreen.route}/{title}") { backStackEntry ->
             SortedListScreen(

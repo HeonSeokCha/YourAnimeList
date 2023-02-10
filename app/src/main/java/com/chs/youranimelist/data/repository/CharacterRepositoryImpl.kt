@@ -45,11 +45,11 @@ class CharacterRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertCharacter(character: CharacterDto) {
-        db.charaListDao.insertCharaList(character)
+        db.charaListDao.insert(character)
     }
 
     override suspend fun deleteCharacter(character: CharacterDto) {
-        db.charaListDao.deleteCharaList(character)
+        db.charaListDao.delete(character)
     }
 
     override fun searchCharaList(charaName: String): Flow<List<CharacterDto>> {

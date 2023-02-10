@@ -65,11 +65,11 @@ class AnimeListRepositoryImpl @Inject constructor(
         db.animeListDao.getAllAnimeList()
 
     override suspend fun insertAnime(anime: AnimeDto) {
-        db.animeListDao.insertAnimeList(anime)
+        db.animeListDao.insert(anime)
     }
 
     override suspend fun deleteAnime(animeId: AnimeDto) {
-        db.animeListDao.deleteAnimeList(animeId)
+        db.animeListDao.delete(animeId)
     }
 
     override fun searchAnimeList(animeTitle: String): Flow<List<AnimeDto>> {
