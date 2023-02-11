@@ -2,6 +2,7 @@ package com.chs.youranimelist.presentation.browse.anime
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -35,63 +36,77 @@ fun AnimeOverViewScreen(
                 bottom = 16.dp
             )
     ) {
-        FlowRow {
-            animeOverViewInfo?.media?.genres?.forEach { genre ->
-                Chip(
-                    modifier = Modifier
-                        .padding(end = 4.dp),
-                    onClick = {
-                        navController.navigate("${Screen.SortListScreen.route}/$genre")
-                    },
-                    colors = ChipDefaults.chipColors(
-                        backgroundColor = GENRE_COLOR[genre]?.color ?: Color.Black,
-                        contentColor = Color.White
-                    )
-                ) {
-                    Text(text = genre.toString())
+        if (!animeOverViewInfo?.media?.genres.isNullOrEmpty()) {
+            FlowRow {
+                animeOverViewInfo?.media?.genres?.forEach { genre ->
+                    Chip(
+                        modifier = Modifier
+                            .padding(end = 4.dp),
+                        onClick = {
+                            navController.navigate("${Screen.SortListScreen.route}/$genre")
+                        },
+                        colors = ChipDefaults.chipColors(
+                            backgroundColor = GENRE_COLOR[genre]?.color ?: Color.Black,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text(text = genre.toString())
+                    }
                 }
             }
         }
-        Text(
-            text = "Description",
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-        )
+
+        if (animeOverViewInfo?.media?.description != null) {
+            Text(
+                text = "Description",
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+            )
+
+            Spacer(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
+
+            Text(
+                text = HtmlCompat.fromHtml(
+                    animeOverViewInfo.media.description,
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                ).toString()
+            )
+        }
+
+        if (!animeTheme?.openingThemes.isNullOrEmpty()) {
+            animeTheme?.openingThemes?.forEach { themeTitle ->
+                Text(text = themeTitle)
+            }
+        }
+
+
+        if (!animeTheme?.endingThemes.isNullOrEmpty()) {
+            animeTheme?.endingThemes?.forEach { themeTitle ->
+                Text(text = themeTitle)
+            }
+        }
 
         Spacer(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
 
-        Text(
-            text = HtmlCompat.fromHtml(
-                animeOverViewInfo?.media?.description ?: "",
-                HtmlCompat.FROM_HTML_MODE_LEGACY
-            ).toString()
-        )
-        animeTheme?.openingThemes?.forEach { themeTitle ->
-            Text(text = themeTitle)
-        }
-
-        animeTheme?.endingThemes?.forEach { themeTitle ->
-            Text(text = themeTitle)
-        }
-
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-            items(animeOverViewInfo?.media?.relations?.relationsEdges?.size ?: 0) { idx ->
-                ItemAnimeSmall(
-                    item = animeOverViewInfo?.media?.relations?.relationsEdges?.get(idx)?.relationsNode?.animeList!!
-                ) {
-                    navController.navigate(
-                        "${BrowseScreen.AnimeDetailScreen.route}/" +
-                                "${animeOverViewInfo.media.relations.relationsEdges[idx]?.relationsNode?.animeList!!.id}" +
-                                "/${animeOverViewInfo.media.relations.relationsEdges[idx]?.relationsNode?.animeList!!.idMal ?: 0}"
-                    )
+        if (animeOverViewInfo?.media?.relations?.relationsEdges != null) {
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                items(animeOverViewInfo.media.relations.relationsEdges) { edge ->
+                    ItemAnimeSmall(
+                        item = edge?.relationsNode?.animeList!!
+                    ) {
+                        navController.navigate(
+                            "${BrowseScreen.AnimeDetailScreen.route}/" +
+                                    "${edge.relationsNode.animeList.id}" +
+                                    "/${edge.relationsNode.animeList.idMal}"
+                        )
+                    }
                 }
             }
         }
-
     }
 }

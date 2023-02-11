@@ -1,12 +1,9 @@
 package com.chs.youranimelist.data.model
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "character")
-@Parcelize
 data class CharacterDto(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
@@ -16,4 +13,4 @@ data class CharacterDto(
     val image: String? = null,
     val favourites: Int? = null,
     val created: Long = System.currentTimeMillis(),
-) : Parcelable
+)
