@@ -1,10 +1,17 @@
 package com.chs.youranimelist.presentation.browse.character
 
 import android.app.Activity
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -23,8 +30,11 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -33,6 +43,7 @@ import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.util.color
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CharacterDetailScreen(
     charaId: Int,
@@ -43,81 +54,40 @@ fun CharacterDetailScreen(
     val state = viewModel.state
     val context = LocalContext.current
 
-    val maxHeight = 320f
-    val minHeight = 0f
-    val d by with(LocalDensity.current) {
-        remember { mutableStateOf(this.density) }
-    }
-    val toolbarHeightPx by with(LocalDensity.current) {
-        remember { mutableStateOf(maxHeight.dp.roundToPx().toFloat()) }
-    }
-    val toolbarMinHeightPx by with(LocalDensity.current) {
-        remember { mutableStateOf(minHeight.dp.roundToPx().toFloat()) }
-    }
-    val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val delta = available.y
-                val newOffset = toolbarOffsetHeightPx.value + delta
-                toolbarOffsetHeightPx.value =
-                    newOffset.coerceIn(toolbarMinHeightPx - toolbarHeightPx, 0f)
-                return Offset.Zero
-            }
-        }
-    }
-    var progress by remember { mutableStateOf(0f) }
-
-    LaunchedEffect(key1 = toolbarOffsetHeightPx.value) {
-        progress =
-            ((toolbarHeightPx + toolbarOffsetHeightPx.value) / toolbarHeightPx - minHeight / maxHeight) / (1f - minHeight / maxHeight)
-    }
-
     LaunchedEffect(viewModel, context) {
         viewModel.getCharacterDetail(charaId)
         viewModel.isSaveCharacter(charaId)
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(nestedScrollConnection)
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Adaptive(100.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        val characterInfo = state.characterDetailInfo?.character
-        LazyVerticalGrid(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            columns = GridCells.Adaptive(100.dp),
-            contentPadding = PaddingValues(
-                top = maxHeight.dp,
-                start = 8.dp,
-                end = 8.dp
+        item(span = StaggeredGridItemSpan.FullLine) {
+            CharacterBanner(
+                state = state,
+                insertClick = {
+                    viewModel.insertCharacter()
+                }, deleteClick = {
+                    viewModel.deleteCharacter()
+                }
             )
-        ) {
-            items(characterInfo?.media?.edges?.size ?: 0) { idx ->
+        }
+        if (state.characterDetailInfo?.character?.media?.edges != null) {
+            items(state.characterDetailInfo.character.media.edges) { anime ->
                 ItemAnimeSmall(
-                    item = characterInfo?.media?.edges?.get(idx)?.node?.animeList!!,
+                    item = anime?.node?.animeList!!,
                     onClick = {
                         navController.navigate(
                             "${BrowseScreen.AnimeDetailScreen.route}/" +
-                                    "${characterInfo.media.edges[idx]?.node?.animeList!!.id}" +
-                                    "/${characterInfo.media.edges[idx]?.node?.animeList!!.idMal ?: 0}"
+                                    "${anime.node.animeList.id}" +
+                                    "/${anime.node.animeList.idMal ?: 0}"
                         )
                     }
                 )
             }
         }
-
-        CharacterBanner(
-            height = ((toolbarHeightPx + toolbarOffsetHeightPx.value) / d).dp,
-            progress = progress,
-            state = state,
-            insertClick = {
-                viewModel.insertCharacter()
-            }, deleteClick = {
-                viewModel.deleteCharacter()
-            }
-        )
     }
 
     if (state.isLoading) {
@@ -128,8 +98,6 @@ fun CharacterDetailScreen(
 
 @Composable
 fun CharacterBanner(
-    height: Dp,
-    progress: Float,
     state: CharacterDetailState,
     insertClick: () -> Unit,
     deleteClick: () -> Unit
@@ -139,17 +107,19 @@ fun CharacterBanner(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(height)
-            .alpha(progress)
+            .wrapContentHeight()
     ) {
         Column(
             modifier = Modifier
-                .padding(top = 60.dp)
+                .padding(
+                    top = 60.dp,
+                    start = 8.dp,
+                    end = 8.dp
+                )
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
             ) {
                 AsyncImage(
                     modifier = Modifier
@@ -191,11 +161,7 @@ fun CharacterBanner(
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        top = 8.dp,
-                        start = 8.dp,
-                        end = 8.dp
-                    ),
+                    .padding(top = 8.dp),
                 onClick = {
                     if (state.characterDetailInfo != null) {
                         if (state.isSaveChara != null) {
@@ -213,20 +179,20 @@ fun CharacterBanner(
                 }
             }
 
-//            Text(
-//                text = "Description",
-//                fontWeight = FontWeight.Bold,
-//                fontSize = 16.sp,
-//            )
-//
-//            Spacer(modifier = Modifier.height(8.dp))
-//
-//            Text(
-//                text = HtmlCompat.fromHtml(
-//                    state.characterDetailInfo?.character?.description ?: "",
-//                    HtmlCompat.FROM_HTML_MODE_LEGACY
-//                ).toString()
-//            )
+            Text(
+                text = "Description",
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = HtmlCompat.fromHtml(
+                    state.characterDetailInfo?.character?.description ?: "",
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                ).toString()
+            )
         }
     }
 
