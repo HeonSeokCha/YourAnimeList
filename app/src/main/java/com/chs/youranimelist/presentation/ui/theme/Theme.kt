@@ -1,13 +1,12 @@
 package com.chs.youranimelist.presentation.ui.theme
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
-private val DarkColorScheme = lightColors(
+private val DarkColorScheme = lightColorScheme(
     primary = Red500,
-    primaryVariant = Pink80,
     secondary = Red500
 )
 
@@ -17,7 +16,7 @@ fun YourAnimeListTheme(
 ) {
 
     MaterialTheme(
-        colors = DarkColorScheme,
+        colorScheme = DarkColorScheme,
         typography = Typography,
         shapes = Shapes,
         content = content

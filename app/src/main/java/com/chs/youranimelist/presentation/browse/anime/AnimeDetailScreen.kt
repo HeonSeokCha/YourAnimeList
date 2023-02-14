@@ -12,12 +12,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.*
-import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.*
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -91,11 +92,11 @@ fun AnimeDetailScreen(
                 }
             )
         }
+
         item {
             TabRow(
                 modifier = Modifier.fillMaxWidth(),
                 selectedTabIndex = pagerState.currentPage,
-                backgroundColor = Color.White,
                 indicator = { tabPositions ->
                     TabRowDefaults.Indicator(
                         modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
@@ -125,6 +126,7 @@ fun AnimeDetailScreen(
                 }
             }
         }
+
         item {
             HorizontalPager(
                 state = pagerState,
@@ -157,6 +159,7 @@ fun AnimeDetailScreen(
             }
         }
     }
+
     if (state.isLoading) {
         LoadingIndicator()
     }

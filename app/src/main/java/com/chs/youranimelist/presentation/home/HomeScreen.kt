@@ -13,11 +13,11 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -121,7 +121,6 @@ fun ItemHomeBanner(
                 Icon(
                     Icons.Rounded.Star,
                     contentDescription = null,
-                    tint = Color.Yellow,
                 )
             }),
         Pair(
@@ -281,7 +280,6 @@ fun ItemAnimeSort(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ItemAnimeSmall(
     item: AnimeList,
@@ -308,9 +306,16 @@ fun ItemAnimeSmall(
     Card(
         modifier = Modifier
             .width(130.dp)
-            .height(280.dp),
-        elevation = 3.dp,
-        onClick = onClick
+            .height(280.dp)
+            .clickable {
+                onClick()
+            },
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 2.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        )
     ) {
         Column(
             modifier = Modifier
@@ -437,7 +442,6 @@ fun ItemAnimeSmallShimmer() {
         modifier = Modifier
             .width(130.dp)
             .height(280.dp),
-        elevation = 3.dp
     ) {
         Column(
             modifier = Modifier

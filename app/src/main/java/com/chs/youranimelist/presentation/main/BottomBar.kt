@@ -1,9 +1,6 @@
 package com.chs.youranimelist.presentation.main
 
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
@@ -29,17 +26,20 @@ fun BottomBar(
             BottomNavScreen.AnimeListScreen,
             BottomNavScreen.CharaListScreen,
         )
-        BottomNavigation(
-            backgroundColor = Red200
+        NavigationBar(
+            containerColor = Red200
         ) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
             items.forEach { destination ->
-                BottomNavigationItem(
+                NavigationBarItem(
                     selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true,
-                    selectedContentColor = Red700,
-                    unselectedContentColor = Red500,
-                    onClick = {
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Red700,
+                        selectedTextColor = Red700,
+                        unselectedIconColor = Red500,
+                        unselectedTextColor = Red500
+                    ), onClick = {
                         navController.navigate(destination.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true

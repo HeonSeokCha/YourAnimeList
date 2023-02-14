@@ -4,9 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
@@ -37,7 +37,6 @@ fun ItemAnimeRecommend(
             .clickable {
                 clickAble()
             },
-        backgroundColor = Pink80,
         shape = RoundedCornerShape(5.dp)
     ) {
         Row {
@@ -126,7 +125,6 @@ fun ItemAnimeRecShimmer() {
             .fillMaxWidth()
             .height(200.dp)
             .clickable {},
-        backgroundColor = Color(0xFFE0E0E0),
         shape = RoundedCornerShape(5.dp)
     ) {
         Row {

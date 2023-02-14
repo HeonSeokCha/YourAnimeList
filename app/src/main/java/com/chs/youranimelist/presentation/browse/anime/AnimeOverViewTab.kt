@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,7 +23,7 @@ import com.chs.youranimelist.presentation.home.ItemAnimeSmall
 import com.chs.youranimelist.util.Constant.GENRE_COLOR
 import com.chs.youranimelist.util.color
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AnimeOverViewScreen(
     animeOverViewInfo: AnimeDetailQuery.Data?,
@@ -39,19 +42,16 @@ fun AnimeOverViewScreen(
         if (!animeOverViewInfo?.media?.genres.isNullOrEmpty()) {
             FlowRow {
                 animeOverViewInfo?.media?.genres?.forEach { genre ->
-                    Chip(
-                        modifier = Modifier
-                            .padding(end = 4.dp),
+                    AssistChip(
                         onClick = {
                             navController.navigate("${Screen.SortListScreen.route}/$genre")
-                        },
-                        colors = ChipDefaults.chipColors(
-                            backgroundColor = GENRE_COLOR[genre]?.color ?: Color.Black,
-                            contentColor = Color.White
+                        }, label = {
+                            Text(text = genre.toString())
+                        }, colors = AssistChipDefaults.assistChipColors(
+                            containerColor = GENRE_COLOR[genre]?.color ?: Color.Black,
+                            labelColor = Color.White
                         )
-                    ) {
-                        Text(text = genre.toString())
-                    }
+                    )
                 }
             }
         }

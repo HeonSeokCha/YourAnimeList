@@ -9,10 +9,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -251,6 +248,7 @@ fun ItemSort(
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun filterDialog(
     list: List<String?>,
@@ -268,23 +266,22 @@ private fun filterDialog(
                 end = 16.dp
             ),
         onDismissRequest = onDismiss,
-        text = {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(list.size) { idx ->
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                onDismiss()
-                                onClick(idx)
-                            },
-                        text = list[idx].toString(),
-                        fontSize = 16.sp
-                    )
-                }
+    ) {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(list.size) { idx ->
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onDismiss()
+                            onClick(idx)
+                        },
+                    text = list[idx].toString(),
+                    fontSize = 16.sp
+                )
             }
-        }, buttons = {}
-    )
+        }
+    }
 }

@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.twotone.Search
@@ -18,13 +18,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.chs.youranimelist.R
+import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.util.SearchWidgetState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(
     navController: NavHostController,
@@ -39,6 +42,10 @@ fun AppBar(
         "${Screen.SortListScreen.route}/{title}" -> {
             TopAppBar(
                 title = {},
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Pink80,
+                    navigationIconContentColor = Color.White
+                ),
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(Icons.Filled.ArrowBack, "sort_screen_back")
@@ -46,6 +53,7 @@ fun AppBar(
                 }
             )
         }
+
         Screen.SearchScreen.route -> {
             SearchAppBar(
                 onSearchClicked = {
@@ -77,8 +85,15 @@ fun AppBar(
                 SearchWidgetState.CLOSED -> {
                     TopAppBar(
                         title = {
-                            Text(text = stringResource(R.string.app_name))
+                            Text(
+                                text = stringResource(R.string.app_name),
+                                color = Color.White
+                            )
                         },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = Pink80,
+                            actionIconContentColor = Color.White
+                        ),
                         actions = {
                             if (navBackStackEntry?.destination?.route == BottomNavScreen.HomeScreen.route) {
                                 IconButton(onClick = {
@@ -107,7 +122,7 @@ fun AppBar(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SearchAppBar(
     onSearchClicked: (String) -> Unit,
@@ -121,12 +136,13 @@ fun SearchAppBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp),
-        elevation = AppBarDefaults.TopAppBarElevation,
-        color = MaterialTheme.colors.primary
     ) {
         TextField(
             modifier = Modifier
                 .fillMaxWidth(),
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Pink80
+            ),
             value = textState,
             onValueChange = {
                 textState = it
@@ -134,14 +150,13 @@ fun SearchAppBar(
             },
             placeholder = {
                 Text(
-                    modifier = Modifier
-                        .alpha(ContentAlpha.medium),
                     text = "Search here...",
-                    color = Color.White
+                    color = Color.White,
+                    fontWeight = FontWeight.Thin
                 )
             },
             textStyle = TextStyle(
-                fontSize = MaterialTheme.typography.subtitle1.fontSize
+                fontSize = MaterialTheme.typography.titleMedium.fontSize
             ),
             singleLine = true,
             leadingIcon = {
@@ -153,8 +168,6 @@ fun SearchAppBar(
             },
             trailingIcon = {
                 IconButton(
-                    modifier = Modifier
-                        .alpha(ContentAlpha.medium),
                     onClick = {
                         if (textState.isNotEmpty()) {
                             onSearchClicked("")

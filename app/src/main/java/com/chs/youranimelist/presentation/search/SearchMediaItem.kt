@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Star
@@ -78,7 +78,6 @@ fun SearchMediaItem(
                     .clickable {
                         clickAble()
                     },
-                backgroundColor = Pink80,
                 shape = RoundedCornerShape(5.dp)
             ) {
                 Row {
@@ -187,7 +186,6 @@ fun SearchMediaItem(
                     .clickable {
                         clickAble()
                     },
-                backgroundColor = Pink80,
                 shape = RoundedCornerShape(5.dp)
             ) {
                 Row {
