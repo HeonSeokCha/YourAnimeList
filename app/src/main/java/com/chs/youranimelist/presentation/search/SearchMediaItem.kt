@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -78,6 +79,9 @@ fun SearchMediaItem(
                     .clickable {
                         clickAble()
                     },
+                colors = CardDefaults.cardColors(
+                    containerColor = Pink80
+                ),
                 shape = RoundedCornerShape(5.dp)
             ) {
                 Row {
@@ -186,6 +190,9 @@ fun SearchMediaItem(
                     .clickable {
                         clickAble()
                     },
+                colors = CardDefaults.cardColors(
+                    containerColor = Pink80
+                ),
                 shape = RoundedCornerShape(5.dp)
             ) {
                 Row {

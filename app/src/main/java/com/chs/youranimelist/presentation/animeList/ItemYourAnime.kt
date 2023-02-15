@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -77,6 +78,9 @@ fun ItemYourAnime(
             .clickable {
                 clickAble()
             },
+        colors = CardDefaults.cardColors(
+            containerColor = Pink80
+        ),
         shape = RoundedCornerShape(5.dp)
     ) {
         Row {

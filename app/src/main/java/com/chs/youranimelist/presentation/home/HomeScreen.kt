@@ -105,7 +105,6 @@ fun ItemHomeBanner(
     context: Context,
     banner: HomeRecommendListQuery.Medium?
 ) {
-    Log.e("ItemHomeBanner", banner.toString())
     val favoriteId = "favoriteId"
     val scoreId = "scoreId"
     val inlineContent = mapOf(
@@ -121,6 +120,7 @@ fun ItemHomeBanner(
                 Icon(
                     Icons.Rounded.Star,
                     contentDescription = null,
+                    tint = Color.Yellow
                 )
             }),
         Pair(

@@ -13,7 +13,6 @@ import androidx.compose.material.icons.twotone.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -24,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.chs.youranimelist.R
-import com.chs.youranimelist.presentation.ui.theme.Pink80
+import com.chs.youranimelist.presentation.ui.theme.Red500
 import com.chs.youranimelist.util.SearchWidgetState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +42,7 @@ fun AppBar(
             TopAppBar(
                 title = {},
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Pink80,
+                    containerColor = Red500,
                     navigationIconContentColor = Color.White
                 ),
                 navigationIcon = {
@@ -91,7 +90,7 @@ fun AppBar(
                             )
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = Pink80,
+                            containerColor = Red500,
                             actionIconContentColor = Color.White
                         ),
                         actions = {
@@ -141,7 +140,7 @@ fun SearchAppBar(
             modifier = Modifier
                 .fillMaxWidth(),
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = Pink80
+                containerColor = Red500
             ),
             value = textState,
             onValueChange = {

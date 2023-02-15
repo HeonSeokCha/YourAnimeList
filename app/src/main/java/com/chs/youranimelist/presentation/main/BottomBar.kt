@@ -3,6 +3,7 @@ package com.chs.youranimelist.presentation.main
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -27,7 +28,7 @@ fun BottomBar(
             BottomNavScreen.CharaListScreen,
         )
         NavigationBar(
-            containerColor = Red200
+            containerColor = Red200,
         ) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination

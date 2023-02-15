@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,7 +38,10 @@ fun ItemAnimeRecommend(
             .clickable {
                 clickAble()
             },
-        shape = RoundedCornerShape(5.dp)
+        shape = RoundedCornerShape(5.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Pink80
+        )
     ) {
         Row {
             AsyncImage(

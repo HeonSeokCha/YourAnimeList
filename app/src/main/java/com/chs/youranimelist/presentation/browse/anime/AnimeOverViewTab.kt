@@ -43,6 +43,8 @@ fun AnimeOverViewScreen(
             FlowRow {
                 animeOverViewInfo?.media?.genres?.forEach { genre ->
                     AssistChip(
+                        modifier = Modifier
+                            .padding(end = 4.dp),
                         onClick = {
                             navController.navigate("${Screen.SortListScreen.route}/$genre")
                         }, label = {
@@ -50,6 +52,8 @@ fun AnimeOverViewScreen(
                         }, colors = AssistChipDefaults.assistChipColors(
                             containerColor = GENRE_COLOR[genre]?.color ?: Color.Black,
                             labelColor = Color.White
+                        ), border = AssistChipDefaults.assistChipBorder(
+                            borderColor = GENRE_COLOR[genre]?.color ?: Color.Black
                         )
                     )
                 }
