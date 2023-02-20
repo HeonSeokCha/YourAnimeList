@@ -6,12 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.data.mapper.toCharacterDto
-import com.chs.youranimelist.data.model.CharacterDto
 import com.chs.youranimelist.domain.model.Character
-import com.chs.youranimelist.domain.usecase.CheckSaveCharaUseCase
-import com.chs.youranimelist.domain.usecase.DeleteCharaUseCase
-import com.chs.youranimelist.domain.usecase.GetCharaDetailUseCase
-import com.chs.youranimelist.domain.usecase.InsertCharaUseCase
 import com.chs.youranimelist.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

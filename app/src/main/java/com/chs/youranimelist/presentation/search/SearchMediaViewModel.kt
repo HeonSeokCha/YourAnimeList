@@ -5,12 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 
-import com.chs.youranimelist.domain.usecase.SearchAnimeUseCase
-import com.chs.youranimelist.domain.usecase.SearchCharaUseCase
-import com.chs.youranimelist.domain.usecase.SearchMangaUseCase
 import com.chs.youranimelist.util.Constant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
