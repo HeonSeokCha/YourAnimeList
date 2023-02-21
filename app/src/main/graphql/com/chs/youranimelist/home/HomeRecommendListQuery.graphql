@@ -1,123 +1,92 @@
-query HomeRecommendListQuery(
+query (
     $currentSeason: MediaSeason,
     $nextSeason: MediaSeason,
+    $lastSeason: MediaSeason,
     $currentYear: Int,
+    $lastYear: Int,
     $nexrYear: Int
 ) {
     viewPager: Page(
         page: 1,
         perPage: 6
     ) {
-        ... pageInfo
+        ... pageBasicInfo
         media(
             sort: [SCORE_DESC],
             type: ANIME,
-            format: TV,
-            seasonYear: $currentYear
+            seasonYear: $lastYear,
+            season: $lastSeason
         ) {
-            id
-            idMal
-            title {
-                romaji
-                native
-                english
-            }
-            coverImage {
-                extraLarge
-                color
-            }
+            ... animeBasicInfo
             trailer {
                 id
             }
-            averageScore
-            favourites
-            seasonYear
-            format
-            status
-            bannerImage
         }
     },
     trending: Page(
         page: 1,
         perPage: 6
     ) {
-        ... pageInfo
-        trendingMedia: media(
+        ... pageBasicInfo
+        media(
             sort: [TRENDING_DESC],
             type: ANIME
         ) {
-            ... animeList
+            ... animeBasicInfo
         }
     },
     popular: Page(
         page: 1,
         perPage: 6
     ) {
-        ... pageInfo
-        popularMedia: media(
+        ... pageBasicInfo
+        media(
             sort: [POPULARITY_DESC],
             season: $currentSeason,
             seasonYear: $currentYear,
             type: ANIME
         ) {
-            ... animeList
+            ... animeBasicInfo
         }
     },
     upComming: Page(
         page: 1,
         perPage: 6
     ) {
-        ... pageInfo
-        upCommingMedia: media(
+        ... pageBasicInfo
+        media(
             sort: [POPULARITY_DESC],
             season: $nextSeason,
             seasonYear: $nexrYear,
             type: ANIME
         ) {
-            ... animeList
+            ... animeBasicInfo
         }
     },
     allTime : Page(
         page: 1,
         perPage: 6
     ) {
-        ... pageInfo
-        allTimeMedia: media(
+        ... pageBasicInfo
+        media(
             sort: [POPULARITY_DESC],
             type: ANIME
         ) {
-            ... animeList
+            ... animeBasicInfo
         }
     }
-}
 
-fragment animeList on Media {
-    id
-    idMal
-    title {
-        romaji
-        native
-        english
-    }
-    coverImage {
-        extraLarge
-        color
-    }
-    bannerImage
-    averageScore
-    favourites
-    season
-    seasonYear
-    format
-    status
-}
 
-fragment pageInfo on Page {
-    pageInfo {
-        total
-        perPage
-        currentPage
-        lastPage
-        hasNextPage
+    topList : Page(
+        page: 1,
+        perPage: 10
+    ) {
+        ... pageBasicInfo
+        media(
+            sort: [SCORE_DESC],
+            type: ANIME
+        ) {
+            ... animeBasicInfo
+        }
     }
 }

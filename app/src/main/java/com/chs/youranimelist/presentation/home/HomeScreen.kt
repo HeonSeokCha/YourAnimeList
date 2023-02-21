@@ -2,7 +2,6 @@ package com.chs.youranimelist.presentation.home
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -38,8 +37,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.chs.youranimelist.HomeRecommendListQuery
-import com.chs.youranimelist.fragment.AnimeList
+import com.chs.HomeRecommendListQuery
+import com.chs.fragment.AnimeList
 import com.chs.youranimelist.presentation.main.Screen
 import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.shimmerEffect
@@ -103,7 +102,7 @@ fun HomeScreen(
 @Composable
 fun ItemHomeBanner(
     context: Context,
-    banner: HomeRecommendListQuery.Medium?
+    banner: AnimeList
 ) {
     val favoriteId = "favoriteId"
     val scoreId = "scoreId"
@@ -144,7 +143,7 @@ fun ItemHomeBanner(
         modifier = Modifier
             .fillMaxWidth()
             .height(250.dp),
-        model = banner?.bannerImage,
+        model = banner?.animeList?.bannerImage
         contentDescription = null,
         contentScale = ContentScale.Crop
     )

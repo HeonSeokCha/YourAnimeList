@@ -61,8 +61,7 @@ android {
     }
     apollo {
         service("service") {
-            packageName.set("com.chs.youranimelist")
-            generateOptionalOperationVariables.set(false)
+            packageName.set("com.chs")
         }
     }
 }
@@ -94,6 +93,7 @@ dependencies {
     //Dagger - Hilt
     implementation("com.google.dagger:hilt-android:2.44.2")
     kapt("com.google.dagger:hilt-android-compiler:2.44.2")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.44.2")
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.44.2")
