@@ -16,15 +16,25 @@ fragment animeBasicInfo on Media {
     season
     seasonYear
     format
-    status
+    status(version: 2)
 }
 
-fragment pageBasicInfo on Page {
-    pageInfo {
-        total
-        perPage
-        currentPage
-        lastPage
-        hasNextPage
+fragment characterBasicInfo on Character {
+    id
+    name {
+        full
+        native
     }
+    image {
+        large
+    }
+    favourites
+}
+
+fragment pageBasicInfo on PageInfo {
+    total
+    perPage
+    currentPage
+    lastPage
+    hasNextPage
 }

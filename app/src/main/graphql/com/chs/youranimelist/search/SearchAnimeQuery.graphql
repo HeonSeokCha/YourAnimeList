@@ -7,11 +7,7 @@ query SearchAnimeQuery(
         perPage: 10
     ) {
         pageInfo {
-            total
-            perPage
-            currentPage
-            lastPage
-            hasNextPage
+            ...pageBasicInfo
         }
         media(
             search: $search,
@@ -19,7 +15,7 @@ query SearchAnimeQuery(
             sort: [FAVOURITES_DESC],
             isAdult: false
         ) {
-            ...animeList
+            ...animeBasicInfo
         }
     }
 }

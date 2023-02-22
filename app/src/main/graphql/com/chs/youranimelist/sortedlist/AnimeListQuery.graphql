@@ -10,11 +10,7 @@ query AnimeListQuery(
         perPage: 10
     ) {
         pageInfo {
-            total
-            perPage
-            currentPage
-            lastPage
-            hasNextPage
+            ...pageBasicInfo
         }
         media(
             sort: [$sort],
@@ -24,7 +20,7 @@ query AnimeListQuery(
             type: ANIME,
             isAdult: false
         ) {
-            ... animeList
+            ... animeBasicInfo
         }
     }
 }

@@ -1,15 +1,8 @@
-query AnimeDetailQuery(
+query AnimeDetailInfo(
     $id: Int
 ) {
     media: Media(id: $id) {
-        id
-        idMal
-        title {
-            userPreferred
-            romaji
-            native
-            english
-        }
+        ... animeBasicInfo
         description(asHtml: true)
         startDate {
             year
@@ -21,39 +14,27 @@ query AnimeDetailQuery(
             month
             day
         }
-        format
         trailer {
             id
             thumbnail
-        }
-        episodes
-        coverImage {
-            extraLarge
-            color
         }
         type
         bannerImage
         genres
         synonyms
-        status(version: 2)
-        season
-        seasonYear
         episodes
         duration
         chapters
         volumes
         countryOfOrigin
         hashtag
-        averageScore
         meanScore
         popularity
-        favourites
         source
-
         relations {
             relationsEdges: edges {
                 relationsNode: node {
-                    ... animeList
+                    ... animeBasicInfo
                 }
                 id
                 relationType(version: 2)
@@ -74,7 +55,6 @@ query AnimeDetailQuery(
             airingAt
             episode
         }
-
         airingSchedule {
             edges {
                 node {
@@ -92,7 +72,7 @@ query AnimeDetailQuery(
         }
 
         characters(sort: [ROLE,ID]) {
-            charactersNode: nodes {
+            nodes {
                 id
                 name {
                     first

@@ -2,18 +2,14 @@ query AnimeRecommendQuery(
     $id: Int,
     $page: Int
 ) {
-    animeRecommend: Media(id: $id) {
+    Media(id: $id) {
         recommendations(
             page: $page,
             perPage: 10,
             sort: [RATING_DESC]
         ) {
             pageInfo {
-                total
-                perPage
-                currentPage
-                lastPage
-                hasNextPage
+                ...pageBasicInfo
             }
             edges {
                 node {
@@ -21,22 +17,7 @@ query AnimeRecommendQuery(
                     rating
                     userRating
                     mediaRecommendation {
-                        id
-                        idMal
-                        title {
-                            english
-                            romaji
-                            userPreferred
-                        }
-                        seasonYear
-                        format
-                        type
-                        averageScore
-                        favourites
-                        coverImage {
-                            color
-                            extraLarge
-                        }
+                        ...animeBasicInfo
                     }
                 }
             }

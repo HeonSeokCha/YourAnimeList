@@ -1,4 +1,4 @@
-query (
+query HomeAnimeList(
     $currentSeason: MediaSeason,
     $nextSeason: MediaSeason,
     $lastSeason: MediaSeason,
@@ -10,7 +10,6 @@ query (
         page: 1,
         perPage: 6
     ) {
-        ... pageBasicInfo
         media(
             sort: [SCORE_DESC],
             type: ANIME,
@@ -20,6 +19,7 @@ query (
             ... animeBasicInfo
             trailer {
                 id
+                thumbnail
             }
         }
     },
@@ -27,7 +27,6 @@ query (
         page: 1,
         perPage: 6
     ) {
-        ... pageBasicInfo
         media(
             sort: [TRENDING_DESC],
             type: ANIME
@@ -39,7 +38,6 @@ query (
         page: 1,
         perPage: 6
     ) {
-        ... pageBasicInfo
         media(
             sort: [POPULARITY_DESC],
             season: $currentSeason,
@@ -53,7 +51,6 @@ query (
         page: 1,
         perPage: 6
     ) {
-        ... pageBasicInfo
         media(
             sort: [POPULARITY_DESC],
             season: $nextSeason,
@@ -67,21 +64,17 @@ query (
         page: 1,
         perPage: 6
     ) {
-        ... pageBasicInfo
         media(
             sort: [POPULARITY_DESC],
             type: ANIME
         ) {
             ... animeBasicInfo
         }
-    }
-
-
+    },
     topList : Page(
         page: 1,
         perPage: 10
     ) {
-        ... pageBasicInfo
         media(
             sort: [SCORE_DESC],
             type: ANIME

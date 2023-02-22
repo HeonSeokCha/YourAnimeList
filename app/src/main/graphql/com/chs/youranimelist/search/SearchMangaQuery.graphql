@@ -7,19 +7,13 @@ query SearchMangaQuery(
         perPage: 10
     ) {
         pageInfo {
-            total
-            perPage
-            currentPage
-            lastPage
-            hasNextPage
+            ...pageBasicInfo
         }
         media(
             search: $search,
             type: MANGA,
             sort: [FAVOURITES_DESC],
             isAdult: false
-        ) {
-            ...animeList
-        }
+        )
     }
 }

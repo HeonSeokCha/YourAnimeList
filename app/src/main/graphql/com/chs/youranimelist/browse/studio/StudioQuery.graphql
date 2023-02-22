@@ -2,7 +2,7 @@ query StudioAnimeQuery(
     $id: Int,
     $sort: MediaSort,
     $page: Int
-){
+) {
     studio: Studio(id: $id) {
         id
         name
@@ -12,17 +12,13 @@ query StudioAnimeQuery(
             page: $page,
             perPage: 10
         ) {
+            pageInfo {
+                ...pageBasicInfo
+            }
             edges {
                 node {
-                    ... animeList
+                    ... animeBasicInfo
                 }
-            }
-            pageInfo {
-                total
-                perPage
-                currentPage
-                lastPage
-                hasNextPage
             }
         }
     }

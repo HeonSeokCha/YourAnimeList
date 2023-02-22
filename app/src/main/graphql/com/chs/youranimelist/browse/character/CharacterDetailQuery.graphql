@@ -18,7 +18,7 @@ query CharacterQuery($id: Int) {
         media(sort: [POPULARITY_DESC]) {
             edges {
                 node {
-                    ... animeList
+                    ...animeBasicInfo
                 }
                 relationType
                 characterRole

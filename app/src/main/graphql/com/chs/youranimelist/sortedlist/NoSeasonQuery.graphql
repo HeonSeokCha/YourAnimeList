@@ -9,11 +9,7 @@ query NoSeasonQuery(
         perPage: 10,
     ) {
         pageInfo {
-            total
-            perPage
-            currentPage
-            lastPage
-            hasNextPage
+            ...pageBasicInfo
         }
         media(
             sort: [$sort],
@@ -22,7 +18,7 @@ query NoSeasonQuery(
             genre: $genre,
             isAdult: false
         ) {
-            ... animeList
+            ... animeBasicInfo
         }
     }
 }
