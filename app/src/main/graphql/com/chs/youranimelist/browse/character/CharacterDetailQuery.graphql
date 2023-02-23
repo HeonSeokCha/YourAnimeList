@@ -17,12 +17,12 @@ query CharacterQuery($id: Int) {
         favourites
         media(sort: [POPULARITY_DESC]) {
             edges {
-                node {
-                    ...animeBasicInfo
-                }
                 relationType
                 characterRole
                 staffRole
+                node {
+                    ...animeBasicInfo
+                }
             }
         }
     }

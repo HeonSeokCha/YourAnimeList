@@ -1,7 +1,7 @@
 query AnimeDetailInfo(
     $id: Int
 ) {
-    media: Media(id: $id) {
+    Media(id: $id) {
         ... animeBasicInfo
         description(asHtml: true)
         startDate {
@@ -19,7 +19,6 @@ query AnimeDetailInfo(
             thumbnail
         }
         type
-        bannerImage
         genres
         synonyms
         episodes
@@ -32,12 +31,12 @@ query AnimeDetailInfo(
         popularity
         source
         relations {
-            relationsEdges: edges {
-                relationsNode: node {
-                    ... animeBasicInfo
-                }
+            edges {
                 id
                 relationType(version: 2)
+                node {
+                    ... animeBasicInfo
+                }
             }
         }
 
@@ -56,12 +55,10 @@ query AnimeDetailInfo(
             episode
         }
         airingSchedule {
-            edges {
-                node {
-                    id
-                    airingAt
-                    episode
-                }
+            nodes {
+                id
+                airingAt
+                episode
             }
         }
 

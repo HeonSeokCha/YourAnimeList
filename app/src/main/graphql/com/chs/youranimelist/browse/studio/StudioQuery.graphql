@@ -15,10 +15,8 @@ query StudioAnimeQuery(
             pageInfo {
                 ...pageBasicInfo
             }
-            edges {
-                node {
-                    ... animeBasicInfo
-                }
+            nodes {
+                ... animeBasicInfo
             }
         }
     }

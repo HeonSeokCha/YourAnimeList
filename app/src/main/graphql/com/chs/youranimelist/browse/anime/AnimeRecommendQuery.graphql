@@ -11,14 +11,10 @@ query AnimeRecommendQuery(
             pageInfo {
                 ...pageBasicInfo
             }
-            edges {
-                node {
-                    id
-                    rating
-                    userRating
-                    mediaRecommendation {
-                        ...animeBasicInfo
-                    }
+            nodes {
+                rating
+                mediaRecommendation {
+                    ...animeBasicInfo
                 }
             }
         }

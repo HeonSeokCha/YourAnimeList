@@ -1,0 +1,31 @@
+query MangaDetailInfo(
+    $id: Int
+) {
+    media: Media(id: $id) {
+        ...animeBasicInfo
+        genres
+        relations {
+            edges {
+                id
+                relationType(version: 2)
+                node {
+                    ... animeBasicInfo
+                }
+            }
+        }
+
+        characters(sort: [ROLE,ID]) {
+            nodes {
+                id
+                name {
+                    first
+                    last
+                    full
+                }
+                image {
+                    large
+                }
+            }
+        }
+    }
+}
