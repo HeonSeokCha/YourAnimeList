@@ -1,8 +1,10 @@
 package com.chs.youranimelist.domain.repository
 
+import com.chs.youranimelist.domain.model.AnimeRecommendList
+
 interface AnimeRepository {
 
-    suspend fun getAnimeRecommendList()
+    suspend fun getAnimeRecommendList(): AnimeRecommendList
 
     suspend fun getAnimeFilteredList(
         selectType: String,

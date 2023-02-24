@@ -1,10 +1,19 @@
 package com.chs.youranimelist.data.repository
 
+import com.apollographql.apollo3.ApolloClient
+import com.chs.HomeAnimeListQuery
+import com.chs.youranimelist.domain.model.AnimeRecommendList
 import com.chs.youranimelist.domain.repository.AnimeRepository
 
-class AnimeRepositoryImpl : AnimeRepository {
-    override suspend fun getAnimeRecommendList() {
-        TODO("Not yet implemented")
+class AnimeRepositoryImpl(
+    private val apolloClient: ApolloClient
+) : AnimeRepository {
+    override suspend fun getAnimeRecommendList(): AnimeRecommendList {
+        return apolloClient
+            .query(HomeAnimeListQuery())
+            .execute()
+            .data
+            ?
     }
 
     override suspend fun getAnimeFilteredList(
