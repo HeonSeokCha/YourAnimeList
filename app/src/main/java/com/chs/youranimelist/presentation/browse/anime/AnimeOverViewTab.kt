@@ -2,7 +2,6 @@ package com.chs.youranimelist.presentation.browse.anime
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -16,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
 import com.chs.youranimelist.AnimeDetailQuery
-import com.chs.youranimelist.domain.model.AnimeDetails
+import com.chs.youranimelist.domain.model.AnimeThemeInfo
 import com.chs.youranimelist.presentation.main.Screen
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
@@ -27,7 +26,7 @@ import com.chs.youranimelist.util.color
 @Composable
 fun AnimeOverViewScreen(
     animeOverViewInfo: AnimeDetailQuery.Data?,
-    animeTheme: AnimeDetails?,
+    animeTheme: AnimeThemeInfo?,
     navController: NavController,
 ) {
     Column(

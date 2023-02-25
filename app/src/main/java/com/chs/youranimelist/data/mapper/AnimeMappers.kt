@@ -3,11 +3,11 @@ package com.chs.youranimelist.data.mapper
 import com.chs.HomeAnimeListQuery
 import com.chs.youranimelist.domain.model.*
 
-fun HomeAnimeListQuery.Data.toAnimeRecommendList(): AnimeRecommendList {
+fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
     return AnimeRecommendList(
-        bannerList = viewPager?.media?.map {
+        bannerList = this?.viewPager?.media?.map {
             AnimeRecommendBannerInfo(
-                animeBasicInfo = AnimeBasicInfo(
+                animeInfo = AnimeInfo(
                     id = it?.animeBasicInfo?.id ?: 0,
                     idMal = it?.animeBasicInfo?.idMal ?: 0,
                     title = TitleInfo(
@@ -22,6 +22,7 @@ fun HomeAnimeListQuery.Data.toAnimeRecommendList(): AnimeRecommendList {
                     averageScore = it?.animeBasicInfo?.averageScore ?: 0,
                     favoriteScore = it?.animeBasicInfo?.favourites ?: 0,
                     season = it?.animeBasicInfo?.season?.rawValue ?: "UnKnown",
+                    seasonYear = it?.animeBasicInfo?.seasonYear ?: 0,
                     format = it?.animeBasicInfo?.format?.rawValue ?: "UnKnown",
                     status = it?.animeBasicInfo?.status?.rawValue ?: "Unknown"
                 ),
@@ -31,24 +32,111 @@ fun HomeAnimeListQuery.Data.toAnimeRecommendList(): AnimeRecommendList {
                 )
             )
         } ?: emptyList(),
-
         animeBasicList = listOf(
-            trending?.media?.map {
-                AnimeBasicInfo()
+            this?.trending?.media?.map {
+                AnimeInfo(
+                    id = it?.animeBasicInfo?.id ?: 0,
+                    idMal = it?.animeBasicInfo?.idMal ?: 0,
+                    title = TitleInfo(
+                        romaji = it?.animeBasicInfo?.title?.romaji,
+                        native = it?.animeBasicInfo?.title?.native,
+                        english = it?.animeBasicInfo?.title?.english ?: "No title"
+                    ),
+                    imageInfo = ImageInfo(
+                        url = it?.animeBasicInfo?.coverImage?.extraLarge,
+                        color = it?.animeBasicInfo?.coverImage?.color
+                    ),
+                    averageScore = it?.animeBasicInfo?.averageScore ?: 0,
+                    favoriteScore = it?.animeBasicInfo?.favourites ?: 0,
+                    season = it?.animeBasicInfo?.season?.rawValue ?: "UnKnown",
+                    seasonYear = it?.animeBasicInfo?.seasonYear ?: 0,
+                    format = it?.animeBasicInfo?.format?.rawValue ?: "UnKnown",
+                    status = it?.animeBasicInfo?.status?.rawValue ?: "Unknown"
+                )
             } ?: emptyList(),
-            popular?.media?.map {
-                AnimeBasicInfo()
+            this?.popular?.media?.map {
+                AnimeInfo(
+                    id = it?.animeBasicInfo?.id ?: 0,
+                    idMal = it?.animeBasicInfo?.idMal ?: 0,
+                    title = TitleInfo(
+                        romaji = it?.animeBasicInfo?.title?.romaji,
+                        native = it?.animeBasicInfo?.title?.native,
+                        english = it?.animeBasicInfo?.title?.english ?: "No title"
+                    ),
+                    imageInfo = ImageInfo(
+                        url = it?.animeBasicInfo?.coverImage?.extraLarge,
+                        color = it?.animeBasicInfo?.coverImage?.color
+                    ),
+                    averageScore = it?.animeBasicInfo?.averageScore ?: 0,
+                    favoriteScore = it?.animeBasicInfo?.favourites ?: 0,
+                    season = it?.animeBasicInfo?.season?.rawValue ?: "UnKnown",
+                    seasonYear = it?.animeBasicInfo?.seasonYear ?: 0,
+                    format = it?.animeBasicInfo?.format?.rawValue ?: "UnKnown",
+                    status = it?.animeBasicInfo?.status?.rawValue ?: "Unknown"
+                )
             } ?: emptyList(),
-
-            upComming?.media?.map {
-                AnimeBasicInfo()
+            this?.upComming?.media?.map {
+                AnimeInfo(
+                    id = it?.animeBasicInfo?.id ?: 0,
+                    idMal = it?.animeBasicInfo?.idMal ?: 0,
+                    title = TitleInfo(
+                        romaji = it?.animeBasicInfo?.title?.romaji,
+                        native = it?.animeBasicInfo?.title?.native,
+                        english = it?.animeBasicInfo?.title?.english ?: "No title"
+                    ),
+                    imageInfo = ImageInfo(
+                        url = it?.animeBasicInfo?.coverImage?.extraLarge,
+                        color = it?.animeBasicInfo?.coverImage?.color
+                    ),
+                    averageScore = it?.animeBasicInfo?.averageScore ?: 0,
+                    favoriteScore = it?.animeBasicInfo?.favourites ?: 0,
+                    season = it?.animeBasicInfo?.season?.rawValue ?: "UnKnown",
+                    seasonYear = it?.animeBasicInfo?.seasonYear ?: 0,
+                    format = it?.animeBasicInfo?.format?.rawValue ?: "UnKnown",
+                    status = it?.animeBasicInfo?.status?.rawValue ?: "Unknown"
+                )
             } ?: emptyList(),
-            trending?.media?.map {
-                AnimeBasicInfo()
+            this?.trending?.media?.map {
+                AnimeInfo(
+                    id = it?.animeBasicInfo?.id ?: 0,
+                    idMal = it?.animeBasicInfo?.idMal ?: 0,
+                    title = TitleInfo(
+                        romaji = it?.animeBasicInfo?.title?.romaji,
+                        native = it?.animeBasicInfo?.title?.native,
+                        english = it?.animeBasicInfo?.title?.english ?: "No title"
+                    ),
+                    imageInfo = ImageInfo(
+                        url = it?.animeBasicInfo?.coverImage?.extraLarge,
+                        color = it?.animeBasicInfo?.coverImage?.color
+                    ),
+                    averageScore = it?.animeBasicInfo?.averageScore ?: 0,
+                    favoriteScore = it?.animeBasicInfo?.favourites ?: 0,
+                    season = it?.animeBasicInfo?.season?.rawValue ?: "UnKnown",
+                    seasonYear = it?.animeBasicInfo?.seasonYear ?: 0,
+                    format = it?.animeBasicInfo?.format?.rawValue ?: "UnKnown",
+                    status = it?.animeBasicInfo?.status?.rawValue ?: "Unknown"
+                )
             } ?: emptyList(),
-
-            trending?.media?.map {
-                AnimeBasicInfo()
+            this?.trending?.media?.map {
+                AnimeInfo(
+                    id = it?.animeBasicInfo?.id ?: 0,
+                    idMal = it?.animeBasicInfo?.idMal ?: 0,
+                    title = TitleInfo(
+                        romaji = it?.animeBasicInfo?.title?.romaji,
+                        native = it?.animeBasicInfo?.title?.native,
+                        english = it?.animeBasicInfo?.title?.english ?: "No title"
+                    ),
+                    imageInfo = ImageInfo(
+                        url = it?.animeBasicInfo?.coverImage?.extraLarge,
+                        color = it?.animeBasicInfo?.coverImage?.color
+                    ),
+                    averageScore = it?.animeBasicInfo?.averageScore ?: 0,
+                    favoriteScore = it?.animeBasicInfo?.favourites ?: 0,
+                    season = it?.animeBasicInfo?.season?.rawValue ?: "UnKnown",
+                    seasonYear = it?.animeBasicInfo?.seasonYear ?: 0,
+                    format = it?.animeBasicInfo?.format?.rawValue ?: "UnKnown",
+                    status = it?.animeBasicInfo?.status?.rawValue ?: "Unknown"
+                )
             } ?: emptyList(),
         )
     )

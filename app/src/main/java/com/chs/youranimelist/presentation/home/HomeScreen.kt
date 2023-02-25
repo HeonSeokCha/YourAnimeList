@@ -18,6 +18,8 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,8 +39,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.chs.HomeRecommendListQuery
-import com.chs.fragment.AnimeList
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.AnimeRecommendBannerInfo
 import com.chs.youranimelist.presentation.main.Screen
 import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.shimmerEffect
@@ -50,7 +52,7 @@ fun HomeScreen(
     navigator: NavHostController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state
+    val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val pagerState = rememberPagerState()
 
@@ -59,36 +61,41 @@ fun HomeScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        item {
-            HorizontalPager(
-                modifier = if (state.isLoading) {
-                    Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .shimmerEffect()
-                } else {
-                    Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                },
-                state = pagerState,
-                pageCount = state.pagerList.size,
-            ) { idx ->
-                ItemHomeBanner(
-                    context = context,
-                    banner = state.pagerList[idx]
+        if (state.animeRecommendList?.bannerList != null) {
+            item {
+                HorizontalPager(
+                    modifier = if (state.isLoading) {
+                        Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .shimmerEffect()
+                    } else {
+                        Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                    },
+                    state = pagerState,
+                    pageCount = state.animeRecommendList?.bannerList!!.size
+                ) { idx ->
+                    ItemHomeBanner(
+                        context = context,
+                        banner = state.animeRecommendList?.bannerList!![idx]
+                    )
+                }
+            }
+        }
+
+        if (state.animeRecommendList?.animeBasicList != null) {
+            items(state.animeRecommendList?.animeBasicList!!.size) { idx ->
+                ItemAnimeSort(
+                    Constant.HOME_SORT_TILE[idx],
+                    state.animeRecommendList?.animeBasicList!![idx],
+                    navigator,
+                    context
                 )
             }
         }
 
-        items(state.nestedList.size) { idx ->
-            ItemAnimeSort(
-                Constant.HOME_SORT_TILE[idx],
-                state.nestedList[idx],
-                navigator,
-                context
-            )
-        }
         if (state.isLoading) {
             items(Constant.HOME_SORT_TILE.size) { idx ->
                 ItemSortShimmer(
@@ -102,7 +109,7 @@ fun HomeScreen(
 @Composable
 fun ItemHomeBanner(
     context: Context,
-    banner: AnimeList
+    banner: AnimeRecommendBannerInfo
 ) {
     val favoriteId = "favoriteId"
     val scoreId = "scoreId"
@@ -143,7 +150,7 @@ fun ItemHomeBanner(
         modifier = Modifier
             .fillMaxWidth()
             .height(250.dp),
-        model = banner?.animeList?.bannerImage
+        model = banner.animeInfo.imageInfo.url,
         contentDescription = null,
         contentScale = ContentScale.Crop
     )
@@ -156,8 +163,8 @@ fun ItemHomeBanner(
                         context, BrowseActivity::class.java
                     ).apply {
                         this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                        this.putExtra(Constant.TARGET_ID, banner?.id)
-                        this.putExtra(Constant.TARGET_ID_MAL, banner?.idMal)
+                        this.putExtra(Constant.TARGET_ID, banner.animeInfo.id)
+                        this.putExtra(Constant.TARGET_ID_MAL, banner.animeInfo.idMal)
                     }
                 )
             }
@@ -170,7 +177,7 @@ fun ItemHomeBanner(
                     start = 8.dp,
                     bottom = 32.dp
                 ),
-            text = banner?.title?.english ?: banner?.title?.romaji.toString(),
+            text = banner.animeInfo.title.romaji ?: banner.animeInfo.title.english,
             color = Color.White,
             fontWeight = FontWeight.Bold,
             maxLines = 1,
@@ -188,7 +195,7 @@ fun ItemHomeBanner(
             Text(
                 text = buildAnnotatedString {
                     appendInlineContent(scoreId, scoreId)
-                    append(banner?.averageScore.toString())
+                    append(banner.animeInfo.averageScore.toString())
                 },
                 inlineContent = inlineContent,
                 fontWeight = FontWeight.Bold,
@@ -199,7 +206,7 @@ fun ItemHomeBanner(
             Text(
                 text = buildAnnotatedString {
                     appendInlineContent(favoriteId, favoriteId)
-                    append(banner?.favourites.toString())
+                    append(banner.animeInfo.favoriteScore.toString())
                 },
                 inlineContent = inlineContent,
                 fontWeight = FontWeight.Bold,
@@ -213,7 +220,7 @@ fun ItemHomeBanner(
 @Composable
 fun ItemAnimeSort(
     title: String,
-    list: List<AnimeList>,
+    list: List<AnimeInfo>,
     navigator: NavController,
     context: Context
 ) {
@@ -281,7 +288,7 @@ fun ItemAnimeSort(
 
 @Composable
 fun ItemAnimeSmall(
-    item: AnimeList,
+    item: AnimeInfo,
     onClick: () -> Unit
 ) {
     val starId = "starId"
@@ -331,13 +338,13 @@ fun ItemAnimeSmall(
                     .fillMaxWidth()
                     .height(180.dp)
                     .clip(RoundedCornerShape(5.dp)),
-                model = item.coverImage?.extraLarge,
+                model = item.imageInfo.url,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = item.title?.english ?: item.title?.romaji.toString(),
+                text = item.title.romaji ?: item.title.english,
                 color = Color.Gray,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -359,7 +366,7 @@ fun ItemAnimeSmall(
                 verticalAlignment = Alignment.Bottom
             ) {
 
-                if (item.seasonYear != null) {
+                if (item.season != null) {
                     Text(
                         text = item.seasonYear.toString(),
                         color = Color.Gray,

@@ -2,6 +2,7 @@ package com.chs.youranimelist.data.repository
 
 import com.apollographql.apollo3.ApolloClient
 import com.chs.HomeAnimeListQuery
+import com.chs.youranimelist.data.mapper.toAnimeRecommendList
 import com.chs.youranimelist.domain.model.AnimeRecommendList
 import com.chs.youranimelist.domain.repository.AnimeRepository
 
@@ -13,7 +14,7 @@ class AnimeRepositoryImpl(
             .query(HomeAnimeListQuery())
             .execute()
             .data
-            ?
+            ?.toAnimeRecommendList()!!
     }
 
     override suspend fun getAnimeFilteredList(

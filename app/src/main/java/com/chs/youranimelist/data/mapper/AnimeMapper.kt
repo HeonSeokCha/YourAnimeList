@@ -3,7 +3,7 @@ package com.chs.youranimelist.data.mapper
 import com.chs.youranimelist.data.model.AnimeDetailDto
 import com.chs.youranimelist.data.model.AnimeDto
 import com.chs.youranimelist.domain.model.Anime
-import com.chs.youranimelist.domain.model.AnimeDetails
+import com.chs.youranimelist.domain.model.AnimeThemeInfo
 
 fun Anime.toAnimeDto(): AnimeDto {
     return AnimeDto(
@@ -21,8 +21,8 @@ fun Anime.toAnimeDto(): AnimeDto {
     )
 }
 
-fun AnimeDetailDto.toAnimDetails(): AnimeDetails {
-    return AnimeDetails(
+fun AnimeDetailDto.toAnimDetails(): AnimeThemeInfo {
+    return AnimeThemeInfo(
         data.openingThemes,
         data.endingThemes
     )
