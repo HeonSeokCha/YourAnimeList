@@ -42,26 +42,13 @@ query AnimeDetailInfo(
 
         studios (isMain: true) {
             studiosEdges: edges {
+                isMain
                 studiosNode: node {
                     id
                     name
-                    isAnimationStudio
                 }
-                isMain
             }
         }
-        nextAiringEpisode {
-            airingAt
-            episode
-        }
-        airingSchedule {
-            nodes {
-                id
-                airingAt
-                episode
-            }
-        }
-
         externalLinks {
             id
             url
@@ -72,8 +59,6 @@ query AnimeDetailInfo(
             nodes {
                 id
                 name {
-                    first
-                    last
                     full
                 }
                 image {

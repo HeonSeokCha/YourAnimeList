@@ -135,14 +135,8 @@ object Constant {
     )
 
     val mediaStatus = hashMapOf(
-        Pair(MediaStatus.RELEASING, "Up Releasing"),
-        Pair(MediaStatus.FINISHED, "FINISHED"),
-        Pair(MediaStatus.NOT_YET_RELEASED, "Up Coming")
-    )
-
-    val mediaStatusColor = hashMapOf(
-        Pair(MediaStatus.RELEASING, MediaStatusReleasingColor),
-        Pair(MediaStatus.FINISHED, MediaStatusFinishedColor),
-        Pair(MediaStatus.NOT_YET_RELEASED, MediaStatusNotYetColor)
+        Pair("RELEASING", "Up Releasing" to MediaStatusReleasingColor),
+        Pair("FINISHED", "FINISHED" to MediaStatusFinishedColor),
+        Pair("NOT_YET_RELEASED", "Up Coming" to MediaStatusNotYetColor)
     )
 }

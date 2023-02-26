@@ -351,8 +351,8 @@ fun ItemAnimeSmall(
                 fontSize = 12.sp
             )
             Text(
-                text = Constant.mediaStatus[item.status] ?: "",
-                color = Constant.mediaStatusColor[item.status] ?: Color(0xFF888888),
+                text = Constant.mediaStatus[item.status]?.first ?: "",
+                color = Constant.mediaStatus[item.status]?.second ?: Color(0xFF888888),
                 fontSize = 12.sp
             )
 
@@ -366,29 +366,25 @@ fun ItemAnimeSmall(
                 verticalAlignment = Alignment.Bottom
             ) {
 
-                if (item.season != null) {
-                    Text(
-                        text = item.seasonYear.toString(),
-                        color = Color.Gray,
-                        fontSize = 12.sp,
-                    )
-                }
+                Text(
+                    text = item.seasonYear.toString(),
+                    color = Color.Gray,
+                    fontSize = 12.sp,
+                )
 
-                if (item.averageScore != null) {
-                    Text(
-                        text = buildAnnotatedString {
-                            appendInlineContent(starId, starId)
-                            append(item.averageScore.toString())
-                        },
-                        inlineContent = inlineContent,
-                        color = Color.Gray,
-                        fontSize = 12.sp,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f, false),
-                        textAlign = TextAlign.End
-                    )
-                }
+                Text(
+                    text = buildAnnotatedString {
+                        appendInlineContent(starId, starId)
+                        append(item.averageScore.toString())
+                    },
+                    inlineContent = inlineContent,
+                    color = Color.Gray,
+                    fontSize = 12.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f, false),
+                    textAlign = TextAlign.End
+                )
             }
         }
     }
