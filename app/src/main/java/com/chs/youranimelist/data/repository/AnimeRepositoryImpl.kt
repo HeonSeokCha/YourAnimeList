@@ -1,8 +1,13 @@
 package com.chs.youranimelist.data.repository
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.Optional
+import com.chs.AnimeDetailInfoQuery
 import com.chs.HomeAnimeListQuery
+import com.chs.youranimelist.data.ConvertDate
+import com.chs.youranimelist.data.mapper.toAnimeDetailInfo
 import com.chs.youranimelist.data.mapper.toAnimeRecommendList
+import com.chs.youranimelist.domain.model.AnimeDetailInfo
 import com.chs.youranimelist.domain.model.AnimeRecommendList
 import com.chs.youranimelist.domain.repository.AnimeRepository
 
@@ -11,7 +16,15 @@ class AnimeRepositoryImpl(
 ) : AnimeRepository {
     override suspend fun getAnimeRecommendList(): AnimeRecommendList {
         return apolloClient
-            .query(HomeAnimeListQuery())
+            .query(
+                HomeAnimeListQuery(
+                    currentSeason = Optional.present(ConvertDate.getCurrentSeason()),
+                    nextSeason = Optional.present(ConvertDate.getNextSeason()),
+                    currentYear = Optional.present(ConvertDate.getCurrentYear()),
+                    nextYear = Optional.present(ConvertDate.getCurrentYear() + 1),
+                    lastYear = Optional.present(ConvertDate.getCurrentYear() - 1)
+                )
+            )
             .execute()
             .data
             ?.toAnimeRecommendList()!!
@@ -27,8 +40,16 @@ class AnimeRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getAnimeDetailInfo(animeId: Int) {
-        TODO("Not yet implemented")
+    override suspend fun getAnimeDetailInfo(animeId: Int): AnimeDetailInfo {
+        return apolloClient
+            .query(
+                AnimeDetailInfoQuery(
+                    id = Optional.present(animeId)
+                )
+            )
+            .execute()
+            .data
+            ?.toAnimeDetailInfo()!!
     }
 
     override suspend fun getAnimeDetailInfoRecommendList(animeId: Int) {

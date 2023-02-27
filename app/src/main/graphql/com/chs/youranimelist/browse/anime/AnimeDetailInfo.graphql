@@ -1,4 +1,4 @@
-query AnimeDetailInfo(
+query AnimeDetailInfoQuery(
     $id: Int
 ) {
     Media(id: $id) {
@@ -50,9 +50,10 @@ query AnimeDetailInfo(
             }
         }
         externalLinks {
-            id
-            url
+            color
+            icon
             site
+            url
         }
 
         characters(sort: [ROLE,ID]) {

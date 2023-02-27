@@ -1,10 +1,9 @@
 query HomeAnimeList(
     $currentSeason: MediaSeason,
     $nextSeason: MediaSeason,
-    $lastSeason: MediaSeason,
     $currentYear: Int,
-    $lastYear: Int,
-    $nexrYear: Int
+    $nextYear: Int,
+    $lastYear: Int
 ) {
     viewPager: Page(
         page: 1,
@@ -14,7 +13,7 @@ query HomeAnimeList(
             sort: [SCORE_DESC],
             type: ANIME,
             seasonYear: $lastYear,
-            season: $lastSeason
+            season: $currentSeason
         ) {
             ... animeBasicInfo
             trailer {
@@ -54,7 +53,7 @@ query HomeAnimeList(
         media(
             sort: [POPULARITY_DESC],
             season: $nextSeason,
-            seasonYear: $nexrYear,
+            seasonYear: $nextYear,
             type: ANIME
         ) {
             ... animeBasicInfo

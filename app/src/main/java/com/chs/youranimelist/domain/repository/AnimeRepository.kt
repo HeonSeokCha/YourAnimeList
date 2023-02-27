@@ -1,6 +1,6 @@
 package com.chs.youranimelist.domain.repository
 
-import com.chs.youranimelist.domain.model.AnimeRecommendList
+import com.chs.youranimelist.domain.model.*
 
 interface AnimeRepository {
 
@@ -12,15 +12,15 @@ interface AnimeRepository {
         season: String,
         year: Int,
         genre: String?
-    )
+    ): List<AnimeInfo>
 
-    suspend fun getAnimeDetailInfo(animeId: Int)
+    suspend fun getAnimeDetailInfo(animeId: Int): AnimeDetailInfo
 
-    suspend fun getAnimeDetailInfoRecommendList(animeId: Int)
+    suspend fun getAnimeDetailInfoRecommendList(animeId: Int): List<AnimeInfo>
 
-    suspend fun getAnimeDetailTheme(animeId: Int)
+    suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo
 
-    suspend fun getAnimeSearchResult(title: String)
+    suspend fun getAnimeSearchResult(title: String): List<AnimeInfo>
 
     suspend fun getSavedAnimeList()
 
