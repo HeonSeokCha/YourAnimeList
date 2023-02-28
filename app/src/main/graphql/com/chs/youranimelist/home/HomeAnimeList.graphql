@@ -59,7 +59,7 @@ query HomeAnimeList(
             ... animeBasicInfo
         }
     },
-    allTime : Page(
+    allTime: Page(
         page: 1,
         perPage: 6
     ) {
@@ -70,7 +70,7 @@ query HomeAnimeList(
             ... animeBasicInfo
         }
     },
-    topList : Page(
+    topList: Page(
         page: 1,
         perPage: 10
     ) {
@@ -79,6 +79,7 @@ query HomeAnimeList(
             type: ANIME
         ) {
             ... animeBasicInfo
+            genres,
         }
     }
 }
