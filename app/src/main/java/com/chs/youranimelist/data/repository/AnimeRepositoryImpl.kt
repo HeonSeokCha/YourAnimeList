@@ -8,7 +8,9 @@ import com.chs.youranimelist.data.ConvertDate
 import com.chs.youranimelist.data.mapper.toAnimeDetailInfo
 import com.chs.youranimelist.data.mapper.toAnimeRecommendList
 import com.chs.youranimelist.domain.model.AnimeDetailInfo
+import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.AnimeRecommendList
+import com.chs.youranimelist.domain.model.AnimeThemeInfo
 import com.chs.youranimelist.domain.repository.AnimeRepository
 
 class AnimeRepositoryImpl(
@@ -36,7 +38,7 @@ class AnimeRepositoryImpl(
         season: String,
         year: Int,
         genre: String?
-    ) {
+    ): List<AnimeInfo> {
         TODO("Not yet implemented")
     }
 
@@ -52,15 +54,15 @@ class AnimeRepositoryImpl(
             ?.toAnimeDetailInfo()!!
     }
 
-    override suspend fun getAnimeDetailInfoRecommendList(animeId: Int) {
+    override suspend fun getAnimeDetailInfoRecommendList(animeId: Int): List<AnimeInfo> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getAnimeDetailTheme(animeId: Int) {
+    override suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getAnimeSearchResult(title: String) {
+    override suspend fun getAnimeSearchResult(title: String): List<AnimeInfo> {
         TODO("Not yet implemented")
     }
 

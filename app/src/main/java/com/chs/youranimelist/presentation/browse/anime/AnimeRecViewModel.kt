@@ -11,14 +11,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimeRecViewModel @Inject constructor(
-    private val getAnimeRecUseCase: GetAnimeRecUseCase
+
 ) : ViewModel() {
 
     var state by mutableStateOf(AnimeRecState())
 
     fun getAnimeRecommendList(animeId: Int) {
-        state = state.copy(
-            animeRecInfo = getAnimeRecUseCase(animeId).cachedIn(viewModelScope)
-        )
     }
 }

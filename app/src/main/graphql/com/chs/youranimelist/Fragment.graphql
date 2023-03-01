@@ -32,8 +32,6 @@ fragment characterBasicInfo on Character {
 }
 
 fragment pageBasicInfo on PageInfo {
-    total
-    perPage
     currentPage
     lastPage
     hasNextPage

@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.presentation.main.Screen
 import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
@@ -78,12 +79,6 @@ fun HomeScreen(
                     navigator,
                     context
                 )
-            }
-        }
-
-        if (state.animeRecommendList?.topAnimeList != null) {
-            items(state.animeRecommendList?.topAnimeList!!.size) {
-
             }
         }
 

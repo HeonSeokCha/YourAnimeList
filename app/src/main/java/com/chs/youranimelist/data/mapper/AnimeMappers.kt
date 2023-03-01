@@ -1,6 +1,7 @@
 package com.chs.youranimelist.data.mapper
 
 import com.chs.AnimeDetailInfoQuery
+import com.chs.AnimeRecommendQuery
 import com.chs.HomeAnimeListQuery
 import com.chs.youranimelist.domain.model.*
 
@@ -105,7 +106,7 @@ fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
                     )
                 }
             } ?: emptyList(),
-            this?.trending?.media?.map {
+            this?.allTime?.media?.map {
                 with(it?.animeBasicInfo) {
                     AnimeInfo(
                         id = this?.id ?: 0,
@@ -128,7 +129,7 @@ fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
                     )
                 }
             } ?: emptyList(),
-            this?.trending?.media?.map {
+            this?.topList?.media?.map {
                 with(it?.animeBasicInfo) {
                     AnimeInfo(
                         id = this?.id ?: 0,
@@ -239,10 +240,47 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
             } ?: emptyList(),
             characterList = this?.characters?.nodes?.map {
                 CharacterInfo(
-                    id = it?.id ?: 0,
-                    name = it?.name?.full ?: "",
-                    image = it?.image?.large
+                    id = it?.characterBasicInfo?.id ?: 0,
+                    name = it?.characterBasicInfo?.name?.full ?: "",
+                    nativeName = it?.characterBasicInfo?.name?.native ?: "",
+                    imageUrl = it?.characterBasicInfo?.image?.large,
+                    favorites = it?.characterBasicInfo?.favourites ?: 0
                 )
+            } ?: emptyList()
+        )
+    }
+}
+
+fun AnimeRecommendQuery.Data.toAnimeInfoList(): ListInfo<AnimeInfo> {
+    return with(this.Media?.recommendations) {
+        ListInfo(
+            pageInfo = PageInfo(
+                currentPage = this?.pageInfo?.pageBasicInfo?.currentPage ?: 0,
+                lasPage = this?.pageInfo?.pageBasicInfo?.lastPage ?: 0,
+                hasNextPage = this?.pageInfo?.pageBasicInfo?.hasNextPage ?: false
+            ),
+            list = this?.nodes?.map {
+                with(it?.mediaRecommendation?.animeBasicInfo) {
+                    AnimeInfo(
+                        id = this?.id ?: 0,
+                        idMal = this?.idMal ?: 0,
+                        title = TitleInfo(
+                            romaji = this?.title?.romaji,
+                            native = this?.title?.native,
+                            english = this?.title?.english ?: "No title"
+                        ),
+                        imageInfo = ImageInfo(
+                            url = this?.coverImage?.extraLarge,
+                            color = this?.coverImage?.color
+                        ),
+                        averageScore = this?.averageScore ?: 0,
+                        favoriteScore = this?.favourites ?: 0,
+                        season = this?.season?.rawValue ?: "UnKnown",
+                        seasonYear = this?.seasonYear ?: 0,
+                        format = this?.format?.rawValue ?: "UnKnown",
+                        status = this?.status?.rawValue ?: "Unknown"
+                    )
+                }
             } ?: emptyList()
         )
     }

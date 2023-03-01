@@ -29,7 +29,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.youranimelist.presentation.LoadingIndicator
 import com.chs.youranimelist.presentation.browse.BrowseScreen
-import com.chs.youranimelist.presentation.home.ItemAnimeSmall
+import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.util.color
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -63,15 +63,15 @@ fun CharacterDetailScreen(
                 }
             )
         }
-        if (state.characterDetailInfo?.character?.media?.edges != null) {
-            items(state.characterDetailInfo.character.media.edges) { anime ->
+        if (state.characterDetailInfo?.animeList != null) {
+            items(state.characterDetailInfo.animeList) { anime ->
                 ItemAnimeSmall(
-                    item = anime?.node?.animeList!!,
+                    item = anime,
                     onClick = {
                         navController.navigate(
                             "${BrowseScreen.AnimeDetailScreen.route}/" +
-                                    "${anime.node.animeList.id}" +
-                                    "/${anime.node.animeList.idMal ?: 0}"
+                                    "${anime.id}" +
+                                    "/${anime.idMal}"
                         )
                     }
                 )
@@ -91,7 +91,7 @@ fun CharacterBanner(
     insertClick: () -> Unit,
     deleteClick: () -> Unit
 ) {
-    val characterInfo = state.characterDetailInfo?.character
+    val characterInfo = state.characterDetailInfo
     val activity = (LocalContext.current as? Activity)
     Box(
         modifier = Modifier
@@ -117,7 +117,7 @@ fun CharacterBanner(
                         .background(
                             color = "#ffffff".color
                         ),
-                    model = characterInfo?.image?.large,
+                    model = characterInfo?.characterInfo?.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
@@ -133,15 +133,15 @@ fun CharacterBanner(
                         ),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Text(text = characterInfo?.name?.full.toString())
-                    Text(text = characterInfo?.name?.native.toString())
+                    Text(text = characterInfo?.characterInfo?.name ?: "")
+                    Text(text = characterInfo?.characterInfo?.nativeName ?: "")
                     Row {
                         Icon(
                             Icons.Default.Favorite,
                             contentDescription = null,
                             tint = Color.Red
                         )
-                        Text(text = characterInfo?.favourites.toString())
+                        Text(text = characterInfo?.favorites.toString())
                     }
 
                 }
@@ -178,7 +178,7 @@ fun CharacterBanner(
 
             Text(
                 text = HtmlCompat.fromHtml(
-                    state.characterDetailInfo?.character?.description ?: "",
+                    state.characterDetailInfo?.description ?: "",
                     HtmlCompat.FROM_HTML_MODE_LEGACY
                 ).toString()
             )

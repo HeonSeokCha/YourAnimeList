@@ -58,13 +58,7 @@ query AnimeDetailInfoQuery(
 
         characters(sort: [ROLE,ID]) {
             nodes {
-                id
-                name {
-                    full
-                }
-                image {
-                    large
-                }
+                ...characterBasicInfo
             }
         }
     }

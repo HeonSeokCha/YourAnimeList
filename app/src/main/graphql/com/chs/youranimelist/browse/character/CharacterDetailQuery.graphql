@@ -1,28 +1,10 @@
 query CharacterQuery($id: Int) {
     character: Character(id: $id) {
-        id
-        name {
-            first
-            last
-            full
-            native
-            alternative
-        }
-        image {
-            large
-        }
+        ...characterBasicInfo
         description(asHtml: true)
-        isFavourite
-        siteUrl
-        favourites
         media(sort: [POPULARITY_DESC]) {
-            edges {
-                relationType
-                characterRole
-                staffRole
-                node {
-                    ...animeBasicInfo
-                }
+            nodes {
+                ...animeBasicInfo
             }
         }
     }
