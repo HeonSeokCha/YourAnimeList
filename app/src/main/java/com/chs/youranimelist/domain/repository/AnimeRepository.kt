@@ -12,15 +12,21 @@ interface AnimeRepository {
         season: String,
         year: Int,
         genre: String?
-    ): List<AnimeInfo>
+    ): ListInfo<AnimeInfo>
 
     suspend fun getAnimeDetailInfo(animeId: Int): AnimeDetailInfo
 
-    suspend fun getAnimeDetailInfoRecommendList(animeId: Int): List<AnimeInfo>
+    suspend fun getAnimeDetailInfoRecommendList(
+        page: Int,
+        animeId: Int
+    ): ListInfo<AnimeInfo>
 
     suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo
 
-    suspend fun getAnimeSearchResult(title: String): List<AnimeInfo>
+    suspend fun getAnimeSearchResult(
+        page: Int,
+        query: String
+    ): ListInfo<AnimeInfo>
 
     suspend fun getSavedAnimeList()
 

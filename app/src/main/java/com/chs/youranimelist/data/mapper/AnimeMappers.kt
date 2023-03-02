@@ -3,6 +3,8 @@ package com.chs.youranimelist.data.mapper
 import com.chs.AnimeDetailInfoQuery
 import com.chs.AnimeRecommendQuery
 import com.chs.HomeAnimeListQuery
+import com.chs.SearchAnimeQuery
+import com.chs.youranimelist.data.model.JikanAnimeDataDto
 import com.chs.youranimelist.domain.model.*
 
 fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
@@ -284,4 +286,46 @@ fun AnimeRecommendQuery.Data.toAnimeInfoList(): ListInfo<AnimeInfo> {
             } ?: emptyList()
         )
     }
+}
+
+fun JikanAnimeDataDto.toAnimeThemeInfo(): AnimeThemeInfo {
+    return AnimeThemeInfo(
+        openingThemes = this.data.openingThemes,
+        endingThemes = this.data.endingThemes
+    )
+}
+
+fun SearchAnimeQuery.Data.toAnimeList(): ListInfo<AnimeInfo> {
+    return ListInfo(
+        pageInfo = with(this.page?.pageInfo?.pageBasicInfo) {
+            PageInfo(
+                currentPage = this?.currentPage ?: 0,
+                lasPage = this?.lastPage ?: 0,
+                hasNextPage = this?.hasNextPage ?: false
+            )
+        },
+        list = this.page?.media?.map {
+            with(it?.animeBasicInfo) {
+                AnimeInfo(
+                    id = this?.id ?: 0,
+                    idMal = this?.idMal ?: 0,
+                    title = TitleInfo(
+                        romaji = this?.title?.romaji,
+                        native = this?.title?.native,
+                        english = this?.title?.english ?: "No title"
+                    ),
+                    imageInfo = ImageInfo(
+                        url = this?.coverImage?.extraLarge,
+                        color = this?.coverImage?.color
+                    ),
+                    averageScore = this?.averageScore ?: 0,
+                    favoriteScore = this?.favourites ?: 0,
+                    season = this?.season?.rawValue ?: "UnKnown",
+                    seasonYear = this?.seasonYear ?: 0,
+                    format = this?.format?.rawValue ?: "UnKnown",
+                    status = this?.status?.rawValue ?: "Unknown"
+                )
+            }
+        } ?: emptyList()
+    )
 }

@@ -1,6 +1,6 @@
 package com.chs.youranimelist.data.source
 
-import com.chs.youranimelist.data.model.AnimeDetailDto
+import com.chs.youranimelist.data.model.JikanAnimeDataDto
 import com.chs.youranimelist.util.Constant
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -12,10 +12,9 @@ import javax.inject.Singleton
 class KtorJikanService @Inject constructor(
     private val client: HttpClient
 ) {
-    suspend fun getAnimeTheme(malId: Int): AnimeDetailDto? {
-        val a = client.get("${Constant.JIKAN_API_URL}/$malId/themes") {
+    suspend fun getAnimeTheme(malId: Int): JikanAnimeDataDto? {
+        return client.get("${Constant.JIKAN_API_URL}/$malId/themes") {
             headers.append("Content-Type", "application/json")
-        }
-        return a.body()
+        }.body()
     }
 }
