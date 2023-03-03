@@ -1,4 +1,4 @@
-package com.chs.youranimelist.data.source
+package com.chs.youranimelist.data.source.db.dao
 
 import androidx.room.*
 import com.chs.youranimelist.data.model.AnimeDto

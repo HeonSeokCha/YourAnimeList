@@ -1,4 +1,4 @@
-package com.chs.youranimelist.data.source
+package com.chs.youranimelist.data.source.db.dao
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow

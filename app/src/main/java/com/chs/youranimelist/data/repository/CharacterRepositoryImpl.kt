@@ -14,15 +14,15 @@ class CharacterRepositoryImpl : CharacterRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getSavedCharacterList() {
+    override fun getSavedCharacterList(): List<CharacterInfo> {
         TODO("Not yet implemented")
     }
 
-    override fun getSavedCharacterInfo() {
+    override fun getSavedCharacterInfo(): CharacterInfo? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun insertCharacterInfo() {
+    override suspend fun insertCharacterInfo(characterInfo: CharacterInfo) {
         TODO("Not yet implemented")
     }
 

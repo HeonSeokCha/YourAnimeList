@@ -4,11 +4,8 @@ data class AnimeInfo(
     val id: Int,
     val idMal: Int,
     val title: TitleInfo,
-    val imageInfo: ImageInfo,
+    val imageUrl: String?,
     val averageScore: Int,
-    val favoriteScore: Int,
-    val season: String,
     val seasonYear: Int,
-    val format: String,
     val status: String
 )

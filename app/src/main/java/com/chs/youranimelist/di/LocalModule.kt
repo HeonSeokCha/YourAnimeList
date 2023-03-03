@@ -2,7 +2,7 @@ package com.chs.youranimelist.di
 
 import android.app.Application
 import androidx.room.Room
-import com.chs.youranimelist.data.source.AnimeListDatabase
+import com.chs.youranimelist.data.source.db.AnimeListDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -10,11 +10,11 @@ interface CharacterRepository {
 
     suspend fun getCharacterSearchResult(name: String): ListInfo<CharacterInfo>
 
-    fun getSavedCharacterList()
+    fun getSavedCharacterList(): List<CharacterInfo>
 
-    fun getSavedCharacterInfo()
+    fun getSavedCharacterInfo(): CharacterInfo?
 
-    suspend fun insertCharacterInfo()
+    suspend fun insertCharacterInfo(characterInfo: CharacterInfo)
 
     suspend fun deleteCharacterInfo()
 

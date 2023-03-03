@@ -28,11 +28,11 @@ interface AnimeRepository {
         query: String
     ): ListInfo<AnimeInfo>
 
-    suspend fun getSavedAnimeList()
+    suspend fun getSavedAnimeList(): List<AnimeInfo>
 
-    suspend fun getSavedAnimeInfo()
+    suspend fun getSavedAnimeInfo(): AnimeInfo?
 
-    suspend fun insertSavedAnimeInfo()
+    suspend fun insertSavedAnimeInfo(animeInfo: AnimeInfo)
 
     suspend fun deleteSavedAnimeInfo()
 

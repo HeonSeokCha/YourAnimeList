@@ -53,8 +53,8 @@ class AnimeRepositoryImpl(
     }
 
     override suspend fun getAnimeDetailInfoRecommendList(
-        animeId: Int,
-        page: Int
+        page: Int,
+        animeId: Int
     ): ListInfo<AnimeInfo> {
         return apolloClient
             .query(
@@ -85,15 +85,15 @@ class AnimeRepositoryImpl(
             ?.toAnimeList()!!
     }
 
-    override suspend fun getSavedAnimeList() {
+    override suspend fun getSavedAnimeList(): List<AnimeInfo> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getSavedAnimeInfo() {
+    override suspend fun getSavedAnimeInfo(): AnimeInfo? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun insertSavedAnimeInfo() {
+    override suspend fun insertSavedAnimeInfo(animeInfo: AnimeInfo) {
         TODO("Not yet implemented")
     }
 
