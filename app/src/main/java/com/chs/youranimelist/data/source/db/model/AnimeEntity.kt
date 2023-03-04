@@ -9,7 +9,7 @@ data class AnimeEntity(
     val id: Int,
     val idMal: Int,
     val title: String,
-    val imageUrl: String,
+    val imageUrl: String?,
     val seasonYear: Int,
     val status: String
 )

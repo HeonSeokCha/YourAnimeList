@@ -2,19 +2,19 @@ package com.chs.youranimelist.data.repository
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
-import com.chs.AnimeDetailInfoQuery
-import com.chs.AnimeRecommendQuery
-import com.chs.HomeAnimeListQuery
-import com.chs.SearchAnimeQuery
+import com.chs.*
 import com.chs.youranimelist.data.ConvertDate
 import com.chs.youranimelist.data.mapper.*
 import com.chs.youranimelist.data.source.KtorJikanService
+import com.chs.youranimelist.data.source.db.dao.AnimeListDao
 import com.chs.youranimelist.domain.model.*
 import com.chs.youranimelist.domain.repository.AnimeRepository
+import kotlinx.coroutines.flow.Flow
 
 class AnimeRepositoryImpl(
     private val apolloClient: ApolloClient,
-    private val jikanService: KtorJikanService
+    private val jikanService: KtorJikanService,
+    private val dao: AnimeListDao
 ) : AnimeRepository {
     override suspend fun getAnimeRecommendList(): AnimeRecommendList {
         return apolloClient
@@ -85,23 +85,29 @@ class AnimeRepositoryImpl(
             ?.toAnimeList()!!
     }
 
-    override suspend fun getSavedAnimeList(): List<AnimeInfo> {
-        TODO("Not yet implemented")
+    override fun getSavedAnimeList(): Flow<List<AnimeInfo>> {
+        return dao.getAllAnimeList()
     }
 
-    override suspend fun getSavedAnimeInfo(): AnimeInfo? {
-        TODO("Not yet implemented")
+    override fun getSavedAnimeInfo(id: Int): Flow<AnimeInfo?> {
+        return dao.checkAnimeList(id)
     }
 
     override suspend fun insertSavedAnimeInfo(animeInfo: AnimeInfo) {
-        TODO("Not yet implemented")
+        dao.insert(animeInfo)
     }
 
-    override suspend fun deleteSavedAnimeInfo() {
-        TODO("Not yet implemented")
+    override suspend fun deleteSavedAnimeInfo(animeInfo: AnimeInfo) {
+        dao.delete(animeInfo)
     }
 
-    override suspend fun getAnimeGenreList() {
-        TODO("Not yet implemented")
+    override suspend fun getAnimeGenreList(): List<String> {
+        return apolloClient.query(
+            GenreQuery()
+        )
+            .execute()
+            .data?.genreCollection?.map {
+                it.let { it!! }
+            } ?: emptyList()
     }
 }

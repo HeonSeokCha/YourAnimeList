@@ -5,6 +5,7 @@ import com.chs.AnimeRecommendQuery
 import com.chs.HomeAnimeListQuery
 import com.chs.SearchAnimeQuery
 import com.chs.youranimelist.data.model.JikanAnimeDataDto
+import com.chs.youranimelist.data.source.db.model.AnimeEntity
 import com.chs.youranimelist.domain.model.*
 
 fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
@@ -12,7 +13,7 @@ fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
         bannerList = this?.viewPager?.media?.map {
             with(it?.animeBasicInfo) {
                 AnimeRecommendBannerInfo(
-                    animeInfo = AnimeInfo(
+                    AnimeInfo(
                         id = this?.id ?: 0,
                         idMal = this?.idMal ?: 0,
                         title = TitleInfo(
@@ -20,15 +21,9 @@ fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
                             native = this?.title?.native,
                             english = this?.title?.english ?: "No title"
                         ),
-                        imageInfo = ImageInfo(
-                            url = this?.coverImage?.extraLarge,
-                            color = this?.coverImage?.color
-                        ),
+                        imageUrl = this?.coverImage?.extraLarge,
                         averageScore = this?.averageScore ?: 0,
-                        favoriteScore = this?.favourites ?: 0,
-                        season = this?.season?.rawValue ?: "UnKnown",
                         seasonYear = this?.seasonYear ?: 0,
-                        format = this?.format?.rawValue ?: "UnKnown",
                         status = this?.status?.rawValue ?: "Unknown"
                     ),
                     trailer = TrailerInfo(
@@ -49,15 +44,9 @@ fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
                             native = this?.title?.native,
                             english = this?.title?.english ?: "No title"
                         ),
-                        imageInfo = ImageInfo(
-                            url = this?.coverImage?.extraLarge,
-                            color = this?.coverImage?.color
-                        ),
+                        imageUrl = this?.coverImage?.extraLarge,
                         averageScore = this?.averageScore ?: 0,
-                        favoriteScore = this?.favourites ?: 0,
-                        season = this?.season?.rawValue ?: "UnKnown",
                         seasonYear = this?.seasonYear ?: 0,
-                        format = this?.format?.rawValue ?: "UnKnown",
                         status = this?.status?.rawValue ?: "Unknown"
                     )
                 }
@@ -72,15 +61,9 @@ fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
                             native = this?.title?.native,
                             english = this?.title?.english ?: "No title"
                         ),
-                        imageInfo = ImageInfo(
-                            url = this?.coverImage?.extraLarge,
-                            color = this?.coverImage?.color
-                        ),
+                        imageUrl = this?.coverImage?.extraLarge,
                         averageScore = this?.averageScore ?: 0,
-                        favoriteScore = this?.favourites ?: 0,
-                        season = this?.season?.rawValue ?: "UnKnown",
                         seasonYear = this?.seasonYear ?: 0,
-                        format = this?.format?.rawValue ?: "UnKnown",
                         status = this?.status?.rawValue ?: "Unknown"
                     )
                 }
@@ -95,15 +78,9 @@ fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
                             native = this?.title?.native,
                             english = this?.title?.english ?: "No title"
                         ),
-                        imageInfo = ImageInfo(
-                            url = this?.coverImage?.extraLarge,
-                            color = this?.coverImage?.color
-                        ),
+                        imageUrl = this?.coverImage?.extraLarge,
                         averageScore = this?.averageScore ?: 0,
-                        favoriteScore = this?.favourites ?: 0,
-                        season = this?.season?.rawValue ?: "UnKnown",
                         seasonYear = this?.seasonYear ?: 0,
-                        format = this?.format?.rawValue ?: "UnKnown",
                         status = this?.status?.rawValue ?: "Unknown"
                     )
                 }
@@ -118,15 +95,9 @@ fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
                             native = this?.title?.native,
                             english = this?.title?.english ?: "No title"
                         ),
-                        imageInfo = ImageInfo(
-                            url = this?.coverImage?.extraLarge,
-                            color = this?.coverImage?.color
-                        ),
+                        imageUrl = this?.coverImage?.extraLarge,
                         averageScore = this?.averageScore ?: 0,
-                        favoriteScore = this?.favourites ?: 0,
-                        season = this?.season?.rawValue ?: "UnKnown",
                         seasonYear = this?.seasonYear ?: 0,
-                        format = this?.format?.rawValue ?: "UnKnown",
                         status = this?.status?.rawValue ?: "Unknown"
                     )
                 }
@@ -141,15 +112,9 @@ fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
                             native = this?.title?.native,
                             english = this?.title?.english ?: "No title"
                         ),
-                        imageInfo = ImageInfo(
-                            url = this?.coverImage?.extraLarge,
-                            color = this?.coverImage?.color
-                        ),
+                        imageUrl = this?.coverImage?.extraLarge,
                         averageScore = this?.averageScore ?: 0,
-                        favoriteScore = this?.favourites ?: 0,
-                        season = this?.season?.rawValue ?: "UnKnown",
                         seasonYear = this?.seasonYear ?: 0,
-                        format = this?.format?.rawValue ?: "UnKnown",
                         status = this?.status?.rawValue ?: "Unknown"
                     )
                 }
@@ -170,15 +135,9 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
                         native = this?.title?.native,
                         english = this?.title?.english ?: "No title"
                     ),
-                    imageInfo = ImageInfo(
-                        url = this?.coverImage?.extraLarge,
-                        color = this?.coverImage?.color
-                    ),
+                    imageUrl = this?.coverImage?.extraLarge,
                     averageScore = this?.averageScore ?: 0,
-                    favoriteScore = this?.favourites ?: 0,
-                    season = this?.season?.rawValue ?: "UnKnown",
                     seasonYear = this?.seasonYear ?: 0,
-                    format = this?.format?.rawValue ?: "UnKnown",
                     status = this?.status?.rawValue ?: "Unknown"
                 )
             },
@@ -209,15 +168,9 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
                                 native = this?.title?.native,
                                 english = this?.title?.english ?: "No title"
                             ),
-                            imageInfo = ImageInfo(
-                                url = this?.coverImage?.extraLarge,
-                                color = this?.coverImage?.color
-                            ),
+                            imageUrl = this?.coverImage?.extraLarge,
                             averageScore = this?.averageScore ?: 0,
-                            favoriteScore = this?.favourites ?: 0,
-                            season = this?.season?.rawValue ?: "UnKnown",
                             seasonYear = this?.seasonYear ?: 0,
-                            format = this?.format?.rawValue ?: "UnKnown",
                             status = this?.status?.rawValue ?: "Unknown"
                         )
                     )
@@ -271,15 +224,9 @@ fun AnimeRecommendQuery.Data.toAnimeInfoList(): ListInfo<AnimeInfo> {
                             native = this?.title?.native,
                             english = this?.title?.english ?: "No title"
                         ),
-                        imageInfo = ImageInfo(
-                            url = this?.coverImage?.extraLarge,
-                            color = this?.coverImage?.color
-                        ),
+                        imageUrl = this?.coverImage?.extraLarge,
                         averageScore = this?.averageScore ?: 0,
-                        favoriteScore = this?.favourites ?: 0,
-                        season = this?.season?.rawValue ?: "UnKnown",
                         seasonYear = this?.seasonYear ?: 0,
-                        format = this?.format?.rawValue ?: "UnKnown",
                         status = this?.status?.rawValue ?: "Unknown"
                     )
                 }
@@ -314,18 +261,34 @@ fun SearchAnimeQuery.Data.toAnimeList(): ListInfo<AnimeInfo> {
                         native = this?.title?.native,
                         english = this?.title?.english ?: "No title"
                     ),
-                    imageInfo = ImageInfo(
-                        url = this?.coverImage?.extraLarge,
-                        color = this?.coverImage?.color
-                    ),
+                    imageUrl = this?.coverImage?.extraLarge,
                     averageScore = this?.averageScore ?: 0,
-                    favoriteScore = this?.favourites ?: 0,
-                    season = this?.season?.rawValue ?: "UnKnown",
                     seasonYear = this?.seasonYear ?: 0,
-                    format = this?.format?.rawValue ?: "UnKnown",
                     status = this?.status?.rawValue ?: "Unknown"
                 )
             }
         } ?: emptyList()
+    )
+}
+
+fun AnimeInfo.toAnimeEntity(): AnimeEntity {
+    return AnimeEntity(
+        id = this.id,
+        idMal = this.idMal,
+        title = this.title.romaji ?: this.title.english,
+        imageUrl = this.imageUrl,
+        seasonYear = this.seasonYear,
+        status = this.status
+    )
+}
+
+fun AnimeEntity.toAnimeInfo(): AnimeInfo {
+    return AnimeInfo(
+        id = this.id,
+        idMal = this.idMal,
+        title = this.title.romaji ?: this.title.english,
+        imageUrl = this.imageUrl,
+        seasonYear = this.seasonYear,
+        status = this.status
     )
 }

@@ -1,6 +1,7 @@
 package com.chs.youranimelist.domain.repository
 
 import com.chs.youranimelist.domain.model.*
+import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository {
 
@@ -28,14 +29,14 @@ interface AnimeRepository {
         query: String
     ): ListInfo<AnimeInfo>
 
-    suspend fun getSavedAnimeList(): List<AnimeInfo>
+    fun getSavedAnimeList(): Flow<List<AnimeInfo>>
 
-    suspend fun getSavedAnimeInfo(): AnimeInfo?
+    fun getSavedAnimeInfo(id: Int): Flow<AnimeInfo?>
 
     suspend fun insertSavedAnimeInfo(animeInfo: AnimeInfo)
 
-    suspend fun deleteSavedAnimeInfo()
+    suspend fun deleteSavedAnimeInfo(animeInfo: AnimeInfo)
 
-    suspend fun getAnimeGenreList()
+    suspend fun getAnimeGenreList(): List<String>
 
 }
