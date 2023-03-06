@@ -3,7 +3,6 @@ fragment animeBasicInfo on Media {
     idMal
     title {
         romaji
-        native
         english
     }
     coverImage {

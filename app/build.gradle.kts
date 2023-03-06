@@ -70,7 +70,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.compose.ui:ui:1.4.0-beta02")
     implementation("androidx.compose.material3:material3:1.1.0-alpha07")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.3.3")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.4.0-beta02")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("androidx.activity:activity-compose:1.6.1")
     implementation("androidx.core:core-ktx:1.9.0")
@@ -94,11 +94,11 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     //Ktor
-    implementation("io.ktor:ktor-client-core:2.2.3")
-    implementation("io.ktor:ktor-client-android:2.2.3")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.3")
-    implementation("io.ktor:ktor-client-content-negotiation:2.2.3")
-    implementation("io.ktor:ktor-client-logging:2.2.3")
+    implementation("io.ktor:ktor-client-core:2.2.4")
+    implementation("io.ktor:ktor-client-android:2.2.4")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.4")
+    implementation("io.ktor:ktor-client-content-negotiation:2.2.4")
+    implementation("io.ktor:ktor-client-logging:2.2.4")
 
     //Room
     implementation("androidx.room:room-ktx:2.5.0")

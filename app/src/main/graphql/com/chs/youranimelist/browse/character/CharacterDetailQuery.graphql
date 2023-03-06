@@ -1,4 +1,4 @@
-query CharacterQuery($id: Int) {
+query CharacterDetailQuery($id: Int) {
     character: Character(id: $id) {
         ...characterBasicInfo
         description(asHtml: true)

@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.chs.youranimelist.data.model.CharacterDto
 import com.chs.youranimelist.presentation.ui.theme.Pink80
 
 @Composable

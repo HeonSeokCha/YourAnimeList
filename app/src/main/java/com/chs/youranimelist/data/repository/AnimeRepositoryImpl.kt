@@ -10,6 +10,7 @@ import com.chs.youranimelist.data.source.db.dao.AnimeListDao
 import com.chs.youranimelist.domain.model.*
 import com.chs.youranimelist.domain.repository.AnimeRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class AnimeRepositoryImpl(
     private val apolloClient: ApolloClient,
@@ -86,19 +87,25 @@ class AnimeRepositoryImpl(
     }
 
     override fun getSavedAnimeList(): Flow<List<AnimeInfo>> {
-        return dao.getAllAnimeList()
+        return dao.getAllAnimeList().map {
+            it.map { animeEntity ->
+                animeEntity.toAnimeInfo()
+            }
+        }
     }
 
     override fun getSavedAnimeInfo(id: Int): Flow<AnimeInfo?> {
-        return dao.checkAnimeList(id)
+        return dao.checkAnimeList(id).map {
+            it?.toAnimeInfo()
+        }
     }
 
     override suspend fun insertSavedAnimeInfo(animeInfo: AnimeInfo) {
-        dao.insert(animeInfo)
+        dao.insert(animeInfo.toAnimeEntity())
     }
 
     override suspend fun deleteSavedAnimeInfo(animeInfo: AnimeInfo) {
-        dao.delete(animeInfo)
+        dao.delete(animeInfo.toAnimeEntity())
     }
 
     override suspend fun getAnimeGenreList(): List<String> {
