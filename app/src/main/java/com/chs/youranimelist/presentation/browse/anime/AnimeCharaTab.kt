@@ -16,12 +16,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.model.CharacterInfo
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 
 @Composable
 fun AnimeCharaScreen(
-   charaInfoList: List<CharacterInfo>,
+    charaInfoList: List<com.chs.youranimelist.model.CharacterInfo>,
     navController: NavController,
 ) {
     LazyVerticalGrid(

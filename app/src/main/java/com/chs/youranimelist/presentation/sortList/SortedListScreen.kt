@@ -28,7 +28,7 @@ import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.type.MediaSeason
 import com.chs.youranimelist.type.MediaSort
 import com.chs.youranimelist.util.Constant
-import com.chs.youranimelist.data.ConvertDate
+import com.chs.youranimelist.ConvertDate
 
 @Composable
 fun SortedListScreen(
@@ -54,30 +54,30 @@ fun SortedListScreen(
 
             Constant.POPULAR_THIS_SEASON -> {
                 viewModel.selectedSort = MediaSort.POPULARITY_DESC
-                viewModel.selectedSeason = ConvertDate.getCurrentSeason()
-                viewModel.selectedYear = ConvertDate.getCurrentYear(false)
+                viewModel.selectedSeason = com.chs.youranimelist.ConvertDate.getCurrentSeason()
+                viewModel.selectedYear = com.chs.youranimelist.ConvertDate.getCurrentYear(false)
                 viewModel.selectType = Constant.SEASON_YEAR
                 viewModel.filterList[0] =
                     viewModel.filterList[0].copy(
-                        second = ConvertDate.getCurrentYear(false).toString()
+                        second = com.chs.youranimelist.ConvertDate.getCurrentYear(false).toString()
                     )
                 viewModel.filterList[1] =
-                    viewModel.filterList[1].copy(second = ConvertDate.getCurrentSeason().toString())
+                    viewModel.filterList[1].copy(second = com.chs.youranimelist.ConvertDate.getCurrentSeason().toString())
                 viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
             }
 
             Constant.UPCOMING_NEXT_SEASON -> {
                 viewModel.selectedSort = MediaSort.POPULARITY_DESC
-                viewModel.selectedSeason = ConvertDate.getNextSeason()
-                viewModel.selectedYear = ConvertDate.getCurrentYear(true)
+                viewModel.selectedSeason = com.chs.youranimelist.ConvertDate.getNextSeason()
+                viewModel.selectedYear = com.chs.youranimelist.ConvertDate.getCurrentYear(true)
                 viewModel.selectType = Constant.SEASON_YEAR
 
                 viewModel.filterList[0] =
                     viewModel.filterList[0].copy(
-                        second = ConvertDate.getCurrentYear(true).toString()
+                        second = com.chs.youranimelist.ConvertDate.getCurrentYear(true).toString()
                     )
                 viewModel.filterList[1] =
-                    viewModel.filterList[1].copy(second = ConvertDate.getNextSeason().toString())
+                    viewModel.filterList[1].copy(second = com.chs.youranimelist.ConvertDate.getNextSeason().toString())
                 viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
             }
 
@@ -120,7 +120,7 @@ fun SortedListScreen(
                         "Year" -> {
                             filterSelect = "Year"
                             list =
-                                ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
+                                ArrayList((com.chs.youranimelist.ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
                         }
                         "Season" -> {
                             filterSelect = "Season"
@@ -192,7 +192,7 @@ fun SortedListScreen(
                 }
                 "Season" -> {
                     if (viewModel.selectedYear == null) {
-                        viewModel.selectedYear = ConvertDate.getCurrentYear(false)
+                        viewModel.selectedYear = com.chs.youranimelist.ConvertDate.getCurrentYear(false)
                     }
                     viewModel.selectType = Constant.SEASON_YEAR
                     viewModel.selectedSeason = MediaSeason.safeValueOf(list[selectIdx]!!)

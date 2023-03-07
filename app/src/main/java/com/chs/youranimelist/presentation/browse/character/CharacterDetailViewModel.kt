@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.data.mapper.toCharacterDto
-import com.chs.youranimelist.domain.model.Character
+import com.chs.youranimelist.model.Character
 import com.chs.youranimelist.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -58,7 +58,7 @@ class CharacterDetailViewModel @Inject constructor(
     fun insertCharacter() {
         val character = state.characterDetailInfo?.character!!
         viewModelScope.launch {
-            val characterObj = Character(
+            val characterObj = com.chs.youranimelist.model.Character(
                 charaId = character.id,
                 name = character.name?.full,
                 nativeName = character.name?.native,

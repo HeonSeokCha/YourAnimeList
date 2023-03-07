@@ -1,9 +1,9 @@
 package com.chs.youranimelist.presentation.home
 
-import com.chs.youranimelist.domain.model.AnimeRecommendList
+import com.chs.youranimelist.model.AnimeRecommendList
 
 data class HomeState(
-    val animeRecommendList: AnimeRecommendList? = null,
+    val animeRecommendList: com.chs.youranimelist.model.AnimeRecommendList? = null,
     val isLoading: Boolean = false,
     val isRefreshing: Boolean = false,
 )

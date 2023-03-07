@@ -25,15 +25,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.chs.youranimelist.domain.model.AnimeInfo
-import com.chs.youranimelist.domain.model.AnimeRecommendBannerInfo
+import com.chs.youranimelist.model.AnimeInfo
+import com.chs.youranimelist.model.AnimeRecommendBannerInfo
 import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.util.Constant
 
 @Composable
 fun ItemHomeBanner(
     context: Context,
-    banner: AnimeRecommendBannerInfo
+    banner: com.chs.youranimelist.model.AnimeRecommendBannerInfo
 ) {
     val favoriteId = "favoriteId"
     val scoreId = "scoreId"
@@ -146,7 +146,7 @@ fun ItemHomeBanner(
 
 @Composable
 fun ItemHomeTopAnime(
-    animeInfo: AnimeInfo
+    animeInfo: com.chs.youranimelist.model.AnimeInfo
 ) {
     Row {
         AsyncImage(

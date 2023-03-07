@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.data.mapper.toAnimeDto
-import com.chs.youranimelist.domain.model.Anime
+import com.chs.youranimelist.model.Anime
 import com.chs.youranimelist.domain.usecase.*
 import com.chs.youranimelist.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -89,7 +89,7 @@ class AnimeDetailViewModel @Inject constructor(
     fun insertAnime() {
         val anime = state.animeDetailInfo?.media!!
         viewModelScope.launch {
-            val animeObj = Anime(
+            val animeObj = com.chs.youranimelist.model.Anime(
                 animeId = anime.id,
                 idMal = anime.idMal ?: 0,
                 title = anime.title!!.english ?: anime.title.romaji!!,
@@ -99,7 +99,9 @@ class AnimeDetailViewModel @Inject constructor(
                 coverImage = anime.coverImage?.extraLarge,
                 averageScore = anime.averageScore ?: 0,
                 favorites = anime.favourites,
-                studio = if (!anime.studios?.studiosEdges.isNullOrEmpty()) anime.studios?.studiosEdges?.get(0)?.studiosNode?.name else "",
+                studio = if (!anime.studios?.studiosEdges.isNullOrEmpty()) anime.studios?.studiosEdges?.get(
+                    0
+                )?.studiosNode?.name else "",
                 genre = anime.genres ?: listOf()
             )
             insertAnimeUseCase(animeObj)

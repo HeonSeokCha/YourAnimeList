@@ -26,13 +26,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.model.AnimeInfo
 import com.chs.youranimelist.presentation.shimmerEffect
 import com.chs.youranimelist.util.Constant
 
 @Composable
 fun ItemAnimeSmall(
-    item: AnimeInfo,
+    item: com.chs.youranimelist.model.AnimeInfo,
     onClick: () -> Unit
 ) {
     val starId = "starId"

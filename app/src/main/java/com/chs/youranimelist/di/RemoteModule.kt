@@ -3,7 +3,7 @@ package com.chs.youranimelist.di
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
 import com.apollographql.apollo3.cache.normalized.normalizedCache
-import com.chs.youranimelist.data.source.KtorJikanService
+import com.chs.youranimelist.source.KtorJikanService
 import com.chs.youranimelist.util.Constant
 import dagger.Module
 import dagger.Provides
@@ -23,8 +23,8 @@ object RemoteModule {
 
     @Singleton
     @Provides
-    fun providerKtorHttpClient(): KtorJikanService {
-        return KtorJikanService(
+    fun providerKtorHttpClient(): com.chs.youranimelist.source.KtorJikanService {
+        return com.chs.youranimelist.source.KtorJikanService(
             HttpClient(Android) {
                 install(Logging) {
                     level = LogLevel.ALL

@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "YourAnimeList"
 include(":app")
+include(":domain")
+include(":data")
+include(":presentation")

@@ -1,6 +1,6 @@
 package com.chs.youranimelist.di
 
-import com.chs.youranimelist.domain.repository.CharacterRepository
+import com.chs.youranimelist.repository.CharacterRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

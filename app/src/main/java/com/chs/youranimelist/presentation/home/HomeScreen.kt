@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.model.AnimeInfo
 import com.chs.youranimelist.presentation.main.Screen
 import com.chs.youranimelist.presentation.browse.BrowseActivity
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
@@ -93,7 +93,7 @@ fun HomeScreen(
 @Composable
 fun ItemRecommendCategory(
     title: String,
-    list: List<AnimeInfo>,
+    list: List<com.chs.youranimelist.model.AnimeInfo>,
     navigator: NavController,
     context: Context
 ) {

@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
 import com.chs.youranimelist.AnimeDetailQuery
-import com.chs.youranimelist.domain.model.AnimeThemeInfo
+import com.chs.youranimelist.model.AnimeThemeInfo
 import com.chs.youranimelist.presentation.main.Screen
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.home.ItemAnimeSmall
@@ -26,7 +26,7 @@ import com.chs.youranimelist.util.color
 @Composable
 fun AnimeOverViewScreen(
     animeOverViewInfo: AnimeDetailQuery.Data?,
-    animeTheme: AnimeThemeInfo?,
+    animeTheme: com.chs.youranimelist.model.AnimeThemeInfo?,
     navController: NavController,
 ) {
     Column(
