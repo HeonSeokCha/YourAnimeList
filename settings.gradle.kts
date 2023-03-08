@@ -1,3 +1,7 @@
+@file:Suppress("UnstableApiUsage", "UNCHECKED_CAST")
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -12,8 +16,10 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "YourAnimeList"
-include(":app")
-include(":domain")
-include(":data")
-include(":presentation")
+
+settings.include(":app")
+settings.include(":data")
+settings.include(":presentation")
+settings.include(":domain")

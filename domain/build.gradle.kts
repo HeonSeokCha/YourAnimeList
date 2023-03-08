@@ -1,12 +1,12 @@
 plugins {
-    id("java-library")
-    id("kotlin")
+    id("com.android.library")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+android {
+    namespace = "com.chs.youranimelist.domain"
 }
 
 dependencies {
+    implementation(libs.kotlin.coroutine.core)
+    implementation(libs.dagger)
 }

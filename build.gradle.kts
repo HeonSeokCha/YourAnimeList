@@ -1,17 +1,13 @@
-buildscript {
-
-    val kotlin_version by extra("1.8.0")
-    dependencies {
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.44.2")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:1.8.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
-    }
-    repositories {
-        mavenCentral()
-    }
-}
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.application") version "7.4.2" apply false
-    id("com.android.library") version "7.4.2" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.0" apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.hilt) apply false
+}
+
+apply(from = "${rootDir}/gradle/jetifier_disable.gradle.kts")
+
+task("clean", Delete::class) {
+    delete(rootProject.buildDir)
 }
