@@ -22,14 +22,14 @@ kotlin {
 
 android {
     namespace = "com.chs.youranimelist"
-    compileSdk = 33
+    compileSdk = libs.versions.compileSdkVersion.get().toInt()
 
     defaultConfig {
         applicationId = "com.chs.youranimelist"
-        minSdk = 29
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = libs.versions.minSdkVersion.get().toInt()
+        targetSdk = libs.versions.targetSdkVersion.get().toInt()
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "com.chs.youranimelist.CustomTestRunner"
         vectorDrawables {
@@ -39,8 +39,11 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -67,6 +70,10 @@ android {
 }
 
 dependencies {
+    implementation(projects.presentation)
+    implementation(projects.domain)
+    implementation(projects.data)
+
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.compose.ui:ui:1.4.0-beta02")
     implementation("androidx.compose.material3:material3:1.1.0-alpha07")
