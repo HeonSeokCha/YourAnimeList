@@ -1,12 +1,10 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
-    id("kotlin-parcelize")
-    id("kotlinx-serialization")
-    id("com.google.devtools.ksp") version "1.8.0-1.0.9"
-    id("com.apollographql.apollo3") version "3.7.4"
+    kotlin("kapt")
+    kotlin("android")
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.apollo)
 }
 
 kotlin {
@@ -74,53 +72,60 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.data)
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.compose.ui:ui:1.4.0-beta02")
-    implementation("androidx.compose.material3:material3:1.1.0-alpha07")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.4.0-beta02")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.activity:activity-compose:1.6.1")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("com.google.truth:truth:1.1.3")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.3")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-
-    // Compose dependencies
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
-    implementation("androidx.compose.material:material-icons-extended:1.3.1")
-    implementation("androidx.activity:activity-compose:1.6.1")
-    implementation("androidx.navigation:navigation-compose:2.5.3")
-
-    //Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.45")
-    kapt("com.google.dagger:hilt-android-compiler:2.45")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-
-    //Ktor
-    implementation("io.ktor:ktor-client-core:2.2.4")
-    implementation("io.ktor:ktor-client-android:2.2.4")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.4")
-    implementation("io.ktor:ktor-client-content-negotiation:2.2.4")
-    implementation("io.ktor:ktor-client-logging:2.2.4")
-
-    //Room
-    implementation("androidx.room:room-ktx:2.5.0")
-    kapt("androidx.room:room-compiler:2.5.0")
-
-    //Apollo
-    implementation("com.apollographql.apollo3:apollo-runtime:3.7.4")
-    implementation("com.apollographql.apollo3:apollo-api:3.7.4")
-    implementation("com.apollographql.apollo3:apollo-normalized-cache:3.7.4")
-
-    // Paging
-    implementation("androidx.paging:paging-compose:1.0.0-alpha18")
-
-    // Coil
-    implementation("io.coil-kt:coil-compose:2.2.2")
-
-    // CustomTabs
-    implementation("androidx.browser:browser:1.5.0")
+//    implementation(libs.androidX.core)
+//    implementation(libs.hilt.android)
+//    kapt(libs.hilt.compiler)
+//
+//    implementation("androidx.core:core-ktx:1.9.0")
+//    implementation("androidx.compose.ui:ui:1.4.0-beta02")
+//    implementation("androidx.compose.material3:material3:1.1.0-alpha07")
+//    implementation("androidx.compose.ui:ui-tooling-preview:1.4.0-beta02")
+//    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+//    implementation("androidx.activity:activity-compose:1.6.1")
+//    testImplementation("junit:junit:4.13.2")
+//    androidTestImplementation("com.google.truth:truth:1.1.3")
+//    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+//    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+//    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.3")
+//
+//
+//    // Compose dependencies
+//    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
+//    implementation("androidx.compose.material:material-icons-extended:1.3.1")
+//    implementation("androidx.activity:activity-compose:1.6.1")
+//    implementation("androidx.navigation:navigation-compose:2.5.3")
+//
+//    //Dagger - Hilt
+//    implementation("com.google.dagger:hilt-android:2.45")
+//    kapt("com.google.dagger:hilt-android-compiler:2.45")
+//    kapt("androidx.hilt:hilt-compiler:1.0.0")
+//    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+//
+//    //Ktor
+//    implementation("io.ktor:ktor-client-core:2.2.4")
+//    implementation("io.ktor:ktor-client-android:2.2.4")
+//    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.4")
+//    implementation("io.ktor:ktor-client-content-negotiation:2.2.4")
+//    implementation("io.ktor:ktor-client-logging:2.2.4")
+//
+//    //Room
+//    implementation("androidx.room:room-ktx:2.5.0")
+//    kapt("androidx.room:room-compiler:2.5.0")
+//
+//    //Apollo
+//    implementation("com.apollographql.apollo3:apollo-runtime:3.7.4")
+//    implementation("com.apollographql.apollo3:apollo-api:3.7.4")
+//    implementation("com.apollographql.apollo3:apollo-normalized-cache:3.7.4")
+//
+//    // Paging
+//    implementation("androidx.paging:paging-compose:1.0.0-alpha18")
+//
+//    // Coil
+//    implementation("io.coil-kt:coil-compose:2.2.2")
+//
+//    // CustomTabs
+//    implementation("androidx.browser:browser:1.5.0")
 }

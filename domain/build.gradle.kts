@@ -10,5 +10,5 @@ java {
 
 dependencies {
     implementation(libs.kotlin.coroutine.core)
-    implementation(libs.dagger)
+//    implementation(libs.hilt.android)
 }

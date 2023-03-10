@@ -1,24 +1,22 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
+    kotlin("android")
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.android.library)
 }
 
 android {
-    namespace = "com.chs.youanimelist"
-    compileSdk = 33
+    compileSdk = libs.versions.compileSdkVersion.get().toInt()
 
     defaultConfig {
-        applicationId = "com.chs.youanimelist"
-        minSdk = 24
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
-
+        minSdk = libs.versions.minSdkVersion.get().toInt()
+        targetSdk = libs.versions.targetSdkVersion.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -33,14 +31,18 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.0"
+    }
 }
 
 dependencies {
+    implementation(projects.domain)
 
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(libs.androidX.core.ktx)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 }
