@@ -8,7 +8,7 @@ versionCode = "1"
 versionName = "1.0"
 
 activity = "1.6.1"
-compose-ui = "1.4.0-beta02"
+compose-ui = "1.4.0-rc01"
 composeCompiler = "1.4.2"
 lifecycle = "2.6.0-beta01"
 room = "2.5.0"
@@ -19,7 +19,6 @@ ksp = "1.8.0-1.0.9"
 kotlin-coroutine = "1.6.4"
 ktor = "2.2.4"
 apollo = "3.7.4"
-
 
 [libraries]
 # AndroidX
@@ -33,11 +32,15 @@ androidX-browser = "androidx.browser:browser:1.5.0"
 androidX-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidX-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidX-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidX-paging-commons = "androidx.paging:paging-common:3.1.1"
+androidX-paging-runtime = "androidx.paging:paging-compose:1.0.0-alpha18"
 
 ## Hilt
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 hilt-navigation-compose = "androidx.hilt:hilt-navigation-compose:1.0.0"
+
+#javax-inject = { module = "javax.inject:javax.inject", version = "1" }
 
 ## Kotlin
 kotlin-coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutine" }
