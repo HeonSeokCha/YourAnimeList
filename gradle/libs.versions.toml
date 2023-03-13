@@ -10,12 +10,12 @@ versionName = "1.0"
 activity = "1.6.1"
 compose-ui = "1.4.0-rc01"
 composeCompiler = "1.4.2"
-lifecycle = "2.6.0-beta01"
+lifecycle = "2.6.0"
 room = "2.5.0"
 coil = "2.2.2"
 hilt = "2.45"
-kotlin = "1.8.0"
-ksp = "1.8.0-1.0.9"
+kotlin = "1.8.10"
+ksp = "1.8.10-1.0.9"
 kotlin-coroutine = "1.6.4"
 ktor = "2.2.4"
 apollo = "3.7.4"
@@ -24,8 +24,13 @@ apollo = "3.7.4"
 # AndroidX
 androidX-core-ktx = "androidx.core:core-ktx:1.9.0"
 androidX-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
-androidX-compose-material = "androidx.compose.ui:ui:1.4.0-beta02"
+androidX-activity-compose = "androidx.activity:activity-compose:1.6.1"
+androidX-compose-material-icon-extend = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-ui"}
+androidX-compose-material3 = "androidx.compose.material3:material3:1.1.0-alpha07"
 androidX-compose-ui-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-ui" }
+androidX-navigation-compose = "androidx.navigation:navigation-compose:2.5.3"
+androidX-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle"}
+androidX-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle"}
 androidX-paging-compose = "androidx.paging:paging-compose:1.0.0-alpha18"
 androidX-browser = "androidx.browser:browser:1.5.0"
 
@@ -33,7 +38,6 @@ androidX-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidX-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidX-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidX-paging-commons = "androidx.paging:paging-common:3.1.1"
-androidX-paging-runtime = "androidx.paging:paging-compose:1.0.0-alpha18"
 
 ## Hilt
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
@@ -57,11 +61,22 @@ ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor"}
 ktor-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor"}
 ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor"}
 ktor-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor"}
+junit = "junit:junit:4.13.2"
+assertJ = "org.assertj:assertj-core:3.23.1"
+mockito = "org.mockito:mockito-core:4.8.0"
 
-# Dependencies of the included build-logic
-android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidStudioGradlePlugin" }
-kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
+[bundles]
+apollo = [
+    "apollo-runtime",
+    "apollo-api",
+    "apollo-cache"
+]
+ktor = [
+    "ktor-core",
+    "ktor-android",
+    "ktor-serialization",
+    "ktor-negotiation"
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidStudioGradlePlugin" }

@@ -104,28 +104,4 @@ dependencies {
 //    kapt("androidx.hilt:hilt-compiler:1.0.0")
 //    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 //
-//    //Ktor
-//    implementation("io.ktor:ktor-client-core:2.2.4")
-//    implementation("io.ktor:ktor-client-android:2.2.4")
-//    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.4")
-//    implementation("io.ktor:ktor-client-content-negotiation:2.2.4")
-//    implementation("io.ktor:ktor-client-logging:2.2.4")
-//
-//    //Room
-//    implementation("androidx.room:room-ktx:2.5.0")
-//    kapt("androidx.room:room-compiler:2.5.0")
-//
-//    //Apollo
-//    implementation("com.apollographql.apollo3:apollo-runtime:3.7.4")
-//    implementation("com.apollographql.apollo3:apollo-api:3.7.4")
-//    implementation("com.apollographql.apollo3:apollo-normalized-cache:3.7.4")
-//
-//    // Paging
-//    implementation("androidx.paging:paging-compose:1.0.0-alpha18")
-//
-//    // Coil
-//    implementation("io.coil-kt:coil-compose:2.2.2")
-//
-//    // CustomTabs
-//    implementation("androidx.browser:browser:1.5.0")
 }
