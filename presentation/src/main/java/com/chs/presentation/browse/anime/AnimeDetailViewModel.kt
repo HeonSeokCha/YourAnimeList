@@ -88,7 +88,7 @@ class AnimeDetailViewModel @Inject constructor(
     fun insertAnime() {
         val anime = state.animeDetailInfo?.media!!
         viewModelScope.launch {
-            val animeObj = com.chs.presentation.model.Anime(
+            val animeObj = com.chs.domain.model.Anime(
                 animeId = anime.id,
                 idMal = anime.idMal ?: 0,
                 title = anime.title!!.english ?: anime.title.romaji!!,

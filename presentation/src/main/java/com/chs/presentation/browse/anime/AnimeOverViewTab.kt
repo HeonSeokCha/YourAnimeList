@@ -25,7 +25,7 @@ import com.chs.presentation.util.color
 @Composable
 fun AnimeOverViewScreen(
     animeOverViewInfo: AnimeDetailQuery.Data?,
-    animeTheme: com.chs.presentation.model.AnimeThemeInfo?,
+    animeTheme: com.chs.domain.model.AnimeThemeInfo?,
     navController: NavController,
 ) {
     Column(

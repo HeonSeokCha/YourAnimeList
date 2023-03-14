@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.chs.presentation.animeList.ItemYourAnime
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.util.Constant
 

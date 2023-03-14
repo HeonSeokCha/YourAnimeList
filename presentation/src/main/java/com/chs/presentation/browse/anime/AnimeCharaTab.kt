@@ -20,7 +20,7 @@ import com.chs.presentation.browse.BrowseScreen
 
 @Composable
 fun AnimeCharaScreen(
-    charaInfoList: List<com.chs.presentation.model.CharacterInfo>,
+    charaInfoList: List<com.chs.domain.model.CharacterInfo>,
     navController: NavController,
 ) {
     LazyVerticalGrid(

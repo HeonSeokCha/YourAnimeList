@@ -57,7 +57,7 @@ class CharacterDetailViewModel @Inject constructor(
     fun insertCharacter() {
         val character = state.characterDetailInfo?.character!!
         viewModelScope.launch {
-            val characterObj = com.chs.presentation.model.Character(
+            val characterObj = com.chs.domain.model.Character(
                 charaId = character.id,
                 name = character.name?.full,
                 nativeName = character.name?.native,

@@ -92,7 +92,7 @@ fun HomeScreen(
 @Composable
 fun ItemRecommendCategory(
     title: String,
-    list: List<com.chs.presentation.model.AnimeInfo>,
+    list: List<com.chs.domain.model.AnimeInfo>,
     navigator: NavController,
     context: Context
 ) {

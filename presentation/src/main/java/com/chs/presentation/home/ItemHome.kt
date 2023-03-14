@@ -31,7 +31,7 @@ import com.chs.presentation.util.Constant
 @Composable
 fun ItemHomeBanner(
     context: Context,
-    banner: com.chs.presentation.model.AnimeRecommendBannerInfo
+    banner: com.chs.domain.model.AnimeRecommendBannerInfo
 ) {
     val favoriteId = "favoriteId"
     val scoreId = "scoreId"
@@ -144,7 +144,7 @@ fun ItemHomeBanner(
 
 @Composable
 fun ItemHomeTopAnime(
-    animeInfo: com.chs.presentation.model.AnimeInfo
+    animeInfo: com.chs.domain.model.AnimeInfo
 ) {
     Row {
         AsyncImage(

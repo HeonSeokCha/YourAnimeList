@@ -38,11 +38,14 @@ android {
 dependencies {
     implementation(projects.domain)
     implementation(libs.kotlin.coroutine.core)
+    implementation(libs.kotlin.serialization)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidX.room.ktx)
     ksp(libs.androidX.room.compiler)
     implementation(libs.androidX.paging.compose)
+    implementation(libs.bundles.ktor)
+    implementation(libs.bundles.apollo)
 
     testImplementation(libs.junit)
 }

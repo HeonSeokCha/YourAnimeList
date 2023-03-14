@@ -11,5 +11,6 @@ java {
 dependencies {
     implementation(libs.kotlin.coroutine.core)
     implementation(libs.androidX.paging.commons)
+    implementation(libs.javax.inject)
     testImplementation(libs.junit)
 }

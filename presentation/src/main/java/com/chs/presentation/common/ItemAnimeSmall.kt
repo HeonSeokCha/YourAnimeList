@@ -31,7 +31,7 @@ import com.chs.presentation.util.Constant
 
 @Composable
 fun ItemAnimeSmall(
-    item: com.chs.presentation.model.AnimeInfo,
+    item: com.chs.domain.model.AnimeInfo,
     onClick: () -> Unit
 ) {
     val starId = "starId"

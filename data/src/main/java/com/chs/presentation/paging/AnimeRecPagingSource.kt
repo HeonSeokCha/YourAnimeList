@@ -5,8 +5,8 @@ import androidx.paging.PagingState
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.chs.AnimeRecommendQuery
+import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.mapper.toAnimeInfoList
-import com.chs.presentation.domain.model.AnimeInfo
 
 class AnimeRecPagingSource(
     private val apolloClient: ApolloClient,
