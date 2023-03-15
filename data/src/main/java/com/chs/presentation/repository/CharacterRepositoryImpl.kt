@@ -1,14 +1,16 @@
 package com.chs.presentation.repository
 
+import androidx.paging.PagingData
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
-import com.chs.CharacterQuery
+import com.chs.CharacterDetailQuery
+import com.chs.domain.model.CharacterDetailInfo
+import com.chs.domain.model.CharacterInfo
+import com.chs.domain.repository.CharacterRepository
 import com.chs.presentation.source.KtorJikanService
 import com.chs.presentation.source.db.dao.CharaListDao
-import com.chs.presentation.domain.model.CharacterDetailInfo
-import com.chs.presentation.domain.model.CharacterInfo
-import com.chs.presentation.domain.model.ListInfo
-import com.chs.presentation.domain.repository.CharacterRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class CharacterRepositoryImpl(
     private val apolloClient: ApolloClient,
@@ -17,29 +19,28 @@ class CharacterRepositoryImpl(
 ) : CharacterRepository {
     override suspend fun getCharacterDetailInfo(characterId: Int): CharacterDetailInfo {
         return apolloClient
-            .query(CharacterQuery(Optional.present(characterId)))
+            .query(CharacterDetailQuery(Optional.present(characterId)))
             .execute()
             ?.data
             ?.character
     }
 
-    override suspend fun getCharacterSearchResult(name: String): ListInfo<CharacterInfo> {
+    override suspend fun getCharacterSearchResult(name: String): Flow<PagingData<CharacterInfo>> {
         TODO("Not yet implemented")
     }
 
-    override fun getSavedCharacterList(): List<CharacterInfo> {
+    override fun getSavedCharacterList(): Flow<List<CharacterInfo>> {
         TODO("Not yet implemented")
     }
 
-    override fun getSavedCharacterInfo(): CharacterInfo? {
-        TODO("Not yet implemented")
+    override fun getSavedCharacterInfo(): Flow<CharacterInfo?> {
     }
 
     override suspend fun insertCharacterInfo(characterInfo: CharacterInfo) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun deleteCharacterInfo() {
+    override suspend fun deleteCharacterInfo(characterInfo: CharacterInfo) {
         TODO("Not yet implemented")
     }
 }

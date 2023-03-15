@@ -14,21 +14,15 @@ interface AnimeRepository {
         season: String,
         year: Int,
         genre: String?
-    ): PagingData<AnimeInfo>
+    ): Flow<PagingData<AnimeInfo>>
 
     suspend fun getAnimeDetailInfo(animeId: Int): AnimeDetailInfo
 
-    suspend fun getAnimeDetailInfoRecommendList(
-        page: Int,
-        animeId: Int
-    ): PagingData<AnimeInfo>
+    suspend fun getAnimeDetailInfoRecommendList(animeId: Int): Flow<PagingData<AnimeInfo>>
 
     suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo
 
-    suspend fun getAnimeSearchResult(
-        page: Int,
-        query: String
-    ): PagingData<AnimeInfo>
+    suspend fun getAnimeSearchResult(query: String): Flow<PagingData<AnimeInfo>>
 
     fun getSavedAnimeList(): Flow<List<AnimeInfo>>
 

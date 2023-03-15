@@ -1,15 +1,23 @@
 package com.chs.presentation.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.chs.*
+import com.chs.domain.model.AnimeDetailInfo
+import com.chs.domain.model.AnimeInfo
+import com.chs.domain.model.AnimeRecommendList
+import com.chs.domain.model.AnimeThemeInfo
+import com.chs.domain.repository.AnimeRepository
 import com.chs.presentation.ConvertDate
-import com.chs.presentation.data.mapper.*
 import com.chs.presentation.source.KtorJikanService
 import com.chs.presentation.source.db.dao.AnimeListDao
-import com.chs.presentation.domain.model.*
-import com.chs.presentation.domain.repository.AnimeRepository
 import com.chs.presentation.mapper.*
+import com.chs.presentation.paging.AnimeRecPagingSource
+import com.chs.presentation.paging.AnimeSortPagingSource
+import com.chs.presentation.paging.SearchAnimePagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -40,8 +48,12 @@ class AnimeRepositoryImpl(
         season: String,
         year: Int,
         genre: String?
-    ): ListInfo<AnimeInfo> {
-        TODO("Not yet implemented")
+    ): Flow<PagingData<AnimeInfo>> {
+        return Pager(
+            PagingConfig(pageSize = 10)
+        ) {
+            AnimeSortPagingSource(apolloClient)
+        }.flow
     }
 
     override suspend fun getAnimeDetailInfo(animeId: Int): AnimeDetailInfo {
@@ -54,37 +66,30 @@ class AnimeRepositoryImpl(
             ?.toAnimeDetailInfo()!!
     }
 
-    override suspend fun getAnimeDetailInfoRecommendList(
-        page: Int,
-        animeId: Int
-    ): ListInfo<AnimeInfo> {
-        return apolloClient
-            .query(
-                AnimeRecommendQuery(id = Optional.present(animeId), page = Optional.present(page))
+    override suspend fun getAnimeDetailInfoRecommendList(animeId: Int): Flow<PagingData<AnimeInfo>> {
+        return Pager(
+            PagingConfig(pageSize = 10)
+        ) {
+            AnimeRecPagingSource(
+                apolloClient = apolloClient,
+                animeId = animeId
             )
-            .execute()
-            .data
-            ?.toAnimeInfoList()!!
+        }.flow
     }
 
     override suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo {
         return jikanService.getAnimeTheme(animeId)?.toAnimeThemeInfo()!!
     }
 
-    override suspend fun getAnimeSearchResult(
-        page: Int,
-        query: String
-    ): ListInfo<AnimeInfo> {
-        return apolloClient
-            .query(
-                SearchAnimeQuery(
-                    page = Optional.present(page),
-                    search = Optional.present(query)
-                )
+    override suspend fun getAnimeSearchResult(query: String): Flow<PagingData<AnimeInfo>> {
+        return Pager(
+            PagingConfig(pageSize = 10)
+        ) {
+            SearchAnimePagingSource(
+                apolloClient = apolloClient,
+                search = query
             )
-            .execute()
-            .data
-            ?.toAnimeList()!!
+        }.flow
     }
 
     override fun getSavedAnimeList(): Flow<List<AnimeInfo>> {
@@ -114,7 +119,9 @@ class AnimeRepositoryImpl(
             GenreQuery()
         )
             .execute()
-            .data?.genreCollection?.map {
+            .data
+            ?.genreCollection
+            ?.map {
                 it.let { it!! }
             } ?: emptyList()
     }

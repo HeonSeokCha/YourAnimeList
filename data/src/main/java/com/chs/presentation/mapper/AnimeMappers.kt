@@ -7,7 +7,7 @@ import com.chs.SearchAnimeQuery
 import com.chs.fragment.AnimeBasicInfo
 import com.chs.presentation.model.JikanAnimeDataDto
 import com.chs.presentation.source.db.model.AnimeEntity
-import com.chs.presentation.domain.model.*
+import com.chs.domain.model.*
 
 fun convertAnimeBasicInfo(animeBasicInfo: AnimeBasicInfo?): AnimeInfo {
     return AnimeInfo(

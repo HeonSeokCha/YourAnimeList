@@ -8,11 +8,11 @@ interface CharacterRepository {
 
     suspend fun getCharacterDetailInfo(characterId: Int): CharacterDetailInfo
 
-    suspend fun getCharacterSearchResult(name: String): PagingData<CharacterInfo>
+    suspend fun getCharacterSearchResult(name: String): Flow<PagingData<CharacterInfo>>
 
     fun getSavedCharacterList(): Flow<List<CharacterInfo>>
 
-    fun getSavedCharacterInfo(): Flow<CharacterInfo>?
+    fun getSavedCharacterInfo(): Flow<CharacterInfo?>
 
     suspend fun insertCharacterInfo(characterInfo: CharacterInfo)
 
