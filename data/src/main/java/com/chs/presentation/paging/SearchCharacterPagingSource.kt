@@ -3,7 +3,8 @@ package com.chs.presentation.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.apollographql.apollo3.ApolloClient
-import com.chs.presentation.SearchCharacterQuery
+import com.apollographql.apollo3.api.Optional
+import com.chs.SearchCharacterQuery
 
 class SearchCharacterPagingSource(
     private val apolloClient: ApolloClient,
@@ -22,15 +23,15 @@ class SearchCharacterPagingSource(
             val page = params.key ?: 1
             val response = apolloClient.query(
                 SearchCharacterQuery(
-                    page = page,
-                    search = search
+                    page = Optional.present(page),
+                    search = Optional.present(search)
                 )
             ).execute().data
 
             LoadResult.Page(
                 data = response?.page?.characters?.map { it!! }!!,
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (response.page.pageInfo?.hasNextPage!!) page + 1 else null
+                nextKey = if (response.page.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
             )
 
         } catch (e: Exception) {

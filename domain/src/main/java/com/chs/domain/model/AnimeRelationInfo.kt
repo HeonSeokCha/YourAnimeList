@@ -2,5 +2,5 @@ package com.chs.domain.model
 
 data class AnimeRelationInfo(
     val relationType: String,
-    val animeBasicInfo: com.chs.domain.model.AnimeInfo
+    val animeBasicInfo: AnimeInfo
 )

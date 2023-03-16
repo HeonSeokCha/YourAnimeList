@@ -1,25 +1,34 @@
 package com.chs.presentation.mapper
 
 import com.chs.CharacterDetailQuery
+import com.chs.domain.model.CharacterDetailInfo
+import com.chs.domain.model.CharacterInfo
 import com.chs.fragment.CharacterBasicInfo
-import com.chs.presentation.domain.model.CharacterDetailInfo
-import com.chs.presentation.domain.model.CharacterInfo
 
-private fun convertCharacter(characterBasicInfo: CharacterBasicInfo?): CharacterInfo {
+
+fun CharacterBasicInfo.toCharacterInfo(): CharacterInfo {
     return CharacterInfo(
-        id = characterBasicInfo?.id ?: 0,
-        name = characterBasicInfo?.name?.full ?: "",
-        nativeName = characterBasicInfo?.name?.native ?: "",
-        imageUrl = characterBasicInfo?.image?.large,
-        favorites = characterBasicInfo?.favourites ?: 0
+        id = this.id,
+        name = this.name?.full ?: "",
+        nativeName = this.name?.native ?: "",
+        imageUrl = this.image?.large,
+        favorites = this.favourites ?: 0
     )
 }
 
-fun CharacterDetailQuery.Data.toCharacterDetailInfo(): CharacterDetailInfo {
+fun CharacterDetailQuery.Character.toCharacterDetailInfo(): CharacterDetailInfo {
     return CharacterDetailInfo(
-        characterInfo = convertCharacter(this.character?.characterBasicInfo),
-        description = this.character?.description ?: "",
-        animeList = this.character?.media?.nodes?.map {
+        characterInfo = with(this.characterBasicInfo) {
+            CharacterInfo(
+                id = this.id,
+                name = this.name?.full ?: "",
+                nativeName = this.name?.native ?: "",
+                imageUrl = this.image?.large,
+                favorites = this.favourites ?: 0
+            )
+        },
+        description = this.description ?: "",
+        animeList = this.media?.nodes?.map {
             convertAnimeBasicInfo(it?.animeBasicInfo)
         } ?: emptyList()
     )

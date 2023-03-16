@@ -3,7 +3,7 @@ package com.chs.presentation.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.apollographql.apollo3.ApolloClient
-import com.chs.presentation.SearchMangaQuery
+import com.chs.SearchMangaQuery
 
 class SearchMangaPagingSource(
     private val apolloClient: ApolloClient,
