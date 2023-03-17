@@ -3,12 +3,13 @@ package com.chs.domain.usecase
 import androidx.paging.PagingData
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.repository.AnimeRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetAnimeDetailRecList @Inject constructor(
+class GetAnimeSearchResultUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
-    suspend operator fun invoke(animeId: Int): PagingData<AnimeInfo> {
-        return repository.getAnimeDetailInfoRecommendList(animeId)
+    suspend operator fun invoke(query: String): Flow<PagingData<AnimeInfo>> {
+        return repository.getAnimeSearchResult(query)
     }
 }
