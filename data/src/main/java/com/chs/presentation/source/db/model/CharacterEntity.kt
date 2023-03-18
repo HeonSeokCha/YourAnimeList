@@ -9,7 +9,7 @@ data class CharacterEntity(
     val id: Int,
     val name: String,
     val nativeName: String,
-    val imageUrl: String,
+    val imageUrl: String?,
     val favorite: Int,
     val createDate: Long = System.currentTimeMillis()
 )

@@ -119,19 +119,8 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
     }
 }
 
-fun AnimeRecommendQuery.Data.toAnimeInfoList(): ListInfo<AnimeInfo> {
-    return with(this.Media?.recommendations) {
-        ListInfo(
-            pageInfo = PageInfo(
-                currentPage = this?.pageInfo?.pageBasicInfo?.currentPage ?: 0,
-                lasPage = this?.pageInfo?.pageBasicInfo?.lastPage ?: 0,
-                hasNextPage = this?.pageInfo?.pageBasicInfo?.hasNextPage ?: false
-            ),
-            list = this?.nodes?.map {
-                convertAnimeBasicInfo(it?.mediaRecommendation?.animeBasicInfo)
-            } ?: emptyList()
-        )
-    }
+fun AnimeRecommendQuery.Node.toAnimeInfo(): AnimeInfo {
+    return convertAnimeBasicInfo(this.mediaRecommendation?.animeBasicInfo)
 }
 
 fun JikanAnimeDataDto.toAnimeThemeInfo(): AnimeThemeInfo {
@@ -141,19 +130,8 @@ fun JikanAnimeDataDto.toAnimeThemeInfo(): AnimeThemeInfo {
     )
 }
 
-fun SearchAnimeQuery.Data.toAnimeList(): ListInfo<AnimeInfo> {
-    return ListInfo(
-        pageInfo = with(this.page?.pageInfo?.pageBasicInfo) {
-            PageInfo(
-                currentPage = this?.currentPage ?: 0,
-                lasPage = this?.lastPage ?: 0,
-                hasNextPage = this?.hasNextPage ?: false
-            )
-        },
-        list = this.page?.media?.map {
-            convertAnimeBasicInfo(it?.animeBasicInfo)
-        } ?: emptyList()
-    )
+fun SearchAnimeQuery.Medium.toAnimeInfo(): AnimeInfo {
+    return convertAnimeBasicInfo(this.animeBasicInfo)
 }
 
 fun AnimeInfo.toAnimeEntity(): AnimeEntity {

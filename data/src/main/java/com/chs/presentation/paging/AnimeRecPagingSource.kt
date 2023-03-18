@@ -6,6 +6,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.chs.AnimeRecommendQuery
 import com.chs.domain.model.AnimeInfo
+import com.chs.presentation.mapper.toAnimeInfo
 import com.chs.presentation.mapper.toAnimeInfoList
 
 class AnimeRecPagingSource(
@@ -31,11 +32,12 @@ class AnimeRecPagingSource(
                     )
                 )
                 .execute()
-                .data
-                ?.toAnimeInfoList()!!
+                .data!!
 
             LoadResult.Page(
-                data = response.list,
+                data = response.Media?.recommendations.nodes.map {
+                    it.toAnimeInfo()
+                },
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = if (response.pageInfo.hasNextPage) page + 1 else null
             )

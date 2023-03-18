@@ -49,11 +49,11 @@ class AnimeRepositoryImpl(
         year: Int,
         genre: String?
     ): Flow<PagingData<AnimeInfo>> {
-        return Pager(
-            PagingConfig(pageSize = 10)
-        ) {
-            AnimeSortPagingSource(apolloClient)
-        }.flow
+//        return Pager(
+//            PagingConfig(pageSize = 10)
+//        ) {
+//            AnimeSortPagingSource(apolloClient)
+//        }.flow
     }
 
     override suspend fun getAnimeDetailInfo(animeId: Int): AnimeDetailInfo {

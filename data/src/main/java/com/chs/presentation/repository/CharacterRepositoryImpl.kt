@@ -1,12 +1,19 @@
 package com.chs.presentation.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.chs.CharacterDetailQuery
+import com.chs.SearchCharacterQuery
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.domain.repository.CharacterRepository
+import com.chs.presentation.mapper.toCharacterDetailInfo
+import com.chs.presentation.mapper.toCharacterEntity
+import com.chs.presentation.mapper.toCharacterInfo
+import com.chs.presentation.paging.SearchCharacterPagingSource
 import com.chs.presentation.source.KtorJikanService
 import com.chs.presentation.source.db.dao.CharaListDao
 import kotlinx.coroutines.flow.Flow
@@ -21,26 +28,41 @@ class CharacterRepositoryImpl(
         return apolloClient
             .query(CharacterDetailQuery(Optional.present(characterId)))
             .execute()
-            ?.data
+            .data
             ?.character
+            ?.toCharacterDetailInfo()!!
     }
 
     override suspend fun getCharacterSearchResult(name: String): Flow<PagingData<CharacterInfo>> {
-        TODO("Not yet implemented")
+        return Pager(
+            PagingConfig(pageSize = 10)
+        ) {
+            SearchCharacterPagingSource(
+                apolloClient,
+                search = name
+            )
+        }.flow
     }
 
     override fun getSavedCharacterList(): Flow<List<CharacterInfo>> {
-        TODO("Not yet implemented")
+        return dao.getAllCharaList().map {
+            it.map { characterEntity ->
+                characterEntity.toCharacterInfo()
+            }
+        }
     }
 
-    override fun getSavedCharacterInfo(): Flow<CharacterInfo?> {
+    override fun getSavedCharacterInfo(characterId: Int): Flow<CharacterInfo?> {
+        return dao.checkCharaList(characterId).map {
+            it.toCharacterInfo()
+        }
     }
 
     override suspend fun insertCharacterInfo(characterInfo: CharacterInfo) {
-        TODO("Not yet implemented")
+        dao.insert(characterInfo.toCharacterEntity())
     }
 
     override suspend fun deleteCharacterInfo(characterInfo: CharacterInfo) {
-        TODO("Not yet implemented")
+        dao.delete(characterInfo.toCharacterEntity())
     }
 }
