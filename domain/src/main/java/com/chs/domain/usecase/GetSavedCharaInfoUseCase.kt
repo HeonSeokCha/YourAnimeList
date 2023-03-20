@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetSavedCharaInfoUseCase @Inject constructor(
     private val repository: CharacterRepository
 ) {
-    operator fun invoke(): Flow<CharacterInfo?> {
-        return repository.getSavedCharacterInfo()
+    operator fun invoke(charaId: Int): Flow<CharacterInfo?> {
+        return repository.getSavedCharacterInfo(charaId)
     }
 }

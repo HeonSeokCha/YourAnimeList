@@ -1,0 +1,33 @@
+package com.chs.data.paging
+
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
+import com.apollographql.apollo3.ApolloClient
+import com.chs.domain.model.AnimeInfo
+import com.chs.type.MediaSeason
+import com.chs.type.MediaSort
+
+class AnimeSortPagingSource(
+    private val apolloClient: ApolloClient,
+    private val sort: MediaSort,
+    private val season: MediaSeason,
+    private val seasonYear: Int?,
+    private val genre: String?
+) : PagingSource<Int, AnimeInfo>() {
+
+    override fun getRefreshKey(state: PagingState<Int, AnimeInfo>): Int? {
+        return state.anchorPosition?.let { position ->
+            val page = state.closestPageToPosition(position)
+            page?.prevKey?.minus(1) ?: page?.nextKey?.plus(1)
+        }
+    }
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnimeInfo> {
+        return try {
+            val page = params.key ?: 1
+
+        } catch (e: Exception) {
+            LoadResult.Error(e)
+        }
+    }
+}
