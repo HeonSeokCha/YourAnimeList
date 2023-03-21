@@ -3,6 +3,9 @@ package com.chs.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.Optional
+import com.chs.AnimeListQuery
+import com.chs.data.mapper.toAnimeInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.type.MediaSeason
 import com.chs.type.MediaSort
@@ -10,7 +13,7 @@ import com.chs.type.MediaSort
 class AnimeSortPagingSource(
     private val apolloClient: ApolloClient,
     private val sort: MediaSort,
-    private val season: MediaSeason,
+    private val season: MediaSeason?,
     private val seasonYear: Int?,
     private val genre: String?
 ) : PagingSource<Int, AnimeInfo>() {
@@ -25,6 +28,30 @@ class AnimeSortPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnimeInfo> {
         return try {
             val page = params.key ?: 1
+            val response = apolloClient
+                .query(
+                    AnimeListQuery(
+                        page = Optional.present(page),
+                        sort = Optional.present(sort),
+                        season = if (season == null) {
+                            Optional.absent()
+                        } else Optional.present(season),
+                        seasonYear = if (seasonYear == null) {
+                            Optional.absent()
+                        } else Optional.present(seasonYear),
+                        genre = Optional.present(genre)
+                    )
+                )
+                .execute()
+                .data!!
+
+            LoadResult.Page(
+                data = response.page?.media?.map {
+                    it?.toAnimeInfo()!!
+                } ?: emptyList(),
+                prevKey = if (page == 1) null else page - 1,
+                nextKey = if (response.page?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
+            )
 
         } catch (e: Exception) {
             LoadResult.Error(e)

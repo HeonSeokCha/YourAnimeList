@@ -11,13 +11,14 @@ import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeRecommendList
 import com.chs.domain.model.AnimeThemeInfo
 import com.chs.domain.repository.AnimeRepository
-import com.chs.data.ConvertDate
-import com.chs.presentation.source.KtorJikanService
-import com.chs.presentation.source.db.dao.AnimeListDao
-import com.chs.presentation.mapper.*
-import com.chs.presentation.paging.AnimeRecPagingSource
-import com.chs.presentation.paging.AnimeSortPagingSource
-import com.chs.presentation.paging.SearchAnimePagingSource
+import com.chs.data.source.KtorJikanService
+import com.chs.data.source.db.dao.AnimeListDao
+import com.chs.data.mapper.*
+import com.chs.data.paging.AnimeRecPagingSource
+import com.chs.data.paging.AnimeSortPagingSource
+import com.chs.data.paging.SearchAnimePagingSource
+import com.chs.type.MediaSeason
+import com.chs.type.MediaSort
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -45,15 +46,21 @@ class AnimeRepositoryImpl(
     override suspend fun getAnimeFilteredList(
         selectType: String,
         sortType: String,
-        season: String,
-        year: Int,
+        season: String?,
+        year: Int?,
         genre: String?
     ): Flow<PagingData<AnimeInfo>> {
-//        return Pager(
-//            PagingConfig(pageSize = 10)
-//        ) {
-//            AnimeSortPagingSource(apolloClient)
-//        }.flow
+        return Pager(
+            PagingConfig(pageSize = 10)
+        ) {
+            AnimeSortPagingSource(
+                apolloClient = apolloClient,
+                sort = MediaSort.safeValueOf(sortType),
+                season = if (season != null) MediaSeason.safeValueOf(season) else null,
+                seasonYear = year,
+                genre = genre
+            )
+        }.flow
     }
 
     override suspend fun getAnimeDetailInfo(animeId: Int): AnimeDetailInfo {

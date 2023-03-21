@@ -1,6 +1,7 @@
 package com.chs.data.repository
 
-import com.chs.presentation.domain.repository.MangaRepository
+
+import com.chs.domain.repository.MangaRepository
 
 class MangaRepositoryImpl : MangaRepository {
     override suspend fun getMangaDetailInfo(mangaId: Int) {

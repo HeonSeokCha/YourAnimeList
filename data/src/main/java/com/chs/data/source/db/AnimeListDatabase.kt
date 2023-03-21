@@ -3,11 +3,11 @@ package com.chs.data.source.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.chs.presentation.source.db.dao.AnimeListDao
-import com.chs.presentation.source.db.dao.CharaListDao
-import com.chs.presentation.source.db.model.AnimeEntity
-import com.chs.presentation.source.db.model.CharacterEntity
-import com.chs.presentation.util.RoomConverter
+import com.chs.data.RoomConverter
+import com.chs.data.source.db.dao.AnimeListDao
+import com.chs.data.source.db.dao.CharaListDao
+import com.chs.data.source.db.model.AnimeEntity
+import com.chs.data.source.db.model.CharacterEntity
 
 @Database(
     entities = [

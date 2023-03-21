@@ -2,6 +2,7 @@ package com.chs.data.module
 
 import android.app.Application
 import androidx.room.Room
+import com.chs.data.source.db.AnimeListDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,10 +15,10 @@ object LocalModule {
 
     @Provides
     @Singleton
-    fun provideYourListDatabases(app: Application): com.chs.presentation.source.db.AnimeListDatabase {
+    fun provideYourListDatabases(app: Application): AnimeListDatabase {
         return Room.databaseBuilder(
             app,
-            com.chs.presentation.source.db.AnimeListDatabase::class.java,
+            AnimeListDatabase::class.java,
             "animeList_db"
         ).build()
     }

@@ -11,8 +11,8 @@ interface AnimeRepository {
     suspend fun getAnimeFilteredList(
         selectType: String,
         sortType: String,
-        season: String,
-        year: Int,
+        season: String?,
+        year: Int?,
         genre: String?
     ): Flow<PagingData<AnimeInfo>>
 

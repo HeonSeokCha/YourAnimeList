@@ -3,7 +3,8 @@ package com.chs.data.module
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
 import com.apollographql.apollo3.cache.normalized.normalizedCache
-import com.chs.presentation.util.Constant
+import com.chs.data.source.KtorJikanService
+import com.chs.data.source.LoggingApolloInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,8 +23,8 @@ object RemoteModule {
 
     @Singleton
     @Provides
-    fun providerKtorHttpClient(): com.chs.presentation.source.KtorJikanService {
-        return com.chs.presentation.source.KtorJikanService(
+    fun providerKtorHttpClient(): KtorJikanService {
+        return KtorJikanService(
             HttpClient(Android) {
                 install(Logging) {
                     level = LogLevel.ALL
@@ -39,7 +40,7 @@ object RemoteModule {
     @Singleton
     fun providesApollo(): ApolloClient {
         return ApolloClient.Builder()
-            .serverUrl(Constant.ANILIST_API_URL)
+            .serverUrl("https://graphql.anilist.co/v2")
             .addInterceptor(LoggingApolloInterceptor())
             .normalizedCache(
                 MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024)

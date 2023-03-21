@@ -1,9 +1,6 @@
 package com.chs.data.mapper
 
-import com.chs.AnimeDetailInfoQuery
-import com.chs.AnimeRecommendQuery
-import com.chs.HomeAnimeListQuery
-import com.chs.SearchAnimeQuery
+import com.chs.*
 import com.chs.data.model.JikanAnimeDataDto
 import com.chs.data.source.db.model.AnimeEntity
 import com.chs.fragment.AnimeBasicInfo
@@ -131,6 +128,10 @@ fun JikanAnimeDataDto.toAnimeThemeInfo(): AnimeThemeInfo {
 }
 
 fun SearchAnimeQuery.Medium.toAnimeInfo(): AnimeInfo {
+    return convertAnimeBasicInfo(this.animeBasicInfo)
+}
+
+fun AnimeListQuery.Medium.toAnimeInfo(): AnimeInfo {
     return convertAnimeBasicInfo(this.animeBasicInfo)
 }
 

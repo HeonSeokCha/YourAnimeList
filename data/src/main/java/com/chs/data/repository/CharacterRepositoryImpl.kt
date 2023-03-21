@@ -10,12 +10,12 @@ import com.chs.SearchCharacterQuery
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.domain.repository.CharacterRepository
-import com.chs.presentation.mapper.toCharacterDetailInfo
-import com.chs.presentation.mapper.toCharacterEntity
-import com.chs.presentation.mapper.toCharacterInfo
-import com.chs.presentation.paging.SearchCharacterPagingSource
-import com.chs.presentation.source.KtorJikanService
-import com.chs.presentation.source.db.dao.CharaListDao
+import com.chs.data.mapper.toCharacterDetailInfo
+import com.chs.data.mapper.toCharacterEntity
+import com.chs.data.mapper.toCharacterInfo
+import com.chs.data.paging.SearchCharacterPagingSource
+import com.chs.data.source.KtorJikanService
+import com.chs.data.source.db.dao.CharaListDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

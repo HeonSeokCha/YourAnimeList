@@ -1,6 +1,7 @@
 package com.chs.data.model
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class JikanAnimeDataDto(

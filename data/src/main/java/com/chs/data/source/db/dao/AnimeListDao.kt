@@ -1,7 +1,7 @@
 package com.chs.data.source.db.dao
 
 import androidx.room.*
-import com.chs.presentation.source.db.model.AnimeEntity
+import com.chs.data.source.db.model.AnimeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
