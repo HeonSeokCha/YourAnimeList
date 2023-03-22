@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.SearchCharacterQuery
 import com.chs.presentation.fragment.AnimeList
 import com.chs.presentation.ui.theme.Pink80
@@ -37,7 +38,7 @@ fun SearchMediaItem(
     clickAble: () -> Unit
 ) {
     when (item) {
-        is AnimeList -> {
+        is AnimeInfo -> {
             val starId = "starId"
             val favoriteId = "favoriteId"
             val inlineContent = mapOf(

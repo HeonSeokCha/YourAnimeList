@@ -38,7 +38,6 @@ import coil.compose.AsyncImage
 import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.shimmerEffect
 import com.chs.presentation.ui.theme.Pink80
-import com.chs.presentation.util.Constant
 import com.chs.presentation.util.color
 import kotlinx.coroutines.launch
 

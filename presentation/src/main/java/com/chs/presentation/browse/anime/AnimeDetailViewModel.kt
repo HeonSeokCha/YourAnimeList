@@ -5,9 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.presentation.data.mapper.toAnimeDto
-import com.chs.presentation.domain.usecase.*
-import com.chs.presentation.util.Resource
+import com.chs.domain.model.AnimeInfo
+import com.chs.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,8 +15,8 @@ import javax.inject.Inject
 class AnimeDetailViewModel @Inject constructor(
     private val getAnimeDetailUseCase: GetAnimeDetailUseCase,
     private val checkSaveAnimeUseCase: CheckSaveAnimeUseCase,
-    private val insertAnimeUseCase: InsertAnimeUseCase,
-    private val deleteAnimeUseCase: DeleteAnimeUseCase,
+    private val insertAnimeUseCase: InsertAnimeInfoUseCase,
+    private val deleteAnimeUseCase: DeleteAnimeInfoUseCase,
     private val getAnimeThemeUseCase: GetAnimeThemeUseCase,
 ) : ViewModel() {
 
@@ -88,7 +87,7 @@ class AnimeDetailViewModel @Inject constructor(
     fun insertAnime() {
         val anime = state.animeDetailInfo?.media!!
         viewModelScope.launch {
-            val animeObj = com.chs.domain.model.Anime(
+            val animeObj = AnimeInfo(
                 animeId = anime.id,
                 idMal = anime.idMal ?: 0,
                 title = anime.title!!.english ?: anime.title.romaji!!,
@@ -108,7 +107,7 @@ class AnimeDetailViewModel @Inject constructor(
         }
     }
 
-    fun deleteAnime(anime: AnimeDto) {
+    fun deleteAnime(anime: AnimeInfo) {
         viewModelScope.launch {
             deleteAnimeUseCase(anime)
             state = state.copy(isSaveAnime = null)

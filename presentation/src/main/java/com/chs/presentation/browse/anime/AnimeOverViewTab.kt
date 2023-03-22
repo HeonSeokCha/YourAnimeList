@@ -14,11 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
-import com.chs.presentation.AnimeDetailQuery
 import com.chs.presentation.main.Screen
 import com.chs.presentation.browse.BrowseScreen
-import com.chs.presentation.home.ItemAnimeSmall
-import com.chs.presentation.util.Constant.GENRE_COLOR
+import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.util.color
 
 @OptIn(ExperimentalLayoutApi::class)

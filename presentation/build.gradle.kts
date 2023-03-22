@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.utils.`is`
+
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     kotlin("kapt")
@@ -24,16 +26,20 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     buildFeatures {
         compose = true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
@@ -41,8 +47,21 @@ android {
 
 dependencies {
     implementation(projects.domain)
-
     implementation(libs.androidX.core.ktx)
     implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.androidX.browser)
     kapt(libs.hilt.compiler)
+    implementation(libs.androidX.core.ktx)
+    implementation(libs.coil.compose)
+    implementation(libs.androidX.compose.ui)
+    implementation(libs.androidX.compose.material.icon.extend)
+    implementation(libs.androidX.compose.material3)
+    implementation(libs.androidX.compose.ui.preview)
+    implementation(libs.androidX.lifecycle.runtime)
+    implementation(libs.androidX.activity.compose)
+    implementation(libs.androidX.lifecycle.viewmodel.compose)
+    implementation(libs.androidX.activity.compose)
+    implementation(libs.androidX.navigation.compose)
+    implementation(libs.androidX.paging.compose)
 }

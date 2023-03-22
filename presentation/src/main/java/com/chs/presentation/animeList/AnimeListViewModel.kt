@@ -5,14 +5,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chs.domain.usecase.GetAnimeSearchResultUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AnimeListViewModel @Inject constructor(
-    private val getYourAnimeListUseCase: GetYourAnimeListUseCase,
-    private val searchAnimeListUseCase: SearchAnimeListUseCase
+    private val getYourAnimeListUseCase: GetAnime,
+    private val searchAnimeListUseCase: GetAnimeSearchResultUseCase
 ) : ViewModel() {
 
     var state by mutableStateOf(AnimeListState())

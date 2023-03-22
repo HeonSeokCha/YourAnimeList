@@ -1,6 +1,8 @@
 package com.chs.presentation.animeList
 
+import com.chs.domain.model.AnimeInfo
+
 data class AnimeListState(
     val isLoading: Boolean = false,
-    val animeList: List<AnimeDto> = emptyList()
+    val animeList: List<AnimeInfo> = emptyList()
 )

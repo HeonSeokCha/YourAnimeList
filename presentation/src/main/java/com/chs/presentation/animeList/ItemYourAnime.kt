@@ -27,12 +27,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.util.color
 
 @Composable
 fun ItemYourAnime(
-    anime: AnimeDto,
+    anime: AnimeInfo,
     clickAble: () -> Unit
 ) {
 
@@ -90,7 +91,7 @@ fun ItemYourAnime(
                     .background(
                         color = "#ffffff".color
                     ),
-                model = anime.coverImage,
+                model = anime.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -120,7 +121,7 @@ fun ItemYourAnime(
                 )
 
                 Text(
-                    text = "${anime.seasonYear} ⦁ ${anime.format}",
+                    text = "${anime.seasonYear} ⦁ ${anime.status}",
                     color = Color.White,
                 )
 
@@ -141,7 +142,7 @@ fun ItemYourAnime(
                     Text(
                         text = buildAnnotatedString {
                             appendInlineContent(favoriteId, favoriteId)
-                            append(anime.favorites.toString())
+                            append(anime.averageScore.toString())
                         },
                         inlineContent = inlineContent,
                         fontWeight = FontWeight.Bold,
