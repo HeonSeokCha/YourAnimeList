@@ -47,6 +47,7 @@ android {
 
 dependencies {
     implementation(projects.domain)
+    implementation(projects.common)
     implementation(libs.androidX.core.ktx)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)

@@ -54,6 +54,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.common)
     implementation(projects.domain)
     implementation(libs.kotlin.coroutine.core)
     implementation(libs.kotlin.serialization)

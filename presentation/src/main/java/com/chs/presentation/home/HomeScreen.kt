@@ -29,7 +29,7 @@ import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemAnimeSmallShimmer
 import com.chs.presentation.shimmerEffect
-import com.chs.presentation.util.Constant
+import com.chs.common.UiConst
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -73,7 +73,7 @@ fun HomeScreen(
         if (state.animeRecommendList?.animeBasicList != null) {
             items(state.animeRecommendList?.animeBasicList!!.size) { idx ->
                 ItemRecommendCategory(
-                    Constant.HOME_SORT_TILE[idx],
+                    UiConst.HOME_SORT_TILE[idx],
                     state.animeRecommendList?.animeBasicList!![idx],
                     navigator,
                     context
@@ -82,8 +82,8 @@ fun HomeScreen(
         }
 
         if (state.isLoading) {
-            items(Constant.HOME_SORT_TILE.size) { idx ->
-                ItemSortShimmer(Constant.HOME_SORT_TILE[idx])
+            items(UiConst.HOME_SORT_TILE.size) { idx ->
+                ItemSortShimmer(UiConst.HOME_SORT_TILE[idx])
             }
         }
     }
@@ -140,9 +140,9 @@ fun ItemRecommendCategory(
                             Intent(
                                 context, BrowseActivity::class.java
                             ).apply {
-                                this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                                this.putExtra(Constant.TARGET_ID, list[it].id)
-                                this.putExtra(Constant.TARGET_ID_MAL, list[it].idMal)
+                                this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                                this.putExtra(UiConst.TARGET_ID, list[it].id)
+                                this.putExtra(UiConst.TARGET_ID_MAL, list[it].idMal)
                             }
                         )
                     }

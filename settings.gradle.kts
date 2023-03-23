@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage", "UNCHECKED_CAST")
 
+include(":common")
+
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

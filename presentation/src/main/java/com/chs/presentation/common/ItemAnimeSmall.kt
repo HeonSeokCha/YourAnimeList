@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.presentation.shimmerEffect
-import com.chs.presentation.util.Constant
+import com.chs.common.UiConst
 
 @Composable
 fun ItemAnimeSmall(
@@ -81,23 +81,23 @@ fun ItemAnimeSmall(
                     .fillMaxWidth()
                     .height(180.dp)
                     .clip(RoundedCornerShape(5.dp)),
-                model = item.imageInfo.url,
+                model = item.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = item.title.romaji ?: item.title.english,
+                text = item.title,
                 color = Color.Gray,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 fontSize = 12.sp
             )
-            Text(
-                text = Constant.mediaStatus[item.status]?.first ?: "",
-                color = Constant.mediaStatus[item.status]?.second ?: Color(0xFF888888),
-                fontSize = 12.sp
-            )
+//            Text(
+//                text = UiConst.mediaStatus[item.status]?.first ?: "",
+//                color = UiConst.mediaStatus[item.status]?.second ?: Color(0xFF888888),
+//                fontSize = 12.sp
+//            )
 
             Row(
                 modifier = Modifier

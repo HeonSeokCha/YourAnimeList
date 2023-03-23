@@ -1,4 +1,4 @@
-package com.chs.youranimelist.util
+package com.chs.common
 
 sealed class Resource<T>(
     val data: T? = null,

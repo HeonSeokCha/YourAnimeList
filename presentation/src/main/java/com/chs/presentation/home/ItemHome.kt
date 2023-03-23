@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.presentation.browse.BrowseActivity
-import com.chs.presentation.util.Constant
+import com.chs.common.UiConst
 
 @Composable
 fun ItemHomeBanner(
@@ -74,7 +74,7 @@ fun ItemHomeBanner(
         modifier = Modifier
             .fillMaxWidth()
             .height(250.dp),
-        model = banner.animeInfo.imageInfo.url,
+        model = banner.animeInfo.imageUrl,
         contentDescription = null,
         contentScale = ContentScale.Crop
     )
@@ -86,9 +86,9 @@ fun ItemHomeBanner(
                     Intent(
                         context, BrowseActivity::class.java
                     ).apply {
-                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                        this.putExtra(Constant.TARGET_ID, banner.animeInfo.id)
-                        this.putExtra(Constant.TARGET_ID_MAL, banner.animeInfo.idMal)
+                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                        this.putExtra(UiConst.TARGET_ID, banner.animeInfo.id)
+                        this.putExtra(UiConst.TARGET_ID_MAL, banner.animeInfo.idMal)
                     }
                 )
             }
@@ -101,7 +101,7 @@ fun ItemHomeBanner(
                     start = 8.dp,
                     bottom = 32.dp
                 ),
-            text = banner.animeInfo.title.romaji ?: banner.animeInfo.title.english,
+            text = banner.animeInfo.title,
             color = Color.White,
             fontWeight = FontWeight.Bold,
             maxLines = 1,
@@ -130,7 +130,7 @@ fun ItemHomeBanner(
             Text(
                 text = buildAnnotatedString {
                     appendInlineContent(favoriteId, favoriteId)
-                    append(banner.animeInfo.favoriteScore.toString())
+                    append(banner.animeInfo.averageScore.toString())
                 },
                 inlineContent = inlineContent,
                 fontWeight = FontWeight.Bold,
@@ -149,13 +149,13 @@ fun ItemHomeTopAnime(
     Row {
         AsyncImage(
             modifier = Modifier,
-            model = animeInfo.imageInfo.url,
+            model = animeInfo.imageUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
 
         Column {
-            Text(text = animeInfo.title.romaji ?: animeInfo.title.english)
+            Text(text = animeInfo.title)
         }
     }
 }

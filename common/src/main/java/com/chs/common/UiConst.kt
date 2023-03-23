@@ -1,11 +1,6 @@
-package com.chs.youranimelist.util
+package com.chs.common
 
-
-object Constant {
-    const val ANILIST_API_URL: String = "https://graphql.anilist.co/v2"
-    const val JIKAN_API_URL: String = "https://api.jikan.moe/v4/anime"
-    const val YOUTUBE_BASE_URL: String = "https://www.youtube.com/watch?v="
-
+object UiConst {
     const val TARGET_MAIN: String = "main"
     const val TARGET_SORT: String = "sort"
     const val TARGET_MEDIA: String = "media"
@@ -59,30 +54,14 @@ object Constant {
     )
 
     val animeSortArray = listOf(
-        "POPULARITY",
-        "AVERAGE SCORE",
-        "FAVORITE",
-        "NEWEST",
-        "OLDEST",
-        "TITLE",
+        "POPULARITY" to "POPULARITY_DESC",
+        "AVERAGE SCORE" to "SCORE_DESC",
+        "FAVORITE" to "FAVOURITES_DESC",
+        "NEWEST" to "START_DATE_DESC",
+        "OLDEST" to "START_DATE",
+        "TITLE" to "TITLE_ENGLISH_DESC"
     )
-//
-//    val animeSeasonList = arrayListOf(
-//        MediaSeason.WINTER,
-//        MediaSeason.SPRING,
-//        MediaSeason.SUMMER,
-//        MediaSeason.FALL
-//    )
-//
-//    val animeSortList = arrayListOf(
-//        MediaSort.POPULARITY_DESC,
-//        MediaSort.SCORE_DESC,
-//        MediaSort.FAVOURITES_DESC,
-//        MediaSort.START_DATE_DESC,
-//        MediaSort.START_DATE,
-//        MediaSort.TITLE_ENGLISH_DESC,
-//    )
-//
+
 //    val mediaStatus = hashMapOf(
 //        Pair("RELEASING", "Up Releasing" to MediaStatusReleasingColor),
 //        Pair("FINISHED", "FINISHED" to MediaStatusFinishedColor),
