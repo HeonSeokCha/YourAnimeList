@@ -24,11 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.ui.theme.Pink80
 
 @Composable
 fun ItemYourChara(
-    character: CharacterDto,
+    character: CharacterInfo,
     clickAble: () -> Unit
 ) {
 
@@ -68,7 +69,7 @@ fun ItemYourChara(
                 modifier = Modifier
                     .width(150.dp)
                     .height(200.dp),
-                model = character.image,
+                model = character.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -102,7 +103,7 @@ fun ItemYourChara(
                 Text(
                     text = buildAnnotatedString {
                         appendInlineContent(starId, starId)
-                        append(character.favourites.toString())
+                        append(character.favorites.toString())
                     },
                     inlineContent = inlineContent,
                     color = Color.White,

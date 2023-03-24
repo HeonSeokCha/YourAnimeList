@@ -6,13 +6,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.domain.usecase.GetAnimeSearchResultUseCase
+import com.chs.domain.usecase.GetSavedAnimeListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AnimeListViewModel @Inject constructor(
-    private val getYourAnimeListUseCase: GetAnime,
+    private val getYourAnimeListUseCase: GetSavedAnimeListUseCase,
     private val searchAnimeListUseCase: GetAnimeSearchResultUseCase
 ) : ViewModel() {
 

@@ -16,12 +16,11 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.chs.presentation.SearchAnimeQuery
-import com.chs.presentation.SearchCharacterQuery
-import com.chs.presentation.SearchMangaQuery
 import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.BrowseActivity
-import com.chs.presentation.util.Constant
+import com.chs.common.UiConst
+import com.chs.domain.model.AnimeInfo
+import com.chs.domain.model.CharacterInfo
 
 @Composable
 fun SearchMediaScreen(
@@ -42,15 +41,15 @@ fun SearchMediaScreen(
     }
 
     val pagingItems = when (searchType) {
-        Constant.TARGET_ANIME -> {
+        UiConst.TARGET_ANIME -> {
             state.searchAnimeResultPaging?.collectAsLazyPagingItems()
         }
 
-        Constant.TARGET_MANGA -> {
+        UiConst.TARGET_MANGA -> {
             state.searchMangaResultPaging?.collectAsLazyPagingItems()
         }
 
-        Constant.TARGET_CHARA -> {
+        UiConst.TARGET_CHARA -> {
             state.searchCharaResultPaging?.collectAsLazyPagingItems()
         }
 
@@ -66,23 +65,23 @@ fun SearchMediaScreen(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         when (searchType) {
-            Constant.TARGET_ANIME -> {
+            UiConst.TARGET_ANIME -> {
                 pagingItems?.let {
-                    val animeItems = pagingItems as LazyPagingItems<SearchAnimeQuery.Medium>
+                    val animeItems = pagingItems as LazyPagingItems<AnimeInfo>
                     items(animeItems) { item ->
-                        SearchMediaItem(item?.animeList!!) {
+                        SearchMediaItem(item!!) {
                             context.startActivity(
                                 Intent(
                                     context, BrowseActivity::class.java
                                 ).apply {
-                                    this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+                                    this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
                                     this.putExtra(
-                                        Constant.TARGET_ID,
-                                        item.animeList.id
+                                        UiConst.TARGET_ID,
+                                        item.id
                                     )
                                     this.putExtra(
-                                        Constant.TARGET_ID_MAL,
-                                        item.animeList.idMal
+                                        UiConst.TARGET_ID_MAL,
+                                        item.idMal
                                     )
                                 }
                             )
@@ -91,42 +90,42 @@ fun SearchMediaScreen(
                 }
             }
 
-            Constant.TARGET_MANGA -> {
-                pagingItems?.let {
-                    val mangaItems = pagingItems as LazyPagingItems<SearchMangaQuery.Medium>
-                    items(mangaItems) { item ->
-                        SearchMediaItem(item?.animeList!!) {
-                            context.startActivity(
-                                Intent(
-                                    context, BrowseActivity::class.java
-                                ).apply {
-                                    this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                                    this.putExtra(
-                                        Constant.TARGET_ID,
-                                        item.animeList.id
-                                    )
-                                    this.putExtra(
-                                        Constant.TARGET_ID_MAL,
-                                        item.animeList.idMal
-                                    )
-                                }
-                            )
-                        }
-                    }
-                }
-            }
+//            UiConst.TARGET_MANGA -> {
+//                pagingItems?.let {
+//                    val mangaItems = pagingItems as LazyPagingItems<SearchMangaQuery.Medium>
+//                    items(mangaItems) { item ->
+//                        SearchMediaItem(item?.animeList!!) {
+//                            context.startActivity(
+//                                Intent(
+//                                    context, BrowseActivity::class.java
+//                                ).apply {
+//                                    this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
+//                                    this.putExtra(
+//                                        Constant.TARGET_ID,
+//                                        item.animeList.id
+//                                    )
+//                                    this.putExtra(
+//                                        Constant.TARGET_ID_MAL,
+//                                        item.animeList.idMal
+//                                    )
+//                                }
+//                            )
+//                        }
+//                    }
+//                }
+//            }
 
-            Constant.TARGET_CHARA -> {
+            UiConst.TARGET_CHARA -> {
                 pagingItems?.let {
-                    val charaItems = pagingItems as LazyPagingItems<SearchCharacterQuery.Character>
+                    val charaItems = pagingItems as LazyPagingItems<CharacterInfo>
                     items(charaItems) { item ->
                         SearchMediaItem(item!!) {
                             context.startActivity(
                                 Intent(
                                     context, BrowseActivity::class.java
                                 ).apply {
-                                    this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_CHARA)
-                                    this.putExtra(Constant.TARGET_ID, item.id)
+                                    this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
+                                    this.putExtra(UiConst.TARGET_ID, item.id)
                                 }
                             )
                         }

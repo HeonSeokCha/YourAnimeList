@@ -24,7 +24,7 @@ import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.common.UiConst
-import com.chs.presentation.ConvertDate
+import com.chs.presentation.common.ItemAnimeSmall
 
 @Composable
 fun SortedListScreen(
@@ -92,8 +92,8 @@ fun SortedListScreen(
 //            }
         }
 
-        viewModel.getSortedAnime()
-        viewModel.getGenreList()
+//        viewModel.getSortedAnime()
+//        viewModel.getGenreList()
     }
 
     Column(
@@ -120,11 +120,11 @@ fun SortedListScreen(
                         }
                         "Season" -> {
                             filterSelect = "Season"
-                            list = Constant.animeSeasonList.map { it.name }
+                            list = UiConst.animeSeasonList.map { it.name }
                         }
                         "Sort" -> {
                             filterSelect = "Sort"
-                            list = Constant.animeSortArray
+                            list = UiConst.animeSortArray
                         }
                         "Genre" -> {
                             filterSelect = "Genre"
@@ -153,10 +153,10 @@ fun SortedListScreen(
                         Intent(
                             context, BrowseActivity::class.java
                         ).apply {
-                            this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                            this.putExtra(Constant.TARGET_ID, pagingItems.get(idx)!!.id)
+                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                            this.putExtra(UiConst.TARGET_ID, pagingItems.get(idx)!!.id)
                             this.putExtra(
-                                Constant.TARGET_ID_MAL,
+                                UiConst.TARGET_ID_MAL,
                                 pagingItems[idx]!!.idMal
                             )
                         }
@@ -165,7 +165,7 @@ fun SortedListScreen(
             }
             if (state.isLoading) {
                 items(9) {
-                    ItemAnimeSmallShimmer()
+//                    ItemAnimeSmallShimmer()
                 }
             }
         }
@@ -207,7 +207,7 @@ fun SortedListScreen(
 //                        viewModel.filterList[3].copy(second = list[selectIdx]!!)
 //                }
             }
-            viewModel.getSortedAnime()
+//            viewModel.getSortedAnime()
         })
     }
     if (pagingItems?.loadState?.append == LoadState.Loading) {

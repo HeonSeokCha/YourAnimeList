@@ -4,7 +4,6 @@ plugins {
     kotlin("android")
     alias(libs.plugins.hilt)
     alias(libs.plugins.android.application)
-    alias(libs.plugins.apollo)
 }
 
 kotlin {
@@ -55,15 +54,10 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.0"
+        kotlinCompilerExtensionVersion = libs.versions.compileSdkVersion.get()
     }
     packagingOptions {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
-    }
-    apollo {
-        service("service") {
-            packageName.set("com.chs")
-        }
     }
 }
 

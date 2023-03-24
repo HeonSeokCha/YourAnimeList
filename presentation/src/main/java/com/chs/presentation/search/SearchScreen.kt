@@ -15,7 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import com.chs.presentation.ui.theme.Pink80
-import com.chs.presentation.util.Constant
+import com.chs.common.UiConst
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -80,22 +80,22 @@ fun SearchScreen(
             when (pagerState.currentPage) {
                 0 -> {
                     SearchMediaScreen(
-                        searchType = Constant.TARGET_ANIME,
+                        searchType = UiConst.TARGET_ANIME,
                         searchKeyWord = searchKeyWord
                     )
                 }
                 1 -> {
                     SearchMediaScreen(
-                        searchType = Constant.TARGET_MANGA,
+                        searchType = UiConst.TARGET_CHARA,
                         searchKeyWord = searchKeyWord
                     )
                 }
-                2 -> {
-                    SearchMediaScreen(
-                        searchType = Constant.TARGET_CHARA,
-                        searchKeyWord = searchKeyWord
-                    )
-                }
+//                2 -> {
+//                    SearchMediaScreen(
+//                        searchType = UiConst.TARGET_CHARA,
+//                        searchKeyWord = searchKeyWord
+//                    )
+//                }
             }
         }
     }

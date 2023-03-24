@@ -27,8 +27,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.domain.model.AnimeInfo
-import com.chs.presentation.SearchCharacterQuery
-import com.chs.presentation.fragment.AnimeList
+import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.util.color
 
@@ -93,7 +92,7 @@ fun SearchMediaItem(
                             .background(
                                 color = "#ffffff".color
                             ),
-                        model = item.coverImage?.extraLarge,
+                        model = item.imageUrl,
                         contentDescription = null,
                         contentScale = ContentScale.Crop
                     )
@@ -107,7 +106,7 @@ fun SearchMediaItem(
                             )
                     ) {
                         Text(
-                            text = item.title?.english ?: item.title?.romaji.toString(),
+                            text = item.title,
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
@@ -122,17 +121,10 @@ fun SearchMediaItem(
                             fontSize = 16.sp
                         )
 
-                        if (item.seasonYear != null) {
-                            Text(
-                                text = "${item.seasonYear} ⦁ ${item.format}",
-                                color = Color.White,
-                            )
-                        } else {
-                            Text(
-                                text = "${item.format}",
-                                color = Color.White,
-                            )
-                        }
+                        Text(
+                            text = "${item.seasonYear} ⦁ ${item.status}",
+                            color = Color.White,
+                        )
 
                         Row(
                             modifier = Modifier.padding(top = 8.dp)
@@ -151,7 +143,7 @@ fun SearchMediaItem(
                             Text(
                                 text = buildAnnotatedString {
                                     appendInlineContent(favoriteId, favoriteId)
-                                    append(item.favourites.toString())
+                                    append(item.averageScore.toString())
                                 },
                                 inlineContent = inlineContent,
                                 fontWeight = FontWeight.Bold,
@@ -164,7 +156,7 @@ fun SearchMediaItem(
             }
         }
 
-        is SearchCharacterQuery.Character -> {
+        is CharacterInfo -> {
             val starId = "starId"
             val inlineContent = mapOf(
                 Pair(
@@ -201,7 +193,7 @@ fun SearchMediaItem(
                         modifier = Modifier
                             .width(150.dp)
                             .height(200.dp),
-                        model = item.image?.large,
+                        model = item.imageUrl,
                         contentDescription = null,
                         contentScale = ContentScale.Crop
                     )
@@ -216,7 +208,7 @@ fun SearchMediaItem(
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Text(
-                            text = item.name?.full.toString(),
+                            text = item.name,
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
@@ -225,7 +217,7 @@ fun SearchMediaItem(
                         )
 
                         Text(
-                            text = item.name?.native.toString(),
+                            text = item.nativeName,
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp
@@ -235,7 +227,7 @@ fun SearchMediaItem(
                         Text(
                             text = buildAnnotatedString {
                                 appendInlineContent(starId, starId)
-                                append(item.favourites.toString())
+                                append(item.favorites.toString())
                             },
                             inlineContent = inlineContent,
                             color = Color.White,

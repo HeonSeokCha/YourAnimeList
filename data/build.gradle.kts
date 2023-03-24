@@ -56,6 +56,7 @@ android {
 dependencies {
     implementation(projects.common)
     implementation(projects.domain)
+    implementation(libs.androidX.paging.compose)
     implementation(libs.kotlin.coroutine.core)
     implementation(libs.kotlin.serialization)
     implementation(libs.hilt.android)
@@ -66,7 +67,6 @@ dependencies {
 
     implementation(libs.bundles.apollo)
     implementation(libs.bundles.ktor)
-    implementation(libs.androidX.paging.compose)
 
     testImplementation(libs.junit)
 }

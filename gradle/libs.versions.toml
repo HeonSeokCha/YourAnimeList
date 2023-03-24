@@ -8,8 +8,8 @@ versionCode = "1"
 versionName = "1.0"
 
 activity = "1.6.1"
-compose-ui = "1.4.0-rc01"
-composeCompiler = "1.4.2"
+compose-ui = "1.4.0"
+composeCompiler = "1.4.4"
 lifecycle = "2.6.0"
 room = "2.5.0"
 coil = "2.2.2"
@@ -31,13 +31,13 @@ androidX-compose-ui-preview = { module = "androidx.compose.ui:ui-tooling-preview
 androidX-navigation-compose = "androidx.navigation:navigation-compose:2.5.3"
 androidX-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle"}
 androidX-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle"}
-androidX-paging-compose = "androidx.paging:paging-compose:1.0.0-alpha18"
 androidX-browser = "androidx.browser:browser:1.5.0"
 
 androidX-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidX-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidX-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidX-paging-commons = "androidx.paging:paging-common:3.1.1"
+androidX-paging-compose = "androidx.paging:paging-compose:1.0.0-alpha18"
 
 ## Hilt
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
@@ -78,6 +78,19 @@ ktor = [
     "ktor-serialization",
     "ktor-negotiation",
     "ktor-logging"
+]
+android = [
+    "androidX-core-ktx",
+    "androidX-lifecycle-runtime",
+    "androidX-browser"
+]
+compose = [
+    "androidX-compose-ui",
+    "androidX-activity-compose",
+    "androidX-compose-material-icon-extend",
+    "androidX-compose-material3",
+    "androidX-compose-ui-preview",
+    "androidX-lifecycle-viewmodel-compose"
 ]
 
 [plugins]

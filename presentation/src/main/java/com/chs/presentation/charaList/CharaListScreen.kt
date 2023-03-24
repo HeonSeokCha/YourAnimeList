@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.chs.presentation.browse.BrowseActivity
-import com.chs.presentation.util.Constant
+import com.chs.common.UiConst
 
 @Composable
 fun CharaListScreen(
@@ -40,8 +40,8 @@ fun CharaListScreen(
                     Intent(
                         context, BrowseActivity::class.java
                     ).apply {
-                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_CHARA)
-                        this.putExtra(Constant.TARGET_ID, state.charaList[idx].charaId)
+                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
+                        this.putExtra(UiConst.TARGET_ID, state.charaList[idx].id)
                     }
                 )
             }

@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.chs.presentation.browse.BrowseActivity
-import com.chs.presentation.util.Constant
+import com.chs.common.UiConst
 
 @Composable
 fun AnimeListScreen(
@@ -39,9 +39,9 @@ fun AnimeListScreen(
                     Intent(
                         context, BrowseActivity::class.java
                     ).apply {
-                        this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-                        this.putExtra(Constant.TARGET_ID, state.animeList[idx].animeId)
-                        this.putExtra(Constant.TARGET_ID_MAL, state.animeList[idx].idMal)
+                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                        this.putExtra(UiConst.TARGET_ID, state.animeList[idx].id)
+                        this.putExtra(UiConst.TARGET_ID_MAL, state.animeList[idx].idMal)
                     }
                 )
             }
