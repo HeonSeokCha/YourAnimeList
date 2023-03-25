@@ -40,7 +40,7 @@ fun AnimeRecScreen(
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         items(lazyPagingItems?.itemCount ?: 0) { idx ->
-            lazyPagingItems?.get(idx)?.node?.mediaRecommendation?.let {
+            lazyPagingItems?.get(idx)?.let {
                 ItemAnimeRecommend(it) {
                     navController.navigate(
                         "${BrowseScreen.AnimeDetailScreen.route}/" +

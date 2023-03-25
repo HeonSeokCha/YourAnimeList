@@ -24,7 +24,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.chs.presentation.R
 import com.chs.presentation.ui.theme.Red500
-import com.chs.presentation.util.SearchWidgetState
+import com.chs.presentation.SearchWidgetState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

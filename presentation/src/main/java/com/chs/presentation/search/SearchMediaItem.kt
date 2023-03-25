@@ -29,7 +29,7 @@ import coil.compose.AsyncImage
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.ui.theme.Pink80
-import com.chs.presentation.util.color
+import com.chs.presentation.color
 
 @Composable
 fun SearchMediaItem(

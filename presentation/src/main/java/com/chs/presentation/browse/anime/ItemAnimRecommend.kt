@@ -21,14 +21,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.chs.presentation.AnimeRecommendQuery
+import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.shimmerEffect
 import com.chs.presentation.ui.theme.Pink80
-import com.chs.presentation.util.color
+import com.chs.presentation.color
 
 @Composable
 fun ItemAnimeRecommend(
-    animeInfo: AnimeRecommendQuery.MediaRecommendation,
+    animeInfo: AnimeInfo,
     clickAble: () -> Unit
 ) {
     Card(
@@ -49,9 +49,9 @@ fun ItemAnimeRecommend(
                     .width(150.dp)
                     .height(200.dp)
                     .background(
-                        color = animeInfo.coverImage?.color?.color ?: "#ffffff".color
+                        color = animeInfo.imagePlaceColor?.color ?: "#ffffff".color
                     ),
-                model = animeInfo.coverImage?.extraLarge,
+                model = animeInfo.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -65,7 +65,7 @@ fun ItemAnimeRecommend(
                     )
             ) {
                 Text(
-                    text = animeInfo.title?.english ?: animeInfo.title?.romaji.toString(),
+                    text = animeInfo.title,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,

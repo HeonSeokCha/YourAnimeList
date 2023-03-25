@@ -30,7 +30,7 @@ import coil.compose.AsyncImage
 import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.common.ItemAnimeSmall
-import com.chs.presentation.util.color
+import com.chs.presentation.color
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -51,7 +51,7 @@ fun CharacterDetailScreen(
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Adaptive(100.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+//        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
             CharacterBanner(
@@ -141,7 +141,7 @@ fun CharacterBanner(
                             contentDescription = null,
                             tint = Color.Red
                         )
-                        Text(text = characterInfo?.favorites.toString())
+                        Text(text = characterInfo?.characterInfo?.favorites.toString())
                     }
 
                 }

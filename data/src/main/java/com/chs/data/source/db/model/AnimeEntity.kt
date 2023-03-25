@@ -10,8 +10,11 @@ data class AnimeEntity(
     val idMal: Int,
     val title: String,
     val imageUrl: String?,
+    val imagePlaceColor: String?,
     val averageScore: Int,
     val seasonYear: Int,
+    val favourites: Int,
+    val format: String,
     val status: String,
     val createDate: Long = System.currentTimeMillis()
 )

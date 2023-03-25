@@ -35,10 +35,11 @@ import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.chs.common.URLConst
 import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.shimmerEffect
 import com.chs.presentation.ui.theme.Pink80
-import com.chs.presentation.util.color
+import com.chs.presentation.color
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -78,7 +79,7 @@ fun AnimeDetailScreen(
                         .build()
                         .launchUrl(
                             context,
-                            Uri.parse("${Constant.YOUTUBE_BASE_URL}$trailerId")
+                            Uri.parse("${URLConst.YOUTUBE_BASE_URL}$trailerId")
                         )
                 },
                 insertClick = {
@@ -144,7 +145,7 @@ fun AnimeDetailScreen(
                     }
                     1 -> {
                         AnimeCharaScreen(
-                            animeCharaInfo = state.animeDetailInfo?.media?.characters,
+                            charaInfoList = state.animeDetailInfo?.characterList!!,
                             navController = navController,
                         )
                     }
@@ -226,11 +227,11 @@ fun AnimeDetailHeadBanner(
                         .fillMaxWidth()
                         .height(250.dp)
                         .background(
-                            color = state.animeDetailInfo?.media?.coverImage?.color?.color
+                            color = state.animeDetailInfo?.animeInfo?.imagePlaceColor?.color
                                 ?: "#ffffff".color
                         )
                 },
-                model = state.animeDetailInfo?.media?.bannerImage,
+                model = state.animeDetailInfo?.animeInfo?.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -248,12 +249,12 @@ fun AnimeDetailHeadBanner(
                 )
             }
 
-            if (state.animeDetailInfo?.media?.trailer != null) {
+            if (state.animeDetailInfo?.trailerInfo != null) {
                 FloatingActionButton(
                     modifier = Modifier
                         .align(Alignment.Center),
                     onClick = {
-                        trailerClick(state.animeDetailInfo.media.trailer.id)
+                        trailerClick(state.animeDetailInfo.trailerInfo!!.id)
                     }
                 ) {
                     Icon(Icons.Filled.PlayArrow, null)
@@ -284,7 +285,7 @@ fun AnimeDetailHeadBanner(
                             )
                             .clip(RoundedCornerShape(5.dp))
                     },
-                    model = state.animeDetailInfo?.media?.coverImage?.extraLarge,
+                    model = state.animeDetailInfo?.animeInfo?.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
@@ -297,27 +298,26 @@ fun AnimeDetailHeadBanner(
                         )
                 ) {
                     Text(
-                        text = state.animeDetailInfo?.media?.title?.english
-                            ?: (state.animeDetailInfo?.media?.title?.romaji ?: ""),
+                        text = state.animeDetailInfo?.animeInfo?.title.toString(),
                         fontSize = 18.sp,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
 
-                    if (state.animeDetailInfo?.media?.seasonYear != null) {
-                        Text(text = "${state.animeDetailInfo.media.format?.name} ⦁ ${state.animeDetailInfo.media.seasonYear}")
+                    if (state.animeDetailInfo?.animeInfo?.seasonYear != null) {
+                        Text(text = "${state.animeDetailInfo.animeInfo.status} ⦁ ${state.animeDetailInfo.animeInfo.seasonYear}")
                     } else {
-                        Text(text = state.animeDetailInfo?.media?.format?.name ?: "")
+                        Text(text = state.animeDetailInfo?.animeInfo?.status ?: "")
                     }
 
                     Row(
                         modifier = Modifier.padding(top = 8.dp)
                     ) {
-                        if (state.animeDetailInfo?.media?.averageScore != null) {
+                        if (state.animeDetailInfo?.animeInfo?.averageScore != null) {
                             Text(
                                 text = buildAnnotatedString {
                                     appendInlineContent(starId, starId)
-                                    append(state.animeDetailInfo.media.averageScore.toString())
+                                    append(state.animeDetailInfo.animeInfo.averageScore.toString())
                                 },
                                 inlineContent = inlineContent,
                                 fontWeight = FontWeight.Bold,
@@ -326,11 +326,11 @@ fun AnimeDetailHeadBanner(
                             Spacer(modifier = Modifier.width(16.dp))
                         }
 
-                        if (state.animeDetailInfo?.media?.favourites != null) {
+                        if (state.animeDetailInfo?.animeInfo?.favourites != null) {
                             Text(
                                 text = buildAnnotatedString {
                                     appendInlineContent(favoriteId, favoriteId)
-                                    append(state.animeDetailInfo.media.favourites.toString())
+                                    append(state.animeDetailInfo.animeInfo.favourites.toString())
                                 },
                                 inlineContent = inlineContent,
                                 fontWeight = FontWeight.Bold,

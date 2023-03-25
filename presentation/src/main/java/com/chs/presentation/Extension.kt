@@ -1,4 +1,4 @@
-package com.chs.presentation.util
+package com.chs.presentation
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color

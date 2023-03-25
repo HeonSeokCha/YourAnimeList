@@ -12,8 +12,11 @@ fun convertAnimeBasicInfo(animeBasicInfo: AnimeBasicInfo?): AnimeInfo {
         idMal = animeBasicInfo?.idMal ?: 0,
         title = animeBasicInfo?.title?.romaji ?: animeBasicInfo?.title?.english ?: "",
         imageUrl = animeBasicInfo?.coverImage?.extraLarge,
+        imagePlaceColor = animeBasicInfo?.coverImage?.color,
         averageScore = animeBasicInfo?.averageScore ?: 0,
+        favourites = animeBasicInfo?.favourites ?: 0,
         seasonYear = animeBasicInfo?.seasonYear ?: 0,
+        format = animeBasicInfo?.format?.name ?: "",
         status = animeBasicInfo?.status?.rawValue ?: "Unknown"
     )
 }
@@ -141,9 +144,12 @@ fun AnimeInfo.toAnimeEntity(): AnimeEntity {
         idMal = this.idMal,
         title = this.title,
         imageUrl = this.imageUrl,
+        imagePlaceColor = this.imagePlaceColor,
         averageScore = this.averageScore,
         seasonYear = this.seasonYear,
-        status = this.status
+        favourites = this.favourites,
+        status = this.status,
+        format = this.format
     )
 }
 
@@ -152,9 +158,12 @@ fun AnimeEntity.toAnimeInfo(): AnimeInfo {
         id = this.id,
         idMal = this.idMal,
         title = this.title,
-        averageScore = this.averageScore,
         imageUrl = this.imageUrl,
+        imagePlaceColor = this.imagePlaceColor,
+        averageScore = this.averageScore,
         seasonYear = this.seasonYear,
-        status = this.status
+        favourites = this.favourites,
+        status = this.status,
+        format = this.format
     )
 }

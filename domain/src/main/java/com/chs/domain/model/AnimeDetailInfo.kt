@@ -2,11 +2,11 @@ package com.chs.domain.model
 
 
 data class AnimeDetailInfo(
-    val animeInfo: com.chs.domain.model.AnimeInfo,
+    val animeInfo: AnimeInfo,
     val description: String,
     val startDate: String,
     val endDate: String,
-    val trailerInfo: com.chs.domain.model.TrailerInfo,
+    val trailerInfo: TrailerInfo?,
     val type: String,
     val genres: List<String?>,
     val episode: Int,
@@ -15,8 +15,8 @@ data class AnimeDetailInfo(
     val hashtag: String,
     val meanScore: Int,
     val source: String,
-    val animeRelationInfo: List<com.chs.domain.model.AnimeRelationInfo>,
-    val studioInfo: List<com.chs.domain.model.StudioInfo>,
-    val externalLinks: List<com.chs.domain.model.ExternalLinkInfo>,
-    val characterList: List<com.chs.domain.model.CharacterInfo>
+    val animeRelationInfo: List<AnimeRelationInfo>,
+    val studioInfo: List<StudioInfo>,
+    val externalLinks: List<ExternalLinkInfo>,
+    val characterList: List<CharacterInfo>
 )

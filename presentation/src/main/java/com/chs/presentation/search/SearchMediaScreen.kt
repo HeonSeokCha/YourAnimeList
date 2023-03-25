@@ -45,9 +45,9 @@ fun SearchMediaScreen(
             state.searchAnimeResultPaging?.collectAsLazyPagingItems()
         }
 
-        UiConst.TARGET_MANGA -> {
-            state.searchMangaResultPaging?.collectAsLazyPagingItems()
-        }
+//        UiConst.TARGET_MANGA -> {
+//            state.searchMangaResultPaging?.collectAsLazyPagingItems()
+//        }
 
         UiConst.TARGET_CHARA -> {
             state.searchCharaResultPaging?.collectAsLazyPagingItems()

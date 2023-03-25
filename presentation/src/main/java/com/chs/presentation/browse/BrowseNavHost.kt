@@ -12,7 +12,7 @@ import com.chs.presentation.browse.anime.AnimeDetailScreen
 import com.chs.presentation.browse.character.CharacterDetailScreen
 import com.chs.presentation.main.Screen
 import com.chs.presentation.sortList.SortedListScreen
-import com.chs.presentation.util.Constant
+import com.chs.common.UiConst
 
 @Composable
 fun BrowseNavHost(
@@ -22,7 +22,7 @@ fun BrowseNavHost(
 ) {
 
     val startMediaDestination =
-        if (intent?.getStringExtra(Constant.TARGET_TYPE) == Constant.TARGET_MEDIA) {
+        if (intent?.getStringExtra(UiConst.TARGET_TYPE) == UiConst.TARGET_MEDIA) {
             "${BrowseScreen.AnimeDetailScreen.route}/{id}/{idMal}"
         } else {
             "${BrowseScreen.CharacterDetailScreen.route}/{id}"
@@ -38,11 +38,11 @@ fun BrowseNavHost(
             arguments = listOf(
                 navArgument("id") {
                     type = NavType.IntType
-                    defaultValue = intent?.getIntExtra(Constant.TARGET_ID, 0)!!
+                    defaultValue = intent?.getIntExtra(UiConst.TARGET_ID, 0)!!
                 },
                 navArgument("idMal") {
                     type = NavType.IntType
-                    defaultValue = intent?.getIntExtra(Constant.TARGET_ID_MAL, 0)!!
+                    defaultValue = intent?.getIntExtra(UiConst.TARGET_ID_MAL, 0)!!
                 },
             )
         ) { backStackEntry ->
@@ -58,7 +58,7 @@ fun BrowseNavHost(
             arguments = listOf(
                 navArgument("id") {
                     type = NavType.IntType; defaultValue =
-                    intent?.getIntExtra(Constant.TARGET_ID, 0)!!
+                    intent?.getIntExtra(UiConst.TARGET_ID, 0)!!
                 }
             )
         ) { backStackEntry ->
@@ -74,7 +74,7 @@ fun BrowseNavHost(
 
         composable("${Screen.SortListScreen.route}/{genre}") { backStackEntry ->
             SortedListScreen(
-                sortType = Constant.TARGET_GENRE,
+                sortType = UiConst.TARGET_GENRE,
                 genre = backStackEntry.arguments?.getString("genre")
                     ?: "",
             )

@@ -13,7 +13,6 @@ import javax.inject.Inject
 @HiltViewModel
 class CharacterListViewModel @Inject constructor(
     private val getYourCharaListUseCase: GetSavedCharaListUseCase,
-    private val searchCharaListUseCase: SearchCharaListUseCase
 ) : ViewModel() {
 
     var state by mutableStateOf(CharaListState())
@@ -21,17 +20,6 @@ class CharacterListViewModel @Inject constructor(
     fun getYourCharaList() {
         viewModelScope.launch {
             getYourCharaListUseCase().collect {
-                state = state.copy(
-                    charaList = it,
-                    isLoading = false
-                )
-            }
-        }
-    }
-
-    fun getSearchResultChara(query: String) {
-        viewModelScope.launch {
-            searchCharaListUseCase(query).collect {
                 state = state.copy(
                     charaList = it,
                     isLoading = false

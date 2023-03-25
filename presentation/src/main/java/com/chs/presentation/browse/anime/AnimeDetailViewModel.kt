@@ -14,103 +14,55 @@ import javax.inject.Inject
 @HiltViewModel
 class AnimeDetailViewModel @Inject constructor(
     private val getAnimeDetailUseCase: GetAnimeDetailUseCase,
-    private val checkSaveAnimeUseCase: CheckSaveAnimeUseCase,
+    private val checkSaveAnimeUseCase: GetSavedAnimeInfoUseCase,
     private val insertAnimeUseCase: InsertAnimeInfoUseCase,
     private val deleteAnimeUseCase: DeleteAnimeInfoUseCase,
     private val getAnimeThemeUseCase: GetAnimeThemeUseCase,
 ) : ViewModel() {
 
     var state by mutableStateOf(AnimeDetailState())
+        private set
 
     fun getAnimeDetailInfo(id: Int) {
         viewModelScope.launch {
-            getAnimeDetailUseCase(id).collect {
-                when (it) {
-                    is Resource.Success -> {
-                        state = state.copy(
-                            animeDetailInfo = it.data,
-                            isLoading = false
-                        )
-                    }
-                    is Resource.Error -> {
-                        state = state.copy(
-                            isLoading = false
-                        )
-                    }
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = true
-                        )
-                    }
-                }
-            }
+            state = state.copy(
+                animeDetailInfo = getAnimeDetailUseCase(id),
+                isLoading = false
+            )
         }
     }
 
     fun getAnimeTheme(idMal: Int) {
         viewModelScope.launch {
-            getAnimeThemeUseCase(idMal).collect {
-                when (it) {
-                    is Resource.Success -> {
-                        state = state.copy(
-                            animeThemes = it.data,
-                            isLoading = false
-                        )
-                    }
-                    is Resource.Error -> {
-                        state = state.copy(
-                            isLoading = false
-                        )
-                    }
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = true
-                        )
-                    }
-                }
-            }
+            state = state.copy(
+                animeThemes = getAnimeThemeUseCase(idMal),
+                isLoading = false
+            )
         }
     }
 
     fun isSaveAnime(animeId: Int) {
         viewModelScope.launch {
             checkSaveAnimeUseCase(animeId).collect {
-                if (it != null && it.animeId == animeId) {
-                    state = state.copy(
-                        isSaveAnime = it
-                    )
+                state = if (it != null && it.id == animeId) {
+                    state.copy(isSaveAnime = it)
+                } else {
+                    state.copy(isSaveAnime = null)
                 }
             }
         }
     }
 
     fun insertAnime() {
-        val anime = state.animeDetailInfo?.media!!
+        val anime = state.animeDetailInfo?.animeInfo!!
         viewModelScope.launch {
-            val animeObj = AnimeInfo(
-                animeId = anime.id,
-                idMal = anime.idMal ?: 0,
-                title = anime.title!!.english ?: anime.title.romaji!!,
-                format = anime.format.toString(),
-                seasonYear = anime.seasonYear ?: 0,
-                episode = anime.episodes ?: 0,
-                coverImage = anime.coverImage?.extraLarge,
-                averageScore = anime.averageScore ?: 0,
-                favorites = anime.favourites,
-                studio = if (!anime.studios?.studiosEdges.isNullOrEmpty()) anime.studios?.studiosEdges?.get(
-                    0
-                )?.studiosNode?.name else "",
-                genre = anime.genres ?: listOf()
-            )
-            insertAnimeUseCase(animeObj)
-            state = state.copy(isSaveAnime = animeObj.toAnimeDto())
+            insertAnimeUseCase(anime)
         }
     }
 
     fun deleteAnime(anime: AnimeInfo) {
         viewModelScope.launch {
             deleteAnimeUseCase(anime)
-            state = state.copy(isSaveAnime = null)
         }
     }
 }

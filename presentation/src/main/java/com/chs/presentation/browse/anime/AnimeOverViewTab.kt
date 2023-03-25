@@ -17,7 +17,7 @@ import androidx.navigation.NavController
 import com.chs.presentation.main.Screen
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.common.ItemAnimeSmall
-import com.chs.presentation.util.color
+import com.chs.presentation.color
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
