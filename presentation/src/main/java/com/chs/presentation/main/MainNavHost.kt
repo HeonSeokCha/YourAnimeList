@@ -10,7 +10,6 @@ import com.chs.presentation.charaList.CharaListScreen
 import com.chs.presentation.home.HomeScreen
 import com.chs.presentation.search.SearchScreen
 import com.chs.presentation.sortList.SortedListScreen
-import com.chs.presentation.util.Constant
 
 @Composable
 fun MainNavHost(
@@ -40,12 +39,12 @@ fun MainNavHost(
                 onBack
             )
         }
-        composable("${Screen.SortListScreen.route}/{title}") { backStackEntry ->
-            SortedListScreen(
-                backStackEntry.arguments?.getString("title")
-                    ?: Constant.TRENDING_NOW
-            )
-        }
+//        composable("${Screen.SortListScreen.route}/{title}") { backStackEntry ->
+//            SortedListScreen(
+//                backStackEntry.arguments?.getString("title")
+//                    ?: Constant.TRENDING_NOW
+//            )
+//        }
     }
 
 }

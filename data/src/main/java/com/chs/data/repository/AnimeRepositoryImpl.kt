@@ -31,11 +31,11 @@ class AnimeRepositoryImpl(
         return apolloClient
             .query(
                 HomeAnimeListQuery(
-                    currentSeason = Optional.present(com.chs.data.ConvertDate.getCurrentSeason()),
-                    nextSeason = Optional.present(com.chs.data.ConvertDate.getNextSeason()),
-                    currentYear = Optional.present(com.chs.data.ConvertDate.getCurrentYear()),
-                    nextYear = Optional.present(com.chs.data.ConvertDate.getCurrentYear() + 1),
-                    lastYear = Optional.present(com.chs.data.ConvertDate.getCurrentYear() - 1)
+                    currentSeason = Optional.present(com.chs.presentation.ConvertDate.getCurrentSeason()),
+                    nextSeason = Optional.present(com.chs.presentation.ConvertDate.getNextSeason()),
+                    currentYear = Optional.present(com.chs.presentation.ConvertDate.getCurrentYear()),
+                    nextYear = Optional.present(com.chs.presentation.ConvertDate.getCurrentYear() + 1),
+                    lastYear = Optional.present(com.chs.presentation.ConvertDate.getCurrentYear() - 1)
                 )
             )
             .execute()

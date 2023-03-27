@@ -13,8 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimeListViewModel @Inject constructor(
-    private val getYourAnimeListUseCase: GetSavedAnimeListUseCase,
-    private val searchAnimeListUseCase: GetAnimeSearchResultUseCase
+    private val getYourAnimeListUseCase: GetSavedAnimeListUseCase
 ) : ViewModel() {
 
     var state by mutableStateOf(AnimeListState())
@@ -31,14 +30,14 @@ class AnimeListViewModel @Inject constructor(
         }
     }
 
-    fun getSearchResultAnime(query: String) {
-        viewModelScope.launch {
-            searchAnimeListUseCase(query).collect {
-                state = state.copy(
-                    animeList = it,
-                    isLoading = false
-                )
-            }
-        }
-    }
+//    fun getSearchResultAnime(query: String) {
+//        viewModelScope.launch {
+//            searchAnimeListUseCase(query).collect {
+//                state = state.copy(
+//                    animeList = it,
+//                    isLoading = false
+//                )
+//            }
+//        }
+//    }
 }

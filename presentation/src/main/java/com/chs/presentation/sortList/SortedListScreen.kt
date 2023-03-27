@@ -24,6 +24,7 @@ import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.common.UiConst
+import com.chs.presentation.ConvertDate
 import com.chs.presentation.common.ItemAnimeSmall
 
 @Composable

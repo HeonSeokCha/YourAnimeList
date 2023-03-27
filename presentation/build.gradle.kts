@@ -55,5 +55,5 @@ dependencies {
     implementation(libs.androidX.navigation.compose)
     implementation(libs.androidX.paging.compose)
     implementation(libs.coil.compose)
-
+    implementation(libs.accompanist.placeholder)
 }
