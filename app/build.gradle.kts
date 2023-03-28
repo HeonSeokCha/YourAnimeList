@@ -54,7 +54,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compileSdkVersion.get()
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
     packagingOptions {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
@@ -64,7 +64,11 @@ android {
 dependencies {
     implementation(projects.presentation)
     implementation(projects.domain)
+    implementation(projects.common)
     implementation(projects.data)
+
+    implementation(libs.bundles.android)
+    implementation(libs.bundles.compose)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
@@ -97,4 +101,8 @@ dependencies {
 //    kapt("com.google.dagger:hilt-android-compiler:2.45")
 //    kapt("androidx.hilt:hilt-compiler:1.0.0")
 //    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+}
+
+kapt {
+    useBuildCache = true
 }

@@ -15,7 +15,6 @@ import com.chs.data.source.db.model.CharacterEntity
         CharacterEntity::class
     ], version = 1, exportSchema = false
 )
-@TypeConverters(RoomConverter::class)
 abstract class AnimeListDatabase : RoomDatabase() {
     abstract val animeListDao: AnimeListDao
     abstract val charaListDao: CharaListDao

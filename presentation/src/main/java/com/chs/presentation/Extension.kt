@@ -10,9 +10,11 @@ enum class SearchWidgetState {
     CLOSED
 }
 
-enum class Season {
-    WINTER,
-    SPRING,
-    SUMMER,
-    FALL
+enum class Season(
+    val rawValue: String
+) {
+    WINTER("WINTER"),
+    SPRING("SPRING"),
+    SUMMER("SUMMER"),
+    FALL("FALL")
 }

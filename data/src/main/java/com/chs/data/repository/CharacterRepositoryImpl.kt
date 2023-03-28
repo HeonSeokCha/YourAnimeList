@@ -18,8 +18,11 @@ import com.chs.data.source.KtorJikanService
 import com.chs.data.source.db.dao.CharaListDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class CharacterRepositoryImpl(
+@Singleton
+class CharacterRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
     private val jikanService: KtorJikanService,
     private val dao: CharaListDao

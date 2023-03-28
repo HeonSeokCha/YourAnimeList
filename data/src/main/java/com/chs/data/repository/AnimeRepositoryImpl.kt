@@ -21,21 +21,30 @@ import com.chs.type.MediaSeason
 import com.chs.type.MediaSort
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AnimeRepositoryImpl(
+@Singleton
+class AnimeRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
     private val jikanService: KtorJikanService,
     private val dao: AnimeListDao
 ) : AnimeRepository {
-    override suspend fun getAnimeRecommendList(): AnimeRecommendList {
+    override suspend fun getAnimeRecommendList(
+        currentSeason: String,
+        nextSeason: String,
+        currentYear: Int,
+        lastYear: Int,
+        nextYear: Int
+    ): AnimeRecommendList {
         return apolloClient
             .query(
                 HomeAnimeListQuery(
-                    currentSeason = Optional.present(com.chs.presentation.ConvertDate.getCurrentSeason()),
-                    nextSeason = Optional.present(com.chs.presentation.ConvertDate.getNextSeason()),
-                    currentYear = Optional.present(com.chs.presentation.ConvertDate.getCurrentYear()),
-                    nextYear = Optional.present(com.chs.presentation.ConvertDate.getCurrentYear() + 1),
-                    lastYear = Optional.present(com.chs.presentation.ConvertDate.getCurrentYear() - 1)
+                    currentSeason = Optional.present(MediaSeason.valueOf(currentSeason)),
+                    nextSeason = Optional.present(MediaSeason.valueOf(nextSeason)),
+                    currentYear = Optional.present(currentYear),
+                    nextYear = Optional.present(lastYear),
+                    lastYear = Optional.present(nextYear)
                 )
             )
             .execute()

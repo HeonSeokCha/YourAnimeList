@@ -24,9 +24,9 @@ fun AnimeListScreen(
         viewModel.getYourAnimeList()
     }
 
-    LaunchedEffect(searchQuery) {
-        viewModel.getSearchResultAnime(searchQuery)
-    }
+//    LaunchedEffect(searchQuery) {
+//        viewModel.getSearchResultAnime(searchQuery)
+//    }
 
     LazyColumn(
         modifier = Modifier

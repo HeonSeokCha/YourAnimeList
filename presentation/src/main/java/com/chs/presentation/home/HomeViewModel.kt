@@ -3,6 +3,7 @@ package com.chs.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.domain.usecase.GetAnimeRecListUseCase
+import com.chs.presentation.ConvertDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,7 +29,13 @@ class HomeViewModel @Inject constructor(
 
             _state.update {
                 it.copy(
-                    animeRecommendList = getHomeListUseCase(),
+                    animeRecommendList = getHomeListUseCase(
+                        currentSeason = ConvertDate.getCurrentSeason(),
+                        nextSeason = ConvertDate.getNextSeason(),
+                        currentYear = ConvertDate.getCurrentYear(),
+                        nextYear = ConvertDate.getVariationYear(true),
+                        lastYear = ConvertDate.getVariationYear(false)
+                    ),
                     isLoading = false
                 )
             }

@@ -6,7 +6,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository {
 
-    suspend fun getAnimeRecommendList(): AnimeRecommendList
+    suspend fun getAnimeRecommendList(
+        currentSeason: String,
+        nextSeason: String,
+        currentYear: Int,
+        lastYear: Int,
+        nextYear: Int
+    ): AnimeRecommendList
 
     suspend fun getAnimeFilteredList(
         selectType: String,

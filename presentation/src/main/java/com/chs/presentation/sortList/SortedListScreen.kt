@@ -113,25 +113,25 @@ fun SortedListScreen(
                     title = viewModel.filterList[idx].first,
                     subTitle = viewModel.filterList[idx].second
                 ) {
-                    when (viewModel.filterList[idx].first) {
-                        "Year" -> {
-                            filterSelect = "Year"
-                            list =
-                                ArrayList((ConvertDate.getCurrentYear(true) downTo 1970).map { it.toString() })
-                        }
-                        "Season" -> {
-                            filterSelect = "Season"
-                            list = UiConst.animeSeasonList.map { it.name }
-                        }
-                        "Sort" -> {
-                            filterSelect = "Sort"
-                            list = UiConst.animeSortArray
-                        }
-                        "Genre" -> {
-                            filterSelect = "Genre"
-                            list = state.genreList
-                        }
-                    }
+//                    when (viewModel.filterList[idx].first) {
+//                        "Year" -> {
+//                            filterSelect = "Year"
+//                            list =
+//                                ArrayList((ConvertDate.getCurrentYear() downTo 1970).map { it.toString() })
+//                        }
+//                        "Season" -> {
+//                            filterSelect = "Season"
+//                            list = UiConst.animeSeasonList.map { it.name }
+//                        }
+//                        "Sort" -> {
+//                            filterSelect = "Sort"
+//                            list = UiConst.animeSortArray
+//                        }
+//                        "Genre" -> {
+//                            filterSelect = "Genre"
+//                            list = state.genreList
+//                        }
+//                    }
                     filterDialogShow = true
                 }
             }
