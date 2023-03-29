@@ -1,5 +1,6 @@
 package com.chs.data.source
 
+import android.util.Log
 import com.chs.common.URLConst
 import com.chs.data.model.JikanAnimeDataDto
 import io.ktor.client.*
@@ -12,9 +13,11 @@ import javax.inject.Singleton
 class KtorJikanService @Inject constructor(
     private val client: HttpClient
 ) {
-    suspend fun getAnimeTheme(malId: Int): JikanAnimeDataDto? {
-        return client.get("${URLConst.JIKAN_API_URL}/$malId/themes") {
+    suspend fun getAnimeTheme(malId: Int): JikanAnimeDataDto {
+         val a: JikanAnimeDataDto = client.get("${URLConst.JIKAN_API_URL}/$malId/themes") {
             headers.append("Content-Type", "application/json")
         }.body()
+        Log.e("getAnimeTheme", a.toString())
+        return a
     }
 }

@@ -135,7 +135,7 @@ fun AnimeDetailScreen(
                     .fillMaxSize(),
                 userScrollEnabled = false
             ) {
-                when (pagerState.currentPage) {
+                when (it) {
                     0 -> {
                         AnimeOverViewScreen(
                             animeOverViewInfo = state.animeDetailInfo,
@@ -160,9 +160,9 @@ fun AnimeDetailScreen(
         }
     }
 
-    if (state.isLoading) {
-        LoadingIndicator()
-    }
+//    if (state.isLoading) {
+//        LoadingIndicator()
+//    }
 }
 
 @Composable

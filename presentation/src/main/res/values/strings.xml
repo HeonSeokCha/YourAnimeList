@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">YourAnimeList</string>
+    <string name="home">Home</string>
+    <string name="anime_list">Anime</string>
+    <string name="chara_list">Character</string>
+    <string name="title_activity_anime_detail">AnimeDetailActivity</string>
+</resources>

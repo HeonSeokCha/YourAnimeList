@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.chs.common.UiConst
 import com.chs.presentation.animeList.AnimeListScreen
 import com.chs.presentation.charaList.CharaListScreen
 import com.chs.presentation.home.HomeScreen
@@ -34,17 +35,14 @@ fun MainNavHost(
             CharaListScreen(searchListQuery)
         }
         composable(Screen.SearchScreen.route) {
-            SearchScreen(
-                searchQuery,
-                onBack
+            SearchScreen(searchQuery, onBack)
+        }
+        composable("${Screen.SortListScreen.route}/{title}") { backStackEntry ->
+            SortedListScreen(
+                backStackEntry.arguments?.getString("title")
+                    ?: UiConst.TRENDING_NOW
             )
         }
-//        composable("${Screen.SortListScreen.route}/{title}") { backStackEntry ->
-//            SortedListScreen(
-//                backStackEntry.arguments?.getString("title")
-//                    ?: Constant.TRENDING_NOW
-//            )
-//        }
     }
 
 }
