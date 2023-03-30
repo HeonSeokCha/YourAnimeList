@@ -1,4 +1,4 @@
-package com.chs.presentation.browse.anime
+package com.chs.presentation.browse.anime.recommend
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.domain.model.AnimeInfo
-import com.chs.presentation.shimmerEffect
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.color
 
@@ -136,7 +135,6 @@ fun ItemAnimeRecShimmer() {
                 modifier = Modifier
                     .width(150.dp)
                     .height(200.dp)
-                    .shimmerEffect()
             )
 
             Column(
@@ -151,7 +149,6 @@ fun ItemAnimeRecShimmer() {
                     modifier = Modifier
                         .width(220.dp)
                         .height(16.dp)
-                        .shimmerEffect()
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -160,7 +157,6 @@ fun ItemAnimeRecShimmer() {
                     modifier = Modifier
                         .width(220.dp)
                         .height(14.dp)
-                        .shimmerEffect()
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -169,7 +165,6 @@ fun ItemAnimeRecShimmer() {
                     modifier = Modifier
                         .width(220.dp)
                         .height(12.dp)
-                        .shimmerEffect()
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -182,7 +177,6 @@ fun ItemAnimeRecShimmer() {
                         modifier = Modifier
                             .width(50.dp)
                             .height(14.dp)
-                            .shimmerEffect()
                     )
 
                     Box(
@@ -190,7 +184,6 @@ fun ItemAnimeRecShimmer() {
                             .width(50.dp)
                             .height(14.dp)
                             .padding(start = 16.dp)
-                            .shimmerEffect()
                     )
                 }
             }

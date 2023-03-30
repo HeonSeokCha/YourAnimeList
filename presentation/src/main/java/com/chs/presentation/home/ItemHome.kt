@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
@@ -27,11 +28,17 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.common.UiConst
+import com.chs.domain.model.AnimeRecommendBannerInfo
+import com.chs.presentation.ui.theme.Shapes
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.material.shimmer
 
 @Composable
 fun ItemHomeBanner(
     context: Context,
-    banner: com.chs.domain.model.AnimeRecommendBannerInfo
+    banner: AnimeRecommendBannerInfo,
+    isLoading: Boolean
 ) {
     val favoriteId = "favoriteId"
     val scoreId = "scoreId"
@@ -73,7 +80,11 @@ fun ItemHomeBanner(
     AsyncImage(
         modifier = Modifier
             .fillMaxWidth()
-            .height(250.dp),
+            .height(250.dp)
+            .placeholder(
+                visible = isLoading,
+                highlight = PlaceholderHighlight.shimmer()
+            ),
         model = banner.animeInfo.imageUrl,
         contentDescription = null,
         contentScale = ContentScale.Crop
@@ -93,13 +104,16 @@ fun ItemHomeBanner(
                 )
             }
     ) {
-
         Text(
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(
                     start = 8.dp,
                     bottom = 32.dp
+                )
+                .placeholder(
+                    visible = isLoading,
+                    highlight = PlaceholderHighlight.shimmer()
                 ),
             text = banner.animeInfo.title,
             color = Color.White,
@@ -117,6 +131,11 @@ fun ItemHomeBanner(
                 ),
         ) {
             Text(
+                modifier = Modifier
+                    .placeholder(
+                        visible = isLoading,
+                        highlight = PlaceholderHighlight.shimmer()
+                    ),
                 text = buildAnnotatedString {
                     appendInlineContent(scoreId, scoreId)
                     append(banner.animeInfo.averageScore.toString())
@@ -128,6 +147,11 @@ fun ItemHomeBanner(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
+                modifier = Modifier
+                    .placeholder(
+                        visible = isLoading,
+                        highlight = PlaceholderHighlight.shimmer()
+                    ),
                 text = buildAnnotatedString {
                     appendInlineContent(favoriteId, favoriteId)
                     append(banner.animeInfo.averageScore.toString())
@@ -137,25 +161,6 @@ fun ItemHomeBanner(
                 color = Color.White,
                 fontSize = 14.sp,
             )
-        }
-    }
-}
-
-
-@Composable
-fun ItemHomeTopAnime(
-    animeInfo: com.chs.domain.model.AnimeInfo
-) {
-    Row {
-        AsyncImage(
-            modifier = Modifier,
-            model = animeInfo.imageUrl,
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
-
-        Column {
-            Text(text = animeInfo.title)
         }
     }
 }

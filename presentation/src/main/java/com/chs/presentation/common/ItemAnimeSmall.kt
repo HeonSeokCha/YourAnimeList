@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.chs.presentation.shimmerEffect
 import com.chs.domain.model.AnimeInfo
 
 @Composable
@@ -155,14 +154,12 @@ fun ItemAnimeSmallShimmer() {
                     .fillMaxWidth()
                     .height(180.dp)
                     .clip(RoundedCornerShape(5.dp))
-                    .shimmerEffect()
             )
             Spacer(modifier = Modifier.height(4.dp))
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(12.dp)
-                    .shimmerEffect()
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -172,7 +169,6 @@ fun ItemAnimeSmallShimmer() {
                     .width(76.dp)
                     .height(12.dp)
                     .padding()
-                    .shimmerEffect()
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -181,7 +177,7 @@ fun ItemAnimeSmallShimmer() {
                 modifier = Modifier
                     .width(48.dp)
                     .height(12.dp)
-                    .shimmerEffect()
+
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -199,14 +195,13 @@ fun ItemAnimeSmallShimmer() {
                     modifier = Modifier
                         .width(32.dp)
                         .height(12.dp)
-                        .shimmerEffect()
+
                 )
 
                 Box(
                     modifier = Modifier
                         .width(32.dp)
                         .height(12.dp)
-                        .shimmerEffect()
                 )
             }
         }

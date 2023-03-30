@@ -1,4 +1,4 @@
-package com.chs.presentation.browse.anime
+package com.chs.presentation.browse.anime.detail
 
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
@@ -10,6 +10,6 @@ data class AnimeDetailState(
     val animeDetailInfo: AnimeDetailInfo? = null,
     val animeThemes: AnimeThemeInfo? = null,
     val isSaveAnime: AnimeInfo? = null,
-    val isLoading: Boolean = true
+    val isLoading: Boolean = false
 )
 

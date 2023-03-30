@@ -1,4 +1,4 @@
-package com.chs.presentation.browse.anime
+package com.chs.presentation.browse.anime.recommend
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.height

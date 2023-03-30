@@ -14,9 +14,9 @@ class GetAnimeDetailUseCase @Inject constructor(
         return flow {
             emit(Resource.Loading())
             try {
-                Resource.Success(repository.getAnimeDetailInfo(animeId))
+                emit(Resource.Success(repository.getAnimeDetailInfo(animeId)))
             } catch (e: Exception) {
-                Resource.Error(e.message.toString())
+                emit(Resource.Error(e.message.toString()))
             }
         }
     }

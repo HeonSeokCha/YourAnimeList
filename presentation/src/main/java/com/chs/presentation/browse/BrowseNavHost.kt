@@ -8,7 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.chs.presentation.browse.anime.AnimeDetailScreen
+import com.chs.presentation.browse.anime.detail.AnimeDetailScreen
 import com.chs.presentation.browse.character.CharacterDetailScreen
 import com.chs.presentation.main.Screen
 import com.chs.presentation.sortList.SortedListScreen

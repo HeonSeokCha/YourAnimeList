@@ -1,4 +1,4 @@
-package com.chs.presentation.browse.anime
+package com.chs.presentation.browse.anime.detail
 
 import android.app.Activity
 import android.net.Uri
@@ -30,6 +30,7 @@ import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,9 +38,14 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.common.URLConst
 import com.chs.presentation.LoadingIndicator
-import com.chs.presentation.shimmerEffect
+import com.chs.presentation.browse.anime.AnimeCharaScreen
+import com.chs.presentation.browse.anime.AnimeOverViewScreen
+import com.chs.presentation.browse.anime.recommend.AnimeRecScreen
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.color
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.material.shimmer
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -144,10 +150,12 @@ fun AnimeDetailScreen(
                         )
                     }
                     1 -> {
-                        AnimeCharaScreen(
-                            charaInfoList = state.animeDetailInfo?.characterList!!,
-                            navController = navController,
-                        )
+                        if (!state.animeDetailInfo?.characterList.isNullOrEmpty()) {
+                            AnimeCharaScreen(
+                                charaInfoList = state.animeDetailInfo?.characterList!!,
+                                navController = navController,
+                            )
+                        }
                     }
                     2 -> {
                         AnimeRecScreen(
@@ -160,9 +168,9 @@ fun AnimeDetailScreen(
         }
     }
 
-//    if (state.isLoading) {
-//        LoadingIndicator()
-//    }
+    if (state.isLoading) {
+        LoadingIndicator()
+    }
 }
 
 @Composable
@@ -217,20 +225,17 @@ fun AnimeDetailHeadBanner(
     ) {
         Box {
             AsyncImage(
-                modifier = if (state.isLoading) {
-                    Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .shimmerEffect()
-                } else {
-                    Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .background(
-                            color = state.animeDetailInfo?.animeInfo?.imagePlaceColor?.color
-                                ?: "#ffffff".color
-                        )
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
+                    .background(
+                        color = state.animeDetailInfo?.animeInfo?.imagePlaceColor?.color
+                            ?: "#ffffff".color
+                    )
+                    .placeholder(
+                        visible = state.isLoading,
+                        highlight = PlaceholderHighlight.shimmer()
+                    ),
                 model = state.animeDetailInfo?.animeInfo?.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
@@ -268,23 +273,17 @@ fun AnimeDetailHeadBanner(
         ) {
             Row {
                 AsyncImage(
-                    modifier = if (state.isLoading) {
-                        Modifier
-                            .width(130.dp)
-                            .height(180.dp)
-                            .padding(
-                                start = 8.dp,
-                            )
-                            .shimmerEffect()
-                    } else {
-                        Modifier
-                            .width(130.dp)
-                            .height(180.dp)
-                            .padding(
-                                start = 8.dp,
-                            )
-                            .clip(RoundedCornerShape(5.dp))
-                    },
+                    modifier = Modifier
+                        .width(130.dp)
+                        .height(180.dp)
+                        .padding(
+                            start = 8.dp,
+                        )
+                        .placeholder(
+                            visible = state.isLoading,
+                            highlight = PlaceholderHighlight.shimmer()
+                        )
+                        .clip(RoundedCornerShape(5.dp)),
                     model = state.animeDetailInfo?.animeInfo?.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
@@ -298,10 +297,16 @@ fun AnimeDetailHeadBanner(
                         )
                 ) {
                     Text(
-                        text = state.animeDetailInfo?.animeInfo?.title.toString(),
+                        text = state.animeDetailInfo?.animeInfo?.title ?: "",
                         fontSize = 18.sp,
                         maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .placeholder(
+                                visible = true,
+                                highlight = PlaceholderHighlight.shimmer()
+                            )
                     )
 
                     if (state.animeDetailInfo?.animeInfo?.seasonYear != null) {

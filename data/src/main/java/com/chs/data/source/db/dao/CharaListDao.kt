@@ -11,7 +11,7 @@ abstract class CharaListDao : BaseDao<CharacterEntity> {
     abstract fun getAllCharaList(): Flow<List<CharacterEntity>>
 
     @Query("SELECT * FROM characterInfo where id = :charaId")
-    abstract fun checkCharaList(charaId: Int): Flow<CharacterEntity>
+    abstract fun checkCharaList(charaId: Int): Flow<CharacterEntity?>
 
     @Query("SELECT * FROM characterInfo WHERE name LIKE '%' || :charaName || '%' ORDER BY createDate DESC")
     abstract fun searchCharaList(charaName: String): Flow<List<CharacterEntity>>

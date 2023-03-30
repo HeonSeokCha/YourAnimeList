@@ -1,4 +1,4 @@
-package com.chs.presentation.browse.anime
+package com.chs.presentation.browse.anime.detail
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -10,9 +10,6 @@ import com.chs.common.Resource
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

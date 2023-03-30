@@ -28,8 +28,8 @@ import com.chs.presentation.main.Screen
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemAnimeSmallShimmer
-import com.chs.presentation.shimmerEffect
 import com.chs.common.UiConst
+import com.chs.domain.model.AnimeInfo
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -53,7 +53,6 @@ fun HomeScreen(
                         Modifier
                             .fillMaxWidth()
                             .height(200.dp)
-                            .shimmerEffect()
                     } else {
                         Modifier
                             .fillMaxWidth()
@@ -64,7 +63,8 @@ fun HomeScreen(
                 ) { idx ->
                     ItemHomeBanner(
                         context = context,
-                        banner = state.animeRecommendList?.bannerList!![idx]
+                        banner = state.animeRecommendList?.bannerList!![idx],
+                        state.isLoading
                     )
                 }
             }
@@ -92,7 +92,7 @@ fun HomeScreen(
 @Composable
 fun ItemRecommendCategory(
     title: String,
-    list: List<com.chs.domain.model.AnimeInfo>,
+    list: List<AnimeInfo>,
     navigator: NavController,
     context: Context
 ) {

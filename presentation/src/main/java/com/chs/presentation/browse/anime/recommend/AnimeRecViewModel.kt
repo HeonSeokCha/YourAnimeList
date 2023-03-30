@@ -1,4 +1,4 @@
-package com.chs.presentation.browse.anime
+package com.chs.presentation.browse.anime.recommend
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

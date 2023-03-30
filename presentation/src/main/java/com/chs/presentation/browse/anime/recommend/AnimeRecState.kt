@@ -1,4 +1,4 @@
-package com.chs.presentation.browse.anime
+package com.chs.presentation.browse.anime.recommend
 
 import androidx.paging.PagingData
 import com.chs.domain.model.AnimeInfo

@@ -57,7 +57,7 @@ class CharacterRepositoryImpl @Inject constructor(
 
     override fun getSavedCharacterInfo(characterId: Int): Flow<CharacterInfo?> {
         return dao.checkCharaList(characterId).map {
-            it.toCharacterInfo()
+            it?.toCharacterInfo()
         }
     }
 
