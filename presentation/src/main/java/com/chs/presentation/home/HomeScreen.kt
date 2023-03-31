@@ -27,7 +27,6 @@ import androidx.navigation.NavHostController
 import com.chs.presentation.main.Screen
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.ItemAnimeSmall
-import com.chs.presentation.common.ItemAnimeSmallShimmer
 import com.chs.common.UiConst
 import com.chs.domain.model.AnimeInfo
 
@@ -78,12 +77,6 @@ fun HomeScreen(
                     navigator,
                     context
                 )
-            }
-        }
-
-        if (state.isLoading) {
-            items(UiConst.HOME_SORT_TILE.size) { idx ->
-                ItemSortShimmer(UiConst.HOME_SORT_TILE[idx])
             }
         }
     }
@@ -148,54 +141,6 @@ fun ItemRecommendCategory(
                     }
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun ItemSortShimmer(
-    title: String
-) {
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 8.dp,
-                    end = 8.dp
-                ),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = title,
-                fontSize = 16.sp,
-                color = Color.Gray,
-                fontWeight = FontWeight.Bold
-            )
-            IconButton(
-                onClick = { }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowForward,
-                    tint = Color.Gray,
-                    contentDescription = null
-                )
-            }
-        }
-
-        LazyRow(
-            modifier = Modifier
-                .padding(bottom = 8.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            items(
-                count = 6,
-                itemContent = {
-                    ItemAnimeSmallShimmer()
-                }
-            )
         }
     }
 }

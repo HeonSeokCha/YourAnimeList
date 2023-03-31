@@ -1,5 +1,7 @@
 package com.chs.common
 
+import java.util.*
+
 object UiConst {
     const val TARGET_MAIN: String = "main"
     const val TARGET_SORT: String = "sort"
@@ -53,7 +55,7 @@ object UiConst {
         Pair("Thriller", "#224C80")
     )
 
-    val animeSortArray = listOf(
+    val sortTypeList = listOf(
         "POPULARITY" to "POPULARITY_DESC",
         "AVERAGE SCORE" to "SCORE_DESC",
         "FAVORITE" to "FAVOURITES_DESC",
@@ -61,6 +63,12 @@ object UiConst {
         "OLDEST" to "START_DATE",
         "TITLE" to "TITLE_ENGLISH_DESC"
     )
+
+    val yearSortList = listOf(
+        Calendar.getInstance().get(Calendar.YEAR) downTo 1980
+    ).map {
+        it.toString()
+    }
 
 //    val mediaStatus = hashMapOf(
 //        Pair("RELEASING", "Up Releasing" to MediaStatusReleasingColor),
