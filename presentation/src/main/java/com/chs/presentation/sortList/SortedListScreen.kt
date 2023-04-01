@@ -42,59 +42,7 @@ fun SortedListScreen(
     val pagingItems = viewModel.state.animeSortPaging?.collectAsLazyPagingItems()
 
     LaunchedEffect(viewModel, context) {
-        when (sortType) {
-//            Constant.TRENDING_NOW -> {
-//                viewModel.selectedSort = UiConst.
-//                viewModel.selectType = Constant.NO_SEASON_NO_YEAR
-//                viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Trending")
-//            }
-//
-//            Constant.POPULAR_THIS_SEASON -> {
-//                viewModel.selectedSort = MediaSort.POPULARITY_DESC
-//                viewModel.selectedSeason = com.chs.presentation.ConvertDate.getCurrentSeason()
-//                viewModel.selectedYear = com.chs.presentation.ConvertDate.getCurrentYear(false)
-//                viewModel.selectType = Constant.SEASON_YEAR
-//                viewModel.filterList[0] =
-//                    viewModel.filterList[0].copy(
-//                        second = com.chs.presentation.ConvertDate.getCurrentYear(false).toString()
-//                    )
-//                viewModel.filterList[1] =
-//                    viewModel.filterList[1].copy(second = com.chs.presentation.ConvertDate.getCurrentSeason().toString())
-//                viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
-//            }
-//
-//            Constant.UPCOMING_NEXT_SEASON -> {
-//                viewModel.selectedSort = MediaSort.POPULARITY_DESC
-//                viewModel.selectedSeason = com.chs.presentation.ConvertDate.getNextSeason()
-//                viewModel.selectedYear = com.chs.presentation.ConvertDate.getCurrentYear(true)
-//                viewModel.selectType = Constant.SEASON_YEAR
-//
-//                viewModel.filterList[0] =
-//                    viewModel.filterList[0].copy(
-//                        second = com.chs.presentation.ConvertDate.getCurrentYear(true).toString()
-//                    )
-//                viewModel.filterList[1] =
-//                    viewModel.filterList[1].copy(second = com.chs.presentation.ConvertDate.getNextSeason().toString())
-//                viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
-//            }
-//
-//            Constant.ALL_TIME_POPULAR -> {
-//                viewModel.selectedSort = MediaSort.POPULARITY_DESC
-//                viewModel.selectType = Constant.NO_SEASON_NO_YEAR
-//                viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Popularity")
-//            }
-//
-//            Constant.TARGET_GENRE -> {
-//                viewModel.selectedSort = MediaSort.SCORE_DESC
-//                viewModel.selectType = Constant.NO_SEASON_NO_YEAR
-//                viewModel.selectGenre = genre
-//                viewModel.filterList[2] = viewModel.filterList[2].copy(second = "Average Score")
-//                viewModel.filterList[3] = viewModel.filterList[3].copy(second = genre)
-//            }
-        }
-
-//        viewModel.getSortedAnime()
-//        viewModel.getGenreList()
+        viewModel.getSortedAnime()
     }
 
     Column(

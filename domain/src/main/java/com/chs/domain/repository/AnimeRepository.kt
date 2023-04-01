@@ -15,7 +15,6 @@ interface AnimeRepository {
     ): AnimeRecommendList
 
     suspend fun getAnimeFilteredList(
-        selectType: String,
         sortType: String,
         season: String?,
         year: Int?,

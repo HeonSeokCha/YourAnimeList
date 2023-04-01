@@ -53,7 +53,6 @@ class AnimeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAnimeFilteredList(
-        selectType: String,
         sortType: String,
         season: String?,
         year: Int?,

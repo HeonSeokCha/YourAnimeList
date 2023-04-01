@@ -1,5 +1,6 @@
 package com.chs.presentation.sortList
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.chs.domain.usecase.GetAnimeFilteredListUseCase
 import com.chs.domain.usecase.GetGenreListUseCase
+import com.chs.presentation.Season
+import com.chs.presentation.SortType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,11 +20,6 @@ class SortedViewModel @Inject constructor(
     private val getAnimeFilteredListUseCase: GetAnimeFilteredListUseCase,
     private val getGenreListUseCase: GetGenreListUseCase
 ) : ViewModel() {
-    var selectedYear: Int? = null
-//    var selectedSeason: MediaSeason? = null
-//    var selectedSort: MediaSort? = MediaSort.TRENDING_DESC
-    var selectGenre: String? = null
-    var selectType = ""
 
     val filterList = mutableListOf(
         Pair("Year", "Any"),
@@ -34,26 +32,34 @@ class SortedViewModel @Inject constructor(
         private set
 
     init {
+        state = state.copy(
+            selectType = SortType.POPULARITY.rawValue,
+            selectSeason = Season.WINTER.rawValue,
+            selectYear = 2022
+        )
         getGenreList()
+        Log.e("State", state.toString())
     }
 
     fun getSortedAnime() {
-        state = state.copy(
-            animeSortPaging = getAnimeFilteredListUseCase(
-                selectType = selectType,
-                sortType = selectedSort!!,
-                season = selectedSeason,
-                year = selectedYear,
-                genre = selectGenre
-            ).cachedIn(viewModelScope)
-        )
+        Log.e("State", state.toString())
+        viewModelScope.launch {
+            state = state.copy(
+                animeSortPaging = getAnimeFilteredListUseCase(
+                    sortType = SortType.TRENDING.rawValue,
+                    season = state.selectSeason,
+                    year = state.selectYear,
+                    genre = state.selectGenre
+                ).cachedIn(viewModelScope)
+            )
+        }
     }
 
     private fun getGenreList() {
-        viewModelScope.launch {
-            state = state.copy(
-                genreList = getGenreListUseCase()
-            )
-        }
+//        viewModelScope.launch {
+//            state = state.copy(
+//                genreList = getGenreListUseCase()
+//            )
+//        }
     }
 }

@@ -10,14 +10,12 @@ class GetAnimeFilteredListUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
     suspend operator fun invoke(
-        selectType: String,
         sortType: String,
-        season: String,
-        year: Int,
+        season: String?,
+        year: Int?,
         genre: String?
     ): Flow<PagingData<AnimeInfo>> {
         return repository.getAnimeFilteredList(
-            selectType,
             sortType,
             season,
             year,
