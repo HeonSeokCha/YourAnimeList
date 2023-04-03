@@ -30,15 +30,11 @@ import com.chs.presentation.common.ItemAnimeSmall
 @Composable
 fun SortedListScreen(
     sortType: String,
-    genre: String = "",
     viewModel: SortedViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
     val context = LocalContext.current
     val lazyGridScrollState = rememberLazyGridState()
-    var list: List<String?> by remember { mutableStateOf(emptyList()) }
-    var filterDialogShow by remember { mutableStateOf(false) }
-    var filterSelect by remember { mutableStateOf("") }
     val pagingItems = viewModel.state.animeSortPaging?.collectAsLazyPagingItems()
 
     LaunchedEffect(viewModel, context) {
@@ -80,7 +76,7 @@ fun SortedListScreen(
 //                            list = state.genreList
 //                        }
 //                    }
-                    filterDialogShow = true
+//                    filterDialogShow = true
                 }
             }
         }
@@ -120,11 +116,11 @@ fun SortedListScreen(
         }
     }
 
-    if (filterDialogShow) {
-        filterDialog(list, onDismiss = {
-            filterDialogShow = false
-        }, onClick = { selectIdx ->
-            when (filterSelect) {
+//    if (filterDialogShow) {
+//        filterDialog(list, onDismiss = {
+//            filterDialogShow = false
+//        }, onClick = { selectIdx ->
+//            when (filterSelect) {
 //                "Year" -> {
 //                    if (viewModel.selectedSeason != null) {
 //                        viewModel.selectType = Constant.SEASON_YEAR
@@ -155,10 +151,10 @@ fun SortedListScreen(
 //                    viewModel.filterList[3] =
 //                        viewModel.filterList[3].copy(second = list[selectIdx]!!)
 //                }
-            }
+//            }
 //            viewModel.getSortedAnime()
-        })
-    }
+//        })
+//    }
     if (pagingItems?.loadState?.append == LoadState.Loading) {
         LoadingIndicator()
     }

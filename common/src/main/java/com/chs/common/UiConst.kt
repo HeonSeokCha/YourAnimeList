@@ -26,11 +26,11 @@ object UiConst {
     const val SEASON_YEAR: String = "seasonYear"
 
     val HOME_SORT_TILE = listOf(
-        TRENDING_NOW,
-        POPULAR_THIS_SEASON,
-        UPCOMING_NEXT_SEASON,
-        ALL_TIME_POPULAR,
-        TOP_ANIME
+        "TRENDING NOW" to "",
+        "POPULAR THIS SEASON" to "",
+        "UPCOMING NEXT SEASON" to "",
+        "ALL TIME POPULAR" to "",
+        "TOP ANIME" to ""
     )
 
     val GENRE_COLOR = hashMapOf(
@@ -70,9 +70,9 @@ object UiConst {
         it.toString()
     }
 
-//    val mediaStatus = hashMapOf(
-//        Pair("RELEASING", "Up Releasing" to MediaStatusReleasingColor),
-//        Pair("FINISHED", "FINISHED" to MediaStatusFinishedColor),
-//        Pair("NOT_YET_RELEASED", "Up Coming" to MediaStatusNotYetColor)
-//    )
+    val mediaStatus = hashMapOf(
+        Pair("RELEASING", "Up Releasing" to 0xFF00BCD4),
+        Pair("FINISHED", "FINISHED" to 0xFF4CAF50),
+        Pair("NOT_YET_RELEASED", "Up Coming" to 0xFF673AB7)
+    )
 }

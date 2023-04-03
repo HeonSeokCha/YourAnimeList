@@ -72,12 +72,12 @@ fun BrowseNavHost(
 //            StudioDetailScreen()
 //        }
 
-        composable("${Screen.SortListScreen.route}/{genre}") { backStackEntry ->
-            SortedListScreen(
-                sortType = UiConst.TARGET_GENRE,
-                genre = backStackEntry.arguments?.getString("genre")
-                    ?: "",
-            )
-        }
+//        composable("${Screen.SortListScreen.route}/{genre}") { backStackEntry ->
+//            SortedListScreen(
+//                sortType = UiConst.TARGET_GENRE,
+//                genre = backStackEntry.arguments?.getString("genre")
+//                    ?: "",
+//            )
+//        }
     }
 }

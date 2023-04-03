@@ -43,6 +43,7 @@ import com.chs.presentation.browse.anime.AnimeOverViewScreen
 import com.chs.presentation.browse.anime.recommend.AnimeRecScreen
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.color
+import com.chs.presentation.isNotEmptyValue
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
@@ -295,6 +296,10 @@ fun AnimeDetailHeadBanner(
                             top = 90.dp,
                             start = 16.dp
                         )
+                        .placeholder(
+                            visible = state.isLoading,
+                            highlight = PlaceholderHighlight.shimmer()
+                        )
                 ) {
                     Text(
                         text = state.animeDetailInfo?.animeInfo?.title ?: "",
@@ -304,12 +309,14 @@ fun AnimeDetailHeadBanner(
                         textAlign = TextAlign.Start,
                         modifier = Modifier
                             .placeholder(
-                                visible = true,
+                                visible = state.isLoading,
                                 highlight = PlaceholderHighlight.shimmer()
                             )
                     )
 
-                    if (state.animeDetailInfo?.animeInfo?.seasonYear != null) {
+                    if (state.animeDetailInfo?.animeInfo?.seasonYear.isNotEmptyValue
+                        && state.animeDetailInfo?.animeInfo?.status != null
+                    ) {
                         Text(text = "${state.animeDetailInfo.animeInfo.status} ⦁ ${state.animeDetailInfo.animeInfo.seasonYear}")
                     } else {
                         Text(text = state.animeDetailInfo?.animeInfo?.status ?: "")

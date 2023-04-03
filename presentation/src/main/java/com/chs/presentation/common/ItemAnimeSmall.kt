@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.chs.common.UiConst
 import com.chs.domain.model.AnimeInfo
 
 @Composable
@@ -90,13 +91,9 @@ fun ItemAnimeSmall(
                 color = Color.Gray,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                fontSize = 12.sp
+                fontSize = 12.sp,
+                lineHeight = 14.sp
             )
-//            Text(
-//                text = UiConst.mediaStatus[item.status]?.first ?: "",
-//                color = UiConst.mediaStatus[item.status]?.second ?: Color(0xFF888888),
-//                fontSize = 12.sp
-//            )
 
             Row(
                 modifier = Modifier
@@ -107,26 +104,35 @@ fun ItemAnimeSmall(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Bottom
             ) {
+                Column {
+                    Text(
+                        text = UiConst.mediaStatus[item.status]?.first ?: "",
+                        color = Color(UiConst.mediaStatus[item.status]?.second ?: 0xFF888888),
+                        fontSize = 12.sp
+                    )
 
-                Text(
-                    text = item.seasonYear.toString(),
-                    color = Color.Gray,
-                    fontSize = 12.sp,
-                )
+                    Text(
+                        text = if (item.seasonYear == 0) "" else item.seasonYear.toString(),
+                        color = Color.Gray,
+                        fontSize = 12.sp,
+                    )
+                }
 
-                Text(
-                    text = buildAnnotatedString {
-                        appendInlineContent(starId, starId)
-                        append(item.averageScore.toString())
-                    },
-                    inlineContent = inlineContent,
-                    color = Color.Gray,
-                    fontSize = 12.sp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f, false),
-                    textAlign = TextAlign.End
-                )
+                if (item.averageScore != 0) {
+                    Text(
+                        text = buildAnnotatedString {
+                            appendInlineContent(starId, starId)
+                            append(item.averageScore.toString())
+                        },
+                        inlineContent = inlineContent,
+                        color = Color.Gray,
+                        fontSize = 12.sp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f, false),
+                        textAlign = TextAlign.End
+                    )
+                }
             }
         }
     }

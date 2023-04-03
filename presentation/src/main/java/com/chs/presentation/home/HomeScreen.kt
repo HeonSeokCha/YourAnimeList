@@ -29,6 +29,7 @@ import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.common.UiConst
 import com.chs.domain.model.AnimeInfo
+import com.chs.presentation.LoadingIndicator
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -72,13 +73,17 @@ fun HomeScreen(
         if (state.animeRecommendList?.animeBasicList != null) {
             items(state.animeRecommendList?.animeBasicList!!.size) { idx ->
                 ItemRecommendCategory(
-                    UiConst.HOME_SORT_TILE[idx],
+                    UiConst.HOME_SORT_TILE[idx].first,
                     state.animeRecommendList?.animeBasicList!![idx],
                     navigator,
                     context
                 )
             }
         }
+    }
+
+    if (state.isLoading) {
+        LoadingIndicator()
     }
 }
 
