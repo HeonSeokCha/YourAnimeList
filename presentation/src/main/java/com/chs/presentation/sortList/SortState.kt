@@ -11,5 +11,6 @@ data class SortState(
     val selectSeason: String? = null,
     val selectYear: Int? = null,
     val selectGenre: String? = null,
+    val menuList: List<String> = emptyList(),
     val isLoading: Boolean = false
 )

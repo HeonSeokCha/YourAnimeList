@@ -2,6 +2,7 @@ package com.chs.presentation.sortList
 
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,8 +20,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.ui.theme.Pink80
@@ -32,10 +36,11 @@ fun SortedListScreen(
     sortType: String,
     viewModel: SortedViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val lazyGridScrollState = rememberLazyGridState()
-    val pagingItems = viewModel.state.animeSortPaging?.collectAsLazyPagingItems()
+    val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
+    var filterDialogShow by remember { mutableStateOf(false) }
 
     LaunchedEffect(viewModel, context) {
         viewModel.getSortedAnime()
@@ -52,31 +57,13 @@ fun SortedListScreen(
             verticalAlignment = Alignment.CenterVertically,
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
-            items(viewModel.filterList.size) { idx ->
+            items(UiConst.filterMenuList) { title ->
                 ItemSort(
-                    title = viewModel.filterList[idx].first,
-                    subTitle = viewModel.filterList[idx].second
+                    title = title,
+                    subTitle = "Any"
                 ) {
-//                    when (viewModel.filterList[idx].first) {
-//                        "Year" -> {
-//                            filterSelect = "Year"
-//                            list =
-//                                ArrayList((ConvertDate.getCurrentYear() downTo 1970).map { it.toString() })
-//                        }
-//                        "Season" -> {
-//                            filterSelect = "Season"
-//                            list = UiConst.animeSeasonList.map { it.name }
-//                        }
-//                        "Sort" -> {
-//                            filterSelect = "Sort"
-//                            list = UiConst.animeSortArray
-//                        }
-//                        "Genre" -> {
-//                            filterSelect = "Genre"
-//                            list = state.genreList
-//                        }
-//                    }
-//                    filterDialogShow = true
+                    viewModel.setFilterMenu(it)
+                    filterDialogShow = true
                 }
             }
         }
@@ -108,53 +95,16 @@ fun SortedListScreen(
                     )
                 }
             }
-            if (state.isLoading) {
-                items(9) {
-//                    ItemAnimeSmallShimmer()
-                }
-            }
         }
     }
 
-//    if (filterDialogShow) {
-//        filterDialog(list, onDismiss = {
-//            filterDialogShow = false
-//        }, onClick = { selectIdx ->
-//            when (filterSelect) {
-//                "Year" -> {
-//                    if (viewModel.selectedSeason != null) {
-//                        viewModel.selectType = Constant.SEASON_YEAR
-//                    } else {
-//                        viewModel.selectType = Constant.NO_SEASON
-//                    }
-//                    viewModel.selectedYear = list[selectIdx]!!.toInt()
-//                    viewModel.filterList[0] =
-//                        viewModel.filterList[0].copy(second = list[selectIdx]!!)
-//                }
-//                "Season" -> {
-//                    if (viewModel.selectedYear == null) {
-//                        viewModel.selectedYear = com.chs.presentation.ConvertDate.getCurrentYear(false)
-//                    }
-//                    viewModel.selectType = Constant.SEASON_YEAR
-//                    viewModel.selectedSeason = MediaSeason.safeValueOf(list[selectIdx]!!)
-//                    viewModel.filterList[1] =
-//                        viewModel.filterList[1].copy(second = list[selectIdx]!!)
-//                }
-//                "Sort" -> {
-//                    viewModel.selectedSort =
-//                        MediaSort.safeValueOf(Constant.animeSortList[selectIdx].name)
-//                    viewModel.filterList[2] =
-//                        viewModel.filterList[2].copy(second = list[selectIdx]!!)
-//                }
-//                "Genre" -> {
-//                    viewModel.selectGenre = list[selectIdx]
-//                    viewModel.filterList[3] =
-//                        viewModel.filterList[3].copy(second = list[selectIdx]!!)
-//                }
-//            }
+    if (filterDialogShow) {
+        filterDialog(state.menuList, onDismiss = {
+            filterDialogShow = false
+        }, onClick = { selectIdx ->
 //            viewModel.getSortedAnime()
-//        })
-//    }
+        })
+    }
     if (pagingItems?.loadState?.append == LoadState.Loading) {
         LoadingIndicator()
     }
@@ -182,7 +132,7 @@ fun ItemSort(
     )
     TextButton(
         colors = ButtonDefaults.textButtonColors(contentColor = Color.Black),
-        onClick = { clickAble(subTitle) }
+        onClick = { clickAble(title) }
     ) {
         Text(text = subTitle)
     }
@@ -198,8 +148,7 @@ private fun filterDialog(
 ) {
     AlertDialog(
         modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
+            .background(color = Color.White)
             .padding(
                 top = 64.dp,
                 bottom = 64.dp,
@@ -209,6 +158,7 @@ private fun filterDialog(
         onDismissRequest = onDismiss,
     ) {
         LazyColumn(
+            modifier = Modifier.background(Color.Gray),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(list.size) { idx ->

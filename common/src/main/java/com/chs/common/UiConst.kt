@@ -1,6 +1,7 @@
 package com.chs.common
 
 import java.util.*
+import kotlin.collections.HashMap
 
 object UiConst {
     const val TARGET_MAIN: String = "main"
@@ -24,6 +25,27 @@ object UiConst {
     const val NO_SEASON_NO_YEAR: String = "noSeasonNoYear"
     const val NO_SEASON: String = "noSeason"
     const val SEASON_YEAR: String = "seasonYear"
+
+    enum class Season(
+        val rawValue: String
+    ) {
+        WINTER("WINTER"),
+        SPRING("SPRING"),
+        SUMMER("SUMMER"),
+        FALL("FALL")
+    }
+
+    enum class SortType(
+        val rawValue: String
+    ) {
+        POPULARITY("POPULARITY_DESC"),
+        AVERAGE("SCORE_DESC"),
+        FAVORITE("FAVOURITES_DESC"),
+        NEWEST("START_DATE_DESC"),
+        OLDEST("START_DATE"),
+        TITLE("TITLE_ENGLISH_DESC"),
+        TRENDING("TRENDING_DESC")
+    }
 
     val HOME_SORT_TILE = listOf(
         "TRENDING NOW" to "",
@@ -55,20 +77,23 @@ object UiConst {
         Pair("Thriller", "#224C80")
     )
 
-    val sortTypeList = listOf(
-        "POPULARITY" to "POPULARITY_DESC",
-        "AVERAGE SCORE" to "SCORE_DESC",
-        "FAVORITE" to "FAVOURITES_DESC",
-        "NEWEST" to "START_DATE_DESC",
-        "OLDEST" to "START_DATE",
-        "TITLE" to "TITLE_ENGLISH_DESC"
+    val filterMenuList = listOf(
+        "Year",
+        "Season",
+        "Sort",
+        "Genre"
     )
 
-    val yearSortList = listOf(
-        Calendar.getInstance().get(Calendar.YEAR) downTo 1980
-    ).map {
-        it.toString()
-    }
+    val sortTypeList = SortType
+        .values()
+        .map { it.name to it.rawValue }
+
+    val yearSortList = (Calendar.getInstance().get(Calendar.YEAR) downTo 1980)
+        .map { it.toString() to it }
+
+    val seasonFilterList = Season
+        .values()
+        .map { it.name to it.rawValue }
 
     val mediaStatus = hashMapOf(
         Pair("RELEASING", "Up Releasing" to 0xFF00BCD4),
