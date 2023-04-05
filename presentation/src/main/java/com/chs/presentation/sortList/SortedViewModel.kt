@@ -22,6 +22,8 @@ class SortedViewModel @Inject constructor(
     private val _state = MutableStateFlow(SortState())
     val state = _state.asStateFlow()
 
+    var selectMenuIdx: Int = 0
+
     init {
         _state.update {
             it.copy(
@@ -79,44 +81,20 @@ class SortedViewModel @Inject constructor(
         }
     }
 
-    fun setFilterMenu(menuType: String) {
-        when (menuType) {
-            "Year" -> {
-                _state.update {
-                    it.copy(
-                        menuList = UiConst.yearSortList.map { it.first }
-                    )
-                }
-            }
-            "Season" -> {
-                _state.update {
-                    it.copy(
-                        menuList = UiConst.seasonFilterList.map { it.first }
-                    )
-                }
-            }
-            "Sort" -> {
-                _state.update {
-                    it.copy(
-                        menuList = UiConst.sortTypeList.map { it.first }
-                    )
-                }
-            }
-            "Genre" -> {
-//                _state.update {
-//                    it.copy(
-//                        menuList = it.genreList
-//                    )
-//                }
-            }
-        }
-    }
+//    fun setFilterMenu(menuType: Int) {
+//
+//    }
 
     private fun getGenreList() {
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    genreList = getGenreListUseCase()
+                    menuList = listOf(
+                        "Year" to UiConst.yearSortList,
+                        "Season" to UiConst.seasonFilterList,
+                        "Sort" to UiConst.sortTypeList,
+                        "Genre" to getGenreListUseCase().map { genre -> genre to genre }
+                    )
                 )
             }
         }

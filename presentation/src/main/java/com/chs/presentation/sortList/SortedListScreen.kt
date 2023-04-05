@@ -1,6 +1,7 @@
 package com.chs.presentation.sortList
 
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -57,12 +58,12 @@ fun SortedListScreen(
             verticalAlignment = Alignment.CenterVertically,
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
-            items(UiConst.filterMenuList) { title ->
+            items(state.menuList) { title ->
                 ItemSort(
-                    title = title,
+                    title = title.first,
                     subTitle = "Any"
-                ) {
-                    viewModel.setFilterMenu(it)
+                ) { title
+                    viewModel.selectMenuIdx = state.menuList.indexOf(state.menuList.find { it.first == title.first })
                     filterDialogShow = true
                 }
             }
@@ -99,9 +100,11 @@ fun SortedListScreen(
     }
 
     if (filterDialogShow) {
-        filterDialog(state.menuList, onDismiss = {
+        filterDialog(state.menuList[viewModel.selectMenuIdx].second, onDismiss = {
             filterDialogShow = false
         }, onClick = { selectIdx ->
+            Log.e("onClick", selectIdx.toString())
+
 //            viewModel.getSortedAnime()
         })
     }
@@ -142,7 +145,7 @@ fun ItemSort(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun filterDialog(
-    list: List<String?>,
+    list: List<Pair<String, String>>,
     onClick: (Int) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -169,7 +172,7 @@ private fun filterDialog(
                             onDismiss()
                             onClick(idx)
                         },
-                    text = list[idx].toString(),
+                    text = list[idx].second,
                     fontSize = 16.sp
                 )
             }

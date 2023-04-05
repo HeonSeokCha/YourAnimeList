@@ -77,19 +77,12 @@ object UiConst {
         Pair("Thriller", "#224C80")
     )
 
-    val filterMenuList = listOf(
-        "Year",
-        "Season",
-        "Sort",
-        "Genre"
-    )
-
     val sortTypeList = SortType
         .values()
         .map { it.name to it.rawValue }
 
     val yearSortList = (Calendar.getInstance().get(Calendar.YEAR) downTo 1980)
-        .map { it.toString() to it }
+        .map { it.toString() to it.toString() }
 
     val seasonFilterList = Season
         .values()
