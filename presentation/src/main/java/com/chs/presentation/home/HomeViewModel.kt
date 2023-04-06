@@ -2,6 +2,7 @@ package com.chs.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chs.common.UiConst
 import com.chs.domain.usecase.GetAnimeRecListUseCase
 import com.chs.presentation.ConvertDate
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +19,14 @@ class HomeViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(HomeState())
     val state = _state.asStateFlow()
+
+    val animeCategorySortList = listOf(
+        "TRENDING NOW" to (UiConst.SortType.TRENDING to "0"),
+        "POPULAR THIS SEASON" to (UiConst.SortType.POPULARITY to ConvertDate.getCurrentSeason()),
+        "UPCOMING NEXT SEASON" to (UiConst.SortType.POPULARITY to ConvertDate.getNextSeason()),
+        "ALL TIME POPULAR" to (UiConst.SortType.POPULARITY to "0"),
+        "TOP ANIME" to (UiConst.SortType.AVERAGE to "0")
+    )
 
     init {
         viewModelScope.launch {

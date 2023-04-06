@@ -47,14 +47,6 @@ object UiConst {
         TRENDING("TRENDING_DESC")
     }
 
-    val HOME_SORT_TILE = listOf(
-        "TRENDING NOW" to "",
-        "POPULAR THIS SEASON" to "",
-        "UPCOMING NEXT SEASON" to "",
-        "ALL TIME POPULAR" to "",
-        "TOP ANIME" to ""
-    )
-
     val GENRE_COLOR = hashMapOf(
         Pair("Action", "#24687B"),
         Pair("Adventure", "#014037"),

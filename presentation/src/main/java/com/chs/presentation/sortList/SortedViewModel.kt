@@ -50,40 +50,31 @@ class SortedViewModel @Inject constructor(
         }
     }
 
-    fun changeFilterOptions(
-        selectSortType: UiConst.SortType? = null,
-        selectSeason: UiConst.Season? = null,
-        selectYear: Int? = null,
-        selectGenre: String? = null
-    ) {
-        if (selectSortType != null) {
-            _state.update {
-                it.copy(selectType = selectSortType.rawValue)
+    fun changeFilterOptions(selectIdx: Int) {
+        when (selectMenuIdx) {
+            0 -> {
+                _state.update {
+                    it.copy(selectYear = it.menuList[0].second[selectIdx].second.toInt())
+                }
+            }
+            1 -> {
+                _state.update {
+                    it.copy(selectSeason = it.menuList[1].second[selectIdx].second)
+                }
+            }
+            2 -> {
+                _state.update {
+                    it.copy(selectType = it.menuList[2].second[selectIdx].second)
+                }
+            }
+            3 -> {
+                _state.update {
+                    it.copy(selectGenre = it.menuList[3].second[selectIdx].second)
+                }
             }
         }
-
-        if (selectSeason != null) {
-            _state.update {
-                it.copy(selectSeason = selectSeason.rawValue)
-            }
-        }
-
-        if (selectYear != null) {
-            _state.update {
-                it.copy(selectYear = selectYear)
-            }
-        }
-
-        if (selectGenre != null) {
-            _state.update {
-                it.copy(selectGenre = selectGenre)
-            }
-        }
+        getSortedAnime()
     }
-
-//    fun setFilterMenu(menuType: Int) {
-//
-//    }
 
     private fun getGenreList() {
         viewModelScope.launch {

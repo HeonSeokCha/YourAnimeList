@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.chs.common.UiConst
+import com.chs.presentation.ConvertDate
 import com.chs.presentation.animeList.AnimeListScreen
 import com.chs.presentation.charaList.CharaListScreen
 import com.chs.presentation.home.HomeScreen
@@ -37,12 +38,13 @@ fun MainNavHost(
         composable(Screen.SearchScreen.route) {
             SearchScreen(searchQuery, onBack)
         }
-        composable("${Screen.SortListScreen.route}/{title}") { backStackEntry ->
+        composable("${Screen.SortListScreen.route}/{sortOption}/{sortYear}") { backStackEntry ->
             SortedListScreen(
-                backStackEntry.arguments?.getString("title")
-                    ?: UiConst.TRENDING_NOW
+                backStackEntry.arguments?.getString("sortOption")
+                    ?: UiConst.SortType.TRENDING.rawValue,
+                backStackEntry.arguments?.getString("sortYear")
+                    ?: "0"
             )
         }
     }
-
 }

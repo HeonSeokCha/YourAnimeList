@@ -34,7 +34,8 @@ import com.chs.presentation.common.ItemAnimeSmall
 
 @Composable
 fun SortedListScreen(
-    sortType: String,
+    sortOption: String,
+    sortYear: String,
     viewModel: SortedViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -62,8 +63,9 @@ fun SortedListScreen(
                 ItemSort(
                     title = title.first,
                     subTitle = "Any"
-                ) { title
-                    viewModel.selectMenuIdx = state.menuList.indexOf(state.menuList.find { it.first == title.first })
+                ) {
+                    viewModel.selectMenuIdx =
+                        state.menuList.indexOf(state.menuList.find { it.first == title.first })
                     filterDialogShow = true
                 }
             }
@@ -87,7 +89,7 @@ fun SortedListScreen(
                             context, BrowseActivity::class.java
                         ).apply {
                             this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                            this.putExtra(UiConst.TARGET_ID, pagingItems.get(idx)!!.id)
+                            this.putExtra(UiConst.TARGET_ID, pagingItems[idx]!!.id)
                             this.putExtra(
                                 UiConst.TARGET_ID_MAL,
                                 pagingItems[idx]!!.idMal
@@ -103,9 +105,7 @@ fun SortedListScreen(
         filterDialog(state.menuList[viewModel.selectMenuIdx].second, onDismiss = {
             filterDialogShow = false
         }, onClick = { selectIdx ->
-            Log.e("onClick", selectIdx.toString())
-
-//            viewModel.getSortedAnime()
+            viewModel.changeFilterOptions(selectIdx)
         })
     }
     if (pagingItems?.loadState?.append == LoadState.Loading) {

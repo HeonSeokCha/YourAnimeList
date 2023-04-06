@@ -48,7 +48,7 @@ fun AnimeOverViewScreen(
                             modifier = Modifier
                                 .padding(end = 4.dp),
                             onClick = {
-                                navController.navigate("${Screen.SortListScreen.route}/$genre")
+//                                navController.navigate("${Screen.SortListScreen.route}/$genre")
                             }, label = {
                                 Text(text = genre.toString())
                             }, colors = AssistChipDefaults.assistChipColors(

@@ -2,6 +2,7 @@ package com.chs.presentation.home
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -74,7 +75,7 @@ fun HomeScreen(
         if (state.animeRecommendList?.animeBasicList != null) {
             items(state.animeRecommendList?.animeBasicList!!.size) { idx ->
                 ItemRecommendCategory(
-                    UiConst.HOME_SORT_TILE[idx].first,
+                    viewModel.animeCategorySortList[idx],
                     state.animeRecommendList?.animeBasicList!![idx],
                     navigator,
                     context
@@ -90,7 +91,7 @@ fun HomeScreen(
 
 @Composable
 fun ItemRecommendCategory(
-    title: String,
+    title: Pair<String, Pair<UiConst.SortType, String>>,
     list: List<AnimeInfo>,
     navigator: NavController,
     context: Context
@@ -107,14 +108,14 @@ fun ItemRecommendCategory(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = title,
+                text = title.first,
                 fontSize = 16.sp,
                 color = Color.Gray,
                 fontWeight = FontWeight.Bold
             )
             IconButton(
                 onClick = {
-                    navigator.navigate("${Screen.SortListScreen.route}/$title")
+                    navigator.navigate("${Screen.SortListScreen.route}/${title.second.first}/${title.second.second}")
                 }
             ) {
                 Icon(
