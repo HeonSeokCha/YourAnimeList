@@ -13,6 +13,7 @@ data class AnimeDetailInfo(
     val duration: String,
     val chapters: Int,
     val hashtag: String,
+    val popularScore: Int,
     val meanScore: Int,
     val source: String,
     val animeRelationInfo: List<AnimeRelationInfo>,

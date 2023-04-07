@@ -81,6 +81,7 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
             duration = "${this?.duration ?: 0}Min",
             chapters = this?.chapters ?: 0,
             hashtag = this?.hashtag ?: "",
+            popularScore = this?.popularity ?: 0,
             meanScore = this?.meanScore ?: 0,
             source = this?.source?.rawValue ?: "Unknown",
             animeRelationInfo = this?.relations?.edges?.map {

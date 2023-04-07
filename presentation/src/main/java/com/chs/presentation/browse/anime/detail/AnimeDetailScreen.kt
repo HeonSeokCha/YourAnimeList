@@ -317,9 +317,9 @@ fun AnimeDetailHeadBanner(
                     if (state.animeDetailInfo?.animeInfo?.seasonYear.isNotEmptyValue
                         && state.animeDetailInfo?.animeInfo?.status != null
                     ) {
-                        Text(text = "${state.animeDetailInfo.animeInfo.status} ⦁ ${state.animeDetailInfo.animeInfo.seasonYear}")
+                        Text(text = "${state.animeDetailInfo.animeInfo.format} ⦁ ${state.animeDetailInfo.animeInfo.seasonYear}")
                     } else {
-                        Text(text = state.animeDetailInfo?.animeInfo?.status ?: "")
+                        Text(text = state.animeDetailInfo?.animeInfo?.format ?: "")
                     }
 
                     Row(

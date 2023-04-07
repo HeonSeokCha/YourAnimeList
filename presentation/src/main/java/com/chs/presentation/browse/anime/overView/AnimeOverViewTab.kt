@@ -4,13 +4,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.HtmlCompat
@@ -31,6 +34,7 @@ fun AnimeOverViewScreen(
     animeTheme: AnimeThemeInfo?,
     navController: NavController,
 ) {
+    var expandedDescButton by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,13 +75,34 @@ fun AnimeOverViewScreen(
 
                 Spacer(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
 
-                Text(
-                    text = HtmlCompat.fromHtml(
-                        animeOverViewInfo.description,
-                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                    ).toString()
-                )
+                if (expandedDescButton) {
+                    Text(
+                        text = HtmlCompat.fromHtml(
+                            animeOverViewInfo.description,
+                            HtmlCompat.FROM_HTML_MODE_LEGACY
+                        ).toString()
+                    )
+                } else {
+                    Text(
+                        text = HtmlCompat.fromHtml(
+                            animeOverViewInfo.description,
+                            HtmlCompat.FROM_HTML_MODE_LEGACY
+                        ).toString(),
+                        maxLines = 5,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+                Button(onClick = { expandedDescButton = !expandedDescButton }) {
+                    if (expandedDescButton) {
+                        Icon(imageVector = Icons.Filled.ArrowUpward, contentDescription = null)
+                    } else {
+                        Icon(imageVector = Icons.Filled.ArrowDownward, contentDescription = null)
+                    }
+                }
             }
+
+            AnimeSummaryInfo(animeDetailInfo = animeOverViewInfo)
 
             if (!animeTheme?.openingThemes.isNullOrEmpty()) {
                 animeTheme?.openingThemes?.forEach { themeTitle ->
@@ -114,6 +139,35 @@ fun AnimeOverViewScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun AnimeSummaryInfo(animeDetailInfo: AnimeDetailInfo) {
+    Row (
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Column {
+            Text(text = animeDetailInfo.animeInfo.averageScore.toString())
+            Text(text = "Average")
+        }
+
+        Column {
+            Text(text = animeDetailInfo.meanScore.toString())
+            Text(text = "MeanScore")
+        }
+
+        Column {
+            Text(text = animeDetailInfo.popularScore.toString())
+            Text(text = "Popularity")
+        }
+
+
+        Column {
+            Text(text = animeDetailInfo.animeInfo.favourites.toString())
+            Text(text = "Favorites")
         }
     }
 }
