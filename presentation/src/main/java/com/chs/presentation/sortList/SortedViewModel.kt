@@ -76,6 +76,16 @@ class SortedViewModel @Inject constructor(
         getSortedAnime()
     }
 
+    fun getSelectedOption(selectIdx: Int): String {
+        return when (selectIdx) {
+            0 -> "${state.value.selectYear ?: "Any"}"
+            1 -> state.value.selectSeason ?: "Any"
+            2 -> state.value.selectType ?: "Any"
+            3 -> state.value.selectGenre ?: "Any"
+            else -> "Any"
+        }
+    }
+
     private fun getGenreList() {
         viewModelScope.launch {
             _state.update {

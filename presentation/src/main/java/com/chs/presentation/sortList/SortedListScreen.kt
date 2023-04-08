@@ -59,13 +59,13 @@ fun SortedListScreen(
             verticalAlignment = Alignment.CenterVertically,
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
-            items(state.menuList) { title ->
+            items(state.menuList.size) { idx ->
                 ItemSort(
-                    title = title.first,
-                    subTitle = "Any"
+                    title = state.menuList[idx].first,
+                    subTitle = viewModel.getSelectedOption(idx)
                 ) {
                     viewModel.selectMenuIdx =
-                        state.menuList.indexOf(state.menuList.find { it.first == title.first })
+                        state.menuList.indexOf(state.menuList.find { it.first == state.menuList[idx].first })
                     filterDialogShow = true
                 }
             }

@@ -3,6 +3,7 @@ package com.chs.presentation.main
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -38,7 +39,8 @@ fun BottomBar(
                         selectedIconColor = Red700,
                         selectedTextColor = Red700,
                         unselectedIconColor = Red500,
-                        unselectedTextColor = Red500
+                        unselectedTextColor = Red500,
+                        indicatorColor = Red200
                     ), onClick = {
                         navController.navigate(destination.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
