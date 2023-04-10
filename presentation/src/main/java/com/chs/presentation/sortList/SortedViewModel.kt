@@ -1,5 +1,6 @@
 package com.chs.presentation.sortList
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -24,23 +25,49 @@ class SortedViewModel @Inject constructor(
 
     var selectMenuIdx: Int = 0
 
-    init {
-        _state.update {
-            it.copy(
-                selectType = UiConst.SortType.POPULARITY.rawValue,
-                selectSeason = UiConst.Season.WINTER.rawValue,
-                selectYear = 2022
-            )
+    fun initSort(
+        selectType: UiConst.SortType? = null,
+        selectSeason: UiConst.Season? = null,
+        selectYear: String? = null,
+        selectGenre: String? = null
+    ) {
+        if (selectType != null) {
+            Log.e("selectType", selectType.toString())
+            _state.update {
+                it.copy(selectType = selectType.rawValue)
+            }
         }
-        getGenreList()
+
+        if (selectSeason != null) {
+            Log.e("selectSeason", selectSeason.toString())
+            _state.update {
+                it.copy(selectSeason = selectSeason.rawValue)
+            }
+        }
+
+        if (selectYear != null) {
+            Log.e("selectYear", selectYear.toString())
+            _state.update {
+                it.copy(selectYear = 2023)
+            }
+        }
+
+        if (selectGenre != null) {
+            Log.e("selectGenre", selectGenre.toString())
+            _state.update {
+                it.copy(selectGenre = selectGenre)
+            }
+        }
+
+        getSortedAnime()
     }
 
-    fun getSortedAnime() {
+    private fun getSortedAnime() {
         viewModelScope.launch {
             _state.update {
                 it.copy(
                     animeSortPaging = getAnimeFilteredListUseCase(
-                        sortType = UiConst.SortType.TRENDING.rawValue,
+                        sortType = it.selectType ?: UiConst.SortType.TRENDING.rawValue,
                         season = it.selectSeason,
                         year = it.selectYear,
                         genre = it.selectGenre
@@ -86,7 +113,7 @@ class SortedViewModel @Inject constructor(
         }
     }
 
-    private fun getGenreList() {
+    fun getGenreList() {
         viewModelScope.launch {
             _state.update {
                 it.copy(

@@ -1,7 +1,6 @@
 package com.chs.presentation.sortList
 
 import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,18 +22,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.common.UiConst
-import com.chs.presentation.ConvertDate
 import com.chs.presentation.common.ItemAnimeSmall
 
 @Composable
 fun SortedListScreen(
-    sortOption: String,
-    sortYear: String,
+    sortOption: String? = null,
+    sortYear: String? = null,
+    sortSeason: String? = null,
+    genre: String? = null,
     viewModel: SortedViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -45,7 +43,13 @@ fun SortedListScreen(
     var filterDialogShow by remember { mutableStateOf(false) }
 
     LaunchedEffect(viewModel, context) {
-        viewModel.getSortedAnime()
+        viewModel.initSort(
+            selectType = UiConst.SortType.values().firstOrNull { it.rawValue == sortOption },
+            selectYear = sortYear,
+            selectSeason = UiConst.Season.values().firstOrNull { it.rawValue == sortSeason },
+            selectGenre = genre
+        )
+        viewModel.getGenreList()
     }
 
     Column(

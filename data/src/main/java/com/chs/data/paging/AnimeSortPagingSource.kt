@@ -28,6 +28,7 @@ class AnimeSortPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnimeInfo> {
         return try {
+            Log.e("load", "${sort.rawValue}, ${season?.rawValue} $seasonYear $genre")
             val page = params.key ?: 1
             val response = apolloClient
                 .query(
@@ -40,7 +41,9 @@ class AnimeSortPagingSource(
                         seasonYear = if (seasonYear == null) {
                             Optional.absent()
                         } else Optional.present(seasonYear),
-                        genre = Optional.present(genre)
+                        genre = if (genre == null) {
+                            Optional.absent()
+                        } else Optional.present(genre)
                     )
                 )
                 .execute()

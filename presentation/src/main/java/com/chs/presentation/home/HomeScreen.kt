@@ -91,7 +91,7 @@ fun HomeScreen(
 
 @Composable
 fun ItemRecommendCategory(
-    title: Pair<String, Pair<UiConst.SortType, String>>,
+    title: Pair<String, Triple<UiConst.SortType, Int?, String?>>,
     list: List<AnimeInfo>,
     navigator: NavController,
     context: Context
@@ -115,7 +115,10 @@ fun ItemRecommendCategory(
             )
             IconButton(
                 onClick = {
-                    navigator.navigate("${Screen.SortListScreen.route}/${title.second.first}/${title.second.second}")
+                    Log.e("onClick", "${Screen.SortListScreen.route}/${title.second.first}/${title.second.second}/${title.second.third}/null")
+                    navigator.navigate(
+                        "${Screen.SortListScreen.route}/${title.second.first.rawValue}/${title.second.second}/${title.second.third}/null"
+                    )
                 }
             ) {
                 Icon(

@@ -3,8 +3,10 @@ package com.chs.presentation.main
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.chs.common.UiConst
 import com.chs.presentation.ConvertDate
 import com.chs.presentation.animeList.AnimeListScreen
@@ -38,12 +40,12 @@ fun MainNavHost(
         composable(Screen.SearchScreen.route) {
             SearchScreen(searchQuery, onBack)
         }
-        composable("${Screen.SortListScreen.route}/{sortOption}/{sortYear}") { backStackEntry ->
+        composable("${Screen.SortListScreen.route}/{sortOption}/{sortYear}/{sortSeason}/{sortGenre}",) { backStackEntry ->
             SortedListScreen(
-                backStackEntry.arguments?.getString("sortOption")
-                    ?: UiConst.SortType.TRENDING.rawValue,
-                backStackEntry.arguments?.getString("sortYear")
-                    ?: "0"
+                sortOption = backStackEntry.arguments?.getString("sortOption"),
+                sortYear = backStackEntry.arguments?.getString("sortYear"),
+                sortSeason = backStackEntry.arguments?.getString("sortSeason"),
+                genre = backStackEntry.arguments?.getString("sortGenre")
             )
         }
     }

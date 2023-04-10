@@ -20,13 +20,34 @@ class HomeViewModel @Inject constructor(
     private val _state = MutableStateFlow(HomeState())
     val state = _state.asStateFlow()
 
-    val animeCategorySortList = listOf(
-        "TRENDING NOW" to (UiConst.SortType.TRENDING to "0"),
-        "POPULAR THIS SEASON" to (UiConst.SortType.POPULARITY to ConvertDate.getCurrentSeason()),
-        "UPCOMING NEXT SEASON" to (UiConst.SortType.POPULARITY to ConvertDate.getNextSeason()),
-        "ALL TIME POPULAR" to (UiConst.SortType.POPULARITY to "0"),
-        "TOP ANIME" to (UiConst.SortType.AVERAGE to "0")
-    )
+    val animeCategorySortList: List<Pair<String, Triple<UiConst.SortType, Int?, String?>>> =
+        listOf(
+            "TRENDING NOW" to Triple(
+                UiConst.SortType.TRENDING,
+                null,
+                null
+            ),
+            "POPULAR THIS SEASON" to Triple(
+                UiConst.SortType.POPULARITY,
+                ConvertDate.getCurrentYear(),
+                ConvertDate.getCurrentSeason()
+            ),
+            "UPCOMING NEXT SEASON" to Triple(
+                UiConst.SortType.POPULARITY,
+                ConvertDate.getVariationYear(true),
+                ConvertDate.getNextSeason()
+            ),
+            "ALL TIME POPULAR" to Triple(
+                UiConst.SortType.POPULARITY,
+                null,
+                null
+            ),
+            "TOP ANIME" to Triple(
+                UiConst.SortType.AVERAGE,
+                null,
+                null
+            )
+        )
 
     init {
         viewModelScope.launch {

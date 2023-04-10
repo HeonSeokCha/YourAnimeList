@@ -38,7 +38,7 @@ fun AppBar(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     when (navBackStackEntry?.destination?.route) {
-        "${Screen.SortListScreen.route}/{sortOption}/{sortYear}" -> {
+        "${Screen.SortListScreen.route}/{sortOption}/{sortYear}/{sortSeason}/{sortGenre}" -> {
             TopAppBar(
                 title = {},
                 colors = TopAppBarDefaults.topAppBarColors(
