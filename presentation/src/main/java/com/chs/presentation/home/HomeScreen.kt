@@ -115,9 +115,8 @@ fun ItemRecommendCategory(
             )
             IconButton(
                 onClick = {
-                    Log.e("onClick", "${Screen.SortListScreen.route}/${title.second.first}/${title.second.second}/${title.second.third}/null")
                     navigator.navigate(
-                        "${Screen.SortListScreen.route}/${title.second.first.rawValue}/${title.second.second}/${title.second.third}/null"
+                        "${Screen.SortListScreen.route}/${title.second.first.rawValue}/${title.second.second}/${title.second.third}"
                     )
                 }
             ) {

@@ -53,7 +53,7 @@ class SortedViewModel @Inject constructor(
         }
 
         if (selectGenre != null) {
-            Log.e("selectGenre", selectGenre.toString())
+            Log.e("selectGenre", (selectGenre == "null").toString())
             _state.update {
                 it.copy(selectGenre = selectGenre)
             }

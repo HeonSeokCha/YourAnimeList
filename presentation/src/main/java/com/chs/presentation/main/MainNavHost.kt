@@ -40,12 +40,35 @@ fun MainNavHost(
         composable(Screen.SearchScreen.route) {
             SearchScreen(searchQuery, onBack)
         }
-        composable("${Screen.SortListScreen.route}/{sortOption}/{sortYear}/{sortSeason}/{sortGenre}",) { backStackEntry ->
+        composable(
+            route = "${Screen.SortListScreen.route}/{sortOption}/{sortYear}/{sortSeason}",
+            arguments = listOf(
+                navArgument("sortOption") {
+                    nullable = true
+                    defaultValue = null
+                    type = NavType.StringType
+                },
+                navArgument("sortYear") {
+                    nullable = true
+                    defaultValue = null
+                    type = NavType.StringType
+                },
+                navArgument("sortSeason") {
+                    nullable = true
+                    defaultValue = null
+                    type = NavType.StringType
+                },
+//                navArgument("sortGenre") {
+//                    nullable = true
+//                    defaultValue = null
+//                    type = NavType.StringType
+//                }
+            )
+        ) { backStackEntry ->
             SortedListScreen(
                 sortOption = backStackEntry.arguments?.getString("sortOption"),
                 sortYear = backStackEntry.arguments?.getString("sortYear"),
-                sortSeason = backStackEntry.arguments?.getString("sortSeason"),
-                genre = backStackEntry.arguments?.getString("sortGenre")
+                sortSeason = backStackEntry.arguments?.getString("sortSeason")
             )
         }
     }

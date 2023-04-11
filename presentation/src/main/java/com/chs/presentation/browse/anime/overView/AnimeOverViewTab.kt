@@ -120,15 +120,36 @@ fun AnimeOverViewScreen(
             AnimeSummaryInfo(animeDetailInfo = animeOverViewInfo)
 
             if (!animeTheme?.openingThemes.isNullOrEmpty()) {
+                Text(
+                    text = "Opening Theme",
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
                 animeTheme?.openingThemes?.forEach { themeTitle ->
-                    Text(text = themeTitle)
+                    Text(
+                        text = themeTitle,
+                        fontSize = 13.sp
+                    )
                 }
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
 
             if (!animeTheme?.endingThemes.isNullOrEmpty()) {
+                Text(
+                    text = "Ending Theme",
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
                 animeTheme?.endingThemes?.forEach { themeTitle ->
-                    Text(text = themeTitle)
+                    Text(
+                        text = themeTitle,
+                        fontSize = 13.sp
+                    )
                 }
             }
 
