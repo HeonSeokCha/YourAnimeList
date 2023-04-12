@@ -39,7 +39,7 @@ import coil.compose.AsyncImage
 import com.chs.common.URLConst
 import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.anime.AnimeCharaScreen
-import com.chs.presentation.browse.anime.AnimeOverViewScreen
+import com.chs.presentation.browse.anime.overView.AnimeOverViewScreen
 import com.chs.presentation.browse.anime.recommend.AnimeRecScreen
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.color

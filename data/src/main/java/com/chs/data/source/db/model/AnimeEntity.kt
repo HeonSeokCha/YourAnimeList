@@ -12,6 +12,7 @@ data class AnimeEntity(
     val imageUrl: String?,
     val imagePlaceColor: String?,
     val averageScore: Int,
+    val season: String,
     val seasonYear: Int,
     val favourites: Int,
     val format: String,

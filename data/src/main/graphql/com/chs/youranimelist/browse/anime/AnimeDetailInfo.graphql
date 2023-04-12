@@ -3,6 +3,11 @@ query AnimeDetailInfoQuery(
 ) {
     Media(id: $id) {
         ... animeBasicInfo
+        title {
+            romaji
+            english
+            native
+        }
         description(asHtml: true)
         startDate {
             year

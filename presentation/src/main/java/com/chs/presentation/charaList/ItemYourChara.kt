@@ -20,12 +20,14 @@ import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.ui.theme.Pink80
+import com.chs.presentation.ui.theme.YourAnimeListTheme
 
 @Composable
 fun ItemYourChara(
@@ -110,6 +112,23 @@ fun ItemYourChara(
                     fontSize = 14.sp,
                 )
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewItemChara() {
+    YourAnimeListTheme {
+        val charaInfo = CharacterInfo(
+            id = 0,
+            name = "test",
+            nativeName = "test",
+            imageUrl = null,
+            favorites = 123
+        )
+        ItemYourChara(charaInfo) {
+
         }
     }
 }

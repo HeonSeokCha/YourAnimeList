@@ -16,18 +16,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.common.UiConst
 import com.chs.domain.model.AnimeInfo
+import com.chs.presentation.ui.theme.YourAnimeListTheme
 
 @Composable
 fun ItemAnimeSmall(
@@ -82,6 +86,7 @@ fun ItemAnimeSmall(
                     .height(180.dp)
                     .clip(RoundedCornerShape(5.dp)),
                 model = item.imageUrl,
+                placeholder = ColorPainter(Color.LightGray),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -135,5 +140,26 @@ fun ItemAnimeSmall(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewItemAnimeSmall() {
+    YourAnimeListTheme {
+        val animeInfo = AnimeInfo(
+            id = 0,
+            idMal = 0,
+            title = "Test",
+            imageUrl = null,
+            imagePlaceColor = null,
+            averageScore = 87,
+            favourites = 1234,
+            seasonYear = 2019,
+            season = "",
+            format = "TV",
+            status = "FINISHED"
+        )
+        ItemAnimeSmall(item = animeInfo) { }
     }
 }

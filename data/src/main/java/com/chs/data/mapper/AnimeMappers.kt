@@ -15,6 +15,7 @@ fun convertAnimeBasicInfo(animeBasicInfo: AnimeBasicInfo?): AnimeInfo {
         imagePlaceColor = animeBasicInfo?.coverImage?.color,
         averageScore = animeBasicInfo?.averageScore ?: 0,
         favourites = animeBasicInfo?.favourites ?: 0,
+        season = animeBasicInfo?.season?.rawValue ?: "",
         seasonYear = animeBasicInfo?.seasonYear ?: 0,
         format = animeBasicInfo?.format?.name ?: "",
         status = animeBasicInfo?.status?.rawValue ?: "Unknown"
@@ -147,6 +148,7 @@ fun AnimeInfo.toAnimeEntity(): AnimeEntity {
         imageUrl = this.imageUrl,
         imagePlaceColor = this.imagePlaceColor,
         averageScore = this.averageScore,
+        season = this.season,
         seasonYear = this.seasonYear,
         favourites = this.favourites,
         status = this.status,
@@ -162,6 +164,7 @@ fun AnimeEntity.toAnimeInfo(): AnimeInfo {
         imageUrl = this.imageUrl,
         imagePlaceColor = this.imagePlaceColor,
         averageScore = this.averageScore,
+        season = this.season,
         seasonYear = this.seasonYear,
         favourites = this.favourites,
         status = this.status,

@@ -8,6 +8,7 @@ data class AnimeInfo(
     val imagePlaceColor: String?,
     val averageScore: Int,
     val favourites: Int,
+    val season: String,
     val seasonYear: Int,
     val format: String,
     val status: String
