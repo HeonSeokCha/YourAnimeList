@@ -3,6 +3,8 @@ package com.chs.domain.model
 
 data class AnimeDetailInfo(
     val animeInfo: AnimeInfo,
+    val titleEnglish: String,
+    val titleNative: String,
     val description: String,
     val startDate: String,
     val endDate: String,

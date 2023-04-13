@@ -233,13 +233,13 @@ private fun AnimeSummaryInfo(
     ) {
 
         AnimeSummaryInfoSmall("Romaji : ", animeDetailInfo.animeInfo.title)
-        AnimeSummaryInfoSmall("English : ", animeDetailInfo.animeInfo.title)
-        AnimeSummaryInfoSmall("Native : ", animeDetailInfo.animeInfo.title)
+        AnimeSummaryInfoSmall("English : ", animeDetailInfo.titleEnglish)
+        AnimeSummaryInfoSmall("Native : ", animeDetailInfo.titleNative)
         AnimeSummaryInfoSmall("Format : ", animeDetailInfo.animeInfo.format)
         AnimeSummaryInfoSmall("Episode : ", animeDetailInfo.episode.toString())
-        AnimeSummaryInfoSmall("Durations : ", "${animeDetailInfo.duration} mins")
-//        AnimeSummaryInfoSmall("StartDate", animeDetailInfo.startDate)
-//        AnimeSummaryInfoSmall("EndDate", animeDetailInfo.animeInfo.status)
+        AnimeSummaryInfoSmall("Durations : ", animeDetailInfo.duration)
+        AnimeSummaryInfoSmall("StartDate", animeDetailInfo.startDate)
+        AnimeSummaryInfoSmall("EndDate", animeDetailInfo.endDate)
         AnimeSummaryInfoSmall(
             "Season : ",
             "${animeDetailInfo.animeInfo.seasonYear} ${animeDetailInfo.animeInfo.season}"

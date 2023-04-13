@@ -69,6 +69,8 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
     return with(this.Media) {
         AnimeDetailInfo(
             animeInfo = convertAnimeBasicInfo(this?.animeBasicInfo),
+            titleEnglish = this?.title?.english ?: "",
+            titleNative = this?.title?.native ?: "",
             description = this?.description ?: "",
             startDate = "${this?.startDate?.year ?: 0}/${this?.startDate?.month ?: 0}/${this?.startDate?.day ?: 0}",
             endDate = "${this?.endDate?.year ?: 0}/${this?.endDate?.month ?: 0}/${this?.endDate?.day ?: 0}",
