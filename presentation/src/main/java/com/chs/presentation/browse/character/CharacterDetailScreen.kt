@@ -51,7 +51,7 @@ fun CharacterDetailScreen(
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Adaptive(100.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-//        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalItemSpacing = 4.dp
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
             CharacterBanner(
@@ -86,7 +86,7 @@ fun CharacterDetailScreen(
 
 
 @Composable
-fun CharacterBanner(
+private fun CharacterBanner(
     state: CharacterDetailState,
     insertClick: () -> Unit,
     deleteClick: () -> Unit
@@ -101,7 +101,7 @@ fun CharacterBanner(
         Column(
             modifier = Modifier
                 .padding(
-                    top = 60.dp,
+                    top = 68.dp,
                     start = 8.dp,
                     end = 8.dp
                 )
