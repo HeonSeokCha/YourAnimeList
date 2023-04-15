@@ -12,7 +12,7 @@ data class AnimeDetailInfo(
     val type: String,
     val genres: List<String?>,
     val episode: Int,
-    val duration: String,
+    val duration: Int,
     val chapters: Int,
     val hashtag: String,
     val popularScore: Int,

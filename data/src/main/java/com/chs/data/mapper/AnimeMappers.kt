@@ -15,7 +15,7 @@ fun convertAnimeBasicInfo(animeBasicInfo: AnimeBasicInfo?): AnimeInfo {
         imagePlaceColor = animeBasicInfo?.coverImage?.color,
         averageScore = animeBasicInfo?.averageScore ?: 0,
         favourites = animeBasicInfo?.favourites ?: 0,
-        season = animeBasicInfo?.season?.rawValue ?: "",
+        season = animeBasicInfo?.season?.rawValue ?: "Unknown",
         seasonYear = animeBasicInfo?.seasonYear ?: 0,
         format = animeBasicInfo?.format?.name ?: "",
         status = animeBasicInfo?.status?.rawValue ?: "Unknown"
@@ -72,8 +72,10 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
             titleEnglish = this?.title?.english ?: "",
             titleNative = this?.title?.native ?: "",
             description = this?.description ?: "",
-            startDate = "${this?.startDate?.year ?: 0}/${this?.startDate?.month ?: 0}/${this?.startDate?.day ?: 0}",
-            endDate = "${this?.endDate?.year ?: 0}/${this?.endDate?.month ?: 0}/${this?.endDate?.day ?: 0}",
+            startDate = if (this?.startDate?.year == null || this.startDate.month == null || this.startDate.day == null) ""
+            else "${this.startDate.year}/${this.startDate.month}/${this.startDate.day}",
+            endDate = if (this?.endDate?.year == null || this.endDate.month == null || this.endDate.day == null) ""
+            else "${this.endDate.year}/${this.endDate.month}/${this.endDate.day}",
             trailerInfo = TrailerInfo(
                 id = this?.trailer?.id ?: "",
                 thumbnailUrl = this?.trailer?.thumbnail
@@ -81,7 +83,7 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
             type = this?.type?.rawValue ?: "Unknown",
             genres = this?.genres ?: emptyList(),
             episode = this?.episodes ?: 0,
-            duration = "${this?.duration ?: 0}Min",
+            duration = this?.duration ?: 0,
             chapters = this?.chapters ?: 0,
             hashtag = this?.hashtag ?: "",
             popularScore = this?.popularity ?: 0,

@@ -1,5 +1,10 @@
 package com.chs.presentation.browse.anime.overView
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -115,6 +120,7 @@ private fun AnimeGenreChips(list: List<String?>) {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun AnimeDescription(
     description: String,
@@ -132,6 +138,12 @@ private fun AnimeDescription(
             .padding(
                 top = 8.dp,
                 bottom = 8.dp
+            )
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow
+                )
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -231,23 +243,48 @@ private fun AnimeSummaryInfo(
             .wrapContentHeight()
             .padding(vertical = 16.dp)
     ) {
-
         AnimeSummaryInfoSmall("Romaji : ", animeDetailInfo.animeInfo.title)
-        AnimeSummaryInfoSmall("English : ", animeDetailInfo.titleEnglish)
-        AnimeSummaryInfoSmall("Native : ", animeDetailInfo.titleNative)
-        AnimeSummaryInfoSmall("Format : ", animeDetailInfo.animeInfo.format)
-        AnimeSummaryInfoSmall("Episode : ", animeDetailInfo.episode.toString())
-        AnimeSummaryInfoSmall("Durations : ", animeDetailInfo.duration)
-        AnimeSummaryInfoSmall("StartDate", animeDetailInfo.startDate)
-        AnimeSummaryInfoSmall("EndDate", animeDetailInfo.endDate)
-        AnimeSummaryInfoSmall(
-            "Season : ",
-            "${animeDetailInfo.animeInfo.seasonYear} ${animeDetailInfo.animeInfo.season}"
-        )
-        AnimeSummaryInfoSmall(
-            "Studio : ",
-            animeDetailInfo.studioInfo.first { it.isMainStudio }.name
-        )
+
+        if (animeDetailInfo.titleEnglish.isNotEmpty()) {
+            AnimeSummaryInfoSmall("English : ", animeDetailInfo.titleEnglish)
+        }
+        if (animeDetailInfo.titleNative.isNotEmpty()) {
+            AnimeSummaryInfoSmall("Native : ", animeDetailInfo.titleNative)
+        }
+
+        if (animeDetailInfo.animeInfo.format.isNotEmpty()) {
+            AnimeSummaryInfoSmall("Format : ", animeDetailInfo.animeInfo.format)
+        }
+
+        if (animeDetailInfo.episode != 0) {
+            AnimeSummaryInfoSmall("Episode : ", animeDetailInfo.episode.toString())
+        }
+
+        if (animeDetailInfo.duration != 0) {
+            AnimeSummaryInfoSmall("Durations : ", "${animeDetailInfo.duration}Min")
+        }
+
+        if (animeDetailInfo.startDate.isNotEmpty()) {
+            AnimeSummaryInfoSmall("StartDate", animeDetailInfo.startDate)
+        }
+
+        if (animeDetailInfo.endDate.isNotEmpty()) {
+            AnimeSummaryInfoSmall("EndDate", animeDetailInfo.endDate)
+        }
+
+        if (animeDetailInfo.animeInfo.seasonYear != 0) {
+            AnimeSummaryInfoSmall(
+                "Season : ",
+                "${animeDetailInfo.animeInfo.seasonYear} ${animeDetailInfo.animeInfo.season}"
+            )
+        }
+
+        if (animeDetailInfo.studioInfo.firstOrNull() != null) {
+            AnimeSummaryInfoSmall(
+                "Studio : ",
+                animeDetailInfo.studioInfo.firstOrNull { it.isMainStudio }?.name ?: ""
+            )
+        }
     }
 }
 
@@ -256,19 +293,17 @@ private fun AnimeSummaryInfoSmall(
     title: String,
     value: String
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(horizontal = 4.dp, vertical = 8.dp)
     ) {
         Text(
             text = title,
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp,
         )
-
+        Spacer(modifier = Modifier.weight(1f))
         Text(
             text = value,
             fontWeight = FontWeight.Bold,
