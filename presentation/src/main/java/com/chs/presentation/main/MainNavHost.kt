@@ -7,8 +7,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.chs.common.UiConst
-import com.chs.presentation.ConvertDate
 import com.chs.presentation.animeList.AnimeListScreen
 import com.chs.presentation.charaList.CharaListScreen
 import com.chs.presentation.home.HomeScreen
@@ -49,9 +47,7 @@ fun MainNavHost(
                     type = NavType.StringType
                 },
                 navArgument("sortYear") {
-                    nullable = true
-                    defaultValue = null
-                    type = NavType.StringType
+                    type = NavType.IntType
                 },
                 navArgument("sortSeason") {
                     nullable = true
@@ -67,7 +63,7 @@ fun MainNavHost(
         ) { backStackEntry ->
             SortedListScreen(
                 sortOption = backStackEntry.arguments?.getString("sortOption"),
-                sortYear = backStackEntry.arguments?.getString("sortYear"),
+                sortYear = backStackEntry.arguments?.getInt("sortYear") ?: 0,
                 sortSeason = backStackEntry.arguments?.getString("sortSeason")
             )
         }

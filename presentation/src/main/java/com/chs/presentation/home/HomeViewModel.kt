@@ -20,11 +20,11 @@ class HomeViewModel @Inject constructor(
     private val _state = MutableStateFlow(HomeState())
     val state = _state.asStateFlow()
 
-    val animeCategorySortList: List<Pair<String, Triple<UiConst.SortType, Int?, String?>>> =
+    val animeCategorySortList: List<Pair<String, Triple<UiConst.SortType, Int, String?>>> =
         listOf(
             "TRENDING NOW" to Triple(
                 UiConst.SortType.TRENDING,
-                null,
+                0,
                 null
             ),
             "POPULAR THIS SEASON" to Triple(
@@ -39,12 +39,12 @@ class HomeViewModel @Inject constructor(
             ),
             "ALL TIME POPULAR" to Triple(
                 UiConst.SortType.POPULARITY,
-                null,
+                0,
                 null
             ),
             "TOP ANIME" to Triple(
                 UiConst.SortType.AVERAGE,
-                null,
+                0,
                 null
             )
         )

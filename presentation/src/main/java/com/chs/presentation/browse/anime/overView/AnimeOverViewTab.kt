@@ -120,7 +120,6 @@ private fun AnimeGenreChips(list: List<String?>) {
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun AnimeDescription(
     description: String,

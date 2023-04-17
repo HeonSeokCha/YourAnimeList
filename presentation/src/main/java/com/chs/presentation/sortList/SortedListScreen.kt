@@ -31,7 +31,7 @@ import com.chs.presentation.common.ItemAnimeSmall
 @Composable
 fun SortedListScreen(
     sortOption: String? = null,
-    sortYear: String? = null,
+    sortYear: Int,
     sortSeason: String? = null,
     genre: String? = null,
     viewModel: SortedViewModel = hiltViewModel()
@@ -123,6 +123,7 @@ fun SortedListScreen(
         is LoadState.Error -> {
             Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT).show()
         }
+
         else -> {}
     }
 }
@@ -176,7 +177,7 @@ private fun filterDialog(
                             onDismiss()
                             onClick(idx)
                         },
-                    text = list[idx].second,
+                    text = list[idx].first,
                     fontSize = 16.sp
                 )
             }

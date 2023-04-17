@@ -28,36 +28,45 @@ class SortedViewModel @Inject constructor(
     fun initSort(
         selectType: UiConst.SortType? = null,
         selectSeason: UiConst.Season? = null,
-        selectYear: String? = null,
+        selectYear: Int = 0,
         selectGenre: String? = null
     ) {
-        if (selectType != null) {
-            Log.e("selectType", selectType.toString())
-            _state.update {
-                it.copy(selectType = selectType.rawValue)
-            }
-        }
 
-        if (selectSeason != null) {
-            Log.e("selectSeason", selectSeason.toString())
-            _state.update {
-                it.copy(selectSeason = selectSeason.rawValue)
-            }
+        _state.update {
+            it.copy(
+                selectType = if (selectType != null) {
+                    selectType.name to selectType.rawValue
+                } else null,
+                selectSeason = if (selectSeason != null) {
+                    selectSeason.name to selectSeason.rawValue
+                } else null,
+                selectYear = if (selectYear != 0) selectYear else null,
+                selectGenre = selectGenre
+            )
         }
-
-        if (selectYear != null) {
-            Log.e("selectYear", selectYear.toString())
-            _state.update {
-                it.copy(selectYear = 2023)
-            }
-        }
-
-        if (selectGenre != null) {
-            Log.e("selectGenre", (selectGenre == "null").toString())
-            _state.update {
-                it.copy(selectGenre = selectGenre)
-            }
-        }
+//        if (selectType != null) {
+//            _state.update {
+//                it.copy(selectType = selectType.name to selectType.rawValue)
+//            }
+//        }
+//
+//        if (selectSeason != null) {
+//            _state.update {
+//                it.copy(selectSeason = selectSeason.name to selectSeason.rawValue)
+//            }
+//        }
+//
+//        if (selectYear != null) {
+//            _state.update {
+//                it.copy(selectYear = 2023)
+//            }
+//        }
+//
+//        if (selectGenre != null) {
+//            _state.update {
+//                it.copy(selectGenre = selectGenre)
+//            }
+//        }
 
         getSortedAnime()
     }
@@ -67,8 +76,8 @@ class SortedViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     animeSortPaging = getAnimeFilteredListUseCase(
-                        sortType = it.selectType ?: UiConst.SortType.TRENDING.rawValue,
-                        season = it.selectSeason,
+                        sortType = it.selectType?.second ?: UiConst.SortType.TRENDING.rawValue,
+                        season = it.selectSeason?.second,
                         year = it.selectYear,
                         genre = it.selectGenre
                     ).cachedIn(viewModelScope)
@@ -84,16 +93,19 @@ class SortedViewModel @Inject constructor(
                     it.copy(selectYear = it.menuList[0].second[selectIdx].second.toInt())
                 }
             }
+
             1 -> {
                 _state.update {
-                    it.copy(selectSeason = it.menuList[1].second[selectIdx].second)
+                    it.copy(selectSeason = it.menuList[1].second[selectIdx])
                 }
             }
+
             2 -> {
                 _state.update {
-                    it.copy(selectType = it.menuList[2].second[selectIdx].second)
+                    it.copy(selectType = it.menuList[2].second[selectIdx])
                 }
             }
+
             3 -> {
                 _state.update {
                     it.copy(selectGenre = it.menuList[3].second[selectIdx].second)
@@ -106,8 +118,8 @@ class SortedViewModel @Inject constructor(
     fun getSelectedOption(selectIdx: Int): String {
         return when (selectIdx) {
             0 -> "${state.value.selectYear ?: "Any"}"
-            1 -> state.value.selectSeason ?: "Any"
-            2 -> state.value.selectType ?: "Any"
+            1 -> state.value.selectSeason?.first ?: "Any"
+            2 -> state.value.selectType?.first ?: "Any"
             3 -> state.value.selectGenre ?: "Any"
             else -> "Any"
         }
