@@ -20,15 +20,10 @@ class BrowseActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             YourAnimeListTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    BrowseNavHost(
-                        navController = navController,
-                        modifier = Modifier.padding(it),
-                        intent = intent
-                    )
-                }
+                BrowseNavHost(
+                    navController = navController,
+                    intent = intent
+                )
             }
         }
     }

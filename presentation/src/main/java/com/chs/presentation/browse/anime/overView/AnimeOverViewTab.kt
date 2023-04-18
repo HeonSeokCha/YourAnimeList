@@ -230,17 +230,16 @@ private fun AnimeRelationInfo(
 private fun AnimeSummaryInfo(
     animeDetailInfo: AnimeDetailInfo
 ) {
-    Text(
-        text = "Anime Info",
-        fontWeight = FontWeight.Bold,
-        fontSize = 16.sp,
-    )
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(vertical = 16.dp)
+            .padding(
+                start = 8.dp,
+                end = 8.dp,
+                bottom = 16.dp
+            )
     ) {
         AnimeSummaryInfoSmall("Romaji : ", animeDetailInfo.animeInfo.title)
 
@@ -256,7 +255,7 @@ private fun AnimeSummaryInfo(
         }
 
         if (animeDetailInfo.episode != 0) {
-            AnimeSummaryInfoSmall("Episode : ", animeDetailInfo.episode.toString())
+            AnimeSummaryInfoSmall("Episode : ", "${animeDetailInfo.episode}Ep")
         }
 
         if (animeDetailInfo.duration != 0) {

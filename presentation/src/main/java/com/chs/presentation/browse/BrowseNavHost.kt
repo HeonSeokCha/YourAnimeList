@@ -10,8 +10,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.chs.presentation.browse.anime.detail.AnimeDetailScreen
 import com.chs.presentation.browse.character.CharacterDetailScreen
-import com.chs.presentation.main.Screen
-import com.chs.presentation.sortList.SortedListScreen
 import com.chs.common.UiConst
 
 @Composable

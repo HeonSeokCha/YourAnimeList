@@ -38,6 +38,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.common.URLConst
 import com.chs.presentation.LoadingIndicator
+import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.browse.anime.AnimeCharaScreen
 import com.chs.presentation.browse.anime.overView.AnimeOverViewScreen
 import com.chs.presentation.browse.anime.recommend.AnimeRecScreen
@@ -49,7 +50,7 @@ import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AnimeDetailScreen(
     id: Int,
@@ -60,6 +61,7 @@ fun AnimeDetailScreen(
 
     val state = viewModel.state
     val context = LocalContext.current
+    val activity = (LocalContext.current as? Activity)
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
     val tabList = listOf(
@@ -68,109 +70,123 @@ fun AnimeDetailScreen(
         "RECOMMEND"
     )
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
+
     LaunchedEffect(viewModel, context) {
         viewModel.getAnimeDetailInfo(id)
         viewModel.getAnimeTheme(idMal)
         viewModel.isSaveAnime(id)
     }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        item {
-            AnimeDetailHeadBanner(
-                state = state,
-                trailerClick = { trailerId ->
-                    CustomTabsIntent.Builder()
-                        .build()
-                        .launchUrl(
-                            context,
-                            Uri.parse("${URLConst.YOUTUBE_BASE_URL}$trailerId")
-                        )
-                },
-                insertClick = {
-                    viewModel.insertAnime()
-                },
-                deleteClick = {
-                    if (state.isSaveAnime != null) {
-                        viewModel.deleteAnime(state.isSaveAnime)
-                    }
+    Scaffold(
+        topBar = {
+            CollapsingAppBar(scrollBehavior = scrollBehavior,
+                collapsingContent = {
+                    AnimeDetailHeadBanner(
+                        state = state,
+                        trailerClick = { trailerId ->
+                            CustomTabsIntent.Builder()
+                                .build()
+                                .launchUrl(
+                                    context,
+                                    Uri.parse("${URLConst.YOUTUBE_BASE_URL}$trailerId")
+                                )
+                        },
+                        insertClick = {
+                            viewModel.insertAnime()
+                        },
+                        deleteClick = {
+                            if (state.isSaveAnime != null) {
+                                viewModel.deleteAnime(state.isSaveAnime)
+                            }
+                        }
+                    )
+                }, toolBarClick = {
+                    activity?.finish()
                 }
             )
         }
-
-        item {
-            TabRow(
-                modifier = Modifier.fillMaxWidth(),
-                selectedTabIndex = pagerState.currentPage,
-                indicator = { tabPositions ->
-                    TabRowDefaults.Indicator(
-                        modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
-                        color = Pink80
-                    )
-                }
-            ) {
-                tabList.forEachIndexed { index, title ->
-                    Tab(
-                        text = {
-                            Text(
-                                text = title,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                fontSize = 12.sp,
-                            )
-                        },
-                        selected = pagerState.currentPage == index,
-                        onClick = {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        },
-                        selectedContentColor = Pink80,
-                        unselectedContentColor = Color.Gray
-                    )
-                }
-            }
-        }
-
-        item {
-            HorizontalPager(
-                state = pagerState,
-                pageCount = tabList.size,
-                modifier = Modifier
-                    .fillMaxSize(),
-                userScrollEnabled = false
-            ) {
-                when (it) {
-                    0 -> {
-                        AnimeOverViewScreen(
-                            animeOverViewInfo = state.animeDetailInfo,
-                            animeTheme = state.animeThemes,
-                            navController = navController
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxWidth()
+        ) {
+            item {
+                TabRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    selectedTabIndex = pagerState.currentPage,
+                    indicator = { tabPositions ->
+                        TabRowDefaults.Indicator(
+                            modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+                            color = Pink80
                         )
                     }
-                    1 -> {
-                        if (!state.animeDetailInfo?.characterList.isNullOrEmpty()) {
-                            AnimeCharaScreen(
-                                charaInfoList = state.animeDetailInfo?.characterList!!,
+                ) {
+                    tabList.forEachIndexed { index, title ->
+                        Tab(
+                            text = {
+                                Text(
+                                    text = title,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    fontSize = 12.sp,
+                                )
+                            },
+                            selected = pagerState.currentPage == index,
+                            onClick = {
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            },
+                            selectedContentColor = Pink80,
+                            unselectedContentColor = Color.Gray
+                        )
+                    }
+                }
+            }
+
+            item {
+                HorizontalPager(
+                    state = pagerState,
+                    pageCount = tabList.size,
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    userScrollEnabled = false
+                ) {
+                    when (it) {
+                        0 -> {
+                            AnimeOverViewScreen(
+                                animeOverViewInfo = state.animeDetailInfo,
+                                animeTheme = state.animeThemes,
+                                navController = navController
+                            )
+                        }
+
+                        1 -> {
+                            if (!state.animeDetailInfo?.characterList.isNullOrEmpty()) {
+                                AnimeCharaScreen(
+                                    charaInfoList = state.animeDetailInfo?.characterList!!,
+                                    navController = navController,
+                                )
+                            }
+                        }
+
+                        2 -> {
+                            AnimeRecScreen(
+                                animeId = id,
                                 navController = navController,
                             )
                         }
                     }
-                    2 -> {
-                        AnimeRecScreen(
-                            animeId = id,
-                            navController = navController,
-                        )
-                    }
                 }
             }
         }
-    }
 
-    if (state.isLoading) {
-        LoadingIndicator()
+        if (state.isLoading) {
+            LoadingIndicator()
+        }
     }
 }
 
@@ -181,7 +197,6 @@ fun AnimeDetailHeadBanner(
     insertClick: () -> Unit,
     deleteClick: () -> Unit
 ) {
-    val activity = (LocalContext.current as? Activity)
     val starId = "starId"
     val favoriteId = "favoriteId"
     val inlineContent = mapOf(
@@ -241,19 +256,6 @@ fun AnimeDetailHeadBanner(
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
-
-            IconButton(
-                modifier = Modifier
-                    .padding(start = 4.dp)
-                    .align(Alignment.TopStart),
-                onClick = { activity?.finish() }
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Close,
-                    tint = Color.White,
-                    contentDescription = null
-                )
-            }
 
             if (state.animeDetailInfo?.trailerInfo != null) {
                 FloatingActionButton(
@@ -379,24 +381,4 @@ fun AnimeDetailHeadBanner(
             }
         }
     }
-//    Row(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(height)
-//            .alpha(1f - progress)
-//            .background(MaterialTheme.colors.primarySurface),
-//        horizontalArrangement = Arrangement.Start,
-//        verticalAlignment = Alignment.CenterVertically
-//    ) {
-//        IconButton(
-//            modifier = Modifier.padding(start = 4.dp),
-//            onClick = { activity?.finish() }
-//        ) {
-//            Icon(
-//                imageVector = Icons.Filled.Close,
-//                tint = Color.White,
-//                contentDescription = null
-//            )
-//        }
-//    }
 }
