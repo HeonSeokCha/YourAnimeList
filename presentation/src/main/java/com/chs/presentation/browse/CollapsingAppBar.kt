@@ -69,8 +69,8 @@ fun CollapsingAppBar(
     val appBarDragModifier = if (!scrollBehavior.isPinned) {
         Modifier.draggable(
             orientation = Orientation.Vertical,
-            state = rememberDraggableState { delat ->
-                scrollBehavior.state.heightOffset = offset + delat
+            state = rememberDraggableState { delta ->
+                scrollBehavior.state.heightOffset = offset + delta
             },
             onDragStopped = { velocity ->
                 settleAppBar(
@@ -103,7 +103,7 @@ fun CollapsingAppBar(
                     IconButton(
                         modifier = Modifier
                             .padding(start = 4.dp)
-                            .align(Alignment.TopStart),
+                            .align(Alignment.CenterStart),
                         onClick = { toolBarClick() }
                     ) {
                         Icon(
