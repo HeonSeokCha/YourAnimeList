@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.twotone.Search
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -66,6 +67,7 @@ fun AppBar(
                 }
             )
         }
+
         else -> {
             when (searchWidgetState) {
                 SearchWidgetState.OPENED -> {
@@ -81,6 +83,7 @@ fun AppBar(
                         }
                     )
                 }
+
                 SearchWidgetState.CLOSED -> {
                     TopAppBar(
                         title = {

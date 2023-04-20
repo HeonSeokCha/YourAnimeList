@@ -15,6 +15,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.*
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.Placeholder
@@ -37,6 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.common.URLConst
+import com.chs.domain.model.AnimeDetailInfo
 import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.browse.anime.AnimeCharaScreen
@@ -73,8 +76,6 @@ fun AnimeDetailScreen(
     )
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val headerState = rememberCollapsingHeaderState(key = inset, topInset = )
-
 
     LaunchedEffect(viewModel, context) {
         viewModel.getAnimeDetailInfo(id)
@@ -87,7 +88,8 @@ fun AnimeDetailScreen(
             CollapsingAppBar(scrollBehavior = scrollBehavior,
                 collapsingContent = {
                     AnimeDetailHeadBanner(
-                        state = state,
+                        animeDetailInfo = state.animeDetailInfo,
+                        isAnimeSave = state.isSaveAnime != null,
                         trailerClick = { trailerId ->
                             CustomTabsIntent.Builder()
                                 .build()
@@ -95,6 +97,9 @@ fun AnimeDetailScreen(
                                     context,
                                     Uri.parse("${URLConst.YOUTUBE_BASE_URL}$trailerId")
                                 )
+                        },
+                        closeClick = {
+                            activity?.finish()
                         },
                         insertClick = {
                             viewModel.insertAnime()
@@ -115,9 +120,6 @@ fun AnimeDetailScreen(
             modifier = Modifier
                 .padding(it)
                 .fillMaxWidth()
-                .collapsingHeaderController(
-
-                )
         ) {
             item {
                 TabRow(
@@ -198,7 +200,9 @@ fun AnimeDetailScreen(
 
 @Composable
 fun AnimeDetailHeadBanner(
-    state: AnimeDetailState,
+    animeDetailInfo: AnimeDetailInfo?,
+    isAnimeSave: Boolean,
+    closeClick: () -> Unit,
     trailerClick: (trailerId: String?) -> Unit,
     insertClick: () -> Unit,
     deleteClick: () -> Unit
@@ -251,28 +255,40 @@ fun AnimeDetailHeadBanner(
                     .fillMaxWidth()
                     .height(250.dp)
                     .background(
-                        color = state.animeDetailInfo?.animeInfo?.imagePlaceColor?.color
+                        color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
                             ?: "#ffffff".color
-                    )
-                    .placeholder(
-                        visible = state.isLoading,
-                        highlight = PlaceholderHighlight.shimmer()
                     ),
-                model = state.animeDetailInfo?.animeInfo?.imageUrl,
+                model = animeDetailInfo?.animeInfo?.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
 
-            if (state.animeDetailInfo?.trailerInfo != null) {
+            if (animeDetailInfo?.trailerInfo != null) {
                 FloatingActionButton(
                     modifier = Modifier
                         .align(Alignment.Center),
                     onClick = {
-                        trailerClick(state.animeDetailInfo.trailerInfo!!.id)
+                        trailerClick(animeDetailInfo.trailerInfo!!.id)
                     }
                 ) {
                     Icon(Icons.Filled.PlayArrow, null)
                 }
+            }
+
+            IconButton(
+                modifier = Modifier
+                    .padding(
+                        top = 4.dp,
+                        start = 4.dp
+                    )
+                    .align(Alignment.TopStart),
+                onClick = { closeClick() }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Close,
+                    tint = White,
+                    contentDescription = null
+                )
             }
         }
 
@@ -288,12 +304,8 @@ fun AnimeDetailHeadBanner(
                         .padding(
                             start = 8.dp,
                         )
-                        .placeholder(
-                            visible = state.isLoading,
-                            highlight = PlaceholderHighlight.shimmer()
-                        )
                         .clip(RoundedCornerShape(5.dp)),
-                    model = state.animeDetailInfo?.animeInfo?.imageUrl,
+                    model = animeDetailInfo?.animeInfo?.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
@@ -304,40 +316,31 @@ fun AnimeDetailHeadBanner(
                             top = 90.dp,
                             start = 16.dp
                         )
-                        .placeholder(
-                            visible = state.isLoading,
-                            highlight = PlaceholderHighlight.shimmer()
-                        )
                 ) {
                     Text(
-                        text = state.animeDetailInfo?.animeInfo?.title ?: "",
+                        text = animeDetailInfo?.animeInfo?.title ?: "",
                         fontSize = 18.sp,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier
-                            .placeholder(
-                                visible = state.isLoading,
-                                highlight = PlaceholderHighlight.shimmer()
-                            )
+                        textAlign = TextAlign.Start
                     )
 
-                    if (state.animeDetailInfo?.animeInfo?.seasonYear.isNotEmptyValue
-                        && state.animeDetailInfo?.animeInfo?.status != null
+                    if (animeDetailInfo?.animeInfo?.seasonYear.isNotEmptyValue
+                        && animeDetailInfo?.animeInfo?.status != null
                     ) {
-                        Text(text = "${state.animeDetailInfo.animeInfo.format} ⦁ ${state.animeDetailInfo.animeInfo.seasonYear}")
+                        Text(text = "${animeDetailInfo.animeInfo.format} ⦁ ${animeDetailInfo.animeInfo.seasonYear}")
                     } else {
-                        Text(text = state.animeDetailInfo?.animeInfo?.format ?: "")
+                        Text(text = animeDetailInfo?.animeInfo?.format ?: "")
                     }
 
                     Row(
                         modifier = Modifier.padding(top = 8.dp)
                     ) {
-                        if (state.animeDetailInfo?.animeInfo?.averageScore != null) {
+                        if (animeDetailInfo?.animeInfo?.averageScore != null) {
                             Text(
                                 text = buildAnnotatedString {
                                     appendInlineContent(starId, starId)
-                                    append(state.animeDetailInfo.animeInfo.averageScore.toString())
+                                    append(animeDetailInfo.animeInfo.averageScore.toString())
                                 },
                                 inlineContent = inlineContent,
                                 fontWeight = FontWeight.Bold,
@@ -346,11 +349,11 @@ fun AnimeDetailHeadBanner(
                             Spacer(modifier = Modifier.width(16.dp))
                         }
 
-                        if (state.animeDetailInfo?.animeInfo?.favourites != null) {
+                        if (animeDetailInfo?.animeInfo?.favourites != null) {
                             Text(
                                 text = buildAnnotatedString {
                                     appendInlineContent(favoriteId, favoriteId)
-                                    append(state.animeDetailInfo.animeInfo.favourites.toString())
+                                    append(animeDetailInfo.animeInfo.favourites.toString())
                                 },
                                 inlineContent = inlineContent,
                                 fontWeight = FontWeight.Bold,
@@ -370,8 +373,8 @@ fun AnimeDetailHeadBanner(
                         end = 8.dp
                     ),
                 onClick = {
-                    if (state.animeDetailInfo != null) {
-                        if (state.isSaveAnime != null) {
+                    if (animeDetailInfo != null) {
+                        if (isAnimeSave) {
                             deleteClick()
                         } else {
                             insertClick()
@@ -379,7 +382,7 @@ fun AnimeDetailHeadBanner(
                     }
                 }
             ) {
-                if (state.isSaveAnime != null) {
+                if (isAnimeSave) {
                     Text("SAVED")
                 } else {
                     Text("ADD MY LIST")

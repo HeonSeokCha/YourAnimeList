@@ -2,6 +2,7 @@ package com.chs.presentation.browse
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.AnimationState
+import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.DecayAnimationSpec
 import androidx.compose.animation.core.animateDecay
 import androidx.compose.animation.core.animateTo
@@ -32,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.Layout
@@ -83,6 +85,13 @@ fun CollapsingAppBar(
         )
     } else Modifier
 
+    val baseOffset =
+        if (scrollBehavior.state.heightOffsetLimit > minHeightPx) -minHeightPx else (minHeightPx - collapsingContentHeight)
+    val collapsedFraction = offset / baseOffset
+    val collapsedContentAlpha =
+        CubicBezierEasing(.8f, 0f, .8f, .15f).transform(collapsedFraction)
+    val expandedContentAlpha = 1f - collapsedContentAlpha
+
     Surface(
         modifier = modifier
             .background(backgroundColor)
@@ -92,17 +101,25 @@ fun CollapsingAppBar(
     ) {
         Layout(
             content = {
-                Box(modifier = Modifier.layoutId("collapsingContent")) { collapsingContent() }
+                Box(
+                    modifier = Modifier
+                        .layoutId("collapsingContent")
+                        .alpha(expandedContentAlpha)
+                ) { collapsingContent() }
                 Box(
                     Modifier
                         .layoutId("toolbar")
                         .fillMaxWidth()
                         .height(minHeight)
+                        .alpha(collapsedContentAlpha)
                         .background(MaterialTheme.colorScheme.primary),
                 ) {
                     IconButton(
                         modifier = Modifier
-                            .padding(start = 4.dp)
+                            .padding(
+                                top = 4.dp,
+                                start = 4.dp
+                            )
                             .align(Alignment.CenterStart),
                         onClick = { toolBarClick() }
                     ) {
@@ -132,10 +149,7 @@ fun CollapsingAppBar(
                 collapsingContentHeight + scrollBehavior.state.heightOffset
 
             layout(maxWidth, currentHeight.toInt()) {
-                ccPlaceable.placeRelative(
-                    0,
-                    minHeight.roundToPx() + offset.roundToInt()
-                )
+                ccPlaceable.placeRelative(0, 0)
                 tbPlaceable.placeRelative(0, 0)
             }
         }
