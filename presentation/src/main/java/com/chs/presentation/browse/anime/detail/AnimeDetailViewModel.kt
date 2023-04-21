@@ -86,9 +86,10 @@ class AnimeDetailViewModel @Inject constructor(
         }
     }
 
-    fun deleteAnime(anime: AnimeInfo) {
+    fun deleteAnime() {
+        if (state.isSaveAnime == null) return
         viewModelScope.launch {
-            deleteAnimeUseCase(anime)
+            deleteAnimeUseCase(state.isSaveAnime!!)
         }
     }
 }

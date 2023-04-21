@@ -66,7 +66,8 @@ fun CharacterDetailScreen(
                     )
                 }, toolBarClick = {
                     activity?.finish()
-                }
+                },
+                isShowToolBar = true
             )
         }
     ) {

@@ -105,9 +105,7 @@ fun AnimeDetailScreen(
                             viewModel.insertAnime()
                         },
                         deleteClick = {
-                            if (state.isSaveAnime != null) {
-                                viewModel.deleteAnime(state.isSaveAnime)
-                            }
+                            viewModel.deleteAnime()
                         }
                     )
                 }, toolBarClick = {

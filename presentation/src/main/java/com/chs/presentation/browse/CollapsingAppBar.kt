@@ -27,8 +27,8 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.TopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -53,6 +53,7 @@ fun CollapsingAppBar(
     backgroundColor: Color = White,
     minHeight: Dp = 56.dp,
     scrollBehavior: TopAppBarScrollBehavior,
+    isShowToolBar: Boolean = false,
     collapsingContent: @Composable () -> Unit = {},
     toolBarClick: () -> Unit
 ) {
@@ -106,28 +107,54 @@ fun CollapsingAppBar(
                         .layoutId("collapsingContent")
                         .alpha(expandedContentAlpha)
                 ) { collapsingContent() }
-                Box(
-                    Modifier
-                        .layoutId("toolbar")
-                        .fillMaxWidth()
-                        .height(minHeight)
-                        .alpha(collapsedContentAlpha)
-                        .background(MaterialTheme.colorScheme.primary),
-                ) {
-                    IconButton(
-                        modifier = Modifier
-                            .padding(
-                                top = 4.dp,
-                                start = 4.dp
-                            )
-                            .align(Alignment.CenterStart),
-                        onClick = { toolBarClick() }
+                if (isShowToolBar) {
+                    Box(
+                        Modifier
+                            .layoutId("toolbar")
+                            .fillMaxWidth()
+                            .height(minHeight)
+                            .background(MaterialTheme.colorScheme.primary),
                     ) {
-                        Icon(
-                            imageVector = Icons.Filled.Close,
-                            tint = White,
-                            contentDescription = null
-                        )
+                        IconButton(
+                            modifier = Modifier
+                                .padding(
+                                    top = 4.dp,
+                                    start = 4.dp
+                                )
+                                .align(Alignment.CenterStart),
+                            onClick = { toolBarClick() }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                tint = White,
+                                contentDescription = null
+                            )
+                        }
+                    }
+                } else {
+                    Box(
+                        Modifier
+                            .layoutId("toolbar")
+                            .fillMaxWidth()
+                            .height(minHeight)
+                            .alpha(collapsedContentAlpha)
+                            .background(MaterialTheme.colorScheme.primary),
+                    ) {
+                        IconButton(
+                            modifier = Modifier
+                                .padding(
+                                    top = 4.dp,
+                                    start = 4.dp
+                                )
+                                .align(Alignment.CenterStart),
+                            onClick = { toolBarClick() }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                tint = White,
+                                contentDescription = null
+                            )
+                        }
                     }
                 }
             },
@@ -149,7 +176,14 @@ fun CollapsingAppBar(
                 collapsingContentHeight + scrollBehavior.state.heightOffset
 
             layout(maxWidth, currentHeight.toInt()) {
-                ccPlaceable.placeRelative(0, 0)
+                if (isShowToolBar) {
+                    ccPlaceable.placeRelative(
+                        0,
+                        minHeight.roundToPx() + offset.roundToInt()
+                    )
+                } else {
+                    ccPlaceable.placeRelative(0, 0)
+                }
                 tbPlaceable.placeRelative(0, 0)
             }
         }
