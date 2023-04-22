@@ -93,7 +93,7 @@ class AnimeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo {
-        return jikanService.getAnimeTheme(animeId)?.toAnimeThemeInfo()!!
+        return jikanService.getAnimeTheme(animeId).toAnimeThemeInfo()
     }
 
     override suspend fun getAnimeSearchResult(query: String): Flow<PagingData<AnimeInfo>> {
