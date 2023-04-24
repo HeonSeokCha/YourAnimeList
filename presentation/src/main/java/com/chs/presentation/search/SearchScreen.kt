@@ -29,7 +29,7 @@ fun SearchScreen(
 
     val tabList = listOf(
         "ANIME",
-        "MANGA",
+//        "MANGA",
         "CHARACTER"
     )
 
@@ -84,6 +84,7 @@ fun SearchScreen(
                         searchKeyWord = searchKeyWord
                     )
                 }
+
                 1 -> {
                     SearchMediaScreen(
                         searchType = UiConst.TARGET_CHARA,

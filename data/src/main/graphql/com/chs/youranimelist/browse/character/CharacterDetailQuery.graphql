@@ -1,6 +1,13 @@
 query CharacterDetailQuery($id: Int) {
     character: Character(id: $id) {
         ...characterBasicInfo
+        gender
+        age
+        dateOfBirth {
+            year
+            month
+            day
+        }
         description(asHtml: true)
         media(sort: [POPULARITY_DESC]) {
             nodes {

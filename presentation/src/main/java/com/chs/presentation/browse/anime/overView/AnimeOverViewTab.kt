@@ -164,21 +164,23 @@ private fun AnimeDescription(
             )
         }
 
-        Button(
-            modifier = Modifier
-                .padding(
-                    top = 8.dp,
-                    bottom = 8.dp
-                ),
-            onClick = { onClick() }
-        ) {
-            if (expandedDescButton) {
-                Icon(imageVector = Icons.Filled.ArrowUpward, contentDescription = null)
-            } else {
-                Icon(
-                    imageVector = Icons.Filled.ArrowDownward,
-                    contentDescription = null
-                )
+        if (description.length > 500) {
+            Button(
+                modifier = Modifier
+                    .padding(
+                        top = 8.dp,
+                        bottom = 8.dp
+                    ),
+                onClick = { onClick() }
+            ) {
+                if (expandedDescButton) {
+                    Icon(imageVector = Icons.Filled.ArrowUpward, contentDescription = null)
+                } else {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowDownward,
+                        contentDescription = null
+                    )
+                }
             }
         }
     }

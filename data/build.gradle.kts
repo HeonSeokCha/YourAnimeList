@@ -58,7 +58,7 @@ dependencies {
     implementation(projects.domain)
     implementation(libs.androidX.paging.compose)
     implementation(libs.kotlin.coroutine.core)
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation(libs.kotlin.serialization)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 

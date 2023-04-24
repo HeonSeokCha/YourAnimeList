@@ -143,8 +143,7 @@ fun SearchMediaScreen(
         is LoadState.Error -> {
             Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT).show()
         }
+
         else -> {}
     }
-
-
 }

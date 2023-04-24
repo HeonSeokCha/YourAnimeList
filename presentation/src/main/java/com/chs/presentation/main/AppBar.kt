@@ -137,7 +137,7 @@ fun SearchAppBar(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp),
+            .height(62.dp),
     ) {
         TextField(
             modifier = Modifier
