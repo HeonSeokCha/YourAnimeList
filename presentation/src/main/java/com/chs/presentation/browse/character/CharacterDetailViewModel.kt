@@ -22,6 +22,7 @@ class CharacterDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     var state by mutableStateOf(CharacterDetailState())
+        private set
 
     fun getCharacterDetail(charaId: Int) {
         viewModelScope.launch {

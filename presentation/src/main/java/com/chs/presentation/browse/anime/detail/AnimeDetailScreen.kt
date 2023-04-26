@@ -105,11 +105,12 @@ fun AnimeDetailScreen(
                         closeClick = {
                             activity?.finish()
                         },
-                        insertClick = {
-                            viewModel.insertAnime()
-                        },
-                        deleteClick = {
-                            viewModel.deleteAnime()
+                        saveClick = {
+                            if (state.isSaveAnime != null) {
+                                viewModel.deleteAnime()
+                            } else {
+                                viewModel.insertAnime()
+                            }
                         }
                     )
                 }, toolBarClick = {
@@ -207,8 +208,7 @@ fun AnimeDetailHeadBanner(
     isAnimeSave: Boolean,
     closeClick: () -> Unit,
     trailerClick: (trailerId: String?) -> Unit,
-    insertClick: () -> Unit,
-    deleteClick: () -> Unit
+    saveClick: () -> Unit
 ) {
     val starId = "starId"
     val favoriteId = "favoriteId"
@@ -375,15 +375,7 @@ fun AnimeDetailHeadBanner(
                         start = 8.dp,
                         end = 8.dp
                     ),
-                onClick = {
-                    if (animeDetailInfo != null) {
-                        if (isAnimeSave) {
-                            deleteClick()
-                        } else {
-                            insertClick()
-                        }
-                    }
-                }
+                onClick = { saveClick() }
             ) {
                 if (isAnimeSave) {
                     Text("SAVED")

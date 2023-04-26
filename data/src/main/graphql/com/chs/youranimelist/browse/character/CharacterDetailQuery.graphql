@@ -8,7 +8,8 @@ query CharacterDetailQuery($id: Int) {
             month
             day
         }
-        description(asHtml: true)
+        bloodType
+        description(asHtml: false)
         media(sort: [POPULARITY_DESC]) {
             nodes {
                 ...animeBasicInfo

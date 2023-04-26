@@ -1,36 +1,26 @@
 package com.chs.presentation.browse.anime.overView
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDownward
-import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
 import com.chs.common.UiConst.GENRE_COLOR
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeRelationInfo
 import com.chs.domain.model.AnimeThemeInfo
-import com.chs.presentation.ConvertDate
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.color
+import com.chs.presentation.common.DescriptionItem
 import com.chs.presentation.common.ItemAnimeSmall
 
 
@@ -56,7 +46,7 @@ fun AnimeOverViewScreen(
             }
 
             if (animeOverViewInfo.description.isNotEmpty()) {
-                AnimeDescription(
+                DescriptionItem(
                     description = animeOverViewInfo.description,
                     expandedDescButton = expandedDescButton
                 ) {
@@ -115,72 +105,6 @@ private fun AnimeGenreChips(list: List<String?>) {
                         borderColor = GENRE_COLOR[genre]?.color ?: Color.Black
                     )
                 )
-            }
-        }
-    }
-}
-
-@Composable
-private fun AnimeDescription(
-    description: String,
-    expandedDescButton: Boolean,
-    onClick: () -> Unit
-) {
-    Text(
-        text = "Description",
-        fontWeight = FontWeight.Bold,
-        fontSize = 16.sp,
-    )
-
-    Column(
-        modifier = Modifier
-            .padding(
-                top = 8.dp,
-                bottom = 8.dp
-            )
-            .animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessLow
-                )
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (expandedDescButton) {
-            Text(
-                text = HtmlCompat.fromHtml(
-                    description,
-                    HtmlCompat.FROM_HTML_MODE_LEGACY
-                ).toString()
-            )
-        } else {
-            Text(
-                text = HtmlCompat.fromHtml(
-                    description,
-                    HtmlCompat.FROM_HTML_MODE_LEGACY
-                ).toString(),
-                maxLines = 5,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-
-        if (description.length > 500) {
-            Button(
-                modifier = Modifier
-                    .padding(
-                        top = 8.dp,
-                        bottom = 8.dp
-                    ),
-                onClick = { onClick() }
-            ) {
-                if (expandedDescButton) {
-                    Icon(imageVector = Icons.Filled.ArrowUpward, contentDescription = null)
-                } else {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowDownward,
-                        contentDescription = null
-                    )
-                }
             }
         }
     }

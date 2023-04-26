@@ -32,12 +32,14 @@ class AnimeDetailViewModel @Inject constructor(
                     is Resource.Loading -> {
                         state = state.copy(isLoading = true)
                     }
+
                     is Resource.Success -> {
                         state = state.copy(
                             animeDetailInfo = it.data,
                             isLoading = false
                         )
                     }
+
                     is Resource.Error -> {
                         Log.e("getAnimeDetailInfo", it.message.toString())
                     }
@@ -53,12 +55,14 @@ class AnimeDetailViewModel @Inject constructor(
                     is Resource.Loading -> {
                         state = state.copy(isLoading = true)
                     }
+
                     is Resource.Success -> {
                         state = state.copy(
                             animeThemes = it.data,
                             isLoading = false
                         )
                     }
+
                     is Resource.Error -> {
                         Log.e("getAnimeDetailInfo", it.message.toString())
                     }

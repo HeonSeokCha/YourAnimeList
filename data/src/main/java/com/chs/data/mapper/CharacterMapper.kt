@@ -1,6 +1,7 @@
 package com.chs.data.mapper
 
 import com.chs.CharacterDetailQuery
+import com.chs.data.Util
 import com.chs.data.source.db.model.CharacterEntity
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.domain.model.CharacterInfo
@@ -29,6 +30,12 @@ fun CharacterDetailQuery.Character.toCharacterDetailInfo(): CharacterDetailInfo 
             )
         },
         description = this.description ?: "",
+        birthDay = with(this.dateOfBirth) {
+            Util.convertToDateFormat(this?.year, this?.month, this?.day)
+        },
+        bloodType = this.bloodType ?: "",
+        gender = this.gender ?: "",
+        age = this.age ?: "",
         animeList = this.media?.nodes?.map {
             convertAnimeBasicInfo(it?.animeBasicInfo)
         } ?: emptyList()
