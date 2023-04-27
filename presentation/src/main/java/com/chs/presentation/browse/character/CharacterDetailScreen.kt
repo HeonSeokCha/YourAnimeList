@@ -1,6 +1,9 @@
 package com.chs.presentation.browse.character
 
 import android.app.Activity
+import android.content.res.ColorStateList
+import android.text.TextUtils
+import android.widget.TextView
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -46,7 +49,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -56,7 +59,6 @@ import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.color
-import com.chs.presentation.common.DescriptionItem
 import com.chs.presentation.common.ItemAnimeSmall
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -118,9 +120,7 @@ fun CharacterDetailScreen(
                     ) {
                         CharacterProfile(characterDetailInfo = state.characterDetailInfo)
 
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        DescriptionItem(
+                        CharacterDescription(
                             description = state.characterDetailInfo.description,
                             expandedDescButton = expandedDescButton
                         ) {
@@ -259,5 +259,75 @@ private fun ProfileText(
         Text(
             text = values,
         )
+    }
+}
+
+
+@Composable
+private fun CharacterDescription(
+    description: String,
+    expandedDescButton: Boolean,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .padding(
+                bottom = 8.dp
+            )
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow
+                )
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        val spannedText = HtmlCompat.fromHtml(
+            description,
+            HtmlCompat.FROM_HTML_MODE_COMPACT
+        )
+
+        if (expandedDescButton) {
+            AndroidView(
+                modifier = Modifier,
+                factory = { TextView(it) },
+                update = {
+                    it.text = spannedText
+                    it.setTextColor(android.graphics.Color.parseColor("#000000"))
+                    it.textSize = 16f
+                }
+            )
+        } else {
+            AndroidView(
+                modifier = Modifier,
+                factory = { TextView(it) },
+                update = {
+                    it.text = spannedText
+                    it.maxLines = 5
+                    it.ellipsize = TextUtils.TruncateAt.END
+                    it.setTextColor(android.graphics.Color.parseColor("#000000"))
+                    it.textSize = 16f
+                }
+            )
+        }
+
+        if (description.length > 500) {
+            if (!expandedDescButton) {
+                Button(
+                    modifier = Modifier
+                        .padding(
+                            top = 8.dp,
+                            bottom = 8.dp
+                        ),
+                    onClick = { onClick() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowDownward,
+                        contentDescription = null
+                    )
+                }
+            }
+        }
     }
 }

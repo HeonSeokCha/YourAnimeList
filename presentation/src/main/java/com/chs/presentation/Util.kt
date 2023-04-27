@@ -3,7 +3,7 @@ package com.chs.presentation
 import java.util.*
 import com.chs.common.UiConst.Season
 
-object ConvertDate {
+object Util {
 
     fun getCurrentSeason(): String {
         val calendar = Calendar.getInstance()

@@ -1,17 +1,28 @@
 package com.chs.presentation.browse.anime.overView
 
+import android.text.TextUtils
+import android.widget.TextView
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
 import com.chs.common.UiConst.GENRE_COLOR
 import com.chs.domain.model.AnimeDetailInfo
@@ -20,7 +31,6 @@ import com.chs.domain.model.AnimeRelationInfo
 import com.chs.domain.model.AnimeThemeInfo
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.color
-import com.chs.presentation.common.DescriptionItem
 import com.chs.presentation.common.ItemAnimeSmall
 
 
@@ -46,7 +56,7 @@ fun AnimeOverViewScreen(
             }
 
             if (animeOverViewInfo.description.isNotEmpty()) {
-                DescriptionItem(
+                AnimeDescription(
                     description = animeOverViewInfo.description,
                     expandedDescButton = expandedDescButton
                 ) {
@@ -161,11 +171,7 @@ private fun AnimeSummaryInfo(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(
-                start = 8.dp,
-                end = 8.dp,
-                bottom = 16.dp
-            )
+            .padding(bottom = 16.dp)
     ) {
         AnimeSummaryInfoSmall("Romaji : ", animeDetailInfo.animeInfo.title)
 
@@ -271,6 +277,75 @@ private fun AnimeScoreInfo(animeDetailInfo: AnimeDetailInfo) {
                     color = Color.Gray,
                     fontWeight = FontWeight.SemiBold
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AnimeDescription(
+    description: String,
+    expandedDescButton: Boolean,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .padding(
+                top = 8.dp,
+                bottom = 8.dp
+            )
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow
+                )
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        val spannedText = HtmlCompat.fromHtml(
+            description,
+            HtmlCompat.FROM_HTML_MODE_COMPACT
+        )
+
+        if (expandedDescButton) {
+            AndroidView(
+                modifier = Modifier,
+                factory = { TextView(it) },
+                update = {
+                    it.text = spannedText
+                    it.setTextColor(android.graphics.Color.parseColor("#000000"))
+                    it.textSize = 16f
+                }
+            )
+        } else {
+            AndroidView(
+                modifier = Modifier,
+                factory = { TextView(it) },
+                update = {
+                    it.text = spannedText
+                    it.maxLines = 5
+                    it.ellipsize = TextUtils.TruncateAt.END
+                    it.setTextColor(android.graphics.Color.parseColor("#000000"))
+                    it.textSize = 16f
+                }
+            )
+        }
+
+        if (description.length > 400) {
+            if (!expandedDescButton) {
+                Button(
+                    modifier = Modifier
+                        .padding(
+                            top = 8.dp,
+                            bottom = 8.dp
+                        ),
+                    onClick = { onClick() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowDownward,
+                        contentDescription = null
+                    )
+                }
             }
         }
     }

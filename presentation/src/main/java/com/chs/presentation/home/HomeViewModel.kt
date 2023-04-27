@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.common.UiConst
 import com.chs.domain.usecase.GetAnimeRecListUseCase
-import com.chs.presentation.ConvertDate
+import com.chs.presentation.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,13 +29,13 @@ class HomeViewModel @Inject constructor(
             ),
             "POPULAR THIS SEASON" to Triple(
                 UiConst.SortType.POPULARITY,
-                ConvertDate.getCurrentYear(),
-                ConvertDate.getCurrentSeason()
+                Util.getCurrentYear(),
+                Util.getCurrentSeason()
             ),
             "UPCOMING NEXT SEASON" to Triple(
                 UiConst.SortType.POPULARITY,
-                ConvertDate.getVariationYear(true),
-                ConvertDate.getNextSeason()
+                Util.getVariationYear(true),
+                Util.getNextSeason()
             ),
             "ALL TIME POPULAR" to Triple(
                 UiConst.SortType.POPULARITY,
@@ -60,11 +60,11 @@ class HomeViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     animeRecommendList = getHomeListUseCase(
-                        currentSeason = ConvertDate.getCurrentSeason(),
-                        nextSeason = ConvertDate.getNextSeason(),
-                        currentYear = ConvertDate.getCurrentYear(),
-                        nextYear = ConvertDate.getVariationYear(true),
-                        lastYear = ConvertDate.getVariationYear(false)
+                        currentSeason = Util.getCurrentSeason(),
+                        nextSeason = Util.getNextSeason(),
+                        currentYear = Util.getCurrentYear(),
+                        nextYear = Util.getVariationYear(true),
+                        lastYear = Util.getVariationYear(false)
                     ),
                     isLoading = false
                 )
