@@ -32,6 +32,7 @@ import com.chs.domain.model.AnimeThemeInfo
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.color
 import com.chs.presentation.common.ItemAnimeSmall
+import com.chs.presentation.main.Screen
 
 
 @Composable
@@ -52,7 +53,10 @@ fun AnimeOverViewScreen(
     ) {
         if (animeOverViewInfo != null) {
             if (animeOverViewInfo.genres.isNotEmpty()) {
-                AnimeGenreChips(animeOverViewInfo.genres)
+                AnimeGenreChips(
+                    navController,
+                    animeOverViewInfo.genres
+                )
             }
 
             if (animeOverViewInfo.description.isNotEmpty()) {
@@ -97,7 +101,10 @@ fun AnimeOverViewScreen(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun AnimeGenreChips(list: List<String?>) {
+private fun AnimeGenreChips(
+    navController: NavController,
+    list: List<String?>
+) {
     FlowRow {
         list.forEach { genre ->
             if (genre != null) {
@@ -105,7 +112,7 @@ private fun AnimeGenreChips(list: List<String?>) {
                     modifier = Modifier
                         .padding(end = 4.dp),
                     onClick = {
-//                                navController.navigate("${Screen.SortListScreen.route}/$genre")
+                        navController.navigate("${Screen.SortListScreen.route}/$genre")
                     }, label = {
                         Text(text = genre)
                     }, colors = AssistChipDefaults.assistChipColors(
