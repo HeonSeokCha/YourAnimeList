@@ -9,7 +9,6 @@ fragment animeBasicInfo on Media {
         extraLarge
         color
     }
-    bannerImage
     averageScore
     favourites
     season

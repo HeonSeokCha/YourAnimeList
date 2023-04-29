@@ -72,6 +72,7 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
             titleEnglish = this?.title?.english ?: "",
             titleNative = this?.title?.native ?: "",
             description = this?.description ?: "",
+            bannerImage = this?.bannerImage,
             startDate = if (this?.startDate?.year == null || this.startDate.month == null || this.startDate.day == null) ""
             else "${this.startDate.year}/${this.startDate.month}/${this.startDate.day}",
             endDate = if (this?.endDate?.year == null || this.endDate.month == null || this.endDate.day == null) ""

@@ -72,14 +72,14 @@ fun AnimeOverViewScreen(
 
             AnimeSummaryInfo(animeOverViewInfo)
 
-            if (animeTheme?.openingThemes != null) {
+            if (animeTheme?.openingThemes != null && animeTheme.openingThemes.isNotEmpty()) {
                 AnimeThemeInfo(
                     title = "Opening Theme",
                     songList = animeTheme.openingThemes
                 )
             }
 
-            if (animeTheme?.openingThemes != null) {
+            if (animeTheme?.endingThemes != null && animeTheme.endingThemes.isNotEmpty()) {
                 AnimeThemeInfo(
                     title = "Ending Theme",
                     songList = animeTheme.endingThemes
@@ -180,25 +180,25 @@ private fun AnimeSummaryInfo(
             .wrapContentHeight()
             .padding(bottom = 16.dp)
     ) {
-        AnimeSummaryInfoSmall("Romaji : ", animeDetailInfo.animeInfo.title)
+        AnimeSummaryInfoSmall("Romaji", animeDetailInfo.animeInfo.title)
 
         if (animeDetailInfo.titleEnglish.isNotEmpty()) {
-            AnimeSummaryInfoSmall("English : ", animeDetailInfo.titleEnglish)
+            AnimeSummaryInfoSmall("English", animeDetailInfo.titleEnglish)
         }
         if (animeDetailInfo.titleNative.isNotEmpty()) {
-            AnimeSummaryInfoSmall("Native : ", animeDetailInfo.titleNative)
+            AnimeSummaryInfoSmall("Native", animeDetailInfo.titleNative)
         }
 
         if (animeDetailInfo.animeInfo.format.isNotEmpty()) {
-            AnimeSummaryInfoSmall("Format : ", animeDetailInfo.animeInfo.format)
+            AnimeSummaryInfoSmall("Format", animeDetailInfo.animeInfo.format)
         }
 
         if (animeDetailInfo.episode != 0) {
-            AnimeSummaryInfoSmall("Episode : ", "${animeDetailInfo.episode}Ep")
+            AnimeSummaryInfoSmall("Episode", "${animeDetailInfo.episode}Ep")
         }
 
         if (animeDetailInfo.duration != 0) {
-            AnimeSummaryInfoSmall("Durations : ", "${animeDetailInfo.duration}Min")
+            AnimeSummaryInfoSmall("Durations", "${animeDetailInfo.duration}Min")
         }
 
         if (animeDetailInfo.startDate.isNotEmpty()) {
@@ -211,14 +211,14 @@ private fun AnimeSummaryInfo(
 
         if (animeDetailInfo.animeInfo.seasonYear != 0) {
             AnimeSummaryInfoSmall(
-                "Season : ",
+                "Season",
                 "${animeDetailInfo.animeInfo.seasonYear} ${animeDetailInfo.animeInfo.season}"
             )
         }
 
         if (animeDetailInfo.studioInfo.firstOrNull() != null) {
             AnimeSummaryInfoSmall(
-                "Studio : ",
+                "Studio",
                 animeDetailInfo.studioInfo.firstOrNull { it.isMainStudio }?.name ?: ""
             )
         }
@@ -236,7 +236,7 @@ private fun AnimeSummaryInfoSmall(
             .padding(horizontal = 4.dp, vertical = 8.dp)
     ) {
         Text(
-            text = title,
+            text = "$title : ",
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp,
         )

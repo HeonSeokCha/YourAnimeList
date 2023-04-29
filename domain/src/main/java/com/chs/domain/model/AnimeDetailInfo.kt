@@ -9,6 +9,7 @@ data class AnimeDetailInfo(
     val startDate: String,
     val endDate: String,
     val trailerInfo: TrailerInfo?,
+    val bannerImage: String?,
     val type: String,
     val genres: List<String?>,
     val episode: Int,

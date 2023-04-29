@@ -261,7 +261,7 @@ fun AnimeDetailHeadBanner(
                         color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
                             ?: "#ffffff".color
                     ),
-                model = animeDetailInfo?.animeInfo?.imageUrl,
+                model = animeDetailInfo?.bannerImage,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
