@@ -1,0 +1,20 @@
+query StudioAnimeQuery(
+    $id: Int,
+    $sort: MediaSort,
+    $page: Int
+) {
+    studio: Studio(id: $id) {
+        media(
+            sort: [$sort],
+            page: $page,
+            perPage: 10
+        ) {
+            pageInfo {
+                ...pageBasicInfo
+            }
+            nodes {
+                ... animeBasicInfo
+            }
+        }
+    }
+}

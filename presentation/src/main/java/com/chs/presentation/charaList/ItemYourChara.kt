@@ -105,7 +105,7 @@ fun ItemYourChara(
                 Text(
                     text = buildAnnotatedString {
                         appendInlineContent(starId, starId)
-                        append(character.favorites.toString())
+                        append(character.favourites.toString())
                     },
                     inlineContent = inlineContent,
                     color = Color.White,
@@ -125,7 +125,7 @@ fun PreviewItemChara() {
             name = "test",
             nativeName = "test",
             imageUrl = null,
-            favorites = 123
+            favourites = 123
         )
         ItemYourChara(charaInfo) {
 

@@ -14,7 +14,7 @@ fun CharacterBasicInfo.toCharacterInfo(): CharacterInfo {
         name = this.name?.full ?: "",
         nativeName = this.name?.native ?: "",
         imageUrl = this.image?.large,
-        favorites = this.favourites ?: 0
+        favourites = this.favourites ?: 0
     )
 }
 
@@ -26,7 +26,7 @@ fun CharacterDetailQuery.Character.toCharacterDetailInfo(): CharacterDetailInfo 
                 name = this.name?.full ?: "",
                 nativeName = this.name?.native ?: "",
                 imageUrl = this.image?.large,
-                favorites = this.favourites ?: 0
+                favourites = this.favourites ?: 0
             )
         },
         description = this.description ?: "",
@@ -37,7 +37,7 @@ fun CharacterDetailQuery.Character.toCharacterDetailInfo(): CharacterDetailInfo 
         gender = this.gender ?: "",
         age = this.age ?: "",
         animeList = this.media?.nodes?.map {
-            convertAnimeBasicInfo(it?.animeBasicInfo)
+            it?.animeBasicInfo.toAnimeInfo()
         } ?: emptyList()
     )
 }
@@ -48,7 +48,7 @@ fun CharacterEntity.toCharacterInfo(): CharacterInfo {
         name = this.name,
         nativeName = this.nativeName,
         imageUrl = this.imageUrl,
-        favorites = this.favorite
+        favourites = this.favorite
     )
 }
 
@@ -58,6 +58,6 @@ fun CharacterInfo.toCharacterEntity(): CharacterEntity {
         name = this.name,
         nativeName = this.nativeName,
         imageUrl = this.imageUrl,
-        favorite = this.favorites
+        favorite = this.favourites
     )
 }

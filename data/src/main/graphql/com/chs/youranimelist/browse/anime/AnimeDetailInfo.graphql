@@ -30,8 +30,6 @@ query AnimeDetailInfoQuery(
         duration
         chapters
         volumes
-        countryOfOrigin
-        hashtag
         meanScore
         popularity
         source
@@ -45,26 +43,24 @@ query AnimeDetailInfoQuery(
             }
         }
 
-        studios (isMain: true) {
-            studiosEdges: edges {
-                isMain
-                studiosNode: node {
-                    id
-                    name
-                }
+        characters(sort: [ROLE,ID]) {
+            nodes {
+                ...characterBasicInfo
             }
         }
+
+        studios (isMain: true) {
+            nodes {
+                id
+                name
+            }
+        }
+
         externalLinks {
             color
             icon
             site
             url
-        }
-
-        characters(sort: [ROLE,ID]) {
-            nodes {
-                ...characterBasicInfo
-            }
         }
     }
 }

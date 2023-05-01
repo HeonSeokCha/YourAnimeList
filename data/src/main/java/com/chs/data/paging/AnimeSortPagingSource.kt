@@ -28,7 +28,6 @@ class AnimeSortPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnimeInfo> {
         return try {
-            Log.e("load", "${sort.rawValue}, ${season?.rawValue} $seasonYear $genre")
             val page = params.key ?: 1
             val response = apolloClient
                 .query(
@@ -51,7 +50,7 @@ class AnimeSortPagingSource(
 
             LoadResult.Page(
                 data = response.page?.media?.map {
-                    it?.toAnimeInfo()!!
+                    it?.animeBasicInfo.toAnimeInfo()
                 } ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = if (response.page?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null

@@ -204,7 +204,7 @@ private fun CharacterBanner(
                         contentDescription = null,
                         tint = Color.Red
                     )
-                    Text(text = characterInfo?.characterInfo?.favorites.toString())
+                    Text(text = characterInfo?.characterInfo?.favourites.toString())
                 }
             }
         }

@@ -1,23 +1,9 @@
-query StudioAnimeQuery(
+query StudioQuery(
     $id: Int,
-    $sort: MediaSort,
-    $page: Int
 ) {
     studio: Studio(id: $id) {
         id
         name
         favourites
-        media(
-            sort: [$sort],
-            page: $page,
-            perPage: 10
-        ) {
-            pageInfo {
-                ...pageBasicInfo
-            }
-            nodes {
-                ... animeBasicInfo
-            }
-        }
     }
 }

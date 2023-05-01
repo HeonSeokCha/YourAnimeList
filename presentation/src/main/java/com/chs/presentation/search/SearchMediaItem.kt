@@ -225,7 +225,7 @@ fun SearchMediaItem(
                         Text(
                             text = buildAnnotatedString {
                                 appendInlineContent(starId, starId)
-                                append(item.favorites.toString())
+                                append(item.favourites.toString())
                             },
                             inlineContent = inlineContent,
                             color = Color.White,

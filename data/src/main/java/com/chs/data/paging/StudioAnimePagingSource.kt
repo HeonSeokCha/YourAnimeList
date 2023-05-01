@@ -4,13 +4,16 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
-import com.chs.SearchAnimeQuery
+import com.chs.StudioAnimeQuery
 import com.chs.data.mapper.toAnimeInfo
 import com.chs.domain.model.AnimeInfo
+import com.chs.type.MediaSort
 
-class SearchAnimePagingSource(
+class StudioAnimePagingSource(
     private val apolloClient: ApolloClient,
-    private val search: String
+    private val studioId: Int,
+    private val page: Int,
+    private val sort: MediaSort
 ) : PagingSource<Int, AnimeInfo>() {
 
     override fun getRefreshKey(state: PagingState<Int, AnimeInfo>): Int? {
@@ -22,19 +25,24 @@ class SearchAnimePagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnimeInfo> {
         return try {
-            val page = params.key ?: 1
-            val response = apolloClient.query(
-                SearchAnimeQuery(
-                    page = Optional.present(page),
-                    search = Optional.present(search)
+            val page  = params.key ?: 1
+            val response = apolloClient
+                .query(
+                    StudioAnimeQuery(
+                        id = Optional.present(studioId),
+                        page = Optional.present(page),
+                        sort = Optional.present(sort),
+                    )
                 )
-            ).execute().data!!
+                .execute()
+                .data!!
 
             LoadResult.Page(
-                data = response.page?.media?.map { it?.animeBasicInfo.toAnimeInfo() }
-                    ?: emptyList(),
+                data = response.studio?.media?.nodes?.map {
+                    it?.animeBasicInfo.toAnimeInfo()
+                } ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (response.page?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
+                nextKey = if (response.studio?.media?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
             )
 
         } catch (e: Exception) {
@@ -42,3 +50,6 @@ class SearchAnimePagingSource(
         }
     }
 }
+
+
+

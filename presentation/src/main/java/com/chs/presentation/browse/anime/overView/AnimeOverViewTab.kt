@@ -219,7 +219,7 @@ private fun AnimeSummaryInfo(
         if (animeDetailInfo.studioInfo.firstOrNull() != null) {
             AnimeSummaryInfoSmall(
                 "Studio",
-                animeDetailInfo.studioInfo.firstOrNull { it.isMainStudio }?.name ?: ""
+                animeDetailInfo.studioInfo[0].name
             )
         }
     }
@@ -266,7 +266,7 @@ private fun AnimeScoreInfo(animeDetailInfo: AnimeDetailInfo) {
             "Average" to "${animeDetailInfo.animeInfo.averageScore}%",
             "Mean" to "${animeDetailInfo.meanScore}%",
             "Popularity" to animeDetailInfo.popularScore.toString(),
-            "Favorites" to animeDetailInfo.animeInfo.favourites.toString(),
+            "Favourites" to animeDetailInfo.animeInfo.favourites.toString(),
         )
         summaryList.forEach {
             Column(

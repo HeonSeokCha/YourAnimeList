@@ -5,8 +5,8 @@ import androidx.paging.PagingState
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.chs.AnimeRecommendQuery
-import com.chs.domain.model.AnimeInfo
 import com.chs.data.mapper.toAnimeInfo
+import com.chs.domain.model.AnimeInfo
 
 class AnimeRecPagingSource(
     private val apolloClient: ApolloClient,
@@ -35,7 +35,7 @@ class AnimeRecPagingSource(
 
             LoadResult.Page(
                 data = response.Media?.recommendations?.nodes?.map {
-                    it?.toAnimeInfo()!!
+                    it?.mediaRecommendation?.animeBasicInfo.toAnimeInfo()
                 } ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = if (response.Media?.recommendations?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null

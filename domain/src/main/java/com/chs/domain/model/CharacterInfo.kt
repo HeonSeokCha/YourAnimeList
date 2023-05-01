@@ -5,5 +5,5 @@ data class CharacterInfo(
     val name: String,
     val nativeName: String,
     val imageUrl: String?,
-    val favorites: Int
+    val favourites: Int
 )
