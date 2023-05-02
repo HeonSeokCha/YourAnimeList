@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.chs.presentation.browse.anime.detail.AnimeDetailScreen
 import com.chs.presentation.browse.character.CharacterDetailScreen
 import com.chs.common.UiConst
+import com.chs.presentation.browse.studio.StudioDetailScreen
 import com.chs.presentation.main.Screen
 import com.chs.presentation.sortList.SortedListScreen
 
@@ -68,9 +69,31 @@ fun BrowseNavHost(
             )
         }
 
-//        composable("${BrowseScreen.StudioDetailScreen.route}/{id}") {
-//            StudioDetailScreen()
-//        }
+        composable("${BrowseScreen.StudioDetailScreen.route}/{id}") { backStackEntry ->
+            StudioDetailScreen(
+                studioId = backStackEntry.arguments?.getInt("id") ?: 0
+            )
+        }
+
+        composable(
+            route = "${Screen.SortListScreen.route}/{year}/{season}",
+            arguments = listOf(
+                navArgument("year") {
+                    defaultValue = 0
+                    type = NavType.IntType
+                },
+                navArgument("season") {
+                    defaultValue = ""
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            SortedListScreen(
+                sortOption = UiConst.SortType.POPULARITY.rawValue,
+                sortYear = backStackEntry.arguments?.getInt("year") ?: 0,
+                sortSeason = backStackEntry.arguments?.getString("season") ?: ""
+            )
+        }
 
         composable("${Screen.SortListScreen.route}/{genre}") { backStackEntry ->
             SortedListScreen(

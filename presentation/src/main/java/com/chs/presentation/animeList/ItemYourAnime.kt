@@ -141,7 +141,7 @@ fun ItemYourAnime(
                     Text(
                         text = buildAnnotatedString {
                             appendInlineContent(favoriteId, favoriteId)
-                            append(anime.averageScore.toString())
+                            append(anime.favourites.toString())
                         },
                         inlineContent = inlineContent,
                         fontWeight = FontWeight.Bold,

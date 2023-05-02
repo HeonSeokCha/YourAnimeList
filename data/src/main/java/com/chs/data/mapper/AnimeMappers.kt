@@ -95,12 +95,10 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
                     animeBasicInfo = it?.node?.animeBasicInfo.toAnimeInfo()
                 )
             } ?: emptyList(),
-            studioInfo = this?.studios?.nodes?.map {
-                StudioInfo(
-                    id = it?.id ?: 0,
-                    name = it?.name ?: ""
-                )
-            } ?: emptyList(),
+            studioInfo = StudioInfo(
+                id = this?.studios?.nodes?.get(0)?.id ?: 0,
+                name = this?.studios?.nodes?.get(0)?.name ?: ""
+            ),
             externalLinks = this?.externalLinks?.map {
                 ExternalLinkInfo(
                     color = it?.color ?: "#ffffff",

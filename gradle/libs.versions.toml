@@ -1,5 +1,5 @@
 [versions]
-androidStudioGradlePlugin = "8.0.0"
+androidStudioGradlePlugin = "8.0.1"
 
 compileSdkVersion = "33"
 minSdkVersion = "29"

@@ -19,7 +19,7 @@ data class AnimeDetailInfo(
     val meanScore: Int,
     val source: String,
     val animeRelationInfo: List<AnimeRelationInfo>,
-    val studioInfo: List<StudioInfo>,
+    val studioInfo: StudioInfo,
     val externalLinks: List<ExternalLinkInfo>,
     val characterList: List<CharacterInfo>
 )

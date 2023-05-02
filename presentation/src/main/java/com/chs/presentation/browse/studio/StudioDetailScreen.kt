@@ -8,7 +8,9 @@ import androidx.compose.ui.Modifier
 
 
 @Composable
-fun StudioDetailScreen() {
+fun StudioDetailScreen(
+    studioId: Int
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
