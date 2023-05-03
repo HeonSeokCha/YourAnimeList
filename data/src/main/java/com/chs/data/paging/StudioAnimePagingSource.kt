@@ -12,7 +12,6 @@ import com.chs.type.MediaSort
 class StudioAnimePagingSource(
     private val apolloClient: ApolloClient,
     private val studioId: Int,
-    private val page: Int,
     private val sort: MediaSort
 ) : PagingSource<Int, AnimeInfo>() {
 
@@ -25,7 +24,7 @@ class StudioAnimePagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnimeInfo> {
         return try {
-            val page  = params.key ?: 1
+            val page = params.key ?: 1
             val response = apolloClient
                 .query(
                     StudioAnimeQuery(

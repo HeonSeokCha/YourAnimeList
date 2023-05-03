@@ -24,7 +24,6 @@ import javax.inject.Singleton
 @Singleton
 class CharacterRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
-    private val jikanService: KtorJikanService,
     private val dao: CharaListDao
 ) : CharacterRepository {
     override suspend fun getCharacterDetailInfo(characterId: Int): CharacterDetailInfo {

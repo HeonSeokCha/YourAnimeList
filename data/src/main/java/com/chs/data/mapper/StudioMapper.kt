@@ -4,12 +4,12 @@ import com.chs.StudioQuery
 import com.chs.domain.model.StudioDetailInfo
 import com.chs.domain.model.StudioInfo
 
-fun StudioQuery.Studio.toStudioDetailInfo(): StudioDetailInfo {
+fun StudioQuery.Data.toStudioDetailInfo(): StudioDetailInfo {
     return StudioDetailInfo(
         studioBasicInfo = StudioInfo(
-            id = this.id,
-            name = this.name
+            id = this.studio?.id ?: 0,
+            name = this.studio?.name ?: ""
         ),
-        favourites = this.favourites ?: 0,
+        favourites = this.studio?.favourites ?: 0
     )
 }

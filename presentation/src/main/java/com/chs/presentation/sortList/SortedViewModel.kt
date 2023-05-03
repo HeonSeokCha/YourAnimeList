@@ -1,6 +1,5 @@
 package com.chs.presentation.sortList
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -44,29 +43,6 @@ class SortedViewModel @Inject constructor(
                 selectGenre = selectGenre
             )
         }
-//        if (selectType != null) {
-//            _state.update {
-//                it.copy(selectType = selectType.name to selectType.rawValue)
-//            }
-//        }
-//
-//        if (selectSeason != null) {
-//            _state.update {
-//                it.copy(selectSeason = selectSeason.name to selectSeason.rawValue)
-//            }
-//        }
-//
-//        if (selectYear != null) {
-//            _state.update {
-//                it.copy(selectYear = 2023)
-//            }
-//        }
-//
-//        if (selectGenre != null) {
-//            _state.update {
-//                it.copy(selectGenre = selectGenre)
-//            }
-//        }
 
         getSortedAnime()
     }
