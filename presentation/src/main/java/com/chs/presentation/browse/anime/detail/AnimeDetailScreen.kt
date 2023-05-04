@@ -49,14 +49,9 @@ import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.browse.anime.AnimeCharaScreen
 import com.chs.presentation.browse.anime.overView.AnimeOverViewScreen
 import com.chs.presentation.browse.anime.recommend.AnimeRecScreen
-import com.chs.presentation.collapsingHeaderController
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.color
 import com.chs.presentation.isNotEmptyValue
-import com.chs.presentation.rememberCollapsingHeaderState
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.placeholder
-import com.google.accompanist.placeholder.material.shimmer
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)

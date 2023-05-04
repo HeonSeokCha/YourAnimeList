@@ -22,6 +22,7 @@ class StudioDetailViewModel @Inject constructor(
     private val _state = MutableStateFlow(StudioDetailState())
     val state = _state.asStateFlow()
 
+
     fun getStudioDetailInfo(studioId: Int) {
         viewModelScope.launch {
             _state.update {
