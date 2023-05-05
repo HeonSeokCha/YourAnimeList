@@ -69,9 +69,18 @@ fun BrowseNavHost(
             )
         }
 
-        composable("${BrowseScreen.StudioDetailScreen.route}/{id}") { backStackEntry ->
+        composable(
+            route = "${BrowseScreen.StudioDetailScreen.route}/{id}",
+            arguments = listOf(
+                navArgument("id") {
+                    defaultValue = 0
+                    type = NavType.IntType
+                }
+            )
+        ) { backStackEntry ->
             StudioDetailScreen(
-                studioId = backStackEntry.arguments?.getInt("id") ?: 0
+                studioId = backStackEntry.arguments?.getInt("id") ?: 0,
+                navController
             )
         }
 

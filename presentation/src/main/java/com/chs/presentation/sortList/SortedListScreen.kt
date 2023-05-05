@@ -2,10 +2,7 @@ package com.chs.presentation.sortList
 
 import android.content.Intent
 import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -17,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
@@ -26,6 +22,7 @@ import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.common.UiConst
+import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
 
 @Composable
@@ -106,7 +103,7 @@ fun SortedListScreen(
     }
 
     if (filterDialogShow) {
-        filterDialog(state.menuList[viewModel.selectMenuIdx].second, onDismiss = {
+        FilterDialog(state.menuList[viewModel.selectMenuIdx].second, onDismiss = {
             filterDialogShow = false
         }, onClick = { selectIdx ->
             viewModel.changeFilterOptions(selectIdx)
@@ -143,44 +140,5 @@ fun ItemSort(
         onClick = { clickAble(title) }
     ) {
         Text(text = subTitle)
-    }
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun filterDialog(
-    list: List<Pair<String, String>>,
-    onClick: (Int) -> Unit,
-    onDismiss: () -> Unit
-) {
-    AlertDialog(
-        modifier = Modifier
-            .background(color = Color.White)
-            .padding(
-                top = 64.dp,
-                bottom = 64.dp,
-                start = 16.dp,
-                end = 16.dp
-            ),
-        onDismissRequest = onDismiss,
-    ) {
-        LazyColumn(
-            modifier = Modifier.background(Color.Gray),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(list.size) { idx ->
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            onDismiss()
-                            onClick(idx)
-                        },
-                    text = list[idx].first,
-                    fontSize = 16.sp
-                )
-            }
-        }
     }
 }

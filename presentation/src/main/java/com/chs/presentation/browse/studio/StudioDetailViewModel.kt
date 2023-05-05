@@ -46,4 +46,12 @@ class StudioDetailViewModel @Inject constructor(
             )
         }
     }
+
+    fun changeFilterOption(sortType: String) {
+        _state.update {
+            it.copy(
+                sortOption = sortType
+            )
+        }
+    }
 }
