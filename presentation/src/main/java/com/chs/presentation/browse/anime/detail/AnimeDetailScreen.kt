@@ -40,6 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.common.URLConst
@@ -63,7 +64,7 @@ fun AnimeDetailScreen(
     viewModel: AnimeDetailViewModel = hiltViewModel()
 ) {
 
-    val state = viewModel.state
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
     val pagerState = rememberPagerState()
@@ -88,7 +89,7 @@ fun AnimeDetailScreen(
                 collapsingContent = {
                     AnimeDetailHeadBanner(
                         animeDetailInfo = state.animeDetailInfo,
-                        isAnimeSave = state.isSaveAnime != null,
+                        isAnimeSave = state.isSave,
                         trailerClick = { trailerId ->
                             CustomTabsIntent.Builder()
                                 .build()
@@ -101,7 +102,7 @@ fun AnimeDetailScreen(
                             activity?.finish()
                         },
                         saveClick = {
-                            if (state.isSaveAnime != null) {
+                            if (state.isSave) {
                                 viewModel.deleteAnime()
                             } else {
                                 viewModel.insertAnime()

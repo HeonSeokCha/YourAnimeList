@@ -1,8 +1,5 @@
 package com.chs.presentation.browse.character
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.domain.usecase.DeleteCharaInfoUseCase
@@ -10,6 +7,9 @@ import com.chs.domain.usecase.GetCharaDetailUseCase
 import com.chs.domain.usecase.GetSavedCharaInfoUseCase
 import com.chs.domain.usecase.InsertCharaInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,41 +21,49 @@ class CharacterDetailViewModel @Inject constructor(
     private val deleteCharaUseCase: DeleteCharaInfoUseCase
 ) : ViewModel() {
 
-    var state by mutableStateOf(CharacterDetailState())
-        private set
+    private val _state = MutableStateFlow(CharacterDetailState())
+    val state = _state.asStateFlow()
 
     fun getCharacterDetail(charaId: Int) {
         viewModelScope.launch {
-            state = state.copy(
-                isLoading = false,
-                characterDetailInfo = getCharaDetailUseCase(charaId)
-            )
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    characterDetailInfo = getCharaDetailUseCase(charaId)
+                )
+            }
         }
     }
 
     fun isSaveCharacter(charaId: Int) {
         viewModelScope.launch {
-            checkSaveCharaUseCase(charaId).collect {
-                state = if (it != null && it.id == charaId) {
-                    state.copy(isSaveChara = it)
-                } else {
-                    state.copy(isSaveChara = null)
+            checkSaveCharaUseCase(charaId).collect { charaInfo ->
+                _state.update {
+                    it.copy(
+                        isSave = (charaInfo != null && charaInfo.id == charaId)
+                    )
                 }
             }
         }
     }
 
     fun insertCharacter() {
-        val character = state.characterDetailInfo?.characterInfo!!
-        viewModelScope.launch {
-            insertCharaUseCase(character)
+        val character = state.value.characterDetailInfo?.characterInfo
+        if (character != null) {
+            viewModelScope.launch {
+                insertCharaUseCase(character)
+            }
         }
     }
 
     fun deleteCharacter() {
-        if (state.isSaveChara == null) return
-        viewModelScope.launch {
-            deleteCharaUseCase(state.isSaveChara!!)
+        val character = state.value.characterDetailInfo?.characterInfo
+        if (character != null) {
+            if (state.value.isSave) {
+                viewModelScope.launch {
+                    deleteCharaUseCase(character)
+                }
+            }
         }
     }
 }

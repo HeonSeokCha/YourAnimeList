@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.domain.model.CharacterDetailInfo
@@ -65,7 +66,7 @@ fun CharacterDetailScreen(
     viewModel: CharacterDetailViewModel = hiltViewModel()
 ) {
 
-    val state = viewModel.state
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
     var expandedDescButton by remember { mutableStateOf(false) }
@@ -83,9 +84,9 @@ fun CharacterDetailScreen(
                 collapsingContent = {
                     CharacterBanner(
                         characterInfo = state.characterDetailInfo,
-                        isSave = state.isSaveChara != null,
+                        isSave = state.isSave,
                     ) {
-                        if (state.isSaveChara != null) {
+                        if (state.isSave) {
                             viewModel.deleteCharacter()
                         } else {
                             viewModel.insertCharacter()
@@ -114,10 +115,10 @@ fun CharacterDetailScreen(
                                 end = 8.dp
                             )
                     ) {
-                        CharacterProfile(characterDetailInfo = state.characterDetailInfo)
+                        CharacterProfile(characterDetailInfo = state.characterDetailInfo!!)
 
                         CharacterDescription(
-                            description = state.characterDetailInfo.description,
+                            description = state.characterDetailInfo!!.description,
                             expandedDescButton = expandedDescButton
                         ) {
                             expandedDescButton = !expandedDescButton
@@ -126,7 +127,7 @@ fun CharacterDetailScreen(
                 }
             }
             if (state.characterDetailInfo?.animeList != null) {
-                items(state.characterDetailInfo.animeList) { anime ->
+                items(state.characterDetailInfo!!.animeList) { anime ->
                     ItemAnimeSmall(
                         item = anime,
                         onClick = {
@@ -308,7 +309,7 @@ private fun CharacterDescription(
             )
         }
 
-        if (description.length > 500) {
+        if (description.length > 100) {
             if (!expandedDescButton) {
                 Button(
                     modifier = Modifier

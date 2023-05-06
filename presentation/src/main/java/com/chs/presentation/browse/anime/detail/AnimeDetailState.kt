@@ -9,7 +9,7 @@ import javax.annotation.concurrent.Immutable
 data class AnimeDetailState(
     val animeDetailInfo: AnimeDetailInfo? = null,
     val animeThemes: AnimeThemeInfo? = null,
-    val isSaveAnime: AnimeInfo? = null,
+    val isSave: Boolean = false,
     val isLoading: Boolean = false
 )
 
