@@ -68,24 +68,24 @@ fun SearchMediaScreen(
             UiConst.TARGET_ANIME -> {
                 pagingItems?.let {
                     val animeItems = pagingItems as LazyPagingItems<AnimeInfo>
-                    items(animeItems) { item ->
-                        SearchMediaItem(item!!) {
-                            context.startActivity(
-                                Intent(
-                                    context, BrowseActivity::class.java
-                                ).apply {
-                                    this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                                    this.putExtra(
-                                        UiConst.TARGET_ID,
-                                        item.id
-                                    )
-                                    this.putExtra(
-                                        UiConst.TARGET_ID_MAL,
-                                        item.idMal
-                                    )
-                                }
-                            )
+                    items(
+                        animeItems,
+                        key = { it.id }
+                    ) { item ->
+                        if (item != null) {
+                            SearchMediaItem(item) {
+                                context.startActivity(
+                                    Intent(
+                                        context, BrowseActivity::class.java
+                                    ).apply {
+                                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                                        this.putExtra(UiConst.TARGET_ID, item.id)
+                                        this.putExtra(UiConst.TARGET_ID_MAL, item.idMal)
+                                    }
+                                )
+                            }
                         }
+
                     }
                 }
             }
@@ -118,16 +118,21 @@ fun SearchMediaScreen(
             UiConst.TARGET_CHARA -> {
                 pagingItems?.let {
                     val charaItems = pagingItems as LazyPagingItems<CharacterInfo>
-                    items(charaItems) { item ->
-                        SearchMediaItem(item!!) {
-                            context.startActivity(
-                                Intent(
-                                    context, BrowseActivity::class.java
-                                ).apply {
-                                    this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
-                                    this.putExtra(UiConst.TARGET_ID, item.id)
-                                }
-                            )
+                    items(
+                        charaItems,
+                        key = { it.id }
+                    ) { item ->
+                        if (item != null) {
+                            SearchMediaItem(item) {
+                                context.startActivity(
+                                    Intent(
+                                        context, BrowseActivity::class.java
+                                    ).apply {
+                                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
+                                        this.putExtra(UiConst.TARGET_ID, item.id)
+                                    }
+                                )
+                            }
                         }
                     }
                 }

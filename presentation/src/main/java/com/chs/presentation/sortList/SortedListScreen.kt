@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -24,6 +25,7 @@ import com.chs.presentation.ui.theme.Pink80
 import com.chs.common.UiConst
 import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
+import com.chs.presentation.items
 
 @Composable
 fun SortedListScreen(
@@ -83,20 +85,24 @@ fun SortedListScreen(
             state = lazyGridScrollState,
             columns = GridCells.Fixed(3),
         ) {
-            items(pagingItems?.itemCount ?: 0) { idx ->
-                ItemAnimeSmall(item = pagingItems?.get(idx)!!) {
-                    context.startActivity(
-                        Intent(
-                            context, BrowseActivity::class.java
-                        ).apply {
-                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                            this.putExtra(UiConst.TARGET_ID, pagingItems[idx]!!.id)
-                            this.putExtra(
-                                UiConst.TARGET_ID_MAL,
-                                pagingItems[idx]!!.idMal
+            if (pagingItems != null) {
+                items(
+                    pagingItems,
+                    key = { it.id }
+                ) { animeInfo ->
+                    if (animeInfo != null) {
+                        ItemAnimeSmall(item = animeInfo) {
+                            context.startActivity(
+                                Intent(
+                                    context, BrowseActivity::class.java
+                                ).apply {
+                                    this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                                    this.putExtra(UiConst.TARGET_ID, animeInfo.id)
+                                    this.putExtra(UiConst.TARGET_ID_MAL, animeInfo.idMal)
+                                }
                             )
                         }
-                    )
+                    }
                 }
             }
         }

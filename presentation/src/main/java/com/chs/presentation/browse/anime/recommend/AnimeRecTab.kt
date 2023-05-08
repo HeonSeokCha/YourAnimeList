@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -13,6 +14,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
+import androidx.paging.compose.items
+import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.browse.BrowseScreen
 
 @Composable
@@ -39,21 +44,20 @@ fun AnimeRecScreen(
             ),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        items(lazyPagingItems?.itemCount ?: 0) { idx ->
-            lazyPagingItems?.get(idx)?.let {
-                ItemAnimeRecommend(it) {
-                    navController.navigate(
-                        "${BrowseScreen.AnimeDetailScreen.route}/" +
-                                "${it.id}" +
-                                "/${it.idMal}"
-                    )
+        if (lazyPagingItems != null) {
+            items(
+                lazyPagingItems,
+                key = { it.id }
+            ) { item ->
+                if (item != null) {
+                    ItemAnimeRecommend(item) {
+                        navController.navigate(
+                            "${BrowseScreen.AnimeDetailScreen.route}/" +
+                                    "${item.id}" +
+                                    "/${item.idMal}"
+                        )
+                    }
                 }
-            }
-        }
-
-        if (lazyPagingItems?.loadState?.source?.refresh == LoadState.Loading) {
-            items(6) {
-                ItemAnimeRecShimmer()
             }
         }
     }

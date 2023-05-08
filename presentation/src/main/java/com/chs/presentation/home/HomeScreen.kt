@@ -50,15 +50,9 @@ fun HomeScreen(
         if (state.animeRecommendList?.bannerList != null) {
             item {
                 HorizontalPager(
-                    modifier = if (state.isLoading) {
-                        Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                    } else {
-                        Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
                     state = pagerState,
                     pageCount = state.animeRecommendList?.bannerList!!.size
                 ) { idx ->
@@ -72,7 +66,10 @@ fun HomeScreen(
         }
 
         if (state.animeRecommendList?.animeBasicList != null) {
-            items(state.animeRecommendList?.animeBasicList!!.size) { idx ->
+            items(
+                state.animeRecommendList?.animeBasicList!!.size,
+                key = { viewModel.animeCategorySortList[it].first }
+            ) { idx ->
                 ItemRecommendCategory(
                     viewModel.animeCategorySortList[idx],
                     state.animeRecommendList?.animeBasicList!![idx],
@@ -133,7 +130,10 @@ fun ItemRecommendCategory(
             contentPadding = PaddingValues(horizontal = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(list.size) {
+            items(
+                list.size,
+                key = { list[it].id }
+            ) {
                 ItemAnimeSmall(
                     item = list[it],
                     onClick = {
