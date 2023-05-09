@@ -52,7 +52,7 @@ class AnimeRepositoryImpl @Inject constructor(
             ?.toAnimeRecommendList()!!
     }
 
-    override suspend fun getAnimeFilteredList(
+    override fun getAnimeFilteredList(
         sortType: String,
         season: String?,
         year: Int?,
@@ -81,7 +81,7 @@ class AnimeRepositoryImpl @Inject constructor(
             ?.toAnimeDetailInfo()!!
     }
 
-    override suspend fun getAnimeDetailInfoRecommendList(animeId: Int): Flow<PagingData<AnimeInfo>> {
+    override fun getAnimeDetailInfoRecommendList(animeId: Int): Flow<PagingData<AnimeInfo>> {
         return Pager(
             PagingConfig(pageSize = 10)
         ) {
@@ -96,7 +96,7 @@ class AnimeRepositoryImpl @Inject constructor(
         return jikanService.getAnimeTheme(animeId).toAnimeThemeInfo()
     }
 
-    override suspend fun getAnimeSearchResult(query: String): Flow<PagingData<AnimeInfo>> {
+    override fun getAnimeSearchResult(query: String): Flow<PagingData<AnimeInfo>> {
         return Pager(
             PagingConfig(pageSize = 10)
         ) {

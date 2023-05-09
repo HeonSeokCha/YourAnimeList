@@ -1,0 +1,21 @@
+query CharacterDetailAnimeListQuery(
+    $id: Int,
+    $sort: MediaSort,
+    $page: Int
+
+) {
+    character: Character(id: $id) {
+        media(
+            sort: [$sort],
+            page: $page,
+            perPage: 10
+        ) {
+            pageInfo {
+                ...pageBasicInfo
+            }
+            nodes {
+                ... animeBasicInfo
+            }
+        }
+    }
+}

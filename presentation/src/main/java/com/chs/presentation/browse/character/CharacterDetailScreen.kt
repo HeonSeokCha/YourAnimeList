@@ -2,6 +2,7 @@ package com.chs.presentation.browse.character
 
 import android.app.Activity
 import android.text.TextUtils
+import android.util.Log
 import android.widget.TextView
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring

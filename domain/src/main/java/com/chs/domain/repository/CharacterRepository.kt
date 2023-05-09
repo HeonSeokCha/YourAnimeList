@@ -8,7 +8,12 @@ interface CharacterRepository {
 
     suspend fun getCharacterDetailInfo(characterId: Int): CharacterDetailInfo
 
-    suspend fun getCharacterSearchResult(name: String): Flow<PagingData<CharacterInfo>>
+    fun getCharacterDetailAnimeList(
+        characterId: Int,
+        sort: String
+    ): Flow<PagingData<AnimeInfo>>
+
+    fun getCharacterSearchResult(name: String): Flow<PagingData<CharacterInfo>>
 
     fun getSavedCharacterList(): Flow<List<CharacterInfo>>
 

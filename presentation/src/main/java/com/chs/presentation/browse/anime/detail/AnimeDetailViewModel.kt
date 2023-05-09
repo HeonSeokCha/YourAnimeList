@@ -43,7 +43,6 @@ class AnimeDetailViewModel @Inject constructor(
                         }
 
                         is Resource.Error -> {
-                            Log.e("getAnimeDetailInfo", result.message.toString())
                             it.copy(
                                 isLoading = false
                             )
