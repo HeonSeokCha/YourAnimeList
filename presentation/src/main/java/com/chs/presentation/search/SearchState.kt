@@ -10,6 +10,5 @@ data class SearchState(
     val searchAnimeResultPaging: Flow<PagingData<AnimeInfo>>? = null,
 //    val searchMangaResultPaging: Flow<PagingData<SearchMangaQuery.Medium>>? = null,
     val searchCharaResultPaging: Flow<PagingData<CharacterInfo>>? = null,
-    val searchPage: UiConst.SearchType? = null,
     val isLoading: Boolean = false
 )
