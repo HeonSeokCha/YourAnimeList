@@ -24,6 +24,10 @@ class SortedViewModel @Inject constructor(
 
     var selectMenuIdx: Int = 0
 
+    init {
+        getGenreList()
+    }
+
     fun initSort(
         selectType: UiConst.SortType? = null,
         selectSeason: UiConst.Season? = null,
@@ -48,17 +52,15 @@ class SortedViewModel @Inject constructor(
     }
 
     private fun getSortedAnime() {
-        viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    animeSortPaging = getAnimeFilteredListUseCase(
-                        sortType = it.selectType?.second ?: UiConst.SortType.TRENDING.rawValue,
-                        season = it.selectSeason?.second,
-                        year = it.selectYear,
-                        genre = it.selectGenre
-                    ).cachedIn(viewModelScope)
-                )
-            }
+        _state.update {
+            it.copy(
+                animeSortPaging = getAnimeFilteredListUseCase(
+                    sortType = it.selectType?.second ?: UiConst.SortType.TRENDING.rawValue,
+                    season = it.selectSeason?.second,
+                    year = it.selectYear,
+                    genre = it.selectGenre
+                ).cachedIn(viewModelScope)
+            )
         }
     }
 
@@ -101,7 +103,7 @@ class SortedViewModel @Inject constructor(
         }
     }
 
-    fun getGenreList() {
+    private fun getGenreList() {
         viewModelScope.launch {
             _state.update {
                 it.copy(

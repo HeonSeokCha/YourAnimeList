@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetCharaSearchResultUseCase @Inject constructor(
     private val repository: CharacterRepository
 ) {
-    suspend operator fun invoke(query: String): Flow<PagingData<CharacterInfo>> {
+    operator fun invoke(query: String): Flow<PagingData<CharacterInfo>> {
         return repository.getCharacterSearchResult(query)
     }
 }

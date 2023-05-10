@@ -6,11 +6,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.chs.common.UiConst
 import com.chs.domain.usecase.GetAnimeSearchResultUseCase
 import com.chs.domain.usecase.GetCharaSearchResultUseCase
-import com.chs.common.UiConst
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,13 +23,13 @@ class SearchMediaViewModel @Inject constructor(
 
 
     fun search(query: String) {
-        viewModelScope.launch {
-            when (searchPage) {
-                UiConst.TARGET_ANIME -> {
-                    state = state.copy(
-                        searchAnimeResultPaging = searchAnimeUseCase(query).cachedIn(viewModelScope)
-                    )
-                }
+
+        when (searchPage) {
+            UiConst.TARGET_ANIME -> {
+                state = state.copy(
+                    searchAnimeResultPaging = searchAnimeUseCase(query).cachedIn(viewModelScope)
+                )
+            }
 
 //            UiConst.TARGET_MANGA -> {
 //                state = state.copy(
@@ -38,11 +37,10 @@ class SearchMediaViewModel @Inject constructor(
 //                )
 //            }
 
-                UiConst.TARGET_CHARA -> {
-                    state = state.copy(
-                        searchCharaResultPaging = searchCharaUseCase(query).cachedIn(viewModelScope)
-                    )
-                }
+            UiConst.TARGET_CHARA -> {
+                state = state.copy(
+                    searchCharaResultPaging = searchCharaUseCase(query).cachedIn(viewModelScope)
+                )
             }
         }
     }

@@ -2,7 +2,10 @@ package com.chs.presentation.browse.character
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
+import com.chs.common.UiConst
 import com.chs.domain.usecase.DeleteCharaInfoUseCase
+import com.chs.domain.usecase.GetCharaDetailAnimeListUseCase
 import com.chs.domain.usecase.GetCharaDetailUseCase
 import com.chs.domain.usecase.GetSavedCharaInfoUseCase
 import com.chs.domain.usecase.InsertCharaInfoUseCase
@@ -16,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CharacterDetailViewModel @Inject constructor(
     private val getCharaDetailUseCase: GetCharaDetailUseCase,
+    private val getCharaAnimeListUseCase: GetCharaDetailAnimeListUseCase,
     private val checkSaveCharaUseCase: GetSavedCharaInfoUseCase,
     private val insertCharaUseCase: InsertCharaInfoUseCase,
     private val deleteCharaUseCase: DeleteCharaInfoUseCase
@@ -32,6 +36,19 @@ class CharacterDetailViewModel @Inject constructor(
                     characterDetailInfo = getCharaDetailUseCase(charaId)
                 )
             }
+        }
+    }
+
+    fun getCharacterDetailAnimeList(
+        charaId: Int,
+        sortType: UiConst.SortType
+    ) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                animeList = getCharaAnimeListUseCase(charaId, sortType.rawValue)
+                    .cachedIn(viewModelScope)
+            )
         }
     }
 

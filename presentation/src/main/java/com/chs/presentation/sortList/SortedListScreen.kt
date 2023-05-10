@@ -48,7 +48,6 @@ fun SortedListScreen(
             selectSeason = UiConst.Season.values().firstOrNull { it.rawValue == sortSeason },
             selectGenre = genre
         )
-        viewModel.getGenreList()
     }
 
     Column(

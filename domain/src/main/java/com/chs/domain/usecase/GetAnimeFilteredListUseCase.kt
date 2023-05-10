@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetAnimeFilteredListUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
-    suspend operator fun invoke(
+    operator fun invoke(
         sortType: String,
         season: String?,
         year: Int?,

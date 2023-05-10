@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetAnimeDetailRecListUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
-    suspend operator fun invoke(animeId: Int): Flow<PagingData<AnimeInfo>> {
+    operator fun invoke(animeId: Int): Flow<PagingData<AnimeInfo>> {
         return repository.getAnimeDetailInfoRecommendList(animeId)
     }
 }

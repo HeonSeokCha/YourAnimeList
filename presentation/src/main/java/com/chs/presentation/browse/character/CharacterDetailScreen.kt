@@ -51,13 +51,16 @@ import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
+import com.chs.common.UiConst
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.color
 import com.chs.presentation.common.ItemAnimeSmall
+import com.chs.presentation.items
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -71,10 +74,12 @@ fun CharacterDetailScreen(
     val context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
     var expandedDescButton by remember { mutableStateOf(false) }
+    val pagingItem = state.animeList?.collectAsLazyPagingItems()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     LaunchedEffect(viewModel, context) {
         viewModel.getCharacterDetail(charaId)
+        viewModel.getCharacterDetailAnimeList(charaId, UiConst.SortType.POPULARITY)
         viewModel.isSaveCharacter(charaId)
     }
 
@@ -100,7 +105,7 @@ fun CharacterDetailScreen(
             )
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-    ) {
+    ) { it ->
         LazyVerticalStaggeredGrid(
             modifier = Modifier.padding(it),
             columns = StaggeredGridCells.Adaptive(100.dp),
@@ -127,18 +132,23 @@ fun CharacterDetailScreen(
                     }
                 }
             }
-            if (state.characterDetailInfo?.animeList != null) {
-                items(state.characterDetailInfo!!.animeList) { anime ->
-                    ItemAnimeSmall(
-                        item = anime,
-                        onClick = {
-                            navController.navigate(
-                                "${BrowseScreen.AnimeDetailScreen.route}/" +
-                                        "${anime.id}" +
-                                        "/${anime.idMal}"
-                            )
-                        }
-                    )
+            if (pagingItem != null) {
+                items(
+                    pagingItem,
+                    key = { it.id }
+                ) { anime ->
+                    if (anime != null) {
+                        ItemAnimeSmall(
+                            item = anime,
+                            onClick = {
+                                navController.navigate(
+                                    "${BrowseScreen.AnimeDetailScreen.route}/" +
+                                            "${anime.id}" +
+                                            "/${anime.idMal}"
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }

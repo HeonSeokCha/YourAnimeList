@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetAnimeSearchResultUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
-    suspend operator fun invoke(query: String): Flow<PagingData<AnimeInfo>> {
+    operator fun invoke(query: String): Flow<PagingData<AnimeInfo>> {
         return repository.getAnimeSearchResult(query)
     }
 }
