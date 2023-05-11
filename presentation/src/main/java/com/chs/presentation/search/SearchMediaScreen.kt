@@ -8,10 +8,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -28,7 +30,7 @@ fun SearchMediaScreen(
     searchKeyWord: String,
     viewModel: SearchMediaViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val lazyColScrollState = rememberLazyListState()
 

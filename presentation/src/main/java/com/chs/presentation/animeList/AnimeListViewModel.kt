@@ -1,13 +1,12 @@
 package com.chs.presentation.animeList
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.domain.usecase.GetAnimeSearchResultUseCase
 import com.chs.domain.usecase.GetSavedAnimeListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,16 +15,17 @@ class AnimeListViewModel @Inject constructor(
     private val getYourAnimeListUseCase: GetSavedAnimeListUseCase
 ) : ViewModel() {
 
-    var state by mutableStateOf(AnimeListState())
+    private val _state = MutableStateFlow(AnimeListState())
+    val state = _state.asStateFlow()
 
     fun getYourAnimeList() {
-        state = state.copy(isLoading = true)
         viewModelScope.launch {
-            getYourAnimeListUseCase().collect {
-                state = state.copy(
-                    animeList = it,
-                    isLoading = false
-                )
+            getYourAnimeListUseCase().collect { animeInfo ->
+                _state.update {
+                    it.copy(
+                        animeList = animeInfo
+                    )
+                }
             }
         }
     }
