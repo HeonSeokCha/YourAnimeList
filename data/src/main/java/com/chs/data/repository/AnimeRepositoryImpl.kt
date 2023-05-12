@@ -121,6 +121,14 @@ class AnimeRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getSavedSearchAnimeList(query: String): Flow<List<AnimeInfo>> {
+        return dao.searchAnimeList(query).map {
+            it.map { animeEntity ->
+                animeEntity.toAnimeInfo()
+            }
+        }
+    }
+
     override suspend fun insertSavedAnimeInfo(animeInfo: AnimeInfo) {
         dao.insert(animeInfo.toAnimeEntity())
     }

@@ -3,6 +3,7 @@ package com.chs.presentation.animeList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.domain.usecase.GetSavedAnimeListUseCase
+import com.chs.domain.usecase.GetSavedSearchAnimeListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimeListViewModel @Inject constructor(
-    private val getYourAnimeListUseCase: GetSavedAnimeListUseCase
+    private val getYourAnimeListUseCase: GetSavedAnimeListUseCase,
+    private val getSavedSearchAnimeListUseCase: GetSavedSearchAnimeListUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AnimeListState())
@@ -30,14 +32,16 @@ class AnimeListViewModel @Inject constructor(
         }
     }
 
-//    fun getSearchResultAnime(query: String) {
-//        viewModelScope.launch {
-//            searchAnimeListUseCase(query).collect {
-//                state = state.copy(
-//                    animeList = it,
-//                    isLoading = false
-//                )
-//            }
-//        }
-//    }
+    fun getSearchResultAnime() {
+        viewModelScope.launch {
+            getSavedSearchAnimeListUseCase("").collect { animeList ->
+                _state.update {
+                    it.copy(
+                        animeList = animeList,
+                        isLoading = false
+                    )
+                }
+            }
+        }
+    }
 }

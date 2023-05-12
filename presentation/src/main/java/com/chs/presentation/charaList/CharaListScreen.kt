@@ -28,9 +28,9 @@ fun CharaListScreen(
         viewModel.getYourCharaList()
     }
 
-//    LaunchedEffect(searchQuery) {
-//        viewModel.getSearchResultChara(searchQuery)
-//    }
+    LaunchedEffect(searchQuery) {
+        viewModel.getSearchResultChara()
+    }
 
     LazyColumn(
         modifier = Modifier

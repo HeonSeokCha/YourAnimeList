@@ -27,17 +27,9 @@ class MainActivity : ComponentActivity() {
                     topBar = {
                         AppBar(
                             navController,
-                            searchWidgetState,
-                            onSearchTriggered = {
-                                searchWidgetState = SearchWidgetState.OPENED
-                            }, onClosedClicked = {
-                                searchWidgetState = SearchWidgetState.CLOSED
-                            }, onSearchClicked = {
-                                searchQuery = it
-                            }, onTextChanged = {
-                                searchListQuery = it
-                            }
-                        )
+                        ) {
+
+                        }
                     },
                     bottomBar = {
                         BottomBar(navController) {

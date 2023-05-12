@@ -77,6 +77,14 @@ class CharacterRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getSavedSearchCharacterList(query: String): Flow<List<CharacterInfo>> {
+        return dao.searchCharaList(query).map {
+            it.map { characterEntity ->
+                characterEntity.toCharacterInfo()
+            }
+        }
+    }
+
     override suspend fun insertCharacterInfo(characterInfo: CharacterInfo) {
         dao.insert(characterInfo.toCharacterEntity())
     }

@@ -53,12 +53,7 @@ fun MainNavHost(
                     nullable = true
                     defaultValue = null
                     type = NavType.StringType
-                },
-//                navArgument("sortGenre") {
-//                    nullable = true
-//                    defaultValue = null
-//                    type = NavType.StringType
-//                }
+                }
             )
         ) { backStackEntry ->
             SortedListScreen(

@@ -1,7 +1,10 @@
 package com.chs.domain.repository
 
 import androidx.paging.PagingData
-import com.chs.domain.model.*
+import com.chs.domain.model.AnimeDetailInfo
+import com.chs.domain.model.AnimeInfo
+import com.chs.domain.model.AnimeRecommendList
+import com.chs.domain.model.AnimeThemeInfo
 import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository {
@@ -32,6 +35,8 @@ interface AnimeRepository {
     fun getSavedAnimeList(): Flow<List<AnimeInfo>>
 
     fun getSavedAnimeInfo(id: Int): Flow<AnimeInfo?>
+
+    fun getSavedSearchAnimeList(query: String): Flow<List<AnimeInfo>>
 
     suspend fun insertSavedAnimeInfo(animeInfo: AnimeInfo)
 
