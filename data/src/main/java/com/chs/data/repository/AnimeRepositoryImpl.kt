@@ -96,16 +96,6 @@ class AnimeRepositoryImpl @Inject constructor(
         return jikanService.getAnimeTheme(animeId).toAnimeThemeInfo()
     }
 
-    override fun getAnimeSearchResult(query: String): Flow<PagingData<AnimeInfo>> {
-        return Pager(
-            PagingConfig(pageSize = 10)
-        ) {
-            SearchAnimePagingSource(
-                apolloClient = apolloClient,
-                search = query
-            )
-        }.flow
-    }
 
     override fun getSavedAnimeList(): Flow<List<AnimeInfo>> {
         return dao.getAllAnimeList().map {

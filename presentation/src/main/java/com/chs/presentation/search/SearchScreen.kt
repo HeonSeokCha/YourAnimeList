@@ -13,7 +13,10 @@ import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.common.UiConst
 import kotlinx.coroutines.launch
@@ -21,9 +24,13 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchScreen(
-    searchKeyWord: String,
-    onBack: () -> Unit
+    searchQuery: String,
+    onBack: () -> Unit,
+    searchHistoryList: (List<String>) -> Unit,
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     val pagerState = rememberPagerState(0)
     val coroutineScope = rememberCoroutineScope()
 
@@ -32,6 +39,16 @@ fun SearchScreen(
 //        "MANGA",
         "CHARACTER"
     )
+
+    LaunchedEffect(context, state) {
+        searchHistoryList(state.searchHistoryList)
+    }
+
+    LaunchedEffect(searchQuery) {
+        if (searchQuery.isNotEmpty()) {
+            viewModel.insertSearchHistory(searchQuery)
+        }
+    }
 
     DisposableEffect(Unit) {
         onDispose {
@@ -81,14 +98,14 @@ fun SearchScreen(
                 0 -> {
                     SearchMediaScreen(
                         searchType = UiConst.TARGET_ANIME,
-                        searchKeyWord = searchKeyWord
+                        searchKeyWord = searchQuery
                     )
                 }
 
                 1 -> {
                     SearchMediaScreen(
                         searchType = UiConst.TARGET_CHARA,
-                        searchKeyWord = searchKeyWord
+                        searchKeyWord = searchQuery
                     )
                 }
 //                2 -> {

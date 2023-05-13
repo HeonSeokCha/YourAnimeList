@@ -19,7 +19,8 @@ fun MainNavHost(
     modifier: Modifier = Modifier,
     searchListQuery: String,
     searchQuery: String,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    searchHistory: (List<String>) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -36,7 +37,7 @@ fun MainNavHost(
             CharaListScreen(searchListQuery)
         }
         composable(Screen.SearchScreen.route) {
-            SearchScreen(searchQuery, onBack)
+            SearchScreen(searchQuery, onBack, searchHistory)
         }
         composable(
             route = "${Screen.SortListScreen.route}/{sortOption}/{sortYear}/{sortSeason}",

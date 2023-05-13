@@ -2,9 +2,11 @@ package com.chs.data.module
 
 import com.chs.data.repository.AnimeRepositoryImpl
 import com.chs.data.repository.CharacterRepositoryImpl
+import com.chs.data.repository.SearchRepositoryImpl
 import com.chs.data.repository.StudioRepositoryImpl
 import com.chs.domain.repository.AnimeRepository
 import com.chs.domain.repository.CharacterRepository
+import com.chs.domain.repository.SearchRepository
 import com.chs.domain.repository.StudioRepository
 import dagger.Binds
 import dagger.Module
@@ -28,5 +30,10 @@ abstract class RepositoryModule {
     abstract fun bindStudioRepository(
         studioRepositoryImpl: StudioRepositoryImpl
     ): StudioRepository
+
+    @Binds
+    abstract fun bindSearchRepository(
+        searchRepositoryImpl: SearchRepositoryImpl
+    ): SearchRepository
 
 }

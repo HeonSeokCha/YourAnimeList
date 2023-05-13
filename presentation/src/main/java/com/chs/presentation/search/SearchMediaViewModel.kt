@@ -19,7 +19,7 @@ class SearchMediaViewModel @Inject constructor(
 ) : ViewModel() {
 
     var searchPage: String = ""
-    private val _state = MutableStateFlow(SearchState())
+    private val _state = MutableStateFlow(SearchMediaState())
     val state = _state.asStateFlow()
 
 

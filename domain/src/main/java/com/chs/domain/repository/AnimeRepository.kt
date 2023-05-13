@@ -30,8 +30,6 @@ interface AnimeRepository {
 
     suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo
 
-    fun getAnimeSearchResult(query: String): Flow<PagingData<AnimeInfo>>
-
     fun getSavedAnimeList(): Flow<List<AnimeInfo>>
 
     fun getSavedAnimeInfo(id: Int): Flow<AnimeInfo?>

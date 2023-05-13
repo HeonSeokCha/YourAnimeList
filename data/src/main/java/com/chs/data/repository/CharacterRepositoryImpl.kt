@@ -52,19 +52,7 @@ class CharacterRepositoryImpl @Inject constructor(
         }.flow
     }
 
-    override fun getCharacterSearchResult(name: String): Flow<PagingData<CharacterInfo>> {
-        return Pager(
-            PagingConfig(pageSize = 10)
-        ) {
-            SearchCharacterPagingSource(
-                apolloClient,
-                search = name
-            )
-        }.flow
-    }
-
-    override fun getSavedCharacterList(): Flow<List<CharacterInfo>> {
-        return dao.getAllCharaList().map {
+    override fun getSavedCharacterList(): Flow<List<CharacterInfo>> { return dao.getAllCharaList().map {
             it.map { characterEntity ->
                 characterEntity.toCharacterInfo()
             }

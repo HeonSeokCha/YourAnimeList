@@ -13,7 +13,6 @@ interface CharacterRepository {
         sort: String
     ): Flow<PagingData<AnimeInfo>>
 
-    fun getCharacterSearchResult(name: String): Flow<PagingData<CharacterInfo>>
 
     fun getSavedCharacterList(): Flow<List<CharacterInfo>>
 
