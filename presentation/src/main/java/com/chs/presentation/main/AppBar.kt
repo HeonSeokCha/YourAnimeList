@@ -1,13 +1,16 @@
 package com.chs.presentation.main
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.*
@@ -115,8 +118,11 @@ fun SearchAppBar(
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
         trailingIcon = {
             IconButton(onClick = {
-                text = ""
-                isSearchActive = false
+                if (text.isNotEmpty()) {
+                    text = ""
+                } else {
+                    isSearchActive = false
+                }
             }) {
                 Icon(
                     Icons.Default.Close,
@@ -126,11 +132,29 @@ fun SearchAppBar(
         }
     ) {
         LazyColumn(
-            contentPadding = PaddingValues(start = 16.dp, top = 72.dp, end = 16.dp, bottom = 16.dp),
+            contentPadding = PaddingValues(
+                start = 16.dp,
+                end = 16.dp,
+                bottom = 16.dp
+            ),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(searchHistoryList) { title ->
-                Text(text = title)
+                Row(modifier = Modifier
+                    .padding(all = 14.dp)
+                    .clickable {
+                        text = title
+                        isSearchActive = false
+                        onSearch(title)
+                    }
+                ) {
+                    Icon(
+                        modifier = Modifier.padding(end = 10.dp),
+                        imageVector = Icons.Default.History,
+                        contentDescription = null
+                    )
+                    Text(text = title)
+                }
             }
         }
     }

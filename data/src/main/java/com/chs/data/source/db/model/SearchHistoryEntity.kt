@@ -5,8 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity("searchHistory")
 data class SearchHistoryEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val createDate: Long = System.currentTimeMillis(),
+    @PrimaryKey
     val title: String,
+    val createDate: Long = System.currentTimeMillis()
 )
