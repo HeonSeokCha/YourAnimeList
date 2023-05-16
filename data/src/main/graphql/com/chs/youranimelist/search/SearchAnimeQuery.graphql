@@ -12,7 +12,7 @@ query SearchAnimeQuery(
         media(
             search: $search,
             type: ANIME,
-            sort: [FAVOURITES_DESC],
+            sort: [POPULARITY_DESC],
             isAdult: false
         ) {
             ...animeBasicInfo

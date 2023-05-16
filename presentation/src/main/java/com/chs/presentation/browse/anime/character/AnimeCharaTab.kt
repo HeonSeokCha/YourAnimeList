@@ -39,7 +39,10 @@ fun AnimeCharaScreen(
         ),
         columns = GridCells.Fixed(3),
     ) {
-        items(charaInfoList) { charaInfo ->
+        items(
+            charaInfoList,
+            key = { it.id }
+        ) { charaInfo ->
             Column(
                 modifier = Modifier
                     .width(100.dp)

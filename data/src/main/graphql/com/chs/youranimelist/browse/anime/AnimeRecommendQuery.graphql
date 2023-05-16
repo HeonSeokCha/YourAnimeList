@@ -6,7 +6,7 @@ query AnimeRecommendQuery(
         recommendations(
             page: $page,
             perPage: 10,
-            sort: [RATING_DESC]
+            sort: [RATING_DESC, ID]
         ) {
             pageInfo {
                 ...pageBasicInfo

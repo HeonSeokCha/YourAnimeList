@@ -33,7 +33,10 @@ fun AnimeListScreen(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        contentPadding = PaddingValues(
+            vertical = 4.dp
+        )
     ) {
         items(
             state.animeList.size,
