@@ -3,6 +3,7 @@ package com.chs.presentation.browse.character
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.chs.common.Resource
 import com.chs.common.UiConst
 import com.chs.domain.usecase.DeleteCharaInfoUseCase
 import com.chs.domain.usecase.GetCharaDetailAnimeListUseCase
@@ -30,11 +31,30 @@ class CharacterDetailViewModel @Inject constructor(
 
     fun getCharacterDetail(charaId: Int) {
         viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    isLoading = false,
-                    characterDetailInfo = getCharaDetailUseCase(charaId)
-                )
+            getCharaDetailUseCase(charaId).collect { result ->
+                _state.update {
+                    when (result) {
+                        is Resource.Loading -> {
+                            it.copy(
+                                isLoading = true
+                            )
+                        }
+
+                        is Resource.Success -> {
+                            it.copy(
+                                characterDetailInfo = result.data,
+                                isLoading = false
+                            )
+                        }
+
+                        is Resource.Error -> {
+                            it.copy(
+                                isError = result.message,
+                                isLoading = false
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -45,7 +65,6 @@ class CharacterDetailViewModel @Inject constructor(
     ) {
         _state.update {
             it.copy(
-                isLoading = false,
                 animeList = getCharaAnimeListUseCase(charaId, sortType.rawValue)
                     .cachedIn(viewModelScope)
             )

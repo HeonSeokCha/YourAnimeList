@@ -53,6 +53,8 @@ import com.chs.presentation.browse.anime.recommend.AnimeRecScreen
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.color
 import com.chs.presentation.isNotEmptyValue
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.placeholder
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -88,6 +90,7 @@ fun AnimeDetailScreen(
             CollapsingAppBar(scrollBehavior = scrollBehavior,
                 collapsingContent = {
                     AnimeDetailHeadBanner(
+                        isLoading = state.isLoading,
                         animeDetailInfo = state.animeDetailInfo,
                         isAnimeSave = state.isSave,
                         trailerClick = { trailerId ->
@@ -200,6 +203,7 @@ fun AnimeDetailScreen(
 
 @Composable
 fun AnimeDetailHeadBanner(
+    isLoading: Boolean,
     animeDetailInfo: AnimeDetailInfo?,
     isAnimeSave: Boolean,
     closeClick: () -> Unit,
@@ -256,7 +260,8 @@ fun AnimeDetailHeadBanner(
                     .background(
                         color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
                             ?: "#ffffff".color
-                    ),
+                    )
+                    .placeholder(visible = isLoading),
                 model = animeDetailInfo?.bannerImage,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
@@ -303,7 +308,8 @@ fun AnimeDetailHeadBanner(
                         .padding(
                             start = 8.dp,
                         )
-                        .clip(RoundedCornerShape(5.dp)),
+                        .clip(RoundedCornerShape(5.dp))
+                        .placeholder(visible = isLoading),
                     model = animeDetailInfo?.animeInfo?.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
@@ -370,7 +376,8 @@ fun AnimeDetailHeadBanner(
                         top = 8.dp,
                         start = 8.dp,
                         end = 8.dp
-                    ),
+                    )
+                    .placeholder(visible = isLoading),
                 onClick = { saveClick() }
             ) {
                 if (isAnimeSave) {

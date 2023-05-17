@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,8 +17,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import androidx.paging.compose.items
-import com.chs.domain.model.AnimeInfo
+import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.BrowseScreen
 
 @Composable
@@ -48,9 +46,11 @@ fun AnimeRecScreen(
     ) {
         if (lazyPagingItems != null) {
             items(
-                lazyPagingItems,
-                key = { it.id }
-            ) { item ->
+                count = lazyPagingItems.itemCount,
+                key = lazyPagingItems.itemKey(key = { it.id }),
+                contentType = lazyPagingItems.itemContentType()
+            ) { index ->
+                val item = lazyPagingItems[index]
                 if (item != null) {
                     ItemAnimeRecommend(item) {
                         navController.navigate(
@@ -62,5 +62,9 @@ fun AnimeRecScreen(
                 }
             }
         }
+    }
+
+    if (lazyPagingItems?.loadState?.append == LoadState.Loading) {
+        LoadingIndicator()
     }
 }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -61,6 +62,7 @@ import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.color
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.items
+import com.google.accompanist.placeholder.material.placeholder
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -89,6 +91,7 @@ fun CharacterDetailScreen(
                 scrollBehavior = scrollBehavior,
                 collapsingContent = {
                     CharacterBanner(
+                        isLoading = state.isLoading,
                         characterInfo = state.characterDetailInfo,
                         isSave = state.isSave,
                     ) {
@@ -107,10 +110,11 @@ fun CharacterDetailScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { it ->
         LazyVerticalStaggeredGrid(
-            modifier = Modifier.padding(it),
+            modifier = Modifier
+                .padding(it),
             columns = StaggeredGridCells.Adaptive(100.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalItemSpacing = 4.dp
+            verticalItemSpacing = 4.dp,
         ) {
             if (state.characterDetailInfo != null) {
                 item(span = StaggeredGridItemSpan.FullLine) {
@@ -163,6 +167,7 @@ fun CharacterDetailScreen(
 
 @Composable
 private fun CharacterBanner(
+    isLoading: Boolean,
     characterInfo: CharacterDetailInfo?,
     isSave: Boolean,
     onClick: () -> Unit
@@ -187,7 +192,8 @@ private fun CharacterBanner(
                     .clip(RoundedCornerShape(100))
                     .background(
                         color = "#ffffff".color
-                    ),
+                    )
+                    .placeholder(visible = isLoading),
                 model = characterInfo?.characterInfo?.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
@@ -205,14 +211,18 @@ private fun CharacterBanner(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(text = characterInfo?.characterInfo?.name ?: "")
+
                 Text(text = characterInfo?.characterInfo?.nativeName ?: "")
-                Row {
-                    Icon(
-                        Icons.Default.Favorite,
-                        contentDescription = null,
-                        tint = Color.Red
-                    )
-                    Text(text = characterInfo?.characterInfo?.favourites.toString())
+
+                if (characterInfo?.characterInfo?.favourites != null) {
+                    Row {
+                        Icon(
+                            Icons.Default.Favorite,
+                            contentDescription = null,
+                            tint = Color.Red
+                        )
+                        Text(text = characterInfo.characterInfo.favourites.toString())
+                    }
                 }
             }
         }
@@ -220,7 +230,8 @@ private fun CharacterBanner(
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp),
+                .padding(top = 8.dp)
+                .placeholder(visible = isLoading),
             onClick = { onClick() }
         ) {
             if (isSave) {

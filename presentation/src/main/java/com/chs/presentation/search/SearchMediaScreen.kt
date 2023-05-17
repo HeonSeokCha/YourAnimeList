@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,6 +18,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import androidx.paging.compose.items
 import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.BrowseActivity
@@ -71,23 +74,26 @@ fun SearchMediaScreen(
                 pagingItems?.let {
                     val animeItems = pagingItems as LazyPagingItems<AnimeInfo>
                     items(
-                        animeItems,
-                        key = { it.id }
-                    ) { item ->
-                        if (item != null) {
-                            SearchMediaItem(item) {
-                                context.startActivity(
-                                    Intent(
-                                        context, BrowseActivity::class.java
-                                    ).apply {
-                                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                                        this.putExtra(UiConst.TARGET_ID, item.id)
-                                        this.putExtra(UiConst.TARGET_ID_MAL, item.idMal)
-                                    }
-                                )
-                            }
-                        }
-
+        count = animeItems.itemCount,
+        key = animeItems.itemKey(key = { it.id }
+        ),
+        contentType = animeItems.itemContentType(
+            )
+    ) { index ->
+        val item = animeItems[index]
+        if (item != null) {
+            SearchMediaItem(item) {
+                context.startActivity(
+                    Intent(
+                        context, BrowseActivity::class.java
+                    ).apply {
+                        putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                        putExtra(UiConst.TARGET_ID, item.id)
+                        putExtra(UiConst.TARGET_ID_MAL, item.idMal)
+                    }
+                )
+            }
+        }
                     }
                 }
             }
