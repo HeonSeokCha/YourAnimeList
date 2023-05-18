@@ -70,23 +70,13 @@ fun AppBar(
                     actionIconContentColor = Color.White
                 ),
                 actions = {
-                    if (navBackStackEntry?.destination?.route == BottomNavScreen.HomeScreen.route) {
-                        IconButton(onClick = {
-                            navController.navigate(Screen.SearchScreen.route)
-                        }) {
-                            Icon(
-                                imageVector = Icons.TwoTone.Search,
-                                contentDescription = "home_screen_search"
-                            )
-                        }
-                    } else {
-                        IconButton(onClick = {
-                        }) {
-                            Icon(
-                                imageVector = Icons.TwoTone.Search,
-                                contentDescription = null
-                            )
-                        }
+                    IconButton(onClick = {
+                        navController.navigate(Screen.SearchScreen.route)
+                    }) {
+                        Icon(
+                            imageVector = Icons.TwoTone.Search,
+                            contentDescription = "home_screen_search"
+                        )
                     }
                 }
             )

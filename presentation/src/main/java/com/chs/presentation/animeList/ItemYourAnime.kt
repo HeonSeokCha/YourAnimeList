@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.chs.common.UiConst
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.color
@@ -120,7 +121,7 @@ fun ItemYourAnime(
                 )
 
                 Text(
-                    text = "${anime.seasonYear} ⦁ ${anime.status}",
+                    text = "${anime.seasonYear} ⦁ ${UiConst.mediaStatus[anime.status]?.first ?: ""}",
                     color = Color.White,
                 )
 

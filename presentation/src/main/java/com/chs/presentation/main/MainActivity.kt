@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.chs.presentation.ui.theme.*
-import com.chs.presentation.SearchWidgetState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,7 +21,6 @@ class MainActivity : ComponentActivity() {
             val navController: NavHostController = rememberNavController()
             var searchQuery: String by remember { mutableStateOf("") }
             var searchListQuery: String by remember { mutableStateOf("") }
-            var searchWidgetState: SearchWidgetState by remember { mutableStateOf(SearchWidgetState.CLOSED) }
             var searchHistoryList: List<String> by remember { mutableStateOf(emptyList()) }
 
             YourAnimeListTheme {
@@ -38,7 +36,6 @@ class MainActivity : ComponentActivity() {
                     bottomBar = {
                         BottomBar(navController) {
                             searchListQuery = ""
-                            searchWidgetState = SearchWidgetState.CLOSED
                         }
                     },
                 ) {

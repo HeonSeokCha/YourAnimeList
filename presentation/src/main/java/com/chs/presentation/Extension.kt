@@ -20,10 +20,6 @@ val String.color
 val Int?.isNotEmptyValue
     get() = this != null && this != 0
 
-enum class SearchWidgetState {
-    OPENED,
-    CLOSED
-}
 
 fun <T : Any> LazyGridScope.items(
     items: LazyPagingItems<T>,
