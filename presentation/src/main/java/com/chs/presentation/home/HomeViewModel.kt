@@ -2,6 +2,7 @@ package com.chs.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chs.common.Resource
 import com.chs.common.UiConst
 import com.chs.domain.usecase.GetAnimeRecListUseCase
 import com.chs.presentation.Util
@@ -51,23 +52,34 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    isLoading = true
-                )
-            }
+            getHomeListUseCase(
+                currentSeason = Util.getCurrentSeason(),
+                nextSeason = Util.getNextSeason(),
+                currentYear = Util.getCurrentYear(),
+                nextYear = Util.getVariationYear(true),
+                lastYear = Util.getVariationYear(false)
+            ).collect { result ->
+                _state.update {
+                    when (result) {
+                        is Resource.Loading -> {
+                            it.copy(isLoading = true)
+                        }
 
-            _state.update {
-                it.copy(
-                    animeRecommendList = getHomeListUseCase(
-                        currentSeason = Util.getCurrentSeason(),
-                        nextSeason = Util.getNextSeason(),
-                        currentYear = Util.getCurrentYear(),
-                        nextYear = Util.getVariationYear(true),
-                        lastYear = Util.getVariationYear(false)
-                    ),
-                    isLoading = false
-                )
+                        is Resource.Success -> {
+                            it.copy(
+                                animeRecommendList = result.data,
+                                isLoading = false
+                            )
+                        }
+
+                        is Resource.Error -> {
+                            it.copy(
+                                isError = result.message,
+                                isLoading = false
+                            )
+                        }
+                    }
+                }
             }
         }
     }

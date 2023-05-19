@@ -2,7 +2,6 @@ package com.chs.presentation.home
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,12 +24,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.chs.presentation.main.Screen
-import com.chs.presentation.browse.BrowseActivity
-import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.common.UiConst
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.LoadingIndicator
+import com.chs.presentation.browse.BrowseActivity
+import com.chs.presentation.common.ItemAnimeSmall
+import com.chs.presentation.main.Screen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -47,21 +46,19 @@ fun HomeScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (state.animeRecommendList?.bannerList != null) {
-            item {
-                HorizontalPager(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp),
-                    state = pagerState,
-                    pageCount = state.animeRecommendList?.bannerList!!.size
-                ) { idx ->
-                    ItemHomeBanner(
-                        context = context,
-                        banner = state.animeRecommendList?.bannerList!![idx],
-                        state.isLoading
-                    )
-                }
+        item {
+            HorizontalPager(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                state = pagerState,
+                pageCount = state.animeRecommendList?.bannerList?.size ?: 1
+            ) { idx ->
+                ItemHomeBanner(
+                    context = context,
+                    banner = state.animeRecommendList?.bannerList?.get(idx),
+                    state.isLoading
+                )
             }
         }
 

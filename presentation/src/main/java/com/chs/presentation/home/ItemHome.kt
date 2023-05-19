@@ -3,8 +3,14 @@ package com.chs.presentation.home
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
@@ -26,10 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.chs.presentation.browse.BrowseActivity
 import com.chs.common.UiConst
 import com.chs.domain.model.AnimeRecommendBannerInfo
-import com.chs.presentation.ui.theme.Shapes
+import com.chs.presentation.browse.BrowseActivity
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
@@ -37,7 +42,7 @@ import com.google.accompanist.placeholder.material.shimmer
 @Composable
 fun ItemHomeBanner(
     context: Context,
-    banner: AnimeRecommendBannerInfo,
+    banner: AnimeRecommendBannerInfo?,
     isLoading: Boolean
 ) {
     val favoriteId = "favoriteId"
@@ -82,10 +87,9 @@ fun ItemHomeBanner(
             .fillMaxWidth()
             .height(250.dp)
             .placeholder(
-                visible = isLoading,
-                highlight = PlaceholderHighlight.shimmer()
+                visible = isLoading
             ),
-        model = banner.animeInfo.imageUrl,
+        model = banner?.animeInfo?.imageUrl,
         contentDescription = null,
         contentScale = ContentScale.Crop
     )
@@ -98,8 +102,8 @@ fun ItemHomeBanner(
                         context, BrowseActivity::class.java
                     ).apply {
                         this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                        this.putExtra(UiConst.TARGET_ID, banner.animeInfo.id)
-                        this.putExtra(UiConst.TARGET_ID_MAL, banner.animeInfo.idMal)
+                        this.putExtra(UiConst.TARGET_ID, banner?.animeInfo?.id)
+                        this.putExtra(UiConst.TARGET_ID_MAL, banner?.animeInfo?.idMal)
                     }
                 )
             }
@@ -115,7 +119,7 @@ fun ItemHomeBanner(
                     visible = isLoading,
                     highlight = PlaceholderHighlight.shimmer()
                 ),
-            text = banner.animeInfo.title,
+            text = banner?.animeInfo?.title ?: "",
             color = Color.White,
             fontWeight = FontWeight.Bold,
             maxLines = 1,
@@ -138,7 +142,7 @@ fun ItemHomeBanner(
                     ),
                 text = buildAnnotatedString {
                     appendInlineContent(scoreId, scoreId)
-                    append(banner.animeInfo.averageScore.toString())
+                    append((banner?.animeInfo?.averageScore ?: 0).toString())
                 },
                 inlineContent = inlineContent,
                 fontWeight = FontWeight.Bold,
@@ -154,7 +158,7 @@ fun ItemHomeBanner(
                     ),
                 text = buildAnnotatedString {
                     appendInlineContent(favoriteId, favoriteId)
-                    append(banner.animeInfo.averageScore.toString())
+                    append((banner?.animeInfo?.favourites ?: 0).toString())
                 },
                 inlineContent = inlineContent,
                 fontWeight = FontWeight.Bold,

@@ -2,14 +2,29 @@ package com.chs.presentation.sortList
 
 import android.content.Intent
 import android.widget.Toast
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,13 +34,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.chs.common.UiConst
 import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.BrowseActivity
-import com.chs.presentation.ui.theme.Pink80
-import com.chs.common.UiConst
 import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.items
+import com.chs.presentation.ui.theme.Pink80
 
 @Composable
 fun SortedListScreen(
@@ -40,6 +55,7 @@ fun SortedListScreen(
     val lazyGridScrollState = rememberLazyGridState()
     val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
     var filterDialogShow by remember { mutableStateOf(false) }
+    var placeItemShow by remember { mutableStateOf(false) }
 
     LaunchedEffect(viewModel, context) {
         viewModel.initSort(
@@ -104,34 +120,65 @@ fun SortedListScreen(
                     }
                 }
             }
+
+            if (placeItemShow) {
+                items(9) {
+                    Card(
+                        modifier = Modifier
+                            .width(130.dp)
+                            .height(280.dp)
+                    ) {
+
+                    }
+                }
+            }
         }
     }
 
     if (filterDialogShow) {
-        FilterDialog(state.menuList[viewModel.selectMenuIdx].second, onDismiss = {
-            filterDialogShow = false
-        }, onClick = { selectIdx ->
-            viewModel.changeFilterOptions(selectIdx)
-        })
+        FilterDialog(
+            list = state.menuList[viewModel.selectMenuIdx].second,
+            onDismiss = {
+                filterDialogShow = false
+            }, onClick = { selectIdx ->
+                viewModel.changeFilterOptions(selectIdx)
+            }
+        )
     }
-    if (pagingItems?.loadState?.append == LoadState.Loading) {
-        LoadingIndicator()
-    }
-    when (pagingItems?.loadState?.source?.refresh) {
-        is LoadState.Loading -> {
-            LoadingIndicator()
+
+    if (pagingItems != null) {
+        placeItemShow = when (pagingItems.loadState.refresh) {
+            is LoadState.Loading -> {
+                true
+            }
+
+            is LoadState.Error -> {
+                Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT)
+                    .show()
+                false
+            }
+
+            else -> false
         }
 
-        is LoadState.Error -> {
-            Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT).show()
-        }
+        placeItemShow = when (pagingItems.loadState.append) {
+            is LoadState.Loading -> {
+                true
+            }
 
-        else -> {}
+            is LoadState.Error -> {
+                Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT)
+                    .show()
+                false
+            }
+
+            else -> false
+        }
     }
 }
 
 @Composable
-fun ItemSort(
+private fun ItemSort(
     title: String,
     subTitle: String,
     clickAble: (String) -> Unit

@@ -3,8 +3,11 @@ package com.chs.presentation.common
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,17 +27,12 @@ fun FilterDialog(
 ) {
     AlertDialog(
         modifier = Modifier
+            .height(400.dp)
             .background(color = Color.White)
-            .padding(
-                top = 64.dp,
-                bottom = 64.dp,
-                start = 16.dp,
-                end = 16.dp
-            ),
+            .padding(16.dp),
         onDismissRequest = onDismiss,
     ) {
         LazyColumn(
-            modifier = Modifier.background(Color.Gray),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(list.size) { idx ->

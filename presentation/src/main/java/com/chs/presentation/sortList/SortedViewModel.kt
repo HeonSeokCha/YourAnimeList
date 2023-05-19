@@ -3,6 +3,7 @@ package com.chs.presentation.sortList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.chs.common.Resource
 import com.chs.common.UiConst
 import com.chs.domain.usecase.GetAnimeFilteredListUseCase
 import com.chs.domain.usecase.GetGenreListUseCase
@@ -105,15 +106,29 @@ class SortedViewModel @Inject constructor(
 
     private fun getGenreList() {
         viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    menuList = listOf(
-                        "Year" to UiConst.yearSortList,
-                        "Season" to UiConst.seasonFilterList,
-                        "Sort" to UiConst.sortTypeList,
-                        "Genre" to getGenreListUseCase().map { genre -> genre to genre }
-                    )
-                )
+            getGenreListUseCase().collect { result ->
+                when (result) {
+                    is Resource.Loading -> {
+                        _state.update { it.copy(isLoading = true) }
+                    }
+
+                    is Resource.Success -> {
+                        _state.update {
+                            it.copy(
+                                menuList = listOf(
+                                    "Year" to UiConst.yearSortList,
+                                    "Season" to UiConst.seasonFilterList,
+                                    "Sort" to UiConst.sortTypeList,
+                                    "Genre" to result.data!!.map { genre -> genre to genre }
+                                )
+                            )
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        _state.update { it.copy(isError = result.message) }
+                    }
+                }
             }
         }
     }
