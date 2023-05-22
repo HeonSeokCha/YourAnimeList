@@ -56,36 +56,30 @@ fun HomeScreen(
             ) { idx ->
                 ItemHomeBanner(
                     context = context,
-                    banner = state.animeRecommendList?.bannerList?.get(idx),
-                    state.isLoading
+                    banner = state.animeRecommendList?.bannerList?.get(idx)
                 )
             }
         }
 
-        if (state.animeRecommendList?.animeBasicList != null) {
-            items(
-                state.animeRecommendList?.animeBasicList!!.size,
-                key = { viewModel.animeCategorySortList[it].first }
-            ) { idx ->
-                ItemRecommendCategory(
-                    viewModel.animeCategorySortList[idx],
-                    state.animeRecommendList?.animeBasicList!![idx],
-                    navigator,
-                    context
-                )
-            }
+        items(
+            state.animeRecommendList?.animeBasicList?.size ?: 5,
+            key = { viewModel.animeCategorySortList[it].first }
+        ) { idx ->
+            ItemRecommendCategory(
+                title = viewModel.animeCategorySortList[idx],
+                list = state.animeRecommendList?.animeBasicList?.get(idx)
+                    ?: List<AnimeInfo?>(5) { null },
+                navigator = navigator,
+                context = context
+            )
         }
-    }
-
-    if (state.isLoading) {
-        LoadingIndicator()
     }
 }
 
 @Composable
 fun ItemRecommendCategory(
     title: Pair<String, Triple<UiConst.SortType, Int?, String?>>,
-    list: List<AnimeInfo>,
+    list: List<AnimeInfo?>,
     navigator: NavController,
     context: Context
 ) {
@@ -129,20 +123,22 @@ fun ItemRecommendCategory(
         ) {
             items(
                 list.size,
-                key = { list[it].id }
+                key = { list[it]?.id ?: it }
             ) {
                 ItemAnimeSmall(
                     item = list[it],
                     onClick = {
-                        context.startActivity(
-                            Intent(
-                                context, BrowseActivity::class.java
-                            ).apply {
-                                this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                                this.putExtra(UiConst.TARGET_ID, list[it].id)
-                                this.putExtra(UiConst.TARGET_ID_MAL, list[it].idMal)
-                            }
-                        )
+                        if (list[it] != null) {
+                            context.startActivity(
+                                Intent(
+                                    context, BrowseActivity::class.java
+                                ).apply {
+                                    this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                                    this.putExtra(UiConst.TARGET_ID, list[it]!!.id)
+                                    this.putExtra(UiConst.TARGET_ID_MAL, list[it]!!.idMal)
+                                }
+                            )
+                        }
                     }
                 )
             }

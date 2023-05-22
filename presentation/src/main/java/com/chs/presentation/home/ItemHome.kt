@@ -42,8 +42,7 @@ import com.google.accompanist.placeholder.material.shimmer
 @Composable
 fun ItemHomeBanner(
     context: Context,
-    banner: AnimeRecommendBannerInfo?,
-    isLoading: Boolean
+    banner: AnimeRecommendBannerInfo?
 ) {
     val favoriteId = "favoriteId"
     val scoreId = "scoreId"
@@ -87,7 +86,7 @@ fun ItemHomeBanner(
             .fillMaxWidth()
             .height(250.dp)
             .placeholder(
-                visible = isLoading
+                visible = banner == null
             ),
         model = banner?.animeInfo?.imageUrl,
         contentDescription = null,
@@ -97,15 +96,17 @@ fun ItemHomeBanner(
         modifier = Modifier
             .fillMaxSize()
             .clickable {
-                context.startActivity(
-                    Intent(
-                        context, BrowseActivity::class.java
-                    ).apply {
-                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                        this.putExtra(UiConst.TARGET_ID, banner?.animeInfo?.id)
-                        this.putExtra(UiConst.TARGET_ID_MAL, banner?.animeInfo?.idMal)
-                    }
-                )
+                if (banner != null) {
+                    context.startActivity(
+                        Intent(
+                            context, BrowseActivity::class.java
+                        ).apply {
+                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                            this.putExtra(UiConst.TARGET_ID, banner.animeInfo.id)
+                            this.putExtra(UiConst.TARGET_ID_MAL, banner.animeInfo.idMal)
+                        }
+                    )
+                }
             }
     ) {
         Text(
@@ -116,7 +117,7 @@ fun ItemHomeBanner(
                     bottom = 32.dp
                 )
                 .placeholder(
-                    visible = isLoading,
+                    visible = banner == null,
                     highlight = PlaceholderHighlight.shimmer()
                 ),
             text = banner?.animeInfo?.title ?: "",
@@ -137,7 +138,7 @@ fun ItemHomeBanner(
             Text(
                 modifier = Modifier
                     .placeholder(
-                        visible = isLoading,
+                        visible = banner == null,
                         highlight = PlaceholderHighlight.shimmer()
                     ),
                 text = buildAnnotatedString {
@@ -153,7 +154,7 @@ fun ItemHomeBanner(
             Text(
                 modifier = Modifier
                     .placeholder(
-                        visible = isLoading,
+                        visible = banner == null,
                         highlight = PlaceholderHighlight.shimmer()
                     ),
                 text = buildAnnotatedString {
