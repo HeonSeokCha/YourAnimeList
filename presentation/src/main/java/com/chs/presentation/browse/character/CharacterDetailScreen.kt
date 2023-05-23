@@ -2,7 +2,6 @@ package com.chs.presentation.browse.character
 
 import android.app.Activity
 import android.text.TextUtils
-import android.util.Log
 import android.widget.TextView
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -11,7 +10,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,11 +19,12 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
-import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -45,8 +44,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -56,7 +61,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.chs.common.UiConst
 import com.chs.domain.model.CharacterDetailInfo
-import com.chs.presentation.LoadingIndicator
+import com.chs.presentation.R
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.color
@@ -91,7 +96,6 @@ fun CharacterDetailScreen(
                 scrollBehavior = scrollBehavior,
                 collapsingContent = {
                     CharacterBanner(
-                        isLoading = state.isLoading,
                         characterInfo = state.characterDetailInfo,
                         isSave = state.isSave,
                     ) {
@@ -116,23 +120,23 @@ fun CharacterDetailScreen(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalItemSpacing = 4.dp,
         ) {
-            if (state.characterDetailInfo != null) {
-                item(span = StaggeredGridItemSpan.FullLine) {
-                    Column(
-                        modifier = Modifier
-                            .padding(
-                                start = 8.dp,
-                                end = 8.dp
-                            )
-                    ) {
+            item(span = StaggeredGridItemSpan.FullLine) {
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            start = 8.dp,
+                            end = 8.dp
+                        )
+                ) {
+                    if (state.characterDetailInfo != null) {
                         CharacterProfile(characterDetailInfo = state.characterDetailInfo!!)
+                    }
 
-                        CharacterDescription(
-                            description = state.characterDetailInfo!!.description,
-                            expandedDescButton = expandedDescButton
-                        ) {
-                            expandedDescButton = !expandedDescButton
-                        }
+                    CharacterDescription(
+                        description = state.characterDetailInfo?.description,
+                        expandedDescButton = expandedDescButton
+                    ) {
+                        expandedDescButton = !expandedDescButton
                     }
                 }
             }
@@ -156,22 +160,35 @@ fun CharacterDetailScreen(
                 }
             }
         }
-
-        if (state.isLoading) {
-            LoadingIndicator()
-        }
     }
-
 }
 
 
 @Composable
 private fun CharacterBanner(
-    isLoading: Boolean,
     characterInfo: CharacterDetailInfo?,
     isSave: Boolean,
     onClick: () -> Unit
 ) {
+
+    val inlineContent = mapOf(
+        Pair(
+            "favourite",
+            InlineTextContent(
+                Placeholder(
+                    width = 1.5.em,
+                    height = 1.5.em,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                )
+            ) {
+                Icon(
+                    Icons.Rounded.Favorite,
+                    contentDescription = null,
+                    tint = Color.Red,
+                )
+            }
+        )
+    )
 
     Column(
         modifier = Modifier
@@ -193,7 +210,7 @@ private fun CharacterBanner(
                     .background(
                         color = "#ffffff".color
                     )
-                    .placeholder(visible = isLoading),
+                    .placeholder(visible = characterInfo == null),
                 model = characterInfo?.characterInfo?.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
@@ -210,20 +227,31 @@ private fun CharacterBanner(
                     ),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(text = characterInfo?.characterInfo?.name ?: "")
+                Text(
+                    modifier = Modifier
+                        .placeholder(characterInfo == null),
+                    text = characterInfo?.characterInfo?.name ?: "Character PreView"
+                )
 
-                Text(text = characterInfo?.characterInfo?.nativeName ?: "")
+                Text(
+                    modifier = Modifier
+                        .placeholder(characterInfo == null),
+                    text = characterInfo?.characterInfo?.nativeName ?: "Character PreView"
+                )
 
-                if (characterInfo?.characterInfo?.favourites != null) {
-                    Row {
-                        Icon(
-                            Icons.Default.Favorite,
-                            contentDescription = null,
-                            tint = Color.Red
-                        )
-                        Text(text = characterInfo.characterInfo.favourites.toString())
-                    }
-                }
+                Text(
+                    modifier = Modifier
+                        .placeholder(characterInfo == null),
+                    text = buildAnnotatedString {
+                        appendInlineContent("favourite", "favourite")
+                        append("${characterInfo?.characterInfo?.favourites ?: 0}")
+
+                    },
+                    inlineContent = inlineContent,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 13.sp,
+                )
+
             }
         }
 
@@ -231,7 +259,7 @@ private fun CharacterBanner(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
-                .placeholder(visible = isLoading),
+                .placeholder(visible = characterInfo == null),
             onClick = { onClick() }
         ) {
             if (isSave) {
@@ -268,15 +296,19 @@ private fun CharacterProfile(characterDetailInfo: CharacterDetailInfo) {
 @Composable
 private fun ProfileText(
     title: String,
-    values: String
+    values: String?
 ) {
-    Row {
+    Row(
+        modifier = Modifier
+            .padding(bottom = 16.dp)
+            .placeholder(values == null)
+    ) {
         Text(
             text = "$title: ",
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = values,
+            text = values ?: "$title Value PreView",
         )
     }
 }
@@ -284,7 +316,7 @@ private fun ProfileText(
 
 @Composable
 private fun CharacterDescription(
-    description: String,
+    description: String?,
     expandedDescButton: Boolean,
     onClick: () -> Unit
 ) {
@@ -303,7 +335,7 @@ private fun CharacterDescription(
     ) {
 
         val spannedText = HtmlCompat.fromHtml(
-            description,
+            description ?: stringResource(id = R.string.lorem_ipsum),
             HtmlCompat.FROM_HTML_MODE_COMPACT
         )
 
@@ -319,7 +351,8 @@ private fun CharacterDescription(
             )
         } else {
             AndroidView(
-                modifier = Modifier,
+                modifier = Modifier
+                    .placeholder(description == null),
                 factory = { TextView(it) },
                 update = {
                     it.text = spannedText
@@ -331,7 +364,7 @@ private fun CharacterDescription(
             )
         }
 
-        if (description.length > 100) {
+        if (description != null && description.length > 100) {
             if (!expandedDescButton) {
                 Button(
                     modifier = Modifier

@@ -1,10 +1,18 @@
 package com.chs.presentation.browse.anime.detail
 
 import android.app.Activity
-import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -16,9 +24,22 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.runtime.*
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,7 +54,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -46,9 +69,9 @@ import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.browse.anime.AnimeCharaScreen
 import com.chs.presentation.browse.anime.overView.AnimeOverViewScreen
 import com.chs.presentation.browse.anime.recommend.AnimeRecScreen
-import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.color
 import com.chs.presentation.isNotEmptyValue
+import com.chs.presentation.ui.theme.Pink80
 import com.google.accompanist.placeholder.material.placeholder
 import kotlinx.coroutines.launch
 
@@ -85,7 +108,6 @@ fun AnimeDetailScreen(
             CollapsingAppBar(scrollBehavior = scrollBehavior,
                 collapsingContent = {
                     AnimeDetailHeadBanner(
-                        isLoading = state.isLoading,
                         animeDetailInfo = state.animeDetailInfo,
                         isAnimeSave = state.isSave,
                         trailerClick = { trailerId ->
@@ -198,7 +220,6 @@ fun AnimeDetailScreen(
 
 @Composable
 fun AnimeDetailHeadBanner(
-    isLoading: Boolean,
     animeDetailInfo: AnimeDetailInfo?,
     isAnimeSave: Boolean,
     closeClick: () -> Unit,
@@ -256,7 +277,7 @@ fun AnimeDetailHeadBanner(
                         color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
                             ?: "#ffffff".color
                     )
-                    .placeholder(visible = isLoading),
+                    .placeholder(visible = animeDetailInfo == null),
                 model = animeDetailInfo?.bannerImage,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
@@ -304,7 +325,7 @@ fun AnimeDetailHeadBanner(
                             start = 8.dp,
                         )
                         .clip(RoundedCornerShape(5.dp))
-                        .placeholder(visible = isLoading),
+                        .placeholder(visible = animeDetailInfo == null),
                     model = animeDetailInfo?.animeInfo?.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
@@ -318,48 +339,58 @@ fun AnimeDetailHeadBanner(
                         )
                 ) {
                     Text(
-                        text = animeDetailInfo?.animeInfo?.title ?: "",
+                        modifier = Modifier
+                            .placeholder(animeDetailInfo?.animeInfo?.title == null),
+                        text = animeDetailInfo?.animeInfo?.title ?: "title PreView Title PreView",
                         fontSize = 18.sp,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                         textAlign = TextAlign.Start
                     )
 
-                    if (animeDetailInfo?.animeInfo?.seasonYear.isNotEmptyValue
-                        && animeDetailInfo?.animeInfo?.status != null
-                    ) {
-                        Text(text = "${animeDetailInfo.animeInfo.format} ⦁ ${animeDetailInfo.animeInfo.seasonYear}")
-                    } else {
-                        Text(text = animeDetailInfo?.animeInfo?.format ?: "")
-                    }
+
+                    Text(
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .placeholder(animeDetailInfo?.animeInfo?.format == null),
+                        text = if (animeDetailInfo?.animeInfo?.seasonYear.isNotEmptyValue
+                            && animeDetailInfo?.animeInfo?.status != null
+                        ) {
+                            "${animeDetailInfo.animeInfo.format} ⦁ ${animeDetailInfo.animeInfo.seasonYear}"
+                        } else {
+                            animeDetailInfo?.animeInfo?.format ?: "Title PreView"
+                        }
+                    )
 
                     Row(
                         modifier = Modifier.padding(top = 8.dp)
                     ) {
-                        if (animeDetailInfo?.animeInfo?.averageScore != null) {
-                            Text(
-                                text = buildAnnotatedString {
-                                    appendInlineContent(starId, starId)
-                                    append(animeDetailInfo.animeInfo.averageScore.toString())
-                                },
-                                inlineContent = inlineContent,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 13.sp,
-                            )
-                            Spacer(modifier = Modifier.width(16.dp))
-                        }
+                        Text(
+                            modifier = Modifier
+                                .placeholder(animeDetailInfo?.animeInfo?.averageScore == null),
+                            text = buildAnnotatedString {
+                                appendInlineContent(starId, starId)
+                                append("${animeDetailInfo?.animeInfo?.averageScore ?: 0}")
+                            },
+                            inlineContent = inlineContent,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 13.sp,
+                        )
 
-                        if (animeDetailInfo?.animeInfo?.favourites != null) {
-                            Text(
-                                text = buildAnnotatedString {
-                                    appendInlineContent(favoriteId, favoriteId)
-                                    append(animeDetailInfo.animeInfo.favourites.toString())
-                                },
-                                inlineContent = inlineContent,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 13.sp,
-                            )
-                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+
+                        Text(
+                            modifier = Modifier
+                                .placeholder(animeDetailInfo?.animeInfo?.favourites == null),
+                            text = buildAnnotatedString {
+                                appendInlineContent(favoriteId, favoriteId)
+                                append("${animeDetailInfo?.animeInfo?.favourites ?: 0}")
+
+                            },
+                            inlineContent = inlineContent,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 13.sp,
+                        )
                     }
                 }
             }
@@ -372,7 +403,7 @@ fun AnimeDetailHeadBanner(
                         start = 8.dp,
                         end = 8.dp
                     )
-                    .placeholder(visible = isLoading),
+                    .placeholder(visible = animeDetailInfo == null),
                 onClick = { saveClick() }
             ) {
                 if (isAnimeSave) {
