@@ -105,29 +105,25 @@ fun SortedListScreen(
                     pagingItems,
                     key = { it.id }
                 ) { animeInfo ->
-                    if (animeInfo != null) {
-                        ItemAnimeSmall(item = animeInfo) {
-                            context.startActivity(
-                                Intent(
-                                    context, BrowseActivity::class.java
-                                ).apply {
+                    ItemAnimeSmall(item = animeInfo) {
+                        context.startActivity(
+                            Intent(
+                                context, BrowseActivity::class.java
+                            ).apply {
+                                if (animeInfo != null) {
                                     this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
                                     this.putExtra(UiConst.TARGET_ID, animeInfo.id)
                                     this.putExtra(UiConst.TARGET_ID_MAL, animeInfo.idMal)
                                 }
-                            )
-                        }
+                            }
+                        )
                     }
                 }
             }
 
             if (placeItemShow) {
-                items(9) {
-                    Card(
-                        modifier = Modifier
-                            .width(130.dp)
-                            .height(280.dp)
-                    ) {
+                items(10) {
+                    ItemAnimeSmall(item = null) {
 
                     }
                 }
@@ -147,7 +143,7 @@ fun SortedListScreen(
     }
 
     if (pagingItems != null) {
-        placeItemShow = when (pagingItems.loadState.refresh) {
+        placeItemShow = when (pagingItems.loadState.source.refresh) {
             is LoadState.Loading -> {
                 true
             }
@@ -161,7 +157,7 @@ fun SortedListScreen(
             else -> false
         }
 
-        placeItemShow = when (pagingItems.loadState.append) {
+        placeItemShow = when (pagingItems.loadState.source.append) {
             is LoadState.Loading -> {
                 true
             }
@@ -169,10 +165,10 @@ fun SortedListScreen(
             is LoadState.Error -> {
                 Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT)
                     .show()
-                false
+                pagingItems.itemCount <= 0
             }
 
-            else -> false
+            else -> pagingItems.itemCount <= 0
         }
     }
 }

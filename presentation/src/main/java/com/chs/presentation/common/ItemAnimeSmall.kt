@@ -96,7 +96,7 @@ fun ItemAnimeSmall(
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 modifier = Modifier
-                    .placeholder(item?.title == null),
+                    .placeholder(item == null),
                 text = item?.title ?: "title Preview",
                 color = Color.Gray,
                 maxLines = 2,
@@ -105,48 +105,49 @@ fun ItemAnimeSmall(
                 lineHeight = 16.sp
             )
 
-            Row(
+            Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(
-                        top = 4.dp,
-                    ),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom
             ) {
-                Column {
-                    Text(
-                        modifier = Modifier
-                            .placeholder(item?.title == null),
-                        text = UiConst.mediaStatus[item?.status]?.first ?: "",
-                        color = Color(UiConst.mediaStatus[item?.status]?.second ?: 0xFF888888),
-                        fontSize = 12.sp
-                    )
+                Text(
+                    modifier = Modifier
+                        .padding(bottom = 4.dp)
+                        .placeholder(item == null),
+                    text = UiConst.mediaStatus[item?.status]?.first ?: "",
+                    color = Color(UiConst.mediaStatus[item?.status]?.second ?: 0xFF888888),
+                    fontSize = 12.sp
+                )
 
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Text(
                         modifier = Modifier
-                            .placeholder(item?.title == null),
+                            .placeholder(item == null),
                         text = "${item?.seasonYear ?: 2000}",
                         color = Color.Gray,
                         fontSize = 12.sp,
                     )
-                }
 
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f, false)
-                        .padding(start = 4.dp)
-                        .placeholder(item?.title == null),
-                    text = buildAnnotatedString {
-                        appendInlineContent(starId, starId)
-                        append("${item?.averageScore ?: 99}")
-                    },
-                    inlineContent = inlineContent,
-                    color = Color.Gray,
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.End
-                )
+
+                    if (item?.averageScore != 0) {
+                        Text(
+                            modifier = Modifier
+                                .placeholder(item == null),
+                            text = buildAnnotatedString {
+                                appendInlineContent(starId, starId)
+                                append("${item?.averageScore ?: 99}")
+                            },
+                            inlineContent = inlineContent,
+                            color = Color.Gray,
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.End
+                        )
+                    }
+                }
             }
         }
     }
@@ -159,15 +160,15 @@ fun PreviewItemAnimeSmall() {
         val animeInfo = AnimeInfo(
             id = 0,
             idMal = 0,
-            title = "Test",
+            title = "Testasdkljhasodihaiosdjhaoisdjioasdasdasdasd",
             imageUrl = null,
             imagePlaceColor = null,
-            averageScore = 87,
+            averageScore = 1000,
             favourites = 1234,
-            seasonYear = 2019,
+            seasonYear = 2023,
             season = "",
             format = "TV",
-            status = "FINISHED"
+            status = "RELEASING"
         )
         ItemAnimeSmall(item = animeInfo) { }
     }
