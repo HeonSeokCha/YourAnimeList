@@ -64,7 +64,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.common.URLConst
 import com.chs.domain.model.AnimeDetailInfo
-import com.chs.presentation.LoadingIndicator
+import com.chs.presentation.common.LoadingIndicator
 import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.browse.anime.AnimeCharaScreen
 import com.chs.presentation.browse.anime.overView.AnimeOverViewScreen

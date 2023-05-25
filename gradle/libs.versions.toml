@@ -1,5 +1,5 @@
 [versions]
-androidStudioGradlePlugin = "8.0.1"
+androidStudioGradlePlugin = "8.0.2"
 
 compileSdkVersion = "33"
 minSdkVersion = "29"
@@ -22,7 +22,7 @@ apollo = "3.8.1"
 
 [libraries]
 # AndroidX
-androidX-core-ktx = "androidx.core:core-ktx:1.10.0"
+androidX-core-ktx = "androidx.core:core-ktx:1.10.1"
 androidX-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
 androidX-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity"}
 androidX-compose-material-icon-extend = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-ui"}

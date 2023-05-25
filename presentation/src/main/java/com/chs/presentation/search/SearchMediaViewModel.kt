@@ -18,9 +18,13 @@ class SearchMediaViewModel @Inject constructor(
     private val searchCharaUseCase: GetCharaSearchResultUseCase
 ) : ViewModel() {
 
-    var searchPage: String = ""
+    private var searchPage: String = ""
     private val _state = MutableStateFlow(SearchMediaState())
     val state = _state.asStateFlow()
+
+    fun initSearchType(type: String) {
+        searchPage = type
+    }
 
 
     fun search(query: String) {
@@ -48,6 +52,15 @@ class SearchMediaViewModel @Inject constructor(
                     it
                 }
             }
+        }
+    }
+
+    fun clear() {
+        _state.update {
+            it.copy(
+                searchAnimeResultPaging = null,
+                searchCharaResultPaging = null
+            )
         }
     }
 }

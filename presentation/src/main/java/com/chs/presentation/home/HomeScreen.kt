@@ -26,7 +26,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.chs.common.UiConst
 import com.chs.domain.model.AnimeInfo
-import com.chs.presentation.LoadingIndicator
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.main.Screen

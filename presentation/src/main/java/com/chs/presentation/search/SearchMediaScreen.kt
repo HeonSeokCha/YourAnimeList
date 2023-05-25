@@ -5,11 +5,13 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -21,11 +23,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import androidx.paging.compose.items
-import com.chs.presentation.LoadingIndicator
-import com.chs.presentation.browse.BrowseActivity
 import com.chs.common.UiConst
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
+import com.chs.presentation.browse.BrowseActivity
 
 @Composable
 fun SearchMediaScreen(
@@ -36,11 +37,15 @@ fun SearchMediaScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val lazyColScrollState = rememberLazyListState()
+    var placeItemShow by remember { mutableStateOf(false) }
 
-    viewModel.searchPage = searchType
+    LaunchedEffect(context, viewModel) {
+        viewModel.initSearchType(searchType)
+    }
 
     LaunchedEffect(searchKeyWord) {
         if (searchKeyWord.isNotEmpty()) {
+            viewModel.clear()
             viewModel.search(searchKeyWord)
         }
     }
@@ -74,26 +79,30 @@ fun SearchMediaScreen(
                 pagingItems?.let {
                     val animeItems = pagingItems as LazyPagingItems<AnimeInfo>
                     items(
-        count = animeItems.itemCount,
-        key = animeItems.itemKey(key = { it.id }
-        ),
-        contentType = animeItems.itemContentType(
-            )
-    ) { index ->
-        val item = animeItems[index]
-        if (item != null) {
-            SearchMediaItem(item) {
-                context.startActivity(
-                    Intent(
-                        context, BrowseActivity::class.java
-                    ).apply {
-                        putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                        putExtra(UiConst.TARGET_ID, item.id)
-                        putExtra(UiConst.TARGET_ID_MAL, item.idMal)
+                        count = animeItems.itemCount,
+                        key = animeItems.itemKey(key = { it.id }),
+                        contentType = animeItems.itemContentType()
+                    ) { index ->
+                        val item = animeItems[index]
+                        SearchMediaItem(item) {
+                            context.startActivity(
+                                Intent(
+                                    context, BrowseActivity::class.java
+                                ).apply {
+                                    if (item != null) {
+                                        putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                                        putExtra(UiConst.TARGET_ID, item.id)
+                                        putExtra(UiConst.TARGET_ID_MAL, item.idMal)
+                                    }
+                                }
+                            )
+                        }
                     }
-                )
-            }
-        }
+
+                    if (placeItemShow) {
+                        items(6) {
+                            SearchMediaItem(item = null) { }
+                        }
                     }
                 }
             }
@@ -143,20 +152,44 @@ fun SearchMediaScreen(
                             }
                         }
                     }
+
+                    if (placeItemShow) {
+                        items(6) {
+                            SearchMediaItem(item = null) { }
+                        }
+                    }
                 }
             }
         }
     }
 
-    when (pagingItems?.loadState?.source?.refresh) {
-        is LoadState.Loading -> {
-            LoadingIndicator()
+    if (pagingItems != null) {
+        placeItemShow = when (pagingItems.loadState.source.refresh) {
+            is LoadState.Loading -> {
+                true
+            }
+
+            is LoadState.Error -> {
+                Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT)
+                    .show()
+                pagingItems.itemCount < 0
+            }
+
+            else -> pagingItems.itemCount < 0
         }
 
-        is LoadState.Error -> {
-            Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT).show()
-        }
+        placeItemShow = when (pagingItems.loadState.source.append) {
+            is LoadState.Loading -> {
+                true
+            }
 
-        else -> {}
+            is LoadState.Error -> {
+                Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT)
+                    .show()
+                pagingItems.itemCount < 0
+            }
+
+            else -> pagingItems.itemCount < 0
+        }
     }
 }

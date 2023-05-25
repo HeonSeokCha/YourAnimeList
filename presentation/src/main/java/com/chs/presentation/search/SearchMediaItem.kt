@@ -2,17 +2,25 @@ package com.chs.presentation.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,49 +37,50 @@ import coil.compose.AsyncImage
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.ui.theme.Pink80
-import com.chs.presentation.color
+import com.google.accompanist.placeholder.material.placeholder
 
 @Composable
-fun SearchMediaItem(
-    item: Any,
+fun <T> SearchMediaItem(
+    item: T,
     clickAble: () -> Unit
 ) {
+    val starId = "starId"
+    val favoriteId = "favoriteId"
+    val inlineContent = mapOf(
+        Pair(
+            starId,
+            InlineTextContent(
+                Placeholder(
+                    width = 1.5.em,
+                    height = 1.5.em,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                )
+            ) {
+                Icon(
+                    Icons.Rounded.Star,
+                    contentDescription = null,
+                    tint = Color.Yellow,
+                )
+            }),
+        Pair(
+            favoriteId,
+            InlineTextContent(
+                Placeholder(
+                    width = 1.5.em,
+                    height = 1.5.em,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                )
+            ) {
+                Icon(
+                    Icons.Rounded.Favorite,
+                    contentDescription = null,
+                    tint = Color.Red,
+                )
+            })
+    )
+
     when (item) {
-        is AnimeInfo -> {
-            val starId = "starId"
-            val favoriteId = "favoriteId"
-            val inlineContent = mapOf(
-                Pair(
-                    starId,
-                    InlineTextContent(
-                        Placeholder(
-                            width = 1.5.em,
-                            height = 1.5.em,
-                            placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                        )
-                    ) {
-                        Icon(
-                            Icons.Rounded.Star,
-                            contentDescription = null,
-                            tint = Color.Yellow,
-                        )
-                    }),
-                Pair(
-                    favoriteId,
-                    InlineTextContent(
-                        Placeholder(
-                            width = 1.5.em,
-                            height = 1.5.em,
-                            placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                        )
-                    ) {
-                        Icon(
-                            Icons.Rounded.Favorite,
-                            contentDescription = null,
-                            tint = Color.Red,
-                        )
-                    })
-            )
+        is AnimeInfo? -> {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -89,8 +98,9 @@ fun SearchMediaItem(
                         modifier = Modifier
                             .width(150.dp)
                             .height(190.dp)
-                            .background(color = Color.White),
-                        model = item.imageUrl,
+                            .background(color = Color.White)
+                            .placeholder(item == null),
+                        model = item?.imageUrl,
                         contentDescription = null,
                         contentScale = ContentScale.Crop
                     )
@@ -104,7 +114,9 @@ fun SearchMediaItem(
                             )
                     ) {
                         Text(
-                            text = item.title,
+                            modifier = Modifier
+                                .placeholder(item == null),
+                            text = item?.title ?: "Title PreView",
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
@@ -113,24 +125,25 @@ fun SearchMediaItem(
                         )
 
                         Text(
-                            text = "",
+                            text = if (item?.seasonYear != 0) {
+                                "${item?.seasonYear ?: 0} ⦁ ${item?.status ?: "Unknowns"}"
+                            } else {
+                                item?.status ?: "Unknowns"
+                            },
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp
-                        )
-
-                        Text(
-                            text = "${item.seasonYear} ⦁ ${item.status}",
-                            color = Color.White,
                         )
 
                         Row(
                             modifier = Modifier.padding(top = 8.dp)
                         ) {
                             Text(
+                                modifier = Modifier
+                                    .placeholder(item == null),
                                 text = buildAnnotatedString {
                                     appendInlineContent(starId, starId)
-                                    append(item.averageScore.toString())
+                                    append("${item?.averageScore ?: 0}")
                                 },
                                 inlineContent = inlineContent,
                                 fontWeight = FontWeight.Bold,
@@ -139,9 +152,11 @@ fun SearchMediaItem(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
+                                modifier = Modifier
+                                    .placeholder(item == null),
                                 text = buildAnnotatedString {
                                     appendInlineContent(favoriteId, favoriteId)
-                                    append(item.averageScore.toString())
+                                    append("${item?.favourites ?: 0}")
                                 },
                                 inlineContent = inlineContent,
                                 fontWeight = FontWeight.Bold,
@@ -154,26 +169,7 @@ fun SearchMediaItem(
             }
         }
 
-        is CharacterInfo -> {
-            val starId = "starId"
-            val inlineContent = mapOf(
-                Pair(
-                    starId,
-                    InlineTextContent(
-                        Placeholder(
-                            width = 1.5.em,
-                            height = 1.5.em,
-                            placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                        )
-                    ) {
-                        Icon(
-                            Icons.Rounded.Favorite,
-                            contentDescription = null,
-                            tint = Color.Red,
-                        )
-                    })
-            )
-
+        is CharacterInfo? -> {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -190,8 +186,9 @@ fun SearchMediaItem(
                     AsyncImage(
                         modifier = Modifier
                             .width(150.dp)
-                            .height(200.dp),
-                        model = item.imageUrl,
+                            .height(200.dp)
+                            .placeholder(item == null),
+                        model = item?.imageUrl,
                         contentDescription = null,
                         contentScale = ContentScale.Crop
                     )
@@ -206,7 +203,9 @@ fun SearchMediaItem(
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Text(
-                            text = item.name,
+                            modifier = Modifier
+                                .placeholder(item == null),
+                            text = item?.name ?: "PreView Name",
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
@@ -215,7 +214,9 @@ fun SearchMediaItem(
                         )
 
                         Text(
-                            text = item.nativeName,
+                            modifier = Modifier
+                                .placeholder(item == null),
+                            text = item?.nativeName ?: "PreView NativeName",
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp
@@ -223,16 +224,17 @@ fun SearchMediaItem(
 
 
                         Text(
+                            modifier = Modifier
+                                .placeholder(item == null),
                             text = buildAnnotatedString {
                                 appendInlineContent(starId, starId)
-                                append(item.favourites.toString())
+                                append("${item?.favourites ?: 0}")
                             },
                             inlineContent = inlineContent,
                             color = Color.White,
                             fontSize = 14.sp,
                         )
                     }
-
                 }
             }
         }
