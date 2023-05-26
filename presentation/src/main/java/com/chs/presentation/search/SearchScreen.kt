@@ -1,5 +1,6 @@
 package com.chs.presentation.search
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -83,17 +84,20 @@ fun SearchScreen(
                     selected = pagerState.currentPage == index,
                     onClick = {
                         coroutineScope.launch {
-                            pagerState.animateScrollToPage(index)
+                            pagerState.scrollToPage(index)
                         }
                     },
                 )
             }
         }
+
         HorizontalPager(
             pageCount = tabList.size,
             state = pagerState,
             userScrollEnabled = false,
-        ) {
+            key = { tabList[it] }
+        ) { page ->
+            Log.e("SearchScreenHorizontalPager", page.toString())
             when (pagerState.currentPage) {
                 0 -> {
                     SearchMediaScreen(
