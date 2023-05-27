@@ -43,6 +43,7 @@ import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.items
+import com.google.accompanist.placeholder.material.placeholder
 
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -66,7 +67,7 @@ fun StudioDetailScreen(
     }
 
     LaunchedEffect(state.sortOption) {
-        viewModel.getStudioAnimeList(studioId, state.sortOption)
+        viewModel.getStudioAnimeList(studioId, state.sortOption.rawValue)
     }
 
     Scaffold(
@@ -121,9 +122,9 @@ fun StudioDetailScreen(
 
         if (isShowFilterDialog) {
             FilterDialog(
-                list = UiConst.sortTypeList,
+                list = UiConst.sortTypeList.map { it.name to it.rawValue },
                 onClick = { idx ->
-                    viewModel.changeFilterOption(UiConst.sortTypeList[idx].second)
+                    viewModel.changeFilterOption(UiConst.sortTypeList[idx])
                 }, onDismiss = {
                     isShowFilterDialog = false
                 }
@@ -145,14 +146,23 @@ private fun StudioIndo(studioInfo: StudioDetailInfo?) {
             ),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text(text = studioInfo?.studioBasicInfo?.name ?: "")
-        Row {
+        Text(
+            modifier = Modifier
+                .placeholder(studioInfo == null),
+            text = studioInfo?.studioBasicInfo?.name ?: "Title PreView"
+        )
+        Row(
+            modifier = Modifier
+                .placeholder(studioInfo == null)
+        ) {
             Icon(
                 Icons.Default.Favorite,
                 contentDescription = null,
                 tint = Color.Red
             )
-            Text(text = studioInfo?.favourites.toString())
+            Text(
+                text = "${studioInfo?.favourites ?: 0}"
+            )
         }
     }
 }
@@ -160,7 +170,7 @@ private fun StudioIndo(studioInfo: StudioDetailInfo?) {
 
 @Composable
 private fun StudioAnimeSort(
-    sortType: String,
+    sortType: UiConst.SortType,
     onClick: () -> Unit
 ) {
     Row(
@@ -180,7 +190,7 @@ private fun StudioAnimeSort(
         Text(
             modifier = Modifier
                 .clickable { onClick() },
-            text = sortType
+            text = sortType.name
         )
     }
 }

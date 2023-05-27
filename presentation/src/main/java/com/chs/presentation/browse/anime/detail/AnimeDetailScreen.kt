@@ -64,12 +64,13 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.common.URLConst
 import com.chs.domain.model.AnimeDetailInfo
-import com.chs.presentation.common.LoadingIndicator
+import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.browse.CollapsingAppBar
-import com.chs.presentation.browse.anime.AnimeCharaScreen
+import com.chs.presentation.browse.anime.character.AnimeCharaScreen
 import com.chs.presentation.browse.anime.overView.AnimeOverViewScreen
 import com.chs.presentation.browse.anime.recommend.AnimeRecScreen
 import com.chs.presentation.color
+import com.chs.presentation.common.LoadingIndicator
 import com.chs.presentation.isNotEmptyValue
 import com.chs.presentation.ui.theme.Pink80
 import com.google.accompanist.placeholder.material.placeholder
@@ -193,12 +194,12 @@ fun AnimeDetailScreen(
                         }
 
                         1 -> {
-                            if (!state.animeDetailInfo?.characterList.isNullOrEmpty()) {
-                                AnimeCharaScreen(
-                                    charaInfoList = state.animeDetailInfo?.characterList!!,
-                                    navController = navController,
-                                )
-                            }
+                            AnimeCharaScreen(
+//                                charaInfoList = state.animeDetailInfo?.characterList
+//                                    ?: List<CharacterInfo?>(6) { null },
+                                List<CharacterInfo?>(6) { null },
+                                navController = navController,
+                            )
                         }
 
                         2 -> {

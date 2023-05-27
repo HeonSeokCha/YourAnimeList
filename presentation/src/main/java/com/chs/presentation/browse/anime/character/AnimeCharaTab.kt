@@ -1,7 +1,14 @@
-package com.chs.presentation.browse.anime
+package com.chs.presentation.browse.anime.character
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -18,10 +25,11 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.browse.BrowseScreen
+import com.google.accompanist.placeholder.material.placeholder
 
 @Composable
 fun AnimeCharaScreen(
-    charaInfoList: List<CharacterInfo>,
+    charaInfoList: List<CharacterInfo?>,
     navController: NavController,
 ) {
     LazyVerticalGrid(
@@ -32,40 +40,43 @@ fun AnimeCharaScreen(
                 bottom = 8.dp
             ),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(
             horizontal = 8.dp,
             vertical = 8.dp
         ),
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(3)
     ) {
-        items(
-            charaInfoList,
-            key = { it.id }
-        ) { charaInfo ->
+        items(charaInfoList) { charaInfo ->
             Column(
                 modifier = Modifier
                     .width(100.dp)
                     .clickable {
-                        navController.navigate(
-                            "${BrowseScreen.CharacterDetailScreen.route}/" +
-                                    "${charaInfo.id}"
-                        )
-                    }
+                        if (charaInfo != null) {
+                            navController.navigate(
+                                "${BrowseScreen.CharacterDetailScreen.route}/" +
+                                        "${charaInfo.id}"
+                            )
+                        }
+                    },
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 AsyncImage(
                     modifier = Modifier
                         .size(100.dp)
-                        .clip(RoundedCornerShape(100)),
-                    model = charaInfo.imageUrl,
+                        .clip(RoundedCornerShape(100))
+                        .placeholder(charaInfo == null),
+                    model = charaInfo?.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                 )
+
                 Spacer(modifier = Modifier.height(4.dp))
+
                 Text(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    textAlign = TextAlign.Center,
-                    text = charaInfo.name
+                    modifier = Modifier
+                        .placeholder(charaInfo == null),
+                    text = charaInfo?.name ?: "Character"
                 )
             }
         }

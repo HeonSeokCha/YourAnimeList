@@ -9,6 +9,6 @@ import kotlinx.coroutines.flow.Flow
 data class StudioDetailState(
     val studioDetailInfo: StudioDetailInfo? = null,
     val studioAnimeList: Flow<PagingData<AnimeInfo>>? = null,
-    val sortOption: String = UiConst.SortType.POPULARITY.rawValue,
+    val sortOption: UiConst.SortType = UiConst.SortType.POPULARITY,
     val isLoading: Boolean = false
 )

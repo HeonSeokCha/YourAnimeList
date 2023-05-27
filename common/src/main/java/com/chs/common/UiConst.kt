@@ -71,14 +71,12 @@ object UiConst {
 
     val sortTypeList = SortType
         .values()
-        .map { it.name to it.rawValue }
 
     val yearSortList = (Calendar.getInstance().get(Calendar.YEAR) downTo 1980)
         .map { it.toString() to it.toString() }
 
     val seasonFilterList = Season
         .values()
-        .map { it.name to it.rawValue }
 
     val mediaStatus = hashMapOf(
         Pair("RELEASING", "Up Releasing" to 0xFF00BCD4),

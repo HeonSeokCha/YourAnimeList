@@ -47,7 +47,7 @@ class StudioDetailViewModel @Inject constructor(
         }
     }
 
-    fun changeFilterOption(sortType: String) {
+    fun changeFilterOption(sortType: UiConst.SortType) {
         _state.update {
             it.copy(
                 sortOption = sortType

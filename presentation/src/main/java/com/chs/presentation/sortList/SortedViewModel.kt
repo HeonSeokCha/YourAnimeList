@@ -117,8 +117,8 @@ class SortedViewModel @Inject constructor(
                             it.copy(
                                 menuList = listOf(
                                     "Year" to UiConst.yearSortList,
-                                    "Season" to UiConst.seasonFilterList,
-                                    "Sort" to UiConst.sortTypeList,
+                                    "Season" to UiConst.seasonFilterList.map { it.name to it.rawValue },
+                                    "Sort" to UiConst.sortTypeList.map { it.name to it.rawValue },
                                     "Genre" to result.data!!.map { genre -> genre to genre }
                                 )
                             )
