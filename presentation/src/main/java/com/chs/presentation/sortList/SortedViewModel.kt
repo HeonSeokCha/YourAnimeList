@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.chs.common.Resource
-import com.chs.common.UiConst
+import com.chs.presentation.UiConst
 import com.chs.domain.usecase.GetAnimeFilteredListUseCase
 import com.chs.domain.usecase.GetGenreListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.chs.common.UiConst
+import com.chs.presentation.UiConst
 import com.chs.domain.model.AnimeRecommendBannerInfo
 import com.chs.presentation.browse.BrowseActivity
 import com.google.accompanist.placeholder.PlaceholderHighlight

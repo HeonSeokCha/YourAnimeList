@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.presentation.ui.theme.Pink80
-import com.chs.common.UiConst
+import com.chs.presentation.UiConst
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)

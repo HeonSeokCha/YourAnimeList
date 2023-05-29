@@ -1,4 +1,4 @@
-package com.chs.presentation.animeList
+package com.chs.presentation.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,51 +26,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.chs.common.UiConst
+import com.chs.presentation.UiConst
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.color
+import com.chs.presentation.isNotEmptyValue
+import com.google.accompanist.placeholder.material.placeholder
 
 @Composable
-fun ItemYourAnime(
-    anime: AnimeInfo,
+fun ItemAnimeLarge(
+    anime: AnimeInfo?,
     clickAble: () -> Unit
 ) {
-
-    val starId = "starId"
-    val favoriteId = "favoriteId"
-    val inlineContent = mapOf(
-        Pair(
-            starId,
-            InlineTextContent(
-                Placeholder(
-                    width = 1.5.em,
-                    height = 1.5.em,
-                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                )
-            ) {
-                Icon(
-                    Icons.Rounded.Star,
-                    contentDescription = null,
-                    tint = Color.Yellow,
-                )
-            }),
-        Pair(
-            favoriteId,
-            InlineTextContent(
-                Placeholder(
-                    width = 1.5.em,
-                    height = 1.5.em,
-                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                )
-            ) {
-                Icon(
-                    Icons.Rounded.Favorite,
-                    contentDescription = null,
-                    tint = Color.Red,
-                )
-            })
-    )
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -88,10 +55,8 @@ fun ItemYourAnime(
                 modifier = Modifier
                     .width(150.dp)
                     .height(190.dp)
-                    .background(
-                        color = "#ffffff".color
-                    ),
-                model = anime.imageUrl,
+                    .placeholder(anime == null),
+                model = anime?.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -105,7 +70,9 @@ fun ItemYourAnime(
                     )
             ) {
                 Text(
-                    text = anime.title,
+                    modifier = Modifier
+                        .placeholder(anime == null),
+                    text = anime?.title ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
@@ -113,38 +80,52 @@ fun ItemYourAnime(
                     overflow = TextOverflow.Ellipsis
                 )
 
-                Text(
-                    text = "",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "${anime.seasonYear} ⦁ ${UiConst.mediaStatus[anime.status]?.first ?: ""}",
-                    color = Color.White,
+                    modifier = Modifier
+                        .placeholder(anime == null),
+                    text = if (anime?.seasonYear.isNotEmptyValue) {
+                        "${anime?.seasonYear ?: 2000} ⦁ " +
+                                (UiConst.mediaStatus[anime?.status]?.first ?: UiConst.UNKNOWN)
+                    } else {
+                        UiConst.mediaStatus[anime?.status]?.first ?: UiConst.UNKNOWN
+                    },
+                    color = Color.White
                 )
 
                 Row(
                     modifier = Modifier.padding(top = 8.dp)
                 ) {
+                    if (anime?.averageScore.isNotEmptyValue) {
+                        Text(
+                            modifier = Modifier
+                                .placeholder(anime == null),
+                            text = buildAnnotatedString {
+                                appendInlineContent(
+                                    UiConst.AVERAGE_SCORE_ID,
+                                    UiConst.AVERAGE_SCORE_ID
+                                )
+                                append("${anime?.averageScore ?: 0}")
+                            },
+                            inlineContent = UiConst.inlineContent,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            fontSize = 14.sp,
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
                     Text(
+                        modifier = Modifier
+                            .placeholder(anime == null),
                         text = buildAnnotatedString {
-                            appendInlineContent(starId, starId)
-                            append(anime.averageScore.toString())
+                            appendInlineContent(
+                                UiConst.FAVOURITE_ID,
+                                UiConst.FAVOURITE_ID
+                            )
+                            append("${anime?.favourites ?: 0}")
                         },
-                        inlineContent = inlineContent,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        fontSize = 14.sp,
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = buildAnnotatedString {
-                            appendInlineContent(favoriteId, favoriteId)
-                            append(anime.favourites.toString())
-                        },
-                        inlineContent = inlineContent,
+                        inlineContent = UiConst.inlineContent,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                         fontSize = 14.sp,

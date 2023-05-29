@@ -36,7 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.chs.common.UiConst
+import com.chs.presentation.UiConst
 import com.chs.domain.model.StudioDetailInfo
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingAppBar

@@ -59,7 +59,7 @@ fun AnimeCharaScreen(
                             )
                         }
                     },
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 AsyncImage(
                     modifier = Modifier
@@ -76,7 +76,8 @@ fun AnimeCharaScreen(
                 Text(
                     modifier = Modifier
                         .placeholder(charaInfo == null),
-                    text = charaInfo?.name ?: "Character"
+                    text = charaInfo?.name ?: "Character",
+                    textAlign = TextAlign.Center
                 )
             }
         }

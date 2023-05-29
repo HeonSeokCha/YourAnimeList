@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.presentation.browse.BrowseActivity
-import com.chs.common.UiConst
+import com.chs.presentation.UiConst
 
 @Composable
 fun CharaListScreen(

@@ -24,6 +24,12 @@ class AnimeDetailViewModel @Inject constructor(
     private val _state = MutableStateFlow(AnimeDetailState())
     val state = _state.asStateFlow()
 
+    val tabList = listOf(
+        "OVERVIEW",
+        "CHARACTER",
+        "RECOMMEND"
+    )
+
     fun getAnimeDetailInfo(id: Int) {
         viewModelScope.launch {
             getAnimeDetailUseCase(id).collect { result ->

@@ -31,7 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.chs.common.UiConst
+import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall

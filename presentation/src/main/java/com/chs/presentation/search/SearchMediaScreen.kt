@@ -23,7 +23,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import androidx.paging.compose.items
-import com.chs.common.UiConst
+import com.chs.presentation.UiConst
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.browse.BrowseActivity

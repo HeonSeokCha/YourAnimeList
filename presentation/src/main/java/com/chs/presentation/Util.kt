@@ -1,7 +1,7 @@
 package com.chs.presentation
 
 import java.util.*
-import com.chs.common.UiConst.Season
+import com.chs.presentation.UiConst.Season
 
 object Util {
 

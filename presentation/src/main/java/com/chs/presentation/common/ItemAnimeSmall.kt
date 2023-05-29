@@ -3,35 +3,25 @@ package com.chs.presentation.common
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.Placeholder
-import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.chs.common.UiConst
+import com.chs.presentation.UiConst
 import com.chs.domain.model.AnimeInfo
-import com.chs.presentation.R
 import com.chs.presentation.ui.theme.YourAnimeListTheme
 import com.google.accompanist.placeholder.material.placeholder
 
@@ -40,24 +30,6 @@ fun ItemAnimeSmall(
     item: AnimeInfo?,
     onClick: () -> Unit
 ) {
-    val starId = "starId"
-    val inlineContent = mapOf(
-        Pair(
-            starId,
-            InlineTextContent(
-                Placeholder(
-                    width = 1.5.em,
-                    height = 1.5.em,
-                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                )
-            ) {
-                Icon(
-                    Icons.Rounded.Star,
-                    contentDescription = null,
-                    tint = Color.Yellow,
-                )
-            })
-    )
     Card(
         modifier = Modifier
             .width(130.dp)
@@ -138,10 +110,13 @@ fun ItemAnimeSmall(
                             modifier = Modifier
                                 .placeholder(item == null),
                             text = buildAnnotatedString {
-                                appendInlineContent(starId, starId)
+                                appendInlineContent(
+                                    UiConst.AVERAGE_SCORE_ID,
+                                    UiConst.AVERAGE_SCORE_ID
+                                )
                                 append("${item?.averageScore ?: 99}")
                             },
-                            inlineContent = inlineContent,
+                            inlineContent = UiConst.inlineContent,
                             color = Color.Gray,
                             fontSize = 12.sp,
                             textAlign = TextAlign.End

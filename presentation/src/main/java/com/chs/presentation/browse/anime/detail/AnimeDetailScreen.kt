@@ -65,6 +65,7 @@ import coil.compose.AsyncImage
 import com.chs.common.URLConst
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.CharacterInfo
+import com.chs.presentation.UiConst
 import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.browse.anime.character.AnimeCharaScreen
 import com.chs.presentation.browse.anime.overView.AnimeOverViewScreen
@@ -90,11 +91,6 @@ fun AnimeDetailScreen(
     val activity = (LocalContext.current as? Activity)
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
-    val tabList = listOf(
-        "OVERVIEW",
-        "CHARACTER",
-        "RECOMMEND"
-    )
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
@@ -153,7 +149,7 @@ fun AnimeDetailScreen(
                         )
                     }
                 ) {
-                    tabList.forEachIndexed { index, title ->
+                    viewModel.tabList.forEachIndexed { index, title ->
                         Tab(
                             text = {
                                 Text(
@@ -179,12 +175,12 @@ fun AnimeDetailScreen(
             item {
                 HorizontalPager(
                     state = pagerState,
-                    pageCount = tabList.size,
+                    pageCount = viewModel.tabList.size,
                     modifier = Modifier
                         .fillMaxSize(),
                     userScrollEnabled = false
-                ) {
-                    when (it) {
+                ) { page ->
+                    when (page) {
                         0 -> {
                             AnimeOverViewScreen(
                                 animeOverViewInfo = state.animeDetailInfo,
@@ -195,9 +191,8 @@ fun AnimeDetailScreen(
 
                         1 -> {
                             AnimeCharaScreen(
-//                                charaInfoList = state.animeDetailInfo?.characterList
-//                                    ?: List<CharacterInfo?>(6) { null },
-                                List<CharacterInfo?>(6) { null },
+                                charaInfoList = state.animeDetailInfo?.characterList
+                                    ?: List<CharacterInfo?>(6) { null },
                                 navController = navController,
                             )
                         }
@@ -227,43 +222,6 @@ fun AnimeDetailHeadBanner(
     trailerClick: (trailerId: String?) -> Unit,
     saveClick: () -> Unit
 ) {
-    val starId = "starId"
-    val favoriteId = "favoriteId"
-    val inlineContent = mapOf(
-        Pair(
-            starId,
-            InlineTextContent(
-                Placeholder(
-                    width = 1.5.em,
-                    height = 1.5.em,
-                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                )
-            ) {
-                Icon(
-                    Icons.Rounded.Star,
-                    contentDescription = null,
-                    tint = Color.Yellow,
-                )
-            }
-        ),
-        Pair(
-            favoriteId,
-            InlineTextContent(
-                Placeholder(
-                    width = 1.5.em,
-                    height = 1.5.em,
-                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                )
-            ) {
-                Icon(
-                    Icons.Rounded.Favorite,
-                    contentDescription = null,
-                    tint = Color.Red,
-                )
-            }
-        )
-    )
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -370,10 +328,13 @@ fun AnimeDetailHeadBanner(
                             modifier = Modifier
                                 .placeholder(animeDetailInfo?.animeInfo?.averageScore == null),
                             text = buildAnnotatedString {
-                                appendInlineContent(starId, starId)
+                                appendInlineContent(
+                                    UiConst.AVERAGE_SCORE_ID,
+                                    UiConst.AVERAGE_SCORE_ID
+                                )
                                 append("${animeDetailInfo?.animeInfo?.averageScore ?: 0}")
                             },
-                            inlineContent = inlineContent,
+                            inlineContent = UiConst.inlineContent,
                             fontWeight = FontWeight.Bold,
                             fontSize = 13.sp,
                         )
@@ -384,11 +345,14 @@ fun AnimeDetailHeadBanner(
                             modifier = Modifier
                                 .placeholder(animeDetailInfo?.animeInfo?.favourites == null),
                             text = buildAnnotatedString {
-                                appendInlineContent(favoriteId, favoriteId)
+                                appendInlineContent(
+                                    UiConst.FAVOURITE_ID,
+                                    UiConst.FAVOURITE_ID
+                                )
                                 append("${animeDetailInfo?.animeInfo?.favourites ?: 0}")
 
                             },
-                            inlineContent = inlineContent,
+                            inlineContent = UiConst.inlineContent,
                             fontWeight = FontWeight.Bold,
                             fontSize = 13.sp,
                         )

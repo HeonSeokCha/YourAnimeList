@@ -1,30 +1,28 @@
-package com.chs.common
+package com.chs.presentation
 
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.Icon
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.unit.em
 import java.util.*
-import kotlin.collections.HashMap
 
 object UiConst {
-    const val TARGET_MAIN: String = "main"
-    const val TARGET_SORT: String = "sort"
     const val TARGET_MEDIA: String = "media"
     const val TARGET_ANIME: String = "anime"
-    const val TARGET_MANGA: String = "manga"
     const val TARGET_CHARA: String = "chara"
-    const val TARGET_SEARCH: String = "searchType"
     const val TARGET_ID: String = "id"
     const val TARGET_ID_MAL: String = "idMal"
-    const val TARGET_SORTED: String = "sorted"
     const val TARGET_TYPE: String = "type"
-    const val TARGET_GENRE: String = "genre"
-    const val TARGET_SEASON: String = "season"
-    const val TRENDING_NOW: String = "TRENDING NOW"
-    const val POPULAR_THIS_SEASON: String = "POPULAR THIS SEASON"
-    const val UPCOMING_NEXT_SEASON: String = "UPCOMING NEXT SEASON"
-    const val ALL_TIME_POPULAR: String = "ALL TIME POPULAR"
-    const val TOP_ANIME: String = "Top Anime"
-    const val NO_SEASON_NO_YEAR: String = "noSeasonNoYear"
-    const val NO_SEASON: String = "noSeason"
-    const val SEASON_YEAR: String = "seasonYear"
+    const val AVERAGE_SCORE_ID: String = "averageScoreId"
+    const val FAVOURITE_ID: String = "favoriteId"
+    const val TITLE_PREVIEW: String = "Title PreView"
+    const val UNKNOWN: String = "Unknown"
 
     enum class Season(
         val rawValue: String
@@ -83,4 +81,41 @@ object UiConst {
         Pair("FINISHED", "FINISHED" to 0xFF4CAF50),
         Pair("NOT_YET_RELEASED", "Up Coming" to 0xFF673AB7)
     )
+
+
+    val inlineContent = mapOf(
+        Pair(
+            AVERAGE_SCORE_ID,
+            inlineContentBuilder(
+                Icons.Rounded.Star,
+                Color.Yellow
+            )
+        ),
+        Pair(
+            FAVOURITE_ID,
+            inlineContentBuilder(
+                Icons.Rounded.Favorite,
+                Color.Red
+            )
+        )
+    )
+
+    private fun inlineContentBuilder(
+        icon: ImageVector,
+        tint: Color
+    ): InlineTextContent {
+        return InlineTextContent(
+            Placeholder(
+                width = 1.5.em,
+                height = 1.5.em,
+                placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+            )
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = tint,
+            )
+        }
+    }
 }

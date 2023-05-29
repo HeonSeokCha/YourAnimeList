@@ -19,6 +19,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.chs.presentation.common.LoadingIndicator
 import com.chs.presentation.browse.BrowseScreen
+import com.chs.presentation.common.ItemAnimeLarge
 
 @Composable
 fun AnimeRecScreen(
@@ -52,7 +53,7 @@ fun AnimeRecScreen(
             ) { index ->
                 val item = lazyPagingItems[index]
                 if (item != null) {
-                    ItemAnimeRecommend(item) {
+                    ItemAnimeLarge(item) {
                         navController.navigate(
                             "${BrowseScreen.AnimeDetailScreen.route}/" +
                                     "${item.id}" +

@@ -10,7 +10,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -62,7 +61,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
-import com.chs.common.UiConst
+import com.chs.presentation.UiConst
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.presentation.R
 import com.chs.presentation.browse.BrowseScreen
@@ -179,26 +178,6 @@ private fun CharacterBanner(
     isSave: Boolean,
     onClick: () -> Unit
 ) {
-
-    val inlineContent = mapOf(
-        Pair(
-            "favourite",
-            InlineTextContent(
-                Placeholder(
-                    width = 1.5.em,
-                    height = 1.5.em,
-                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                )
-            ) {
-                Icon(
-                    Icons.Rounded.Favorite,
-                    contentDescription = null,
-                    tint = Color.Red,
-                )
-            }
-        )
-    )
-
     Column(
         modifier = Modifier
             .padding(
@@ -252,11 +231,14 @@ private fun CharacterBanner(
                     modifier = Modifier
                         .placeholder(characterInfo == null),
                     text = buildAnnotatedString {
-                        appendInlineContent("favourite", "favourite")
+                        appendInlineContent(
+                            UiConst.FAVOURITE_ID,
+                            UiConst.FAVOURITE_ID
+                        )
                         append("${characterInfo?.characterInfo?.favourites ?: 0}")
 
                     },
-                    inlineContent = inlineContent,
+                    inlineContent = UiConst.inlineContent,
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
                 )

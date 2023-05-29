@@ -3,7 +3,7 @@ package com.chs.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.common.Resource
-import com.chs.common.UiConst
+import com.chs.presentation.UiConst
 import com.chs.domain.usecase.GetAnimeRecListUseCase
 import com.chs.presentation.Util
 import dagger.hilt.android.lifecycle.HiltViewModel

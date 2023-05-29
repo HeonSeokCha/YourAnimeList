@@ -3,7 +3,7 @@ package com.chs.presentation.browse.studio
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.chs.common.UiConst
+import com.chs.presentation.UiConst
 import com.chs.domain.usecase.GetStudioAnimeListUseCase
 import com.chs.domain.usecase.GetStudioDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
