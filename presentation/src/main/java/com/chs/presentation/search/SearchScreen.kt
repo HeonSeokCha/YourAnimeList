@@ -1,6 +1,5 @@
 package com.chs.presentation.search
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -94,11 +93,9 @@ fun SearchScreen(
         HorizontalPager(
             pageCount = tabList.size,
             state = pagerState,
-            userScrollEnabled = false,
-            key = { tabList[it] }
+            userScrollEnabled = false
         ) { page ->
-            Log.e("SearchScreenHorizontalPager", page.toString())
-            when (pagerState.currentPage) {
+            when (page) {
                 0 -> {
                     SearchMediaScreen(
                         searchType = UiConst.TARGET_ANIME,

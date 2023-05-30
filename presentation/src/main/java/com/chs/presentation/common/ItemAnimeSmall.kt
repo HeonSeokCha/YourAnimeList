@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.presentation.UiConst
 import com.chs.domain.model.AnimeInfo
+import com.chs.presentation.isNotEmptyValue
 import com.chs.presentation.ui.theme.YourAnimeListTheme
 import com.google.accompanist.placeholder.material.placeholder
 
@@ -105,7 +106,7 @@ fun ItemAnimeSmall(
                     )
 
 
-                    if (item?.averageScore != 0) {
+                    if (item?.averageScore.isNotEmptyValue) {
                         Text(
                             modifier = Modifier
                                 .placeholder(item == null),

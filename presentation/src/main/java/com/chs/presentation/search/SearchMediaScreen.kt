@@ -27,6 +27,7 @@ import com.chs.presentation.UiConst
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.browse.BrowseActivity
+import com.chs.presentation.common.ItemAnimeLarge
 
 @Composable
 fun SearchMediaScreen(
@@ -84,24 +85,24 @@ fun SearchMediaScreen(
                         contentType = animeItems.itemContentType()
                     ) { index ->
                         val item = animeItems[index]
-                        SearchMediaItem(item) {
-                            context.startActivity(
-                                Intent(
-                                    context, BrowseActivity::class.java
-                                ).apply {
-                                    if (item != null) {
+                        ItemAnimeLarge(anime = item) {
+                            if (item != null) {
+                                context.startActivity(
+                                    Intent(
+                                        context, BrowseActivity::class.java
+                                    ).apply {
                                         putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
                                         putExtra(UiConst.TARGET_ID, item.id)
                                         putExtra(UiConst.TARGET_ID_MAL, item.idMal)
                                     }
-                                }
-                            )
+                                )
+                            }
                         }
                     }
 
                     if (placeItemShow) {
                         items(6) {
-                            SearchMediaItem(item = null) { }
+                            ItemAnimeLarge(anime = null) { }
                         }
                     }
                 }
@@ -136,8 +137,9 @@ fun SearchMediaScreen(
                 pagingItems?.let {
                     val charaItems = pagingItems as LazyPagingItems<CharacterInfo>
                     items(
-                        charaItems,
-                        key = { it.id }
+                        count = charaItems.itemCount,
+                        key = charaItems.itemKey(key = { it.id }),
+                        contentType = charaItems.itemContentType()
                     ) { item ->
                         if (item != null) {
                             SearchMediaItem(item) {
@@ -146,7 +148,7 @@ fun SearchMediaScreen(
                                         context, BrowseActivity::class.java
                                     ).apply {
                                         this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
-                                        this.putExtra(UiConst.TARGET_ID, item.id)
+                                        this.putExtra(UiConst.TARGET_ID, item)
                                     }
                                 )
                             }

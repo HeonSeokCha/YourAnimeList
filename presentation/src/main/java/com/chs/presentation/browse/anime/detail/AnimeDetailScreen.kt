@@ -13,17 +13,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -48,14 +44,11 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.Placeholder
-import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -133,76 +126,72 @@ fun AnimeDetailScreen(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .padding(it)
-                .fillMaxWidth()
+                .fillMaxSize()
         ) {
-            item {
-                TabRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    selectedTabIndex = pagerState.currentPage,
-                    indicator = { tabPositions ->
-                        TabRowDefaults.Indicator(
-                            modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
-                            color = Pink80
-                        )
-                    }
-                ) {
-                    viewModel.tabList.forEachIndexed { index, title ->
-                        Tab(
-                            text = {
-                                Text(
-                                    text = title,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    fontSize = 12.sp,
-                                )
-                            },
-                            selected = pagerState.currentPage == index,
-                            onClick = {
-                                coroutineScope.launch {
-                                    pagerState.animateScrollToPage(index)
-                                }
-                            },
-                            selectedContentColor = Pink80,
-                            unselectedContentColor = Color.Gray
-                        )
-                    }
+            TabRow(
+                modifier = Modifier.fillMaxWidth(),
+                selectedTabIndex = pagerState.currentPage,
+                indicator = { tabPositions ->
+                    TabRowDefaults.Indicator(
+                        modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+                        color = Pink80
+                    )
+                }
+            ) {
+                viewModel.tabList.forEachIndexed { index, title ->
+                    Tab(
+                        text = {
+                            Text(
+                                text = title,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                fontSize = 12.sp,
+                            )
+                        },
+                        selected = pagerState.currentPage == index,
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        },
+                        selectedContentColor = Pink80,
+                        unselectedContentColor = Color.Gray
+                    )
                 }
             }
 
-            item {
-                HorizontalPager(
-                    state = pagerState,
-                    pageCount = viewModel.tabList.size,
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    userScrollEnabled = false
-                ) { page ->
-                    when (page) {
-                        0 -> {
-                            AnimeOverViewScreen(
-                                animeOverViewInfo = state.animeDetailInfo,
-                                animeTheme = state.animeThemes,
-                                navController = navController
-                            )
-                        }
+            HorizontalPager(
+                state = pagerState,
+                pageCount = viewModel.tabList.size,
+                modifier = Modifier
+                    .fillMaxSize(),
+                userScrollEnabled = false
+            ) { page ->
+                when (page) {
+                    0 -> {
+                        AnimeOverViewScreen(
+                            animeOverViewInfo = state.animeDetailInfo,
+                            animeTheme = state.animeThemes,
+                            navController = navController
+                        )
+                    }
 
-                        1 -> {
-                            AnimeCharaScreen(
-                                charaInfoList = state.animeDetailInfo?.characterList
-                                    ?: List<CharacterInfo?>(6) { null },
-                                navController = navController,
-                            )
-                        }
+                    1 -> {
+                        AnimeCharaScreen(
+                            charaInfoList = state.animeDetailInfo?.characterList
+                                ?: List<CharacterInfo?>(6) { null },
+                            navController = navController,
+                        )
+                    }
 
-                        2 -> {
-                            AnimeRecScreen(
-                                animeId = id,
-                                navController = navController,
-                            )
-                        }
+                    2 -> {
+                        AnimeRecScreen(
+                            animeId = id,
+                            navController = navController,
+                        )
                     }
                 }
             }
