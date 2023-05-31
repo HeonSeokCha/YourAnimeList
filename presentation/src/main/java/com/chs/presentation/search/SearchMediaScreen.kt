@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,6 +29,7 @@ import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.ItemAnimeLarge
+import com.chs.presentation.common.ItemCharaLarge
 
 @Composable
 fun SearchMediaScreen(
@@ -140,24 +142,25 @@ fun SearchMediaScreen(
                         count = charaItems.itemCount,
                         key = charaItems.itemKey(key = { it.id }),
                         contentType = charaItems.itemContentType()
-                    ) { item ->
-                        if (item != null) {
-                            SearchMediaItem(item) {
-                                context.startActivity(
-                                    Intent(
-                                        context, BrowseActivity::class.java
-                                    ).apply {
+                    ) { idx ->
+                        val item = charaItems[idx]
+                        ItemCharaLarge(item) {
+                            context.startActivity(
+                                Intent(
+                                    context, BrowseActivity::class.java
+                                ).apply {
+                                    if (item != null) {
                                         this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
-                                        this.putExtra(UiConst.TARGET_ID, item)
+                                        this.putExtra(UiConst.TARGET_ID, item.id)
                                     }
-                                )
-                            }
+                                }
+                            )
                         }
                     }
 
                     if (placeItemShow) {
                         items(6) {
-                            SearchMediaItem(item = null) { }
+                            ItemCharaLarge(null) { }
                         }
                     }
                 }

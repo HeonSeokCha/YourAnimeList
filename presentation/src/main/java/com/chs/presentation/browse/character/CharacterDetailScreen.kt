@@ -10,6 +10,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -120,9 +121,10 @@ fun CharacterDetailScreen(
         LazyVerticalStaggeredGrid(
             modifier = Modifier
                 .padding(it),
-            columns = StaggeredGridCells.Adaptive(100.dp),
+            columns = StaggeredGridCells.Fixed(3),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalItemSpacing = 4.dp,
+            contentPadding = PaddingValues(horizontal = 4.dp)
         ) {
             item(span = StaggeredGridItemSpan.FullLine) {
                 Column(
@@ -163,8 +165,8 @@ fun CharacterDetailScreen(
                     }
                 }
 
-                item {
-                    Spacer(modifier = Modifier.padding(bottom = 4.dp))
+                item(span = StaggeredGridItemSpan.FullLine) {
+                    Spacer(modifier = Modifier.height(4.dp))
                 }
             }
         }

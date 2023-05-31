@@ -97,19 +97,24 @@ fun ItemAnimeSmall(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        modifier = Modifier
-                            .placeholder(item == null),
-                        text = "${item?.seasonYear ?: 2000}",
-                        color = Color.Gray,
-                        fontSize = 12.sp,
-                    )
+                    if (item?.seasonYear.isNotEmptyValue) {
+                        Text(
+                            modifier = Modifier
+                                .placeholder(item == null),
+                            textAlign = TextAlign.Left,
+                            text = "${item?.seasonYear ?: 2000}",
+                            color = Color.Gray,
+                            fontSize = 12.sp,
+                        )
+                    }
 
+                    Spacer(modifier = Modifier.width(4.dp))
 
                     if (item?.averageScore.isNotEmptyValue) {
                         Text(
                             modifier = Modifier
                                 .placeholder(item == null),
+                            textAlign = TextAlign.Right,
                             text = buildAnnotatedString {
                                 appendInlineContent(
                                     UiConst.AVERAGE_SCORE_ID,
@@ -119,8 +124,7 @@ fun ItemAnimeSmall(
                             },
                             inlineContent = UiConst.inlineContent,
                             color = Color.Gray,
-                            fontSize = 12.sp,
-                            textAlign = TextAlign.End
+                            fontSize = 12.sp
                         )
                     }
                 }

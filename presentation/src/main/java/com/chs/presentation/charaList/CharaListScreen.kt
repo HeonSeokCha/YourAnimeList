@@ -15,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.UiConst
+import com.chs.presentation.common.ItemCharaLarge
 
 @Composable
 fun CharaListScreen(
@@ -41,7 +42,7 @@ fun CharaListScreen(
             state.charaList,
             key = { it.id }
         ) { charaInfo ->
-            ItemYourChara(character = charaInfo) {
+            ItemCharaLarge(character = charaInfo) {
                 context.startActivity(
                     Intent(
                         context, BrowseActivity::class.java
