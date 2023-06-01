@@ -53,7 +53,7 @@ class AnimeRepositoryImpl @Inject constructor(
     }
 
     override fun getAnimeFilteredList(
-        sortType: String,
+        sortType: List<String>,
         season: String?,
         year: Int?,
         genre: String?
@@ -63,7 +63,7 @@ class AnimeRepositoryImpl @Inject constructor(
         ) {
             AnimeSortPagingSource(
                 apolloClient = apolloClient,
-                sort = MediaSort.safeValueOf(sortType),
+                sort = sortType.map { MediaSort.safeValueOf(it) },
                 season = if (season != null) MediaSeason.safeValueOf(season) else null,
                 seasonYear = year,
                 genre = genre

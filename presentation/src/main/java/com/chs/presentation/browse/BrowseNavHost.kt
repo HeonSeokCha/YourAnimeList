@@ -98,19 +98,18 @@ fun BrowseNavHost(
             )
         ) { backStackEntry ->
             SortedListScreen(
-                sortOption = UiConst.SortType.POPULARITY.rawValue,
-                sortYear = backStackEntry.arguments?.getInt("year") ?: 0,
-                sortSeason = backStackEntry.arguments?.getString("season") ?: ""
+                sort = UiConst.SortType.POPULARITY.rawValue,
+                year = backStackEntry.arguments?.getInt("year") ?: 0,
+                season = backStackEntry.arguments?.getString("season") ?: ""
             )
         }
 
         composable("${Screen.SortListScreen.route}/{genre}") { backStackEntry ->
             SortedListScreen(
-                sortOption = UiConst.SortType.AVERAGE.rawValue,
-                sortYear = 0,
-                sortSeason = null,
-                genre = backStackEntry.arguments?.getString("genre")
-                    ?: "",
+                sort = UiConst.SortType.AVERAGE.rawValue,
+                year = 0,
+                season = null,
+                genre = backStackEntry.arguments?.getString("genre") ?: ""
             )
         }
     }

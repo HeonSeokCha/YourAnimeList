@@ -10,7 +10,7 @@ class GetAnimeFilteredListUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
     operator fun invoke(
-        sortType: String,
+        sortType: List<String>,
         season: String?,
         year: Int?,
         genre: String?

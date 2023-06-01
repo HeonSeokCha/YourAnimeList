@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 data class SortState(
     val animeSortPaging: Flow<PagingData<AnimeInfo>>? = null,
     val genreList: List<String> = emptyList(),
-    val selectType: Pair<String, String>? = null,
+    val selectSort: Pair<String, String>? = null,
     val selectSeason: Pair<String, String>? = null,
     val selectYear: Int? = null,
     val selectGenre: String? = null,

@@ -1,6 +1,6 @@
 query AnimeListQuery(
     $page: Int,
-    $sort: MediaSort,
+    $sort: [MediaSort],
     $season: MediaSeason,
     $seasonYear: Int,
     $genre: String
@@ -13,7 +13,7 @@ query AnimeListQuery(
             ...pageBasicInfo
         }
         media(
-            sort: [$sort],
+            sort: $sort,
             season: $season,
             seasonYear: $seasonYear,
             genre: $genre,

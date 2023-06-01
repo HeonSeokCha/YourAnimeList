@@ -81,7 +81,7 @@ fun ItemAnimeSmall(
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.Bottom
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     modifier = Modifier
@@ -143,9 +143,9 @@ fun PreviewItemAnimeSmall() {
             title = "Testasdkljhasodihaiosdjhaoisdjioasdasdasdasd",
             imageUrl = null,
             imagePlaceColor = null,
-            averageScore = 1000,
+            averageScore = 0,
             favourites = 1234,
-            seasonYear = 2023,
+            seasonYear = 0,
             season = "",
             format = "TV",
             status = "RELEASING"

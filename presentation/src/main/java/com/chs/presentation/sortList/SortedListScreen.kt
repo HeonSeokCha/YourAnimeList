@@ -21,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,12 +38,13 @@ import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.items
 import com.chs.presentation.ui.theme.Pink80
+import kotlinx.coroutines.launch
 
 @Composable
 fun SortedListScreen(
-    sortOption: String? = null,
-    sortYear: Int,
-    sortSeason: String? = null,
+    sort: String? = null,
+    year: Int,
+    season: String? = null,
     genre: String? = null,
     viewModel: SortedViewModel = hiltViewModel()
 ) {
@@ -52,12 +54,13 @@ fun SortedListScreen(
     val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
     var filterDialogShow by remember { mutableStateOf(false) }
     var placeItemShow by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(viewModel, context) {
         viewModel.initSort(
-            selectType = UiConst.SortType.values().firstOrNull { it.rawValue == sortOption },
-            selectYear = sortYear,
-            selectSeason = UiConst.Season.values().firstOrNull { it.rawValue == sortSeason },
+            selectSort = UiConst.SortType.values().firstOrNull { it.rawValue == sort },
+            selectYear = year,
+            selectSeason = UiConst.Season.values().firstOrNull { it.rawValue == season },
             selectGenre = genre
         )
     }
@@ -133,6 +136,9 @@ fun SortedListScreen(
             onDismiss = {
                 filterDialogShow = false
             }, onClick = { selectIdx ->
+                coroutineScope.launch {
+                    lazyGridScrollState.scrollToItem(0, 0)
+                }
                 viewModel.changeFilterOptions(selectIdx)
             }
         )

@@ -12,7 +12,7 @@ import com.chs.type.MediaSort
 
 class AnimeSortPagingSource(
     private val apolloClient: ApolloClient,
-    private val sort: MediaSort,
+    private val sort: List<MediaSort>,
     private val season: MediaSeason?,
     private val seasonYear: Int?,
     private val genre: String?

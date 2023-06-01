@@ -30,17 +30,16 @@ class SortedViewModel @Inject constructor(
     }
 
     fun initSort(
-        selectType: UiConst.SortType? = null,
+        selectSort: UiConst.SortType? = null,
         selectSeason: UiConst.Season? = null,
         selectYear: Int = 0,
         selectGenre: String? = null
     ) {
-
         _state.update {
             it.copy(
-                selectType = if (selectType != null) {
-                    selectType.name to selectType.rawValue
-                } else null,
+                selectSort = if (selectSort != null) {
+                    selectSort.name to selectSort.rawValue
+                } else UiConst.SortType.TRENDING.name to UiConst.SortType.TRENDING.rawValue,
                 selectSeason = if (selectSeason != null) {
                     selectSeason.name to selectSeason.rawValue
                 } else null,
@@ -48,7 +47,6 @@ class SortedViewModel @Inject constructor(
                 selectGenre = selectGenre
             )
         }
-
         getSortedAnime()
     }
 
@@ -56,7 +54,14 @@ class SortedViewModel @Inject constructor(
         _state.update {
             it.copy(
                 animeSortPaging = getAnimeFilteredListUseCase(
-                    sortType = it.selectType?.second ?: UiConst.SortType.TRENDING.rawValue,
+                    sortType = if (it.selectSort!!.second == UiConst.SortType.TRENDING.rawValue) {
+                        listOf(
+                            UiConst.SortType.TRENDING.rawValue,
+                            UiConst.SortType.POPULARITY.rawValue
+                        )
+                    } else {
+                        listOf(it.selectSort.second)
+                    },
                     season = it.selectSeason?.second,
                     year = it.selectYear,
                     genre = it.selectGenre
@@ -81,7 +86,7 @@ class SortedViewModel @Inject constructor(
 
             2 -> {
                 _state.update {
-                    it.copy(selectType = it.menuList[2].second[selectIdx])
+                    it.copy(selectSort = it.menuList[2].second[selectIdx])
                 }
             }
 
@@ -98,7 +103,7 @@ class SortedViewModel @Inject constructor(
         return when (selectIdx) {
             0 -> "${state.value.selectYear ?: "Any"}"
             1 -> state.value.selectSeason?.first ?: "Any"
-            2 -> state.value.selectType?.first ?: "Any"
+            2 -> state.value.selectSort?.first ?: "Any"
             3 -> state.value.selectGenre ?: "Any"
             else -> "Any"
         }

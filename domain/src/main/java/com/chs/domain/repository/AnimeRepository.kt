@@ -18,7 +18,7 @@ interface AnimeRepository {
     ): AnimeRecommendList
 
     fun getAnimeFilteredList(
-        sortType: String,
+        sortType: List<String>,
         season: String?,
         year: Int?,
         genre: String?
