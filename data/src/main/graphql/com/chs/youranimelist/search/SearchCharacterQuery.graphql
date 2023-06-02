@@ -11,7 +11,7 @@ query SearchCharacterQuery(
         }
         characters(
             search: $search,
-            sort: [FAVOURITES_DESC],
+            sort: [SEARCH_MATCH, FAVOURITES_DESC],
         ) {
             ...characterBasicInfo
         }

@@ -15,6 +15,7 @@ fragment animeBasicInfo on Media {
     seasonYear
     format
     status(version: 2)
+    isAdult
 }
 
 fragment characterBasicInfo on Character {

@@ -1,6 +1,5 @@
 package com.chs.data.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.apollographql.apollo3.ApolloClient
@@ -35,9 +34,10 @@ class AnimeRecPagingSource(
                 .data!!
 
             LoadResult.Page(
-                data = response.Media?.recommendations?.nodes?.map {
-                    it?.mediaRecommendation?.animeBasicInfo.toAnimeInfo()
-                } ?: emptyList(),
+                data = response.Media?.recommendations?.nodes?.filter { it?.mediaRecommendation?.animeBasicInfo?.isAdult == false }
+                    ?.map {
+                        it?.mediaRecommendation?.animeBasicInfo.toAnimeInfo()
+                    } ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = if (response.Media?.recommendations?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
             )

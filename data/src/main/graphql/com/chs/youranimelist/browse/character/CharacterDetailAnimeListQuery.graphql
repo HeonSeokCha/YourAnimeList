@@ -8,7 +8,7 @@ query CharacterDetailAnimeListQuery(
         media(
             sort: [$sort],
             page: $page,
-            perPage: 10
+            perPage: 10,
         ) {
             pageInfo {
                 ...pageBasicInfo

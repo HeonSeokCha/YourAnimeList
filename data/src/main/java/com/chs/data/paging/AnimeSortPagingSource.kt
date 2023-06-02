@@ -48,7 +48,7 @@ class AnimeSortPagingSource(
                 .data!!
 
             LoadResult.Page(
-                data = response.page?.media?.map {
+                data = response.page?.media?.filter { it?.animeBasicInfo?.isAdult == false }?.map {
                     it?.animeBasicInfo.toAnimeInfo()
                 } ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,

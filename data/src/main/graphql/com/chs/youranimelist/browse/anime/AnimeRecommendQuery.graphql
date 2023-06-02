@@ -2,7 +2,10 @@ query AnimeRecommendQuery(
     $id: Int,
     $page: Int
 ) {
-    Media(id: $id) {
+    Media(
+        id: $id,
+        isAdult: false
+    ) {
         recommendations(
             page: $page,
             perPage: 10,
