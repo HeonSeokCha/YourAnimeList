@@ -1,10 +1,20 @@
 package com.chs.data.mapper
 
-import com.chs.*
+import com.chs.AnimeDetailInfoQuery
+import com.chs.HomeAnimeListQuery
 import com.chs.data.model.JikanAnimeDataDto
 import com.chs.data.source.db.model.AnimeEntity
+import com.chs.domain.model.AnimeDetailInfo
+import com.chs.domain.model.AnimeInfo
+import com.chs.domain.model.AnimeRecommendBannerInfo
+import com.chs.domain.model.AnimeRecommendList
+import com.chs.domain.model.AnimeRelationInfo
+import com.chs.domain.model.AnimeThemeInfo
+import com.chs.domain.model.CharacterInfo
+import com.chs.domain.model.ExternalLinkInfo
+import com.chs.domain.model.StudioInfo
+import com.chs.domain.model.TrailerInfo
 import com.chs.fragment.AnimeBasicInfo
-import com.chs.domain.model.*
 
 fun AnimeBasicInfo?.toAnimeInfo(): AnimeInfo {
     return AnimeInfo(
@@ -95,10 +105,14 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
                     animeBasicInfo = it?.node?.animeBasicInfo.toAnimeInfo()
                 )
             } ?: emptyList(),
-            studioInfo = StudioInfo(
-                id = this?.studios?.nodes?.get(0)?.id ?: 0,
-                name = this?.studios?.nodes?.get(0)?.name ?: ""
-            ),
+            studioInfo = if (this?.studios?.nodes.isNullOrEmpty()) {
+                null
+            } else {
+                StudioInfo(
+                    id = this?.studios?.nodes?.get(0)?.id ?: 0,
+                    name = this?.studios?.nodes?.get(0)?.name ?: ""
+                )
+            },
             externalLinks = this?.externalLinks?.map {
                 ExternalLinkInfo(
                     color = it?.color ?: "#ffffff",

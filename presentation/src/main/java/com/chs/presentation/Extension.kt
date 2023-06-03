@@ -20,6 +20,9 @@ val String.color
 val Int?.isNotEmptyValue
     get() = this != null && this != 0
 
+val String?.isNotEmptyValue
+    get() = this != null && this != ""
+
 
 fun <T : Any> LazyGridScope.items(
     items: LazyPagingItems<T>,
