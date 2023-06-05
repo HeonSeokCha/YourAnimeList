@@ -54,6 +54,7 @@ fun SortedListScreen(
     val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
     var filterDialogShow by remember { mutableStateOf(false) }
     var placeItemShow by remember { mutableStateOf(false) }
+    var isEmptyShow by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(viewModel, context) {
@@ -127,6 +128,14 @@ fun SortedListScreen(
                     }
                 }
             }
+
+            if (isEmptyShow) {
+                item {
+                    Text(
+                        text = "No Result AnimeList.."
+                    )
+                }
+            }
         }
     }
 
@@ -156,21 +165,10 @@ fun SortedListScreen(
                 false
             }
 
-            else -> false
-        }
-
-        placeItemShow = when (pagingItems.loadState.source.append) {
-            is LoadState.Loading -> {
-                true
+            else -> {
+                isEmptyShow = pagingItems.itemCount == 0
+                pagingItems.itemCount < 0
             }
-
-            is LoadState.Error -> {
-                Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT)
-                    .show()
-                pagingItems.itemCount <= 0
-            }
-
-            else -> pagingItems.itemCount <= 0
         }
     }
 }

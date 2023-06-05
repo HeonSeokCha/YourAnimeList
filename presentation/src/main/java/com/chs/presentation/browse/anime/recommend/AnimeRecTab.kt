@@ -1,12 +1,18 @@
 package com.chs.presentation.browse.anime.recommend
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -29,6 +35,8 @@ fun AnimeRecScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    var placeItemShow by remember { mutableStateOf(false) }
+    var isEmptyShow by remember { mutableStateOf(false) }
 
     LaunchedEffect(context, viewModel) {
         viewModel.getAnimeRecommendList(animeId)
@@ -52,8 +60,8 @@ fun AnimeRecScreen(
                 contentType = lazyPagingItems.itemContentType()
             ) { index ->
                 val item = lazyPagingItems[index]
-                if (item != null) {
-                    ItemAnimeLarge(item) {
+                ItemAnimeLarge(item) {
+                    if (item != null) {
                         navController.navigate(
                             "${BrowseScreen.AnimeDetailScreen.route}/" +
                                     "${item.id}" +
@@ -62,10 +70,37 @@ fun AnimeRecScreen(
                     }
                 }
             }
+
+            if (placeItemShow) {
+                items(6) {
+                    ItemAnimeLarge(null) { }
+                }
+            }
+
+            if (isEmptyShow) {
+                item {
+                    Text(
+                        text = "No Recommend AnimeList.."
+                    )
+                }
+            }
         }
     }
 
-    if (lazyPagingItems?.loadState?.append == LoadState.Loading) {
-        LoadingIndicator()
+    if (lazyPagingItems != null) {
+        placeItemShow = when (lazyPagingItems.loadState.source.refresh) {
+            is LoadState.Loading -> true
+            is LoadState.Error -> {
+                Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT)
+                    .show()
+                false
+            }
+
+            else -> {
+                Log.e("Lazy refresh", lazyPagingItems.itemCount.toString())
+                isEmptyShow = lazyPagingItems.itemCount == 0
+                lazyPagingItems.itemCount < 0
+            }
+        }
     }
 }

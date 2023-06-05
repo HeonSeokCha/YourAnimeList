@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,6 +41,7 @@ fun SearchMediaScreen(
     val context = LocalContext.current
     val lazyColScrollState = rememberLazyListState()
     var placeItemShow by remember { mutableStateOf(false) }
+    var isEmptyShow by remember { mutableStateOf(false) }
 
     LaunchedEffect(context, viewModel) {
         viewModel.initSearchType(searchType)
@@ -108,6 +110,14 @@ fun SearchMediaScreen(
                         ItemAnimeLarge(anime = null) { }
                     }
                 }
+
+                if (isEmptyShow) {
+                    item {
+                        Text(
+                            text = "No SearchResult.."
+                        )
+                    }
+                }
             }
 
 //            UiConst.TARGET_MANGA -> {
@@ -163,6 +173,14 @@ fun SearchMediaScreen(
                             ItemCharaLarge(null) { }
                         }
                     }
+
+                    if (isEmptyShow) {
+                        item {
+                            Text(
+                                text = "No SearchResult.."
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -180,21 +198,10 @@ fun SearchMediaScreen(
                 false
             }
 
-            else -> false
-        }
-
-        placeItemShow = when (pagingItems.loadState.source.append) {
-            is LoadState.Loading -> {
-                true
+            else -> {
+                isEmptyShow = pagingItems.itemCount == 0
+                pagingItems.itemCount < 0
             }
-
-            is LoadState.Error -> {
-                Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT)
-                    .show()
-                pagingItems.itemCount <= 0
-            }
-
-            else -> pagingItems.itemCount <= 0
         }
     }
 }
