@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
-import com.chs.presentation.isNotEmptyValue
 import com.chs.presentation.ui.theme.YourAnimeListTheme
 import com.google.accompanist.placeholder.material.placeholder
 
@@ -91,7 +90,7 @@ fun ItemAnimeSmall(
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.Bottom
             ) {
                 Text(
                     modifier = Modifier
@@ -154,7 +153,7 @@ fun PreviewItemAnimeSmall() {
             imageUrl = null,
             imagePlaceColor = null,
             averageScore = 0,
-            favourites = 0,
+            favourites = 80,
             seasonYear = 0,
             season = "",
             format = "TV",

@@ -109,12 +109,6 @@ fun SearchScreen(
                         searchKeyWord = searchQuery
                     )
                 }
-//                2 -> {
-//                    SearchMediaScreen(
-//                        searchType = UiConst.TARGET_CHARA,
-//                        searchKeyWord = searchKeyWord
-//                    )
-//                }
             }
         }
     }
