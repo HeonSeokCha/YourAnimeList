@@ -18,6 +18,9 @@ import com.chs.data.mapper.*
 import com.chs.data.paging.AnimeRecPagingSource
 import com.chs.data.paging.AnimeSortPagingSource
 import com.chs.data.paging.SearchAnimePagingSource
+import com.chs.data.source.db.dao.GenreDao
+import com.chs.data.source.db.model.GenreEntity
+import com.chs.domain.model.GenreInfo
 import com.chs.type.MediaSeason
 import com.chs.type.MediaSort
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +32,8 @@ import javax.inject.Singleton
 class AnimeRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
     private val jikanService: KtorJikanService,
-    private val dao: AnimeListDao
+    private val animeDao: AnimeListDao,
+    private val genreDao: GenreDao
 ) : AnimeRepository {
     override suspend fun getAnimeRecommendList(
         currentSeason: String,
@@ -99,7 +103,7 @@ class AnimeRepositoryImpl @Inject constructor(
 
 
     override fun getSavedAnimeList(): Flow<List<AnimeInfo>> {
-        return dao.getAllAnimeList().map {
+        return animeDao.getAllAnimeList().map {
             it.map { animeEntity ->
                 animeEntity.toAnimeInfo()
             }
@@ -107,13 +111,13 @@ class AnimeRepositoryImpl @Inject constructor(
     }
 
     override fun getSavedAnimeInfo(id: Int): Flow<AnimeInfo?> {
-        return dao.checkAnimeList(id).map {
+        return animeDao.checkAnimeList(id).map {
             it?.toAnimeInfo()
         }
     }
 
     override fun getSavedSearchAnimeList(query: String): Flow<List<AnimeInfo>> {
-        return dao.searchAnimeList(query).map {
+        return animeDao.searchAnimeList(query).map {
             it.map { animeEntity ->
                 animeEntity.toAnimeInfo()
             }
@@ -121,15 +125,15 @@ class AnimeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertSavedAnimeInfo(animeInfo: AnimeInfo) {
-        dao.insert(animeInfo.toAnimeEntity())
+        animeDao.insert(animeInfo.toAnimeEntity())
     }
 
     override suspend fun deleteSavedAnimeInfo(animeInfo: AnimeInfo) {
-        dao.delete(animeInfo.toAnimeEntity())
+        animeDao.delete(animeInfo.toAnimeEntity())
     }
 
-    override suspend fun getAnimeGenreList(): List<String> {
-        return apolloClient.query(
+    override suspend fun insertGenreList(genreList: List<String>) {
+        apolloClient.query(
             GenreQuery()
         )
             .execute()
@@ -138,5 +142,19 @@ class AnimeRepositoryImpl @Inject constructor(
             ?.map {
                 it.let { it!! }
             } ?: emptyList()
+        genreDao.insertMultiple(
+            *genreList.map {
+                GenreEntity(
+                    name = it,
+                    symbolColor = "#ffffff"
+                )
+            }.toTypedArray()
+        )
+    }
+
+    override suspend fun getAnimeGenreList(): List<GenreInfo> {
+        return genreDao.getAllGenres().map {
+            it.toGenreInfo()
+        }
     }
 }

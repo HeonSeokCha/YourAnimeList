@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.chs.data.source.db.AnimeListDatabase
 import com.chs.data.source.db.dao.AnimeListDao
 import com.chs.data.source.db.dao.CharaListDao
+import com.chs.data.source.db.dao.GenreDao
 import com.chs.data.source.db.dao.SearchListDao
 import dagger.Module
 import dagger.Provides
@@ -43,5 +44,11 @@ object LocalModule {
     @Singleton
     fun provideSearchDao(db: AnimeListDatabase): SearchListDao {
         return db.searchListDao
+    }
+
+    @Provides
+    @Singleton
+    fun provideGenreDao(db: AnimeListDatabase): GenreDao {
+        return db.genreDao
     }
 }

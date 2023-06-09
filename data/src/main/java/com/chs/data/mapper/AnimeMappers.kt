@@ -4,6 +4,7 @@ import com.chs.AnimeDetailInfoQuery
 import com.chs.HomeAnimeListQuery
 import com.chs.data.model.JikanAnimeDataDto
 import com.chs.data.source.db.model.AnimeEntity
+import com.chs.data.source.db.model.GenreEntity
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeRecommendBannerInfo
@@ -12,6 +13,7 @@ import com.chs.domain.model.AnimeRelationInfo
 import com.chs.domain.model.AnimeThemeInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.domain.model.ExternalLinkInfo
+import com.chs.domain.model.GenreInfo
 import com.chs.domain.model.StudioInfo
 import com.chs.domain.model.TrailerInfo
 import com.chs.fragment.AnimeBasicInfo
@@ -170,5 +172,12 @@ fun AnimeEntity.toAnimeInfo(): AnimeInfo {
         favourites = this.favourites,
         status = this.status,
         format = this.format
+    )
+}
+
+fun GenreEntity.toGenreInfo(): GenreInfo {
+    return GenreInfo(
+        name = this.name,
+        symbolColor = this.symbolColor
     )
 }

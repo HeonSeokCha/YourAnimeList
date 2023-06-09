@@ -5,6 +5,7 @@ import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeRecommendList
 import com.chs.domain.model.AnimeThemeInfo
+import com.chs.domain.model.GenreInfo
 import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository {
@@ -40,6 +41,8 @@ interface AnimeRepository {
 
     suspend fun deleteSavedAnimeInfo(animeInfo: AnimeInfo)
 
-    suspend fun getAnimeGenreList(): List<String>
+    suspend fun insertGenreList(genreList: List<String>)
+
+    suspend fun getAnimeGenreList(): List<GenreInfo>
 
 }
