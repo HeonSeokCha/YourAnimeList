@@ -41,8 +41,8 @@ interface AnimeRepository {
 
     suspend fun deleteSavedAnimeInfo(animeInfo: AnimeInfo)
 
-    suspend fun insertGenreList(genreList: List<String>)
+    suspend fun getRecentGenreList()
 
-    suspend fun getAnimeGenreList(): List<GenreInfo>
+    suspend fun getSavedGenreList(): List<String>
 
 }

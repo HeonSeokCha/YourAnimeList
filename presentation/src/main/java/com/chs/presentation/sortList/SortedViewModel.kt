@@ -3,21 +3,24 @@ package com.chs.presentation.sortList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.chs.common.Resource
 import com.chs.presentation.UiConst
 import com.chs.domain.usecase.GetAnimeFilteredListUseCase
-import com.chs.domain.usecase.GetGenreListUseCase
+import com.chs.domain.usecase.GetRecentGenresUseCase
+import com.chs.domain.usecase.GetSavedGenresUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class SortedViewModel @Inject constructor(
     private val getAnimeFilteredListUseCase: GetAnimeFilteredListUseCase,
-    private val getGenreListUseCase: GetGenreListUseCase
+    private val getSavedGenresUsaCase: GetSavedGenresUseCase,
+    private val getRecentGenresUseCase: GetRecentGenresUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SortState())
@@ -26,7 +29,7 @@ class SortedViewModel @Inject constructor(
     var selectMenuIdx: Int = 0
 
     init {
-        getGenreList()
+        initFilterList()
     }
 
     fun initSort(
@@ -109,31 +112,23 @@ class SortedViewModel @Inject constructor(
         }
     }
 
-    private fun getGenreList() {
+    private fun initFilterList() {
         viewModelScope.launch {
-            getGenreListUseCase().collect { result ->
-                when (result) {
-                    is Resource.Loading -> {
-                        _state.update { it.copy(isLoading = true) }
-                    }
-
-                    is Resource.Success -> {
-                        _state.update {
-                            it.copy(
-                                menuList = listOf(
-                                    "Year" to UiConst.yearSortList,
-                                    "Season" to UiConst.seasonFilterList.map { it.name to it.rawValue },
-                                    "Sort" to UiConst.sortTypeList.map { it.name to it.rawValue },
-                                    "Genre" to result.data!!.map { genre -> genre to genre }
-                                )
-                            )
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        _state.update { it.copy(isError = result.message) }
-                    }
+            val genreList = withContext(Dispatchers.IO) {
+                if (getSavedGenresUsaCase().isEmpty()) {
+                    getRecentGenresUseCase()
                 }
+                getSavedGenresUsaCase()
+            }
+            _state.update {
+                it.copy(
+                    menuList = listOf(
+                        "Year" to UiConst.yearSortList,
+                        "Season" to UiConst.seasonFilterList.map { it.name to it.rawValue },
+                        "Sort" to UiConst.sortTypeList.map { it.name to it.rawValue },
+                        "Genre" to genreList.map { it to it }
+                    )
+                )
             }
         }
     }

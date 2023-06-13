@@ -48,7 +48,6 @@ class MainActivity : ComponentActivity() {
                             searchQuery = ""
                         },
                         searchHistory = { historyList ->
-                            Log.e("MainActivity", historyList.size.toString())
                             searchHistoryList = historyList
                         }
                     )

@@ -4,7 +4,6 @@ import com.chs.AnimeDetailInfoQuery
 import com.chs.HomeAnimeListQuery
 import com.chs.data.model.JikanAnimeDataDto
 import com.chs.data.source.db.model.AnimeEntity
-import com.chs.data.source.db.model.GenreEntity
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeRecommendBannerInfo
@@ -172,12 +171,5 @@ fun AnimeEntity.toAnimeInfo(): AnimeInfo {
         favourites = this.favourites,
         status = this.status,
         format = this.format
-    )
-}
-
-fun GenreEntity.toGenreInfo(): GenreInfo {
-    return GenreInfo(
-        name = this.name,
-        symbolColor = this.symbolColor
     )
 }

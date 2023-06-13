@@ -3,10 +3,10 @@ package com.chs.domain.usecase
 import com.chs.domain.repository.AnimeRepository
 import javax.inject.Inject
 
-class GetAnimeGenreUseCase @Inject constructor(
+class GetRecentGenresUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
-    suspend operator fun invoke(): List<String> {
-        return repository.getAnimeGenreList()
+    suspend operator fun invoke() {
+        return repository.getRecentGenreList()
     }
 }

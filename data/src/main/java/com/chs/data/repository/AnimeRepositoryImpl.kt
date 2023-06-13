@@ -1,6 +1,5 @@
 package com.chs.data.repository
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -17,14 +16,16 @@ import com.chs.data.source.db.dao.AnimeListDao
 import com.chs.data.mapper.*
 import com.chs.data.paging.AnimeRecPagingSource
 import com.chs.data.paging.AnimeSortPagingSource
-import com.chs.data.paging.SearchAnimePagingSource
 import com.chs.data.source.db.dao.GenreDao
 import com.chs.data.source.db.model.GenreEntity
 import com.chs.domain.model.GenreInfo
 import com.chs.type.MediaSeason
 import com.chs.type.MediaSort
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -132,29 +133,28 @@ class AnimeRepositoryImpl @Inject constructor(
         animeDao.delete(animeInfo.toAnimeEntity())
     }
 
-    override suspend fun insertGenreList(genreList: List<String>) {
-        apolloClient.query(
-            GenreQuery()
-        )
-            .execute()
-            .data
-            ?.genreCollection
-            ?.map {
-                it.let { it!! }
-            } ?: emptyList()
+    override suspend fun getRecentGenreList() {
+        val genreList: List<String> = withContext(Dispatchers.IO) {
+            apolloClient
+                .query(GenreQuery())
+                .execute()
+                .data
+                ?.genreCollection
+                ?.map {
+                    it ?: ""
+                } ?: emptyList()
+        }
+
         genreDao.insertMultiple(
             *genreList.map {
-                GenreEntity(
-                    name = it,
-                    symbolColor = "#ffffff"
-                )
+                GenreEntity(it)
             }.toTypedArray()
         )
     }
 
-    override suspend fun getAnimeGenreList(): List<GenreInfo> {
+    override suspend fun getSavedGenreList(): List<String> {
         return genreDao.getAllGenres().map {
-            it.toGenreInfo()
+            it.name
         }
     }
 }

@@ -8,6 +8,5 @@ import androidx.room.PrimaryKey
 )
 data class GenreEntity(
     @PrimaryKey
-    val name: String,
-    val symbolColor: String
+    val name: String
 )
