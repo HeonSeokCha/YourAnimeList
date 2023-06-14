@@ -1,6 +1,5 @@
 package com.chs.data.source
 
-import android.util.Log
 import com.chs.common.URLConst
 import com.chs.data.model.JikanAnimeDataDto
 import io.ktor.client.*

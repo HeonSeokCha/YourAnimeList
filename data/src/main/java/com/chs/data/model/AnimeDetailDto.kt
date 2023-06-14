@@ -12,7 +12,7 @@ data class JikanAnimeDataDto(
 @Serializable
 data class JikanAnimeThemes(
     @SerialName("openings")
-    val openingThemes: List<String> = listOf(),
+    val openingThemes: List<String>?,
     @SerialName("endings")
-    val endingThemes: List<String> = listOf()
+    val endingThemes: List<String>?
 )

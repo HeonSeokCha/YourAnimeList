@@ -7,17 +7,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class GetAnimeThemeUseCase @Inject constructor(
-    private val repository: AnimeRepository
-) {
-    suspend operator fun invoke(animeId: Int): Flow<Resource<AnimeThemeInfo>> {
-        return flow {
-            emit(Resource.Loading())
-            try {
-                emit(Resource.Success(repository.getAnimeDetailTheme(animeId)))
-            } catch (e: Exception) {
-                emit(Resource.Error(e.message.toString()))
-            }
-        }
-    }
-}
+//class GetAnimeThemeUseCase @Inject constructor(
+//    private val repository: AnimeRepository
+//) {
+//    suspend operator fun invoke(animeId: Int): Flow<Resource<AnimeThemeInfo>> {
+//        return flow {
+//            emit(Resource.Loading())
+//            try {
+//                emit(Resource.Success(repository.getAnimeDetailTheme(animeId)))
+//            } catch (e: Exception) {
+//                emit(Resource.Error(e.message.toString()))
+//            }
+//        }
+//    }
+//}

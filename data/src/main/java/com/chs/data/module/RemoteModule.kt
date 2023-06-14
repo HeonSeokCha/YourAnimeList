@@ -22,20 +22,20 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RemoteModule {
 
-    @Singleton
-    @Provides
-    fun providerKtorHttpClient(): KtorJikanService {
-        return KtorJikanService(
-            HttpClient(Android) {
-                install(Logging) {
-                    level = LogLevel.ALL
-                }
-                install(ContentNegotiation) {
-                    json(Json { ignoreUnknownKeys = true })
-                }
-            }
-        )
-    }
+//    @Singleton
+//    @Provides
+//    fun providerKtorHttpClient(): KtorJikanService {
+//        return KtorJikanService(
+//            HttpClient(Android) {
+//                install(Logging) {
+//                    level = LogLevel.ALL
+//                }
+//                install(ContentNegotiation) {
+//                    json(Json { ignoreUnknownKeys = true })
+//                }
+//            }
+//        )
+//    }
 
     @Provides
     @Singleton

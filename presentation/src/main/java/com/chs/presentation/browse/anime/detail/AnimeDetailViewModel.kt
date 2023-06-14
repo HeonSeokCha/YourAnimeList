@@ -18,7 +18,7 @@ class AnimeDetailViewModel @Inject constructor(
     private val checkSaveAnimeUseCase: GetSavedAnimeInfoUseCase,
     private val insertAnimeUseCase: InsertAnimeInfoUseCase,
     private val deleteAnimeUseCase: DeleteAnimeInfoUseCase,
-    private val getAnimeThemeUseCase: GetAnimeThemeUseCase,
+//    private val getAnimeThemeUseCase: GetAnimeThemeUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AnimeDetailState())
@@ -59,31 +59,31 @@ class AnimeDetailViewModel @Inject constructor(
         }
     }
 
-    fun getAnimeTheme(idMal: Int) {
-        viewModelScope.launch {
-            getAnimeThemeUseCase(idMal).collect { result ->
-                _state.update {
-                    when (result) {
-                        is Resource.Loading -> {
-                            it.copy(isLoading = true)
-                        }
-
-                        is Resource.Success -> {
-                            it.copy(
-                                animeThemes = result.data,
-                                isLoading = false
-                            )
-                        }
-
-                        is Resource.Error -> {
-                            Log.e("getAnimeDetailInfo", result.message.toString())
-                            it.copy(isLoading = false)
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    fun getAnimeTheme(idMal: Int) {
+//        viewModelScope.launch {
+//            getAnimeThemeUseCase(idMal).collect { result ->
+//                _state.update {
+//                    when (result) {
+//                        is Resource.Loading -> {
+//                            it.copy(isLoading = true)
+//                        }
+//
+//                        is Resource.Success -> {
+//                            it.copy(
+//                                animeThemes = result.data,
+//                                isLoading = false
+//                            )
+//                        }
+//
+//                        is Resource.Error -> {
+//                            Log.e("getAnimeDetailInfo", result.message.toString())
+//                            it.copy(isLoading = false)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     fun isSaveAnime(animeId: Int) {
         viewModelScope.launch {

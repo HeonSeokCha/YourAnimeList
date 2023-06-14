@@ -17,7 +17,6 @@ import javax.inject.Inject
 
 class SearchRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
-    private val jikanService: KtorJikanService,
     private val dao: SearchListDao
 ) : SearchRepository {
     override fun getAnimeSearchResult(query: String): Flow<PagingData<AnimeInfo>> {
