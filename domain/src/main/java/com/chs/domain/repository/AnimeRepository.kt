@@ -29,7 +29,7 @@ interface AnimeRepository {
 
     fun getAnimeDetailInfoRecommendList(animeId: Int): Flow<PagingData<AnimeInfo>>
 
-//    suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo
+    suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo
 
     fun getSavedAnimeList(): Flow<List<AnimeInfo>>
 

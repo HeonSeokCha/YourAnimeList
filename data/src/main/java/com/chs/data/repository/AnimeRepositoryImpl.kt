@@ -32,7 +32,7 @@ import javax.inject.Singleton
 @Singleton
 class AnimeRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
-//    private val jikanService: KtorJikanService,
+    private val jikanService: KtorJikanService,
     private val animeDao: AnimeListDao,
     private val genreDao: GenreDao
 ) : AnimeRepository {
@@ -98,9 +98,9 @@ class AnimeRepositoryImpl @Inject constructor(
         }.flow
     }
 
-//    override suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo {
-//        return jikanService.getAnimeTheme(animeId).toAnimeThemeInfo()
-//    }
+    override suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo {
+        return jikanService.getAnimeTheme(animeId).toAnimeThemeInfo()
+    }
 
 
     override fun getSavedAnimeList(): Flow<List<AnimeInfo>> {

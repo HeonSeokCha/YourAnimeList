@@ -89,7 +89,7 @@ fun AnimeDetailScreen(
 
     LaunchedEffect(viewModel, context) {
         viewModel.getAnimeDetailInfo(id)
-//        viewModel.getAnimeTheme(idMal)
+        viewModel.getAnimeTheme(idMal)
         viewModel.isSaveAnime(id)
     }
 
