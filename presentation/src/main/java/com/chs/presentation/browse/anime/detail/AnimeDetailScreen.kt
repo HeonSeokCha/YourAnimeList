@@ -82,7 +82,9 @@ fun AnimeDetailScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState {
+        3
+    }
     val coroutineScope = rememberCoroutineScope()
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -165,9 +167,6 @@ fun AnimeDetailScreen(
 
             HorizontalPager(
                 state = pagerState,
-                pageCount = viewModel.tabList.size,
-                modifier = Modifier
-                    .fillMaxSize(),
                 userScrollEnabled = false
             ) { page ->
                 when (page) {

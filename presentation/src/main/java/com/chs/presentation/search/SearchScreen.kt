@@ -31,14 +31,14 @@ fun SearchScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val pagerState = rememberPagerState(0)
-    val coroutineScope = rememberCoroutineScope()
-
     val tabList = listOf(
         "ANIME",
 //        "MANGA",
         "CHARACTER"
     )
+    val pagerState = rememberPagerState(initialPage = 0) { tabList.size }
+    val coroutineScope = rememberCoroutineScope()
+
 
     LaunchedEffect(context, state) {
         searchHistoryList(state.searchHistoryList)
@@ -91,7 +91,6 @@ fun SearchScreen(
         }
 
         HorizontalPager(
-            pageCount = tabList.size,
             state = pagerState,
             userScrollEnabled = false
         ) { page ->

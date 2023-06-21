@@ -8,16 +8,17 @@ versionCode = "1"
 versionName = "1.0"
 
 activity = "1.7.2"
-compose-ui = "1.4.3"
+compose-ui = "1.5.0-beta02"
 composeCompiler = "1.4.7"
 lifecycle = "2.6.1"
 room = "2.5.1"
+paging = "3.2.0-beta01"
 coil = "2.4.0"
 hilt = "2.46.1"
 kotlin = "1.8.21"
 ksp = "1.8.21-1.0.11"
 kotlin-coroutine = "1.7.1"
-ktor = "2.3.0"
+ktor = "2.3.1"
 apollo = "3.8.2"
 
 [libraries]
@@ -37,8 +38,8 @@ androidX-browser = "androidx.browser:browser:1.5.0"
 androidX-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidX-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidX-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
-androidX-paging-commons = "androidx.paging:paging-common:3.1.1"
-androidX-paging-compose = "androidx.paging:paging-compose:1.0.0-alpha19"
+androidX-paging-commons = { module = "androidx.paging:paging-common", version.ref = "paging" }
+androidX-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
 
 ## Hilt
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
@@ -67,7 +68,7 @@ apollo-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", v
 
 ## etc
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
-accompanist-placeholder = "com.google.accompanist:accompanist-placeholder-material:0.30.1"
+accompanist-placeholder = "com.google.accompanist:accompanist-placeholder-material:0.31.3-beta"
 junit = "junit:junit:4.13.2"
 assertJ = "org.assertj:assertj-core:3.23.1"
 mockito = "org.mockito:mockito-core:4.8.0"

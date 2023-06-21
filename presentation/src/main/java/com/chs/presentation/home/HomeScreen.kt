@@ -42,7 +42,7 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState { state.animeRecommendList?.bannerList?.size ?: 1 }
 
     LazyColumn(
         modifier = Modifier
@@ -51,11 +51,10 @@ fun HomeScreen(
     ) {
         item {
             HorizontalPager(
+                state = pagerState,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp),
-                state = pagerState,
-                pageCount = state.animeRecommendList?.bannerList?.size ?: 1
+                    .height(200.dp)
             ) { idx ->
                 ItemHomeBanner(
                     context = context,

@@ -7,6 +7,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridItemScope
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.runtime.Composable
@@ -64,13 +65,12 @@ fun <T : Any> LazyGridScope.items(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 fun <T : Any> LazyStaggeredGridScope.items(
     items: LazyPagingItems<T>,
     key: ((item: T) -> Any)? = null,
     span: ((item: T) -> StaggeredGridItemSpan)? = null,
     contentType: ((item: T) -> Any)? = null,
-    itemContent: @Composable LazyStaggeredGridScope.(value: T?) -> Unit
+    itemContent: @Composable LazyStaggeredGridItemScope.(value: T?) -> Unit
 ) {
     items(
         count = items.itemCount,
@@ -101,7 +101,7 @@ fun <T : Any> LazyStaggeredGridScope.items(
             }
         }
     ) { idx ->
-        itemContent(items[idx])
+        itemContent(this, items[idx])
     }
 }
 

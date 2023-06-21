@@ -72,7 +72,7 @@ import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.items
 import com.google.accompanist.placeholder.material.placeholder
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharacterDetailScreen(
     charaId: Int,
