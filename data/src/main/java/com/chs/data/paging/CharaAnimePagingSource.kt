@@ -35,14 +35,16 @@ class CharaAnimePagingSource(
                 )
                 .execute()
                 .data!!
+                .character
+                ?.media
 
             LoadResult.Page(
-                data = response.character?.media?.nodes?.filter { it?.animeBasicInfo?.isAdult == false }
+                data = response?.nodes?.filter { it?.animeBasicInfo?.isAdult == false }
                     ?.map {
                         it?.animeBasicInfo.toAnimeInfo()
                     } ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (response.character?.media?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1
+                nextKey = if (response?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1
                 else null
             )
         } catch (e: Exception) {

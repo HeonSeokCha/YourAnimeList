@@ -28,12 +28,14 @@ class SearchCharacterPagingSource(
                     page = Optional.present(page),
                     search = Optional.present(search)
                 )
-            ).execute().data!!
+            ).execute()
+                .data!!
+                .page
 
             LoadResult.Page(
-                data = response.page?.characters?.map { it?.characterBasicInfo?.toCharacterInfo()!! }!!,
+                data = response?.characters?.map { it?.characterBasicInfo?.toCharacterInfo()!! }!!,
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (response.page.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
+                nextKey = if (response.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
             )
 
         } catch (e: Exception) {

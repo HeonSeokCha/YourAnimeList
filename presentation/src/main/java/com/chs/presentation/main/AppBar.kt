@@ -133,6 +133,7 @@ fun SearchAppBar(
         ) {
             items(searchHistoryList) { title ->
                 Row(modifier = Modifier
+                    .fillMaxWidth()
                     .padding(all = 14.dp)
                     .clickable {
                         text = title

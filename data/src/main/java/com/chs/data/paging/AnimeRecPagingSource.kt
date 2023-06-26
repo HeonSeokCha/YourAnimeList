@@ -32,14 +32,16 @@ class AnimeRecPagingSource(
                 )
                 .execute()
                 .data!!
+                .Media
+                ?.recommendations
 
             LoadResult.Page(
-                data = response.Media?.recommendations?.nodes?.filter { it?.mediaRecommendation?.animeBasicInfo?.isAdult == false }
+                data = response?.nodes?.filter { it?.mediaRecommendation?.animeBasicInfo?.isAdult == false }
                     ?.map {
                         it?.mediaRecommendation?.animeBasicInfo.toAnimeInfo()
                     } ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (response.Media?.recommendations?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
+                nextKey = if (response?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
             )
 
         } catch (e: Exception) {

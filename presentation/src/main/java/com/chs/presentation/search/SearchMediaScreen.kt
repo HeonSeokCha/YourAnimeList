@@ -51,7 +51,7 @@ fun SearchMediaScreen(
         if (searchKeyWord.isNotEmpty()) {
             viewModel.clear()
             viewModel.search(searchKeyWord)
-            lazyColScrollState.scrollToItem(0, 0)
+//            lazyColScrollState.scrollToItem(0, 0)
         }
     }
 

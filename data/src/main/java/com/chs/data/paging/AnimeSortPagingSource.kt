@@ -46,13 +46,14 @@ class AnimeSortPagingSource(
                 )
                 .execute()
                 .data!!
+                .page
 
             LoadResult.Page(
-                data = response.page?.media?.filter { it?.animeBasicInfo?.isAdult == false }?.map {
+                data = response?.media?.filter { it?.animeBasicInfo?.isAdult == false }?.map {
                     it?.animeBasicInfo.toAnimeInfo()
                 } ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (response.page?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
+                nextKey = if (response?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
             )
 
         } catch (e: Exception) {

@@ -35,13 +35,15 @@ class StudioAnimePagingSource(
                 )
                 .execute()
                 .data!!
+                .studio
+                ?.media
 
             LoadResult.Page(
-                data = response.studio?.media?.nodes?.map {
+                data = response?.nodes?.map {
                     it?.animeBasicInfo.toAnimeInfo()
                 } ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (response.studio?.media?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
+                nextKey = if (response?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
             )
 
         } catch (e: Exception) {

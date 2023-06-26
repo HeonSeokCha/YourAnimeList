@@ -23,7 +23,6 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import com.chs.presentation.common.LoadingIndicator
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.common.ItemAnimeLarge
 

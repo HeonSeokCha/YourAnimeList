@@ -28,13 +28,17 @@ class SearchAnimePagingSource(
                     page = Optional.present(page),
                     search = Optional.present(search)
                 )
-            ).execute().data!!
+            )
+                .execute()
+                .data!!
+                .page
+
 
             LoadResult.Page(
-                data = response.page?.media?.map { it?.animeBasicInfo.toAnimeInfo() }
+                data = response?.media?.map { it?.animeBasicInfo.toAnimeInfo() }
                     ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (response.page?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
+                nextKey = if (response?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
             )
 
         } catch (e: Exception) {
