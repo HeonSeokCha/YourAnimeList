@@ -82,9 +82,7 @@ fun AnimeDetailScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
-    val pagerState = rememberPagerState {
-        3
-    }
+    val pagerState = rememberPagerState { 3 }
     val coroutineScope = rememberCoroutineScope()
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()

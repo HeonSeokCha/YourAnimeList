@@ -12,7 +12,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,7 +34,7 @@ import com.chs.presentation.common.ItemCharaLarge
 fun SearchMediaScreen(
     searchType: String,
     searchKeyWord: String,
-    viewModel: SearchMediaViewModel = hiltViewModel()
+    viewModel: SearchMediaViewModel = hiltViewModel(key = searchType)
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -48,10 +47,9 @@ fun SearchMediaScreen(
     }
 
     LaunchedEffect(searchKeyWord) {
-        if (searchKeyWord.isNotEmpty()) {
-            viewModel.clear()
+        if (searchKeyWord != viewModel.searchKeyword) {
             viewModel.search(searchKeyWord)
-//            lazyColScrollState.scrollToItem(0, 0)
+            lazyColScrollState.scrollToItem(0, 0)
         }
     }
 
