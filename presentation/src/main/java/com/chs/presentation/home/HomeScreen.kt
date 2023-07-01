@@ -57,9 +57,10 @@ fun HomeScreen(
                     .height(200.dp)
             ) { idx ->
                 ItemHomeBanner(
-                    context = context,
                     banner = state.animeRecommendList?.bannerList?.get(idx)
-                )
+                ) { id, idMal ->
+
+                }
             }
 
             Spacer(modifier = Modifier.height(8.dp))

@@ -6,13 +6,12 @@ import com.chs.data.model.JikanAnimeDataDto
 import com.chs.data.source.db.model.AnimeEntity
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
-import com.chs.domain.model.AnimeRecommendBannerInfo
+import com.chs.domain.model.AnimHomeBannerInfo
 import com.chs.domain.model.AnimeRecommendList
 import com.chs.domain.model.AnimeRelationInfo
 import com.chs.domain.model.AnimeThemeInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.domain.model.ExternalLinkInfo
-import com.chs.domain.model.GenreInfo
 import com.chs.domain.model.StudioInfo
 import com.chs.domain.model.TrailerInfo
 import com.chs.fragment.AnimeBasicInfo
@@ -36,15 +35,15 @@ fun AnimeBasicInfo?.toAnimeInfo(): AnimeInfo {
 fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
     return AnimeRecommendList(
         bannerList = this?.viewPager?.media?.map {
-            with(it?.animeBasicInfo) {
-                AnimeRecommendBannerInfo(
-                    animeInfo = this.toAnimeInfo(),
-                    trailer = TrailerInfo(
-                        id = it?.trailer?.id ?: "",
-                        thumbnailUrl = it?.trailer?.thumbnail
-                    )
-                )
-            }
+            AnimHomeBannerInfo(
+                animeInfo = it?.animeBasicInfo.toAnimeInfo(),
+                description = it?.description ?: "",
+                startDate = if (it?.startDate?.year == null || it.startDate.month == null || it.startDate.day == null) ""
+                else "${it.startDate.year}/${it.startDate.month}/${it.startDate.day}",
+                episode = (it?.episodes ?: 0).toString(),
+                genres = it?.genres?.take(2) ?: emptyList(),
+                studioTitle = it?.studios?.nodes?.firstOrNull()?.name ?: ""
+            )
         } ?: emptyList(),
         animeBasicList = listOf(
             this?.trending?.media?.map {

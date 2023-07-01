@@ -16,9 +16,19 @@ query HomeAnimeList(
             season: $currentSeason
         ) {
             ... animeBasicInfo
-            trailer {
-                id
-                thumbnail
+            description(asHtml: false)
+            episodes
+            startDate {
+                year
+                month
+                day
+            }
+            genres
+            studios (isMain: true) {
+                nodes {
+                    id
+                    name
+                }
             }
         }
     },
@@ -79,7 +89,6 @@ query HomeAnimeList(
             type: ANIME
         ) {
             ... animeBasicInfo
-            genres,
         }
     }
 }
