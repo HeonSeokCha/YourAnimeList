@@ -14,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,8 +27,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.chs.presentation.UiConst
 import com.chs.domain.model.AnimeInfo
+import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.main.Screen
@@ -54,12 +53,19 @@ fun HomeScreen(
                 state = pagerState,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
             ) { idx ->
                 ItemHomeBanner(
                     banner = state.animeRecommendList?.bannerList?.get(idx)
                 ) { id, idMal ->
-
+                    context.startActivity(
+                        Intent(
+                            context, BrowseActivity::class.java
+                        ).apply {
+                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                            this.putExtra(UiConst.TARGET_ID, id)
+                            this.putExtra(UiConst.TARGET_ID_MAL, idMal)
+                        }
+                    )
                 }
             }
 

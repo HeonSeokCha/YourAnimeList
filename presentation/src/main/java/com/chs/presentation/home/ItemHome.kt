@@ -2,6 +2,7 @@ package com.chs.presentation.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.HtmlCompat
 import coil.compose.AsyncImage
 import com.chs.domain.model.AnimHomeBannerInfo
 import com.chs.domain.model.AnimeInfo
@@ -45,7 +47,6 @@ fun ItemHomeBanner(
         modifier = Modifier
             .background(Color.White)
             .fillMaxWidth()
-            .height(250.dp)
             .clickable {
                 if (banner != null) {
                     onClick(
@@ -59,14 +60,14 @@ fun ItemHomeBanner(
             modifier = Modifier
                 .size(
                     150.dp,
-                    250.dp
+                    220.dp
                 )
         ) {
             AsyncImage(
                 modifier = Modifier
                     .size(
                         150.dp,
-                        250.dp
+                        220.dp
                     )
                     .placeholder(banner == null),
                 model = banner?.animeInfo?.imageUrl,
@@ -77,7 +78,7 @@ fun ItemHomeBanner(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
-                    .background(Color.Black.copy(alpha = 0.2f))
+                    .background(Color.Black.copy(alpha = 0.5f))
             ) {
                 Text(
                     modifier = Modifier
@@ -86,7 +87,7 @@ fun ItemHomeBanner(
                     text = banner?.animeInfo?.title ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
+                    fontSize = 11.5.sp,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
                     lineHeight = 14.sp
@@ -106,10 +107,12 @@ fun ItemHomeBanner(
             }
         }
 
-        Column {
+        Column(
+            modifier = Modifier.height(220.dp)
+        ) {
             Text(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(4.dp)
                     .placeholder(banner == null),
                 text = "${banner?.episode} Episodes aired on",
                 fontSize = 12.sp
@@ -117,7 +120,7 @@ fun ItemHomeBanner(
 
             Text(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(4.dp)
                     .placeholder(banner == null),
                 text = banner?.startDate ?: "",
                 fontSize = 12.sp
@@ -127,8 +130,11 @@ fun ItemHomeBanner(
                 modifier = Modifier
                     .padding(8.dp)
                     .placeholder(banner == null),
-                text = banner?.description ?: "",
-                fontSize = 10.sp,
+                text = HtmlCompat.fromHtml(
+                    banner?.description ?: UiConst.TITLE_PREVIEW,
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                ).toString(),
+                fontSize = 12.sp,
                 maxLines = 5,
                 overflow = TextOverflow.Ellipsis,
                 lineHeight = 14.sp
@@ -141,16 +147,21 @@ fun ItemHomeBanner(
                     modifier = Modifier
                         .background("#eff7fb".color)
                         .fillMaxWidth()
-                        .padding(start = 2.dp)
+                        .height(48.dp)
+                        .padding(start = 2.dp),
+                    verticalArrangement = Arrangement.Center
                 ) {
                     banner.genres.forEach { genre ->
                         SuggestionChip(
                             modifier = Modifier
-                                .padding(horizontal = 2.dp)
-                                .placeholder(visible = genre == null),
+                                .height(24.dp)
+                                .padding(horizontal = 2.dp),
                             onClick = { },
                             label = {
-                                Text(text = genre ?: "Unknown")
+                                Text(
+                                    text = genre ?: "Unknown",
+                                    fontSize = 12.sp
+                                )
                             }, colors = AssistChipDefaults.assistChipColors(
                                 containerColor = GENRE_COLOR[genre]?.color ?: Color.Black,
                                 labelColor = Color.White
