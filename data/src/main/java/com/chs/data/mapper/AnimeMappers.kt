@@ -2,6 +2,7 @@ package com.chs.data.mapper
 
 import com.chs.AnimeDetailInfoQuery
 import com.chs.HomeAnimeListQuery
+import com.chs.data.Util
 import com.chs.data.model.JikanAnimeDataDto
 import com.chs.data.source.db.model.AnimeEntity
 import com.chs.domain.model.AnimeDetailInfo
@@ -38,8 +39,11 @@ fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
             AnimHomeBannerInfo(
                 animeInfo = it?.animeBasicInfo.toAnimeInfo(),
                 description = it?.description ?: "",
-                startDate = if (it?.startDate?.year == null || it.startDate.month == null || it.startDate.day == null) ""
-                else "${it.startDate.year}/${it.startDate.month}/${it.startDate.day}",
+                startDate = Util.convertToDateFormat(
+                    it?.startDate?.year,
+                    it?.startDate?.month,
+                    it?.startDate?.day
+                ),
                 episode = (it?.episodes ?: 0).toString(),
                 genres = it?.genres?.take(2) ?: emptyList(),
                 studioTitle = it?.studios?.nodes?.firstOrNull()?.name ?: ""
@@ -83,10 +87,16 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
             titleNative = this?.title?.native ?: "",
             description = this?.description ?: "",
             bannerImage = this?.bannerImage,
-            startDate = if (this?.startDate?.year == null || this.startDate.month == null || this.startDate.day == null) ""
-            else "${this.startDate.year}/${this.startDate.month}/${this.startDate.day}",
-            endDate = if (this?.endDate?.year == null || this.endDate.month == null || this.endDate.day == null) ""
-            else "${this.endDate.year}/${this.endDate.month}/${this.endDate.day}",
+            startDate = Util.convertToDateFormat(
+                this?.startDate?.year,
+                this?.startDate?.month,
+                this?.startDate?.day
+            ),
+            endDate = Util.convertToDateFormat(
+                this?.endDate?.year,
+                this?.endDate?.month,
+                this?.endDate?.day
+            ),
             trailerInfo = TrailerInfo(
                 id = this?.trailer?.id ?: "",
                 thumbnailUrl = this?.trailer?.thumbnail
