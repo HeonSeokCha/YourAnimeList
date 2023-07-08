@@ -12,7 +12,7 @@ object Util {
     ): String {
         if (year == null) return ""
 
-        var datePattern = ""
+        var datePattern: String = ""
 
         if (month != null) {
             datePattern += "MMM"
@@ -28,9 +28,9 @@ object Util {
             ", yyyy"
         }
 
-        val dateFormat = SimpleDateFormat(datePattern, Locale.US)
+        val dateFormat: SimpleDateFormat = SimpleDateFormat(datePattern, Locale.US)
         return try {
-            val calendar = Calendar.getInstance().apply {
+            val calendar: Calendar = Calendar.getInstance().apply {
                 this.set(Calendar.YEAR, year)
                 if (month != null) {
                     this.set(Calendar.MONTH, month - 1)

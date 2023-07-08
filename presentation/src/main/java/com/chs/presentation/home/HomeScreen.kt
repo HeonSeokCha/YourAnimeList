@@ -14,7 +14,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +37,10 @@ import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.main.Screen
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -41,7 +50,30 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val pagerState = rememberPagerState { state.animeRecommendList?.bannerList?.size ?: 1 }
+    var initialPage by remember { mutableIntStateOf(UiConst.INFINITE_PAGER_COUNT) }
+    val pagerState = rememberPagerState {
+        UiConst.INFINITE_PAGER_COUNT / 2
+    }
+
+    LaunchedEffect(Unit) {
+        while (initialPage % (state.animeRecommendList?.bannerList?.size ?: 6) != 0) {
+            initialPage++
+        }
+        pagerState.scrollToPage(initialPage)
+    }
+
+    LaunchedEffect(pagerState.currentPage) {
+        launch {
+            while (true) {
+                delay(UiConst.PAGER_CHANGE_DELAY)
+                withContext(NonCancellable) {
+                    if (pagerState.currentPage + 1 in 0..UiConst.INFINITE_PAGER_COUNT) {
+                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                    }
+                }
+            }
+        }
+    }
 
     LazyColumn(
         modifier = Modifier
@@ -55,7 +87,9 @@ fun HomeScreen(
                     .fillMaxWidth()
             ) { idx ->
                 ItemHomeBanner(
-                    banner = state.animeRecommendList?.bannerList?.get(idx)
+                    banner = state.animeRecommendList?.bannerList?.get(
+                        idx % state.animeRecommendList?.bannerList?.size!!
+                    )
                 ) { id, idMal ->
                     context.startActivity(
                         Intent(
@@ -80,7 +114,8 @@ fun HomeScreen(
             ) {
                 repeat(state.animeRecommendList?.bannerList?.size ?: 0) { iteration ->
                     val color =
-                        if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
+                        if (pagerState.currentPage % state.animeRecommendList?.bannerList?.size!! == iteration) Color.DarkGray
+                        else Color.LightGray
                     Box(
                         modifier = Modifier
                             .padding(2.dp)

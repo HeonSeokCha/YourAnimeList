@@ -23,6 +23,8 @@ object UiConst {
     const val FAVOURITE_ID: String = "favoriteId"
     const val TITLE_PREVIEW: String = "Title PreView"
     const val UNKNOWN: String = "Unknown"
+    const val INFINITE_PAGER_COUNT = Int.MAX_VALUE
+    const val PAGER_CHANGE_DELAY = 5000L
 
     enum class Season(
         val rawValue: String
