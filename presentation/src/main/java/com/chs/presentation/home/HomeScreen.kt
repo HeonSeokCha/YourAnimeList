@@ -56,7 +56,9 @@ fun HomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        while (initialPage % (state.animeRecommendList?.bannerList?.size ?: 6) != 0) {
+        while (initialPage % (state.animeRecommendList?.bannerList?.size
+                ?: UiConst.MAX_BANNER_SIZE) != 0
+        ) {
             initialPage++
         }
         pagerState.scrollToPage(initialPage)
@@ -128,13 +130,13 @@ fun HomeScreen(
         }
 
         items(
-            state.animeRecommendList?.animeBasicList?.size ?: 5,
+            state.animeRecommendList?.animeBasicList?.size ?: UiConst.MAX_BANNER_SIZE,
             key = { viewModel.animeCategorySortList[it].first }
         ) { idx ->
             ItemRecommendCategory(
                 title = viewModel.animeCategorySortList[idx],
                 list = state.animeRecommendList?.animeBasicList?.get(idx)
-                    ?: List<AnimeInfo?>(5) { null },
+                    ?: List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
                 navigator = navigator,
                 context = context
             )

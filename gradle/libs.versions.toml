@@ -1,5 +1,5 @@
 [versions]
-androidStudioGradlePlugin = "8.0.2"
+androidStudioGradlePlugin = "8.1.0"
 
 compileSdkVersion = "34"
 minSdkVersion = "29"
@@ -9,14 +9,14 @@ versionName = "1.0"
 
 activity = "1.7.2"
 compose-ui = "1.5.0-beta03"
-composeCompiler = "1.4.8"
+composeCompiler = "1.5.1"
 lifecycle = "2.6.1"
 room = "2.5.2"
-paging = "3.2.0-rc01"
+paging = "3.2.0"
 coil = "2.4.0"
 hilt = "2.46.1"
-kotlin = "1.8.22"
-ksp = "1.8.22-1.0.11"
+kotlin = "1.9.0"
+ksp = "1.9.0-1.0.12"
 kotlin-coroutine = "1.7.1"
 ktor = "2.3.2"
 apollo = "3.8.2"
@@ -30,10 +30,10 @@ androidX-compose-material-icon-extend = { module = "androidx.compose.material:ma
 androidX-compose-material3 = "androidx.compose.material3:material3:1.1.1"
 androidX-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui" }
 androidX-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-ui" }
-androidX-navigation-compose = "androidx.navigation:navigation-compose:2.6.0-rc01"
+androidX-navigation-compose = "androidx.navigation:navigation-compose:2.7.0-rc01"
 androidX-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle"}
 androidX-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle"}
-androidX-browser = "androidx.browser:browser:1.6.0-beta01"
+androidX-browser = "androidx.browser:browser:1.6.0-rc01"
 
 androidX-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidX-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }

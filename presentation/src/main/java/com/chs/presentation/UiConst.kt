@@ -25,6 +25,7 @@ object UiConst {
     const val UNKNOWN: String = "Unknown"
     const val INFINITE_PAGER_COUNT = Int.MAX_VALUE
     const val PAGER_CHANGE_DELAY = 5000L
+    const val MAX_BANNER_SIZE: Int = 5
 
     enum class Season(
         val rawValue: String
