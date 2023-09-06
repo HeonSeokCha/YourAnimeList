@@ -1,9 +1,9 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    kotlin("kapt")
     kotlin("android")
-    alias(libs.plugins.hilt)
     alias(libs.plugins.android.application)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -65,9 +65,5 @@ dependencies {
     implementation(libs.bundles.compose)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-}
-
-kapt {
-    useBuildCache = true
+    ksp(libs.hilt.compiler)
 }

@@ -1,6 +1,5 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    kotlin("kapt")
     kotlin("android")
     alias(libs.plugins.hilt)
     alias(libs.plugins.apollo)
@@ -60,7 +59,7 @@ dependencies {
     implementation(libs.kotlin.coroutine.core)
     implementation(libs.kotlin.serialization)
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     implementation(libs.androidX.room.ktx)
     ksp(libs.androidX.room.compiler)

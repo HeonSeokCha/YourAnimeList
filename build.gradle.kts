@@ -1,6 +1,6 @@
 buildscript {
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21")
+        classpath(libs.kotlin.gradle.plugin)
     }
 }
 @Suppress("DSL_SCOPE_VIOLATION")
@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.ksp) apply false
     alias(libs.plugins.apollo) apply false
 }
 
