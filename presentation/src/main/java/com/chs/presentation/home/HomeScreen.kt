@@ -138,7 +138,6 @@ fun HomeScreen(
                 list = state.animeRecommendList?.animeBasicList?.get(idx)
                     ?: List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
                 navigator = navigator,
-                context = context
             )
         }
     }
@@ -149,8 +148,8 @@ fun ItemRecommendCategory(
     title: Pair<String, Triple<UiConst.SortType, Int?, String?>>,
     list: List<AnimeInfo?>,
     navigator: NavController,
-    context: Context
 ) {
+    val context: Context = LocalContext.current
     Column {
         Row(
             modifier = Modifier
@@ -191,7 +190,6 @@ fun ItemRecommendCategory(
         ) {
             items(
                 list.size,
-                key = { list[it]?.id ?: it }
             ) {
                 ItemAnimeSmall(
                     item = list[it],
