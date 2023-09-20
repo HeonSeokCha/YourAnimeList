@@ -11,6 +11,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
@@ -52,6 +53,7 @@ fun ItemCharaLarge(
                     .height(200.dp)
                     .placeholder(character == null),
                 model = character?.imageUrl,
+                placeholder = ColorPainter(Color.LightGray),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )

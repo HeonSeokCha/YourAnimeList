@@ -44,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -197,11 +198,9 @@ private fun CharacterBanner(
                 modifier = Modifier
                     .size(150.dp)
                     .clip(RoundedCornerShape(100))
-                    .background(
-                        color = "#ffffff".color
-                    )
                     .placeholder(visible = characterInfo == null),
                 model = characterInfo?.characterInfo?.imageUrl,
+                placeholder = ColorPainter(Color.LightGray),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )

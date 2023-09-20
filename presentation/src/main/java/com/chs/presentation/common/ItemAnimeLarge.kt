@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
@@ -57,6 +58,7 @@ fun ItemAnimeLarge(
                     .height(190.dp)
                     .placeholder(anime == null),
                 model = anime?.imageUrl,
+                placeholder = ColorPainter(Color.LightGray),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )

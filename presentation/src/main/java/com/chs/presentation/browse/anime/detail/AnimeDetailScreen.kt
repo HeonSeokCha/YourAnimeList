@@ -40,7 +40,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -220,10 +222,11 @@ fun AnimeDetailHeadBanner(
                     .height(250.dp)
                     .background(
                         color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
-                            ?: "#ffffff".color
+                            ?: LightGray
                     )
                     .placeholder(visible = animeDetailInfo == null),
                 model = animeDetailInfo?.bannerImage,
+                placeholder = ColorPainter(Color.LightGray),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -266,12 +269,15 @@ fun AnimeDetailHeadBanner(
                     modifier = Modifier
                         .width(130.dp)
                         .height(180.dp)
-                        .padding(
-                            start = 8.dp,
-                        )
+                        .padding(start = 8.dp)
                         .clip(RoundedCornerShape(5.dp))
-                        .placeholder(visible = animeDetailInfo == null),
+                        .placeholder(visible = animeDetailInfo == null)
+                        .background(
+                            color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
+                                ?: Color.LightGray
+                        ),
                     model = animeDetailInfo?.animeInfo?.imageUrl,
+                    placeholder = ColorPainter(Color.LightGray),
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )

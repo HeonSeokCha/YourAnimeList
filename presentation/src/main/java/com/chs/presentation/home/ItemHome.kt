@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -58,19 +59,16 @@ fun ItemHomeBanner(
     ) {
         Box(
             modifier = Modifier
-                .size(
-                    150.dp,
-                    220.dp
-                )
+                .size(150.dp, 220.dp)
         ) {
             AsyncImage(
                 modifier = Modifier
-                    .size(
-                        150.dp,
-                        220.dp
-                    )
+                    .size(150.dp, 220.dp)
                     .placeholder(banner == null),
                 model = banner?.animeInfo?.imageUrl,
+                placeholder = ColorPainter(
+                    banner?.animeInfo?.imagePlaceColor?.color ?: Color.LightGray
+                ),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )

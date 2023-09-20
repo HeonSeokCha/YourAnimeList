@@ -18,6 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -47,7 +49,9 @@ fun AnimeCharaScreen(
         ),
         columns = GridCells.Fixed(3)
     ) {
-        items(charaInfoList) { charaInfo ->
+        items(
+            charaInfoList,
+        ) { charaInfo ->
             Column(
                 modifier = Modifier
                     .width(100.dp)
@@ -67,6 +71,7 @@ fun AnimeCharaScreen(
                         .clip(RoundedCornerShape(100))
                         .placeholder(charaInfo == null),
                     model = charaInfo?.imageUrl,
+                    placeholder = ColorPainter(Color.LightGray),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                 )
