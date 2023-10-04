@@ -49,8 +49,8 @@ class AnimeRepositoryImpl @Inject constructor(
                     currentSeason = Optional.present(MediaSeason.valueOf(currentSeason)),
                     nextSeason = Optional.present(MediaSeason.valueOf(nextSeason)),
                     currentYear = Optional.present(currentYear),
-                    nextYear = Optional.present(lastYear),
-                    lastYear = Optional.present(nextYear)
+                    nextYear = Optional.present(nextYear),
+                    lastYear = Optional.present(lastYear)
                 )
             )
             .execute()

@@ -73,7 +73,7 @@ object UiConst {
     val sortTypeList = SortType
         .values()
 
-    val yearSortList = (Calendar.getInstance().get(Calendar.YEAR) downTo 1980)
+    val yearSortList = (Util.getVariationYear(true) downTo 1980)
         .map { it.toString() to it.toString() }
 
     val seasonFilterList = Season

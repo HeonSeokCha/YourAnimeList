@@ -146,8 +146,8 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
 
 fun JikanAnimeDataDto.toAnimeThemeInfo(): AnimeThemeInfo {
     return AnimeThemeInfo(
-        openingThemes = this.data.openingThemes ?: emptyList(),
-        endingThemes = this.data.endingThemes ?: emptyList()
+        openingThemes = this.data.openingThemes,
+        endingThemes = this.data.endingThemes
     )
 }
 

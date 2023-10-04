@@ -89,9 +89,9 @@ fun HomeScreen(
                     .fillMaxWidth()
             ) { idx ->
                 ItemHomeBanner(
-                    banner = state.animeRecommendList?.bannerList?.get(
-                        idx % state.animeRecommendList?.bannerList?.size!!
-                    )
+                    banner = if (state.animeRecommendList?.bannerList.isNullOrEmpty()) {
+                        null
+                    } else state.animeRecommendList!!.bannerList[idx % state.animeRecommendList?.bannerList?.size!!]
                 ) { id, idMal ->
                     context.startActivity(
                         Intent(
