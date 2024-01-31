@@ -7,6 +7,7 @@ import com.chs.domain.model.StudioDetailInfo
 import kotlinx.coroutines.flow.Flow
 
 data class StudioDetailState(
+    val studioId: Int? = null,
     val studioDetailInfo: StudioDetailInfo? = null,
     val studioAnimeList: Flow<PagingData<AnimeInfo>>? = null,
     val sortOption: UiConst.SortType = UiConst.SortType.POPULARITY,

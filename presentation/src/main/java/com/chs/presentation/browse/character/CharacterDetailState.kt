@@ -7,6 +7,7 @@ import com.chs.domain.model.CharacterInfo
 import kotlinx.coroutines.flow.Flow
 
 data class CharacterDetailState(
+    val characterId: Int? = null,
     val characterDetailInfo: CharacterDetailInfo? = null,
     val animeList: Flow<PagingData<AnimeInfo>>? = null,
     val isLoading: Boolean = true,

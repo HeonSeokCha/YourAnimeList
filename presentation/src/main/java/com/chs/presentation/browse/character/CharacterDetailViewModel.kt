@@ -1,5 +1,6 @@
 package com.chs.presentation.browse.character
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -19,6 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterDetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getCharaDetailUseCase: GetCharaDetailUseCase,
     private val getCharaAnimeListUseCase: GetCharaDetailAnimeListUseCase,
     private val checkSaveCharaUseCase: GetSavedCharaInfoUseCase,
@@ -29,7 +31,15 @@ class CharacterDetailViewModel @Inject constructor(
     private val _state = MutableStateFlow(CharacterDetailState())
     val state = _state.asStateFlow()
 
-    fun getCharacterDetail(charaId: Int) {
+    init {
+        val charaId: Int = savedStateHandle[UiConst.TARGET_ID] ?: 0
+
+        getCharacterDetail(charaId)
+        getCharacterDetailAnimeList(charaId, UiConst.SortType.POPULARITY)
+        isSaveCharacter(charaId)
+    }
+
+    private fun getCharacterDetail(charaId: Int) {
         viewModelScope.launch {
             getCharaDetailUseCase(charaId).collect { result ->
                 _state.update {
@@ -59,7 +69,7 @@ class CharacterDetailViewModel @Inject constructor(
         }
     }
 
-    fun getCharacterDetailAnimeList(
+    private fun getCharacterDetailAnimeList(
         charaId: Int,
         sortType: UiConst.SortType
     ) {

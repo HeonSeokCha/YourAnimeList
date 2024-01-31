@@ -50,15 +50,13 @@ import com.google.accompanist.placeholder.material.placeholder
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudioDetailScreen(
-    studioId: Int,
     navController: NavController,
     viewModel: StudioDetailViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val context: Context = LocalContext.current
     val activity: Activity? = LocalContext.current as? Activity
     val lazyGridScrollState = rememberLazyStaggeredGridState()
     val coroutineScope = rememberCoroutineScope()
@@ -67,13 +65,13 @@ fun StudioDetailScreen(
     val pagingItem = state.studioAnimeList?.collectAsLazyPagingItems()
     var isShowFilterDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(viewModel, context) {
-        viewModel.getStudioDetailInfo(studioId)
-        viewModel.getStudioAnimeList(studioId, UiConst.SortType.POPULARITY.rawValue)
-    }
-
     LaunchedEffect(state.sortOption) {
-        viewModel.getStudioAnimeList(studioId, state.sortOption.rawValue)
+        if (state.studioId != null) {
+            viewModel.getStudioAnimeList(
+                state.studioId!!,
+                state.sortOption.rawValue
+            )
+        }
     }
 
     Scaffold(

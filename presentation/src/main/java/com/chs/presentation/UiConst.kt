@@ -23,6 +23,10 @@ object UiConst {
     const val FAVOURITE_ID: String = "favoriteId"
     const val TITLE_PREVIEW: String = "Title PreView"
     const val UNKNOWN: String = "Unknown"
+    const val KEY_SEASON: String = "season"
+    const val KEY_YEAR: String = "year"
+    const val KEY_SORT: String = "sort"
+    const val KEY_GENRE: String = "genre"
     const val INFINITE_PAGER_COUNT = Int.MAX_VALUE
     const val PAGER_CHANGE_DELAY = 5000L
     const val MAX_BANNER_SIZE: Int = 5
@@ -70,14 +74,12 @@ object UiConst {
         Pair("Thriller", "#224C80")
     )
 
-    val sortTypeList = SortType
-        .values()
+    val sortTypeList = SortType.entries
 
     val yearSortList = (Util.getVariationYear(true) downTo 1980)
         .map { it.toString() to it.toString() }
 
-    val seasonFilterList = Season
-        .values()
+    val seasonFilterList = Season.entries
 
     val mediaStatus = hashMapOf(
         Pair("RELEASING", "Up Releasing" to 0xFF00BCD4),

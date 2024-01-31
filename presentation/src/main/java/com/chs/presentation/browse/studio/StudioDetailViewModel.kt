@@ -1,5 +1,6 @@
 package com.chs.presentation.browse.studio
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -15,6 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StudioDetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getStudioDetailUseCase: GetStudioDetailUseCase,
     private val getStudioAnimeListUseCase: GetStudioAnimeListUseCase
 ) : ViewModel() {
@@ -23,7 +25,16 @@ class StudioDetailViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
 
-    fun getStudioDetailInfo(studioId: Int) {
+    init {
+        val studioId: Int = savedStateHandle[UiConst.TARGET_ID] ?: 0
+        _state.update { it.copy(studioId = studioId) }
+        getStudioDetailInfo(studioId)
+        getStudioAnimeList(
+            studioId, state.value.sortOption.rawValue
+        )
+    }
+
+    private fun getStudioDetailInfo(studioId: Int) {
         viewModelScope.launch {
             _state.update {
                 it.copy(

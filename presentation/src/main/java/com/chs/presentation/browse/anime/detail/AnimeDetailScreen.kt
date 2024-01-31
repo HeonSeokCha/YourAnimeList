@@ -75,8 +75,6 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AnimeDetailScreen(
-    id: Int,
-    idMal: Int,
     navController: NavController,
     viewModel: AnimeDetailViewModel = hiltViewModel()
 ) {
@@ -88,12 +86,6 @@ fun AnimeDetailScreen(
     val coroutineScope = rememberCoroutineScope()
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-
-    LaunchedEffect(viewModel, context) {
-        viewModel.getAnimeDetailInfo(id)
-        viewModel.getAnimeTheme(idMal)
-        viewModel.isSaveAnime(id)
-    }
 
     Scaffold(
         topBar = {
@@ -143,7 +135,7 @@ fun AnimeDetailScreen(
                     )
                 }
             ) {
-                viewModel.tabList.forEachIndexed { index, title ->
+                state.tabNames.forEachIndexed { index, title ->
                     Tab(
                         text = {
                             Text(
@@ -187,10 +179,12 @@ fun AnimeDetailScreen(
                     }
 
                     2 -> {
-                        AnimeRecScreen(
-                            animeId = id,
-                            navController = navController,
-                        )
+                        if (state.animeId != null) {
+                            AnimeRecScreen(
+                                animeId = state.animeId!!,
+                                navController = navController,
+                            )
+                        }
                     }
                 }
             }
@@ -213,7 +207,7 @@ fun AnimeDetailHeadBanner(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(420.dp)
+            .height(440.dp)
     ) {
         Box {
             AsyncImage(
@@ -226,7 +220,7 @@ fun AnimeDetailHeadBanner(
                     )
                     .placeholder(visible = animeDetailInfo == null),
                 model = animeDetailInfo?.bannerImage,
-                placeholder = ColorPainter(Color.LightGray),
+                placeholder = ColorPainter(LightGray),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -274,10 +268,10 @@ fun AnimeDetailHeadBanner(
                         .placeholder(visible = animeDetailInfo == null)
                         .background(
                             color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
-                                ?: Color.LightGray
+                                ?: LightGray
                         ),
                     model = animeDetailInfo?.animeInfo?.imageUrl,
-                    placeholder = ColorPainter(Color.LightGray),
+                    placeholder = ColorPainter(LightGray),
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
@@ -285,8 +279,9 @@ fun AnimeDetailHeadBanner(
                 Column(
                     modifier = Modifier
                         .padding(
-                            top = 90.dp,
-                            start = 16.dp
+                            top = 104.dp,
+                            start = 16.dp,
+                            end = 16.dp
                         )
                 ) {
                     Text(

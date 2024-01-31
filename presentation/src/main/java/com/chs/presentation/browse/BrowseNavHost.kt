@@ -46,71 +46,60 @@ fun BrowseNavHost(
                     defaultValue = intent?.getIntExtra(UiConst.TARGET_ID_MAL, 0)!!
                 },
             )
-        ) { backStackEntry ->
-            AnimeDetailScreen(
-                id = backStackEntry.arguments?.getInt("id")!!,
-                idMal = backStackEntry.arguments?.getInt("idMal")!!,
-                navController
-            )
+        ) {
+            AnimeDetailScreen(navController)
         }
 
         composable(
             route = "${BrowseScreen.CharacterDetailScreen.route}/{id}",
             arguments = listOf(
                 navArgument("id") {
-                    type = NavType.IntType; defaultValue =
-                    intent?.getIntExtra(UiConst.TARGET_ID, 0)!!
+                    type = NavType.IntType
+                    defaultValue = intent?.getIntExtra(UiConst.TARGET_ID, 0)!!
                 }
             )
-        ) { backStackEntry ->
-            CharacterDetailScreen(
-                backStackEntry.arguments?.getInt("id")!!,
-                navController
-            )
+        ) {
+            CharacterDetailScreen(navController)
         }
 
         composable(
             route = "${BrowseScreen.StudioDetailScreen.route}/{id}",
             arguments = listOf(
                 navArgument("id") {
-                    defaultValue = 0
                     type = NavType.IntType
+                    defaultValue = intent?.getIntExtra(UiConst.TARGET_ID, 0)!!
                 }
             )
-        ) { backStackEntry ->
-            StudioDetailScreen(
-                studioId = backStackEntry.arguments?.getInt("id") ?: 0,
-                navController
-            )
+        ) {
+            StudioDetailScreen(navController)
         }
 
         composable(
             route = "${Screen.SortListScreen.route}/{year}/{season}",
             arguments = listOf(
                 navArgument("year") {
-                    defaultValue = 0
+                    defaultValue = intent?.getIntExtra(UiConst.KEY_YEAR, 0)
                     type = NavType.IntType
                 },
                 navArgument("season") {
-                    defaultValue = ""
+                    defaultValue = intent?.getStringExtra(UiConst.KEY_SEASON) ?: ""
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            SortedListScreen()
+        }
+
+        composable(
+            route = "${Screen.SortListScreen.route}/{genre}",
+            arguments = listOf(
+                navArgument("genre") {
+                    defaultValue = intent?.getStringExtra(UiConst.KEY_GENRE) ?: ""
                     type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
-            SortedListScreen(
-                sort = UiConst.SortType.POPULARITY.rawValue,
-                year = backStackEntry.arguments?.getInt("year") ?: 0,
-                season = backStackEntry.arguments?.getString("season") ?: ""
-            )
-        }
-
-        composable("${Screen.SortListScreen.route}/{genre}") { backStackEntry ->
-            SortedListScreen(
-                sort = UiConst.SortType.AVERAGE.rawValue,
-                year = 0,
-                season = null,
-                genre = backStackEntry.arguments?.getString("genre") ?: ""
-            )
+            SortedListScreen()
         }
     }
 }

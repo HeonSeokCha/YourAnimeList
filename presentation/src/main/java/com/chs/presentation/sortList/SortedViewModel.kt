@@ -1,5 +1,6 @@
 package com.chs.presentation.sortList
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -18,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SortedViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getAnimeFilteredListUseCase: GetAnimeFilteredListUseCase,
     private val getSavedGenresUsaCase: GetSavedGenresUseCase,
     private val getRecentGenresUseCase: GetRecentGenresUseCase
@@ -28,28 +30,29 @@ class SortedViewModel @Inject constructor(
 
     var selectMenuIdx: Int = 0
 
-    init {
-        initFilterList()
-    }
 
-    fun initSort(
-        selectSort: UiConst.SortType? = null,
-        selectSeason: UiConst.Season? = null,
-        selectYear: Int = 0,
-        selectGenre: String? = null
-    ) {
+    init {
+        val selectSort = UiConst.SortType.entries.find {
+            it.rawValue == savedStateHandle[UiConst.KEY_SORT]
+        } ?: UiConst.SortType.POPULARITY
+
+        val selectSeason = UiConst.Season.entries.find {
+            it.rawValue == savedStateHandle[UiConst.KEY_SEASON]
+        } ?: UiConst.Season.SPRING
+
+        val selectYear: Int = savedStateHandle[UiConst.KEY_YEAR] ?: 0
+        val selectGenre: String? = savedStateHandle[UiConst.KEY_GENRE]
+
+        initFilterList()
         _state.update {
             it.copy(
-                selectSort = if (selectSort != null) {
-                    selectSort.name to selectSort.rawValue
-                } else UiConst.SortType.TRENDING.name to UiConst.SortType.TRENDING.rawValue,
-                selectSeason = if (selectSeason != null) {
-                    selectSeason.name to selectSeason.rawValue
-                } else null,
+                selectSort = selectSort.name to selectSort.rawValue,
+                selectSeason = selectSeason.name to selectSeason.rawValue,
                 selectYear = if (selectYear != 0) selectYear else null,
                 selectGenre = selectGenre
             )
         }
+
         getSortedAnime()
     }
 

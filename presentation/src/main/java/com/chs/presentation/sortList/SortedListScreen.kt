@@ -42,10 +42,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SortedListScreen(
-    sort: String? = null,
-    year: Int,
-    season: String? = null,
-    genre: String? = null,
     viewModel: SortedViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -56,15 +52,6 @@ fun SortedListScreen(
     var placeItemShow by remember { mutableStateOf(false) }
     var isEmptyShow by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
-
-    LaunchedEffect(viewModel, context) {
-        viewModel.initSort(
-            selectSort = UiConst.SortType.values().firstOrNull { it.rawValue == sort },
-            selectYear = year,
-            selectSeason = UiConst.Season.values().firstOrNull { it.rawValue == season },
-            selectGenre = genre
-        )
-    }
 
     Column(
         modifier = Modifier.fillMaxSize()

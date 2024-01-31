@@ -1,10 +1,12 @@
 package com.chs.presentation.browse.anime.detail
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.common.Resource
 import com.chs.domain.usecase.*
+import com.chs.presentation.UiConst
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimeDetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getAnimeDetailUseCase: GetAnimeDetailUseCase,
     private val checkSaveAnimeUseCase: GetSavedAnimeInfoUseCase,
     private val insertAnimeUseCase: InsertAnimeInfoUseCase,
@@ -24,13 +27,22 @@ class AnimeDetailViewModel @Inject constructor(
     private val _state = MutableStateFlow(AnimeDetailState())
     val state = _state.asStateFlow()
 
-    val tabList = listOf(
-        "OVERVIEW",
-        "CHARACTER",
-        "RECOMMEND"
-    )
+    private val animeId: Int = savedStateHandle[UiConst.TARGET_ID] ?: 0
+    private val animeMalId: Int = savedStateHandle[UiConst.TARGET_ID_MAL] ?: 0
 
-    fun getAnimeDetailInfo(id: Int) {
+    init {
+        _state.update {
+            it.copy(
+                animeId = animeId
+            )
+        }
+
+        getAnimeDetailInfo(animeId)
+        getAnimeTheme(animeMalId)
+        isSaveAnime(animeId)
+    }
+
+    private fun getAnimeDetailInfo(id: Int) {
         viewModelScope.launch {
             getAnimeDetailUseCase(id).collect { result ->
                 _state.update {
@@ -59,7 +71,7 @@ class AnimeDetailViewModel @Inject constructor(
         }
     }
 
-    fun getAnimeTheme(idMal: Int) {
+    private fun getAnimeTheme(idMal: Int) {
         viewModelScope.launch {
             getAnimeThemeUseCase(idMal).collect { result ->
                 _state.update {
@@ -85,7 +97,7 @@ class AnimeDetailViewModel @Inject constructor(
         }
     }
 
-    fun isSaveAnime(animeId: Int) {
+    private fun isSaveAnime(animeId: Int) {
         viewModelScope.launch {
             checkSaveAnimeUseCase(animeId).collect { savedAnimeInfo ->
                 _state.update {

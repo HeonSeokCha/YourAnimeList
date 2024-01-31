@@ -68,7 +68,6 @@ import com.chs.domain.model.CharacterDetailInfo
 import com.chs.presentation.R
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingAppBar
-import com.chs.presentation.color
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.items
 import com.google.accompanist.placeholder.material.placeholder
@@ -76,23 +75,15 @@ import com.google.accompanist.placeholder.material.placeholder
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharacterDetailScreen(
-    charaId: Int,
     navController: NavController,
     viewModel: CharacterDetailViewModel = hiltViewModel()
 ) {
 
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
     var expandedDescButton by remember { mutableStateOf(false) }
     val pagingItem = state.animeList?.collectAsLazyPagingItems()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-
-    LaunchedEffect(viewModel, context) {
-        viewModel.getCharacterDetail(charaId)
-        viewModel.getCharacterDetailAnimeList(charaId, UiConst.SortType.POPULARITY)
-        viewModel.isSaveCharacter(charaId)
-    }
 
     Scaffold(
         topBar = {

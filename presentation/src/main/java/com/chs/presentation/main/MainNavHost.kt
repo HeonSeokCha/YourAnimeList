@@ -56,12 +56,8 @@ fun MainNavHost(
                     type = NavType.StringType
                 }
             )
-        ) { backStackEntry ->
-            SortedListScreen(
-                sort = backStackEntry.arguments?.getString("sortOption"),
-                year = backStackEntry.arguments?.getInt("sortYear") ?: 0,
-                season = backStackEntry.arguments?.getString("sortSeason")
-            )
+        ) {
+            SortedListScreen()
         }
     }
 }

@@ -164,6 +164,7 @@ fun ItemHomeBanner(
                                 containerColor = GENRE_COLOR[genre]?.color ?: Color.Black,
                                 labelColor = Color.White
                             ), border = AssistChipDefaults.assistChipBorder(
+                                enabled = true,
                                 borderColor = GENRE_COLOR[genre]?.color ?: Color.Black
                             ),
                             shape = RoundedCornerShape(16.dp)
