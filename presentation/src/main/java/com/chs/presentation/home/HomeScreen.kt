@@ -2,11 +2,13 @@ package com.chs.presentation.home
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -45,36 +47,13 @@ import kotlinx.coroutines.withContext
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
-    navigator: NavHostController,
+    navController: NavHostController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    var initialPage by remember { mutableIntStateOf(UiConst.INFINITE_PAGER_COUNT) }
     val pagerState = rememberPagerState {
-        UiConst.INFINITE_PAGER_COUNT / 2
-    }
-
-    LaunchedEffect(Unit) {
-        while (initialPage % (state.animeRecommendList?.bannerList?.size
-                ?: UiConst.MAX_BANNER_SIZE) != 0
-        ) {
-            initialPage++
-        }
-        pagerState.scrollToPage(initialPage)
-    }
-
-    LaunchedEffect(pagerState.currentPage) {
-        launch {
-            while (true) {
-                delay(UiConst.PAGER_CHANGE_DELAY)
-                withContext(NonCancellable) {
-                    if (pagerState.currentPage + 1 in 0..UiConst.INFINITE_PAGER_COUNT) {
-                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                    }
-                }
-            }
-        }
+        state.animeRecommendList?.bannerList?.size ?: 1
     }
 
     LazyColumn(
@@ -91,7 +70,7 @@ fun HomeScreen(
                 ItemHomeBanner(
                     banner = if (state.animeRecommendList?.bannerList.isNullOrEmpty()) {
                         null
-                    } else state.animeRecommendList!!.bannerList[idx % state.animeRecommendList?.bannerList?.size!!]
+                    } else state.animeRecommendList!!.bannerList[idx]
                 ) { id, idMal ->
                     context.startActivity(
                         Intent(
@@ -131,13 +110,13 @@ fun HomeScreen(
 
         items(
             state.animeRecommendList?.animeBasicList?.size ?: UiConst.MAX_BANNER_SIZE,
-            key = { viewModel.animeCategorySortList[it].first }
+            key = { state.animeCategoryList[it].first }
         ) { idx ->
             ItemRecommendCategory(
-                title = viewModel.animeCategorySortList[idx],
+                title = state.animeCategoryList[idx],
                 list = state.animeRecommendList?.animeBasicList?.get(idx)
                     ?: List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
-                navigator = navigator,
+                navigator = navController
             )
         }
     }

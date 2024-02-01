@@ -28,7 +28,7 @@ fun MainNavHost(
         startDestination = BottomNavScreen.HomeScreen.route
     ) {
         composable(BottomNavScreen.HomeScreen.route) {
-            HomeScreen(navigator = navController)
+            HomeScreen(navController)
         }
         composable(BottomNavScreen.AnimeListScreen.route) {
             AnimeListScreen(searchListQuery)
