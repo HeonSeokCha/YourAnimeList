@@ -34,11 +34,11 @@ class SortedViewModel @Inject constructor(
     init {
         val selectSort = UiConst.SortType.entries.find {
             it.rawValue == savedStateHandle[UiConst.KEY_SORT]
-        } ?: UiConst.SortType.POPULARITY
+        } ?: UiConst.SortType.TRENDING
 
         val selectSeason = UiConst.Season.entries.find {
             it.rawValue == savedStateHandle[UiConst.KEY_SEASON]
-        } ?: UiConst.Season.SPRING
+        }
 
         val selectYear: Int = savedStateHandle[UiConst.KEY_YEAR] ?: 0
         val selectGenre: String? = savedStateHandle[UiConst.KEY_GENRE]
@@ -47,7 +47,7 @@ class SortedViewModel @Inject constructor(
         _state.update {
             it.copy(
                 selectSort = selectSort.name to selectSort.rawValue,
-                selectSeason = selectSeason.name to selectSeason.rawValue,
+                selectSeason = if (selectSeason != null) selectSeason.name to selectSeason.rawValue else null,
                 selectYear = if (selectYear != 0) selectYear else null,
                 selectGenre = selectGenre
             )

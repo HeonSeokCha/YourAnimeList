@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.chs.presentation.UiConst
 import com.chs.presentation.animeList.AnimeListScreen
 import com.chs.presentation.charaList.CharaListScreen
 import com.chs.presentation.home.HomeScreen
@@ -40,17 +41,17 @@ fun MainNavHost(
             SearchScreen(searchQuery, onBack, searchHistory)
         }
         composable(
-            route = "${Screen.SortListScreen.route}/{sortOption}/{sortYear}/{sortSeason}",
+            route = "${Screen.SortListScreen.route}/{sort}/{year}/{season}",
             arguments = listOf(
-                navArgument("sortOption") {
+                navArgument(UiConst.KEY_SORT) {
                     nullable = true
                     defaultValue = null
                     type = NavType.StringType
                 },
-                navArgument("sortYear") {
+                navArgument(UiConst.KEY_YEAR) {
                     type = NavType.IntType
                 },
-                navArgument("sortSeason") {
+                navArgument(UiConst.KEY_SEASON) {
                     nullable = true
                     defaultValue = null
                     type = NavType.StringType
