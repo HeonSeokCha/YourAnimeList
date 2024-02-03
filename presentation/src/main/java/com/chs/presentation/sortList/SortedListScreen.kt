@@ -36,7 +36,6 @@ import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
-import com.chs.presentation.items
 import com.chs.presentation.ui.theme.Pink80
 import kotlinx.coroutines.launch
 
@@ -89,9 +88,10 @@ fun SortedListScreen(
         ) {
             if (pagingItems != null) {
                 items(
-                    pagingItems,
-                    key = { it.id }
-                ) { animeInfo ->
+                    count = pagingItems.itemCount,
+                    key = { pagingItems[it]?.id ?: it }
+                ) {
+                    val animeInfo = pagingItems[it]
                     ItemAnimeSmall(item = animeInfo) {
                         context.startActivity(
                             Intent(
@@ -105,6 +105,7 @@ fun SortedListScreen(
                             }
                         )
                     }
+
                 }
             }
 

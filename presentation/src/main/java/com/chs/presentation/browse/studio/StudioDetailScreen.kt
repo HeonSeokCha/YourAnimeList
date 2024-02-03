@@ -45,7 +45,6 @@ import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
-import com.chs.presentation.items
 import com.google.accompanist.placeholder.material.placeholder
 import kotlinx.coroutines.launch
 
@@ -109,9 +108,10 @@ fun StudioDetailScreen(
 
             if (pagingItem != null) {
                 items(
-                    pagingItem,
-                    key = { it.id }
-                ) { animeInfo ->
+                    count = pagingItem.itemCount,
+                    key = { pagingItem[it]?.id ?: it }
+                ) {
+                    val animeInfo = pagingItem[it]
                     if (animeInfo != null) {
                         ItemAnimeSmall(item = animeInfo) {
                             navController.navigate(

@@ -64,7 +64,7 @@ fun ItemAnimeSmall(
         ) {
             AsyncImage(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .width(122.dp)
                     .height(180.dp)
                     .clip(RoundedCornerShape(5.dp))
                     .placeholder(item?.imageUrl == null),

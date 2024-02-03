@@ -65,7 +65,7 @@ class AnimeRepositoryImpl @Inject constructor(
         genre: String?
     ): Flow<PagingData<AnimeInfo>> {
         return Pager(
-            PagingConfig(pageSize = 10)
+            PagingConfig(pageSize = 3)
         ) {
             AnimeSortPagingSource(
                 apolloClient = apolloClient,
