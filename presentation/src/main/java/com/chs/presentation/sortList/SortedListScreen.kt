@@ -17,7 +17,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,7 +58,10 @@ fun SortedListScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(start = 4.dp, end = 4.dp),
+                .padding(
+                    start = 4.dp,
+                    end = 4.dp
+                ),
             verticalAlignment = Alignment.CenterVertically,
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
@@ -68,8 +70,9 @@ fun SortedListScreen(
                     title = state.menuList[idx].first,
                     subTitle = viewModel.getSelectedOption(idx)
                 ) {
-                    viewModel.selectMenuIdx =
+                    viewModel.changeFiletMenuIdx(
                         state.menuList.indexOf(state.menuList.find { it.first == state.menuList[idx].first })
+                    )
                     filterDialogShow = true
                 }
             }
@@ -129,7 +132,7 @@ fun SortedListScreen(
 
     if (filterDialogShow) {
         FilterDialog(
-            list = state.menuList[viewModel.selectMenuIdx].second,
+            list = state.menuList[state.selectMenuIdx].second,
             onDismiss = {
                 filterDialogShow = false
             }, onClick = { selectIdx ->

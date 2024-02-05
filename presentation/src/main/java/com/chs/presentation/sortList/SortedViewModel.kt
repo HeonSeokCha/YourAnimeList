@@ -28,10 +28,9 @@ class SortedViewModel @Inject constructor(
     private val _state = MutableStateFlow(SortState())
     val state = _state.asStateFlow()
 
-    var selectMenuIdx: Int = 0
-
-
     init {
+        initFilterList()
+
         val selectSort = UiConst.SortType.entries.find {
             it.rawValue == savedStateHandle[UiConst.KEY_SORT]
         } ?: UiConst.SortType.TRENDING
@@ -43,7 +42,6 @@ class SortedViewModel @Inject constructor(
         val selectYear: Int = savedStateHandle[UiConst.KEY_YEAR] ?: 0
         val selectGenre: String? = savedStateHandle[UiConst.KEY_GENRE]
 
-        initFilterList()
         _state.update {
             it.copy(
                 selectSort = selectSort.name to selectSort.rawValue,
@@ -76,30 +74,20 @@ class SortedViewModel @Inject constructor(
         }
     }
 
+    fun changeFiletMenuIdx(idx: Int) {
+        _state.update {
+            it.copy(
+                selectMenuIdx = idx
+            )
+        }
+    }
+
     fun changeFilterOptions(selectIdx: Int) {
-        when (selectMenuIdx) {
-            0 -> {
-                _state.update {
-                    it.copy(selectYear = it.menuList[0].second[selectIdx].second.toInt())
-                }
-            }
-
-            1 -> {
-                _state.update {
-                    it.copy(selectSeason = it.menuList[1].second[selectIdx])
-                }
-            }
-
-            2 -> {
-                _state.update {
-                    it.copy(selectSort = it.menuList[2].second[selectIdx])
-                }
-            }
-
-            3 -> {
-                _state.update {
-                    it.copy(selectGenre = it.menuList[3].second[selectIdx].second)
-                }
+        _state.update {
+            if (it.selectMenuIdx == 0) {
+                it.copy(selectYear = it.menuList[0].second[selectIdx].second.toInt())
+            } else {
+                it.copy(selectSeason = it.menuList[it.selectMenuIdx].second[selectIdx])
             }
         }
         getSortedAnime()

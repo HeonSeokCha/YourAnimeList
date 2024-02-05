@@ -140,9 +140,7 @@ class AnimeRepositoryImpl @Inject constructor(
                 .execute()
                 .data
                 ?.genreCollection
-                ?.map {
-                    it ?: ""
-                } ?: emptyList()
+                ?.filterNotNull() ?: emptyList()
         }
 
         genreDao.insertMultiple(

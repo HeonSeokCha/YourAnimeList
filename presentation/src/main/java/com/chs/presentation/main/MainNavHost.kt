@@ -31,15 +31,19 @@ fun MainNavHost(
         composable(BottomNavScreen.HomeScreen.route) {
             HomeScreen(navController)
         }
+
         composable(BottomNavScreen.AnimeListScreen.route) {
             AnimeListScreen(searchListQuery)
         }
+
         composable(BottomNavScreen.CharaListScreen.route) {
             CharaListScreen(searchListQuery)
         }
+
         composable(Screen.SearchScreen.route) {
             SearchScreen(searchQuery, onBack, searchHistory)
         }
+
         composable(
             route = "${Screen.SortListScreen.route}/{sort}/{year}/{season}",
             arguments = listOf(
