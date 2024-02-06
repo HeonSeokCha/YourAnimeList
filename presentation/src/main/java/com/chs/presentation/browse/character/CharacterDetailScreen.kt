@@ -61,6 +61,7 @@ import com.chs.presentation.R
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.common.ItemAnimeSmall
+import com.chs.presentation.common.ItemSaveButton
 import com.google.accompanist.placeholder.material.placeholder
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -230,18 +231,11 @@ private fun CharacterBanner(
             }
         }
 
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-                .placeholder(visible = characterInfo == null),
-            onClick = { onClick() }
+        ItemSaveButton(
+            shimmerVisible = characterInfo == null,
+            isSave = isSave
         ) {
-            if (isSave) {
-                Text("SAVED")
-            } else {
-                Text("ADD MY LIST")
-            }
+            onClick()
         }
     }
 }
@@ -259,7 +253,6 @@ private fun CharacterProfile(characterDetailInfo: CharacterDetailInfo) {
 
         if (characterDetailInfo.gender.isNotEmpty()) {
             ProfileText("Gender", characterDetailInfo.gender)
-
         }
 
         if (characterDetailInfo.bloodType.isNotEmpty()) {
@@ -316,7 +309,8 @@ private fun CharacterDescription(
 
         if (expandedDescButton) {
             AndroidView(
-                modifier = Modifier,
+                modifier = Modifier
+                    .fillMaxWidth(),
                 factory = { TextView(it) },
                 update = {
                     it.text = spannedText
@@ -327,6 +321,7 @@ private fun CharacterDescription(
         } else {
             AndroidView(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .placeholder(description == null),
                 factory = { TextView(it) },
                 update = {
@@ -339,10 +334,11 @@ private fun CharacterDescription(
             )
         }
 
-        if (description != null && description.length > 100) {
+        if (description != null && description.length > 200) {
             if (!expandedDescButton) {
                 Button(
                     modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
                         .padding(
                             top = 8.dp,
                             bottom = 8.dp

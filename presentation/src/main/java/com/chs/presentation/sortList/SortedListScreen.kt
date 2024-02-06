@@ -114,9 +114,7 @@ fun SortedListScreen(
 
             if (placeItemShow) {
                 items(10) {
-                    ItemAnimeSmall(item = null) {
-
-                    }
+                    ItemAnimeSmall(item = null)
                 }
             }
 

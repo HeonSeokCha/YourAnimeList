@@ -97,6 +97,12 @@ fun SearchAppBar(
 
     SearchBar(
         modifier = Modifier
+            .padding(
+                start = 12.dp,
+                top = 8.dp,
+                end = 12.dp,
+                bottom = 12.dp
+            )
             .fillMaxWidth(),
         query = text,
         onQueryChange = { text = it },

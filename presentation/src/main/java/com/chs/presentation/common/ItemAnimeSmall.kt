@@ -36,7 +36,7 @@ import com.google.accompanist.placeholder.material.placeholder
 @Composable
 fun ItemAnimeSmall(
     item: AnimeInfo?,
-    onClick: () -> Unit
+    onClick: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier

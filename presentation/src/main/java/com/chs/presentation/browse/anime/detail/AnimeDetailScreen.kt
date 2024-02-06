@@ -29,6 +29,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -66,6 +67,7 @@ import com.chs.presentation.browse.anime.character.AnimeCharaScreen
 import com.chs.presentation.browse.anime.overView.AnimeOverViewScreen
 import com.chs.presentation.browse.anime.recommend.AnimeRecScreen
 import com.chs.presentation.color
+import com.chs.presentation.common.ItemSaveButton
 import com.chs.presentation.common.LoadingIndicator
 import com.chs.presentation.isNotEmptyValue
 import com.chs.presentation.ui.theme.Pink80
@@ -129,7 +131,7 @@ fun AnimeDetailScreen(
                 modifier = Modifier.fillMaxWidth(),
                 selectedTabIndex = pagerState.currentPage,
                 indicator = { tabPositions ->
-                    TabRowDefaults.Indicator(
+                    SecondaryIndicator(
                         modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
                         color = Pink80
                     )
@@ -347,22 +349,11 @@ fun AnimeDetailHeadBanner(
                 }
             }
 
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 8.dp,
-                        start = 8.dp,
-                        end = 8.dp
-                    )
-                    .placeholder(visible = animeDetailInfo == null),
-                onClick = { saveClick() }
+            ItemSaveButton(
+                shimmerVisible = animeDetailInfo == null,
+                isSave = isAnimeSave
             ) {
-                if (isAnimeSave) {
-                    Text("SAVED")
-                } else {
-                    Text("ADD MY LIST")
-                }
+                saveClick()
             }
         }
     }

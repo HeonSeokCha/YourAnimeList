@@ -98,7 +98,7 @@ fun BrowseNavHost(
                     type = NavType.StringType
                 }
             )
-        ) { backStackEntry ->
+        ) {
             SortedListScreen()
         }
     }

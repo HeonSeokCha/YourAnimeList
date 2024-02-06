@@ -1,4 +1,4 @@
-# This file was generated based on ".graphqlconfig". Do not edit manually.
+# This file was generated. Do not edit manually.
 
 schema {
     query: Query
@@ -4411,6 +4411,8 @@ enum ModRole {
     ADMIN
     "An anime data moderator"
     ANIME_DATA
+    "A character data moderator"
+    CHARACTER_DATA
     "A community moderator"
     COMMUNITY
     "An AniList developer"
@@ -4433,6 +4435,8 @@ enum ModRole {
     RETIRED
     "A social media moderator"
     SOCIAL_MEDIA
+    "A staff data moderator"
+    STAFF_DATA
 }
 
 "Notification type enum"

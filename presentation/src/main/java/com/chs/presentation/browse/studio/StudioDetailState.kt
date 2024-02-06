@@ -10,6 +10,6 @@ data class StudioDetailState(
     val studioId: Int? = null,
     val studioDetailInfo: StudioDetailInfo? = null,
     val studioAnimeList: Flow<PagingData<AnimeInfo>>? = null,
-    val sortOption: UiConst.SortType = UiConst.SortType.POPULARITY,
+    val sortOption: UiConst.SortType = UiConst.SortType.NEWEST,
     val isLoading: Boolean = false
 )
