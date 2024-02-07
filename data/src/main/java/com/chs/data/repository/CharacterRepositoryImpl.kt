@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.chs.CharacterDetailQuery
+import com.chs.common.Constants
 import com.chs.data.mapper.toCharacterDetailInfo
 import com.chs.data.mapper.toCharacterEntity
 import com.chs.data.mapper.toCharacterInfo
@@ -42,7 +43,7 @@ class CharacterRepositoryImpl @Inject constructor(
         sort: String
     ): Flow<PagingData<AnimeInfo>> {
         return Pager(
-            PagingConfig(pageSize = 10)
+            PagingConfig(pageSize = Constants.PAGING_SIZE)
         ) {
             CharaAnimePagingSource(
                 apolloClient,
@@ -62,14 +63,6 @@ class CharacterRepositoryImpl @Inject constructor(
     override fun getSavedCharacterInfo(characterId: Int): Flow<CharacterInfo?> {
         return dao.checkCharaList(characterId).map {
             it?.toCharacterInfo()
-        }
-    }
-
-    override fun getSavedSearchCharacterList(query: String): Flow<List<CharacterInfo>> {
-        return dao.searchCharaList(query).map {
-            it.map { characterEntity ->
-                characterEntity.toCharacterInfo()
-            }
         }
     }
 

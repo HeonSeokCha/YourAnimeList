@@ -6,10 +6,10 @@ import com.chs.data.source.db.dao.AnimeListDao
 import com.chs.data.source.db.dao.CharaListDao
 import com.chs.data.source.db.dao.GenreDao
 import com.chs.data.source.db.dao.SearchListDao
-import com.chs.data.source.db.model.AnimeEntity
-import com.chs.data.source.db.model.CharacterEntity
-import com.chs.data.source.db.model.GenreEntity
-import com.chs.data.source.db.model.SearchHistoryEntity
+import com.chs.data.source.db.entity.AnimeEntity
+import com.chs.data.source.db.entity.CharacterEntity
+import com.chs.data.source.db.entity.GenreEntity
+import com.chs.data.source.db.entity.SearchHistoryEntity
 
 @Database(
     entities = [
@@ -17,7 +17,7 @@ import com.chs.data.source.db.model.SearchHistoryEntity
         CharacterEntity::class,
         SearchHistoryEntity::class,
         GenreEntity::class
-    ], version = 1, exportSchema = false
+    ], version = 2, exportSchema = false
 )
 abstract class AnimeListDatabase : RoomDatabase() {
     abstract val animeListDao: AnimeListDao

@@ -16,10 +16,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.UiConst
 import com.chs.presentation.common.ItemCharaLarge
+import com.chs.presentation.common.ItemNoResultImage
 
 @Composable
 fun CharaListScreen(
-    searchQuery: String,
     viewModel: CharacterListViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -29,28 +29,28 @@ fun CharaListScreen(
         viewModel.getYourCharaList()
     }
 
-    LaunchedEffect(searchQuery) {
-        viewModel.getSearchResultChara()
-    }
-
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        items(
-            state.charaList,
-            key = { it.id }
-        ) { charaInfo ->
-            ItemCharaLarge(character = charaInfo) {
-                context.startActivity(
-                    Intent(
-                        context, BrowseActivity::class.java
-                    ).apply {
-                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
-                        this.putExtra(UiConst.TARGET_ID, charaInfo.id)
-                    }
-                )
+    if (state.charaList.isEmpty()) {
+        ItemNoResultImage()
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            items(
+                state.charaList,
+                key = { it.id }
+            ) { charaInfo ->
+                ItemCharaLarge(character = charaInfo) {
+                    context.startActivity(
+                        Intent(
+                            context, BrowseActivity::class.java
+                        ).apply {
+                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
+                            this.putExtra(UiConst.TARGET_ID, charaInfo.id)
+                        }
+                    )
+                }
             }
         }
     }

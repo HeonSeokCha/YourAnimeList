@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.chs.StudioQuery
+import com.chs.common.Constants
 import com.chs.data.mapper.toStudioDetailInfo
 import com.chs.data.paging.StudioAnimePagingSource
 import com.chs.domain.model.AnimeInfo
@@ -35,7 +36,7 @@ class StudioRepositoryImpl @Inject constructor(
         studioSort: String
     ): Flow<PagingData<AnimeInfo>> {
         return Pager(
-            PagingConfig(pageSize = 3)
+            PagingConfig(pageSize = Constants.PAGING_SIZE)
         ) {
             StudioAnimePagingSource(
                 apolloClient,

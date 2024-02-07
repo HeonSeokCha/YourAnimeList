@@ -18,8 +18,6 @@ interface CharacterRepository {
 
     fun getSavedCharacterInfo(characterId: Int): Flow<CharacterInfo?>
 
-    fun getSavedSearchCharacterList(query: String): Flow<List<CharacterInfo>>
-
     suspend fun insertCharacterInfo(characterInfo: CharacterInfo)
 
     suspend fun deleteCharacterInfo(characterInfo: CharacterInfo)

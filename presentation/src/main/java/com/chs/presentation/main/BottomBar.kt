@@ -14,10 +14,7 @@ import com.chs.presentation.ui.theme.Red500
 import com.chs.presentation.ui.theme.Red700
 
 @Composable
-fun BottomBar(
-    navController: NavHostController,
-    onNavigate: () -> Unit,
-) {
+fun BottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     if (navBackStackEntry?.destination?.route?.contains(Screen.SortListScreen.route) == false
         && navBackStackEntry?.destination?.route != Screen.SearchScreen.route
@@ -49,7 +46,6 @@ fun BottomBar(
                             launchSingleTop = true
                             restoreState = true
                         }
-                        onNavigate()
                     },
                     icon = {
                         Icon(

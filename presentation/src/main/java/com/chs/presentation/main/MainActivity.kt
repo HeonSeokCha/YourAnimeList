@@ -20,7 +20,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController: NavHostController = rememberNavController()
             var searchQuery: String by remember { mutableStateOf("") }
-            var searchListQuery: String by remember { mutableStateOf("") }
             var searchHistoryList: List<String> by remember { mutableStateOf(emptyList()) }
 
             YourAnimeListTheme {
@@ -34,15 +33,12 @@ class MainActivity : ComponentActivity() {
                         }
                     },
                     bottomBar = {
-                        BottomBar(navController) {
-                            searchListQuery = ""
-                        }
+                        BottomBar(navController)
                     },
                 ) {
                     MainNavHost(
                         navController = navController,
                         modifier = Modifier.padding(it),
-                        searchListQuery = searchListQuery,
                         searchQuery = searchQuery,
                         onBack = {
                             searchQuery = ""

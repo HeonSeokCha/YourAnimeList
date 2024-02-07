@@ -35,8 +35,6 @@ interface AnimeRepository {
 
     fun getSavedAnimeInfo(id: Int): Flow<AnimeInfo?>
 
-    fun getSavedSearchAnimeList(query: String): Flow<List<AnimeInfo>>
-
     suspend fun insertSavedAnimeInfo(animeInfo: AnimeInfo)
 
     suspend fun deleteSavedAnimeInfo(animeInfo: AnimeInfo)

@@ -28,6 +28,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.common.ItemAnimeLarge
+import com.chs.presentation.common.ItemNoResultImage
 
 @Composable
 fun AnimeRecScreen(
@@ -46,46 +47,45 @@ fun AnimeRecScreen(
 
     val lazyPagingItems = state.animeRecInfo?.collectAsLazyPagingItems()
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                top = 8.dp,
-                bottom = 8.dp
-            ),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        if (lazyPagingItems != null) {
-            items(
-                count = lazyPagingItems.itemCount,
-                key = lazyPagingItems.itemKey(key = { it.id }),
-                contentType = lazyPagingItems.itemContentType()
-            ) { index ->
-                val item = lazyPagingItems[index]
-                ItemAnimeLarge(item) {
-                    if (item != null) {
-                        navController.navigate(
-                            "${BrowseScreen.AnimeDetailScreen.route}/" +
-                                    "${item.id}" +
-                                    "/${item.idMal}"
-                        )
+    if (isEmptyShow) {
+        ItemNoResultImage()
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = 8.dp,
+                    bottom = 8.dp
+                ),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            if (lazyPagingItems != null) {
+                items(
+                    count = lazyPagingItems.itemCount,
+                    key = lazyPagingItems.itemKey(key = { it.id }),
+                    contentType = lazyPagingItems.itemContentType()
+                ) { index ->
+                    val item = lazyPagingItems[index]
+                    ItemAnimeLarge(item) {
+                        if (item != null) {
+                            navController.navigate(
+                                "${BrowseScreen.AnimeDetailScreen.route}/" +
+                                        "${item.id}" +
+                                        "/${item.idMal}"
+                            )
+                        }
                     }
                 }
-            }
 
-            if (placeItemShow) {
-                items(6) {
-                    ItemAnimeLarge(null) { }
-                }
-            }
-
-            if (isEmptyShow) {
-                item {
-                    Text(text = "No Recommend AnimeList..")
+                if (placeItemShow) {
+                    items(6) {
+                        ItemAnimeLarge(null) { }
+                    }
                 }
             }
         }
     }
+
 
     if (lazyPagingItems != null) {
         placeItemShow = when (lazyPagingItems.loadState.source.refresh) {

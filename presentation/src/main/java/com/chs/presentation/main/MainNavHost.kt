@@ -18,7 +18,6 @@ import com.chs.presentation.sortList.SortedListScreen
 fun MainNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    searchListQuery: String,
     searchQuery: String,
     onBack: () -> Unit,
     searchHistory: (List<String>) -> Unit
@@ -33,15 +32,19 @@ fun MainNavHost(
         }
 
         composable(BottomNavScreen.AnimeListScreen.route) {
-            AnimeListScreen(searchListQuery)
+            AnimeListScreen()
         }
 
         composable(BottomNavScreen.CharaListScreen.route) {
-            CharaListScreen(searchListQuery)
+            CharaListScreen()
         }
 
         composable(Screen.SearchScreen.route) {
-            SearchScreen(searchQuery, onBack, searchHistory)
+            SearchScreen(
+                searchQuery = searchQuery,
+                onBack = onBack,
+                searchHistoryList = searchHistory
+            )
         }
 
         composable(

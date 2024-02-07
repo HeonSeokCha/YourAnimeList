@@ -4,7 +4,7 @@ import com.chs.AnimeDetailInfoQuery
 import com.chs.HomeAnimeListQuery
 import com.chs.data.Util
 import com.chs.data.model.JikanAnimeDataDto
-import com.chs.data.source.db.model.AnimeEntity
+import com.chs.data.source.db.entity.AnimeEntity
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimHomeBannerInfo

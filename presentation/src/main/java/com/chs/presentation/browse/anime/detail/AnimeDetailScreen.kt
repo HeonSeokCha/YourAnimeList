@@ -20,7 +20,6 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -28,13 +27,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -58,7 +55,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.chs.common.URLConst
+import com.chs.common.Constants
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.UiConst
@@ -101,7 +98,7 @@ fun AnimeDetailScreen(
                                 .build()
                                 .launchUrl(
                                     context,
-                                    "${URLConst.YOUTUBE_BASE_URL}$trailerId".toUri()
+                                    "${Constants.YOUTUBE_BASE_URL}$trailerId".toUri()
                                 )
                         },
                         closeClick = {

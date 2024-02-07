@@ -29,6 +29,7 @@ import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.ItemAnimeLarge
 import com.chs.presentation.common.ItemCharaLarge
+import com.chs.presentation.common.ItemNoResultImage
 
 @Composable
 fun SearchMediaScreen(
@@ -71,118 +72,82 @@ fun SearchMediaScreen(
         }
     }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize(),
-        state = lazyColScrollState,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        when (searchType) {
-            UiConst.TARGET_ANIME -> {
-                val animeItems = pagingItems as LazyPagingItems<AnimeInfo>?
-                if (animeItems != null) {
-                    items(
-                        count = animeItems.itemCount,
-                        key = animeItems.itemKey(key = { it.id }),
-                        contentType = animeItems.itemContentType()
-                    ) { index ->
-                        val item = animeItems[index]
-                        ItemAnimeLarge(anime = item) {
-                            if (item != null) {
-                                context.startActivity(
-                                    Intent(
-                                        context, BrowseActivity::class.java
-                                    ).apply {
-                                        putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                                        putExtra(UiConst.TARGET_ID, item.id)
-                                        putExtra(UiConst.TARGET_ID_MAL, item.idMal)
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
-
-                if (placeItemShow) {
-                    items(6) {
-                        ItemAnimeLarge(anime = null) { }
-                    }
-                }
-
-                if (isEmptyShow) {
-                    item {
-                        Text(
-                            text = "No SearchResult.."
-                        )
-                    }
-                }
-            }
-
-//            UiConst.TARGET_MANGA -> {
-//                pagingItems?.let {
-//                    val mangaItems = pagingItems as LazyPagingItems<SearchMangaQuery.Medium>
-//                    items(mangaItems) { item ->
-//                        SearchMediaItem(item?.animeList!!) {
-//                            context.startActivity(
-//                                Intent(
-//                                    context, BrowseActivity::class.java
-//                                ).apply {
-//                                    this.putExtra(Constant.TARGET_TYPE, Constant.TARGET_MEDIA)
-//                                    this.putExtra(
-//                                        Constant.TARGET_ID,
-//                                        item.animeList.id
-//                                    )
-//                                    this.putExtra(
-//                                        Constant.TARGET_ID_MAL,
-//                                        item.animeList.idMal
-//                                    )
-//                                }
-//                            )
-//                        }
-//                    }
-//                }
-//            }
-
-            UiConst.TARGET_CHARA -> {
-                val charaItems = pagingItems as LazyPagingItems<CharacterInfo>?
-                if (charaItems != null) {
-                    items(
-                        count = charaItems.itemCount,
-                        key = charaItems.itemKey(key = { it.id }),
-                        contentType = charaItems.itemContentType()
-                    ) { idx ->
-                        val item = charaItems[idx]
-                        ItemCharaLarge(item) {
-                            context.startActivity(
-                                Intent(
-                                    context, BrowseActivity::class.java
-                                ).apply {
-                                    if (item != null) {
-                                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
-                                        this.putExtra(UiConst.TARGET_ID, item.id)
-                                    }
+    if (isEmptyShow) {
+        ItemNoResultImage()
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+            state = lazyColScrollState,
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            when (searchType) {
+                UiConst.TARGET_ANIME -> {
+                    val animeItems = pagingItems as LazyPagingItems<AnimeInfo>?
+                    if (animeItems != null) {
+                        items(
+                            count = animeItems.itemCount,
+                            key = animeItems.itemKey(key = { it.id })
+                        ) { index ->
+                            val item = animeItems[index]
+                            ItemAnimeLarge(anime = item) {
+                                if (item != null) {
+                                    context.startActivity(
+                                        Intent(
+                                            context, BrowseActivity::class.java
+                                        ).apply {
+                                            putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                                            putExtra(UiConst.TARGET_ID, item.id)
+                                            putExtra(UiConst.TARGET_ID_MAL, item.idMal)
+                                        }
+                                    )
                                 }
-                            )
+                            }
                         }
                     }
 
                     if (placeItemShow) {
                         items(6) {
-                            ItemCharaLarge(null) { }
+                            ItemAnimeLarge(anime = null) { }
                         }
                     }
+                }
 
-                    if (isEmptyShow) {
-                        item {
-                            Text(
-                                text = "No SearchResult.."
-                            )
+                UiConst.TARGET_CHARA -> {
+                    val charaItems = pagingItems as LazyPagingItems<CharacterInfo>?
+                    if (charaItems != null) {
+                        items(
+                            count = charaItems.itemCount,
+                            key = charaItems.itemKey(key = { it.id }),
+                            contentType = charaItems.itemContentType()
+                        ) { idx ->
+                            val item = charaItems[idx]
+                            ItemCharaLarge(item) {
+                                context.startActivity(
+                                    Intent(
+                                        context, BrowseActivity::class.java
+                                    ).apply {
+                                        if (item != null) {
+                                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
+                                            this.putExtra(UiConst.TARGET_ID, item.id)
+                                        }
+                                    }
+                                )
+                            }
+                        }
+
+                        if (placeItemShow) {
+                            items(6) {
+                                ItemCharaLarge(null) { }
+                            }
                         }
                     }
                 }
             }
         }
     }
+
+
 
     if (pagingItems != null) {
         placeItemShow = when (pagingItems.loadState.source.refresh) {

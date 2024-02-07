@@ -1,11 +1,11 @@
-package com.chs.data.source.db.model
+package com.chs.data.source.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "characterInfo")
 data class CharacterEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val id: Int,
     val name: String,
     val nativeName: String,

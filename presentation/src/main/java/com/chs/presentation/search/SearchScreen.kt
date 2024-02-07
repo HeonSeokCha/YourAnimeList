@@ -35,7 +35,6 @@ fun SearchScreen(
     val context = LocalContext.current
     val tabList = listOf(
         "ANIME",
-//        "MANGA",
         "CHARACTER"
     )
     val pagerState = rememberPagerState(initialPage = 0) { tabList.size }

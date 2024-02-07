@@ -3,7 +3,6 @@ package com.chs.presentation.charaList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.domain.usecase.GetSavedCharaListUseCase
-import com.chs.domain.usecase.GetSavedSearchCharaListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +13,6 @@ import javax.inject.Inject
 @HiltViewModel
 class CharacterListViewModel @Inject constructor(
     private val getYourCharaListUseCase: GetSavedCharaListUseCase,
-    private val getSavedSearchCharaListUseCase: GetSavedSearchCharaListUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CharaListState())
@@ -27,12 +25,9 @@ class CharacterListViewModel @Inject constructor(
                     it.copy(
                         charaList = charaInfo,
                         isLoading = false
-                    ) }
+                    )
+                }
             }
         }
-    }
-
-    fun getSearchResultChara() {
-
     }
 }

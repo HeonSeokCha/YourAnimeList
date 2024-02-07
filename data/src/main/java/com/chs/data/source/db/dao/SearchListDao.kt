@@ -2,7 +2,7 @@ package com.chs.data.source.db.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.chs.data.source.db.model.SearchHistoryEntity
+import com.chs.data.source.db.entity.SearchHistoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

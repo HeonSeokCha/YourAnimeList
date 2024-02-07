@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.chs.*
+import com.chs.common.Constants
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeRecommendList
@@ -17,12 +18,10 @@ import com.chs.data.mapper.*
 import com.chs.data.paging.AnimeRecPagingSource
 import com.chs.data.paging.AnimeSortPagingSource
 import com.chs.data.source.db.dao.GenreDao
-import com.chs.data.source.db.model.GenreEntity
-import com.chs.domain.model.GenreInfo
+import com.chs.data.source.db.entity.GenreEntity
 import com.chs.type.MediaSeason
 import com.chs.type.MediaSort
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -65,7 +64,7 @@ class AnimeRepositoryImpl @Inject constructor(
         genre: String?
     ): Flow<PagingData<AnimeInfo>> {
         return Pager(
-            PagingConfig(pageSize = 3)
+            PagingConfig(pageSize = Constants.PAGING_SIZE)
         ) {
             AnimeSortPagingSource(
                 apolloClient = apolloClient,
@@ -89,7 +88,7 @@ class AnimeRepositoryImpl @Inject constructor(
 
     override fun getAnimeDetailInfoRecommendList(animeId: Int): Flow<PagingData<AnimeInfo>> {
         return Pager(
-            PagingConfig(pageSize = 10)
+            PagingConfig(pageSize = Constants.PAGING_SIZE)
         ) {
             AnimeRecPagingSource(
                 apolloClient = apolloClient,
@@ -114,14 +113,6 @@ class AnimeRepositoryImpl @Inject constructor(
     override fun getSavedAnimeInfo(id: Int): Flow<AnimeInfo?> {
         return animeDao.checkAnimeList(id).map {
             it?.toAnimeInfo()
-        }
-    }
-
-    override fun getSavedSearchAnimeList(query: String): Flow<List<AnimeInfo>> {
-        return animeDao.searchAnimeList(query).map {
-            it.map { animeEntity ->
-                animeEntity.toAnimeInfo()
-            }
         }
     }
 

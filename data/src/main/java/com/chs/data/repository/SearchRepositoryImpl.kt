@@ -4,11 +4,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.apollographql.apollo3.ApolloClient
+import com.chs.common.Constants
 import com.chs.data.paging.SearchAnimePagingSource
 import com.chs.data.paging.SearchCharacterPagingSource
-import com.chs.data.source.KtorJikanService
 import com.chs.data.source.db.dao.SearchListDao
-import com.chs.data.source.db.model.SearchHistoryEntity
+import com.chs.data.source.db.entity.SearchHistoryEntity
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.domain.repository.SearchRepository
@@ -21,7 +21,7 @@ class SearchRepositoryImpl @Inject constructor(
 ) : SearchRepository {
     override fun getAnimeSearchResult(query: String): Flow<PagingData<AnimeInfo>> {
         return Pager(
-            PagingConfig(pageSize = 10)
+            PagingConfig(pageSize = Constants.PAGING_SIZE)
         ) {
             SearchAnimePagingSource(
                 apolloClient = apolloClient,
@@ -32,7 +32,7 @@ class SearchRepositoryImpl @Inject constructor(
 
     override fun getCharacterSearchResult(name: String): Flow<PagingData<CharacterInfo>> {
         return Pager(
-            PagingConfig(pageSize = 10)
+            PagingConfig(pageSize = Constants.PAGING_SIZE)
         ) {
             SearchCharacterPagingSource(
                 apolloClient,

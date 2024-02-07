@@ -1,11 +1,11 @@
-package com.chs.data.source.db.model
+package com.chs.data.source.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "animeInfo")
 data class AnimeEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val id: Int,
     val idMal: Int,
     val title: String,
