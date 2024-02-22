@@ -2,6 +2,7 @@ package com.chs.presentation.home
 
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +49,12 @@ fun HomeScreen(
     val context = LocalContext.current
     val pagerState = rememberPagerState {
         state.animeRecommendList?.bannerList?.size ?: 1
+    }
+
+    LaunchedEffect(state.isError) {
+        if (state.isError != null) {
+            Toast.makeText(context, state.isError, Toast.LENGTH_SHORT).show()
+        }
     }
 
     LazyColumn(

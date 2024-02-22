@@ -19,7 +19,6 @@ class SearchMediaViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var searchPage: String = ""
-    var searchKeyword: String = ""
     private val _state = MutableStateFlow(SearchMediaState())
     val state = _state.asStateFlow()
 
@@ -27,9 +26,7 @@ class SearchMediaViewModel @Inject constructor(
         searchPage = type
     }
 
-
     fun search(query: String) {
-        searchKeyword = query
         _state.update {
             when (searchPage) {
                 UiConst.TARGET_ANIME -> {
@@ -37,12 +34,6 @@ class SearchMediaViewModel @Inject constructor(
                         searchAnimeResultPaging = searchAnimeUseCase(query).cachedIn(viewModelScope)
                     )
                 }
-
-//            UiConst.TARGET_MANGA -> {
-//                state = state.copy(
-//                    searchMangaResultPaging = searchMangaUseCase(query).cachedIn(viewModelScope)
-//                )
-//            }
 
                 UiConst.TARGET_CHARA -> {
                     it.copy(

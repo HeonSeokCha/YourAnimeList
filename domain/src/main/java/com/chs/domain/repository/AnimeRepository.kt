@@ -5,7 +5,6 @@ import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeRecommendList
 import com.chs.domain.model.AnimeThemeInfo
-import com.chs.domain.model.GenreInfo
 import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository {

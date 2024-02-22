@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -30,6 +31,9 @@ import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.ItemAnimeLarge
 import com.chs.presentation.common.ItemCharaLarge
 import com.chs.presentation.common.ItemNoResultImage
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 
 @Composable
 fun SearchMediaScreen(
@@ -48,20 +52,19 @@ fun SearchMediaScreen(
     }
 
     LaunchedEffect(searchKeyWord) {
-        if (searchKeyWord != viewModel.searchKeyword) {
-            viewModel.search(searchKeyWord)
-            lazyColScrollState.scrollToItem(0, 0)
-        }
+        snapshotFlow { searchKeyWord }
+            .distinctUntilChanged()
+            .filter { it.isNotEmpty() }
+            .collect {
+                viewModel.search(it)
+                lazyColScrollState.scrollToItem(0, 0)
+            }
     }
 
     val pagingItems = when (searchType) {
         UiConst.TARGET_ANIME -> {
             state.searchAnimeResultPaging?.collectAsLazyPagingItems()
         }
-
-//        UiConst.TARGET_MANGA -> {
-//            state.searchMangaResultPaging?.collectAsLazyPagingItems()
-//        }
 
         UiConst.TARGET_CHARA -> {
             state.searchCharaResultPaging?.collectAsLazyPagingItems()

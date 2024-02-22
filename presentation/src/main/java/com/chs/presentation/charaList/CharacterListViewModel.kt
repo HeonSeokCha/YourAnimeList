@@ -23,8 +23,7 @@ class CharacterListViewModel @Inject constructor(
             getYourCharaListUseCase().collect { charaInfo ->
                 _state.update {
                     it.copy(
-                        charaList = charaInfo,
-                        isLoading = false
+                        charaList = charaInfo
                     )
                 }
             }
