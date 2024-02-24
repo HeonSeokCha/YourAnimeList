@@ -22,7 +22,7 @@ fun AnimeBasicInfo?.toAnimeInfo(): AnimeInfo {
         id = this?.id ?: 0,
         idMal = this?.idMal ?: 0,
         title = this?.title?.romaji ?: this?.title?.english ?: "",
-        imageUrl = this?.coverImage?.extraLarge,
+        imageUrl = this?.coverImage?.large,
         imagePlaceColor = this?.coverImage?.color,
         averageScore = this?.averageScore ?: 0,
         favourites = this?.favourites ?: 0,

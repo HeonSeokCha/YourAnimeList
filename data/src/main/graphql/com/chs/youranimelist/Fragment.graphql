@@ -6,7 +6,7 @@ fragment animeBasicInfo on Media {
         english
     }
     coverImage {
-        extraLarge
+        large
         color
     }
     averageScore
