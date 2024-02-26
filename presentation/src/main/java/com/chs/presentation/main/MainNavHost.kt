@@ -20,7 +20,6 @@ fun MainNavHost(
     modifier: Modifier = Modifier,
     searchQuery: String,
     onBack: () -> Unit,
-    searchHistory: (List<String>) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -43,7 +42,6 @@ fun MainNavHost(
             SearchScreen(
                 searchQuery = searchQuery,
                 onBack = onBack,
-                searchHistoryList = searchHistory
             )
         }
 

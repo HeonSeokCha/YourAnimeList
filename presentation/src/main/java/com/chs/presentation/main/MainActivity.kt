@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.chs.presentation.ui.theme.*
@@ -15,20 +18,24 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController: NavHostController = rememberNavController()
             var searchQuery: String by remember { mutableStateOf("") }
-            var searchHistoryList: List<String> by remember { mutableStateOf(emptyList()) }
+            val state by viewModel.state.collectAsStateWithLifecycle()
 
             YourAnimeListTheme {
                 Scaffold(
                     topBar = {
                         AppBar(
                             navController = navController,
-                            searchHistoryList = searchHistoryList
+                            searchHistoryList = state.searchHistory
                         ) {
+                            viewModel.insertSearchHistory(searchQuery)
                             searchQuery = it
                         }
                     },
@@ -43,15 +50,9 @@ class MainActivity : ComponentActivity() {
                         onBack = {
                             searchQuery = ""
                         },
-                        searchHistory = { historyList ->
-                            searchHistoryList = historyList
-                        }
                     )
                 }
             }
         }
     }
 }
-
-
-

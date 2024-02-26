@@ -28,28 +28,13 @@ import kotlinx.coroutines.launch
 fun SearchScreen(
     searchQuery: String,
     onBack: () -> Unit,
-    searchHistoryList: (List<String>) -> Unit,
-    viewModel: SearchViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current
     val tabList = listOf(
         "ANIME",
         "CHARACTER"
     )
     val pagerState = rememberPagerState(initialPage = 0) { tabList.size }
     val coroutineScope = rememberCoroutineScope()
-
-
-    LaunchedEffect(context, state) {
-        searchHistoryList(state.searchHistoryList)
-    }
-
-    LaunchedEffect(searchQuery) {
-        if (searchQuery.isNotEmpty()) {
-            viewModel.insertSearchHistory(searchQuery)
-        }
-    }
 
     DisposableEffect(Unit) {
         onDispose {

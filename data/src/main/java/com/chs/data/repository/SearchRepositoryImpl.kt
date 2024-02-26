@@ -41,7 +41,7 @@ class SearchRepositoryImpl @Inject constructor(
         }.flow
     }
 
-    override fun getSearchHistory(): Flow<List<String>> {
+    override suspend fun getSearchHistory(): List<String> {
         return dao.getSearchHistory()
     }
 
@@ -52,6 +52,8 @@ class SearchRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteSearchHistory(title: String) {
-        TODO("Not yet implemented")
+        dao.deleteHistory(
+            SearchHistoryEntity(title)
+        )
     }
 }
