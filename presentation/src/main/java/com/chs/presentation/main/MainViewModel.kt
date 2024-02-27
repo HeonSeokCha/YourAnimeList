@@ -22,7 +22,11 @@ class MainViewModel @Inject constructor(
     private val _state: MutableStateFlow<MainState> = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
 
-    private fun getSearchHistory() {
+    init {
+        getSearchHistory()
+    }
+
+    fun getSearchHistory() {
         viewModelScope.launch {
             _state.update {
                 it.copy(

@@ -1,6 +1,8 @@
 package com.chs.presentation.main
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
@@ -24,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.chs.presentation.R
+import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.ui.theme.Red500
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,7 +35,8 @@ import com.chs.presentation.ui.theme.Red500
 fun AppBar(
     navController: NavHostController,
     searchHistoryList: List<String>,
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
+    onDeleteSearchHistory: (String) -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     when (navBackStackEntry?.destination?.route) {
@@ -44,7 +49,7 @@ fun AppBar(
                 ),
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
-                        Icon(Icons.Filled.ArrowBack, "sort_screen_back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "sort_screen_back")
                     }
                 }
             )
@@ -55,6 +60,8 @@ fun AppBar(
                 searchHistoryList = searchHistoryList,
                 onSearch = {
                     onQueryChange(it)
+                }, onDeleteSearchHistory = {
+                    onDeleteSearchHistory(it)
                 }
             )
         }
@@ -86,14 +93,16 @@ fun AppBar(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun SearchAppBar(
     onSearch: (String) -> Unit,
-    searchHistoryList: List<String>
+    searchHistoryList: List<String>,
+    onDeleteSearchHistory: (String) -> Unit
 ) {
     var text by remember { mutableStateOf("") }
     var isSearchActive by remember { mutableStateOf(false) }
+    var isShowDialog by remember { mutableStateOf(false) }
 
     SearchBar(
         modifier = Modifier
@@ -141,11 +150,17 @@ fun SearchAppBar(
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .padding(all = 14.dp)
-                    .clickable {
-                        text = title
-                        isSearchActive = false
-                        onSearch(title)
-                    }
+                    .combinedClickable(
+                        onClick = {
+                            text = title
+                            isSearchActive = false
+                            onSearch(title)
+                        },
+                        onLongClick = {
+                            text = title
+                            isShowDialog = true
+                        }
+                    )
                 ) {
                     Icon(
                         modifier = Modifier.padding(end = 10.dp),
@@ -155,6 +170,31 @@ fun SearchAppBar(
                     Text(text = title)
                 }
             }
+        }
+
+        if (isShowDialog) {
+            AlertDialog(
+                onDismissRequest = { isShowDialog = false },
+                title = { Text(text = text) },
+                text = { Text(text = "검색 기록에서 삭제하시겠습니까?") },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            isShowDialog = false
+                            onDeleteSearchHistory(text)
+                        }) {
+                        Text("삭제")
+                    }
+                },
+                dismissButton = {
+                    Button(
+                        onClick = {
+                            isShowDialog = false
+                        }) {
+                        Text("취소")
+                    }
+                }
+            )
         }
     }
 }

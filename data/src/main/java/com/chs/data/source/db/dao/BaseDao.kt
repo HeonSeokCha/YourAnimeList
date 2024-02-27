@@ -10,7 +10,7 @@ interface BaseDao<T> {
     @Upsert
     suspend fun insert(entity: T)
 
-    @Insert
+    @Upsert
     suspend fun insertMultiple(vararg entity: T)
 
     @Delete
