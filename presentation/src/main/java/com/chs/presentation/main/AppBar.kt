@@ -106,12 +106,6 @@ fun SearchAppBar(
 
     SearchBar(
         modifier = Modifier
-            .padding(
-                start = 12.dp,
-                top = 8.dp,
-                end = 12.dp,
-                bottom = 12.dp
-            )
             .fillMaxWidth(),
         query = text,
         onQueryChange = { text = it },
@@ -139,11 +133,6 @@ fun SearchAppBar(
         }
     ) {
         LazyColumn(
-            contentPadding = PaddingValues(
-                start = 16.dp,
-                end = 16.dp,
-                bottom = 16.dp
-            ),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(searchHistoryList) { title ->
@@ -176,14 +165,14 @@ fun SearchAppBar(
             AlertDialog(
                 onDismissRequest = { isShowDialog = false },
                 title = { Text(text = text) },
-                text = { Text(text = "검색 기록에서 삭제하시겠습니까?") },
+                text = { Text(text = "Are You Sure Delete Search History?") },
                 confirmButton = {
                     Button(
                         onClick = {
                             isShowDialog = false
                             onDeleteSearchHistory(text)
                         }) {
-                        Text("삭제")
+                        Text("Delete")
                     }
                 },
                 dismissButton = {
@@ -191,7 +180,7 @@ fun SearchAppBar(
                         onClick = {
                             isShowDialog = false
                         }) {
-                        Text("취소")
+                        Text("Cancel")
                     }
                 }
             )

@@ -23,7 +23,11 @@ object Util {
         }
 
         if (day != null) {
-            datePattern += "-$day"
+            if (day < 10) {
+                datePattern += "-0$day"
+            } else {
+                datePattern += "-$day"
+            }
         }
 
         return datePattern

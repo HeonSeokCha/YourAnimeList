@@ -41,7 +41,9 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             searchHistoryList = state.searchHistory,
                             onQueryChange = {
-                                viewModel.insertSearchHistory(it)
+                                if (it.isNotEmpty()) {
+                                    viewModel.insertSearchHistory(it)
+                                }
                                 searchQuery = it
                             }, onDeleteSearchHistory = {
                                 viewModel.deleteSearchHistory(it)
