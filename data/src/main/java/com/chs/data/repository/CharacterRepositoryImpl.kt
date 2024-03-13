@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 class CharacterRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
     private val dao: CharaListDao

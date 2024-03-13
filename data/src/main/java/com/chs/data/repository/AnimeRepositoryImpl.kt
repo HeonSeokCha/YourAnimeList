@@ -28,7 +28,6 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 class AnimeRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
     private val jikanService: KtorJikanService,
