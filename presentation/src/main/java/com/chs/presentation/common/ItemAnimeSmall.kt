@@ -1,5 +1,6 @@
 package com.chs.presentation.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,7 +32,6 @@ import coil.compose.AsyncImage
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
 import com.chs.presentation.ui.theme.YourAnimeListTheme
-import com.google.accompanist.placeholder.material.placeholder
 
 @Composable
 fun ItemAnimeSmall(
@@ -67,9 +67,8 @@ fun ItemAnimeSmall(
                     .width(122.dp)
                     .height(180.dp)
                     .clip(RoundedCornerShape(5.dp))
-                    .placeholder(item?.imageUrl == null),
+                    .background(Color.LightGray),
                 model = item?.imageUrl,
-                placeholder = ColorPainter(Color.LightGray),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -77,8 +76,6 @@ fun ItemAnimeSmall(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                modifier = Modifier
-                    .placeholder(item == null),
                 text = item?.title ?: "title Preview",
                 color = Color.Gray,
                 maxLines = 2,
@@ -94,8 +91,7 @@ fun ItemAnimeSmall(
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(bottom = 4.dp)
-                        .placeholder(item == null),
+                        .padding(bottom = 4.dp),
                     text = UiConst.mediaStatus[item?.status]?.first ?: "",
                     color = Color(UiConst.mediaStatus[item?.status]?.second ?: 0xFF888888),
                     fontSize = 12.sp
@@ -108,8 +104,6 @@ fun ItemAnimeSmall(
                 ) {
                     if (item?.seasonYear != 0) {
                         Text(
-                            modifier = Modifier
-                                .placeholder(item == null),
                             textAlign = TextAlign.Left,
                             text = "${item?.seasonYear ?: 2000}",
                             color = Color.Gray,
@@ -121,8 +115,6 @@ fun ItemAnimeSmall(
 
                     if (item?.averageScore != 0) {
                         Text(
-                            modifier = Modifier
-                                .placeholder(item == null),
                             textAlign = TextAlign.Right,
                             text = buildAnnotatedString {
                                 appendInlineContent(

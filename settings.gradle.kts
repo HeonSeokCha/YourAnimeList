@@ -1,4 +1,4 @@
-@file:Suppress("UnstableApiUsage", "UNCHECKED_CAST")
+@file:Suppress("UnstableApiUsage")
 
 include(":common")
 

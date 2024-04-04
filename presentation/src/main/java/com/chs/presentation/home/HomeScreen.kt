@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -39,7 +40,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     navController: NavHostController,
@@ -47,9 +47,7 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val pagerState = rememberPagerState {
-        state.animeRecommendList?.bannerList?.size ?: 1
-    }
+    val bannerState = rememberLazyListState()
 
     LaunchedEffect(state.isError) {
         if (state.isError != null) {
@@ -64,28 +62,25 @@ fun HomeScreen(
     ) {
         item {
             if (state.animeRecommendList?.bannerList != null) {
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    key = { state.animeRecommendList!!.bannerList[it].animeInfo.id }
-                ) { idx ->
-                    ItemHomeBanner(
-                        banner = state.animeRecommendList!!.bannerList[idx]
-                    ) { id, idMal ->
-                        context.startActivity(
-                            Intent(
-                                context, BrowseActivity::class.java
-                            ).apply {
-                                this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                                this.putExtra(UiConst.TARGET_ID, id)
-                                this.putExtra(UiConst.TARGET_ID_MAL, idMal)
-                            }
-                        )
+                LazyRow(
+                    state = bannerState
+                ) {
+                    items(state.animeRecommendList!!.bannerList.size) { idx ->
+                        ItemHomeBanner(
+                            banner = state.animeRecommendList!!.bannerList[idx]
+                        ) { id, idMal ->
+                            context.startActivity(
+                                Intent(
+                                    context, BrowseActivity::class.java
+                                ).apply {
+                                    this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                                    this.putExtra(UiConst.TARGET_ID, id)
+                                    this.putExtra(UiConst.TARGET_ID_MAL, idMal)
+                                }
+                            )
+                        }
                     }
                 }
-
-                Spacer(modifier = Modifier.height(8.dp))
 
                 Row(
                     modifier = Modifier
@@ -96,7 +91,7 @@ fun HomeScreen(
                 ) {
                     repeat(state.animeRecommendList!!.bannerList.size) { iteration ->
                         val color =
-                            if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
+                            if (bannerState.firstVisibleItemIndex == iteration) Color.DarkGray else Color.LightGray
                         Box(
                             modifier = Modifier
                                 .padding(2.dp)
@@ -109,6 +104,20 @@ fun HomeScreen(
             } else {
                 ItemHomeBanner(banner = null) { id, idMal -> }
             }
+
+
+//            item {
+//                HorizontalPager(
+//                    state = pagerState,
+//                    modifier = Modifier
+//                        .fillMaxWidth(),
+//                    key = { state.animeRecommendList!!.bannerList[it].animeInfo.id }
+//                ) { idx ->
+//                }
+//
+//                Spacer(modifier = Modifier.height(8.dp))
+//
+//            }
         }
 
 
@@ -120,7 +129,19 @@ fun HomeScreen(
                 title = state.animeCategoryList[idx],
                 list = state.animeRecommendList?.animeBasicList?.get(idx)
                     ?: List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
-                navigator = navController
+                sortClick = { route ->
+                    navController.navigate(route)
+                }, animeClick = { id, idMal ->
+                    context.startActivity(
+                        Intent(
+                            context, BrowseActivity::class.java
+                        ).apply {
+                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                            this.putExtra(UiConst.TARGET_ID, id)
+                            this.putExtra(UiConst.TARGET_ID_MAL, idMal)
+                        }
+                    )
+                }
             )
         }
     }
@@ -130,68 +151,62 @@ fun HomeScreen(
 fun ItemRecommendCategory(
     title: Pair<String, Triple<UiConst.SortType, Int?, String?>>,
     list: List<AnimeInfo?>,
-    navigator: NavController,
+    sortClick: (String) -> Unit,
+    animeClick: (Int, Int) -> Unit
 ) {
     val context: Context = LocalContext.current
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 8.dp,
-                    end = 8.dp
-                ),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = 8.dp,
+                end = 8.dp
+            ),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title.first,
+            fontSize = 16.sp,
+            color = Color.Gray,
+            fontWeight = FontWeight.Bold
+        )
+        IconButton(
+            onClick = {
+                sortClick(
+                    "${Screen.SortListScreen.route}/${title.second.first.rawValue}/${title.second.second}/${title.second.third}"
+                )
+            }
         ) {
-            Text(
-                text = title.first,
-                fontSize = 16.sp,
-                color = Color.Gray,
-                fontWeight = FontWeight.Bold
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                tint = Color.Gray,
+                contentDescription = null
             )
-            IconButton(
-                onClick = {
-                    navigator.navigate(
-                        "${Screen.SortListScreen.route}/${title.second.first.rawValue}/${title.second.second}/${title.second.third}"
-                    )
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                    tint = Color.Gray,
-                    contentDescription = null
-                )
-            }
         }
+    }
 
-        LazyRow(
-            modifier = Modifier
-                .padding(bottom = 8.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+    LazyRow(
+        modifier = Modifier
+            .padding(bottom = 8.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        items(
+            count = list.size,
+            key = { list[it]?.id ?: it }
         ) {
-            items(
-                count = list.size,
-                key = { list[it]?.id ?: it }
-            ) {
-                ItemAnimeSmall(
-                    item = list[it],
-                    onClick = {
-                        if (list[it] != null) {
-                            context.startActivity(
-                                Intent(
-                                    context, BrowseActivity::class.java
-                                ).apply {
-                                    this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                                    this.putExtra(UiConst.TARGET_ID, list[it]!!.id)
-                                    this.putExtra(UiConst.TARGET_ID_MAL, list[it]!!.idMal)
-                                }
-                            )
-                        }
+            ItemAnimeSmall(
+                item = list[it],
+                onClick = {
+                    if (list[it] != null) {
+                        animeClick(
+                            list[it]!!.id,
+                            list[it]!!.idMal
+                        )
                     }
-                )
-            }
+                }
+            )
         }
     }
 }

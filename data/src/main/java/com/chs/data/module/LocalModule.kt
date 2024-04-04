@@ -29,25 +29,21 @@ object LocalModule {
     }
 
     @Provides
-    @Singleton
     fun provideAnimeDao(db: AnimeListDatabase): AnimeListDao {
         return db.animeListDao
     }
 
     @Provides
-    @Singleton
     fun provideCharaDao(db: AnimeListDatabase): CharaListDao {
         return db.charaListDao
     }
 
     @Provides
-    @Singleton
     fun provideSearchDao(db: AnimeListDatabase): SearchListDao {
         return db.searchListDao
     }
 
     @Provides
-    @Singleton
     fun provideGenreDao(db: AnimeListDatabase): GenreDao {
         return db.genreDao
     }

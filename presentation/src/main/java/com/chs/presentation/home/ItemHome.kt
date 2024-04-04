@@ -64,7 +64,7 @@ fun ItemHomeBanner(
             AsyncImage(
                 modifier = Modifier
                     .size(150.dp, 220.dp)
-                    .placeholder(banner == null),
+                    .background(Color.LightGray),
                 model = banner?.animeInfo?.imageUrl,
                 placeholder = ColorPainter(
                     banner?.animeInfo?.imagePlaceColor?.color ?: Color.LightGray
@@ -80,8 +80,7 @@ fun ItemHomeBanner(
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(8.dp)
-                        .placeholder(banner == null),
+                        .padding(8.dp),
                     text = banner?.animeInfo?.title ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -93,8 +92,7 @@ fun ItemHomeBanner(
 
                 Text(
                     modifier = Modifier
-                        .padding(8.dp)
-                        .placeholder(banner == null),
+                        .padding(8.dp),
                     text = banner?.studioTitle ?: UiConst.TITLE_PREVIEW,
                     color = banner?.animeInfo?.imagePlaceColor?.color ?: Color.White,
                     fontWeight = FontWeight.Bold,
@@ -110,24 +108,21 @@ fun ItemHomeBanner(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(4.dp)
-                    .placeholder(banner == null),
+                    .padding(4.dp),
                 text = "${banner?.episode} Episodes aired on",
                 fontSize = 12.sp
             )
 
             Text(
                 modifier = Modifier
-                    .padding(4.dp)
-                    .placeholder(banner == null),
+                    .padding(4.dp),
                 text = banner?.startDate ?: "",
                 fontSize = 12.sp
             )
 
             Text(
                 modifier = Modifier
-                    .padding(8.dp)
-                    .placeholder(banner == null),
+                    .padding(8.dp),
                 text = HtmlCompat.fromHtml(
                     banner?.description ?: UiConst.TITLE_PREVIEW,
                     HtmlCompat.FROM_HTML_MODE_LEGACY
