@@ -31,6 +31,7 @@ import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -68,7 +69,6 @@ import com.chs.presentation.common.ItemSaveButton
 import com.chs.presentation.common.LoadingIndicator
 import com.chs.presentation.isNotEmptyValue
 import com.chs.presentation.ui.theme.Pink80
-import com.google.accompanist.placeholder.material.placeholder
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -84,9 +84,13 @@ fun AnimeDetailScreen(
     val pagerState = rememberPagerState { 3 }
     val coroutineScope = rememberCoroutineScope()
 
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
+        rememberTopAppBarState()
+    )
 
     Scaffold(
+        modifier = Modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CollapsingAppBar(scrollBehavior = scrollBehavior,
                 collapsingContent = {
@@ -117,7 +121,6 @@ fun AnimeDetailScreen(
                 }
             )
         },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
         Column(
             modifier = Modifier
@@ -216,10 +219,8 @@ fun AnimeDetailHeadBanner(
                     .background(
                         color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
                             ?: LightGray
-                    )
-                    .placeholder(visible = animeDetailInfo == null),
+                    ),
                 model = animeDetailInfo?.bannerImage,
-                placeholder = ColorPainter(LightGray),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -264,13 +265,11 @@ fun AnimeDetailHeadBanner(
                         .height(180.dp)
                         .padding(start = 8.dp)
                         .clip(RoundedCornerShape(5.dp))
-                        .placeholder(visible = animeDetailInfo == null)
                         .background(
                             color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
                                 ?: LightGray
                         ),
                     model = animeDetailInfo?.animeInfo?.imageUrl,
-                    placeholder = ColorPainter(LightGray),
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
@@ -284,8 +283,6 @@ fun AnimeDetailHeadBanner(
                         )
                 ) {
                     Text(
-                        modifier = Modifier
-                            .placeholder(animeDetailInfo?.animeInfo?.title == null),
                         text = animeDetailInfo?.animeInfo?.title ?: "title PreView Title PreView",
                         fontSize = 18.sp,
                         maxLines = 2,
@@ -296,8 +293,7 @@ fun AnimeDetailHeadBanner(
 
                     Text(
                         modifier = Modifier
-                            .padding(top = 8.dp)
-                            .placeholder(animeDetailInfo?.animeInfo?.format == null),
+                            .padding(top = 8.dp),
                         text = if (animeDetailInfo?.animeInfo?.seasonYear.isNotEmptyValue
                             && animeDetailInfo?.animeInfo?.status != null
                         ) {
@@ -311,8 +307,6 @@ fun AnimeDetailHeadBanner(
                         modifier = Modifier.padding(top = 8.dp)
                     ) {
                         Text(
-                            modifier = Modifier
-                                .placeholder(animeDetailInfo?.animeInfo?.averageScore == null),
                             text = buildAnnotatedString {
                                 appendInlineContent(
                                     UiConst.AVERAGE_SCORE_ID,
@@ -328,8 +322,6 @@ fun AnimeDetailHeadBanner(
                         Spacer(modifier = Modifier.width(16.dp))
 
                         Text(
-                            modifier = Modifier
-                                .placeholder(animeDetailInfo?.animeInfo?.favourites == null),
                             text = buildAnnotatedString {
                                 appendInlineContent(
                                     UiConst.FAVOURITE_ID,
@@ -347,7 +339,6 @@ fun AnimeDetailHeadBanner(
             }
 
             ItemSaveButton(
-                shimmerVisible = animeDetailInfo == null,
                 isSave = isAnimeSave
             ) {
                 saveClick()

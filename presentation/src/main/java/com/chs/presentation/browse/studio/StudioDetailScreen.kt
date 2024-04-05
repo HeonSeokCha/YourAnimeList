@@ -45,7 +45,6 @@ import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
-import com.google.accompanist.placeholder.material.placeholder
 import kotlinx.coroutines.launch
 
 
@@ -155,14 +154,9 @@ private fun StudioIndo(studioInfo: StudioDetailInfo?) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            modifier = Modifier
-                .placeholder(studioInfo == null),
             text = studioInfo?.studioBasicInfo?.name ?: "Title PreView"
         )
-        Row(
-            modifier = Modifier
-                .placeholder(studioInfo == null)
-        ) {
+        Row {
             Icon(
                 Icons.Default.Favorite,
                 contentDescription = null,

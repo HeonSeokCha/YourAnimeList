@@ -40,6 +40,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     navController: NavHostController,
@@ -47,7 +48,9 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val bannerState = rememberLazyListState()
+    val pagerState = rememberPagerState {
+        state.animeRecommendList?.bannerList?.size ?: 1
+    }
 
     LaunchedEffect(state.isError) {
         if (state.isError != null) {
@@ -62,23 +65,25 @@ fun HomeScreen(
     ) {
         item {
             if (state.animeRecommendList?.bannerList != null) {
-                LazyRow(
-                    state = bannerState
-                ) {
-                    items(state.animeRecommendList!!.bannerList.size) { idx ->
-                        ItemHomeBanner(
-                            banner = state.animeRecommendList!!.bannerList[idx]
-                        ) { id, idMal ->
-                            context.startActivity(
-                                Intent(
-                                    context, BrowseActivity::class.java
-                                ).apply {
-                                    this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                                    this.putExtra(UiConst.TARGET_ID, id)
-                                    this.putExtra(UiConst.TARGET_ID_MAL, idMal)
-                                }
-                            )
-                        }
+
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    key = { state.animeRecommendList!!.bannerList[it].animeInfo.id }
+                ) { idx ->
+                    ItemHomeBanner(
+                        banner = state.animeRecommendList!!.bannerList[idx]
+                    ) { id, idMal ->
+                        context.startActivity(
+                            Intent(
+                                context, BrowseActivity::class.java
+                            ).apply {
+                                this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                                this.putExtra(UiConst.TARGET_ID, id)
+                                this.putExtra(UiConst.TARGET_ID_MAL, idMal)
+                            }
+                        )
                     }
                 }
 
@@ -91,7 +96,7 @@ fun HomeScreen(
                 ) {
                     repeat(state.animeRecommendList!!.bannerList.size) { iteration ->
                         val color =
-                            if (bannerState.firstVisibleItemIndex == iteration) Color.DarkGray else Color.LightGray
+                            if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
                         Box(
                             modifier = Modifier
                                 .padding(2.dp)
@@ -104,20 +109,6 @@ fun HomeScreen(
             } else {
                 ItemHomeBanner(banner = null) { id, idMal -> }
             }
-
-
-//            item {
-//                HorizontalPager(
-//                    state = pagerState,
-//                    modifier = Modifier
-//                        .fillMaxWidth(),
-//                    key = { state.animeRecommendList!!.bannerList[it].animeInfo.id }
-//                ) { idx ->
-//                }
-//
-//                Spacer(modifier = Modifier.height(8.dp))
-//
-//            }
         }
 
 
@@ -154,7 +145,6 @@ fun ItemRecommendCategory(
     sortClick: (String) -> Unit,
     animeClick: (Int, Int) -> Unit
 ) {
-    val context: Context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()

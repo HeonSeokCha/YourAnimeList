@@ -69,7 +69,6 @@ apollo-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", v
 
 ## etc
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
-accompanist-placeholder = "com.google.accompanist:accompanist-placeholder-material:0.35.0-alpha"
 junit = "junit:junit:4.13.2"
 
 [bundles]

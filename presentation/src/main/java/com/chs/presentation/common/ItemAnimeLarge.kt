@@ -22,7 +22,6 @@ import com.chs.presentation.UiConst
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.isNotEmptyValue
-import com.google.accompanist.placeholder.material.placeholder
 
 @Composable
 fun ItemAnimeLarge(
@@ -45,8 +44,7 @@ fun ItemAnimeLarge(
             AsyncImage(
                 modifier = Modifier
                     .width(150.dp)
-                    .height(190.dp)
-                    .placeholder(anime == null),
+                    .height(190.dp),
                 model = anime?.imageUrl,
                 placeholder = ColorPainter(Color.LightGray),
                 contentDescription = null,
@@ -62,8 +60,6 @@ fun ItemAnimeLarge(
                     )
             ) {
                 Text(
-                    modifier = Modifier
-                        .placeholder(anime == null),
                     text = anime?.title ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -75,8 +71,6 @@ fun ItemAnimeLarge(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    modifier = Modifier
-                        .placeholder(anime == null),
                     text = if (anime?.seasonYear.isNotEmptyValue) {
                         "${anime?.seasonYear ?: 2000} ⦁ " +
                                 (UiConst.mediaStatus[anime?.status]?.first ?: UiConst.UNKNOWN)
@@ -91,8 +85,6 @@ fun ItemAnimeLarge(
                 ) {
                     if (anime?.averageScore.isNotEmptyValue) {
                         Text(
-                            modifier = Modifier
-                                .placeholder(anime == null),
                             text = buildAnnotatedString {
                                 appendInlineContent(
                                     UiConst.AVERAGE_SCORE_ID,
@@ -108,8 +100,6 @@ fun ItemAnimeLarge(
                         Spacer(modifier = Modifier.width(8.dp))
                     }
                     Text(
-                        modifier = Modifier
-                            .placeholder(anime == null),
                         text = buildAnnotatedString {
                             appendInlineContent(
                                 UiConst.FAVOURITE_ID,

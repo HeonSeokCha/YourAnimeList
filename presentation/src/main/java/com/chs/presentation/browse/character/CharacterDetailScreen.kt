@@ -62,7 +62,6 @@ import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingAppBar
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemSaveButton
-import com.google.accompanist.placeholder.material.placeholder
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -181,8 +180,7 @@ private fun CharacterBanner(
             AsyncImage(
                 modifier = Modifier
                     .size(150.dp)
-                    .clip(RoundedCornerShape(100))
-                    .placeholder(visible = characterInfo == null),
+                    .clip(RoundedCornerShape(100)),
                 model = characterInfo?.characterInfo?.imageUrl,
                 placeholder = ColorPainter(Color.LightGray),
                 contentDescription = null,
@@ -201,20 +199,14 @@ private fun CharacterBanner(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
-                    modifier = Modifier
-                        .placeholder(characterInfo == null),
                     text = characterInfo?.characterInfo?.name ?: "Character PreView"
                 )
 
                 Text(
-                    modifier = Modifier
-                        .placeholder(characterInfo == null),
                     text = characterInfo?.characterInfo?.nativeName ?: "Character PreView"
                 )
 
                 Text(
-                    modifier = Modifier
-                        .placeholder(characterInfo == null),
                     text = buildAnnotatedString {
                         appendInlineContent(
                             UiConst.FAVOURITE_ID,
@@ -231,10 +223,7 @@ private fun CharacterBanner(
             }
         }
 
-        ItemSaveButton(
-            shimmerVisible = characterInfo == null,
-            isSave = isSave
-        ) {
+        ItemSaveButton(isSave = isSave) {
             onClick()
         }
     }
@@ -269,7 +258,6 @@ private fun ProfileText(
     Row(
         modifier = Modifier
             .padding(bottom = 16.dp)
-            .placeholder(values == null)
     ) {
         Text(
             text = "$title: ",
@@ -321,8 +309,7 @@ private fun CharacterDescription(
         } else {
             AndroidView(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .placeholder(description == null),
+                    .fillMaxWidth(),
                 factory = { TextView(it) },
                 update = {
                     it.text = spannedText

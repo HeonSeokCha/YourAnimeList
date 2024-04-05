@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
@@ -13,21 +12,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.Placeholder
-import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.UiConst
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.ui.theme.YourAnimeListTheme
-import com.google.accompanist.placeholder.material.placeholder
 
 @Composable
 fun ItemCharaLarge(
@@ -50,8 +45,7 @@ fun ItemCharaLarge(
             AsyncImage(
                 modifier = Modifier
                     .width(150.dp)
-                    .height(200.dp)
-                    .placeholder(character == null),
+                    .height(200.dp),
                 model = character?.imageUrl,
                 placeholder = ColorPainter(Color.LightGray),
                 contentDescription = null,
@@ -68,7 +62,6 @@ fun ItemCharaLarge(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    modifier = Modifier.placeholder(character == null),
                     text = character?.name ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -78,7 +71,6 @@ fun ItemCharaLarge(
                 )
 
                 Text(
-                    modifier = Modifier.placeholder(character == null),
                     text = character?.nativeName ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -87,7 +79,6 @@ fun ItemCharaLarge(
 
 
                 Text(
-                    modifier = Modifier.placeholder(character == null),
                     text = buildAnnotatedString {
                         appendInlineContent(
                             UiConst.FAVOURITE_ID,

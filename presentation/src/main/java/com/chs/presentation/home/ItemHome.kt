@@ -36,7 +36,6 @@ import com.chs.presentation.UiConst
 import com.chs.presentation.UiConst.GENRE_COLOR
 import com.chs.presentation.color
 import com.chs.presentation.ui.theme.YourAnimeListTheme
-import com.google.accompanist.placeholder.material.placeholder
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -104,7 +103,8 @@ fun ItemHomeBanner(
         }
 
         Column(
-            modifier = Modifier.height(220.dp)
+            modifier = Modifier
+                .height(220.dp)
         ) {
             Text(
                 modifier = Modifier

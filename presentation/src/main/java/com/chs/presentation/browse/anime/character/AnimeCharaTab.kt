@@ -1,5 +1,6 @@
 package com.chs.presentation.browse.anime.character
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,7 +27,6 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.browse.BrowseScreen
-import com.google.accompanist.placeholder.material.placeholder
 
 @Composable
 fun AnimeCharaScreen(
@@ -68,9 +67,8 @@ fun AnimeCharaScreen(
                     modifier = Modifier
                         .size(100.dp)
                         .clip(RoundedCornerShape(100))
-                        .placeholder(charaInfo == null),
+                        .background(Color.LightGray),
                     model = charaInfo?.imageUrl,
-                    placeholder = ColorPainter(Color.LightGray),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                 )
@@ -78,8 +76,6 @@ fun AnimeCharaScreen(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    modifier = Modifier
-                        .placeholder(charaInfo == null),
                     text = charaInfo?.name ?: "Character",
                     textAlign = TextAlign.Center
                 )
