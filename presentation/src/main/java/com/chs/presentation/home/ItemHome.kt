@@ -35,6 +35,9 @@ import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
 import com.chs.presentation.UiConst.GENRE_COLOR
 import com.chs.presentation.color
+import com.chs.presentation.common.PlaceholderHighlight
+import com.chs.presentation.common.placeholder
+import com.chs.presentation.common.shimmer
 import com.chs.presentation.ui.theme.YourAnimeListTheme
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -63,7 +66,11 @@ fun ItemHomeBanner(
             AsyncImage(
                 modifier = Modifier
                     .size(150.dp, 220.dp)
-                    .background(Color.LightGray),
+                    .background(Color.LightGray)
+                    .placeholder(
+                        visible = banner == null,
+                        highlight = PlaceholderHighlight.shimmer()
+                    ),
                 model = banner?.animeInfo?.imageUrl,
                 placeholder = ColorPainter(
                     banner?.animeInfo?.imagePlaceColor?.color ?: Color.LightGray
@@ -79,7 +86,11 @@ fun ItemHomeBanner(
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(8.dp),
+                        .padding(8.dp)
+                        .placeholder(
+                            visible = banner == null,
+                            highlight = PlaceholderHighlight.shimmer()
+                        ),
                     text = banner?.animeInfo?.title ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -91,7 +102,11 @@ fun ItemHomeBanner(
 
                 Text(
                     modifier = Modifier
-                        .padding(8.dp),
+                        .padding(8.dp)
+                        .placeholder(
+                            visible = banner == null,
+                            highlight = PlaceholderHighlight.shimmer()
+                        ),
                     text = banner?.studioTitle ?: UiConst.TITLE_PREVIEW,
                     color = banner?.animeInfo?.imagePlaceColor?.color ?: Color.White,
                     fontWeight = FontWeight.Bold,
@@ -108,21 +123,33 @@ fun ItemHomeBanner(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(4.dp),
+                    .padding(4.dp)
+                    .placeholder(
+                        visible = banner == null,
+                        highlight = PlaceholderHighlight.shimmer()
+                    ),
                 text = "${banner?.episode} Episodes aired on",
                 fontSize = 12.sp
             )
 
             Text(
                 modifier = Modifier
-                    .padding(4.dp),
+                    .padding(4.dp)
+                    .placeholder(
+                        visible = banner == null,
+                        highlight = PlaceholderHighlight.shimmer()
+                    ),
                 text = banner?.startDate ?: "",
                 fontSize = 12.sp
             )
 
             Text(
                 modifier = Modifier
-                    .padding(8.dp),
+                    .padding(8.dp)
+                    .placeholder(
+                        visible = banner == null,
+                        highlight = PlaceholderHighlight.shimmer()
+                    ),
                 text = HtmlCompat.fromHtml(
                     banner?.description ?: UiConst.TITLE_PREVIEW,
                     HtmlCompat.FROM_HTML_MODE_LEGACY
@@ -138,8 +165,8 @@ fun ItemHomeBanner(
             if (banner?.genres != null) {
                 FlowRow(
                     modifier = Modifier
-                        .background("#eff7fb".color)
                         .fillMaxWidth()
+                        .background("#eff7fb".color)
                         .height(48.dp)
                         .padding(start = 2.dp),
                     verticalArrangement = Arrangement.Center

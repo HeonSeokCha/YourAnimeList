@@ -1,6 +1,5 @@
 package com.chs.presentation.common
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -64,18 +62,26 @@ fun ItemAnimeSmall(
         ) {
             AsyncImage(
                 modifier = Modifier
+                    .placeholder(
+                        visible = item == null,
+                        highlight = PlaceholderHighlight.shimmer(),
+                    )
                     .width(122.dp)
                     .height(180.dp)
-                    .clip(RoundedCornerShape(5.dp))
-                    .background(Color.LightGray),
+                    .clip(RoundedCornerShape(5.dp)),
                 model = item?.imageUrl,
-                contentDescription = null,
-                contentScale = ContentScale.Crop
+                placeholder = ColorPainter(Color.LightGray),
+                contentDescription = null
             )
 
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
+                modifier = Modifier
+                    .placeholder(
+                        visible = item == null,
+                        highlight = PlaceholderHighlight.shimmer(),
+                    ),
                 text = item?.title ?: "title Preview",
                 color = Color.Gray,
                 maxLines = 2,
@@ -91,42 +97,49 @@ fun ItemAnimeSmall(
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(bottom = 4.dp),
-                    text = UiConst.mediaStatus[item?.status]?.first ?: "",
+                        .padding(bottom = 4.dp)
+                        .placeholder(
+                            visible = item == null,
+                            highlight = PlaceholderHighlight.shimmer(),
+                        ),
+                    text = UiConst.mediaStatus[item?.status]?.first ?: "FINISHED",
                     color = Color(UiConst.mediaStatus[item?.status]?.second ?: 0xFF888888),
                     fontSize = 12.sp
                 )
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    if (item?.seasonYear != 0) {
-                        Text(
-                            textAlign = TextAlign.Left,
-                            text = "${item?.seasonYear ?: 2000}",
-                            color = Color.Gray,
-                            fontSize = 12.sp,
-                        )
-                    }
 
-                    Spacer(modifier = Modifier.width(4.dp))
+                if (item != null) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        if (item.seasonYear != 0) {
+                            Text(
+                                textAlign = TextAlign.Left,
+                                text = "${item.seasonYear}",
+                                color = Color.Gray,
+                                fontSize = 12.sp,
+                            )
+                        }
 
-                    if (item?.averageScore != 0) {
-                        Text(
-                            textAlign = TextAlign.Right,
-                            text = buildAnnotatedString {
-                                appendInlineContent(
-                                    UiConst.AVERAGE_SCORE_ID,
-                                    UiConst.AVERAGE_SCORE_ID
-                                )
-                                append("${item?.averageScore ?: 99}")
-                            },
-                            inlineContent = UiConst.inlineContent,
-                            color = Color.Gray,
-                            fontSize = 12.sp
-                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+
+                        if (item.averageScore != 0) {
+                            Text(
+                                textAlign = TextAlign.Right,
+                                text = buildAnnotatedString {
+                                    appendInlineContent(
+                                        UiConst.AVERAGE_SCORE_ID,
+                                        UiConst.AVERAGE_SCORE_ID
+                                    )
+                                    append("${item.averageScore}")
+                                },
+                                inlineContent = UiConst.inlineContent,
+                                color = Color.Gray,
+                                fontSize = 12.sp
+                            )
+                        }
                     }
                 }
             }

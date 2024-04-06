@@ -43,6 +43,10 @@ fun ItemAnimeLarge(
         Row {
             AsyncImage(
                 modifier = Modifier
+                    .placeholder(
+                        visible = anime == null,
+                        highlight = PlaceholderHighlight.shimmer()
+                    )
                     .width(150.dp)
                     .height(190.dp),
                 model = anime?.imageUrl,
@@ -60,6 +64,11 @@ fun ItemAnimeLarge(
                     )
             ) {
                 Text(
+                    modifier = Modifier
+                        .placeholder(
+                            visible = anime == null,
+                            highlight = PlaceholderHighlight.shimmer()
+                        ),
                     text = anime?.title ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -71,6 +80,11 @@ fun ItemAnimeLarge(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
+                    modifier = Modifier
+                        .placeholder(
+                            visible = anime == null,
+                            highlight = PlaceholderHighlight.shimmer()
+                        ),
                     text = if (anime?.seasonYear.isNotEmptyValue) {
                         "${anime?.seasonYear ?: 2000} ⦁ " +
                                 (UiConst.mediaStatus[anime?.status]?.first ?: UiConst.UNKNOWN)
@@ -80,38 +94,40 @@ fun ItemAnimeLarge(
                     color = Color.White
                 )
 
-                Row(
-                    modifier = Modifier.padding(top = 8.dp)
-                ) {
-                    if (anime?.averageScore.isNotEmptyValue) {
+                if (anime != null) {
+                    Row(
+                        modifier = Modifier.padding(top = 8.dp)
+                    ) {
+                        if (anime.averageScore.isNotEmptyValue) {
+                            Text(
+                                text = buildAnnotatedString {
+                                    appendInlineContent(
+                                        UiConst.AVERAGE_SCORE_ID,
+                                        UiConst.AVERAGE_SCORE_ID
+                                    )
+                                    append("${anime.averageScore}")
+                                },
+                                inlineContent = UiConst.inlineContent,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                fontSize = 14.sp,
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                        }
                         Text(
                             text = buildAnnotatedString {
                                 appendInlineContent(
-                                    UiConst.AVERAGE_SCORE_ID,
-                                    UiConst.AVERAGE_SCORE_ID
+                                    UiConst.FAVOURITE_ID,
+                                    UiConst.FAVOURITE_ID
                                 )
-                                append("${anime?.averageScore ?: 0}")
+                                append("${anime.favourites}")
                             },
                             inlineContent = UiConst.inlineContent,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
                             fontSize = 14.sp,
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
                     }
-                    Text(
-                        text = buildAnnotatedString {
-                            appendInlineContent(
-                                UiConst.FAVOURITE_ID,
-                                UiConst.FAVOURITE_ID
-                            )
-                            append("${anime?.favourites ?: 0}")
-                        },
-                        inlineContent = UiConst.inlineContent,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        fontSize = 14.sp,
-                    )
                 }
             }
         }

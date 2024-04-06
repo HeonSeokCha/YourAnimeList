@@ -67,6 +67,9 @@ import com.chs.presentation.browse.anime.recommend.AnimeRecScreen
 import com.chs.presentation.color
 import com.chs.presentation.common.ItemSaveButton
 import com.chs.presentation.common.LoadingIndicator
+import com.chs.presentation.common.PlaceholderHighlight
+import com.chs.presentation.common.placeholder
+import com.chs.presentation.common.shimmer
 import com.chs.presentation.isNotEmptyValue
 import com.chs.presentation.ui.theme.Pink80
 import kotlinx.coroutines.launch
@@ -168,16 +171,18 @@ fun AnimeDetailScreen(
                         AnimeOverViewScreen(
                             animeOverViewInfo = state.animeDetailInfo,
                             animeTheme = state.animeThemes,
-                            navController = navController
-                        )
+                        ) {
+                            navController.navigate(it)
+                        }
                     }
 
                     1 -> {
                         AnimeCharaScreen(
                             charaInfoList = state.animeDetailInfo?.characterList
                                 ?: List<CharacterInfo?>(6) { null },
-                            navController = navController,
-                        )
+                        ) {
+                            navController.navigate(it)
+                        }
                     }
 
                     2 -> {
@@ -214,6 +219,10 @@ fun AnimeDetailHeadBanner(
         Box {
             AsyncImage(
                 modifier = Modifier
+                    .placeholder(
+                        visible = animeDetailInfo == null,
+                        highlight = PlaceholderHighlight.shimmer()
+                    )
                     .fillMaxWidth()
                     .height(250.dp)
                     .background(
@@ -261,6 +270,10 @@ fun AnimeDetailHeadBanner(
             Row {
                 AsyncImage(
                     modifier = Modifier
+                        .placeholder(
+                            visible = animeDetailInfo == null,
+                            highlight = PlaceholderHighlight.shimmer()
+                        )
                         .width(130.dp)
                         .height(180.dp)
                         .padding(start = 8.dp)
@@ -283,6 +296,11 @@ fun AnimeDetailHeadBanner(
                         )
                 ) {
                     Text(
+                        modifier = Modifier
+                            .placeholder(
+                                visible = animeDetailInfo == null,
+                                highlight = PlaceholderHighlight.shimmer()
+                            ),
                         text = animeDetailInfo?.animeInfo?.title ?: "title PreView Title PreView",
                         fontSize = 18.sp,
                         maxLines = 2,
@@ -293,6 +311,10 @@ fun AnimeDetailHeadBanner(
 
                     Text(
                         modifier = Modifier
+                            .placeholder(
+                                visible = animeDetailInfo == null,
+                                highlight = PlaceholderHighlight.shimmer()
+                            )
                             .padding(top = 8.dp),
                         text = if (animeDetailInfo?.animeInfo?.seasonYear.isNotEmptyValue
                             && animeDetailInfo?.animeInfo?.status != null
@@ -307,6 +329,11 @@ fun AnimeDetailHeadBanner(
                         modifier = Modifier.padding(top = 8.dp)
                     ) {
                         Text(
+                            modifier = Modifier
+                                .placeholder(
+                                    visible = animeDetailInfo == null,
+                                    highlight = PlaceholderHighlight.shimmer()
+                                ),
                             text = buildAnnotatedString {
                                 appendInlineContent(
                                     UiConst.AVERAGE_SCORE_ID,
@@ -322,6 +349,11 @@ fun AnimeDetailHeadBanner(
                         Spacer(modifier = Modifier.width(16.dp))
 
                         Text(
+                            modifier = Modifier
+                                .placeholder(
+                                    visible = animeDetailInfo == null,
+                                    highlight = PlaceholderHighlight.shimmer()
+                                ),
                             text = buildAnnotatedString {
                                 appendInlineContent(
                                     UiConst.FAVOURITE_ID,

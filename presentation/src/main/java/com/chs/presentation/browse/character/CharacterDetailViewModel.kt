@@ -35,7 +35,7 @@ class CharacterDetailViewModel @Inject constructor(
         val charaId: Int = savedStateHandle[UiConst.TARGET_ID] ?: 0
 
         getCharacterDetail(charaId)
-        getCharacterDetailAnimeList(charaId, UiConst.SortType.POPULARITY)
+        getCharacterDetailAnimeList(charaId)
         isSaveCharacter(charaId)
     }
 
@@ -69,19 +69,16 @@ class CharacterDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getCharacterDetailAnimeList(
-        charaId: Int,
-        sortType: UiConst.SortType
-    ) {
+    private fun getCharacterDetailAnimeList(charaId: Int) {
         _state.update {
             it.copy(
-                animeList = getCharaAnimeListUseCase(charaId, sortType.rawValue)
+                animeList = getCharaAnimeListUseCase(charaId, UiConst.SortType.POPULARITY.rawValue)
                     .cachedIn(viewModelScope)
             )
         }
     }
 
-    fun isSaveCharacter(charaId: Int) {
+    private fun isSaveCharacter(charaId: Int) {
         viewModelScope.launch {
             checkSaveCharaUseCase(charaId).collect { charaInfo ->
                 _state.update {
