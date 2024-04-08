@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,6 +19,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
@@ -27,9 +27,7 @@ import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -59,11 +56,10 @@ import com.chs.presentation.UiConst
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.presentation.R
 import com.chs.presentation.browse.BrowseScreen
-import com.chs.presentation.browse.CollapsingAppBar
+import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemSaveButton
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharacterDetailScreen(
     navController: NavController,
@@ -74,36 +70,27 @@ fun CharacterDetailScreen(
     val activity = (LocalContext.current as? Activity)
     var expandedDescButton by remember { mutableStateOf(false) }
     val pagingItem = state.animeList?.collectAsLazyPagingItems()
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val lazyVerticalStaggeredState = rememberLazyStaggeredGridState()
 
-    Scaffold(
-        topBar = {
-            CollapsingAppBar(
-                scrollBehavior = scrollBehavior,
-                collapsingContent = {
-                    CharacterBanner(
-                        characterInfo = state.characterDetailInfo,
-                        isSave = state.isSave,
-                    ) {
-                        if (state.isSave) {
-                            viewModel.deleteCharacter()
-                        } else {
-                            viewModel.insertCharacter()
-                        }
-                    }
-                }, toolBarClick = {
-                    activity?.finish()
-                },
-                isShowToolBar = true
-            )
+    CollapsingToolbarScaffold(
+        header = {
+            CharacterBanner(
+                characterInfo = state.characterDetailInfo,
+                isSave = state.isSave,
+            ) {
+                if (state.isSave) {
+                    viewModel.deleteCharacter()
+                } else {
+                    viewModel.insertCharacter()
+                }
+            }
         },
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
-    ) { it ->
+        onCloseClick = {
+            activity?.finish()
+        }, isShowToolBar = true
+    ) {
         LazyVerticalStaggeredGrid(
-            modifier = Modifier
-                .padding(it),
+            state = lazyVerticalStaggeredState,
             columns = StaggeredGridCells.Fixed(3),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalItemSpacing = 4.dp,

@@ -1,8 +1,6 @@
 package com.chs.presentation.browse.studio
 
 import android.app.Activity
-import android.content.Context
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,18 +9,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,13 +37,12 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.presentation.UiConst
 import com.chs.domain.model.StudioDetailInfo
 import com.chs.presentation.browse.BrowseScreen
-import com.chs.presentation.browse.CollapsingAppBar
+import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudioDetailScreen(
     navController: NavController,
@@ -58,7 +52,6 @@ fun StudioDetailScreen(
     val activity: Activity? = LocalContext.current as? Activity
     val lazyGridScrollState = rememberLazyStaggeredGridState()
     val coroutineScope = rememberCoroutineScope()
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     val pagingItem = state.studioAnimeList?.collectAsLazyPagingItems()
     var isShowFilterDialog by remember { mutableStateOf(false) }
@@ -72,22 +65,14 @@ fun StudioDetailScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            CollapsingAppBar(
-                scrollBehavior = scrollBehavior,
-                collapsingContent = {
-                    StudioIndo(studioInfo = state.studioDetailInfo)
-                }, toolBarClick = {
-                    activity?.finish()
-                },
-                isShowToolBar = true
-            )
-        },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-    ) { it ->
+    CollapsingToolbarScaffold(
+        header = {
+            StudioIndo(studioInfo = state.studioDetailInfo)
+        }, onCloseClick = {
+            activity?.finish()
+        }, isShowToolBar = true
+    ) {
         LazyVerticalStaggeredGrid(
-            modifier = Modifier.padding(it),
             state = lazyGridScrollState,
             columns = StaggeredGridCells.Adaptive(100.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp),

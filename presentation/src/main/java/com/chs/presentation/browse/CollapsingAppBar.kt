@@ -1,238 +1,243 @@
 package com.chs.presentation.browse
 
+import android.util.Log
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.AnimationState
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.DecayAnimationSpec
 import androidx.compose.animation.core.animateDecay
 import androidx.compose.animation.core.animateTo
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.TopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
+import com.chs.presentation.pxToDp
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.roundToInt
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CollapsingAppBar(
-    modifier: Modifier = Modifier,
-    backgroundColor: Color = White,
-    minHeight: Dp = 56.dp,
-    scrollBehavior: TopAppBarScrollBehavior,
-    isShowToolBar: Boolean = false,
-    collapsingContent: @Composable () -> Unit = {},
-    toolBarClick: () -> Unit
-) {
-    var collapsingContentHeight by remember { mutableStateOf(0) }
-    val offset = scrollBehavior.state.heightOffset
+private var isHeaderHide: Boolean = false
 
-    val minHeightPx = LocalDensity.current.run { minHeight.toPx() }
+internal class BackgroundScrollConnection(
+    private val scrollState: ScrollState
+) : NestedScrollConnection {
 
-    SideEffect {
-        val limit = minHeightPx - collapsingContentHeight.toFloat()
-        if (scrollBehavior.state.heightOffsetLimit != limit) {
-            scrollBehavior.state.heightOffsetLimit = limit
-        }
-    }
+    override fun onPreScroll(
+        available: Offset,
+        source: NestedScrollSource
+    ): Offset {
+        val dy = available.y
 
-    val appBarDragModifier = if (!scrollBehavior.isPinned) {
-        Modifier.draggable(
-            orientation = Orientation.Vertical,
-            state = rememberDraggableState { delta ->
-                scrollBehavior.state.heightOffset = offset + delta
-            },
-            onDragStopped = { velocity ->
-                settleAppBar(
-                    scrollBehavior.state,
-                    velocity,
-                    scrollBehavior.flingAnimationSpec,
-                    scrollBehavior.snapAnimationSpec
-                )
+        return when {
+            isHeaderHide -> {
+                Offset.Zero
             }
-        )
-    } else Modifier
 
-    val baseOffset =
-        if (scrollBehavior.state.heightOffsetLimit > minHeightPx) -minHeightPx else (minHeightPx - collapsingContentHeight)
-    val collapsedFraction = offset / baseOffset
-    val collapsedContentAlpha =
-        CubicBezierEasing(.8f, 0f, .8f, .15f).transform(collapsedFraction)
-    val expandedContentAlpha = 1f - collapsedContentAlpha
+            dy < 0 -> {
+                scrollState.dispatchRawDelta(dy * -1)
+                Offset(0f, dy)
+            }
 
-    Surface(
-        modifier = modifier
-            .background(backgroundColor)
-            .systemBarsPadding()
-            .statusBarsPadding()
-            .then(appBarDragModifier)
-    ) {
-        Layout(
-            content = {
-                Box(
-                    modifier = Modifier
-                        .layoutId("collapsingContent")
-                        .alpha(expandedContentAlpha)
-                ) { collapsingContent() }
-                if (isShowToolBar) {
-                    Box(
-                        Modifier
-                            .layoutId("toolbar")
-                            .fillMaxWidth()
-                            .height(minHeight)
-                            .background(MaterialTheme.colorScheme.primary),
-                    ) {
-                        IconButton(
-                            modifier = Modifier
-                                .padding(
-                                    top = 4.dp,
-                                    start = 4.dp
-                                )
-                                .align(Alignment.CenterStart),
-                            onClick = { toolBarClick() }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Close,
-                                tint = White,
-                                contentDescription = null
-                            )
-                        }
-                    }
-                } else {
-                    Box(
-                        Modifier
-                            .layoutId("toolbar")
-                            .fillMaxWidth()
-                            .height(minHeight)
-                            .alpha(collapsedContentAlpha)
-                            .background(MaterialTheme.colorScheme.primary),
-                    ) {
-                        IconButton(
-                            modifier = Modifier
-                                .padding(
-                                    top = 4.dp,
-                                    start = 4.dp
-                                )
-                                .align(Alignment.CenterStart),
-                            onClick = { toolBarClick() }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Close,
-                                tint = White,
-                                contentDescription = null
-                            )
-                        }
-                    }
-                }
-            },
-            modifier = Modifier
-                .statusBarsPadding()
-                .systemBarsPadding(),
-        ) { measurables, constraints ->
-            val ccPlaceable =
-                measurables.first { it.layoutId == "collapsingContent" }.measure(constraints)
-            val tbPlaceable =
-                measurables.first { it.layoutId == "toolbar" }.measure(constraints)
-
-            collapsingContentHeight =
-                max(ccPlaceable.height, tbPlaceable.height)
-
-            val maxWidth =
-                listOf(ccPlaceable.width, tbPlaceable.width).max()
-            val currentHeight =
-                collapsingContentHeight + scrollBehavior.state.heightOffset
-
-            layout(maxWidth, currentHeight.toInt()) {
-                if (isShowToolBar) {
-                    ccPlaceable.placeRelative(
-                        0,
-                        minHeight.roundToPx() + offset.roundToInt()
-                    )
-                } else {
-                    ccPlaceable.placeRelative(0, 0)
-                }
-                tbPlaceable.placeRelative(0, 0)
+            else -> {
+                Offset.Zero
             }
         }
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
-private suspend fun settleAppBar(
-    state: TopAppBarState,
-    velocity: Float,
-    flingAnimationSpec: DecayAnimationSpec<Float>?,
-    snapAnimationSpec: AnimationSpec<Float>?
-): Velocity {
-    if (state.collapsedFraction < 0.01f || state.collapsedFraction == 1f) {
-        return Velocity.Zero
+@Composable
+fun CollapsingToolbarScaffold(
+    header: @Composable () -> Unit,
+    onCloseClick: () -> Unit,
+    isShowToolBar: Boolean = false,
+    content: @Composable () -> Unit
+) {
+    val scrollState = rememberScrollState()
+    val nestedScrollConnection = remember {
+        BackgroundScrollConnection(scrollState)
     }
-    var remainVelocity = velocity
+    var visiblePercent by remember { mutableFloatStateOf(1f) }
 
-    if (flingAnimationSpec != null && abs(velocity) > 1f) {
-        var lastValue = 0f
-        AnimationState(
-            initialValue = 0f,
-            initialVelocity = velocity
-        )
-            .animateDecay(flingAnimationSpec) {
-                val delta = value - lastValue
-                val initialHeightOffset = state.heightOffset
-                state.heightOffset = initialHeightOffset + delta
-                val consumed = abs(initialHeightOffset - state.heightOffset)
-                lastValue = value
-                remainVelocity = this.velocity
-                if (abs(delta - consumed) > 0.5f) this.cancelAnimation()
+    Scaffold(
+        topBar = {
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .alpha(
+                        if (isShowToolBar) 1f else visiblePercent
+                    )
+                    .background(MaterialTheme.colorScheme.primary),
+            ) {
+                IconButton(
+                    modifier = Modifier
+                        .padding(
+                            top = 4.dp,
+                            start = 4.dp
+                        )
+                        .align(Alignment.CenterStart),
+                    onClick = { onCloseClick() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        tint = White,
+                        contentDescription = null
+                    )
+                }
             }
-    }
 
-    if (snapAnimationSpec != null) {
-        if (state.heightOffset > 0 &&
-            state.heightOffset > state.heightOffsetLimit
+            if (!isShowToolBar) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                        .alpha(1f - visiblePercent)
+                        .background(Color.Transparent)
+                ) {
+                    IconButton(
+                        modifier = Modifier
+                            .padding(
+                                top = 4.dp,
+                                start = 4.dp
+                            )
+                            .align(Alignment.CenterStart),
+                        onClick = { onCloseClick() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Close,
+                            tint = White,
+                            contentDescription = null
+                        )
+                    }
+                }
+            }
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .padding(
+                    bottom = paddingValues.calculateBottomPadding(),
+                    top = if (isShowToolBar) paddingValues.calculateTopPadding() else 0.dp
+                )
+                .fillMaxSize()
         ) {
-            AnimationState(initialValue = state.heightOffset).animateTo(
-                if (state.collapsedFraction < 0.5f) {
-                    0f
-                } else {
-                    state.heightOffset
-                },
-                animationSpec = snapAnimationSpec
-            ) { state.heightOffset = value }
+            var globalHeight by remember { mutableIntStateOf(0) }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent)
+                    .onSizeChanged { size ->
+                        globalHeight = size.height
+                    }
+                    .nestedScroll(
+                        connection = nestedScrollConnection,
+                    )
+                    .verticalScroll(scrollState),
+            ) {
+                HeadSection(
+                    header = header,
+                    onHide = { isHide ->
+                        isHeaderHide = isHide
+                    }, visiblePercent = {
+                        Log.e("chsLog", it.toString())
+                        visiblePercent = (1f - it)
+                    }
+                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(globalHeight.pxToDp())
+                ) {
+                    content()
+                }
+            }
         }
     }
-    return Velocity(0f, remainVelocity)
+}
+
+@Composable
+private fun HeadSection(
+    header: @Composable () -> Unit,
+    onHide: (Boolean) -> Unit,
+    visiblePercent: (Float) -> Unit
+) {
+    var contentHeight by remember { mutableIntStateOf(0) }
+    var visiblePercentage by remember { mutableFloatStateOf(1f) }
+
+    LaunchedEffect(visiblePercentage) {
+        onHide(visiblePercentage <= 0f)
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .onGloballyPositioned { layoutCoordinates ->
+                visiblePercentage = layoutCoordinates.boundsInRoot().height / contentHeight
+                visiblePercent(visiblePercentage)
+            }
+            .onSizeChanged {
+                contentHeight = it.height
+            }
+            .alpha(visiblePercentage)
+    ) {
+        header()
+    }
 }
