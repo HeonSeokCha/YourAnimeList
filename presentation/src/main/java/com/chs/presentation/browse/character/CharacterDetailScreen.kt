@@ -87,7 +87,7 @@ fun CharacterDetailScreen(
         },
         onCloseClick = {
             activity?.finish()
-        }, isShowToolBar = true
+        }
     ) {
         LazyVerticalStaggeredGrid(
             state = lazyVerticalStaggeredState,

@@ -108,39 +108,41 @@ fun AnimeDetailScreen(
             )
         }, onCloseClick = {
             activity?.finish()
+        },
+        stickyHeader = {
+            TabRow(
+                modifier = Modifier.fillMaxWidth(),
+                selectedTabIndex = pagerState.currentPage,
+                indicator = { tabPositions ->
+                    SecondaryIndicator(
+                        modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+                        color = Pink80
+                    )
+                }
+            ) {
+                state.tabNames.forEachIndexed { index, title ->
+                    Tab(
+                        text = {
+                            Text(
+                                text = title,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                fontSize = 12.sp,
+                            )
+                        },
+                        selected = pagerState.currentPage == index,
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        },
+                        selectedContentColor = Pink80,
+                        unselectedContentColor = Color.Gray
+                    )
+                }
+            }
         }
     ) {
-        TabRow(
-            modifier = Modifier.fillMaxWidth(),
-            selectedTabIndex = pagerState.currentPage,
-            indicator = { tabPositions ->
-                SecondaryIndicator(
-                    modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
-                    color = Pink80
-                )
-            }
-        ) {
-            state.tabNames.forEachIndexed { index, title ->
-                Tab(
-                    text = {
-                        Text(
-                            text = title,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            fontSize = 12.sp,
-                        )
-                    },
-                    selected = pagerState.currentPage == index,
-                    onClick = {
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(index)
-                        }
-                    },
-                    selectedContentColor = Pink80,
-                    unselectedContentColor = Color.Gray
-                )
-            }
-        }
 
         HorizontalPager(
             state = pagerState,

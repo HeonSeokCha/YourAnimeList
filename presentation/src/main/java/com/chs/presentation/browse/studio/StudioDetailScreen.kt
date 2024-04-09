@@ -70,7 +70,7 @@ fun StudioDetailScreen(
             StudioIndo(studioInfo = state.studioDetailInfo)
         }, onCloseClick = {
             activity?.finish()
-        }, isShowToolBar = true
+        }
     ) {
         LazyVerticalStaggeredGrid(
             state = lazyGridScrollState,
