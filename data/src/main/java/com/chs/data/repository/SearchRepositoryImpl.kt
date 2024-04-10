@@ -21,7 +21,10 @@ class SearchRepositoryImpl @Inject constructor(
 ) : SearchRepository {
     override fun getAnimeSearchResult(query: String): Flow<PagingData<AnimeInfo>> {
         return Pager(
-            PagingConfig(pageSize = Constants.PAGING_SIZE)
+            PagingConfig(
+                pageSize = Constants.PAGING_SIZE,
+                initialLoadSize = Constants.PAGING_SIZE * 3
+            )
         ) {
             SearchAnimePagingSource(
                 apolloClient = apolloClient,
@@ -32,7 +35,10 @@ class SearchRepositoryImpl @Inject constructor(
 
     override fun getCharacterSearchResult(name: String): Flow<PagingData<CharacterInfo>> {
         return Pager(
-            PagingConfig(pageSize = Constants.PAGING_SIZE)
+            PagingConfig(
+                pageSize = Constants.PAGING_SIZE,
+                initialLoadSize = Constants.PAGING_SIZE * 3
+            )
         ) {
             SearchCharacterPagingSource(
                 apolloClient,

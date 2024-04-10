@@ -42,7 +42,10 @@ class CharacterRepositoryImpl @Inject constructor(
         sort: String
     ): Flow<PagingData<AnimeInfo>> {
         return Pager(
-            PagingConfig(pageSize = Constants.PAGING_SIZE)
+            PagingConfig(
+                pageSize = Constants.PAGING_SIZE,
+                initialLoadSize = Constants.PAGING_SIZE * 3
+            )
         ) {
             CharaAnimePagingSource(
                 apolloClient,

@@ -90,7 +90,10 @@ class AnimeRepositoryImpl @Inject constructor(
 
     override fun getAnimeDetailInfoRecommendList(animeId: Int): Flow<PagingData<AnimeInfo>> {
         return Pager(
-            PagingConfig(pageSize = Constants.PAGING_SIZE)
+            PagingConfig(
+                pageSize = Constants.PAGING_SIZE,
+                initialLoadSize = Constants.PAGING_SIZE * 3
+            )
         ) {
             AnimeRecPagingSource(
                 apolloClient = apolloClient,
