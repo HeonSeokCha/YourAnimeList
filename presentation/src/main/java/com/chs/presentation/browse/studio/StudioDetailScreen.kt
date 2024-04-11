@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
@@ -52,7 +53,7 @@ fun StudioDetailScreen(
     val activity: Activity? = LocalContext.current as? Activity
     val lazyGridScrollState = rememberLazyStaggeredGridState()
     val coroutineScope = rememberCoroutineScope()
-
+    val scrollState = rememberScrollState()
     val pagingItem = state.studioAnimeList?.collectAsLazyPagingItems()
     var isShowFilterDialog by remember { mutableStateOf(false) }
 
@@ -66,6 +67,7 @@ fun StudioDetailScreen(
     }
 
     CollapsingToolbarScaffold(
+        scrollState = scrollState,
         header = {
             StudioIndo(studioInfo = state.studioDetailInfo)
         }, onCloseClick = {

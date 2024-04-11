@@ -5,6 +5,7 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -72,12 +73,12 @@ internal class BackgroundScrollConnection(
 
 @Composable
 fun CollapsingToolbarScaffold(
+    scrollState: ScrollState,
     header: @Composable () -> Unit,
     onCloseClick: () -> Unit,
     stickyHeader: @Composable () -> Unit = { },
     content: @Composable () -> Unit
 ) {
-    val scrollState = rememberScrollState()
     val nestedScrollConnection = remember {
         BackgroundScrollConnection(scrollState)
     }
@@ -88,7 +89,6 @@ fun CollapsingToolbarScaffold(
                 Modifier
                     .fillMaxWidth()
                     .height(56.dp)
-
                     .background(MaterialTheme.colorScheme.primary),
             ) {
                 IconButton(
@@ -111,22 +111,19 @@ fun CollapsingToolbarScaffold(
     ) { paddingValues ->
         Box(
             modifier = Modifier
-                .padding(paddingValues)
                 .fillMaxSize()
+                .padding(paddingValues)
         ) {
             var globalHeight by remember { mutableIntStateOf(0) }
 
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Transparent)
                     .onSizeChanged { size ->
                         globalHeight = size.height
                     }
-                    .nestedScroll(
-                        connection = nestedScrollConnection,
-                    )
-                    .verticalScroll(scrollState),
+                    .verticalScroll(scrollState)
+                    .nestedScroll(nestedScrollConnection)
             ) {
 
                 HeadSection(

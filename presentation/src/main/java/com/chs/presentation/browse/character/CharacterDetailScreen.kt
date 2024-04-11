@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,6 +21,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
@@ -71,8 +73,10 @@ fun CharacterDetailScreen(
     var expandedDescButton by remember { mutableStateOf(false) }
     val pagingItem = state.animeList?.collectAsLazyPagingItems()
     val lazyVerticalStaggeredState = rememberLazyStaggeredGridState()
+    val scrollState = rememberScrollState()
 
     CollapsingToolbarScaffold(
+        scrollState = scrollState,
         header = {
             CharacterBanner(
                 characterInfo = state.characterDetailInfo,
@@ -90,6 +94,8 @@ fun CharacterDetailScreen(
         }
     ) {
         LazyVerticalStaggeredGrid(
+            modifier = Modifier
+                .fillMaxSize(),
             state = lazyVerticalStaggeredState,
             columns = StaggeredGridCells.Fixed(3),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -97,26 +103,29 @@ fun CharacterDetailScreen(
             contentPadding = PaddingValues(horizontal = 4.dp)
         ) {
             item(span = StaggeredGridItemSpan.FullLine) {
-                Column(
-                    modifier = Modifier
-                        .padding(
-                            start = 8.dp,
-                            end = 8.dp
-                        )
-                ) {
-                    if (state.characterDetailInfo != null) {
-                        CharacterProfile(characterDetailInfo = state.characterDetailInfo!!)
-                    }
-
-                    CharacterDescription(
-                        description = state.characterDetailInfo?.description,
-                        expandedDescButton = expandedDescButton
+                if (state.characterDetailInfo != null) {
+                    Column(
+                        modifier = Modifier
+                            .padding(
+                                start = 8.dp,
+                                end = 8.dp
+                            )
                     ) {
-                        expandedDescButton = !expandedDescButton
+                        CharacterProfile(characterDetailInfo = state.characterDetailInfo!!)
+
+                        if (state.characterDetailInfo?.characterInfo != null) {
+                            CharacterDescription(
+                                description = state.characterDetailInfo?.description,
+                                expandedDescButton = expandedDescButton
+                            ) {
+                                expandedDescButton = !expandedDescButton
+                            }
+                        }
                     }
                 }
             }
-            if (pagingItem != null) {
+
+            if (pagingItem != null && pagingItem.itemCount != 0) {
                 items(
                     count = pagingItem.itemCount,
                     key = { pagingItem[it]?.id ?: it }
@@ -158,7 +167,7 @@ private fun CharacterBanner(
                 start = 8.dp,
                 end = 8.dp
             )
-            .height(280.dp)
+            .height(220.dp)
     ) {
         Row(
             modifier = Modifier

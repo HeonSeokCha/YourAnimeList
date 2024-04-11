@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +41,7 @@ fun AnimeRecScreen(
     val context = LocalContext.current
     var placeItemShow by remember { mutableStateOf(false) }
     var isEmptyShow by remember { mutableStateOf(false) }
+    val scrollState = rememberLazyListState()
 
     LaunchedEffect(context, viewModel) {
         viewModel.getAnimeRecommendList(animeId)
@@ -57,6 +59,7 @@ fun AnimeRecScreen(
                     top = 8.dp,
                     bottom = 8.dp
                 ),
+            state = scrollState,
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             if (lazyPagingItems != null) {

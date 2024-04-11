@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
@@ -85,8 +86,10 @@ fun AnimeDetailScreen(
     val activity = (LocalContext.current as? Activity)
     val pagerState = rememberPagerState { 3 }
     val coroutineScope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
 
     CollapsingToolbarScaffold(
+        scrollState = scrollState,
         header = {
             AnimeDetailHeadBanner(
                 animeDetailInfo = state.animeDetailInfo,
