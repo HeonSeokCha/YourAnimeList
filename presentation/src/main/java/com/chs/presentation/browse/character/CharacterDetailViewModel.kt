@@ -82,9 +82,7 @@ class CharacterDetailViewModel @Inject constructor(
         viewModelScope.launch {
             checkSaveCharaUseCase(charaId).collect { charaInfo ->
                 _state.update {
-                    it.copy(
-                        isSave = (charaInfo != null && charaInfo.id == charaId)
-                    )
+                    it.copy(isSave = (charaInfo != null))
                 }
             }
         }

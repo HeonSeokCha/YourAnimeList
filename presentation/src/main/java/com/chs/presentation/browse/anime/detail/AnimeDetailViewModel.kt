@@ -101,9 +101,7 @@ class AnimeDetailViewModel @Inject constructor(
         viewModelScope.launch {
             checkSaveAnimeUseCase(animeId).collect { savedAnimeInfo ->
                 _state.update {
-                    it.copy(
-                        isSave = (savedAnimeInfo != null && savedAnimeInfo.id == animeId)
-                    )
+                    it.copy(isSave = (savedAnimeInfo != null))
                 }
             }
         }

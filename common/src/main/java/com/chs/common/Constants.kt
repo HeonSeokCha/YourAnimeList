@@ -5,5 +5,5 @@ object Constants {
     const val JIKAN_API_URL: String = "https://api.jikan.moe/v4/anime"
     const val YOUTUBE_BASE_URL: String = "https://www.youtube.com/watch?v="
 
-    const val PAGING_SIZE: Int = 1
+    const val PAGING_SIZE: Int = 3
 }
