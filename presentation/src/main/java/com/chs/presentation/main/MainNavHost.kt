@@ -1,7 +1,11 @@
 package com.chs.presentation.main
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -9,8 +13,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.chs.presentation.UiConst
 import com.chs.presentation.animeList.AnimeListScreen
+import com.chs.presentation.animeList.AnimeListViewModel
 import com.chs.presentation.charaList.CharaListScreen
 import com.chs.presentation.home.HomeScreen
+import com.chs.presentation.home.HomeState
+import com.chs.presentation.home.HomeViewModel
 import com.chs.presentation.search.SearchScreen
 import com.chs.presentation.sortList.SortedListScreen
 
@@ -27,11 +34,25 @@ fun MainNavHost(
         startDestination = BottomNavScreen.HomeScreen.route
     ) {
         composable(BottomNavScreen.HomeScreen.route) {
-            HomeScreen(navController)
+            val parentEntry = remember(it) {
+                navController.getBackStackEntry(BottomNavScreen.HomeScreen.route)
+            }
+            val viewModel: HomeViewModel = hiltViewModel(parentEntry)
+            HomeScreen(
+                state = viewModel.state,
+                navController = navController
+            )
         }
 
+
         composable(BottomNavScreen.AnimeListScreen.route) {
-            AnimeListScreen()
+            val parentEntry = remember(it) {
+                navController.getBackStackEntry(BottomNavScreen.AnimeListScreen.route)
+            }
+            val viewModel: AnimeListViewModel = hiltViewModel(parentEntry)
+            AnimeListScreen(
+                state = viewModel.state
+            )
         }
 
         composable(BottomNavScreen.CharaListScreen.route) {

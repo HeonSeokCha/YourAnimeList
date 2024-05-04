@@ -7,6 +7,7 @@ import com.chs.presentation.UiConst
 import com.chs.domain.usecase.GetAnimeRecListUseCase
 import com.chs.domain.usecase.GetRecentGenresUseCase
 import com.chs.presentation.Util
+import com.chs.presentation.main.MainState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,11 +18,10 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getHomeListUseCase: GetAnimeRecListUseCase,
-    private val getRecentGenresUseCase: GetRecentGenresUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(HomeState())
-    val state = _state.asStateFlow()
+    var state: HomeState = HomeState()
+        private set
 
     init {
         viewModelScope.launch {
@@ -32,32 +32,26 @@ class HomeViewModel @Inject constructor(
                 nextYear = Util.getVariationYear(true),
                 lastYear = Util.getVariationYear(false)
             ).collect { result ->
-                _state.update {
-                    when (result) {
-                        is Resource.Loading -> {
-                            it.copy(isLoading = true)
-                        }
+                state = when (result) {
+                    is Resource.Loading -> {
+                        state.copy(isLoading = true)
+                    }
 
-                        is Resource.Success -> {
-                            it.copy(
-                                animeRecommendList = result.data,
-                                isLoading = false
-                            )
-                        }
+                    is Resource.Success -> {
+                        state.copy(
+                            animeRecommendList = result.data,
+                            isLoading = false
+                        )
+                    }
 
-                        is Resource.Error -> {
-                            it.copy(
-                                isError = result.message,
-                                isLoading = false
-                            )
-                        }
+                    is Resource.Error -> {
+                        state.copy(
+                            isError = result.message,
+                            isLoading = false
+                        )
                     }
                 }
             }
-        }
-
-        viewModelScope.launch {
-            getRecentGenresUseCase()
         }
     }
 }

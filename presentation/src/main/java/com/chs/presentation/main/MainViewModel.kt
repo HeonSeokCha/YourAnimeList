@@ -3,6 +3,7 @@ package com.chs.presentation.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.domain.usecase.DeleteSearchHistoryUseCase
+import com.chs.domain.usecase.GetRecentGenresUseCase
 import com.chs.domain.usecase.GetSearchHistoryUseCase
 import com.chs.domain.usecase.InsertSearchHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val getSearchHistoryUseCase: GetSearchHistoryUseCase,
     private val insertSearchHistoryUseCase: InsertSearchHistoryUseCase,
-    private val deleteSearchHistoryUseCase: DeleteSearchHistoryUseCase
+    private val deleteSearchHistoryUseCase: DeleteSearchHistoryUseCase,
+    private val getRecentGenresUseCase: GetRecentGenresUseCase
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<MainState> = MutableStateFlow(MainState())
@@ -24,6 +26,9 @@ class MainViewModel @Inject constructor(
 
     init {
         getSearchHistory()
+        viewModelScope.launch {
+            getRecentGenresUseCase()
+        }
     }
 
     fun getSearchHistory() {

@@ -15,16 +15,9 @@ import com.chs.presentation.common.ItemAnimeLarge
 import com.chs.presentation.common.ItemNoResultImage
 
 @Composable
-fun AnimeListScreen(
-    viewModel: AnimeListViewModel = hiltViewModel()
-) {
+fun AnimeListScreen(state: AnimeListState) {
 
-    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-
-    LaunchedEffect(viewModel, context) {
-        viewModel.getYourAnimeList()
-    }
 
     if (state.animeList.isEmpty()) {
         ItemNoResultImage()
