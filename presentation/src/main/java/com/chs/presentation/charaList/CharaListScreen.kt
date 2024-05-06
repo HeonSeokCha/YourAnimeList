@@ -19,15 +19,8 @@ import com.chs.presentation.common.ItemCharaLarge
 import com.chs.presentation.common.ItemNoResultImage
 
 @Composable
-fun CharaListScreen(
-    viewModel: CharacterListViewModel = hiltViewModel(),
-) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+fun CharaListScreen(state: CharaListState) {
     val context = LocalContext.current
-
-    LaunchedEffect(viewModel, context) {
-        viewModel.getYourCharaList()
-    }
 
     if (state.charaList.isEmpty()) {
         ItemNoResultImage()

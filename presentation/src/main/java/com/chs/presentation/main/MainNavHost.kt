@@ -2,6 +2,7 @@ package com.chs.presentation.main
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -15,11 +16,14 @@ import com.chs.presentation.UiConst
 import com.chs.presentation.animeList.AnimeListScreen
 import com.chs.presentation.animeList.AnimeListViewModel
 import com.chs.presentation.charaList.CharaListScreen
+import com.chs.presentation.charaList.CharacterListViewModel
 import com.chs.presentation.home.HomeScreen
 import com.chs.presentation.home.HomeState
 import com.chs.presentation.home.HomeViewModel
+import com.chs.presentation.search.SearchMediaViewModel
 import com.chs.presentation.search.SearchScreen
 import com.chs.presentation.sortList.SortedListScreen
+import com.chs.presentation.sortList.SortedViewModel
 
 @Composable
 fun MainNavHost(
@@ -56,13 +60,17 @@ fun MainNavHost(
         }
 
         composable(BottomNavScreen.CharaListScreen.route) {
-            CharaListScreen()
+            val parentEntry = remember(it) {
+                navController.getBackStackEntry(BottomNavScreen.CharaListScreen.route)
+            }
+            val viewmodel: CharacterListViewModel = hiltViewModel(parentEntry)
+            CharaListScreen(state = viewmodel.state)
         }
 
         composable(Screen.SearchScreen.route) {
             SearchScreen(
                 searchQuery = searchQuery,
-                onBack = onBack,
+                onBack = onBack
             )
         }
 
@@ -84,6 +92,11 @@ fun MainNavHost(
                 }
             )
         ) {
+            val parentEntry = remember(it) {
+                navController.getBackStackEntry(Screen.SortListScreen.route)
+            }
+            val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
+
             SortedListScreen()
         }
     }

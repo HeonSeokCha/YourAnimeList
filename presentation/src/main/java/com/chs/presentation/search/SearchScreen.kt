@@ -21,6 +21,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.UiConst
 import com.chs.presentation.common.LoadingIndicator
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -36,10 +38,21 @@ fun SearchScreen(
     val pagerState = rememberPagerState(initialPage = 0) { tabList.size }
     val coroutineScope = rememberCoroutineScope()
 
+    val viewModel: SearchMediaViewModel = hiltViewModel()
+
     DisposableEffect(Unit) {
         onDispose {
             onBack()
         }
+    }
+
+    LaunchedEffect(searchQuery) {
+        snapshotFlow { searchQuery }
+            .distinctUntilChanged()
+            .filter { it.isNotEmpty() }
+            .collect {
+                viewModel.search(it)
+            }
     }
 
     Column(
@@ -82,17 +95,11 @@ fun SearchScreen(
         ) { page ->
             when (page) {
                 0 -> {
-                    SearchMediaScreen(
-                        searchType = UiConst.TARGET_ANIME,
-                        searchKeyWord = searchQuery
-                    )
+                    SearchAnimeScreen(pagingItem = viewModel.state.searchAnimeResultPaging)
                 }
 
                 1 -> {
-                    SearchMediaScreen(
-                        searchType = UiConst.TARGET_CHARA,
-                        searchKeyWord = searchQuery
-                    )
+                    SearchCharaScreen(pagingItems = viewModel.state.searchCharaResultPaging)
                 }
             }
         }

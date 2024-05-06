@@ -15,17 +15,15 @@ class CharacterListViewModel @Inject constructor(
     private val getYourCharaListUseCase: GetSavedCharaListUseCase,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(CharaListState())
-    val state = _state.asStateFlow()
+    var state = CharaListState()
+        private set
 
-    fun getYourCharaList() {
+    init {
         viewModelScope.launch {
             getYourCharaListUseCase().collect { charaInfo ->
-                _state.update {
-                    it.copy(
-                        charaList = charaInfo
-                    )
-                }
+                state = state.copy(
+                    charaList = charaInfo
+                )
             }
         }
     }

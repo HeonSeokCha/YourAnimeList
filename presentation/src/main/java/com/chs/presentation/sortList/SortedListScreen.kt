@@ -5,11 +5,11 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -27,8 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.presentation.UiConst
@@ -39,10 +37,8 @@ import com.chs.presentation.ui.theme.Pink80
 import kotlinx.coroutines.launch
 
 @Composable
-fun SortedListScreen(
-    viewModel: SortedViewModel = hiltViewModel()
-) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+fun SortedListScreen(state: SortState) {
+
     val context = LocalContext.current
     val lazyGridScrollState = rememberLazyGridState()
     val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
@@ -54,7 +50,7 @@ fun SortedListScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        LazyRow(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
@@ -63,16 +59,12 @@ fun SortedListScreen(
                     end = 4.dp
                 ),
             verticalAlignment = Alignment.CenterVertically,
-            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
-            items(state.menuList.size) { idx ->
+            state.menuList.forEach {
                 ItemSort(
-                    title = state.menuList[idx].first,
-                    subTitle = viewModel.getSelectedOption(idx)
+                    title = it.first,
+                    subTitle = it.second.first().first
                 ) {
-                    viewModel.changeFiletMenuIdx(
-                        state.menuList.indexOf(state.menuList.find { it.first == state.menuList[idx].first })
-                    )
                     filterDialogShow = true
                 }
             }
@@ -137,7 +129,6 @@ fun SortedListScreen(
                 coroutineScope.launch {
                     lazyGridScrollState.scrollToItem(0, 0)
                 }
-                viewModel.changeFilterOptions(selectIdx)
             }
         )
     }
