@@ -97,7 +97,10 @@ fun MainNavHost(
             }
             val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
 
-            SortedListScreen()
+            SortedListScreen(
+                state = viewmodel.state,
+                onChangeOption = viewmodel::changeSortEvent
+            )
         }
     }
 }

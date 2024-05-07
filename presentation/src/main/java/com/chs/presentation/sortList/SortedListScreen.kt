@@ -37,12 +37,15 @@ import com.chs.presentation.ui.theme.Pink80
 import kotlinx.coroutines.launch
 
 @Composable
-fun SortedListScreen(state: SortState) {
+fun SortedListScreen(
+    state: SortState,
+    onChangeOption: (SortEvent) -> Unit
+) {
 
     val context = LocalContext.current
     val lazyGridScrollState = rememberLazyGridState()
     val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
-    var filterDialogShow by remember { mutableStateOf(false) }
+    var filterDialogShow: Int? by remember { mutableStateOf(null) }
     var placeItemShow by remember { mutableStateOf(false) }
     var isEmptyShow by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
@@ -60,13 +63,29 @@ fun SortedListScreen(state: SortState) {
                 ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            state.menuList.forEach {
-                ItemSort(
-                    title = it.first,
-                    subTitle = it.second.first().first
-                ) {
-                    filterDialogShow = true
-                }
+            ItemSort(
+                title = "Year",
+                subTitle = if (state.selectYear == null) "Any" else state.selectYear.toString()
+            ) {
+                filterDialogShow = 0
+            }
+            ItemSort(
+                title = "Season",
+                subTitle = state.selectSeason?.first ?: "Any"
+            ) {
+                filterDialogShow = 1
+            }
+            ItemSort(
+                title = "Sort",
+                subTitle = state.selectSort?.first ?: "Any"
+            ) {
+                filterDialogShow = 2
+            }
+            ItemSort(
+                title = "Genre",
+                subTitle = state.selectGenre ?: "Any"
+            ) {
+                filterDialogShow = 3
             }
         }
 
@@ -120,15 +139,29 @@ fun SortedListScreen(state: SortState) {
         }
     }
 
-    if (filterDialogShow) {
+    if (filterDialogShow != null) {
         FilterDialog(
-            list = state.menuList[state.selectMenuIdx].second,
+            list = when (filterDialogShow) {
+                0 -> state.optionYears
+                1 -> state.optionSeason
+                2 -> state.optionSort
+                3 -> state.optionGenres
+                else -> state.optionYears
+            },
             onDismiss = {
-                filterDialogShow = false
-            }, onClick = { selectIdx ->
+                filterDialogShow = null
+            }, onClick = { selectValue ->
                 coroutineScope.launch {
                     lazyGridScrollState.scrollToItem(0, 0)
                 }
+                when (filterDialogShow) {
+                    0 -> SortEvent.ChangeYearOption(selectValue.second.toInt())
+                    1 -> SortEvent.ChangeSeasonOption(selectValue)
+                    2 -> SortEvent.ChangeSortOption(selectValue)
+                    3 -> SortEvent.ChangeGenreOption(selectValue.second)
+                    else -> Unit
+                }
+                filterDialogShow = null
             }
         )
     }
@@ -157,7 +190,7 @@ fun SortedListScreen(state: SortState) {
 private fun ItemSort(
     title: String,
     subTitle: String,
-    clickAble: (String) -> Unit
+    clickAble: () -> Unit
 ) {
     Text(
         text = title,
@@ -165,7 +198,7 @@ private fun ItemSort(
     )
     TextButton(
         colors = ButtonDefaults.textButtonColors(contentColor = Color.Black),
-        onClick = { clickAble(title) }
+        onClick = { clickAble() }
     ) {
         Text(text = subTitle)
     }

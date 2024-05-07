@@ -25,8 +25,8 @@ class SortedViewModel @Inject constructor(
     private val getRecentGenresUseCase: GetRecentGenresUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(SortState())
-    val state = _state.asStateFlow()
+    var state = SortState()
+        private set
 
     init {
         initFilterList()
@@ -42,65 +42,71 @@ class SortedViewModel @Inject constructor(
         val selectYear: Int = savedStateHandle[UiConst.KEY_YEAR] ?: 0
         val selectGenre: String? = savedStateHandle[UiConst.KEY_GENRE]
 
-        _state.update {
-            it.copy(
-                selectSort = selectSort.name to selectSort.rawValue,
-                selectSeason = if (selectSeason != null) selectSeason.name to selectSeason.rawValue else null,
-                selectYear = if (selectYear != 0) selectYear else null,
-                selectGenre = selectGenre
-            )
-        }
-
+        state = state.copy(
+            selectSort = selectSort.name to selectSort.rawValue,
+            selectSeason = if (selectSeason != null) selectSeason.name to selectSeason.rawValue else null,
+            selectYear = if (selectYear != 0) selectYear else null,
+            selectGenre = selectGenre
+        )
         getSortedAnime()
     }
 
     private fun getSortedAnime() {
-        _state.update {
-            it.copy(
-                animeSortPaging = getAnimeFilteredListUseCase(
-                    sortType = if (it.selectSort!!.second == UiConst.SortType.TRENDING.rawValue) {
-                        listOf(
-                            UiConst.SortType.TRENDING.rawValue,
-                            UiConst.SortType.POPULARITY.rawValue
-                        )
-                    } else {
-                        listOf(it.selectSort.second)
-                    },
-                    season = it.selectSeason?.second,
-                    year = it.selectYear,
-                    genre = it.selectGenre
-                ).cachedIn(viewModelScope)
-            )
-        }
-    }
-
-    fun changeFiletMenuIdx(idx: Int) {
-        _state.update {
-            it.copy(
-                selectMenuIdx = idx
-            )
-        }
-    }
-
-    fun changeFilterOptions(selectIdx: Int) {
-        _state.update {
-            if (it.selectMenuIdx == 0) {
-                it.copy(selectYear = it.menuList[0].second[selectIdx].second.toInt())
-            } else {
-                it.copy(selectSeason = it.menuList[it.selectMenuIdx].second[selectIdx])
-            }
-        }
-        getSortedAnime()
+        state = state.copy(
+            animeSortPaging = getAnimeFilteredListUseCase(
+                sortType = if (state.selectSort!!.second == UiConst.SortType.TRENDING.rawValue) {
+                    listOf(
+                        UiConst.SortType.TRENDING.rawValue,
+                        UiConst.SortType.POPULARITY.rawValue
+                    )
+                } else {
+                    listOf(state.selectSort!!.second)
+                },
+                season = state.selectSeason?.second,
+                year = state.selectYear,
+                genre = state.selectGenre
+            ).cachedIn(viewModelScope)
+        )
     }
 
     fun getSelectedOption(selectIdx: Int): String {
         return when (selectIdx) {
-            0 -> "${state.value.selectYear ?: "Any"}"
-            1 -> state.value.selectSeason?.first ?: "Any"
-            2 -> state.value.selectSort?.first ?: "Any"
-            3 -> state.value.selectGenre ?: "Any"
+            0 -> "${state.selectYear ?: "Any"}"
+            1 -> state.selectSeason?.first ?: "Any"
+            2 -> state.selectSort?.first ?: "Any"
+            3 -> state.selectGenre ?: "Any"
             else -> "Any"
         }
+    }
+
+    fun changeSortEvent(event: SortEvent) {
+        when (event) {
+            is SortEvent.ChangeYearOption -> {
+                state = state.copy(
+                    selectYear = event.value
+                )
+
+            }
+
+            is SortEvent.ChangeSeasonOption -> {
+                state = state.copy(
+                    selectSeason = event.value
+                )
+            }
+
+            is SortEvent.ChangeSortOption -> {
+                state = state.copy(
+                    selectSort = event.value
+                )
+            }
+
+            is SortEvent.ChangeGenreOption -> {
+                state = state.copy(
+                    selectGenre = event.value
+                )
+            }
+        }
+        getSortedAnime()
     }
 
     private fun initFilterList() {
@@ -111,16 +117,9 @@ class SortedViewModel @Inject constructor(
                 }
                 getSavedGenresUsaCase()
             }
-            _state.update {
-                it.copy(
-                    menuList = listOf(
-                        "Year" to UiConst.yearSortList,
-                        "Season" to UiConst.seasonFilterList.map { it.name to it.rawValue },
-                        "Sort" to UiConst.sortTypeList.map { it.name to it.rawValue },
-                        "Genre" to genreList.map { it to it }
-                    )
-                )
-            }
+            state = state.copy(
+                optionGenres = genreList.map { it to it }
+            )
         }
     }
 }

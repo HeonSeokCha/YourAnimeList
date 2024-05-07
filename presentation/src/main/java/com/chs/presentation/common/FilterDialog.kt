@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun FilterDialog(
     list: List<Pair<String, String>>,
-    onClick: (Int) -> Unit,
+    onClick: (Pair<String, String>) -> Unit,
     onDismiss: () -> Unit
 ) {
     BasicAlertDialog(
@@ -44,7 +44,7 @@ fun FilterDialog(
                         .fillMaxWidth()
                         .clickable {
                             onDismiss()
-                            onClick(idx)
+                            onClick(list[idx])
                         },
                     text = list[idx].first,
                     fontSize = 16.sp

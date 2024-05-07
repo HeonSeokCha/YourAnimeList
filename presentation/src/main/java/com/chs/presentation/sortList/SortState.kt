@@ -2,15 +2,17 @@ package com.chs.presentation.sortList
 
 import androidx.paging.PagingData
 import com.chs.domain.model.AnimeInfo
+import com.chs.presentation.UiConst
 import kotlinx.coroutines.flow.Flow
 
 data class SortState(
     val animeSortPaging: Flow<PagingData<AnimeInfo>>? = null,
-    val genreList: List<String> = emptyList(),
     val selectSort: Pair<String, String>? = null,
     val selectSeason: Pair<String, String>? = null,
     val selectYear: Int? = null,
     val selectGenre: String? = null,
-    val menuList: List<Pair<String, List<Pair<String, String>>>> = emptyList(),
-    val selectMenuIdx: Int = 0
+    val optionYears: List<Pair<String, String>> = UiConst.yearSortList,
+    val optionSort: List<Pair<String, String>> = UiConst.sortTypeList.map { it.name to it.rawValue },
+    val optionSeason: List<Pair<String, String>> = UiConst.seasonFilterList.map { it.name to it.rawValue },
+    val optionGenres: List<Pair<String, String>> = emptyList()
 )

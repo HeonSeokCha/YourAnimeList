@@ -2,7 +2,9 @@ package com.chs.presentation.browse
 
 import android.content.Intent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,6 +16,7 @@ import com.chs.presentation.UiConst
 import com.chs.presentation.browse.studio.StudioDetailScreen
 import com.chs.presentation.main.Screen
 import com.chs.presentation.sortList.SortedListScreen
+import com.chs.presentation.sortList.SortedViewModel
 
 @Composable
 fun BrowseNavHost(
@@ -87,7 +90,14 @@ fun BrowseNavHost(
                 }
             )
         ) {
-            SortedListScreen()
+            val parentEntry = remember(it) {
+                navController.getBackStackEntry(Screen.SortListScreen.route)
+            }
+            val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
+            SortedListScreen(
+                state = viewmodel.state,
+                onChangeOption = viewmodel::changeSortEvent
+            )
         }
 
         composable(
@@ -99,7 +109,14 @@ fun BrowseNavHost(
                 }
             )
         ) {
-            SortedListScreen()
+            val parentEntry = remember(it) {
+                navController.getBackStackEntry(Screen.SortListScreen.route)
+            }
+            val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
+            SortedListScreen(
+                state = viewmodel.state,
+                onChangeOption = viewmodel::changeSortEvent
+            )
         }
     }
 }
