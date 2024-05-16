@@ -13,10 +13,10 @@ sealed class BottomNavScreen(
     val icon: ImageVector,
     @StringRes val label: Int
 ) {
-    object HomeScreen : BottomNavScreen("home_screen", Icons.Default.Home, R.string.home)
-    object AnimeListScreen :
+    data object HomeScreen : BottomNavScreen("home_screen", Icons.Default.Home, R.string.home)
+    data object AnimeListScreen :
         BottomNavScreen("animeList_screen", Icons.Default.LocalMovies, R.string.anime_list)
 
-    object CharaListScreen :
+    data object CharaListScreen :
         BottomNavScreen("charaList_screen", Icons.Default.TagFaces, R.string.chara_list)
 }

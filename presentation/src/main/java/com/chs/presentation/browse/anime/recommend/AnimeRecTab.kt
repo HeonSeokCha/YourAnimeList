@@ -72,9 +72,10 @@ fun AnimeRecScreen(
                     ItemAnimeLarge(item) {
                         if (item != null) {
                             navController.navigate(
-                                "${BrowseScreen.AnimeDetailScreen.route}/" +
-                                        "${item.id}" +
-                                        "/${item.idMal}"
+                                BrowseScreen.AnimeDetailScreen(
+                                    id = item.id,
+                                    idMal = item.idMal
+                                )
                             )
                         }
                     }

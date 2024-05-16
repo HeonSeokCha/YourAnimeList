@@ -1,19 +1,22 @@
 package com.chs.presentation.browse
 
 import android.content.Intent
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.chs.presentation.browse.anime.detail.AnimeDetailScreen
 import com.chs.presentation.browse.character.CharacterDetailScreen
 import com.chs.presentation.UiConst
+import com.chs.presentation.browse.anime.detail.AnimeDetailViewModel
+import com.chs.presentation.browse.character.CharacterDetailViewModel
 import com.chs.presentation.browse.studio.StudioDetailScreen
+import com.chs.presentation.browse.studio.StudioDetailViewModel
 import com.chs.presentation.main.Screen
 import com.chs.presentation.sortList.SortedListScreen
 import com.chs.presentation.sortList.SortedViewModel
@@ -25,92 +28,63 @@ fun BrowseNavHost(
     intent: Intent?
 ) {
 
-    val startMediaDestination =
-        if (intent?.getStringExtra(UiConst.TARGET_TYPE) == UiConst.TARGET_MEDIA) {
-            "${BrowseScreen.AnimeDetailScreen.route}/{id}/{idMal}"
-        } else {
-            "${BrowseScreen.CharacterDetailScreen.route}/{id}"
-        }
+//    val startMediaDestination: BrowseScreen =
+//        if (intent?.getStringExtra(UiConst.TARGET_TYPE) == UiConst.TARGET_MEDIA) {
+//            BrowseScreen.AnimeDetailScreen
+//        } else {
+//            BrowseScreen.CharacterDetailScreen
+//        }
+
 
     NavHost(
         navController = navController,
         modifier = modifier,
-        startDestination = startMediaDestination
+        startDestination = BrowseScreen.AnimeDetailScreen
     ) {
-        composable(
-            route = "${BrowseScreen.AnimeDetailScreen.route}/{id}/{idMal}",
-            arguments = listOf(
-                navArgument("id") {
-                    type = NavType.IntType
-                    defaultValue = intent?.getIntExtra(UiConst.TARGET_ID, 0)!!
-                },
-                navArgument("idMal") {
-                    type = NavType.IntType
-                    defaultValue = intent?.getIntExtra(UiConst.TARGET_ID_MAL, 0)!!
-                },
-            )
-        ) {
-            AnimeDetailScreen(navController)
-        }
 
-        composable(
-            route = "${BrowseScreen.CharacterDetailScreen.route}/{id}",
-            arguments = listOf(
-                navArgument("id") {
-                    type = NavType.IntType
-                    defaultValue = intent?.getIntExtra(UiConst.TARGET_ID, 0)!!
-                }
-            )
-        ) {
-            CharacterDetailScreen(navController)
-        }
-
-        composable(
-            route = "${BrowseScreen.StudioDetailScreen.route}/{id}",
-            arguments = listOf(
-                navArgument("id") {
-                    type = NavType.IntType
-                    defaultValue = intent?.getIntExtra(UiConst.TARGET_ID, 0)!!
-                }
-            )
-        ) {
-            StudioDetailScreen(navController)
-        }
-
-        composable(
-            route = "${Screen.SortListScreen.route}/{year}/{season}",
-            arguments = listOf(
-                navArgument("year") {
-                    defaultValue = intent?.getIntExtra(UiConst.KEY_YEAR, 0)
-                    type = NavType.IntType
-                },
-                navArgument("season") {
-                    defaultValue = intent?.getStringExtra(UiConst.KEY_SEASON) ?: ""
-                    type = NavType.StringType
-                }
-            )
-        ) {
+        composable<BrowseScreen.AnimeDetailScreen> {
+            val arg = it.toRoute<BrowseScreen.AnimeDetailScreen>()
             val parentEntry = remember(it) {
-                navController.getBackStackEntry(Screen.SortListScreen.route)
+                navController.getBackStackEntry(arg)
             }
-            val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
-            SortedListScreen(
+            val viewmodel: AnimeDetailViewModel = hiltViewModel(parentEntry)
+            AnimeDetailScreen(
+                navController = navController,
                 state = viewmodel.state,
-                onChangeOption = viewmodel::changeSortEvent
+                onEvent = viewmodel::changeEvent
             )
         }
 
-        composable(
-            route = "${Screen.SortListScreen.route}/{genre}",
-            arguments = listOf(
-                navArgument("genre") {
-                    defaultValue = intent?.getStringExtra(UiConst.KEY_GENRE) ?: ""
-                    type = NavType.StringType
-                }
-            )
-        ) {
+        composable<BrowseScreen.CharacterDetailScreen> {
+            val arg = it.toRoute<BrowseScreen.CharacterDetailScreen>()
             val parentEntry = remember(it) {
-                navController.getBackStackEntry(Screen.SortListScreen.route)
+                navController.getBackStackEntry(arg)
+            }
+            val viewmodel: CharacterDetailViewModel = hiltViewModel(parentEntry)
+            CharacterDetailScreen(
+                navController = navController,
+                state = viewmodel.state,
+                onEvent = viewmodel::changeEvent
+            )
+        }
+
+        composable<BrowseScreen.StudioDetailScreen> {
+            val arg = it.toRoute<BrowseScreen.StudioDetailScreen>()
+            val parentEntry = remember(it) {
+                navController.getBackStackEntry(arg)
+            }
+            val viewmodel: StudioDetailViewModel = hiltViewModel(parentEntry)
+            StudioDetailScreen(
+                navController = navController,
+                state = viewmodel.state
+            )
+        }
+
+
+        composable<Screen.SortListScreen> {
+            val arg = it.toRoute<Screen.SortListScreen>()
+            val parentEntry = remember(it) {
+                navController.getBackStackEntry(arg)
             }
             val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
             SortedListScreen(

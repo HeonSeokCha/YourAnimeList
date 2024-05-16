@@ -9,6 +9,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.toRoute
 import com.chs.presentation.ui.theme.Red200
 import com.chs.presentation.ui.theme.Red500
 import com.chs.presentation.ui.theme.Red700
@@ -16,8 +17,9 @@ import com.chs.presentation.ui.theme.Red700
 @Composable
 fun BottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    if (navBackStackEntry?.destination?.route?.contains(Screen.SortListScreen.route) == false
-        && navBackStackEntry?.destination?.route != Screen.SearchScreen.route
+
+    if (navBackStackEntry?.toRoute<Screen.SearchScreen>() is Screen.SearchScreen
+        && navBackStackEntry?.toRoute<Screen.SortListScreen>() is Screen.SortListScreen
     ) {
         val items = listOf(
             BottomNavScreen.HomeScreen,

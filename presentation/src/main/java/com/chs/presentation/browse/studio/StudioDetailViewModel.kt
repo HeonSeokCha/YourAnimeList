@@ -21,26 +21,25 @@ class StudioDetailViewModel @Inject constructor(
     private val getStudioAnimeListUseCase: GetStudioAnimeListUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(StudioDetailState())
-    val state = _state.asStateFlow()
+    var state = StudioDetailState()
+        private set
 
 
     init {
         val studioId: Int = savedStateHandle[UiConst.TARGET_ID] ?: 0
-        _state.update { it.copy(studioId = studioId) }
+        state = state.copy(studioId = studioId)
+
         getStudioDetailInfo(studioId)
         getStudioAnimeList(
-            studioId, state.value.sortOption.rawValue
+            studioId, state.sortOption.rawValue
         )
     }
 
     private fun getStudioDetailInfo(studioId: Int) {
         viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    studioDetailInfo = getStudioDetailUseCase(studioId)
-                )
-            }
+            state = state.copy(
+                studioDetailInfo = getStudioDetailUseCase(studioId)
+            )
         }
     }
 
@@ -48,21 +47,17 @@ class StudioDetailViewModel @Inject constructor(
         studioId: Int,
         studioSort: String
     ) {
-        _state.update {
-            it.copy(
-                studioAnimeList = getStudioAnimeListUseCase(
-                    studioId = studioId,
-                    studioSort = studioSort
-                ).cachedIn(viewModelScope)
-            )
-        }
+        state = state.copy(
+            studioAnimeList = getStudioAnimeListUseCase(
+                studioId = studioId,
+                studioSort = studioSort
+            ).cachedIn(viewModelScope)
+        )
     }
 
     fun changeFilterOption(sortType: UiConst.SortType) {
-        _state.update {
-            it.copy(
-                sortOption = sortType
-            )
-        }
+        state = state.copy(
+            sortOption = sortType
+        )
     }
 }

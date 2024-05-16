@@ -1,5 +1,6 @@
 package com.chs.presentation.home
 
+import androidx.compose.runtime.Immutable
 import com.chs.domain.model.AnimeRecommendList
 import com.chs.presentation.UiConst
 

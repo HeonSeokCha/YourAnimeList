@@ -1,5 +1,8 @@
 package com.chs.presentation.charaList
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.domain.usecase.GetSavedCharaListUseCase
@@ -15,7 +18,7 @@ class CharacterListViewModel @Inject constructor(
     private val getYourCharaListUseCase: GetSavedCharaListUseCase,
 ) : ViewModel() {
 
-    var state = CharaListState()
+    var state by mutableStateOf(CharaListState())
         private set
 
     init {

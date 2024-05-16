@@ -34,7 +34,7 @@ import com.chs.presentation.common.shimmer
 @Composable
 fun AnimeCharaScreen(
     charaInfoList: List<CharacterInfo?>,
-    onClick: (String) -> Unit
+    onClick: (BrowseScreen.CharacterDetailScreen) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = Modifier
@@ -59,8 +59,7 @@ fun AnimeCharaScreen(
                     .clickable {
                         if (charaInfo != null) {
                             onClick(
-                                "${BrowseScreen.CharacterDetailScreen.route}/" +
-                                        "${charaInfo.id}"
+                                BrowseScreen.CharacterDetailScreen(id = charaInfo.id)
                             )
                         }
                     },

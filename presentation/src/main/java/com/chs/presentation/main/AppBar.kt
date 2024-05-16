@@ -26,8 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.toRoute
 import com.chs.presentation.R
 import com.chs.presentation.common.FilterDialog
+import com.chs.presentation.fromRoute
 import com.chs.presentation.ui.theme.Red500
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,8 +41,8 @@ fun AppBar(
     onDeleteSearchHistory: (String) -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    when (navBackStackEntry?.destination?.route) {
-        "${Screen.SortListScreen.route}/{sortOption}/{sortYear}/{sortSeason}" -> {
+    when (navBackStackEntry.fromRoute()) {
+        is Screen.SortListScreen -> {
             TopAppBar(
                 title = {},
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -55,7 +57,7 @@ fun AppBar(
             )
         }
 
-        Screen.SearchScreen.route -> {
+        Screen.SearchScreen -> {
             SearchAppBar(
                 searchHistoryList = searchHistoryList,
                 onSearch = {
@@ -80,7 +82,7 @@ fun AppBar(
                 ),
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate(Screen.SearchScreen.route)
+                        navController.navigate(Screen.SearchScreen)
                     }) {
                         Icon(
                             imageVector = Icons.TwoTone.Search,
@@ -91,6 +93,7 @@ fun AppBar(
             )
         }
     }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)

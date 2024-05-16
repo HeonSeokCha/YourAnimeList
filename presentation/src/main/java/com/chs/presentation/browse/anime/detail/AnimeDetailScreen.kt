@@ -62,6 +62,7 @@ import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.CollapsingToolbarScaffold
+import com.chs.presentation.browse.MediaDetailEvent
 import com.chs.presentation.browse.anime.character.AnimeCharaScreen
 import com.chs.presentation.browse.anime.overView.AnimeOverViewScreen
 import com.chs.presentation.browse.anime.recommend.AnimeRecScreen
@@ -75,13 +76,12 @@ import com.chs.presentation.isNotEmptyValue
 import com.chs.presentation.ui.theme.Pink80
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AnimeDetailScreen(
     navController: NavController,
-    viewModel: AnimeDetailViewModel = hiltViewModel()
+    state: AnimeDetailState,
+    onEvent: (MediaDetailEvent) -> Unit
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
     val pagerState = rememberPagerState { 3 }
@@ -103,9 +103,9 @@ fun AnimeDetailScreen(
                         )
                 }, saveClick = {
                     if (state.isSave) {
-                        viewModel.deleteAnime()
+                        onEvent(MediaDetailEvent.InsertMediaInfo)
                     } else {
-                        viewModel.insertAnime()
+                        onEvent(MediaDetailEvent.DeleteMediaInfo)
                     }
                 }
             )

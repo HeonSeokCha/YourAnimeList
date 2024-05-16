@@ -17,10 +17,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,11 +26,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.presentation.UiConst
@@ -43,28 +38,17 @@ import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun StudioDetailScreen(
     navController: NavController,
-    viewModel: StudioDetailViewModel = hiltViewModel()
+    state: StudioDetailState
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
     val activity: Activity? = LocalContext.current as? Activity
     val lazyGridScrollState = rememberLazyStaggeredGridState()
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val pagingItem = state.studioAnimeList?.collectAsLazyPagingItems()
     var isShowFilterDialog by remember { mutableStateOf(false) }
-
-    LaunchedEffect(state.sortOption) {
-        if (state.studioId != null) {
-            viewModel.getStudioAnimeList(
-                state.studioId!!,
-                state.sortOption.rawValue
-            )
-        }
-    }
 
     CollapsingToolbarScaffold(
         scrollState = scrollState,
@@ -101,9 +85,10 @@ fun StudioDetailScreen(
                     if (animeInfo != null) {
                         ItemAnimeSmall(item = animeInfo) {
                             navController.navigate(
-                                BrowseScreen.AnimeDetailScreen.route +
-                                        "/${animeInfo.id}" +
-                                        "/${animeInfo.idMal}"
+                                BrowseScreen.AnimeDetailScreen(
+                                    id = animeInfo.id,
+                                    idMal = animeInfo.idMal
+                                )
                             )
                         }
                     }

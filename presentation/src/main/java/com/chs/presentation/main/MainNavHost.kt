@@ -1,26 +1,19 @@
 package com.chs.presentation.main
 
-import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.chs.presentation.UiConst
+import androidx.navigation.toRoute
 import com.chs.presentation.animeList.AnimeListScreen
 import com.chs.presentation.animeList.AnimeListViewModel
 import com.chs.presentation.charaList.CharaListScreen
 import com.chs.presentation.charaList.CharacterListViewModel
 import com.chs.presentation.home.HomeScreen
-import com.chs.presentation.home.HomeState
 import com.chs.presentation.home.HomeViewModel
-import com.chs.presentation.search.SearchMediaViewModel
 import com.chs.presentation.search.SearchScreen
 import com.chs.presentation.sortList.SortedListScreen
 import com.chs.presentation.sortList.SortedViewModel
@@ -48,7 +41,6 @@ fun MainNavHost(
             )
         }
 
-
         composable(BottomNavScreen.AnimeListScreen.route) {
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(BottomNavScreen.AnimeListScreen.route)
@@ -67,33 +59,18 @@ fun MainNavHost(
             CharaListScreen(state = viewmodel.state)
         }
 
-        composable(Screen.SearchScreen.route) {
+        composable<Screen.SearchScreen> {
             SearchScreen(
                 searchQuery = searchQuery,
                 onBack = onBack
             )
         }
 
-        composable(
-            route = "${Screen.SortListScreen.route}/{sort}/{year}/{season}",
-            arguments = listOf(
-                navArgument(UiConst.KEY_SORT) {
-                    nullable = true
-                    defaultValue = null
-                    type = NavType.StringType
-                },
-                navArgument(UiConst.KEY_YEAR) {
-                    type = NavType.IntType
-                },
-                navArgument(UiConst.KEY_SEASON) {
-                    nullable = true
-                    defaultValue = null
-                    type = NavType.StringType
-                }
-            )
-        ) {
+        composable<Screen.SortListScreen> {
+            val arg = it.toRoute<Screen.SortListScreen>()
+
             val parentEntry = remember(it) {
-                navController.getBackStackEntry(Screen.SortListScreen.route)
+                navController.getBackStackEntry(arg)
             }
             val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
 

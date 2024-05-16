@@ -1,6 +1,7 @@
 package com.chs.presentation.home
 
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -30,11 +31,10 @@ import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.main.Screen
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     state: HomeState,
-    navController: NavHostController,
+    navController: NavHostController
 ) {
     val context = LocalContext.current
     val pagerState = rememberPagerState {
@@ -131,7 +131,7 @@ fun HomeScreen(
 fun ItemRecommendCategory(
     title: Pair<String, Triple<UiConst.SortType, Int?, String?>>,
     list: List<AnimeInfo?>,
-    sortClick: (String) -> Unit,
+    sortClick: (Screen.SortListScreen) -> Unit,
     animeClick: (Int, Int) -> Unit
 ) {
     Row(
@@ -153,7 +153,11 @@ fun ItemRecommendCategory(
         IconButton(
             onClick = {
                 sortClick(
-                    "${Screen.SortListScreen.route}/${title.second.first.rawValue}/${title.second.second}/${title.second.third}"
+                    Screen.SortListScreen(
+                        sortOption = title.second.first.rawValue,
+                        year = title.second.second ?: 0,
+                        season = title.second.third
+                    )
                 )
             }
         ) {

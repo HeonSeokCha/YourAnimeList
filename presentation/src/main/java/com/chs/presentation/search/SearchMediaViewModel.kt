@@ -1,5 +1,8 @@
 package com.chs.presentation.search
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -18,7 +21,7 @@ class SearchMediaViewModel @Inject constructor(
     private val searchCharaUseCase: GetCharaSearchResultUseCase
 ) : ViewModel() {
 
-    var state: SearchMediaState = SearchMediaState()
+    var state: SearchMediaState by mutableStateOf(SearchMediaState())
         private set
 
     fun search(query: String) {

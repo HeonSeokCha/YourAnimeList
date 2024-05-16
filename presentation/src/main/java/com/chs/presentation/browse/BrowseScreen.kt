@@ -1,9 +1,19 @@
 package com.chs.presentation.browse
 
-sealed class BrowseScreen(
-    val route: String
-) {
-    data object AnimeDetailScreen : BrowseScreen("anime_detail_screen")
-    data object CharacterDetailScreen : BrowseScreen("character_detail_screen")
-    data object StudioDetailScreen : BrowseScreen("studio_detail_screen")
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed class BrowseScreen {
+
+    @Serializable
+    data class AnimeDetailScreen(
+        val id: Int,
+        val idMal: Int
+    ) : BrowseScreen()
+
+    @Serializable
+    data class CharacterDetailScreen(val id: Int) : BrowseScreen()
+
+    @Serializable
+    data class StudioDetailScreen(val id: Int) : BrowseScreen()
 }

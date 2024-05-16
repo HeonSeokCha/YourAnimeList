@@ -59,16 +59,17 @@ import com.chs.domain.model.CharacterDetailInfo
 import com.chs.presentation.R
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
+import com.chs.presentation.browse.MediaDetailEvent
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemSaveButton
 
 @Composable
 fun CharacterDetailScreen(
     navController: NavController,
-    viewModel: CharacterDetailViewModel = hiltViewModel()
+    state: CharacterDetailState,
+    onEvent: (MediaDetailEvent) -> Unit
 ) {
 
-    val state by viewModel.state.collectAsStateWithLifecycle()
     val activity = (LocalContext.current as? Activity)
     var expandedDescButton by remember { mutableStateOf(false) }
     val pagingItem = state.animeList?.collectAsLazyPagingItems()
@@ -83,9 +84,9 @@ fun CharacterDetailScreen(
                 isSave = state.isSave,
             ) {
                 if (state.isSave) {
-                    viewModel.deleteCharacter()
+                    onEvent(MediaDetailEvent.DeleteMediaInfo)
                 } else {
-                    viewModel.insertCharacter()
+                    onEvent(MediaDetailEvent.InsertMediaInfo)
                 }
             }
         },
@@ -111,15 +112,13 @@ fun CharacterDetailScreen(
                                 end = 8.dp
                             )
                     ) {
-                        CharacterProfile(characterDetailInfo = state.characterDetailInfo!!)
+                        CharacterProfile(characterDetailInfo = state.characterDetailInfo)
 
-                        if (state.characterDetailInfo?.characterInfo != null) {
-                            CharacterDescription(
-                                description = state.characterDetailInfo?.description,
-                                expandedDescButton = expandedDescButton
-                            ) {
-                                expandedDescButton = !expandedDescButton
-                            }
+                        CharacterDescription(
+                            description = state.characterDetailInfo.description,
+                            expandedDescButton = expandedDescButton
+                        ) {
+                            expandedDescButton = !expandedDescButton
                         }
                     }
                 }
@@ -136,9 +135,10 @@ fun CharacterDetailScreen(
                             item = anime,
                             onClick = {
                                 navController.navigate(
-                                    "${BrowseScreen.AnimeDetailScreen.route}/" +
-                                            "${anime.id}" +
-                                            "/${anime.idMal}"
+                                    BrowseScreen.AnimeDetailScreen(
+                                        id = anime.id,
+                                        idMal = anime.idMal
+                                    )
                                 )
                             }
                         )

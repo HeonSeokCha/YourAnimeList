@@ -1,5 +1,9 @@
 package com.chs.presentation.home
 
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.common.Resource
@@ -20,7 +24,7 @@ class HomeViewModel @Inject constructor(
     private val getHomeListUseCase: GetAnimeRecListUseCase,
 ) : ViewModel() {
 
-    var state: HomeState = HomeState()
+    var state: HomeState by mutableStateOf(HomeState())
         private set
 
     init {
@@ -32,6 +36,7 @@ class HomeViewModel @Inject constructor(
                 nextYear = Util.getVariationYear(true),
                 lastYear = Util.getVariationYear(false)
             ).collect { result ->
+                Log.e("CHSLOG", result.toString())
                 state = when (result) {
                     is Resource.Loading -> {
                         state.copy(isLoading = true)

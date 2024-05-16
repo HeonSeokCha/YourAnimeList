@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -54,4 +56,5 @@ dependencies {
     implementation(libs.androidX.navigation.compose)
     implementation(libs.androidX.paging.compose)
     implementation(libs.coil.compose)
+    implementation(libs.kotlin.serialization)
 }

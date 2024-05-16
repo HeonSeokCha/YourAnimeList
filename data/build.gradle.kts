@@ -55,7 +55,7 @@ dependencies {
     implementation(projects.common)
     implementation(projects.domain)
     implementation(libs.androidX.paging.compose)
-    implementation(libs.kotlin.coroutine.core)
+    implementation(libs.kotlin.coroutine.android)
     implementation(libs.kotlin.serialization)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

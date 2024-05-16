@@ -1,5 +1,8 @@
 package com.chs.presentation.sortList
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,7 +28,7 @@ class SortedViewModel @Inject constructor(
     private val getRecentGenresUseCase: GetRecentGenresUseCase
 ) : ViewModel() {
 
-    var state = SortState()
+    var state by mutableStateOf(SortState())
         private set
 
     init {
