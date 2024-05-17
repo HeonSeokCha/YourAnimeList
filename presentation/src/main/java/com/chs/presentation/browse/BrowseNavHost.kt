@@ -1,7 +1,6 @@
 package com.chs.presentation.browse
 
 import android.content.Intent
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -28,18 +27,23 @@ fun BrowseNavHost(
     intent: Intent?
 ) {
 
-//    val startMediaDestination: BrowseScreen =
-//        if (intent?.getStringExtra(UiConst.TARGET_TYPE) == UiConst.TARGET_MEDIA) {
-//            BrowseScreen.AnimeDetailScreen
-//        } else {
-//            BrowseScreen.CharacterDetailScreen
-//        }
+    val startMediaDestination: Any =
+        if (intent?.getStringExtra(UiConst.TARGET_TYPE) == UiConst.TARGET_MEDIA) {
+            BrowseScreen.AnimeDetailScreen(
+                id = intent.getIntExtra(UiConst.TARGET_ID, 0),
+                idMal = intent.getIntExtra(UiConst.TARGET_ID_MAL, 0),
+            )
+        } else {
+            BrowseScreen.CharacterDetailScreen(
+                id = intent!!.getIntExtra(UiConst.TARGET_ID, 0),
+            )
+        }
 
 
     NavHost(
         navController = navController,
         modifier = modifier,
-        startDestination = BrowseScreen.AnimeDetailScreen
+        startDestination = startMediaDestination
     ) {
 
         composable<BrowseScreen.AnimeDetailScreen> {

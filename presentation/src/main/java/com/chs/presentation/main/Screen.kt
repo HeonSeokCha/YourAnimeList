@@ -1,12 +1,9 @@
 package com.chs.presentation.main
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 @Serializable
-@Parcelize
-sealed class Screen : Parcelable {
+sealed class Screen {
     @Serializable
     data class SortListScreen(
         val year: Int = 0,

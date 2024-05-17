@@ -29,7 +29,6 @@ fun BottomBar(navController: NavHostController) {
         NavigationBar(
             containerColor = Red200,
         ) {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
             items.forEach { destination ->
                 NavigationBarItem(

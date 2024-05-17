@@ -2,6 +2,9 @@ package com.chs.presentation.sortList
 
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,6 +16,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -49,6 +53,7 @@ fun SortedListScreen(
     var placeItemShow by remember { mutableStateOf(false) }
     var isEmptyShow by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -60,7 +65,8 @@ fun SortedListScreen(
                 .padding(
                     start = 4.dp,
                     end = 4.dp
-                ),
+                )
+                .horizontalScroll(scrollState),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             ItemSort(
