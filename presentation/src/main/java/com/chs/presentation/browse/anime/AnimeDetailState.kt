@@ -1,8 +1,10 @@
-package com.chs.presentation.browse.anime.detail
+package com.chs.presentation.browse.anime
 
+import androidx.paging.PagingData
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeThemeInfo
+import kotlinx.coroutines.flow.Flow
 import javax.annotation.concurrent.Immutable
 
 @Immutable
@@ -15,6 +17,7 @@ data class AnimeDetailState(
         "CHARACTER",
         "RECOMMEND"
     ),
+    val animeRecList: Flow<PagingData<AnimeInfo>>? = null,
     val isSave: Boolean = false,
     val isLoading: Boolean = false
 )

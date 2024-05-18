@@ -9,10 +9,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.chs.presentation.browse.anime.detail.AnimeDetailScreen
+import com.chs.presentation.browse.anime.AnimeDetailScreen
 import com.chs.presentation.browse.character.CharacterDetailScreen
 import com.chs.presentation.UiConst
-import com.chs.presentation.browse.anime.detail.AnimeDetailViewModel
+import com.chs.presentation.browse.anime.AnimeDetailViewModel
 import com.chs.presentation.browse.character.CharacterDetailViewModel
 import com.chs.presentation.browse.studio.StudioDetailScreen
 import com.chs.presentation.browse.studio.StudioDetailViewModel

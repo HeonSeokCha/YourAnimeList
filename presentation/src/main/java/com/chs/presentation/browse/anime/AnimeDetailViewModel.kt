@@ -1,4 +1,4 @@
-package com.chs.presentation.browse.anime.detail
+package com.chs.presentation.browse.anime
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -7,15 +7,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.chs.common.Resource
-import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.usecase.*
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.MediaDetailEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,6 +24,7 @@ class AnimeDetailViewModel @Inject constructor(
     private val insertAnimeUseCase: InsertAnimeInfoUseCase,
     private val deleteAnimeUseCase: DeleteAnimeInfoUseCase,
     private val getAnimeThemeUseCase: GetAnimeThemeUseCase,
+    private val getAnimeRecListUseCase: GetAnimeDetailRecListUseCase
 ) : ViewModel() {
 
     var state by mutableStateOf(AnimeDetailState())
@@ -42,6 +40,7 @@ class AnimeDetailViewModel @Inject constructor(
 
         getAnimeDetailInfo(animeId)
         getAnimeTheme(animeMalId)
+        getAnimeRecList(animeId)
         isSaveAnime(animeId)
     }
 
@@ -106,6 +105,12 @@ class AnimeDetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun getAnimeRecList(id: Int) {
+        state = state.copy(
+            animeRecList = getAnimeRecListUseCase(id).cachedIn(viewModelScope)
+        )
     }
 
     private fun isSaveAnime(animeId: Int) {

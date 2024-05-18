@@ -1,5 +1,8 @@
 package com.chs.presentation.browse.studio
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,7 +24,7 @@ class StudioDetailViewModel @Inject constructor(
     private val getStudioAnimeListUseCase: GetStudioAnimeListUseCase
 ) : ViewModel() {
 
-    var state = StudioDetailState()
+    var state by mutableStateOf(StudioDetailState())
         private set
 
 
