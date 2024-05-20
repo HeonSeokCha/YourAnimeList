@@ -1,15 +1,16 @@
 package com.chs.presentation.main
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocalMovies
+import androidx.compose.material.icons.filled.TagFaces
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.toRoute
+import com.chs.presentation.fromRoute
 import com.chs.presentation.ui.theme.Red200
 import com.chs.presentation.ui.theme.Red500
 import com.chs.presentation.ui.theme.Red700
@@ -18,48 +19,92 @@ import com.chs.presentation.ui.theme.Red700
 fun BottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    if (navBackStackEntry?.toRoute<Screen.SearchScreen>() is Screen.SearchScreen
-        && navBackStackEntry?.toRoute<Screen.SortListScreen>() is Screen.SortListScreen
+    if (navBackStackEntry?.fromRoute() !is Screen.SearchScreen
+        && navBackStackEntry?.fromRoute() !is Screen.SortListScreen
     ) {
         val items = listOf(
-            BottomNavScreen.HomeScreen,
-            BottomNavScreen.AnimeListScreen,
-            BottomNavScreen.CharaListScreen,
+            Screen.HomeScreen,
+            Screen.AnimeListScreen,
+            Screen.CharaListScreen
         )
+
         NavigationBar(
-            containerColor = Red200,
+            containerColor = Red200
         ) {
-            val currentDestination = navBackStackEntry?.destination
+            val currentDestination = navBackStackEntry?.fromRoute()
             items.forEach { destination ->
-                NavigationBarItem(
-                    selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true,
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Red700,
-                        selectedTextColor = Red700,
-                        unselectedIconColor = Red500,
-                        unselectedTextColor = Red500,
-                        indicatorColor = Red200
-                    ), onClick = {
-                        navController.navigate(destination.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
-                    icon = {
-                        Icon(
-                            destination.icon,
-                            contentDescription = stringResource(destination.label)
-                        )
-                    },
-                    label = {
-                        Text(
-                            text = stringResource(destination.label),
+                when (destination) {
+                    is Screen.HomeScreen -> {
+                        NavigationBarItem(
+                            selected = currentDestination is Screen.HomeScreen,
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = Red700,
+                                selectedTextColor = Red700,
+                                unselectedIconColor = Red500,
+                                unselectedTextColor = Red500,
+                                indicatorColor = Red200
+                            ), onClick = {
+                                navController.navigate(destination) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                            icon = { Icon(Icons.Default.Home, contentDescription = null) },
+                            label = { Text(text = "Home") }
                         )
                     }
-                )
+
+                    is Screen.AnimeListScreen -> {
+                        NavigationBarItem(
+                            selected = currentDestination is Screen.AnimeListScreen,
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = Red700,
+                                selectedTextColor = Red700,
+                                unselectedIconColor = Red500,
+                                unselectedTextColor = Red500,
+                                indicatorColor = Red200
+                            ), onClick = {
+                                navController.navigate(destination) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                            icon = { Icon(Icons.Default.LocalMovies, contentDescription = null) },
+                            label = { Text(text = "Anime") }
+                        )
+                    }
+
+                    is Screen.CharaListScreen -> {
+                        NavigationBarItem(
+                            selected = currentDestination is Screen.CharaListScreen,
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = Red700,
+                                selectedTextColor = Red700,
+                                unselectedIconColor = Red500,
+                                unselectedTextColor = Red500,
+                                indicatorColor = Red200
+                            ), onClick = {
+                                navController.navigate(destination) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                            icon = { Icon(Icons.Default.TagFaces, contentDescription = null) },
+                            label = { Text(text = "Character") }
+                        )
+                    }
+
+                    else -> Unit
+                }
             }
         }
     }

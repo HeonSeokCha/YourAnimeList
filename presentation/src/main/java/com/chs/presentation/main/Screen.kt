@@ -14,4 +14,13 @@ sealed class Screen {
 
     @Serializable
     data object SearchScreen : Screen()
+
+    @Serializable
+    data object HomeScreen : Screen()
+
+    @Serializable
+    data object AnimeListScreen : Screen()
+
+    @Serializable
+    data object CharaListScreen : Screen()
 }

@@ -25,10 +25,13 @@ fun Int.pxToDp(): Dp {
 fun NavBackStackEntry?.fromRoute(): Screen? {
     return this?.destination?.route?.substringBefore("?")?.substringBefore("/")
         ?.substringAfterLast(".")?.let {
-            when (it) {
-                Screen.SearchScreen::class.simpleName -> return Screen.SearchScreen
-                Screen.SortListScreen::class.simpleName -> return Screen.SortListScreen()
-                else -> return null
+            return when (it) {
+                Screen.SearchScreen::class.simpleName -> Screen.SearchScreen
+                Screen.SortListScreen::class.simpleName -> Screen.SortListScreen()
+                Screen.HomeScreen::class.simpleName -> Screen.HomeScreen
+                Screen.AnimeListScreen::class.simpleName -> Screen.AnimeListScreen
+                Screen.CharaListScreen::class.simpleName -> Screen.CharaListScreen
+                else -> null
             }
         }
 }

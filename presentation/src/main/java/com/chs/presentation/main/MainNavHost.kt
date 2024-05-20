@@ -28,11 +28,11 @@ fun MainNavHost(
     NavHost(
         navController = navController,
         modifier = modifier,
-        startDestination = BottomNavScreen.HomeScreen.route
+        startDestination = Screen.HomeScreen
     ) {
-        composable(BottomNavScreen.HomeScreen.route) {
+        composable<Screen.HomeScreen> {
             val parentEntry = remember(it) {
-                navController.getBackStackEntry(BottomNavScreen.HomeScreen.route)
+                navController.getBackStackEntry(Screen.HomeScreen)
             }
             val viewModel: HomeViewModel = hiltViewModel(parentEntry)
             HomeScreen(
@@ -41,9 +41,9 @@ fun MainNavHost(
             )
         }
 
-        composable(BottomNavScreen.AnimeListScreen.route) {
+        composable<Screen.AnimeListScreen> {
             val parentEntry = remember(it) {
-                navController.getBackStackEntry(BottomNavScreen.AnimeListScreen.route)
+                navController.getBackStackEntry(Screen.AnimeListScreen)
             }
             val viewModel: AnimeListViewModel = hiltViewModel(parentEntry)
             AnimeListScreen(
@@ -51,9 +51,9 @@ fun MainNavHost(
             )
         }
 
-        composable(BottomNavScreen.CharaListScreen.route) {
+        composable<Screen.CharaListScreen> {
             val parentEntry = remember(it) {
-                navController.getBackStackEntry(BottomNavScreen.CharaListScreen.route)
+                navController.getBackStackEntry(Screen.CharaListScreen)
             }
             val viewmodel: CharacterListViewModel = hiltViewModel(parentEntry)
             CharaListScreen(state = viewmodel.state)

@@ -36,7 +36,6 @@ class HomeViewModel @Inject constructor(
                 nextYear = Util.getVariationYear(true),
                 lastYear = Util.getVariationYear(false)
             ).collect { result ->
-                Log.e("CHSLOG", result.toString())
                 state = when (result) {
                     is Resource.Loading -> {
                         state.copy(isLoading = true)
