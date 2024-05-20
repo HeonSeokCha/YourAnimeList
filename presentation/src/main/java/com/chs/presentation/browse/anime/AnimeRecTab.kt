@@ -1,4 +1,4 @@
-package com.chs.presentation.browse.anime.recommend
+package com.chs.presentation.browse.anime
 
 import android.util.Log
 import android.widget.Toast
@@ -24,30 +24,26 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
+import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.common.ItemAnimeLarge
 import com.chs.presentation.common.ItemNoResultImage
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun AnimeRecScreen(
-    animeId: Int,
-    viewModel: AnimeRecViewModel = hiltViewModel(),
     navController: NavController,
+    animeRecList: Flow<PagingData<AnimeInfo>>? = null
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var placeItemShow by remember { mutableStateOf(false) }
     var isEmptyShow by remember { mutableStateOf(false) }
     val scrollState = rememberLazyListState()
-
-    LaunchedEffect(context, viewModel) {
-        viewModel.getAnimeRecommendList(animeId)
-    }
-
-    val lazyPagingItems = state.animeRecInfo?.collectAsLazyPagingItems()
+    val lazyPagingItems = animeRecList?.collectAsLazyPagingItems()
 
     if (isEmptyShow) {
         ItemNoResultImage()

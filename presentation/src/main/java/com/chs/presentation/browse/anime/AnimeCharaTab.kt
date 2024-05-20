@@ -1,4 +1,4 @@
-package com.chs.presentation.browse.anime.character
+package com.chs.presentation.browse.anime
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
