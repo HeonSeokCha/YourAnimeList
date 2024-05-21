@@ -5,7 +5,6 @@ import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
 import com.apollographql.apollo3.cache.normalized.normalizedCache
 import com.chs.common.Constants
 import com.chs.data.source.KtorJikanService
-import com.chs.data.source.LoggingApolloInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,7 +41,6 @@ object RemoteModule {
     fun providesApollo(): ApolloClient {
         return ApolloClient.Builder()
             .serverUrl(Constants.ANILIST_API_URL)
-            .addInterceptor(LoggingApolloInterceptor())
             .normalizedCache(
                 MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024)
             ).build()

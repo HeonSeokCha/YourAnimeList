@@ -36,8 +36,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun AnimeRecScreen(
-    navController: NavController,
-    animeRecList: Flow<PagingData<AnimeInfo>>? = null
+    animeRecList: Flow<PagingData<AnimeInfo>>? = null,
+    onNavigate: (Any) -> Unit
 ) {
     val context = LocalContext.current
     var placeItemShow by remember { mutableStateOf(false) }
@@ -67,7 +67,7 @@ fun AnimeRecScreen(
                     val item = lazyPagingItems[index]
                     ItemAnimeLarge(item) {
                         if (item != null) {
-                            navController.navigate(
+                            onNavigate(
                                 BrowseScreen.AnimeDetailScreen(
                                     id = item.id,
                                     idMal = item.idMal

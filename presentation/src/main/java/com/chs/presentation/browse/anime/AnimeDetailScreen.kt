@@ -1,7 +1,7 @@
 package com.chs.presentation.browse.anime
 
 import android.app.Activity
-import androidx.browser.customtabs.CustomTabsIntent
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -78,12 +78,12 @@ fun AnimeDetailScreen(
                 animeDetailInfo = state.animeDetailInfo,
                 isAnimeSave = state.isSave,
                 trailerClick = { trailerId ->
-                    CustomTabsIntent.Builder()
-                        .build()
-                        .launchUrl(
-                            context,
+                    context.startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
                             "${Constants.YOUTUBE_BASE_URL}$trailerId".toUri()
                         )
+                    )
                 }, saveClick = {
                     if (state.isSave) {
                         onEvent(MediaDetailEvent.InsertMediaInfo)
@@ -155,14 +155,14 @@ fun AnimeDetailScreen(
 
                 2 -> {
                     if (state.animeId != null) {
-                        AnimeRecScreen(
-                            animeRecList = state.animeRecList,
-                            navController = navController,
-                        )
+                        AnimeRecScreen(animeRecList = state.animeRecList) {
+                            navController.navigate(it)
+                        }
                     }
                 }
             }
         }
+
         if (state.isLoading) {
             LoadingIndicator()
         }
