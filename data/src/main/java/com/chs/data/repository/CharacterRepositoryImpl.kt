@@ -29,12 +29,16 @@ class CharacterRepositoryImpl @Inject constructor(
 ) : CharacterRepository {
 
     override suspend fun getCharacterDetailInfo(characterId: Int): CharacterDetailInfo {
-        return apolloClient
-            .query(CharacterDetailQuery(Optional.present(characterId)))
-            .execute()
-            .data
-            ?.character
-            ?.toCharacterDetailInfo()!!
+        return try {
+            apolloClient
+                .query(CharacterDetailQuery(Optional.present(characterId)))
+                .execute()
+                .data
+                ?.character
+                ?.toCharacterDetailInfo()!!
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
     override fun getCharacterDetailAnimeList(

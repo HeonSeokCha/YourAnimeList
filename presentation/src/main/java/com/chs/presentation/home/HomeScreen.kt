@@ -128,7 +128,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun ItemRecommendCategory(
+private fun ItemRecommendCategory(
     title: Pair<String, Triple<UiConst.SortType, Int?, String?>>,
     list: List<AnimeInfo?>,
     sortClick: (Screen.SortListScreen) -> Unit,

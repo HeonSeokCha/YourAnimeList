@@ -34,6 +34,7 @@ class AnimeRepositoryImpl @Inject constructor(
     private val animeDao: AnimeListDao,
     private val genreDao: GenreDao
 ) : AnimeRepository {
+
     override suspend fun getAnimeRecommendList(
         currentSeason: String,
         nextSeason: String,
@@ -41,19 +42,23 @@ class AnimeRepositoryImpl @Inject constructor(
         lastYear: Int,
         nextYear: Int
     ): AnimeRecommendList {
-        return apolloClient
-            .query(
-                HomeAnimeListQuery(
-                    currentSeason = Optional.present(MediaSeason.valueOf(currentSeason)),
-                    nextSeason = Optional.present(MediaSeason.valueOf(nextSeason)),
-                    currentYear = Optional.present(currentYear),
-                    nextYear = Optional.present(nextYear),
-                    lastYear = Optional.present(lastYear)
+        return try {
+            apolloClient
+                .query(
+                    HomeAnimeListQuery(
+                        currentSeason = Optional.present(MediaSeason.valueOf(currentSeason)),
+                        nextSeason = Optional.present(MediaSeason.valueOf(nextSeason)),
+                        currentYear = Optional.present(currentYear),
+                        nextYear = Optional.present(nextYear),
+                        lastYear = Optional.present(lastYear)
+                    )
                 )
-            )
-            .execute()
-            .data
-            ?.toAnimeRecommendList()!!
+                .execute()
+                .data
+                ?.toAnimeRecommendList()!!
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
     override fun getAnimeFilteredList(
@@ -79,13 +84,17 @@ class AnimeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAnimeDetailInfo(animeId: Int): AnimeDetailInfo {
-        return apolloClient
-            .query(
-                AnimeDetailInfoQuery(id = Optional.present(animeId))
-            )
-            .execute()
-            .data
-            ?.toAnimeDetailInfo()!!
+        return try {
+            apolloClient
+                .query(
+                    AnimeDetailInfoQuery(id = Optional.present(animeId))
+                )
+                .execute()
+                .data
+                ?.toAnimeDetailInfo()!!
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
     override fun getAnimeDetailInfoRecommendList(animeId: Int): Flow<PagingData<AnimeInfo>> {
@@ -103,7 +112,11 @@ class AnimeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo {
-        return jikanService.getAnimeTheme(animeId).toAnimeThemeInfo()
+        return try {
+            jikanService.getAnimeTheme(animeId).toAnimeThemeInfo()
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
 
@@ -130,20 +143,24 @@ class AnimeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getRecentGenreList() {
-        val genreList: List<String> = withContext(Dispatchers.IO) {
+        val genreList: List<String> = try {
             apolloClient
                 .query(GenreQuery())
                 .execute()
                 .data
                 ?.genreCollection
                 ?.filterNotNull() ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
         }
 
-        genreDao.insertMultiple(
-            *genreList.map {
-                GenreEntity(it)
-            }.toTypedArray()
-        )
+        if (genreList.isNotEmpty()) {
+            genreDao.insertMultiple(
+                *genreList.map {
+                    GenreEntity(it)
+                }.toTypedArray()
+            )
+        }
     }
 
     override suspend fun getSavedGenreList(): List<String> {

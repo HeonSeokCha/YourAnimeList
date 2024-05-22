@@ -21,13 +21,17 @@ class StudioRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient
 ) : StudioRepository {
     override suspend fun getStudioDetailInfo(studioId: Int): StudioDetailInfo {
-        return apolloClient
-            .query(
-                StudioQuery(id = Optional.present(studioId))
-            )
-            .execute()
-            .data
-            ?.toStudioDetailInfo()!!
+        return try {
+            apolloClient
+                .query(
+                    StudioQuery(id = Optional.present(studioId))
+                )
+                .execute()
+                .data
+                ?.toStudioDetailInfo()!!
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
     override fun getStudioAnimeList(
