@@ -2,7 +2,7 @@
 androidStudioGradlePlugin = "8.4.1"
 
 compileSdkVersion = "34"
-kotlinGradlePlugin = "1.9.23"
+kotlinGradlePlugin = "1.9.24"
 minSdkVersion = "29"
 targetSdkVersion = "33"
 versionCode = "1"
@@ -10,14 +10,14 @@ versionName = "1.0"
 
 activity = "1.9.0"
 compose-ui = "1.6.7"
-composeCompiler = "1.5.11"
+composeCompiler = "1.5.14"
 lifecycle = "2.8.0"
 room = "2.6.1"
 paging = "3.3.0"
 coil = "2.6.0"
 hilt = "2.50"
-kotlin = "1.9.23"
-ksp = "1.9.23-1.0.19"
+kotlin = "2.0.0"
+ksp = "2.0.0-1.0.21"
 kotlin-coroutine = "1.8.1"
 ktor = "2.3.11"
 apollo = "3.8.4"
@@ -100,7 +100,7 @@ compose = [
 android-application = { id = "com.android.application", version.ref = "androidStudioGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidStudioGradlePlugin" }
 apollo = { id = "com.apollographql.apollo3", version.ref = "apollo"}
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
