@@ -36,25 +36,9 @@ class HomeViewModel @Inject constructor(
                 nextYear = Util.getVariationYear(true),
                 lastYear = Util.getVariationYear(false)
             ).collect { result ->
-                state = when (result) {
-                    is Resource.Loading -> {
-                        state.copy(isLoading = true)
-                    }
-
-                    is Resource.Success -> {
-                        state.copy(
-                            animeRecommendList = result.data,
-                            isLoading = false
-                        )
-                    }
-
-                    is Resource.Error -> {
-                        state.copy(
-                            isError = result.message,
-                            isLoading = false
-                        )
-                    }
-                }
+                state = state.copy(
+                    animeRecommendList = result
+                )
             }
         }
     }

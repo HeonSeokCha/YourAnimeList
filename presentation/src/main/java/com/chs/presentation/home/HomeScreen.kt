@@ -16,6 +16,10 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +29,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.chs.common.Constants
+import com.chs.common.Resource
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseActivity
@@ -37,12 +43,13 @@ fun HomeScreen(
     navController: NavHostController
 ) {
     val context = LocalContext.current
-    val pagerState = rememberPagerState {
-        state.animeRecommendList?.bannerList?.size ?: 1
-    }
+    val pagerState = rememberPagerState { UiConst.BANNER_SIZE }
+
+    var showErrorItem by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.isError) {
         if (state.isError != null) {
+            showErrorItem = true
             Toast.makeText(context, state.isError, Toast.LENGTH_SHORT).show()
         }
     }
@@ -52,77 +59,104 @@ fun HomeScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        item {
-            if (state.animeRecommendList?.bannerList != null) {
-
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    key = { state.animeRecommendList!!.bannerList[it].animeInfo.id }
-                ) { idx ->
-                    ItemHomeBanner(
-                        banner = state.animeRecommendList!!.bannerList[idx]
-                    ) { id, idMal ->
-                        context.startActivity(
-                            Intent(
-                                context, BrowseActivity::class.java
-                            ).apply {
-                                this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                                this.putExtra(UiConst.TARGET_ID, id)
-                                this.putExtra(UiConst.TARGET_ID_MAL, idMal)
-                            }
-                        )
-                    }
+        when (state.animeRecommendList) {
+            is Resource.Loading -> {
+                item {
+                    ItemHomeBanner(banner = null) { _, _ -> }
                 }
 
-                Row(
-                    modifier = Modifier
-                        .height(16.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    repeat(state.animeRecommendList!!.bannerList.size) { iteration ->
-                        val color =
-                            if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
-                        Box(
-                            modifier = Modifier
-                                .padding(2.dp)
-                                .clip(CircleShape)
-                                .background(color)
-                                .size(10.dp)
-                        )
-                    }
+                items(6) { idx ->
+                    ItemRecommendCategory(
+                        title = state.animeCategoryList[idx],
+                        list = List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
+                        sortClick = { _ -> }, animeClick = { id, idMal -> }
+                    )
                 }
-            } else {
-                ItemHomeBanner(banner = null) { id, idMal -> }
             }
-        }
+
+            is Resource.Success -> {
+                val data = state.animeRecommendList.data
+                item {
+                    if (data?.bannerList != null) {
+
+                        HorizontalPager(
+                            state = pagerState,
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            key = { data.bannerList[it].animeInfo.id }
+                        ) { idx ->
+                            ItemHomeBanner(
+                                banner = data.bannerList[idx]
+                            ) { id, idMal ->
+                                context.startActivity(
+                                    Intent(
+                                        context, BrowseActivity::class.java
+                                    ).apply {
+                                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                                        this.putExtra(UiConst.TARGET_ID, id)
+                                        this.putExtra(UiConst.TARGET_ID_MAL, idMal)
+                                    }
+                                )
+                            }
+                        }
+
+                        Row(
+                            modifier = Modifier
+                                .height(16.dp)
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            repeat(data.bannerList.size) { iteration ->
+                                val color =
+                                    if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
+                                Box(
+                                    modifier = Modifier
+                                        .padding(2.dp)
+                                        .clip(CircleShape)
+                                        .background(color)
+                                        .size(10.dp)
+                                )
+                            }
+                        }
+                    }
+                }
 
 
-        items(
-            state.animeRecommendList?.animeBasicList?.size ?: UiConst.MAX_BANNER_SIZE,
-            key = { state.animeCategoryList[it].first }
-        ) { idx ->
-            ItemRecommendCategory(
-                title = state.animeCategoryList[idx],
-                list = state.animeRecommendList?.animeBasicList?.get(idx)
-                    ?: List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
-                sortClick = { route ->
-                    navController.navigate(route)
-                }, animeClick = { id, idMal ->
-                    context.startActivity(
-                        Intent(
-                            context, BrowseActivity::class.java
-                        ).apply {
-                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                            this.putExtra(UiConst.TARGET_ID, id)
-                            this.putExtra(UiConst.TARGET_ID_MAL, idMal)
+                items(
+                    data?.animeBasicList?.size ?: UiConst.MAX_BANNER_SIZE,
+                    key = { state.animeCategoryList[it].first }
+                ) { idx ->
+                    ItemRecommendCategory(
+                        title = state.animeCategoryList[idx],
+                        list = data?.animeBasicList?.get(idx)
+                            ?: List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
+                        sortClick = { route ->
+                            navController.navigate(route)
+                        }, animeClick = { id, idMal ->
+                            context.startActivity(
+                                Intent(
+                                    context, BrowseActivity::class.java
+                                ).apply {
+                                    this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                                    this.putExtra(UiConst.TARGET_ID, id)
+                                    this.putExtra(UiConst.TARGET_ID_MAL, idMal)
+                                }
+                            )
                         }
                     )
                 }
-            )
+
+            }
+
+            is Resource.Error -> {
+                item {
+                    Text(
+                        text = state.isError.toString()
+                    )
+                }
+
+            }
         }
     }
 }
@@ -179,14 +213,12 @@ private fun ItemRecommendCategory(
             count = list.size,
             key = { list[it]?.id ?: it }
         ) {
+            val item = list[it]
             ItemAnimeSmall(
-                item = list[it],
+                item = item,
                 onClick = {
-                    if (list[it] != null) {
-                        animeClick(
-                            list[it]!!.id,
-                            list[it]!!.idMal
-                        )
+                    if (item != null) {
+                        animeClick(item.id, item.idMal)
                     }
                 }
             )
