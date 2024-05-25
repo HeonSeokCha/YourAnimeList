@@ -32,6 +32,12 @@ object UiConst {
     const val MAX_BANNER_SIZE: Int = 5
     const val BANNER_SIZE: Int = 6
 
+    val ANIME_DETAIL_TAB_LIST: List<String> = listOf(
+        "OVERVIEW",
+        "CHARACTER",
+        "RECOMMEND"
+    )
+
     enum class Season(
         val rawValue: String
     ) {

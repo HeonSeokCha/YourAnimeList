@@ -40,11 +40,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastCbrt
 import androidx.core.net.toUri
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.common.Constants
+import com.chs.common.Resource
 import com.chs.domain.model.AnimeDetailInfo
+import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.CollapsingToolbarScaffold
@@ -63,7 +66,7 @@ import kotlinx.coroutines.launch
 fun AnimeDetailScreen(
     navController: NavController,
     state: AnimeDetailState,
-    onEvent: (MediaDetailEvent) -> Unit
+    onEvent: (MediaDetailEvent<AnimeInfo>) -> Unit
 ) {
     val context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
@@ -74,24 +77,44 @@ fun AnimeDetailScreen(
     CollapsingToolbarScaffold(
         scrollState = scrollState,
         header = {
-            AnimeDetailHeadBanner(
-                animeDetailInfo = state.animeDetailInfo,
-                isAnimeSave = state.isSave,
-                trailerClick = { trailerId ->
-                    context.startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            "${Constants.YOUTUBE_BASE_URL}$trailerId".toUri()
-                        )
+            when (state.animeDetailInfo) {
+                is Resource.Loading -> {
+                    AnimeDetailHeadBanner(
+                        animeDetailInfo = null,
+                        isAnimeSave = false,
+                        trailerClick = {},
+                        saveClick = {}
                     )
-                }, saveClick = {
-                    if (state.isSave) {
-                        onEvent(MediaDetailEvent.InsertMediaInfo)
-                    } else {
-                        onEvent(MediaDetailEvent.DeleteMediaInfo)
+                }
+
+                is Resource.Success -> {
+                    val data = state.animeDetailInfo.data
+                    if (data != null) {
+                        AnimeDetailHeadBanner(
+                            animeDetailInfo = data,
+                            isAnimeSave = state.isSave,
+                            trailerClick = { trailerId ->
+                                context.startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        "${Constants.YOUTUBE_BASE_URL}$trailerId".toUri()
+                                    )
+                                )
+                            }, saveClick = {
+                                if (state.isSave) {
+                                    onEvent(MediaDetailEvent.InsertMediaInfo(data.animeInfo))
+                                } else {
+                                    onEvent(MediaDetailEvent.DeleteMediaInfo(data.animeInfo))
+                                }
+                            }
+                        )
                     }
                 }
-            )
+
+                is Resource.Error -> {
+
+                }
+            }
         }, onCloseClick = {
             activity?.finish()
         },
@@ -130,47 +153,36 @@ fun AnimeDetailScreen(
         }
     ) {
 
+
         HorizontalPager(
             state = pagerState,
             userScrollEnabled = false
         ) { page ->
             when (page) {
                 0 -> {
-                    AnimeOverViewScreen(
-                        animeOverViewInfo = state.animeDetailInfo,
-                        animeTheme = state.animeThemes,
-                    ) {
+                    AnimeOverViewScreen(state = state.animeDetailInfo) {
                         navController.navigate(it)
                     }
                 }
 
                 1 -> {
-                    AnimeCharaScreen(
-                        charaInfoList = state.animeDetailInfo?.characterList
-                            ?: List<CharacterInfo?>(6) { null },
-                    ) {
+                    AnimeCharaScreen(state = state.animeDetailInfo) {
                         navController.navigate(it)
                     }
                 }
 
                 2 -> {
-                    if (state.animeId != null) {
-                        AnimeRecScreen(animeRecList = state.animeRecList) {
-                            navController.navigate(it)
-                        }
+                    AnimeRecScreen(animeRecList = state.animeRecList) {
+                        navController.navigate(it)
                     }
                 }
             }
-        }
-
-        if (state.isLoading) {
-            LoadingIndicator()
         }
     }
 }
 
 @Composable
-fun AnimeDetailHeadBanner(
+private fun AnimeDetailHeadBanner(
     animeDetailInfo: AnimeDetailInfo?,
     isAnimeSave: Boolean,
     trailerClick: (trailerId: String?) -> Unit,

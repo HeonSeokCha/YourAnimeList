@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.chs.common.Resource
+import com.chs.domain.model.AnimeDetailInfo
+import com.chs.domain.model.AnimeInfo
 import com.chs.domain.usecase.*
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.MediaDetailEvent
@@ -44,14 +46,14 @@ class AnimeDetailViewModel @Inject constructor(
         isSaveAnime(animeId)
     }
 
-    fun changeEvent(mediaDetailEvent: MediaDetailEvent) {
+    fun changeEvent(mediaDetailEvent: MediaDetailEvent<AnimeInfo>) {
         when (mediaDetailEvent) {
             is MediaDetailEvent.InsertMediaInfo -> {
-                insertAnime()
+                insertAnime(mediaDetailEvent.mediaInfo)
             }
 
             is MediaDetailEvent.DeleteMediaInfo -> {
-                deleteAnime()
+                deleteAnime(mediaDetailEvent.mediaInfo)
             }
         }
     }
@@ -59,26 +61,9 @@ class AnimeDetailViewModel @Inject constructor(
     private fun getAnimeDetailInfo(id: Int) {
         viewModelScope.launch {
             getAnimeDetailUseCase(id).collect { result ->
-                state = when (result) {
-                    is Resource.Loading -> {
-                        state.copy(
-                            isLoading = true
-                        )
-                    }
-
-                    is Resource.Success -> {
-                        state.copy(
-                            animeDetailInfo = result.data,
-                            isLoading = false
-                        )
-                    }
-
-                    is Resource.Error -> {
-                        state.copy(
-                            isLoading = false
-                        )
-                    }
-                }
+                state = state.copy(
+                    animeDetailInfo = result
+                )
             }
         }
     }
@@ -86,23 +71,9 @@ class AnimeDetailViewModel @Inject constructor(
     private fun getAnimeTheme(idMal: Int) {
         viewModelScope.launch {
             getAnimeThemeUseCase(idMal).collect { result ->
-                state = when (result) {
-                    is Resource.Loading -> {
-                        state.copy(isLoading = true)
-                    }
-
-                    is Resource.Success -> {
-                        state.copy(
-                            animeThemes = result.data,
-                            isLoading = false
-                        )
-                    }
-
-                    is Resource.Error -> {
-                        Log.e("getAnimeDetailInfo", result.message.toString())
-                        state.copy(isLoading = false)
-                    }
-                }
+                state = state.copy(
+                    animeThemes = result
+                )
             }
         }
     }
@@ -121,8 +92,7 @@ class AnimeDetailViewModel @Inject constructor(
         }
     }
 
-    private fun insertAnime() {
-        val anime = state.animeDetailInfo?.animeInfo
+    private fun insertAnime(anime: AnimeInfo?) {
         if (anime != null) {
             viewModelScope.launch {
                 insertAnimeUseCase(anime)
@@ -130,8 +100,7 @@ class AnimeDetailViewModel @Inject constructor(
         }
     }
 
-    private fun deleteAnime() {
-        val anime = state.animeDetailInfo?.animeInfo
+    private fun deleteAnime(anime: AnimeInfo?) {
         if (anime != null) {
             if (state.isSave) {
                 viewModelScope.launch {

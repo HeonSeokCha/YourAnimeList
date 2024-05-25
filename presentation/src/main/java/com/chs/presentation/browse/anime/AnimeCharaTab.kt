@@ -25,6 +25,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.chs.common.Resource
+import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.common.PlaceholderHighlight
@@ -33,7 +35,7 @@ import com.chs.presentation.common.shimmer
 
 @Composable
 fun AnimeCharaScreen(
-    charaInfoList: List<CharacterInfo?>,
+    state: Resource<AnimeDetailInfo>,
     onClick: (BrowseScreen.CharacterDetailScreen) -> Unit
 ) {
     LazyVerticalGrid(
@@ -50,48 +52,71 @@ fun AnimeCharaScreen(
         ),
         columns = GridCells.Fixed(3)
     ) {
-        items(
-            charaInfoList,
-        ) { charaInfo ->
-            Column(
-                modifier = Modifier
-                    .width(100.dp)
-                    .clickable {
-                        if (charaInfo != null) {
-                            onClick(
-                                BrowseScreen.CharacterDetailScreen(id = charaInfo.id)
-                            )
-                        }
-                    },
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                AsyncImage(
-                    modifier = Modifier
-                        .placeholder(
-                            visible = charaInfo == null,
-                            highlight = PlaceholderHighlight.shimmer(),
-                            shape = CircleShape
-                        )
-                        .size(100.dp)
-                        .clip(RoundedCornerShape(100)),
-                    placeholder = ColorPainter(Color.LightGray),
-                    model = charaInfo?.imageUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                )
+        when (state) {
+            is Resource.Loading -> {
+                items(12) {
+                    CharaImageItem(charaInfo = null) { }
+                }
+            }
 
-                Spacer(modifier = Modifier.height(4.dp))
+            is Resource.Success -> {
+                val charaInfoList = state.data?.characterList ?: emptyList()
+                items(charaInfoList) { charaInfo ->
+                    CharaImageItem(charaInfo = charaInfo) {
+                        onClick(it)
+                    }
+                }
+            }
 
-                Text(
-                    modifier = Modifier
-                        .placeholder(
-                            visible = charaInfo == null,
-                            highlight = PlaceholderHighlight.shimmer()
-                        ),
-                    text = charaInfo?.name ?: "Character",
-                    textAlign = TextAlign.Center
-                )
+            is Resource.Error -> {
+
             }
         }
+    }
+}
+
+@Composable
+private fun CharaImageItem(
+    charaInfo: CharacterInfo?,
+    onClick: (BrowseScreen.CharacterDetailScreen) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .width(100.dp)
+            .clickable {
+                if (charaInfo != null) {
+                    onClick(
+                        BrowseScreen.CharacterDetailScreen(id = charaInfo.id)
+                    )
+                }
+            },
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .placeholder(
+                    visible = charaInfo == null,
+                    highlight = PlaceholderHighlight.shimmer(),
+                    shape = CircleShape
+                )
+                .size(100.dp)
+                .clip(RoundedCornerShape(100)),
+            placeholder = ColorPainter(Color.LightGray),
+            model = charaInfo?.imageUrl,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            modifier = Modifier
+                .placeholder(
+                    visible = charaInfo == null,
+                    highlight = PlaceholderHighlight.shimmer()
+                ),
+            text = charaInfo?.name ?: "Character",
+            textAlign = TextAlign.Center
+        )
     }
 }
