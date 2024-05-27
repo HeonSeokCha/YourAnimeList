@@ -102,9 +102,9 @@ fun AnimeDetailScreen(
                                 )
                             }, saveClick = {
                                 if (state.isSave) {
-                                    onEvent(MediaDetailEvent.InsertMediaInfo(data.animeInfo))
-                                } else {
                                     onEvent(MediaDetailEvent.DeleteMediaInfo(data.animeInfo))
+                                } else {
+                                    onEvent(MediaDetailEvent.InsertMediaInfo(data.animeInfo))
                                 }
                             }
                         )
@@ -160,7 +160,10 @@ fun AnimeDetailScreen(
         ) { page ->
             when (page) {
                 0 -> {
-                    AnimeOverViewScreen(state = state.animeDetailInfo) {
+                    AnimeOverViewScreen(
+                        animeDetailState = state.animeDetailInfo,
+                        animeThemeState = state.animeThemes
+                    ) {
                         navController.navigate(it)
                     }
                 }

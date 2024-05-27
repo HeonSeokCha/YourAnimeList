@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.chs.common.Resource
+import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.UiConst
 import com.chs.domain.usecase.DeleteCharaInfoUseCase
 import com.chs.domain.usecase.GetCharaDetailAnimeListUseCase
@@ -43,14 +44,14 @@ class CharacterDetailViewModel @Inject constructor(
         isSaveCharacter(charaId)
     }
 
-    fun changeEvent(mediaDetailEvent: MediaDetailEvent) {
+    fun changeEvent(mediaDetailEvent: MediaDetailEvent<CharacterInfo>) {
         when (mediaDetailEvent) {
             is MediaDetailEvent.InsertMediaInfo -> {
-                insertCharacter()
+                insertCharacter(mediaDetailEvent.mediaInfo)
             }
 
             is MediaDetailEvent.DeleteMediaInfo -> {
-                deleteCharacter()
+                deleteCharacter(mediaDetailEvent.mediaInfo)
             }
         }
     }
@@ -58,27 +59,9 @@ class CharacterDetailViewModel @Inject constructor(
     private fun getCharacterDetail(charaId: Int) {
         viewModelScope.launch {
             getCharaDetailUseCase(charaId).collect { result ->
-                state = when (result) {
-                    is Resource.Loading -> {
-                        state.copy(
-                            isLoading = true
-                        )
-                    }
-
-                    is Resource.Success -> {
-                        state.copy(
-                            characterDetailInfo = result.data,
-                            isLoading = false
-                        )
-                    }
-
-                    is Resource.Error -> {
-                        state.copy(
-                            isError = result.message,
-                            isLoading = false
-                        )
-                    }
-                }
+                state = state.copy(
+                    characterDetailInfo = result
+                )
             }
         }
     }
@@ -98,22 +81,18 @@ class CharacterDetailViewModel @Inject constructor(
         }
     }
 
-    private fun insertCharacter() {
-        val character = state.characterDetailInfo?.characterInfo
-        if (character != null) {
+    private fun insertCharacter(characterInfo: CharacterInfo?) {
+        if (characterInfo != null) {
             viewModelScope.launch {
-                insertCharaUseCase(character)
+                insertCharaUseCase(characterInfo)
             }
         }
     }
 
-    private fun deleteCharacter() {
-        val character = state.characterDetailInfo?.characterInfo
-        if (character != null) {
-            if (state.isSave) {
-                viewModelScope.launch {
-                    deleteCharaUseCase(character)
-                }
+    private fun deleteCharacter(characterInfo: CharacterInfo?) {
+        if (characterInfo != null) {
+            viewModelScope.launch {
+                deleteCharaUseCase(characterInfo)
             }
         }
     }

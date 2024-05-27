@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -43,8 +44,11 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.fromHtml
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -54,20 +58,25 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
+import com.chs.common.Resource
 import com.chs.presentation.UiConst
 import com.chs.domain.model.CharacterDetailInfo
+import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.R
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.browse.MediaDetailEvent
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemSaveButton
+import com.chs.presentation.common.PlaceholderHighlight
+import com.chs.presentation.common.placeholder
+import com.chs.presentation.common.shimmer
 
 @Composable
 fun CharacterDetailScreen(
     navController: NavController,
     state: CharacterDetailState,
-    onEvent: (MediaDetailEvent) -> Unit
+    onEvent: (MediaDetailEvent<CharacterInfo>) -> Unit
 ) {
 
     val activity = (LocalContext.current as? Activity)
@@ -79,21 +88,38 @@ fun CharacterDetailScreen(
     CollapsingToolbarScaffold(
         scrollState = scrollState,
         header = {
-            CharacterBanner(
-                characterInfo = state.characterDetailInfo,
-                isSave = state.isSave,
-            ) {
-                if (state.isSave) {
-                    onEvent(MediaDetailEvent.DeleteMediaInfo)
-                } else {
-                    onEvent(MediaDetailEvent.InsertMediaInfo)
+            when (state.characterDetailInfo) {
+                is Resource.Loading -> {
+                    CharacterBanner(characterInfo = null, isSave = false) { }
+                }
+
+                is Resource.Success -> {
+                    val characterDetailInfo = state.characterDetailInfo.data
+                    CharacterBanner(
+                        characterInfo = characterDetailInfo,
+                        isSave = state.isSave,
+                    ) {
+                        if (characterDetailInfo != null) {
+                            if (state.isSave) {
+                                onEvent(MediaDetailEvent.DeleteMediaInfo(characterDetailInfo.characterInfo))
+                            } else {
+                                onEvent(MediaDetailEvent.InsertMediaInfo(characterDetailInfo.characterInfo))
+                            }
+                        }
+                    }
+                }
+
+                is Resource.Error -> {
+
                 }
             }
+
         },
         onCloseClick = {
             activity?.finish()
         }
     ) {
+
         LazyVerticalStaggeredGrid(
             modifier = Modifier
                 .fillMaxSize(),
@@ -103,50 +129,79 @@ fun CharacterDetailScreen(
             verticalItemSpacing = 4.dp,
             contentPadding = PaddingValues(horizontal = 4.dp)
         ) {
-            item(span = StaggeredGridItemSpan.FullLine) {
-                if (state.characterDetailInfo != null) {
-                    Column(
-                        modifier = Modifier
-                            .padding(
-                                start = 8.dp,
-                                end = 8.dp
-                            )
-                    ) {
-                        CharacterProfile(characterDetailInfo = state.characterDetailInfo)
-
-                        CharacterDescription(
-                            description = state.characterDetailInfo.description,
-                            expandedDescButton = expandedDescButton
+            when (state.characterDetailInfo) {
+                is Resource.Loading -> {
+                    item(span = StaggeredGridItemSpan.FullLine) {
+                        Column(
+                            modifier = Modifier
+                                .padding(
+                                    start = 8.dp,
+                                    end = 8.dp
+                                )
                         ) {
-                            expandedDescButton = !expandedDescButton
+                            CharacterProfile(characterDetailInfo = null)
+
+                            CharacterDescription(description = null, expandedDescButton = false) { }
+                        }
+                    }
+
+                    items(12) {
+                        ItemAnimeSmall(null)
+                    }
+                }
+
+                is Resource.Success -> {
+                    val characterDetailInfo = state.characterDetailInfo.data
+                    item(span = StaggeredGridItemSpan.FullLine) {
+                        Column(
+                            modifier = Modifier
+                                .padding(
+                                    start = 8.dp,
+                                    end = 8.dp
+                                )
+                        ) {
+                            if (characterDetailInfo != null) {
+                                CharacterProfile(characterDetailInfo = characterDetailInfo)
+
+                                CharacterDescription(
+                                    description = characterDetailInfo.description,
+                                    expandedDescButton = expandedDescButton
+                                ) {
+                                    expandedDescButton = !expandedDescButton
+                                }
+                            }
+                        }
+
+                    }
+
+                    if (pagingItem != null && pagingItem.itemCount != 0) {
+                        items(
+                            count = pagingItem.itemCount,
+                            key = { pagingItem[it]?.id ?: it }
+                        ) {
+                            val anime = pagingItem[it]
+                            if (anime != null) {
+                                ItemAnimeSmall(
+                                    item = anime,
+                                    onClick = {
+                                        navController.navigate(
+                                            BrowseScreen.AnimeDetailScreen(
+                                                id = anime.id,
+                                                idMal = anime.idMal
+                                            )
+                                        )
+                                    }
+                                )
+                            }
+                        }
+
+                        item(span = StaggeredGridItemSpan.FullLine) {
+                            Spacer(modifier = Modifier.height(4.dp))
                         }
                     }
                 }
-            }
 
-            if (pagingItem != null && pagingItem.itemCount != 0) {
-                items(
-                    count = pagingItem.itemCount,
-                    key = { pagingItem[it]?.id ?: it }
-                ) {
-                    val anime = pagingItem[it]
-                    if (anime != null) {
-                        ItemAnimeSmall(
-                            item = anime,
-                            onClick = {
-                                navController.navigate(
-                                    BrowseScreen.AnimeDetailScreen(
-                                        id = anime.id,
-                                        idMal = anime.idMal
-                                    )
-                                )
-                            }
-                        )
-                    }
-                }
-
-                item(span = StaggeredGridItemSpan.FullLine) {
-                    Spacer(modifier = Modifier.height(4.dp))
+                is Resource.Error -> {
                 }
             }
         }
@@ -226,29 +281,44 @@ private fun CharacterBanner(
 }
 
 @Composable
-private fun CharacterProfile(characterDetailInfo: CharacterDetailInfo) {
+private fun CharacterProfile(
+    characterDetailInfo: CharacterDetailInfo?
+) {
     Column {
-        if (characterDetailInfo.birthDay.isNotEmpty()) {
-            ProfileText("Birthday", characterDetailInfo.birthDay)
-        }
 
-        if (characterDetailInfo.age.isNotEmpty()) {
-            ProfileText("Age", characterDetailInfo.age)
-        }
+        if (characterDetailInfo != null) {
+            if (characterDetailInfo.birthDay.isNotEmpty()) {
+                ProfileText("Birthday", characterDetailInfo.birthDay)
+            }
 
-        if (characterDetailInfo.gender.isNotEmpty()) {
-            ProfileText("Gender", characterDetailInfo.gender)
-        }
+            if (characterDetailInfo.age.isNotEmpty()) {
+                ProfileText("Age", characterDetailInfo.age)
+            }
 
-        if (characterDetailInfo.bloodType.isNotEmpty()) {
-            ProfileText("Blood Type", characterDetailInfo.bloodType)
+            if (characterDetailInfo.gender.isNotEmpty()) {
+                ProfileText("Gender", characterDetailInfo.gender)
+            }
+
+            if (characterDetailInfo.bloodType.isNotEmpty()) {
+                ProfileText("Blood Type", characterDetailInfo.bloodType)
+            }
+        } else {
+
+            ProfileText(null, null)
+
+            ProfileText(null, null)
+
+            ProfileText(null, null)
+
+            ProfileText(null, null)
+
         }
     }
 }
 
 @Composable
 private fun ProfileText(
-    title: String,
+    title: String?,
     values: String?
 ) {
     Row(
@@ -256,11 +326,22 @@ private fun ProfileText(
             .padding(bottom = 16.dp)
     ) {
         Text(
-            text = "$title: ",
+            modifier = Modifier
+                .placeholder(
+                    visible = values == null,
+                    highlight = PlaceholderHighlight.shimmer()
+                ),
+            text = "${title ?: UiConst.TITLE_PREVIEW}:  ",
             fontWeight = FontWeight.Bold
         )
+
         Text(
-            text = values ?: "$title Value PreView",
+            modifier = Modifier
+                .placeholder(
+                    visible = values == null,
+                    highlight = PlaceholderHighlight.shimmer()
+                ),
+            text = values ?: UiConst.TITLE_PREVIEW,
         )
     }
 }
@@ -274,9 +355,7 @@ private fun CharacterDescription(
 ) {
     Column(
         modifier = Modifier
-            .padding(
-                bottom = 8.dp
-            )
+            .padding(bottom = 8.dp)
             .animateContentSize(
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioMediumBouncy,
@@ -286,34 +365,26 @@ private fun CharacterDescription(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        val spannedText = HtmlCompat.fromHtml(
-            description ?: stringResource(id = R.string.lorem_ipsum),
-            HtmlCompat.FROM_HTML_MODE_COMPACT
+        val spannedText = AnnotatedString.fromHtml(
+            htmlString = description ?: stringResource(id = R.string.lorem_ipsum)
         )
 
         if (expandedDescButton) {
-            AndroidView(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                factory = { TextView(it) },
-                update = {
-                    it.text = spannedText
-                    it.setTextColor(android.graphics.Color.parseColor("#000000"))
-                    it.textSize = 16f
-                }
+            Text(
+                text = spannedText,
+                fontSize = 16.sp
             )
         } else {
-            AndroidView(
+            Text(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                factory = { TextView(it) },
-                update = {
-                    it.text = spannedText
-                    it.maxLines = 5
-                    it.ellipsize = TextUtils.TruncateAt.END
-                    it.setTextColor(android.graphics.Color.parseColor("#000000"))
-                    it.textSize = 16f
-                }
+                    .placeholder(
+                        visible = description == null,
+                        highlight = PlaceholderHighlight.shimmer()
+                    ),
+                text = spannedText,
+                fontSize = 16.sp,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 5
             )
         }
 

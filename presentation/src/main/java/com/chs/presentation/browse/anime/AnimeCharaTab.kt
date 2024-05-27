@@ -94,11 +94,6 @@ private fun CharaImageItem(
     ) {
         AsyncImage(
             modifier = Modifier
-                .placeholder(
-                    visible = charaInfo == null,
-                    highlight = PlaceholderHighlight.shimmer(),
-                    shape = CircleShape
-                )
                 .size(100.dp)
                 .clip(RoundedCornerShape(100)),
             placeholder = ColorPainter(Color.LightGray),
