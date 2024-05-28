@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.chs.common.Resource
 import com.chs.presentation.UiConst
 import com.chs.domain.model.StudioDetailInfo
 import com.chs.presentation.browse.BrowseScreen
@@ -41,7 +42,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun StudioDetailScreen(
     navController: NavController,
-    state: StudioDetailState
+    state: StudioDetailState,
+    onChangeOption: (StudioEvent) -> Unit
 ) {
     val activity: Activity? = LocalContext.current as? Activity
     val lazyGridScrollState = rememberLazyStaggeredGridState()
@@ -53,7 +55,18 @@ fun StudioDetailScreen(
     CollapsingToolbarScaffold(
         scrollState = scrollState,
         header = {
-            StudioIndo(studioInfo = state.studioDetailInfo)
+            when (state.studioDetailInfo) {
+                is Resource.Loading -> {
+                    StudioInfo(studioInfo = null)
+                }
+
+                is Resource.Success -> {
+                    StudioInfo(studioInfo = state.studioDetailInfo.data)
+                }
+
+                is Resource.Error -> {}
+
+            }
         }, onCloseClick = {
             activity?.finish()
         }
@@ -68,11 +81,9 @@ fun StudioDetailScreen(
                 vertical = 4.dp
             )
         ) {
-            if (state.studioDetailInfo != null) {
-                item(span = StaggeredGridItemSpan.FullLine) {
-                    StudioAnimeSort(sortType = state.sortOption) {
-                        isShowFilterDialog = true
-                    }
+            item(span = StaggeredGridItemSpan.FullLine) {
+                StudioAnimeSort(state.sortOption.first) {
+                    isShowFilterDialog = true
                 }
             }
 
@@ -99,11 +110,13 @@ fun StudioDetailScreen(
         if (isShowFilterDialog) {
             FilterDialog(
                 list = UiConst.sortTypeList.map { it.name to it.rawValue },
-                onClick = { idx ->
-//                    viewModel.changeFilterOption(UiConst.sortTypeList[idx])
+                onClick = { selectValue ->
                     coroutineScope.launch {
                         lazyGridScrollState.scrollToItem(0, 0)
                     }
+                    onChangeOption(
+                        StudioEvent.ChangeSortOption(selectValue)
+                    )
                 }, onDismiss = {
                     isShowFilterDialog = false
                 }
@@ -113,7 +126,7 @@ fun StudioDetailScreen(
 }
 
 @Composable
-private fun StudioIndo(studioInfo: StudioDetailInfo?) {
+private fun StudioInfo(studioInfo: StudioDetailInfo?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -144,7 +157,7 @@ private fun StudioIndo(studioInfo: StudioDetailInfo?) {
 
 @Composable
 private fun StudioAnimeSort(
-    sortType: UiConst.SortType,
+    sortOptionName: String,
     onClick: () -> Unit
 ) {
     Row(
@@ -164,7 +177,7 @@ private fun StudioAnimeSort(
         Text(
             modifier = Modifier
                 .clickable { onClick() },
-            text = sortType.name
+            text = sortOptionName
         )
     }
 }

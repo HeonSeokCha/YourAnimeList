@@ -23,12 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.text.HtmlCompat
 import coil.compose.AsyncImage
 import com.chs.domain.model.AnimHomeBannerInfo
 import com.chs.domain.model.AnimeInfo
@@ -150,10 +151,9 @@ fun ItemHomeBanner(
                         visible = banner == null,
                         highlight = PlaceholderHighlight.shimmer()
                     ),
-                text = HtmlCompat.fromHtml(
-                    banner?.description ?: UiConst.TITLE_PREVIEW,
-                    HtmlCompat.FROM_HTML_MODE_LEGACY
-                ).toString(),
+                text = AnnotatedString.fromHtml(
+                    htmlString = banner?.description ?: UiConst.TITLE_PREVIEW
+                ),
                 fontSize = 12.sp,
                 maxLines = 5,
                 overflow = TextOverflow.Ellipsis,

@@ -88,7 +88,6 @@ class SortedViewModel @Inject constructor(
                 state = state.copy(
                     selectYear = event.value
                 )
-
             }
 
             is SortEvent.ChangeSeasonOption -> {

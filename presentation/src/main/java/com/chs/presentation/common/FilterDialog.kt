@@ -43,8 +43,8 @@ fun FilterDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            onDismiss()
                             onClick(list[idx])
+                            onDismiss()
                         },
                     text = list[idx].first,
                     fontSize = 16.sp

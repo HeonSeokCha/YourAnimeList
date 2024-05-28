@@ -161,13 +161,24 @@ fun SortedListScreen(
                     lazyGridScrollState.scrollToItem(0, 0)
                 }
                 when (filterDialogShow) {
-                    0 -> SortEvent.ChangeYearOption(selectValue.second.toInt())
-                    1 -> SortEvent.ChangeSeasonOption(selectValue)
-                    2 -> SortEvent.ChangeSortOption(selectValue)
-                    3 -> SortEvent.ChangeGenreOption(selectValue.second)
+                    0 -> {
+                        onChangeOption(SortEvent.ChangeYearOption(selectValue.second.toInt()))
+                    }
+
+                    1 -> {
+                        onChangeOption(SortEvent.ChangeSeasonOption(selectValue))
+                    }
+
+                    2 -> {
+                        onChangeOption(SortEvent.ChangeSortOption(selectValue))
+                    }
+
+                    3 -> {
+                        onChangeOption(SortEvent.ChangeGenreOption(selectValue.second))
+                    }
+
                     else -> Unit
                 }
-                filterDialogShow = null
             }
         )
     }

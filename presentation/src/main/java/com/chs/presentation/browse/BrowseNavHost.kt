@@ -80,7 +80,8 @@ fun BrowseNavHost(
             val viewmodel: StudioDetailViewModel = hiltViewModel(parentEntry)
             StudioDetailScreen(
                 navController = navController,
-                state = viewmodel.state
+                state = viewmodel.state,
+                onChangeOption = viewmodel::changeFilterOption
             )
         }
 
