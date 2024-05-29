@@ -70,9 +70,9 @@ import com.chs.presentation.common.shimmer
 
 @Composable
 fun CharacterDetailScreen(
-    navController: NavController,
     state: CharacterDetailState,
-    onEvent: (MediaDetailEvent<CharacterInfo>) -> Unit
+    onEvent: (MediaDetailEvent<CharacterInfo>) -> Unit,
+    onNavigate: (BrowseScreen.AnimeDetailScreen) -> Unit
 ) {
 
     val activity = (LocalContext.current as? Activity)
@@ -180,7 +180,7 @@ fun CharacterDetailScreen(
                                 ItemAnimeSmall(
                                     item = anime,
                                     onClick = {
-                                        navController.navigate(
+                                        onNavigate(
                                             BrowseScreen.AnimeDetailScreen(
                                                 id = anime.id,
                                                 idMal = anime.idMal

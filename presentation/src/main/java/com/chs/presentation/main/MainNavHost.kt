@@ -37,8 +37,9 @@ fun MainNavHost(
             val viewModel: HomeViewModel = hiltViewModel(parentEntry)
             HomeScreen(
                 state = viewModel.state,
-                navController = navController
-            )
+            ) {
+                navController.navigate(it)
+            }
         }
 
         composable<Screen.AnimeListScreen> {
@@ -46,9 +47,7 @@ fun MainNavHost(
                 navController.getBackStackEntry(Screen.AnimeListScreen)
             }
             val viewModel: AnimeListViewModel = hiltViewModel(parentEntry)
-            AnimeListScreen(
-                state = viewModel.state
-            )
+            AnimeListScreen(state = viewModel.state)
         }
 
         composable<Screen.CharaListScreen> {

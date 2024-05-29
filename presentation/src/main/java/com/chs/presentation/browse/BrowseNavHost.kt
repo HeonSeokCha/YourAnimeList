@@ -53,10 +53,11 @@ fun BrowseNavHost(
             }
             val viewmodel: AnimeDetailViewModel = hiltViewModel(parentEntry)
             AnimeDetailScreen(
-                navController = navController,
                 state = viewmodel.state,
                 onEvent = viewmodel::changeEvent
-            )
+            ) {
+                navController.navigate(it)
+            }
         }
 
         composable<BrowseScreen.CharacterDetailScreen> {
@@ -66,10 +67,11 @@ fun BrowseNavHost(
             }
             val viewmodel: CharacterDetailViewModel = hiltViewModel(parentEntry)
             CharacterDetailScreen(
-                navController = navController,
                 state = viewmodel.state,
                 onEvent = viewmodel::changeEvent
-            )
+            ) {
+                navController.navigate(it)
+            }
         }
 
         composable<BrowseScreen.StudioDetailScreen> {
@@ -79,10 +81,11 @@ fun BrowseNavHost(
             }
             val viewmodel: StudioDetailViewModel = hiltViewModel(parentEntry)
             StudioDetailScreen(
-                navController = navController,
                 state = viewmodel.state,
                 onChangeOption = viewmodel::changeFilterOption
-            )
+            ) {
+                navController.navigate(it)
+            }
         }
 
 

@@ -50,6 +50,7 @@ import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.UiConst
+import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.browse.MediaDetailEvent
 import com.chs.presentation.color
@@ -64,9 +65,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AnimeDetailScreen(
-    navController: NavController,
     state: AnimeDetailState,
-    onEvent: (MediaDetailEvent<AnimeInfo>) -> Unit
+    onEvent: (MediaDetailEvent<AnimeInfo>) -> Unit,
+    onNavigate: (Any) -> Unit
 ) {
     val context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
@@ -164,19 +165,19 @@ fun AnimeDetailScreen(
                         animeDetailState = state.animeDetailInfo,
                         animeThemeState = state.animeThemes
                     ) {
-                        navController.navigate(it)
+                        onNavigate(it)
                     }
                 }
 
                 1 -> {
                     AnimeCharaScreen(state = state.animeDetailInfo) {
-                        navController.navigate(it)
+                        onNavigate(it)
                     }
                 }
 
                 2 -> {
                     AnimeRecScreen(animeRecList = state.animeRecList) {
-                        navController.navigate(it)
+                        onNavigate(it)
                     }
                 }
             }

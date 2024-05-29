@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.common.Resource
 import com.chs.presentation.UiConst
@@ -41,9 +40,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun StudioDetailScreen(
-    navController: NavController,
     state: StudioDetailState,
-    onChangeOption: (StudioEvent) -> Unit
+    onChangeOption: (StudioEvent) -> Unit,
+    onNavigate: (BrowseScreen.AnimeDetailScreen) -> Unit
 ) {
     val activity: Activity? = LocalContext.current as? Activity
     val lazyGridScrollState = rememberLazyStaggeredGridState()
@@ -95,7 +94,7 @@ fun StudioDetailScreen(
                     val animeInfo = pagingItem[it]
                     if (animeInfo != null) {
                         ItemAnimeSmall(item = animeInfo) {
-                            navController.navigate(
+                            onNavigate(
                                 BrowseScreen.AnimeDetailScreen(
                                     id = animeInfo.id,
                                     idMal = animeInfo.idMal

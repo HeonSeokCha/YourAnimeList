@@ -40,7 +40,7 @@ import com.chs.presentation.main.Screen
 @Composable
 fun HomeScreen(
     state: HomeState,
-    navController: NavHostController
+    onNavigate: (Screen.SortListScreen) -> Unit
 ) {
     val context = LocalContext.current
     val pagerState = rememberPagerState { UiConst.BANNER_SIZE }
@@ -132,7 +132,7 @@ fun HomeScreen(
                         list = data?.animeBasicList?.get(idx)
                             ?: List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
                         sortClick = { route ->
-                            navController.navigate(route)
+                            onNavigate(route)
                         }, animeClick = { id, idMal ->
                             context.startActivity(
                                 Intent(

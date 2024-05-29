@@ -37,7 +37,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun AnimeRecScreen(
     animeRecList: Flow<PagingData<AnimeInfo>>? = null,
-    onNavigate: (Any) -> Unit
+    onNavigate: (BrowseScreen.AnimeDetailScreen) -> Unit
 ) {
     val context = LocalContext.current
     var placeItemShow by remember { mutableStateOf(false) }
