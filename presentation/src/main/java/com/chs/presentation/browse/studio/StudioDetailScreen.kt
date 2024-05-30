@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.common.Resource
 import com.chs.presentation.UiConst
@@ -102,6 +103,43 @@ fun StudioDetailScreen(
                             )
                         }
                     }
+                }
+
+                when (pagingItem.loadState.refresh) {
+                    is LoadState.Loading -> {
+                        items(10) {
+                            ItemAnimeSmall(item = null)
+                        }
+                    }
+
+                    is LoadState.Error -> {
+                        item {
+                            Text(
+                                text = "Something Wrong for Loading List."
+                            )
+                        }
+                    }
+
+                    else -> Unit
+                }
+
+
+                when (pagingItem.loadState.append) {
+                    is LoadState.Loading -> {
+                        items(10) {
+                            ItemAnimeSmall(item = null)
+                        }
+                    }
+
+                    is LoadState.Error -> {
+                        item {
+                            Text(
+                                text = "Something Wrong for Loading List."
+                            )
+                        }
+                    }
+
+                    else -> Unit
                 }
             }
         }

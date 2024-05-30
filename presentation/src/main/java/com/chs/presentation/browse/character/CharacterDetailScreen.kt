@@ -52,6 +52,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.chs.common.Resource
@@ -115,7 +116,6 @@ fun CharacterDetailScreen(
             activity?.finish()
         }
     ) {
-
         LazyVerticalStaggeredGrid(
             modifier = Modifier
                 .fillMaxSize(),
@@ -140,10 +140,6 @@ fun CharacterDetailScreen(
                             CharacterDescription(description = null, expandedDescButton = false) { }
                         }
                     }
-
-                    items(12) {
-                        ItemAnimeSmall(null)
-                    }
                 }
 
                 is Resource.Success -> {
@@ -167,37 +163,68 @@ fun CharacterDetailScreen(
                                 }
                             }
                         }
-
-                    }
-
-                    if (pagingItem != null && pagingItem.itemCount != 0) {
-                        items(
-                            count = pagingItem.itemCount,
-                            key = { pagingItem[it]?.id ?: it }
-                        ) {
-                            val anime = pagingItem[it]
-                            if (anime != null) {
-                                ItemAnimeSmall(
-                                    item = anime,
-                                    onClick = {
-                                        onNavigate(
-                                            BrowseScreen.AnimeDetailScreen(
-                                                id = anime.id,
-                                                idMal = anime.idMal
-                                            )
-                                        )
-                                    }
-                                )
-                            }
-                        }
-
-                        item(span = StaggeredGridItemSpan.FullLine) {
-                            Spacer(modifier = Modifier.height(4.dp))
-                        }
                     }
                 }
 
-                is Resource.Error -> {
+                is Resource.Error -> {}
+            }
+
+            if (pagingItem != null) {
+                items(
+                    count = pagingItem.itemCount,
+                    key = { pagingItem[it]?.id ?: it }
+                ) {
+                    val anime = pagingItem[it]
+                    if (anime != null) {
+                        ItemAnimeSmall(
+                            item = anime,
+                            onClick = {
+                                onNavigate(
+                                    BrowseScreen.AnimeDetailScreen(
+                                        id = anime.id,
+                                        idMal = anime.idMal
+                                    )
+                                )
+                            }
+                        )
+                    }
+                }
+
+                when (pagingItem.loadState.refresh) {
+                    is LoadState.Loading -> {
+                        items(10) {
+                            ItemAnimeSmall(item = null)
+                        }
+                    }
+
+                    is LoadState.Error -> {
+                        item {
+                            Text(
+                                text = "Something Wrong for Loading List."
+                            )
+                        }
+                    }
+
+                    else -> Unit
+
+                }
+
+                when (pagingItem.loadState.append) {
+                    is LoadState.Loading -> {
+                        items(10) {
+                            ItemAnimeSmall(item = null)
+                        }
+                    }
+
+                    is LoadState.Error -> {
+                        item {
+                            Text(
+                                text = "Something Wrong for Loading List."
+                            )
+                        }
+                    }
+
+                    else -> Unit
                 }
             }
         }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -30,21 +32,15 @@ fun SearchAnimeScreen(
 ) {
     val context = LocalContext.current
     val lazyColScrollState = rememberLazyListState()
-//    var placeItemShow by remember { mutableStateOf(false) }
     val animeItems = pagingItem?.collectAsLazyPagingItems()
 
-
-    if (animeItems != null && animeItems.itemCount == 0) {
-        ItemNoResultImage()
-    }
-
-    if (animeItems != null && animeItems.itemCount != 0) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
-            state = lazyColScrollState,
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
+        state = lazyColScrollState,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        if (animeItems != null) {
             items(
                 count = animeItems.itemCount,
                 key = animeItems.itemKey(key = { it.id })
@@ -63,6 +59,42 @@ fun SearchAnimeScreen(
                         )
                     }
                 }
+            }
+
+            when (animeItems.loadState.refresh) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemAnimeLarge(anime = null) { }
+                    }
+                }
+
+                is LoadState.Error -> {
+                    item {
+                        Text(
+                            text = "Something Wrong for Loading List."
+                        )
+                    }
+                }
+
+                else -> Unit
+            }
+
+            when (animeItems.loadState.append) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemAnimeLarge(anime = null) { }
+                    }
+                }
+
+                is LoadState.Error -> {
+                    item {
+                        Text(
+                            text = "Something Wrong for Loading List."
+                        )
+                    }
+                }
+
+                else -> Unit
             }
         }
     }

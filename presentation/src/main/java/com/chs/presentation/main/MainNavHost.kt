@@ -66,10 +66,8 @@ fun MainNavHost(
         }
 
         composable<Screen.SortListScreen> {
-            val arg = it.toRoute<Screen.SortListScreen>()
-
             val parentEntry = remember(it) {
-                navController.getBackStackEntry(arg)
+                navController.getBackStackEntry(it.toRoute<Screen.SortListScreen>())
             }
             val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
 

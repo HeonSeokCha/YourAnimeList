@@ -45,13 +45,10 @@ fun SortedListScreen(
     state: SortState,
     onChangeOption: (SortEvent) -> Unit
 ) {
-
     val context = LocalContext.current
     val lazyGridScrollState = rememberLazyGridState()
     val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
     var filterDialogShow: Int? by remember { mutableStateOf(null) }
-    var placeItemShow by remember { mutableStateOf(false) }
-    var isEmptyShow by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
@@ -107,6 +104,7 @@ fun SortedListScreen(
             columns = GridCells.Fixed(3),
         ) {
             if (pagingItems != null) {
+
                 items(
                     count = pagingItems.itemCount,
                     key = { pagingItems[it]?.id ?: it }
@@ -125,21 +123,43 @@ fun SortedListScreen(
                             }
                         )
                     }
-
                 }
-            }
 
-            if (placeItemShow) {
-                items(10) {
-                    ItemAnimeSmall(item = null)
+                when (pagingItems.loadState.refresh) {
+                    is LoadState.Loading -> {
+                        items(10) {
+                            ItemAnimeSmall(item = null)
+                        }
+                    }
+
+                    is LoadState.Error -> {
+                        item {
+                            Text(
+                                text = "Something Wrong for Loading List."
+                            )
+                        }
+                    }
+
+                    else -> Unit
                 }
-            }
 
-            if (isEmptyShow) {
-                item {
-                    Text(
-                        text = "No Result AnimeList.."
-                    )
+
+                when (pagingItems.loadState.append) {
+                    is LoadState.Loading -> {
+                        items(10) {
+                            ItemAnimeSmall(item = null)
+                        }
+                    }
+
+                    is LoadState.Error -> {
+                        item {
+                            Text(
+                                text = "Something Wrong for Loading List."
+                            )
+                        }
+                    }
+
+                    else -> Unit
                 }
             }
         }
@@ -183,24 +203,6 @@ fun SortedListScreen(
         )
     }
 
-    if (pagingItems != null) {
-        placeItemShow = when (pagingItems.loadState.source.refresh) {
-            is LoadState.Loading -> {
-                true
-            }
-
-            is LoadState.Error -> {
-                Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT)
-                    .show()
-                false
-            }
-
-            else -> {
-                isEmptyShow = pagingItems.itemCount == 0
-                pagingItems.itemCount < 0
-            }
-        }
-    }
 }
 
 @Composable

@@ -40,66 +40,72 @@ fun AnimeRecScreen(
     onNavigate: (BrowseScreen.AnimeDetailScreen) -> Unit
 ) {
     val context = LocalContext.current
-    var placeItemShow by remember { mutableStateOf(false) }
-    var isEmptyShow by remember { mutableStateOf(false) }
     val scrollState = rememberLazyListState()
     val lazyPagingItems = animeRecList?.collectAsLazyPagingItems()
 
-    if (isEmptyShow) {
-        ItemNoResultImage()
-    } else {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    top = 8.dp,
-                    bottom = 8.dp
-                ),
-            state = scrollState,
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-            if (lazyPagingItems != null) {
-                items(
-                    count = lazyPagingItems.itemCount,
-                    key = lazyPagingItems.itemKey(key = { it.id }),
-                    contentType = lazyPagingItems.itemContentType()
-                ) { index ->
-                    val item = lazyPagingItems[index]
-                    ItemAnimeLarge(item) {
-                        if (item != null) {
-                            onNavigate(
-                                BrowseScreen.AnimeDetailScreen(
-                                    id = item.id,
-                                    idMal = item.idMal
-                                )
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = 8.dp,
+                bottom = 8.dp
+            ),
+        state = scrollState,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        if (lazyPagingItems != null) {
+            items(
+                count = lazyPagingItems.itemCount,
+                key = lazyPagingItems.itemKey(key = { it.id }),
+                contentType = lazyPagingItems.itemContentType()
+            ) { index ->
+                val item = lazyPagingItems[index]
+                ItemAnimeLarge(item) {
+                    if (item != null) {
+                        onNavigate(
+                            BrowseScreen.AnimeDetailScreen(
+                                id = item.id,
+                                idMal = item.idMal
                             )
-                        }
-                    }
-                }
-
-                if (placeItemShow) {
-                    items(6) {
-                        ItemAnimeLarge(null) { }
+                        )
                     }
                 }
             }
-        }
-    }
 
+            when (lazyPagingItems.loadState.refresh) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemAnimeLarge(anime = null) { }
+                    }
+                }
 
-    if (lazyPagingItems != null) {
-        placeItemShow = when (lazyPagingItems.loadState.source.refresh) {
-            is LoadState.Loading -> true
-            is LoadState.Error -> {
-                Toast.makeText(context, "An error occurred while loading...", Toast.LENGTH_SHORT)
-                    .show()
-                false
+                is LoadState.Error -> {
+                    item {
+                        Text(
+                            text = "Something Wrong for Loading List."
+                        )
+                    }
+                }
+
+                else -> Unit
             }
 
-            else -> {
-                Log.e("Lazy refresh", lazyPagingItems.itemCount.toString())
-                isEmptyShow = lazyPagingItems.itemCount == 0
-                lazyPagingItems.itemCount < 0
+            when (lazyPagingItems.loadState.append) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemAnimeLarge(anime = null) { }
+                    }
+                }
+
+                is LoadState.Error -> {
+                    item {
+                        Text(
+                            text = "Something Wrong for Loading List."
+                        )
+                    }
+                }
+
+                else -> Unit
             }
         }
     }
