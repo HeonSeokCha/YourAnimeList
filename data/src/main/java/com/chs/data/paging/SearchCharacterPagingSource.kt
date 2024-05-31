@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
-import com.chs.SearchCharacterQuery
+import com.chs.data.SearchCharacterQuery
 import com.chs.domain.model.CharacterInfo
 import com.chs.data.mapper.toCharacterInfo
 

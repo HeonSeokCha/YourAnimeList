@@ -1,11 +1,11 @@
 package com.chs.data.mapper
 
-import com.chs.CharacterDetailQuery
+import com.chs.data.CharacterDetailQuery
 import com.chs.data.Util
 import com.chs.data.source.db.entity.CharacterEntity
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.domain.model.CharacterInfo
-import com.chs.fragment.CharacterBasicInfo
+import com.chs.data.fragment.CharacterBasicInfo
 
 
 fun CharacterBasicInfo.toCharacterInfo(): CharacterInfo {

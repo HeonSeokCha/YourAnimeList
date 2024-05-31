@@ -5,23 +5,21 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
-import com.chs.CharacterDetailQuery
+import com.chs.data.CharacterDetailQuery
 import com.chs.common.Constants
 import com.chs.data.mapper.toCharacterDetailInfo
 import com.chs.data.mapper.toCharacterEntity
 import com.chs.data.mapper.toCharacterInfo
 import com.chs.data.paging.CharaAnimePagingSource
-import com.chs.data.paging.SearchCharacterPagingSource
 import com.chs.data.source.db.dao.CharaListDao
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.domain.repository.CharacterRepository
-import com.chs.type.MediaSort
+import com.chs.data.type.MediaSort
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class CharacterRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,

@@ -45,8 +45,8 @@ android {
     }
 
     apollo {
-        service("service") {
-            packageName.set("com.chs")
+        service("anilist") {
+            packageName.set("com.chs.data")
         }
     }
 }

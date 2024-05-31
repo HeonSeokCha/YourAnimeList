@@ -1,7 +1,5 @@
 package com.chs.data.mapper
 
-import com.chs.AnimeDetailInfoQuery
-import com.chs.HomeAnimeListQuery
 import com.chs.data.Util
 import com.chs.data.model.JikanAnimeDataDto
 import com.chs.data.source.db.entity.AnimeEntity
@@ -15,7 +13,9 @@ import com.chs.domain.model.CharacterInfo
 import com.chs.domain.model.ExternalLinkInfo
 import com.chs.domain.model.StudioInfo
 import com.chs.domain.model.TrailerInfo
-import com.chs.fragment.AnimeBasicInfo
+import com.chs.data.AnimeDetailInfoQuery
+import com.chs.data.HomeAnimeListQuery
+import com.chs.data.fragment.AnimeBasicInfo
 
 fun AnimeBasicInfo?.toAnimeInfo(): AnimeInfo {
     return AnimeInfo(

@@ -4,11 +4,11 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
-import com.chs.AnimeListQuery
+import com.chs.data.AnimeListQuery
 import com.chs.data.mapper.toAnimeInfo
 import com.chs.domain.model.AnimeInfo
-import com.chs.type.MediaSeason
-import com.chs.type.MediaSort
+import com.chs.data.type.MediaSeason
+import com.chs.data.type.MediaSort
 
 class AnimeSortPagingSource(
     private val apolloClient: ApolloClient,

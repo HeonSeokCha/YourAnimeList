@@ -1,6 +1,6 @@
 package com.chs.data.mapper
 
-import com.chs.StudioQuery
+import com.chs.data.StudioQuery
 import com.chs.domain.model.StudioDetailInfo
 import com.chs.domain.model.StudioInfo
 

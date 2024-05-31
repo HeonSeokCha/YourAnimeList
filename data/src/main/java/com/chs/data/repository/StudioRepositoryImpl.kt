@@ -5,17 +5,16 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
-import com.chs.StudioQuery
+import com.chs.data.StudioQuery
 import com.chs.common.Constants
 import com.chs.data.mapper.toStudioDetailInfo
 import com.chs.data.paging.StudioAnimePagingSource
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.StudioDetailInfo
 import com.chs.domain.repository.StudioRepository
-import com.chs.type.MediaSort
+import com.chs.data.type.MediaSort
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class StudioRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient

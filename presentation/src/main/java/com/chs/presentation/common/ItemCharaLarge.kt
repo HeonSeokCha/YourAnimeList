@@ -44,6 +44,10 @@ fun ItemCharaLarge(
         Row {
             AsyncImage(
                 modifier = Modifier
+                    .placeholder(
+                        visible = character == null,
+                        highlight = PlaceholderHighlight.shimmer()
+                    )
                     .width(150.dp)
                     .height(200.dp),
                 model = character?.imageUrl,
@@ -62,6 +66,11 @@ fun ItemCharaLarge(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
+                    modifier = Modifier
+                        .placeholder(
+                            visible = character == null,
+                            highlight = PlaceholderHighlight.shimmer()
+                        ),
                     text = character?.name ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -71,6 +80,11 @@ fun ItemCharaLarge(
                 )
 
                 Text(
+                    modifier = Modifier
+                        .placeholder(
+                            visible = character == null,
+                            highlight = PlaceholderHighlight.shimmer()
+                        ),
                     text = character?.nativeName ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -79,6 +93,11 @@ fun ItemCharaLarge(
 
 
                 Text(
+                    modifier = Modifier
+                        .placeholder(
+                            visible = character == null,
+                            highlight = PlaceholderHighlight.shimmer()
+                        ),
                     text = buildAnnotatedString {
                         appendInlineContent(
                             UiConst.FAVOURITE_ID,

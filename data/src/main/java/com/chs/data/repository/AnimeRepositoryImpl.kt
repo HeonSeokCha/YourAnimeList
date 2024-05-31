@@ -5,8 +5,10 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
-import com.chs.*
 import com.chs.common.Constants
+import com.chs.data.AnimeDetailInfoQuery
+import com.chs.data.GenreQuery
+import com.chs.data.HomeAnimeListQuery
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeRecommendList
@@ -19,14 +21,11 @@ import com.chs.data.paging.AnimeRecPagingSource
 import com.chs.data.paging.AnimeSortPagingSource
 import com.chs.data.source.db.dao.GenreDao
 import com.chs.data.source.db.entity.GenreEntity
-import com.chs.type.MediaSeason
-import com.chs.type.MediaSort
-import kotlinx.coroutines.Dispatchers
+import com.chs.data.type.MediaSeason
+import com.chs.data.type.MediaSort
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class AnimeRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
