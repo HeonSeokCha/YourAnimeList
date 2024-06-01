@@ -16,6 +16,9 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -33,10 +36,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
+import com.chs.presentation.header
 import com.chs.presentation.ui.theme.Pink80
 import kotlinx.coroutines.launch
 
@@ -52,115 +57,115 @@ fun SortedListScreen(
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
-    Column(
-        modifier = Modifier.fillMaxSize()
+    LazyVerticalGrid(
+        modifier = Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.spacedBy(3.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        contentPadding = PaddingValues(
+            horizontal = 4.dp,
+            vertical = 8.dp
+        ),
+        state = lazyGridScrollState,
+        columns = GridCells.Fixed(3),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(
-                    start = 4.dp,
-                    end = 4.dp
-                )
-                .horizontalScroll(scrollState),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            ItemSort(
-                title = "Year",
-                subTitle = if (state.selectYear == null) "Any" else state.selectYear.toString()
+        header {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 4.dp,
+                        end = 4.dp
+                    )
+                    .horizontalScroll(scrollState),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                filterDialogShow = 0
-            }
-            ItemSort(
-                title = "Season",
-                subTitle = state.selectSeason?.first ?: "Any"
-            ) {
-                filterDialogShow = 1
-            }
-            ItemSort(
-                title = "Sort",
-                subTitle = state.selectSort?.first ?: "Any"
-            ) {
-                filterDialogShow = 2
-            }
-            ItemSort(
-                title = "Genre",
-                subTitle = state.selectGenre ?: "Any"
-            ) {
-                filterDialogShow = 3
+                ItemSort(
+                    title = "Year",
+                    subTitle = if (state.selectYear == null) "Any" else state.selectYear.toString()
+                ) {
+                    filterDialogShow = 0
+                }
+
+                ItemSort(
+                    title = "Season",
+                    subTitle = state.selectSeason?.first ?: "Any"
+                ) {
+                    filterDialogShow = 1
+                }
+
+                ItemSort(
+                    title = "Sort",
+                    subTitle = state.selectSort?.first ?: "Any"
+                ) {
+                    filterDialogShow = 2
+                }
+
+                ItemSort(
+                    title = "Genre",
+                    subTitle = state.selectGenre ?: "Any"
+                ) {
+                    filterDialogShow = 3
+                }
             }
         }
 
-        LazyVerticalGrid(
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(3.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            contentPadding = PaddingValues(
-                horizontal = 4.dp,
-                vertical = 8.dp
-            ),
-            state = lazyGridScrollState,
-            columns = GridCells.Fixed(3),
-        ) {
-            if (pagingItems != null) {
+        if (pagingItems != null) {
 
-                items(
-                    count = pagingItems.itemCount,
-                    key = { pagingItems[it]?.id ?: it }
-                ) {
-                    val animeInfo = pagingItems[it]
-                    ItemAnimeSmall(item = animeInfo) {
-                        context.startActivity(
-                            Intent(
-                                context, BrowseActivity::class.java
-                            ).apply {
-                                if (animeInfo != null) {
-                                    this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                                    this.putExtra(UiConst.TARGET_ID, animeInfo.id)
-                                    this.putExtra(UiConst.TARGET_ID_MAL, animeInfo.idMal)
-                                }
+            items(
+                count = pagingItems.itemCount,
+                key = pagingItems.itemKey { it.id }
+            ) {
+                val animeInfo = pagingItems[it]
+                ItemAnimeSmall(item = animeInfo) {
+                    context.startActivity(
+                        Intent(
+                            context, BrowseActivity::class.java
+                        ).apply {
+                            if (animeInfo != null) {
+                                this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                                this.putExtra(UiConst.TARGET_ID, animeInfo.id)
+                                this.putExtra(UiConst.TARGET_ID_MAL, animeInfo.idMal)
                             }
+                        }
+                    )
+                }
+            }
+
+            when (pagingItems.loadState.refresh) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemAnimeSmall(item = null)
+                    }
+                }
+
+                is LoadState.Error -> {
+                    item {
+                        Text(
+                            text = "Something Wrong for Loading List."
                         )
                     }
                 }
 
-                when (pagingItems.loadState.refresh) {
-                    is LoadState.Loading -> {
-                        items(10) {
-                            ItemAnimeSmall(item = null)
-                        }
-                    }
+                else -> Unit
+            }
 
-                    is LoadState.Error -> {
-                        item {
-                            Text(
-                                text = "Something Wrong for Loading List."
-                            )
-                        }
-                    }
 
-                    else -> Unit
+            when (pagingItems.loadState.append) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemAnimeSmall(item = null)
+                    }
                 }
 
-
-                when (pagingItems.loadState.append) {
-                    is LoadState.Loading -> {
-                        items(10) {
-                            ItemAnimeSmall(item = null)
-                        }
+                is LoadState.Error -> {
+                    item {
+                        Text(
+                            text = "Something Wrong for Loading List."
+                        )
                     }
-
-                    is LoadState.Error -> {
-                        item {
-                            Text(
-                                text = "Something Wrong for Loading List."
-                            )
-                        }
-                    }
-
-                    else -> Unit
                 }
+
+                else -> Unit
             }
         }
     }

@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
 import com.chs.common.Resource
 import com.chs.presentation.UiConst
@@ -172,7 +173,7 @@ fun CharacterDetailScreen(
             if (pagingItem != null) {
                 items(
                     count = pagingItem.itemCount,
-                    key = { pagingItem[it]?.id ?: it }
+                    key = pagingItem.itemKey { it.id }
                 ) {
                     val anime = pagingItem[it]
                     if (anime != null) {

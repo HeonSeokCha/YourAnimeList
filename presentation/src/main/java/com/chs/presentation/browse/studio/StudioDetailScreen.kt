@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.chs.common.Resource
 import com.chs.presentation.UiConst
 import com.chs.domain.model.StudioDetailInfo
@@ -90,7 +91,7 @@ fun StudioDetailScreen(
             if (pagingItem != null) {
                 items(
                     count = pagingItem.itemCount,
-                    key = { pagingItem[it]?.id ?: it }
+                    key = { pagingItem.itemKey { it.id } }
                 ) {
                     val animeInfo = pagingItem[it]
                     if (animeInfo != null) {
