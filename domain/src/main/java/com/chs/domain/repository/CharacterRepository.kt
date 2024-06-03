@@ -4,7 +4,7 @@ import androidx.paging.PagingData
 import com.chs.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
-interface CharacterRepository {
+interface CharacterRepository : BaseMediaRepository<CharacterInfo> {
 
     suspend fun getCharacterDetailInfo(characterId: Int): CharacterDetailInfo
 
@@ -13,13 +13,12 @@ interface CharacterRepository {
         sort: String
     ): Flow<PagingData<AnimeInfo>>
 
+    override suspend fun insertMediaInfo(info: CharacterInfo)
 
-    fun getSavedCharacterList(): Flow<List<CharacterInfo>>
+    override fun getSavedMediaInfoList(): Flow<List<CharacterInfo>>
 
-    fun getSavedCharacterInfo(characterId: Int): Flow<CharacterInfo?>
+    override suspend fun deleteMediaInfo(info: CharacterInfo)
 
-    suspend fun insertCharacterInfo(characterInfo: CharacterInfo)
-
-    suspend fun deleteCharacterInfo(characterInfo: CharacterInfo)
+    override fun getSavedMediaInfo(id: Int): Flow<CharacterInfo?>
 
 }

@@ -7,7 +7,7 @@ import javax.inject.Inject
 class DeleteAnimeInfoUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
-    suspend operator fun invoke(animeInfo: AnimeInfo) {
-        repository.deleteSavedAnimeInfo(animeInfo)
+    suspend operator fun invoke(info: AnimeInfo) {
+        repository.deleteMediaInfo(info)
     }
 }

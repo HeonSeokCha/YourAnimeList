@@ -7,7 +7,7 @@ import com.chs.domain.model.AnimeRecommendList
 import com.chs.domain.model.AnimeThemeInfo
 import kotlinx.coroutines.flow.Flow
 
-interface AnimeRepository {
+interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
 
     suspend fun getAnimeRecommendList(
         currentSeason: String,
@@ -30,16 +30,15 @@ interface AnimeRepository {
 
     suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo
 
-    fun getSavedAnimeList(): Flow<List<AnimeInfo>>
-
-    fun getSavedAnimeInfo(id: Int): Flow<AnimeInfo?>
-
-    suspend fun insertSavedAnimeInfo(animeInfo: AnimeInfo)
-
-    suspend fun deleteSavedAnimeInfo(animeInfo: AnimeInfo)
-
     suspend fun getRecentGenreList()
 
     suspend fun getSavedGenreList(): List<String>
 
+    override fun getSavedMediaInfoList(): Flow<List<AnimeInfo>>
+
+    override suspend fun deleteMediaInfo(info: AnimeInfo)
+
+    override fun getSavedMediaInfo(id: Int): Flow<AnimeInfo?>
+
+    override suspend fun insertMediaInfo(info: AnimeInfo)
 }

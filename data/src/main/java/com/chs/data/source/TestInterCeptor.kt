@@ -8,7 +8,7 @@ class TestInterCeptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val a = chain.proceed(chain.request())
 
-        Log.e("CHS_LOG", "${a.headers["X-RateLimit-Remaining"]} / ${a.headers["X-RateLimit-Limit"]}")
+//        Log.e("CHS_LOG", "${a.headers["X-RateLimit-Remaining"]} / ${a.headers["X-RateLimit-Limit"]}")
 
         return a
     }

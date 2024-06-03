@@ -7,7 +7,7 @@ import javax.inject.Inject
 class InsertCharaInfoUseCase @Inject constructor(
     private val repository: CharacterRepository
 ) {
-    suspend operator fun invoke(charaInfo: CharacterInfo) {
-        return repository.insertCharacterInfo(charaInfo)
+    suspend operator fun invoke(info: CharacterInfo) {
+        return repository.insertMediaInfo(info)
     }
 }

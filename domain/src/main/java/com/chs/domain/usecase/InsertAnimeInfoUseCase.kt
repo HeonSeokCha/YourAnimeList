@@ -7,7 +7,7 @@ import javax.inject.Inject
 class InsertAnimeInfoUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
-    suspend operator fun invoke(animeInfo: AnimeInfo) {
-        repository.insertSavedAnimeInfo(animeInfo)
+    suspend operator fun invoke(info: AnimeInfo) {
+        repository.insertMediaInfo(info)
     }
 }

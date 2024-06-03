@@ -11,7 +11,7 @@ data class AnimeDetailInfo(
     val trailerInfo: TrailerInfo?,
     val bannerImage: String?,
     val type: String,
-    val genres: List<String?> = List(6) { null },
+    val genres: List<String?> = emptyList(),
     val episode: Int,
     val duration: Int,
     val chapters: Int,

@@ -57,24 +57,25 @@ class CharacterRepositoryImpl @Inject constructor(
         }.flow
     }
 
-    override fun getSavedCharacterList(): Flow<List<CharacterInfo>> { return dao.getAllCharaList().map {
+    override fun getSavedMediaInfoList(): Flow<List<CharacterInfo>> {
+        return dao.getAllCharaList().map {
             it.map { characterEntity ->
                 characterEntity.toCharacterInfo()
             }
         }
     }
 
-    override fun getSavedCharacterInfo(characterId: Int): Flow<CharacterInfo?> {
-        return dao.checkCharaList(characterId).map {
+    override fun getSavedMediaInfo(id: Int): Flow<CharacterInfo?> {
+        return dao.checkCharaList(id).map {
             it?.toCharacterInfo()
         }
     }
 
-    override suspend fun insertCharacterInfo(characterInfo: CharacterInfo) {
-        dao.insert(characterInfo.toCharacterEntity())
+    override suspend fun insertMediaInfo(info: CharacterInfo) {
+        dao.insert(info.toCharacterEntity())
     }
 
-    override suspend fun deleteCharacterInfo(characterInfo: CharacterInfo) {
-        dao.delete(characterInfo.toCharacterEntity())
+    override suspend fun deleteMediaInfo(info: CharacterInfo) {
+        dao.delete(info.toCharacterEntity())
     }
 }

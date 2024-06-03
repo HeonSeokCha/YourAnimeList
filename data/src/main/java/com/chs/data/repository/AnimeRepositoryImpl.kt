@@ -119,7 +119,7 @@ class AnimeRepositoryImpl @Inject constructor(
     }
 
 
-    override fun getSavedAnimeList(): Flow<List<AnimeInfo>> {
+    override fun getSavedMediaInfoList(): Flow<List<AnimeInfo>> {
         return animeDao.getAllAnimeList().map {
             it.map { animeEntity ->
                 animeEntity.toAnimeInfo()
@@ -127,18 +127,18 @@ class AnimeRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getSavedAnimeInfo(id: Int): Flow<AnimeInfo?> {
+    override fun getSavedMediaInfo(id: Int): Flow<AnimeInfo?> {
         return animeDao.checkAnimeList(id).map {
             it?.toAnimeInfo()
         }
     }
 
-    override suspend fun insertSavedAnimeInfo(animeInfo: AnimeInfo) {
-        animeDao.insert(animeInfo.toAnimeEntity())
+    override suspend fun insertMediaInfo(info: AnimeInfo) {
+        animeDao.insert(info.toAnimeEntity())
     }
 
-    override suspend fun deleteSavedAnimeInfo(animeInfo: AnimeInfo) {
-        animeDao.delete(animeInfo.toAnimeEntity())
+    override suspend fun deleteMediaInfo(info: AnimeInfo) {
+        animeDao.delete(info.toAnimeEntity())
     }
 
     override suspend fun getRecentGenreList() {

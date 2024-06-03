@@ -42,12 +42,8 @@ object RemoteModule {
     @Provides
     @Singleton
     fun providesApollo(): ApolloClient {
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(TestInterCeptor())
-            .build()
         return ApolloClient.Builder()
             .serverUrl(Constants.ANILIST_API_URL)
-            .okHttpClient(okHttpClient)
             .normalizedCache(
                 MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024)
             ).build()

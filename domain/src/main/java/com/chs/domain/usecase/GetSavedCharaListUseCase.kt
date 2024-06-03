@@ -9,6 +9,6 @@ class GetSavedCharaListUseCase @Inject constructor(
     private val repository: CharacterRepository
 ) {
     operator fun invoke(): Flow<List<CharacterInfo>> {
-        return repository.getSavedCharacterList()
+        return repository.getSavedMediaInfoList()
     }
 }

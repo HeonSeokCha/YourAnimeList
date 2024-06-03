@@ -7,7 +7,7 @@ import javax.inject.Inject
 class DeleteCharaInfoUseCase @Inject constructor(
     private val repository: CharacterRepository
 ) {
-    suspend operator fun invoke(characterInfo: CharacterInfo) {
-        return repository.deleteCharacterInfo(characterInfo)
+    suspend operator fun invoke(info: CharacterInfo) {
+        return repository.deleteMediaInfo(info)
     }
 }

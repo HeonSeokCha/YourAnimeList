@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetSavedAnimeInfoUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
-    operator fun invoke(animeId: Int): Flow<AnimeInfo?> {
-        return repository.getSavedAnimeInfo(animeId)
+    operator fun invoke(id: Int): Flow<AnimeInfo?> {
+        return repository.getSavedMediaInfo(id)
     }
 }
