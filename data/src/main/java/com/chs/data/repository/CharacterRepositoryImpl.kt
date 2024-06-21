@@ -7,6 +7,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.chs.data.CharacterDetailQuery
 import com.chs.common.Constants
+import com.chs.common.Resource
 import com.chs.data.mapper.toCharacterDetailInfo
 import com.chs.data.mapper.toCharacterEntity
 import com.chs.data.mapper.toCharacterInfo
@@ -18,6 +19,7 @@ import com.chs.domain.model.CharacterInfo
 import com.chs.domain.repository.CharacterRepository
 import com.chs.data.type.MediaSort
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -26,16 +28,22 @@ class CharacterRepositoryImpl @Inject constructor(
     private val dao: CharaListDao
 ) : CharacterRepository {
 
-    override suspend fun getCharacterDetailInfo(characterId: Int): CharacterDetailInfo {
-        return try {
-            apolloClient
-                .query(CharacterDetailQuery(Optional.present(characterId)))
-                .execute()
-                .data
-                ?.character
-                ?.toCharacterDetailInfo()!!
-        } catch (e: Exception) {
-            throw e
+    override fun getCharacterDetailInfo(characterId: Int): Flow<Resource<CharacterDetailInfo>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val response = apolloClient
+                    .query(CharacterDetailQuery(Optional.present(characterId)))
+                    .execute()
+
+                if (response.hasErrors()) {
+                    return@flow emit(Resource.Error(response.errors!!.first().message))
+                }
+
+                emit(Resource.Success(response.data?.character?.toCharacterDetailInfo()!!))
+            } catch (e: Exception) {
+                throw e
+            }
         }
     }
 

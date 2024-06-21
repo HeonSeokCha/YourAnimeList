@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.chs.common.Constants
+import com.chs.common.Resource
 import com.chs.data.AnimeDetailInfoQuery
 import com.chs.data.GenreQuery
 import com.chs.data.HomeAnimeListQuery
@@ -24,6 +25,7 @@ import com.chs.data.source.db.entity.GenreEntity
 import com.chs.data.type.MediaSeason
 import com.chs.data.type.MediaSort
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -34,29 +36,42 @@ class AnimeRepositoryImpl @Inject constructor(
     private val genreDao: GenreDao
 ) : AnimeRepository {
 
-    override suspend fun getAnimeRecommendList(
+    override fun getAnimeRecommendList(
         currentSeason: String,
         nextSeason: String,
         currentYear: Int,
         lastYear: Int,
         nextYear: Int
-    ): AnimeRecommendList {
-        return try {
-            apolloClient
-                .query(
-                    HomeAnimeListQuery(
-                        currentSeason = Optional.present(MediaSeason.valueOf(currentSeason)),
-                        nextSeason = Optional.present(MediaSeason.valueOf(nextSeason)),
-                        currentYear = Optional.present(currentYear),
-                        nextYear = Optional.present(nextYear),
-                        lastYear = Optional.present(lastYear)
+    ): Flow<Resource<AnimeRecommendList>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val response = apolloClient
+                    .query(
+                        HomeAnimeListQuery(
+                            currentSeason = Optional.present(MediaSeason.valueOf(currentSeason)),
+                            nextSeason = Optional.present(MediaSeason.valueOf(nextSeason)),
+                            currentYear = Optional.present(currentYear),
+                            nextYear = Optional.present(nextYear),
+                            lastYear = Optional.present(lastYear)
+                        )
+                    )
+                    .execute()
+
+                if (response.hasErrors()) {
+                    return@flow emit(Resource.Error(response.errors!!.first().message))
+                }
+
+                emit(
+                    Resource.Success(
+                        response
+                            .data
+                            ?.toAnimeRecommendList()!!
                     )
                 )
-                .execute()
-                .data
-                ?.toAnimeRecommendList()!!
-        } catch (e: Exception) {
-            throw e
+            } catch (e: Exception) {
+                emit(Resource.Error(e.message.toString()))
+            }
         }
     }
 
@@ -82,17 +97,23 @@ class AnimeRepositoryImpl @Inject constructor(
         }.flow
     }
 
-    override suspend fun getAnimeDetailInfo(animeId: Int): AnimeDetailInfo {
-        return try {
-            apolloClient
-                .query(
-                    AnimeDetailInfoQuery(id = Optional.present(animeId))
-                )
-                .execute()
-                .data
-                ?.toAnimeDetailInfo()!!
-        } catch (e: Exception) {
-            throw e
+    override fun getAnimeDetailInfo(animeId: Int): Flow<Resource<AnimeDetailInfo>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val response = apolloClient
+                    .query(
+                        AnimeDetailInfoQuery(id = Optional.present(animeId))
+                    )
+                    .execute()
+                if (response.hasErrors()) {
+                    return@flow emit(Resource.Error(response.errors!!.first().message))
+                }
+
+                emit(Resource.Success(response.data?.toAnimeDetailInfo()!!))
+            } catch (e: Exception) {
+                emit(Resource.Error(e.message.toString()))
+            }
         }
     }
 
@@ -110,11 +131,18 @@ class AnimeRepositoryImpl @Inject constructor(
         }.flow
     }
 
-    override suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo {
-        return try {
-            jikanService.getAnimeTheme(animeId).toAnimeThemeInfo()
-        } catch (e: Exception) {
-            throw e
+    override fun getAnimeDetailTheme(animeId: Int): Flow<Resource<AnimeThemeInfo>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                emit(
+                    Resource.Success(
+                        jikanService.getAnimeTheme(animeId).toAnimeThemeInfo()
+                    )
+                )
+            } catch (e: Exception) {
+                emit(Resource.Error(e.message.toString()))
+            }
         }
     }
 

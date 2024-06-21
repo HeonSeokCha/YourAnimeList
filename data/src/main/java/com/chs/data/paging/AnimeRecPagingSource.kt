@@ -31,17 +31,22 @@ class AnimeRecPagingSource(
                     )
                 )
                 .execute()
-                .data!!
+
+            if (response.hasErrors()) {
+                return LoadResult.Error(Exception(response.errors!!.first().message))
+            }
+
+            val data = response.data!!
                 .Media
                 ?.recommendations
 
             LoadResult.Page(
-                data = response?.nodes?.filter { it?.mediaRecommendation?.animeBasicInfo?.isAdult == false }
+                data = data?.nodes?.filter { it?.mediaRecommendation?.animeBasicInfo?.isAdult == false }
                     ?.map {
                         it?.mediaRecommendation?.animeBasicInfo.toAnimeInfo()
                     } ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (response?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
+                nextKey = if (data?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
             )
 
         } catch (e: Exception) {

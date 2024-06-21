@@ -7,6 +7,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.chs.data.StudioQuery
 import com.chs.common.Constants
+import com.chs.common.Resource
 import com.chs.data.mapper.toStudioDetailInfo
 import com.chs.data.paging.StudioAnimePagingSource
 import com.chs.domain.model.AnimeInfo
@@ -14,22 +15,29 @@ import com.chs.domain.model.StudioDetailInfo
 import com.chs.domain.repository.StudioRepository
 import com.chs.data.type.MediaSort
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class StudioRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient
 ) : StudioRepository {
-    override suspend fun getStudioDetailInfo(studioId: Int): StudioDetailInfo {
-        return try {
-            apolloClient
-                .query(
-                    StudioQuery(id = Optional.present(studioId))
-                )
-                .execute()
-                .data
-                ?.toStudioDetailInfo()!!
-        } catch (e: Exception) {
-            throw e
+    override fun getStudioDetailInfo(studioId: Int): Flow<Resource<StudioDetailInfo>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val response = apolloClient
+                    .query(
+                        StudioQuery(id = Optional.present(studioId))
+                    )
+                    .execute()
+                if (response.hasErrors()) {
+                    return@flow emit(Resource.Error(response.errors!!.first().message))
+                }
+
+                emit(Resource.Success(response.data?.toStudioDetailInfo()!!))
+            } catch (e: Exception) {
+                emit(Resource.Error(e.message.toString()))
+            }
         }
     }
 

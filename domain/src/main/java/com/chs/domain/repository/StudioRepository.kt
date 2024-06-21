@@ -1,13 +1,14 @@
 package com.chs.domain.repository
 
 import androidx.paging.PagingData
+import com.chs.common.Resource
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.StudioDetailInfo
 import kotlinx.coroutines.flow.Flow
 
 interface StudioRepository {
 
-    suspend fun getStudioDetailInfo(studioId: Int): StudioDetailInfo
+    fun getStudioDetailInfo(studioId: Int): Flow<Resource<StudioDetailInfo>>
 
     fun getStudioAnimeList(
         studioId: Int,

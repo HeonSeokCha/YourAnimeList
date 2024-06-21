@@ -91,7 +91,7 @@ fun StudioDetailScreen(
             if (pagingItem != null) {
                 items(
                     count = pagingItem.itemCount,
-                    key = { pagingItem.itemKey { it.id } }
+                    key = pagingItem.itemKey { it.id }
                 ) {
                     val animeInfo = pagingItem[it]
                     if (animeInfo != null) {

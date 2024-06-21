@@ -1,6 +1,7 @@
 package com.chs.domain.repository
 
 import androidx.paging.PagingData
+import com.chs.common.Resource
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeRecommendList
@@ -9,13 +10,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
 
-    suspend fun getAnimeRecommendList(
+    fun getAnimeRecommendList(
         currentSeason: String,
         nextSeason: String,
         currentYear: Int,
         lastYear: Int,
         nextYear: Int
-    ): AnimeRecommendList
+    ): Flow<Resource<AnimeRecommendList>>
 
     fun getAnimeFilteredList(
         sortType: List<String>,
@@ -24,11 +25,11 @@ interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
         genre: String?
     ): Flow<PagingData<AnimeInfo>>
 
-    suspend fun getAnimeDetailInfo(animeId: Int): AnimeDetailInfo
+    fun getAnimeDetailInfo(animeId: Int): Flow<Resource<AnimeDetailInfo>>
 
     fun getAnimeDetailInfoRecommendList(animeId: Int): Flow<PagingData<AnimeInfo>>
 
-    suspend fun getAnimeDetailTheme(animeId: Int): AnimeThemeInfo
+    fun getAnimeDetailTheme(animeId: Int): Flow<Resource<AnimeThemeInfo>>
 
     suspend fun getRecentGenreList()
 

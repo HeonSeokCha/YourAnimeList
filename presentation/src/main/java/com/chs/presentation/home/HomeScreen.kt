@@ -59,6 +59,12 @@ fun HomeScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        if (showErrorItem) {
+            item {
+                Text("")
+            }
+        }
+
         when (state.animeRecommendList) {
             is Resource.Loading -> {
                 item {
@@ -146,17 +152,9 @@ fun HomeScreen(
                         }
                     )
                 }
-
             }
 
-            is Resource.Error -> {
-                item {
-                    Text(
-                        text = state.isError.toString()
-                    )
-                }
-
-            }
+            else -> Unit
         }
     }
 }

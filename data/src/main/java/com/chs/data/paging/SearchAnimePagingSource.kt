@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo3.exception.ApolloException
 import com.chs.data.SearchAnimeQuery
 import com.chs.data.mapper.toAnimeInfo
 import com.chs.domain.model.AnimeInfo
@@ -28,19 +29,20 @@ class SearchAnimePagingSource(
                     page = Optional.present(page),
                     search = Optional.present(search)
                 )
-            )
-                .execute()
-                .data!!
-                .page
+            ).execute()
 
+            if (response.hasErrors()) {
+                return LoadResult.Error(Exception(response.errors!!.first().message))
+            }
+
+            val data = response.data!!.page
 
             LoadResult.Page(
-                data = response?.media?.map { it?.animeBasicInfo.toAnimeInfo() }
+                data = data?.media?.map { it?.animeBasicInfo.toAnimeInfo() }
                     ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (response?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
+                nextKey = if (data?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
             )
-
         } catch (e: Exception) {
             LoadResult.Error(e)
         }

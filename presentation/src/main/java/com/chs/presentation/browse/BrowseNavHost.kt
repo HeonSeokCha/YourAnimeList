@@ -27,15 +27,15 @@ fun BrowseNavHost(
     intent: Intent?
 ) {
 
-    val startMediaDestination: Any =
+    val startMediaDestination: BrowseScreen =
         if (intent?.getStringExtra(UiConst.TARGET_TYPE) == UiConst.TARGET_MEDIA) {
             BrowseScreen.AnimeDetailScreen(
                 id = intent.getIntExtra(UiConst.TARGET_ID, 0),
-                idMal = intent.getIntExtra(UiConst.TARGET_ID_MAL, 0),
+                idMal = intent.getIntExtra(UiConst.TARGET_ID_MAL, 0)
             )
         } else {
             BrowseScreen.CharacterDetailScreen(
-                id = intent!!.getIntExtra(UiConst.TARGET_ID, 0),
+                id = intent!!.getIntExtra(UiConst.TARGET_ID, 0)
             )
         }
 
@@ -45,7 +45,6 @@ fun BrowseNavHost(
         modifier = modifier,
         startDestination = startMediaDestination
     ) {
-
         composable<BrowseScreen.AnimeDetailScreen> {
             val arg = it.toRoute<BrowseScreen.AnimeDetailScreen>()
             val parentEntry = remember(it) {

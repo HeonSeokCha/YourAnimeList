@@ -29,13 +29,19 @@ class SearchCharacterPagingSource(
                     search = Optional.present(search)
                 )
             ).execute()
+
+            if (response.hasErrors()) {
+                return LoadResult.Error(Exception(response.errors!!.first().message))
+            }
+
+            val data = response
                 .data!!
                 .page
 
             LoadResult.Page(
-                data = response?.characters?.map { it?.characterBasicInfo?.toCharacterInfo()!! }!!,
+                data = data?.characters?.map { it?.characterBasicInfo?.toCharacterInfo()!! }!!,
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (response.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
+                nextKey = if (data.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
             )
 
         } catch (e: Exception) {
