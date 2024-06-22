@@ -20,6 +20,16 @@ class HomeViewModel @Inject constructor(
         private set
 
     init {
+        getHomeList()
+    }
+
+    fun changeOption(event: HomeEvent) {
+        when (event) {
+            HomeEvent.GetHomeData -> getHomeList()
+        }
+    }
+
+    private fun getHomeList() {
         viewModelScope.launch {
             getHomeListUseCase(
                 currentSeason = Util.getCurrentSeason(),

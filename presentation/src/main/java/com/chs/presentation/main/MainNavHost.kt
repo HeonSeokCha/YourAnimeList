@@ -37,6 +37,7 @@ fun MainNavHost(
             val viewModel: HomeViewModel = hiltViewModel(parentEntry)
             HomeScreen(
                 state = viewModel.state,
+                event = viewModel::changeOption
             ) {
                 navController.navigate(it)
             }
