@@ -52,7 +52,6 @@ import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
-import com.chs.presentation.browse.MediaDetailEvent
 import com.chs.presentation.color
 import com.chs.presentation.common.ItemSaveButton
 import com.chs.presentation.common.LoadingIndicator
@@ -66,7 +65,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AnimeDetailScreen(
     state: AnimeDetailState,
-    onEvent: (MediaDetailEvent<AnimeInfo>) -> Unit,
+    onEvent: (AnimeDetailEvent) -> Unit,
     onNavigate: (Any) -> Unit
 ) {
     val context = LocalContext.current
@@ -103,9 +102,9 @@ fun AnimeDetailScreen(
                                 )
                             }, saveClick = {
                                 if (state.isSave) {
-                                    onEvent(MediaDetailEvent.DeleteMediaInfo(data.animeInfo))
+                                    onEvent(AnimeDetailEvent.DeleteAnimeInfo(data.animeInfo))
                                 } else {
-                                    onEvent(MediaDetailEvent.InsertMediaInfo(data.animeInfo))
+                                    onEvent(AnimeDetailEvent.InsertAnimeInfo(data.animeInfo))
                                 }
                             }
                         )

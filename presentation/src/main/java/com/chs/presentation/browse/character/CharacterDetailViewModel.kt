@@ -15,7 +15,6 @@ import com.chs.domain.usecase.GetCharaDetailAnimeListUseCase
 import com.chs.domain.usecase.GetCharaDetailUseCase
 import com.chs.domain.usecase.GetSavedCharaInfoUseCase
 import com.chs.domain.usecase.InsertCharaInfoUseCase
-import com.chs.presentation.browse.MediaDetailEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -36,22 +35,28 @@ class CharacterDetailViewModel @Inject constructor(
     var state by mutableStateOf(CharacterDetailState())
         private set
 
-    init {
-        val charaId: Int = savedStateHandle[UiConst.TARGET_ID] ?: 0
+    private val charaId: Int = savedStateHandle[UiConst.TARGET_ID] ?: 0
 
-        getCharacterDetail(charaId)
-        getCharacterDetailAnimeList(charaId)
-        isSaveCharacter(charaId)
+    init {
+
+        changeEvent(CharaDetailEvent.GetCharaDetailInfo)
     }
 
-    fun changeEvent(mediaDetailEvent: MediaDetailEvent<CharacterInfo>) {
-        when (mediaDetailEvent) {
-            is MediaDetailEvent.InsertMediaInfo -> {
-                insertCharacter(mediaDetailEvent.mediaInfo)
+    fun changeEvent(event: CharaDetailEvent) {
+        when (event) {
+
+            is CharaDetailEvent.InsertCharaInfo -> {
+                insertCharacter(event.info)
             }
 
-            is MediaDetailEvent.DeleteMediaInfo -> {
-                deleteCharacter(mediaDetailEvent.mediaInfo)
+            is CharaDetailEvent.DeleteCharaInfo -> {
+                insertCharacter(event.info)
+            }
+
+            is CharaDetailEvent.GetCharaDetailInfo -> {
+                getCharacterDetail(charaId)
+                getCharacterDetailAnimeList(charaId)
+                isSaveCharacter(charaId)
             }
         }
     }

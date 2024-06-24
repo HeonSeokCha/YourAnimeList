@@ -81,12 +81,11 @@ fun BrowseNavHost(
             val viewmodel: StudioDetailViewModel = hiltViewModel(parentEntry)
             StudioDetailScreen(
                 state = viewmodel.state,
-                onChangeOption = viewmodel::changeFilterOption
+                onChangeOption = viewmodel::changeEvent
             ) {
                 navController.navigate(it)
             }
         }
-
 
         composable<Screen.SortListScreen> {
             val arg = it.toRoute<Screen.SortListScreen>()
@@ -96,7 +95,7 @@ fun BrowseNavHost(
             val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
             SortedListScreen(
                 state = viewmodel.state,
-                onChangeOption = viewmodel::changeSortEvent
+                onEvent = viewmodel::changeSortEvent
             )
         }
     }

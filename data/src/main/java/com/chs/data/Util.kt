@@ -15,18 +15,18 @@ object Util {
         datePattern += "$year"
 
         if (month != null) {
-            if (month < 10) {
-                datePattern += "-0$month"
+            datePattern += if (month < 10) {
+                "-0$month"
             } else {
-                datePattern += "-$month"
+                "-$month"
             }
         }
 
         if (day != null) {
-            if (day < 10) {
-                datePattern += "-0$day"
+            datePattern += if (day < 10) {
+                "-0$day"
             } else {
-                datePattern += "-$day"
+                "-$day"
             }
         }
 

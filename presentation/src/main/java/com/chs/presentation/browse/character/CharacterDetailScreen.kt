@@ -35,6 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,17 +64,18 @@ import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.R
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
-import com.chs.presentation.browse.MediaDetailEvent
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemSaveButton
 import com.chs.presentation.common.PlaceholderHighlight
+import com.chs.presentation.common.PullToRefreshBox
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.common.shimmer
+import kotlinx.coroutines.launch
 
 @Composable
 fun CharacterDetailScreen(
     state: CharacterDetailState,
-    onEvent: (MediaDetailEvent<CharacterInfo>) -> Unit,
+    onEvent: (CharaDetailEvent) -> Unit,
     onNavigate: (BrowseScreen.AnimeDetailScreen) -> Unit
 ) {
 
@@ -82,150 +84,164 @@ fun CharacterDetailScreen(
     val pagingItem = state.animeList?.collectAsLazyPagingItems()
     val lazyVerticalStaggeredState = rememberLazyStaggeredGridState()
     val scrollState = rememberScrollState()
+    var isRefreshing by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
-    CollapsingToolbarScaffold(
-        scrollState = scrollState,
-        header = {
-            when (state.characterDetailInfo) {
-                is Resource.Loading -> {
-                    CharacterBanner(characterInfo = null, isSave = false) { }
-                }
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            coroutineScope.launch {
+                isRefreshing = true
+                scrollState.scrollTo(0)
 
-                is Resource.Success -> {
-                    val characterDetailInfo = state.characterDetailInfo.data
-                    CharacterBanner(
-                        characterInfo = characterDetailInfo,
-                        isSave = state.isSave,
-                    ) {
-                        if (characterDetailInfo != null) {
-                            if (state.isSave) {
-                                onEvent(MediaDetailEvent.DeleteMediaInfo(characterDetailInfo.characterInfo))
-                            } else {
-                                onEvent(MediaDetailEvent.InsertMediaInfo(characterDetailInfo.characterInfo))
-                            }
-                        }
-                    }
-                }
-
-                is Resource.Error -> {
-
-                }
+                isRefreshing = false
             }
-
-        },
-        onCloseClick = {
-            activity?.finish()
         }
     ) {
-        LazyVerticalStaggeredGrid(
-            modifier = Modifier
-                .fillMaxSize(),
-            state = lazyVerticalStaggeredState,
-            columns = StaggeredGridCells.Fixed(3),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalItemSpacing = 4.dp,
-            contentPadding = PaddingValues(horizontal = 4.dp)
-        ) {
-            when (state.characterDetailInfo) {
-                is Resource.Loading -> {
-                    item(span = StaggeredGridItemSpan.FullLine) {
-                        Column(
-                            modifier = Modifier
-                                .padding(
-                                    start = 8.dp,
-                                    end = 8.dp
-                                )
-                        ) {
-                            CharacterProfile(characterDetailInfo = null)
-
-                            CharacterDescription(description = null, expandedDescButton = false) { }
-                        }
+        CollapsingToolbarScaffold(
+            scrollState = scrollState,
+            header = {
+                when (state.characterDetailInfo) {
+                    is Resource.Loading -> {
+                        CharacterBanner(characterInfo = null, isSave = false) { }
                     }
-                }
 
-                is Resource.Success -> {
-                    val characterDetailInfo = state.characterDetailInfo.data
-                    item(span = StaggeredGridItemSpan.FullLine) {
-                        Column(
-                            modifier = Modifier
-                                .padding(
-                                    start = 8.dp,
-                                    end = 8.dp
-                                )
+                    is Resource.Success -> {
+                        val characterDetailInfo = state.characterDetailInfo.data
+                        CharacterBanner(
+                            characterInfo = characterDetailInfo,
+                            isSave = state.isSave,
                         ) {
                             if (characterDetailInfo != null) {
-                                CharacterProfile(characterDetailInfo = characterDetailInfo)
-
-                                CharacterDescription(
-                                    description = characterDetailInfo.description,
-                                    expandedDescButton = expandedDescButton
-                                ) {
-                                    expandedDescButton = !expandedDescButton
+                                if (state.isSave) {
+                                    onEvent(CharaDetailEvent.DeleteCharaInfo(characterDetailInfo.characterInfo))
+                                } else {
+                                    onEvent(CharaDetailEvent.InsertCharaInfo(characterDetailInfo.characterInfo))
                                 }
                             }
                         }
                     }
+
+                    is Resource.Error -> {
+
+                    }
                 }
 
-                is Resource.Error -> {}
+            },
+            onCloseClick = {
+                activity?.finish()
             }
-
-            if (pagingItem != null) {
-                items(
-                    count = pagingItem.itemCount,
-                    key = pagingItem.itemKey { it.id }
-                ) {
-                    val anime = pagingItem[it]
-                    if (anime != null) {
-                        ItemAnimeSmall(
-                            item = anime,
-                            onClick = {
-                                onNavigate(
-                                    BrowseScreen.AnimeDetailScreen(
-                                        id = anime.id,
-                                        idMal = anime.idMal
+        ) {
+            LazyVerticalStaggeredGrid(
+                modifier = Modifier
+                    .fillMaxSize(),
+                state = lazyVerticalStaggeredState,
+                columns = StaggeredGridCells.Fixed(3),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalItemSpacing = 4.dp,
+                contentPadding = PaddingValues(horizontal = 4.dp)
+            ) {
+                when (state.characterDetailInfo) {
+                    is Resource.Loading -> {
+                        item(span = StaggeredGridItemSpan.FullLine) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(
+                                        start = 8.dp,
+                                        end = 8.dp
                                     )
+                            ) {
+                                CharacterProfile(characterDetailInfo = null)
+
+                                CharacterDescription(description = null, expandedDescButton = false) { }
+                            }
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        val characterDetailInfo = state.characterDetailInfo.data
+                        item(span = StaggeredGridItemSpan.FullLine) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(
+                                        start = 8.dp,
+                                        end = 8.dp
+                                    )
+                            ) {
+                                if (characterDetailInfo != null) {
+                                    CharacterProfile(characterDetailInfo = characterDetailInfo)
+
+                                    CharacterDescription(
+                                        description = characterDetailInfo.description,
+                                        expandedDescButton = expandedDescButton
+                                    ) {
+                                        expandedDescButton = !expandedDescButton
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    is Resource.Error -> {}
+                }
+
+                if (pagingItem != null) {
+                    items(
+                        count = pagingItem.itemCount,
+                        key = pagingItem.itemKey { it.id }
+                    ) {
+                        val anime = pagingItem[it]
+                        if (anime != null) {
+                            ItemAnimeSmall(
+                                item = anime,
+                                onClick = {
+                                    onNavigate(
+                                        BrowseScreen.AnimeDetailScreen(
+                                            id = anime.id,
+                                            idMal = anime.idMal
+                                        )
+                                    )
+                                }
+                            )
+                        }
+                    }
+
+                    when (pagingItem.loadState.refresh) {
+                        is LoadState.Loading -> {
+                            items(10) {
+                                ItemAnimeSmall(item = null)
+                            }
+                        }
+
+                        is LoadState.Error -> {
+                            item {
+                                Text(
+                                    text = "Something Wrong for Loading List."
                                 )
                             }
-                        )
-                    }
-                }
-
-                when (pagingItem.loadState.refresh) {
-                    is LoadState.Loading -> {
-                        items(10) {
-                            ItemAnimeSmall(item = null)
                         }
+
+                        else -> Unit
+
                     }
 
-                    is LoadState.Error -> {
-                        item {
-                            Text(
-                                text = "Something Wrong for Loading List."
-                            )
+                    when (pagingItem.loadState.append) {
+                        is LoadState.Loading -> {
+                            items(10) {
+                                ItemAnimeSmall(item = null)
+                            }
                         }
-                    }
 
-                    else -> Unit
-
-                }
-
-                when (pagingItem.loadState.append) {
-                    is LoadState.Loading -> {
-                        items(10) {
-                            ItemAnimeSmall(item = null)
+                        is LoadState.Error -> {
+                            item {
+                                Text(
+                                    text = "Something Wrong for Loading List."
+                                )
+                            }
                         }
-                    }
 
-                    is LoadState.Error -> {
-                        item {
-                            Text(
-                                text = "Something Wrong for Loading List."
-                            )
-                        }
+                        else -> Unit
                     }
-
-                    else -> Unit
                 }
             }
         }

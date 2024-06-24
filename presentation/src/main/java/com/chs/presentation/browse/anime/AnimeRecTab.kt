@@ -25,7 +25,6 @@ fun AnimeRecScreen(
     animeRecList: Flow<PagingData<AnimeInfo>>? = null,
     onNavigate: (BrowseScreen.AnimeDetailScreen) -> Unit
 ) {
-    val context = LocalContext.current
     val scrollState = rememberLazyListState()
     val lazyPagingItems = animeRecList?.collectAsLazyPagingItems()
 

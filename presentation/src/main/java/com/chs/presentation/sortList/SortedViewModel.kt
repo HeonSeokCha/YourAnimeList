@@ -84,6 +84,11 @@ class SortedViewModel @Inject constructor(
 
     fun changeSortEvent(event: SortEvent) {
         when (event) {
+
+            is SortEvent.GetSortList -> {
+
+            }
+
             is SortEvent.ChangeYearOption -> {
                 state = state.copy(
                     selectYear = event.value

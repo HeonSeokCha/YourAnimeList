@@ -1,6 +1,5 @@
 package com.chs.presentation.browse.anime
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,12 +7,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.chs.common.Resource
-import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.usecase.*
 import com.chs.presentation.UiConst
-import com.chs.presentation.browse.MediaDetailEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,20 +36,24 @@ class AnimeDetailViewModel @Inject constructor(
             animeId = animeId
         )
 
-        getAnimeDetailInfo(animeId)
-        getAnimeTheme(animeMalId)
-        getAnimeRecList(animeId)
-        isSaveAnime(animeId)
+        changeEvent(AnimeDetailEvent.GetAnimeDetailInfo)
     }
 
-    fun changeEvent(mediaDetailEvent: MediaDetailEvent<AnimeInfo>) {
-        when (mediaDetailEvent) {
-            is MediaDetailEvent.InsertMediaInfo -> {
-                insertAnime(mediaDetailEvent.mediaInfo)
+    fun changeEvent(event: AnimeDetailEvent) {
+        when (event) {
+            is AnimeDetailEvent.InsertAnimeInfo -> {
+                insertAnime(event.info)
             }
 
-            is MediaDetailEvent.DeleteMediaInfo -> {
-                deleteAnime(mediaDetailEvent.mediaInfo)
+            is AnimeDetailEvent.DeleteAnimeInfo -> {
+                deleteAnime(event.info)
+            }
+
+            is AnimeDetailEvent.GetAnimeDetailInfo -> {
+                getAnimeDetailInfo(animeId)
+                getAnimeTheme(animeMalId)
+                getAnimeRecList(animeId)
+                isSaveAnime(animeId)
             }
         }
     }

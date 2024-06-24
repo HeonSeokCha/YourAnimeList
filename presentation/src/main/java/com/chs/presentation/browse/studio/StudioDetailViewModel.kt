@@ -27,12 +27,12 @@ class StudioDetailViewModel @Inject constructor(
     var state by mutableStateOf(StudioDetailState())
         private set
 
+    private val studioId: Int = savedStateHandle[UiConst.TARGET_ID] ?: 0
+
     init {
-        val studioId: Int = savedStateHandle[UiConst.TARGET_ID] ?: 0
         state = state.copy(studioId = studioId)
 
-        getStudioDetailInfo(studioId)
-        getStudioAnimeList()
+        changeEvent(StudioEvent.GetStudioInfo)
     }
 
     private fun getStudioDetailInfo(studioId: Int) {
@@ -54,14 +54,19 @@ class StudioDetailViewModel @Inject constructor(
         )
     }
 
-    fun changeFilterOption(event: StudioEvent) {
+    fun changeEvent(event: StudioEvent) {
         when (event) {
             is StudioEvent.ChangeSortOption -> {
                 state = state.copy(
                     sortOption = event.value
                 )
             }
+
+            is StudioEvent.GetStudioInfo -> {
+                getStudioDetailInfo(studioId)
+            }
         }
+
         getStudioAnimeList()
     }
 }

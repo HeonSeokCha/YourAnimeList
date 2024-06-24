@@ -41,6 +41,7 @@ import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
+import com.chs.presentation.common.PullToRefreshBox
 import com.chs.presentation.header
 import com.chs.presentation.ui.theme.Pink80
 import kotlinx.coroutines.launch
@@ -48,7 +49,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SortedListScreen(
     state: SortState,
-    onChangeOption: (SortEvent) -> Unit
+    onEvent: (SortEvent) -> Unit
 ) {
     val context = LocalContext.current
     val lazyGridScrollState = rememberLazyGridState()
@@ -56,116 +57,125 @@ fun SortedListScreen(
     var filterDialogShow: Int? by remember { mutableStateOf(null) }
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
+    var isRefreshing by remember { mutableStateOf(false) }
 
-    LazyVerticalGrid(
-        modifier = Modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.spacedBy(3.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        contentPadding = PaddingValues(
-            horizontal = 4.dp,
-            vertical = 8.dp
-        ),
-        state = lazyGridScrollState,
-        columns = GridCells.Fixed(3),
-    ) {
-        header {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 4.dp,
-                        end = 4.dp
-                    )
-                    .horizontalScroll(scrollState),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                ItemSort(
-                    title = "Year",
-                    subTitle = if (state.selectYear == null) "Any" else state.selectYear.toString()
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            isRefreshing = true
+            onEvent(SortEvent.GetSortList)
+            isRefreshing = false
+        }) {
+        LazyVerticalGrid(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.spacedBy(3.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            contentPadding = PaddingValues(
+                horizontal = 4.dp,
+                vertical = 8.dp
+            ),
+            state = lazyGridScrollState,
+            columns = GridCells.Fixed(3),
+        ) {
+            header {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 4.dp,
+                            end = 4.dp
+                        )
+                        .horizontalScroll(scrollState),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    filterDialogShow = 0
-                }
+                    ItemSort(
+                        title = "Year",
+                        subTitle = if (state.selectYear == null) "Any" else state.selectYear.toString()
+                    ) {
+                        filterDialogShow = 0
+                    }
 
-                ItemSort(
-                    title = "Season",
-                    subTitle = state.selectSeason?.first ?: "Any"
-                ) {
-                    filterDialogShow = 1
-                }
+                    ItemSort(
+                        title = "Season",
+                        subTitle = state.selectSeason?.first ?: "Any"
+                    ) {
+                        filterDialogShow = 1
+                    }
 
-                ItemSort(
-                    title = "Sort",
-                    subTitle = state.selectSort?.first ?: "Any"
-                ) {
-                    filterDialogShow = 2
-                }
+                    ItemSort(
+                        title = "Sort",
+                        subTitle = state.selectSort?.first ?: "Any"
+                    ) {
+                        filterDialogShow = 2
+                    }
 
-                ItemSort(
-                    title = "Genre",
-                    subTitle = state.selectGenre ?: "Any"
-                ) {
-                    filterDialogShow = 3
+                    ItemSort(
+                        title = "Genre",
+                        subTitle = state.selectGenre ?: "Any"
+                    ) {
+                        filterDialogShow = 3
+                    }
                 }
             }
-        }
 
-        if (pagingItems != null) {
+            if (pagingItems != null) {
 
-            items(
-                count = pagingItems.itemCount,
-                key = pagingItems.itemKey { it.id }
-            ) {
-                val animeInfo = pagingItems[it]
-                ItemAnimeSmall(item = animeInfo) {
-                    context.startActivity(
-                        Intent(
-                            context, BrowseActivity::class.java
-                        ).apply {
-                            if (animeInfo != null) {
-                                this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                                this.putExtra(UiConst.TARGET_ID, animeInfo.id)
-                                this.putExtra(UiConst.TARGET_ID_MAL, animeInfo.idMal)
+                items(
+                    count = pagingItems.itemCount,
+                    key = pagingItems.itemKey { it.id }
+                ) {
+                    val animeInfo = pagingItems[it]
+                    ItemAnimeSmall(item = animeInfo) {
+                        context.startActivity(
+                            Intent(
+                                context, BrowseActivity::class.java
+                            ).apply {
+                                if (animeInfo != null) {
+                                    this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                                    this.putExtra(UiConst.TARGET_ID, animeInfo.id)
+                                    this.putExtra(UiConst.TARGET_ID_MAL, animeInfo.idMal)
+                                }
                             }
+                        )
+                    }
+                }
+
+                when (pagingItems.loadState.refresh) {
+                    is LoadState.Loading -> {
+                        items(10) {
+                            ItemAnimeSmall(item = null)
                         }
-                    )
-                }
-            }
-
-            when (pagingItems.loadState.refresh) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemAnimeSmall(item = null)
                     }
-                }
 
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
-                        )
+                    is LoadState.Error -> {
+                        item {
+                            Text(
+                                text = "Something Wrong for Loading List."
+                            )
+                        }
                     }
+
+                    else -> Unit
                 }
 
-                else -> Unit
-            }
 
-
-            when (pagingItems.loadState.append) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemAnimeSmall(item = null)
+                when (pagingItems.loadState.append) {
+                    is LoadState.Loading -> {
+                        items(10) {
+                            ItemAnimeSmall(item = null)
+                        }
                     }
-                }
 
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
-                        )
+                    is LoadState.Error -> {
+                        item {
+                            Text(
+                                text = "Something Wrong for Loading List."
+                            )
+                        }
                     }
-                }
 
-                else -> Unit
+                    else -> Unit
+                }
             }
         }
     }
@@ -187,19 +197,19 @@ fun SortedListScreen(
                 }
                 when (filterDialogShow) {
                     0 -> {
-                        onChangeOption(SortEvent.ChangeYearOption(selectValue.second.toInt()))
+                        onEvent(SortEvent.ChangeYearOption(selectValue.second.toInt()))
                     }
 
                     1 -> {
-                        onChangeOption(SortEvent.ChangeSeasonOption(selectValue))
+                        onEvent(SortEvent.ChangeSeasonOption(selectValue))
                     }
 
                     2 -> {
-                        onChangeOption(SortEvent.ChangeSortOption(selectValue))
+                        onEvent(SortEvent.ChangeSortOption(selectValue))
                     }
 
                     3 -> {
-                        onChangeOption(SortEvent.ChangeGenreOption(selectValue.second))
+                        onEvent(SortEvent.ChangeGenreOption(selectValue.second))
                     }
 
                     else -> Unit
