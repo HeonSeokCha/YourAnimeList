@@ -65,7 +65,8 @@ fun SortedListScreen(
             isRefreshing = true
             onEvent(SortEvent.GetSortList)
             isRefreshing = false
-        }) {
+        }
+    ) {
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.spacedBy(3.dp),

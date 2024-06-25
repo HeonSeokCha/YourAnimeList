@@ -1,6 +1,5 @@
 package com.chs.presentation.search
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,26 +7,22 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.chs.presentation.common.PullToRefreshBox
 import com.chs.presentation.ui.theme.Pink80
-import com.chs.presentation.UiConst
-import com.chs.presentation.common.LoadingIndicator
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 @Composable
 fun SearchScreen(
-    searchQuery: String,
+    onEvent: (SearchEvent) -> Unit,
     onBack: () -> Unit,
 ) {
     val tabList = listOf(
@@ -43,15 +38,6 @@ fun SearchScreen(
         onDispose {
             onBack()
         }
-    }
-
-    LaunchedEffect(searchQuery) {
-        snapshotFlow { searchQuery }
-            .distinctUntilChanged()
-            .filter { it.isNotEmpty() }
-            .collect {
-                viewModel.search(it)
-            }
     }
 
     Column(
@@ -92,13 +78,15 @@ fun SearchScreen(
             state = pagerState,
             userScrollEnabled = false
         ) { page ->
-            when (page) {
-                0 -> {
-                    SearchAnimeScreen(pagingItem = viewModel.state.searchAnimeResultPaging)
-                }
+            PullToRefreshBox(isRefreshing = , onRefresh = { /*TODO*/ }) {
+                when (page) {
+                    0 -> {
+                        SearchAnimeScreen(pagingItem = viewModel.state.searchAnimeResultPaging)
+                    }
 
-                1 -> {
-                    SearchCharaScreen(pagingItems = viewModel.state.searchCharaResultPaging)
+                    1 -> {
+                        SearchCharaScreen(pagingItems = viewModel.state.searchCharaResultPaging)
+                    }
                 }
             }
         }

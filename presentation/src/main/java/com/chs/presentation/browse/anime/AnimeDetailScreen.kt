@@ -26,7 +26,11 @@ import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,6 +60,7 @@ import com.chs.presentation.color
 import com.chs.presentation.common.ItemSaveButton
 import com.chs.presentation.common.LoadingIndicator
 import com.chs.presentation.common.PlaceholderHighlight
+import com.chs.presentation.common.PullToRefreshBox
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.common.shimmer
 import com.chs.presentation.isNotEmptyValue
@@ -73,110 +78,124 @@ fun AnimeDetailScreen(
     val pagerState = rememberPagerState { 3 }
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
+    var isRefreshing by remember { mutableStateOf(false) }
 
-    CollapsingToolbarScaffold(
-        scrollState = scrollState,
-        header = {
-            when (state.animeDetailInfo) {
-                is Resource.Loading -> {
-                    AnimeDetailHeadBanner(
-                        animeDetailInfo = null,
-                        isAnimeSave = false,
-                        trailerClick = {},
-                        saveClick = {}
-                    )
-                }
 
-                is Resource.Success -> {
-                    val data = state.animeDetailInfo.data
-                    if (data != null) {
-                        AnimeDetailHeadBanner(
-                            animeDetailInfo = data,
-                            isAnimeSave = state.isSave,
-                            trailerClick = { trailerId ->
-                                context.startActivity(
-                                    Intent(
-                                        Intent.ACTION_VIEW,
-                                        "${Constants.YOUTUBE_BASE_URL}$trailerId".toUri()
-                                    )
-                                )
-                            }, saveClick = {
-                                if (state.isSave) {
-                                    onEvent(AnimeDetailEvent.DeleteAnimeInfo(data.animeInfo))
-                                } else {
-                                    onEvent(AnimeDetailEvent.InsertAnimeInfo(data.animeInfo))
-                                }
-                            }
-                        )
-                    }
-                }
-
-                is Resource.Error -> {
-
-                }
-            }
-        }, onCloseClick = {
-            activity?.finish()
-        },
-        stickyHeader = {
-            TabRow(
-                modifier = Modifier.fillMaxWidth(),
-                selectedTabIndex = pagerState.currentPage,
-                indicator = { tabPositions ->
-                    SecondaryIndicator(
-                        modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
-                        color = Pink80
-                    )
-                }
-            ) {
-                state.tabNames.forEachIndexed { index, title ->
-                    Tab(
-                        text = {
-                            Text(
-                                text = title,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                fontSize = 12.sp,
-                            )
-                        },
-                        selected = pagerState.currentPage == index,
-                        onClick = {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        },
-                        selectedContentColor = Pink80,
-                        unselectedContentColor = Color.Gray
-                    )
-                }
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            coroutineScope.launch {
+                isRefreshing = true
+                scrollState.scrollTo(0)
+                onEvent(AnimeDetailEvent.GetAnimeDetailInfo)
+                isRefreshing = false
             }
         }
     ) {
+        CollapsingToolbarScaffold(
+            scrollState = scrollState,
+            header = {
+                when (state.animeDetailInfo) {
+                    is Resource.Loading -> {
+                        AnimeDetailHeadBanner(
+                            animeDetailInfo = null,
+                            isAnimeSave = false,
+                            trailerClick = {},
+                            saveClick = {}
+                        )
+                    }
 
+                    is Resource.Success -> {
+                        val data = state.animeDetailInfo.data
+                        if (data != null) {
+                            AnimeDetailHeadBanner(
+                                animeDetailInfo = data,
+                                isAnimeSave = state.isSave,
+                                trailerClick = { trailerId ->
+                                    context.startActivity(
+                                        Intent(
+                                            Intent.ACTION_VIEW,
+                                            "${Constants.YOUTUBE_BASE_URL}$trailerId".toUri()
+                                        )
+                                    )
+                                }, saveClick = {
+                                    if (state.isSave) {
+                                        onEvent(AnimeDetailEvent.DeleteAnimeInfo(data.animeInfo))
+                                    } else {
+                                        onEvent(AnimeDetailEvent.InsertAnimeInfo(data.animeInfo))
+                                    }
+                                }
+                            )
+                        }
+                    }
 
-        HorizontalPager(
-            state = pagerState,
-            userScrollEnabled = false
-        ) { page ->
-            when (page) {
-                0 -> {
-                    AnimeOverViewScreen(
-                        animeDetailState = state.animeDetailInfo,
-                        animeThemeState = state.animeThemes
-                    ) {
-                        onNavigate(it)
+                    is Resource.Error -> {
+
                     }
                 }
-
-                1 -> {
-                    AnimeCharaScreen(state = state.animeDetailInfo) {
-                        onNavigate(it)
+            }, onCloseClick = {
+                activity?.finish()
+            },
+            stickyHeader = {
+                TabRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    selectedTabIndex = pagerState.currentPage,
+                    indicator = { tabPositions ->
+                        SecondaryIndicator(
+                            modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+                            color = Pink80
+                        )
+                    }
+                ) {
+                    state.tabNames.forEachIndexed { index, title ->
+                        Tab(
+                            text = {
+                                Text(
+                                    text = title,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    fontSize = 12.sp,
+                                )
+                            },
+                            selected = pagerState.currentPage == index,
+                            onClick = {
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            },
+                            selectedContentColor = Pink80,
+                            unselectedContentColor = Color.Gray
+                        )
                     }
                 }
+            }
+        ) {
 
-                2 -> {
-                    AnimeRecScreen(animeRecList = state.animeRecList) {
-                        onNavigate(it)
+
+            HorizontalPager(
+                state = pagerState,
+                userScrollEnabled = false
+            ) { page ->
+                when (page) {
+                    0 -> {
+                        AnimeOverViewScreen(
+                            animeDetailState = state.animeDetailInfo,
+                            animeThemeState = state.animeThemes
+                        ) {
+                            onNavigate(it)
+                        }
+                    }
+
+                    1 -> {
+                        AnimeCharaScreen(state = state.animeDetailInfo) {
+                            onNavigate(it)
+                        }
+                    }
+
+                    2 -> {
+                        AnimeRecScreen(animeRecList = state.animeRecList) {
+                            onNavigate(it)
+                        }
                     }
                 }
             }

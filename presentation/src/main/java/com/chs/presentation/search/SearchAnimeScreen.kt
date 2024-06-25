@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun SearchAnimeScreen(
-    pagingItem: Flow<PagingData<AnimeInfo>>?
+    pagingItem: Flow<PagingData<AnimeInfo>>?,
 ) {
     val context = LocalContext.current
     val lazyColScrollState = rememberLazyListState()

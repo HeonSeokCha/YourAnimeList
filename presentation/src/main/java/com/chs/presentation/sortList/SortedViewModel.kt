@@ -72,22 +72,10 @@ class SortedViewModel @Inject constructor(
         )
     }
 
-    fun getSelectedOption(selectIdx: Int): String {
-        return when (selectIdx) {
-            0 -> "${state.selectYear ?: "Any"}"
-            1 -> state.selectSeason?.first ?: "Any"
-            2 -> state.selectSort?.first ?: "Any"
-            3 -> state.selectGenre ?: "Any"
-            else -> "Any"
-        }
-    }
-
     fun changeSortEvent(event: SortEvent) {
         when (event) {
 
-            is SortEvent.GetSortList -> {
-
-            }
+            is SortEvent.GetSortList -> Unit
 
             is SortEvent.ChangeYearOption -> {
                 state = state.copy(

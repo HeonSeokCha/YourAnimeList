@@ -74,7 +74,7 @@ fun MainNavHost(
 
             SortedListScreen(
                 state = viewmodel.state,
-                onChangeOption = viewmodel::changeSortEvent
+                onEvent = viewmodel::changeSortEvent
             )
         }
     }

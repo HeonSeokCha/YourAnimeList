@@ -81,7 +81,7 @@ fun BrowseNavHost(
             val viewmodel: StudioDetailViewModel = hiltViewModel(parentEntry)
             StudioDetailScreen(
                 state = viewmodel.state,
-                onChangeOption = viewmodel::changeEvent
+                onEvent = viewmodel::changeEvent
             ) {
                 navController.navigate(it)
             }

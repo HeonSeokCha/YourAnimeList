@@ -93,7 +93,7 @@ fun CharacterDetailScreen(
             coroutineScope.launch {
                 isRefreshing = true
                 scrollState.scrollTo(0)
-
+                onEvent(CharaDetailEvent.GetCharaDetailInfo)
                 isRefreshing = false
             }
         }
@@ -290,10 +290,20 @@ private fun CharacterBanner(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
+                    modifier = Modifier
+                        .placeholder(
+                            visible = characterInfo?.characterInfo?.name == null,
+                            highlight = PlaceholderHighlight.shimmer()
+                        ),
                     text = characterInfo?.characterInfo?.name ?: "Character PreView"
                 )
 
                 Text(
+                    modifier = Modifier
+                        .placeholder(
+                            visible = characterInfo?.characterInfo?.nativeName == null,
+                            highlight = PlaceholderHighlight.shimmer()
+                        ),
                     text = characterInfo?.characterInfo?.nativeName ?: "Character PreView"
                 )
 
@@ -310,7 +320,6 @@ private fun CharacterBanner(
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
                 )
-
             }
         }
 

@@ -38,12 +38,13 @@ import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
+import com.chs.presentation.common.PullToRefreshBox
 import kotlinx.coroutines.launch
 
 @Composable
 fun StudioDetailScreen(
     state: StudioDetailState,
-    onChangeOption: (StudioEvent) -> Unit,
+    onEvent: (StudioEvent) -> Unit,
     onNavigate: (BrowseScreen.AnimeDetailScreen) -> Unit
 ) {
     val activity: Activity? = LocalContext.current as? Activity
@@ -52,113 +53,124 @@ fun StudioDetailScreen(
     val scrollState = rememberScrollState()
     val pagingItem = state.studioAnimeList?.collectAsLazyPagingItems()
     var isShowFilterDialog by remember { mutableStateOf(false) }
+    var isRefreshing by remember { mutableStateOf(false) }
 
-    CollapsingToolbarScaffold(
-        scrollState = scrollState,
-        header = {
-            when (state.studioDetailInfo) {
-                is Resource.Loading -> {
-                    StudioInfo(studioInfo = null)
-                }
-
-                is Resource.Success -> {
-                    StudioInfo(studioInfo = state.studioDetailInfo.data)
-                }
-
-                is Resource.Error -> {}
-
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            coroutineScope.launch {
+                isRefreshing = true
+                scrollState.scrollTo(0)
+                onEvent(StudioEvent.GetStudioInfo)
+                isRefreshing = false
             }
-        }, onCloseClick = {
-            activity?.finish()
         }
     ) {
-        LazyVerticalStaggeredGrid(
-            state = lazyGridScrollState,
-            columns = StaggeredGridCells.Adaptive(100.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalItemSpacing = 4.dp,
-            contentPadding = PaddingValues(
-                horizontal = 4.dp,
-                vertical = 4.dp
-            )
+        CollapsingToolbarScaffold(
+            scrollState = scrollState,
+            header = {
+                when (state.studioDetailInfo) {
+                    is Resource.Loading -> {
+                        StudioInfo(studioInfo = null)
+                    }
+
+                    is Resource.Success -> {
+                        StudioInfo(studioInfo = state.studioDetailInfo.data)
+                    }
+
+                    is Resource.Error -> {}
+
+                }
+            }, onCloseClick = {
+                activity?.finish()
+            }
         ) {
-            item(span = StaggeredGridItemSpan.FullLine) {
-                StudioAnimeSort(state.sortOption.first) {
-                    isShowFilterDialog = true
+            LazyVerticalStaggeredGrid(
+                state = lazyGridScrollState,
+                columns = StaggeredGridCells.Adaptive(100.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalItemSpacing = 4.dp,
+                contentPadding = PaddingValues(
+                    horizontal = 4.dp,
+                    vertical = 4.dp
+                )
+            ) {
+                item(span = StaggeredGridItemSpan.FullLine) {
+                    StudioAnimeSort(state.sortOption.first) {
+                        isShowFilterDialog = true
+                    }
                 }
-            }
 
-            if (pagingItem != null) {
-                items(
-                    count = pagingItem.itemCount,
-                    key = pagingItem.itemKey { it.id }
-                ) {
-                    val animeInfo = pagingItem[it]
-                    if (animeInfo != null) {
-                        ItemAnimeSmall(item = animeInfo) {
-                            onNavigate(
-                                BrowseScreen.AnimeDetailScreen(
-                                    id = animeInfo.id,
-                                    idMal = animeInfo.idMal
+                if (pagingItem != null) {
+                    items(
+                        count = pagingItem.itemCount,
+                        key = pagingItem.itemKey { it.id }
+                    ) {
+                        val animeInfo = pagingItem[it]
+                        if (animeInfo != null) {
+                            ItemAnimeSmall(item = animeInfo) {
+                                onNavigate(
+                                    BrowseScreen.AnimeDetailScreen(
+                                        id = animeInfo.id,
+                                        idMal = animeInfo.idMal
+                                    )
                                 )
-                            )
-                        }
-                    }
-                }
-
-                when (pagingItem.loadState.refresh) {
-                    is LoadState.Loading -> {
-                        items(10) {
-                            ItemAnimeSmall(item = null)
+                            }
                         }
                     }
 
-                    is LoadState.Error -> {
-                        item {
-                            Text(
-                                text = "Something Wrong for Loading List."
-                            )
+                    when (pagingItem.loadState.refresh) {
+                        is LoadState.Loading -> {
+                            items(10) {
+                                ItemAnimeSmall(item = null)
+                            }
                         }
+
+                        is LoadState.Error -> {
+                            item {
+                                Text(
+                                    text = "Something Wrong for Loading List."
+                                )
+                            }
+                        }
+
+                        else -> Unit
                     }
 
-                    else -> Unit
-                }
 
-
-                when (pagingItem.loadState.append) {
-                    is LoadState.Loading -> {
-                        items(10) {
-                            ItemAnimeSmall(item = null)
+                    when (pagingItem.loadState.append) {
+                        is LoadState.Loading -> {
+                            items(10) {
+                                ItemAnimeSmall(item = null)
+                            }
                         }
-                    }
 
-                    is LoadState.Error -> {
-                        item {
-                            Text(
-                                text = "Something Wrong for Loading List."
-                            )
+                        is LoadState.Error -> {
+                            item {
+                                Text(
+                                    text = "Something Wrong for Loading List."
+                                )
+                            }
                         }
-                    }
 
-                    else -> Unit
+                        else -> Unit
+                    }
                 }
             }
-        }
 
-        if (isShowFilterDialog) {
-            FilterDialog(
-                list = UiConst.sortTypeList.map { it.name to it.rawValue },
-                onClick = { selectValue ->
-                    coroutineScope.launch {
-                        lazyGridScrollState.scrollToItem(0, 0)
+            if (isShowFilterDialog) {
+                FilterDialog(
+                    list = UiConst.sortTypeList.map { it.name to it.rawValue },
+                    onClick = { selectValue ->
+                        coroutineScope.launch {
+                            lazyGridScrollState.scrollToItem(0, 0)
+                        }
+                        onEvent(StudioEvent.ChangeSortOption(selectValue))
+                    }, onDismiss = {
+                        isShowFilterDialog = false
                     }
-                    onChangeOption(
-                        StudioEvent.ChangeSortOption(selectValue)
-                    )
-                }, onDismiss = {
-                    isShowFilterDialog = false
-                }
-            )
+                )
+            }
         }
     }
 }

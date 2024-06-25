@@ -38,7 +38,6 @@ class CharacterDetailViewModel @Inject constructor(
     private val charaId: Int = savedStateHandle[UiConst.TARGET_ID] ?: 0
 
     init {
-
         changeEvent(CharaDetailEvent.GetCharaDetailInfo)
     }
 

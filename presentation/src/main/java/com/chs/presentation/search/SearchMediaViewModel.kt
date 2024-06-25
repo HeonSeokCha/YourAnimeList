@@ -24,10 +24,27 @@ class SearchMediaViewModel @Inject constructor(
     var state: SearchMediaState by mutableStateOf(SearchMediaState())
         private set
 
-    fun search(query: String) {
-        state = state.copy(
-            searchAnimeResultPaging = searchAnimeUseCase(query).cachedIn(viewModelScope),
-            searchCharaResultPaging = searchCharaUseCase(query).cachedIn(viewModelScope)
-        )
+    fun onEvent(event: SearchEvent) {
+        when (event) {
+            is SearchEvent.ChangeSearchQuery -> {
+                state = state.copy(
+                    query = event.query
+                )
+            }
+
+            is SearchEvent.GetSearchAnimeResult -> {
+                state = state.copy(
+                    searchAnimeResultPaging = searchAnimeUseCase(state.query!!)
+                        .cachedIn(viewModelScope)
+                )
+            }
+
+            is SearchEvent.GetSearchCharaResult -> {
+                state = state.copy(
+                    searchCharaResultPaging = searchCharaUseCase(state.query!!)
+                        .cachedIn(viewModelScope)
+                )
+            }
+        }
     }
 }
