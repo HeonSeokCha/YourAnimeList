@@ -28,7 +28,13 @@ class SearchMediaViewModel @Inject constructor(
         when (event) {
             is SearchEvent.ChangeSearchQuery -> {
                 state = state.copy(
-                    query = event.query
+                    query = event.query,
+                    searchAnimeResultPaging = searchAnimeUseCase(event.query).cachedIn(
+                        viewModelScope
+                    ),
+                    searchCharaResultPaging = searchCharaUseCase(event.query).cachedIn(
+                        viewModelScope
+                    )
                 )
             }
 

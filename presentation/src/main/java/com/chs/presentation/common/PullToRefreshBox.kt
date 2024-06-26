@@ -2,6 +2,7 @@ package com.chs.presentation.common
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
@@ -42,7 +43,8 @@ fun PullToRefreshBox(
         PullToRefreshContainer(
             state = pullRefreshState,
             modifier = Modifier
-                .align(Alignment.TopCenter)
+                .align(Alignment.TopCenter),
+            contentColor = MaterialTheme.colorScheme.primary
         )
     }
 }
