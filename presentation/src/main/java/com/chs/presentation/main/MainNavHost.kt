@@ -65,7 +65,7 @@ fun MainNavHost(
             CharaListScreen(state = viewmodel.state)
         }
 
-        composable<Screen.SearchScreen> {
+        composable<Screen.SearchScreen> { it ->
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(Screen.SearchScreen)
             }

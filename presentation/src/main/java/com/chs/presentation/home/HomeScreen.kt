@@ -59,8 +59,8 @@ fun HomeScreen(
         isRefreshing = isRefreshing,
         onRefresh = {
             coroutineScope.launch {
-                pagerState.scrollToPage(0)
                 isRefreshing = true
+                pagerState.scrollToPage(0)
                 event(HomeEvent.GetHomeData)
                 isRefreshing = false
             }

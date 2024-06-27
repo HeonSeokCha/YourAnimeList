@@ -44,21 +44,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.util.fastCbrt
 import androidx.core.net.toUri
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.chs.common.Constants
 import com.chs.common.Resource
 import com.chs.domain.model.AnimeDetailInfo
-import com.chs.domain.model.AnimeInfo
-import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.UiConst
-import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.color
 import com.chs.presentation.common.ItemSaveButton
-import com.chs.presentation.common.LoadingIndicator
 import com.chs.presentation.common.PlaceholderHighlight
 import com.chs.presentation.common.PullToRefreshBox
 import com.chs.presentation.common.placeholder
@@ -86,7 +80,7 @@ fun AnimeDetailScreen(
         onRefresh = {
             coroutineScope.launch {
                 isRefreshing = true
-                scrollState.scrollTo(0)
+                pagerState.scrollToPage(0)
                 onEvent(AnimeDetailEvent.GetAnimeDetailInfo)
                 isRefreshing = false
             }
@@ -170,7 +164,6 @@ fun AnimeDetailScreen(
                 }
             }
         ) {
-
 
             HorizontalPager(
                 state = pagerState,

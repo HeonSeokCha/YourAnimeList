@@ -30,11 +30,7 @@ fun SearchScreen(
     onEvent: (SearchEvent) -> Unit,
     onBack: () -> Unit,
 ) {
-    val tabList = listOf(
-        "ANIME",
-        "CHARACTER"
-    )
-    val pagerState = rememberPagerState(initialPage = 0) { tabList.size }
+    val pagerState = rememberPagerState { state.tabList.size }
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     var isRefreshing by remember { mutableStateOf(false) }
@@ -71,7 +67,7 @@ fun SearchScreen(
                     )
                 }
             ) {
-                tabList.forEachIndexed { index, title ->
+                state.tabList.forEachIndexed { index, title ->
                     Tab(
                         text = {
                             Text(
