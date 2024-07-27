@@ -182,7 +182,13 @@ fun CharacterDetailScreen(
                         }
                     }
 
-                    is Resource.Error -> {}
+                    is Resource.Error -> {
+                        item {
+                            Text(
+                                text = "Something Wrong for Loading List."
+                            )
+                        }
+                    }
                 }
 
                 if (pagingItem != null) {
