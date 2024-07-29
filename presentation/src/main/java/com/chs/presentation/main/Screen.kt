@@ -36,6 +36,6 @@ enum class BottomNavigation(
     val route: Screen
 ) {
     HOME("Home", Icons.Filled.Home, Screen.HomeScreen),
-    ANIME("Collection", Icons.Filled.LocalMovies, Screen.AnimeListScreen),
-    CHARA("Collection", Icons.Filled.SupervisorAccount, Screen.CharaListScreen),
+    ANIME("Animation", Icons.Filled.LocalMovies, Screen.AnimeListScreen),
+    CHARA("Character", Icons.Filled.SupervisorAccount, Screen.CharaListScreen),
 }

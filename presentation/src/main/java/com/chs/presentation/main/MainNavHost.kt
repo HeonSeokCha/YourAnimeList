@@ -1,17 +1,21 @@
 package com.chs.presentation.main
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.chs.presentation.UiConst
 import com.chs.presentation.animeList.AnimeListScreen
 import com.chs.presentation.animeList.AnimeListViewModel
+import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.charaList.CharaListScreen
 import com.chs.presentation.charaList.CharacterListViewModel
 import com.chs.presentation.home.HomeScreen
@@ -31,46 +35,66 @@ fun MainNavHost(
     searchQuery: String,
     onBack: () -> Unit,
 ) {
+
+    val context = LocalContext.current
+
     NavHost(
         navController = navController,
         modifier = modifier,
         startDestination = Screen.HomeScreen
     ) {
         composable<Screen.HomeScreen> {
-            val parentEntry = remember(it) {
-                navController.getBackStackEntry(Screen.HomeScreen)
-            }
-            val viewModel: HomeViewModel = hiltViewModel(parentEntry)
+            val viewModel: HomeViewModel = hiltViewModel()
             HomeScreen(
                 state = viewModel.state,
-                event = viewModel::changeOption
-            ) {
-                navController.navigate(it)
+                event = viewModel::changeOption,
+                onNavigate = {
+                    navController.navigate(it)
+                }
+            ) { id, idMal ->
+                context.startActivity(
+                    Intent(
+                        context, BrowseActivity::class.java
+                    ).apply {
+                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                        this.putExtra(UiConst.TARGET_ID, id)
+                        this.putExtra(UiConst.TARGET_ID_MAL, idMal)
+                    }
+                )
             }
         }
 
         composable<Screen.AnimeListScreen> {
-            val parentEntry = remember(it) {
-                navController.getBackStackEntry(Screen.AnimeListScreen)
+            val viewModel: AnimeListViewModel = hiltViewModel()
+            AnimeListScreen(state = viewModel.state) { id, idMal ->
+                context.startActivity(
+                    Intent(
+                        context, BrowseActivity::class.java
+                    ).apply {
+                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                        this.putExtra(UiConst.TARGET_ID, id)
+                        this.putExtra(UiConst.TARGET_ID_MAL, idMal)
+                    }
+                )
             }
-            val viewModel: AnimeListViewModel = hiltViewModel(parentEntry)
-            AnimeListScreen(state = viewModel.state)
         }
 
         composable<Screen.CharaListScreen> {
-            val parentEntry = remember(it) {
-                navController.getBackStackEntry(Screen.CharaListScreen)
+            val viewmodel: CharacterListViewModel = hiltViewModel()
+            CharaListScreen(state = viewmodel.state) { id ->
+                context.startActivity(
+                    Intent(
+                        context, BrowseActivity::class.java
+                    ).apply {
+                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
+                        this.putExtra(UiConst.TARGET_ID, id)
+                    }
+                )
             }
-            val viewmodel: CharacterListViewModel = hiltViewModel(parentEntry)
-            CharaListScreen(state = viewmodel.state)
         }
 
         composable<Screen.SearchScreen> { it ->
-            val parentEntry = remember(it) {
-                navController.getBackStackEntry(Screen.SearchScreen)
-            }
-
-            val viewModel: SearchMediaViewModel = hiltViewModel(parentEntry)
+            val viewModel: SearchMediaViewModel = hiltViewModel()
 
             LaunchedEffect(searchQuery) {
                 snapshotFlow { searchQuery }
@@ -85,7 +109,21 @@ fun MainNavHost(
                 state = viewModel.state,
                 onBack = onBack,
                 onEvent = viewModel::onEvent
-            )
+            ) { type, id, idMal ->
+
+                context.startActivity(
+                    Intent(
+                        context, BrowseActivity::class.java
+                    ).apply {
+                        putExtra(UiConst.TARGET_TYPE, type)
+                        putExtra(UiConst.TARGET_ID, id)
+
+                        if (idMal != null) {
+                            putExtra(UiConst.TARGET_ID_MAL, idMal)
+                        }
+                    }
+                )
+            }
         }
 
         composable<Screen.SortListScreen> {
@@ -97,7 +135,17 @@ fun MainNavHost(
             SortedListScreen(
                 state = viewmodel.state,
                 onEvent = viewmodel::changeSortEvent
-            )
+            ) { id, idMal ->
+                context.startActivity(
+                    Intent(
+                        context, BrowseActivity::class.java
+                    ).apply {
+                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                        this.putExtra(UiConst.TARGET_ID, id)
+                        this.putExtra(UiConst.TARGET_ID_MAL, idMal)
+                    }
+                )
+            }
         }
     }
 }

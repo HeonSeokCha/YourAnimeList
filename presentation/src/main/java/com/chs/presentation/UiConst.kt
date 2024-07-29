@@ -31,6 +31,7 @@ object UiConst {
     const val PAGER_CHANGE_DELAY = 5000L
     const val MAX_BANNER_SIZE: Int = 5
     const val BANNER_SIZE: Int = 6
+    const val TEXT_UNKNOWN_ERROR: String = "Unknown Error.."
 
     val ANIME_DETAIL_TAB_LIST: List<String> = listOf(
         "OVERVIEW",

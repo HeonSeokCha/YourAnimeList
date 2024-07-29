@@ -8,5 +8,5 @@ data class HomeState(
     val animeCategoryList: List<Pair<String, Triple<UiConst.SortType, Int, String?>>> = UiConst.animeCategorySortList,
     val animeRecommendList: Resource<AnimeRecommendList> = Resource.Loading(),
     val isLoading: Boolean = false,
-    val isError: String? = null
+    val errorMessage: String? = null
 )

@@ -15,9 +15,11 @@ import com.chs.presentation.common.ItemAnimeLarge
 import com.chs.presentation.common.ItemNoResultImage
 
 @Composable
-fun AnimeListScreen(state: AnimeListState) {
+fun AnimeListScreen(
+    state: AnimeListState,
+    onStartActivity: (Int, Int) -> Unit
+) {
 
-    val context = LocalContext.current
 
     if (state.animeList.isEmpty()) {
         ItemNoResultImage()
@@ -35,15 +37,7 @@ fun AnimeListScreen(state: AnimeListState) {
                 key = { state.animeList[it].id }
             ) { idx ->
                 ItemAnimeLarge(anime = state.animeList[idx]) {
-                    context.startActivity(
-                        Intent(
-                            context, BrowseActivity::class.java
-                        ).apply {
-                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                            this.putExtra(UiConst.TARGET_ID, state.animeList[idx].id)
-                            this.putExtra(UiConst.TARGET_ID_MAL, state.animeList[idx].idMal)
-                        }
-                    )
+                    onStartActivity(state.animeList[idx].id, state.animeList[idx].idMal)
                 }
             }
         }

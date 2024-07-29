@@ -1,24 +1,15 @@
 package com.chs.presentation.sortList
 
-import android.content.Intent
-import android.widget.Toast
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -32,15 +23,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.chs.presentation.UiConst
-import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
+import com.chs.presentation.common.ItemErrorImage
+import com.chs.presentation.common.ItemNoResultImage
 import com.chs.presentation.common.PullToRefreshBox
 import com.chs.presentation.header
 import com.chs.presentation.ui.theme.Pink80
@@ -49,9 +39,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun SortedListScreen(
     state: SortState,
-    onEvent: (SortEvent) -> Unit
+    onEvent: (SortEvent) -> Unit,
+    onActivityStart: (Int, Int) -> Unit
 ) {
-    val context = LocalContext.current
     val lazyGridScrollState = rememberLazyGridState()
     val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
     var filterDialogShow: Int? by remember { mutableStateOf(null) }
@@ -127,17 +117,9 @@ fun SortedListScreen(
                 ) {
                     val animeInfo = pagingItems[it]
                     ItemAnimeSmall(item = animeInfo) {
-                        context.startActivity(
-                            Intent(
-                                context, BrowseActivity::class.java
-                            ).apply {
-                                if (animeInfo != null) {
-                                    this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                                    this.putExtra(UiConst.TARGET_ID, animeInfo.id)
-                                    this.putExtra(UiConst.TARGET_ID_MAL, animeInfo.idMal)
-                                }
-                            }
-                        )
+                        if (animeInfo != null) {
+                            onActivityStart(animeInfo.id, animeInfo.idMal)
+                        }
                     }
                 }
 
@@ -150,9 +132,7 @@ fun SortedListScreen(
 
                     is LoadState.Error -> {
                         item {
-                            Text(
-                                text = "Something Wrong for Loading List."
-                            )
+                            ItemErrorImage(message = (pagingItems.loadState.refresh as LoadState.Error).error.message)
                         }
                     }
 
@@ -169,9 +149,7 @@ fun SortedListScreen(
 
                     is LoadState.Error -> {
                         item {
-                            Text(
-                                text = "Something Wrong for Loading List."
-                            )
+                            ItemErrorImage(message = (pagingItems.loadState.append as LoadState.Error).error.message)
                         }
                     }
 

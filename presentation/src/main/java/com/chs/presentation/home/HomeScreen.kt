@@ -1,7 +1,5 @@
 package com.chs.presentation.home
 
-import android.content.Intent
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,15 +20,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chs.common.Resource
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
-import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.common.ItemAnimeSmall
+import com.chs.presentation.common.ItemErrorImage
 import com.chs.presentation.common.PullToRefreshBox
 import com.chs.presentation.main.Screen
 import kotlinx.coroutines.launch
@@ -40,20 +36,12 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     state: HomeState,
     event: (HomeEvent) -> Unit,
-    onNavigate: (Screen.SortListScreen) -> Unit
+    onNavigate: (Screen.SortListScreen) -> Unit,
+    onStartActivity: (Int, Int) -> Unit
 ) {
-    val context = LocalContext.current
     val pagerState = rememberPagerState { UiConst.BANNER_SIZE }
-    var showErrorItem by remember { mutableStateOf(false) }
     var isRefreshing by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
-
-    LaunchedEffect(state.isError) {
-        if (state.isError != null) {
-            showErrorItem = true
-            Toast.makeText(context, state.isError, Toast.LENGTH_SHORT).show()
-        }
-    }
 
     PullToRefreshBox(
         isRefreshing = isRefreshing,
@@ -71,11 +59,6 @@ fun HomeScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (showErrorItem) {
-                item {
-                    Text("")
-                } }
-
             when (state.animeRecommendList) {
                 is Resource.Loading -> {
                     item {
@@ -105,15 +88,7 @@ fun HomeScreen(
                                 ItemHomeBanner(
                                     banner = data.bannerList[idx]
                                 ) { id, idMal ->
-                                    context.startActivity(
-                                        Intent(
-                                            context, BrowseActivity::class.java
-                                        ).apply {
-                                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                                            this.putExtra(UiConst.TARGET_ID, id)
-                                            this.putExtra(UiConst.TARGET_ID_MAL, idMal)
-                                        }
-                                    )
+                                    onStartActivity(id, idMal)
                                 }
                             }
 
@@ -150,15 +125,7 @@ fun HomeScreen(
                             sortClick = { route ->
                                 onNavigate(route)
                             }, animeClick = { id, idMal ->
-                                context.startActivity(
-                                    Intent(
-                                        context, BrowseActivity::class.java
-                                    ).apply {
-                                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                                        this.putExtra(UiConst.TARGET_ID, id)
-                                        this.putExtra(UiConst.TARGET_ID_MAL, idMal)
-                                    }
-                                )
+                                onStartActivity(id, idMal)
                             }
                         )
                     }
@@ -166,9 +133,7 @@ fun HomeScreen(
 
                 is Resource.Error -> {
                     item {
-                        Text(
-                            text = state.animeRecommendList.message.toString()
-                        )
+                        ItemErrorImage(message = state.errorMessage)
                     }
                 }
             }
