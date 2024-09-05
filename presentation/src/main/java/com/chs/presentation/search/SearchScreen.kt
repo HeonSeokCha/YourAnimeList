@@ -14,8 +14,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import com.chs.presentation.UiConst
-import com.chs.presentation.common.PullToRefreshBox
+import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.ui.theme.Pink80
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -35,16 +36,19 @@ fun SearchScreen(
         }
     }
 
-    PullToRefreshBox(
+    ItemPullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = {
             isRefreshing = true
-            when (pagerState.currentPage) {
-                0 -> onEvent(SearchEvent.GetSearchAnimeResult)
-                1 -> onEvent(SearchEvent.GetSearchCharaResult)
-                else -> Unit
+            coroutineScope.launch {
+                when (pagerState.currentPage) {
+                    0 -> onEvent(SearchEvent.GetSearchAnimeResult)
+                    1 -> onEvent(SearchEvent.GetSearchCharaResult)
+                    else -> Unit
+                }
+                delay(500L)
+                isRefreshing = false
             }
-            isRefreshing = false
         }
     ) {
         Column(

@@ -28,8 +28,9 @@ import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemErrorImage
-import com.chs.presentation.common.PullToRefreshBox
+import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.main.Screen
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -43,13 +44,14 @@ fun HomeScreen(
     var isRefreshing by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
 
-    PullToRefreshBox(
+    ItemPullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = {
+            isRefreshing = true
             coroutineScope.launch {
-                isRefreshing = true
                 pagerState.scrollToPage(0)
                 event(HomeEvent.GetHomeData)
+                delay(500L)
                 isRefreshing = false
             }
         }

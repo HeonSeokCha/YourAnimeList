@@ -67,9 +67,10 @@ import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemSaveButton
 import com.chs.presentation.common.PlaceholderHighlight
-import com.chs.presentation.common.PullToRefreshBox
+import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.common.shimmer
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -87,13 +88,14 @@ fun CharacterDetailScreen(
     var isRefreshing by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
 
-    PullToRefreshBox(
+    ItemPullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = {
+            isRefreshing = true
             coroutineScope.launch {
-                isRefreshing = true
                 scrollState.scrollTo(0)
                 onEvent(CharaDetailEvent.GetCharaDetailInfo)
+                delay(500L)
                 isRefreshing = false
             }
         }

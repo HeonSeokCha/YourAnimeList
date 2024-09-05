@@ -38,7 +38,8 @@ import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
-import com.chs.presentation.common.PullToRefreshBox
+import com.chs.presentation.common.ItemPullToRefreshBox
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -55,13 +56,14 @@ fun StudioDetailScreen(
     var isShowFilterDialog by remember { mutableStateOf(false) }
     var isRefreshing by remember { mutableStateOf(false) }
 
-    PullToRefreshBox(
+    ItemPullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = {
+            isRefreshing = true
             coroutineScope.launch {
-                isRefreshing = true
                 scrollState.scrollTo(0)
                 onEvent(StudioEvent.GetStudioInfo)
+                delay(500L)
                 isRefreshing = false
             }
         }

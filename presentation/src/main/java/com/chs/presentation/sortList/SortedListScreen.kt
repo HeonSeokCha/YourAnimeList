@@ -31,7 +31,7 @@ import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemErrorImage
 import com.chs.presentation.common.ItemNoResultImage
-import com.chs.presentation.common.PullToRefreshBox
+import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.header
 import com.chs.presentation.ui.theme.Pink80
 import kotlinx.coroutines.launch
@@ -49,7 +49,7 @@ fun SortedListScreen(
     val scrollState = rememberScrollState()
     var isRefreshing by remember { mutableStateOf(false) }
 
-    PullToRefreshBox(
+    ItemPullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = {
             isRefreshing = true

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.chs.domain.usecase.GetAnimeRecListUseCase
 import com.chs.presentation.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

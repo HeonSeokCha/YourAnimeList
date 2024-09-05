@@ -25,7 +25,7 @@ object UiConst {
     const val UNKNOWN: String = "Unknown"
     const val KEY_SEASON: String = "season"
     const val KEY_YEAR: String = "year"
-    const val KEY_SORT: String = "sort"
+    const val KEY_SORT: String = "sortOption"
     const val KEY_GENRE: String = "genre"
     const val INFINITE_PAGER_COUNT = Int.MAX_VALUE
     const val PAGER_CHANGE_DELAY = 5000L

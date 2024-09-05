@@ -54,11 +54,12 @@ import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.color
 import com.chs.presentation.common.ItemSaveButton
 import com.chs.presentation.common.PlaceholderHighlight
-import com.chs.presentation.common.PullToRefreshBox
+import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.common.shimmer
 import com.chs.presentation.isNotEmptyValue
 import com.chs.presentation.ui.theme.Pink80
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -74,14 +75,14 @@ fun AnimeDetailScreen(
     val scrollState = rememberScrollState()
     var isRefreshing by remember { mutableStateOf(false) }
 
-
-    PullToRefreshBox(
+    ItemPullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = {
+            isRefreshing = true
             coroutineScope.launch {
-                isRefreshing = true
                 pagerState.scrollToPage(0)
                 onEvent(AnimeDetailEvent.GetAnimeDetailInfo)
+                delay(500L)
                 isRefreshing = false
             }
         }
