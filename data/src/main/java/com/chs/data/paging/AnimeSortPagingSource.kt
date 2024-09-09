@@ -33,15 +33,10 @@ class AnimeSortPagingSource(
                     AnimeListQuery(
                         page = Optional.present(page),
                         sort = Optional.present(sort),
-                        season = if (season == null) {
-                            Optional.absent()
-                        } else Optional.present(season),
-                        seasonYear = if (seasonYear == null) {
-                            Optional.absent()
-                        } else Optional.present(seasonYear),
-                        genre = if (genre == null) {
-                            Optional.absent()
-                        } else Optional.present(genre)
+                        season = Optional.presentIfNotNull(season),
+                        seasonYear = Optional.presentIfNotNull(seasonYear),
+                        genre = Optional.presentIfNotNull(genre),
+                        stauts = Optional.presentIfNotNull(null)
                     )
                 )
                 .execute()

@@ -52,8 +52,7 @@ class AnimeRepositoryImpl @Inject constructor(
                             currentSeason = Optional.present(MediaSeason.valueOf(currentSeason)),
                             nextSeason = Optional.present(MediaSeason.valueOf(nextSeason)),
                             currentYear = Optional.present(currentYear),
-                            nextYear = Optional.present(nextYear),
-                            lastYear = Optional.present(lastYear)
+                            nextYear = Optional.present(nextYear)
                         )
                     )
                     .execute()
@@ -92,7 +91,7 @@ class AnimeRepositoryImpl @Inject constructor(
                 sort = sortType.map { MediaSort.safeValueOf(it) },
                 season = if (season != null) MediaSeason.safeValueOf(season) else null,
                 seasonYear = year,
-                genre = genre
+                genre = genre,
             )
         }.flow
     }

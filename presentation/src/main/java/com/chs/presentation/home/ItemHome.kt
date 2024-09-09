@@ -62,7 +62,10 @@ fun ItemHomeBanner(
     ) {
         Box(
             modifier = Modifier
-                .size(150.dp, 220.dp)
+                .size(
+                    width = 150.dp,
+                    height = 220.dp
+                )
         ) {
             AsyncImage(
                 modifier = Modifier
@@ -79,6 +82,7 @@ fun ItemHomeBanner(
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

@@ -3,7 +3,8 @@ query AnimeListQuery(
     $sort: [MediaSort],
     $season: MediaSeason,
     $seasonYear: Int,
-    $genre: String
+    $genre: String,
+    $stauts: MediaStatus
 ) {
    page: Page(
         page: $page,
@@ -18,7 +19,8 @@ query AnimeListQuery(
             seasonYear: $seasonYear,
             genre: $genre,
             type: ANIME,
-            isAdult: false
+            isAdult: false,
+            status: $stauts
         ) {
             ... animeBasicInfo
         }

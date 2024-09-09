@@ -2,18 +2,18 @@ query HomeAnimeList(
     $currentSeason: MediaSeason,
     $nextSeason: MediaSeason,
     $currentYear: Int,
-    $nextYear: Int,
-    $lastYear: Int
+    $nextYear: Int
 ) {
     viewPager: Page(
         page: 1,
         perPage: 6
     ) {
         media(
-            sort: [SCORE_DESC],
+            sort: [FAVOURITES_DESC],
             type: ANIME,
-            seasonYear: $lastYear,
-            season: $currentSeason
+            season: $currentSeason,
+            status_in: [RELEASING, FINISHED],
+            format: TV
         ) {
             ... animeBasicInfo
             description(asHtml: false)

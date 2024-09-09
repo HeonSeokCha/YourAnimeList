@@ -34,6 +34,7 @@ import com.chs.presentation.common.ItemNoResultImage
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.header
 import com.chs.presentation.ui.theme.Pink80
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -53,8 +54,11 @@ fun SortedListScreen(
         isRefreshing = isRefreshing,
         onRefresh = {
             isRefreshing = true
-            onEvent(SortEvent.GetSortList)
-            isRefreshing = false
+            coroutineScope.launch {
+                onEvent(SortEvent.GetSortList)
+                delay(500L)
+                isRefreshing = false
+            }
         }
     ) {
         LazyVerticalGrid(
