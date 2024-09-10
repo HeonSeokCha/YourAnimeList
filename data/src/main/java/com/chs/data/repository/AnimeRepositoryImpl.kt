@@ -3,8 +3,8 @@ package com.chs.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Optional
 import com.chs.common.Constants
 import com.chs.common.Resource
 import com.chs.data.AnimeDetailInfoQuery
@@ -24,6 +24,7 @@ import com.chs.data.source.db.dao.GenreDao
 import com.chs.data.source.db.entity.GenreEntity
 import com.chs.data.type.MediaSeason
 import com.chs.data.type.MediaSort
+import com.chs.data.type.MediaStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -78,7 +79,8 @@ class AnimeRepositoryImpl @Inject constructor(
         sortType: List<String>,
         season: String?,
         year: Int?,
-        genre: String?
+        genre: String?,
+        status: String?
     ): Flow<PagingData<AnimeInfo>> {
         return Pager(
             PagingConfig(
@@ -92,6 +94,7 @@ class AnimeRepositoryImpl @Inject constructor(
                 season = if (season != null) MediaSeason.safeValueOf(season) else null,
                 seasonYear = year,
                 genre = genre,
+                status = if (status != null) MediaStatus.safeValueOf(status) else null
             )
         }.flow
     }
@@ -102,7 +105,7 @@ class AnimeRepositoryImpl @Inject constructor(
             try {
                 val response = apolloClient
                     .query(
-                        AnimeDetailInfoQuery(id = Optional.present(animeId))
+                        AnimeDetailInfoQuery(Optional.present(animeId))
                     )
                     .execute()
                 if (response.hasErrors()) {

@@ -67,7 +67,8 @@ class SortedViewModel @Inject constructor(
                 },
                 season = state.selectSeason?.second,
                 year = state.selectYear,
-                genre = state.selectGenre
+                genre = state.selectGenre,
+                status = null
             ).cachedIn(viewModelScope)
         )
     }

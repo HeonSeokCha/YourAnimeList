@@ -2,20 +2,22 @@ package com.chs.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Optional
 import com.chs.data.AnimeListQuery
 import com.chs.data.mapper.toAnimeInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.data.type.MediaSeason
 import com.chs.data.type.MediaSort
+import com.chs.data.type.MediaStatus
 
 class AnimeSortPagingSource(
     private val apolloClient: ApolloClient,
     private val sort: List<MediaSort>,
     private val season: MediaSeason?,
     private val seasonYear: Int?,
-    private val genre: String?
+    private val genre: String?,
+    private val status: MediaStatus?
 ) : PagingSource<Int, AnimeInfo>() {
 
     override fun getRefreshKey(state: PagingState<Int, AnimeInfo>): Int? {
@@ -36,13 +38,17 @@ class AnimeSortPagingSource(
                         season = Optional.presentIfNotNull(season),
                         seasonYear = Optional.presentIfNotNull(seasonYear),
                         genre = Optional.presentIfNotNull(genre),
-                        stauts = Optional.presentIfNotNull(null)
+                        stauts = Optional.presentIfNotNull(status)
                     )
                 )
                 .execute()
 
-            if (response.hasErrors()) {
-                return LoadResult.Error(Exception(response.errors!!.first().message))
+            if (response.data == null) {
+                return if (response.exception == null) {
+                    LoadResult.Error(Exception(response.errors!!.first().message))
+                } else {
+                    LoadResult.Error(Exception(response.exception!!.message))
+                }
             }
 
             val data = response

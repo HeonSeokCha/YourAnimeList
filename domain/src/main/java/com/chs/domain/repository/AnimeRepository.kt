@@ -22,7 +22,8 @@ interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
         sortType: List<String>,
         season: String?,
         year: Int?,
-        genre: String?
+        genre: String?,
+        status: String?
     ): Flow<PagingData<AnimeInfo>>
 
     fun getAnimeDetailInfo(animeId: Int): Flow<Resource<AnimeDetailInfo>>

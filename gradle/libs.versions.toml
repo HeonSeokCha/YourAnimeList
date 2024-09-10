@@ -1,5 +1,5 @@
 [versions]
-androidStudioGradlePlugin = "8.5.2"
+androidStudioGradlePlugin = "8.6.0"
 
 compileSdkVersion = "35"
 kotlinGradlePlugin = "2.0.20"
@@ -8,9 +8,9 @@ targetSdkVersion = "34"
 versionCode = "1"
 versionName = "1.0"
 
-activity = "1.9.1"
+activity = "1.9.2"
 compose-ui = "1.7.0"
-lifecycle = "2.8.4"
+lifecycle = "2.8.5"
 room = "2.6.1"
 paging = "3.3.2"
 coil = "2.6.0"
@@ -19,7 +19,7 @@ kotlin = "2.0.20"
 ksp = "2.0.20-1.0.24"
 kotlin-coroutine = "1.8.1"
 ktor = "2.3.12"
-apollo = "3.8.5"
+apollo = "4.0.0"
 
 [libraries]
 # AndroidX
@@ -60,9 +60,9 @@ ktor-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version
 ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor"}
 
 ## Apollo
-apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo"}
-apollo-api = { module = "com.apollographql.apollo3:apollo-api", version.ref = "apollo"}
-apollo-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", version.ref = "apollo"}
+apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo"}
+apollo-api = { module = "com.apollographql.apollo:apollo-api", version.ref = "apollo"}
+apollo-cache = { module = "com.apollographql.apollo:apollo-http-cache", version.ref = "apollo"}
 
 ## etc
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
@@ -81,10 +81,8 @@ ktor = [
     "ktor-negotiation",
     "ktor-logging"
 ]
-android = [
-    "androidX-core-ktx",
-]
 compose = [
+    "androidX-core-ktx",
     "androidX-compose-ui",
     "androidX-activity-compose",
     "androidX-compose-material-icon-extend",
@@ -98,7 +96,7 @@ compose = [
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidStudioGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidStudioGradlePlugin" }
-apollo = { id = "com.apollographql.apollo3", version.ref = "apollo"}
+apollo = { id = "com.apollographql.apollo", version.ref = "apollo"}
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

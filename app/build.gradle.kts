@@ -61,7 +61,6 @@ dependencies {
     implementation(projects.common)
     implementation(projects.data)
 
-    implementation(libs.bundles.android)
     implementation(libs.bundles.compose)
 
     implementation(libs.hilt.android)

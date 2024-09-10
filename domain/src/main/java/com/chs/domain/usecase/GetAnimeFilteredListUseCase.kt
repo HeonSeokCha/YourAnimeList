@@ -13,13 +13,15 @@ class GetAnimeFilteredListUseCase @Inject constructor(
         sortType: List<String>,
         season: String?,
         year: Int?,
-        genre: String?
+        genre: String?,
+        status: String?
     ): Flow<PagingData<AnimeInfo>> {
         return repository.getAnimeFilteredList(
-            sortType,
-            season,
-            year,
-            genre
+            sortType = sortType,
+            season = season,
+            year = year,
+            genre = genre,
+            status = status
         )
     }
 }

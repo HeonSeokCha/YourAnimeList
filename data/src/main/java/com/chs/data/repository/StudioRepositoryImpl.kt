@@ -3,8 +3,8 @@ package com.chs.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Optional
 import com.chs.data.StudioQuery
 import com.chs.common.Constants
 import com.chs.common.Resource

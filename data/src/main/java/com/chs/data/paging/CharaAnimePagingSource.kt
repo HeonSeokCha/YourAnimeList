@@ -2,8 +2,8 @@ package com.chs.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Optional
 import com.chs.data.CharacterDetailAnimeListQuery
 import com.chs.data.mapper.toAnimeInfo
 import com.chs.domain.model.AnimeInfo
@@ -35,8 +35,12 @@ class CharaAnimePagingSource(
                 )
                 .execute()
 
-            if (response.hasErrors()) {
-                return LoadResult.Error(Exception(response.errors!!.first().message))
+            if (response.data == null) {
+                return if (response.exception == null) {
+                    LoadResult.Error(Exception(response.errors!!.first().message))
+                } else {
+                    LoadResult.Error(Exception(response.exception!!.message))
+                }
             }
 
             val data = response
