@@ -68,7 +68,7 @@ class SortedViewModel @Inject constructor(
                 season = state.selectSeason?.second,
                 year = state.selectYear,
                 genre = state.selectGenre,
-                status = null
+                status = state.selectStatus
             ).cachedIn(viewModelScope)
         )
     }
@@ -99,6 +99,12 @@ class SortedViewModel @Inject constructor(
             is SortEvent.ChangeGenreOption -> {
                 state = state.copy(
                     selectGenre = event.value
+                )
+            }
+
+            is SortEvent.ChangeStatusOption -> {
+                state = state.copy(
+                    selectStatus = event.value
                 )
             }
         }

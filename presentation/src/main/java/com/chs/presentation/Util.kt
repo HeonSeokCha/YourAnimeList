@@ -30,11 +30,11 @@ object Util {
     fun getVariationYear(isNext: Boolean): Int {
         val calendar = Calendar.getInstance()
         return if (isNext) {
-            if (calendar.get(Calendar.MONTH) in Calendar.OCTOBER..Calendar.DECEMBER) {
+            if (calendar.get(Calendar.MONTH) in Calendar.JUNE..Calendar.DECEMBER) {
                 calendar.get(Calendar.YEAR) + 1
             } else calendar.get(Calendar.YEAR)
         } else {
-            if (calendar.get(Calendar.MONTH) in Calendar.JANUARY..Calendar.MARCH) {
+            if (calendar.get(Calendar.MONTH) in Calendar.JANUARY until Calendar.JUNE) {
                 calendar.get(Calendar.YEAR) - 1
             } else calendar.get(Calendar.YEAR)
         }

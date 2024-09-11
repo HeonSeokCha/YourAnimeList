@@ -77,8 +77,8 @@ fun SortedListScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = 4.dp,
-                            end = 4.dp
+                            start = 8.dp,
+                            end = 8.dp
                         )
                         .horizontalScroll(scrollState),
                     verticalAlignment = Alignment.CenterVertically,
@@ -105,10 +105,17 @@ fun SortedListScreen(
                     }
 
                     ItemSort(
-                        title = "Genre",
+                        title = "Status",
                         subTitle = state.selectGenre ?: "Any"
                     ) {
                         filterDialogShow = 3
+                    }
+
+                    ItemSort(
+                        title = "Genre",
+                        subTitle = state.selectGenre ?: "Any"
+                    ) {
+                        filterDialogShow = 4
                     }
                 }
             }
@@ -169,7 +176,8 @@ fun SortedListScreen(
                 0 -> state.optionYears
                 1 -> state.optionSeason
                 2 -> state.optionSort
-                3 -> state.optionGenres
+                3 -> state.optionStatus
+                4 -> state.optionGenres
                 else -> state.optionYears
             },
             onDismiss = {
@@ -192,6 +200,10 @@ fun SortedListScreen(
                     }
 
                     3 -> {
+                        onEvent(SortEvent.ChangeStatusOption(selectValue.second))
+                    }
+
+                    4 -> {
                         onEvent(SortEvent.ChangeGenreOption(selectValue.second))
                     }
 

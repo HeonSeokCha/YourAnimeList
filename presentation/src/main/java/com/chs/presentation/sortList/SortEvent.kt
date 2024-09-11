@@ -6,4 +6,5 @@ sealed class SortEvent {
     data class ChangeSeasonOption(val value: Pair<String, String>) : SortEvent()
     data class ChangeSortOption(val value: Pair<String, String>) : SortEvent()
     data class ChangeGenreOption(val value: String) : SortEvent()
+    data class ChangeStatusOption(val value: String) : SortEvent()
 }

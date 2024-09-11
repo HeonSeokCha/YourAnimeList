@@ -31,8 +31,7 @@ fun BrowseNavHost(
     val startMediaDestination: BrowseScreen =
         if (intent?.getStringExtra(UiConst.TARGET_TYPE) == UiConst.TARGET_MEDIA) {
             BrowseScreen.AnimeDetailScreen(
-                id = intent.getIntExtra(UiConst.TARGET_ID, 0),
-                idMal = intent.getIntExtra(UiConst.TARGET_ID_MAL, 0)
+                id = intent.getIntExtra(UiConst.TARGET_ID, 0), idMal = intent.getIntExtra(UiConst.TARGET_ID_MAL, 0)
             )
         } else {
             BrowseScreen.CharacterDetailScreen(
