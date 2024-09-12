@@ -26,12 +26,15 @@ class StudioRepositoryImpl @Inject constructor(
             emit(Resource.Loading())
             try {
                 val response = apolloClient
-                    .query(
-                        StudioQuery(id = Optional.present(studioId))
-                    )
+                    .query(StudioQuery(id = Optional.present(studioId)))
                     .execute()
-                if (response.hasErrors()) {
-                    return@flow emit(Resource.Error(response.errors!!.first().message))
+
+                if (response.data == null) {
+                    return@flow if (response.exception == null) {
+                        emit(Resource.Error(response.errors!!.first().message))
+                    } else {
+                        emit(Resource.Error(response.exception!!.message))
+                    }
                 }
 
                 emit(Resource.Success(response.data?.toStudioDetailInfo()!!))

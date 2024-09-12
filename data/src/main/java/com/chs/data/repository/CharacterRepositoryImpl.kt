@@ -36,13 +36,17 @@ class CharacterRepositoryImpl @Inject constructor(
                     .query(CharacterDetailQuery(Optional.present(characterId)))
                     .execute()
 
-                if (response.hasErrors()) {
-                    return@flow emit(Resource.Error(response.errors!!.first().message))
+                if (response.data == null) {
+                    return@flow if (response.exception == null) {
+                        emit(Resource.Error(response.errors!!.first().message))
+                    } else {
+                        emit(Resource.Error(response.exception!!.message))
+                    }
                 }
 
                 emit(Resource.Success(response.data?.character?.toCharacterDetailInfo()!!))
             } catch (e: Exception) {
-                throw e
+                emit(Resource.Error(e.message.toString()))
             }
         }
     }

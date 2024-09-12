@@ -3,6 +3,7 @@ package com.chs.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
 import com.chs.common.Constants
@@ -58,17 +59,15 @@ class AnimeRepositoryImpl @Inject constructor(
                     )
                     .execute()
 
-                if (response.hasErrors()) {
-                    return@flow emit(Resource.Error(response.errors!!.first().message))
+                if (response.data == null) {
+                    return@flow if (response.exception == null) {
+                        emit(Resource.Error(response.errors!!.first().message))
+                    } else {
+                        emit(Resource.Error(response.exception!!.message))
+                    }
                 }
 
-                emit(
-                    Resource.Success(
-                        response
-                            .data
-                            ?.toAnimeRecommendList()!!
-                    )
-                )
+                emit(Resource.Success(response.data.toAnimeRecommendList()))
             } catch (e: Exception) {
                 emit(Resource.Error(e.message.toString()))
             }
@@ -108,11 +107,16 @@ class AnimeRepositoryImpl @Inject constructor(
                         AnimeDetailInfoQuery(Optional.present(animeId))
                     )
                     .execute()
-                if (response.hasErrors()) {
-                    return@flow emit(Resource.Error(response.errors!!.first().message))
+
+                if (response.data == null) {
+                    return@flow if (response.exception == null) {
+                        emit(Resource.Error(response.errors!!.first().message))
+                    } else {
+                        emit(Resource.Error(response.exception!!.message))
+                    }
                 }
 
-                emit(Resource.Success(response.data?.toAnimeDetailInfo()!!))
+                emit(Resource.Success(response.data!!.toAnimeDetailInfo()))
             } catch (e: Exception) {
                 emit(Resource.Error(e.message.toString()))
             }
