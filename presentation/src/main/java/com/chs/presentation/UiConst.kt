@@ -75,7 +75,7 @@ object UiConst {
             ),
             "UPCOMING NEXT SEASON" to Triple(
                 SortType.POPULARITY,
-                Util.getVariationYear(true),
+                Util.getVariationYear(),
                 Util.getNextSeason()
             ),
             "ALL TIME POPULAR" to Triple(
@@ -114,7 +114,7 @@ object UiConst {
 
     val sortTypeList = SortType.entries
 
-    val yearSortList = (Util.getVariationYear(true) downTo 1980)
+    val yearSortList = (Util.getCurrentYear() + 1 downTo 1980)
         .map { it.toString() to it.toString() }
 
     val seasonFilterList = Season.entries

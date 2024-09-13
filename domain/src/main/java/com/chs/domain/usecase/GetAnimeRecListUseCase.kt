@@ -15,14 +15,12 @@ class GetAnimeRecListUseCase @Inject constructor(
         currentSeason: String,
         nextSeason: String,
         currentYear: Int,
-        lastYear: Int,
         nextYear: Int
     ): Flow<Resource<AnimeRecommendList>> {
         return repository.getAnimeRecommendList(
             currentSeason,
             nextSeason,
             currentYear,
-            lastYear,
             nextYear
         )
     }

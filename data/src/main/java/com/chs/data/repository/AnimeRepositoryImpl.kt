@@ -42,7 +42,6 @@ class AnimeRepositoryImpl @Inject constructor(
         currentSeason: String,
         nextSeason: String,
         currentYear: Int,
-        lastYear: Int,
         nextYear: Int
     ): Flow<Resource<AnimeRecommendList>> {
         return flow {

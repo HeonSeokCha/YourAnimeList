@@ -14,7 +14,6 @@ interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
         currentSeason: String,
         nextSeason: String,
         currentYear: Int,
-        lastYear: Int,
         nextYear: Int
     ): Flow<Resource<AnimeRecommendList>>
 
