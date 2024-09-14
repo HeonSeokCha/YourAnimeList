@@ -14,7 +14,7 @@ interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
         currentSeason: String,
         nextSeason: String,
         currentYear: Int,
-        nextYear: Int
+        variationYear: Int
     ): Flow<Resource<AnimeRecommendList>>
 
     fun getAnimeFilteredList(

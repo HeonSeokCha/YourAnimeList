@@ -2,7 +2,7 @@ query HomeAnimeList(
     $currentSeason: MediaSeason,
     $nextSeason: MediaSeason,
     $currentYear: Int,
-    $nextYear: Int
+    $variationYear: Int,
 ) {
     viewPager: Page(
         page: 1,
@@ -63,7 +63,7 @@ query HomeAnimeList(
         media(
             sort: [POPULARITY_DESC],
             season: $nextSeason,
-            seasonYear: $nextYear,
+            seasonYear: $variationYear,
             type: ANIME
         ) {
             ... animeBasicInfo

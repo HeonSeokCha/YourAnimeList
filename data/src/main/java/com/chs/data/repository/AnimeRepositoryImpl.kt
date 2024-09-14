@@ -42,7 +42,7 @@ class AnimeRepositoryImpl @Inject constructor(
         currentSeason: String,
         nextSeason: String,
         currentYear: Int,
-        nextYear: Int
+        variationYear: Int
     ): Flow<Resource<AnimeRecommendList>> {
         return flow {
             emit(Resource.Loading())
@@ -53,7 +53,7 @@ class AnimeRepositoryImpl @Inject constructor(
                             currentSeason = Optional.present(MediaSeason.valueOf(currentSeason)),
                             nextSeason = Optional.present(MediaSeason.valueOf(nextSeason)),
                             currentYear = Optional.present(currentYear),
-                            nextYear = Optional.present(nextYear)
+                            variationYear = Optional.present(variationYear)
                         )
                     )
                     .execute()

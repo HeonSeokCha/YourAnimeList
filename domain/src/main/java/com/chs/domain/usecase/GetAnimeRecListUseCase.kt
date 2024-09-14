@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-
 class GetAnimeRecListUseCase @Inject constructor(
     private val repository: AnimeRepository
 ) {
@@ -15,13 +14,13 @@ class GetAnimeRecListUseCase @Inject constructor(
         currentSeason: String,
         nextSeason: String,
         currentYear: Int,
-        nextYear: Int
+        variationYear: Int
     ): Flow<Resource<AnimeRecommendList>> {
         return repository.getAnimeRecommendList(
-            currentSeason,
-            nextSeason,
-            currentYear,
-            nextYear
+            currentSeason = currentSeason,
+            nextSeason = nextSeason,
+            currentYear = currentYear,
+            variationYear = variationYear
         )
     }
 }
