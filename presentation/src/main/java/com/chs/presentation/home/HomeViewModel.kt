@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(
                 currentSeason = Util.getCurrentSeason(),
                 nextSeason = Util.getNextSeason(),
                 currentYear = Util.getCurrentYear(),
-                variationYear =  Util.getVariationYear()
+                variationYear = Util.getVariationYear()
             ).collect { result ->
                 state = state.copy(
                     animeRecommendList = result

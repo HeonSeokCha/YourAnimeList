@@ -3,13 +3,12 @@ package com.chs.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
 import com.chs.common.Constants
 import com.chs.common.Resource
 import com.chs.data.AnimeDetailInfoQuery
-import com.chs.data.GenreQuery
+import com.chs.data.GenreTagQuery
 import com.chs.data.HomeAnimeListQuery
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
@@ -22,10 +21,12 @@ import com.chs.data.mapper.*
 import com.chs.data.paging.AnimeRecPagingSource
 import com.chs.data.paging.AnimeSortPagingSource
 import com.chs.data.source.db.dao.GenreDao
+import com.chs.data.source.db.dao.TagDao
 import com.chs.data.source.db.entity.GenreEntity
 import com.chs.data.type.MediaSeason
 import com.chs.data.type.MediaSort
 import com.chs.data.type.MediaStatus
+import com.chs.domain.model.TagInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -35,7 +36,8 @@ class AnimeRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
     private val jikanService: KtorJikanService,
     private val animeDao: AnimeListDao,
-    private val genreDao: GenreDao
+    private val genreDao: GenreDao,
+    private val tagDao: TagDao
 ) : AnimeRepository {
 
     override fun getAnimeRecommendList(
@@ -89,10 +91,10 @@ class AnimeRepositoryImpl @Inject constructor(
             AnimeSortPagingSource(
                 apolloClient = apolloClient,
                 sort = sortType.map { MediaSort.safeValueOf(it) },
-                season = if (season != null) MediaSeason.safeValueOf(season) else null,
+                season = MediaSeason.entries.find { it.rawValue == season },
                 seasonYear = year,
                 genre = genre,
-                status = if (status != null) MediaStatus.safeValueOf(status) else null
+                status = MediaStatus.entries.find { it.rawValue == season }
             )
         }.flow
     }
@@ -175,16 +177,34 @@ class AnimeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getRecentGenreList() {
+        val data = apolloClient
+            .query(GenreTagQuery())
+            .execute()
+            .data
+
         val genreList: List<String> = try {
-            apolloClient
-                .query(GenreQuery())
-                .execute()
-                .data
-                ?.genreCollection
-                ?.filterNotNull() ?: emptyList()
+            data?.genreCollection
+                ?.filterNotNull()
+                ?: emptyList()
+
+
         } catch (e: Exception) {
             emptyList()
         }
+
+        val tagList: List<TagInfo> = try {
+            data?.mediaTagCollection
+                ?.filterNotNull()
+                ?.map {
+                    TagInfo(
+                        name = it.name,
+                        desc = it.description
+                    )
+                } ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+
 
         if (genreList.isNotEmpty()) {
             genreDao.insertMultiple(

@@ -64,7 +64,7 @@ class CharacterRepositoryImpl @Inject constructor(
             CharaAnimePagingSource(
                 apolloClient,
                 charaId = characterId,
-                sort = MediaSort.valueOf(sort)
+                sort = MediaSort.safeValueOf(sort)
             )
         }.flow
     }

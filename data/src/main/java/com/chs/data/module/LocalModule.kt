@@ -7,6 +7,7 @@ import com.chs.data.source.db.dao.AnimeListDao
 import com.chs.data.source.db.dao.CharaListDao
 import com.chs.data.source.db.dao.GenreDao
 import com.chs.data.source.db.dao.SearchListDao
+import com.chs.data.source.db.dao.TagDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,5 +47,10 @@ object LocalModule {
     @Provides
     fun provideGenreDao(db: AnimeListDatabase): GenreDao {
         return db.genreDao
+    }
+
+    @Provides
+    fun provideTagDao(db: AnimeListDatabase): TagDao {
+        return db.tagDao
     }
 }

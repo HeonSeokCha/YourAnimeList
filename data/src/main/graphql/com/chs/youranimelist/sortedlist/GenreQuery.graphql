@@ -1,3 +1,11 @@
-query GenreQuery {
+query GenreTagQuery {
     genreCollection: GenreCollection
+    mediaTagCollection: MediaTagCollection {
+        name,
+        description,
+        category,
+        isMediaSpoiler,
+        isGeneralSpoiler,
+        isAdult,
+    }
 }
