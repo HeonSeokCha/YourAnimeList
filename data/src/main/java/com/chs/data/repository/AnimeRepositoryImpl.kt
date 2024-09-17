@@ -23,13 +23,18 @@ import com.chs.data.paging.AnimeSortPagingSource
 import com.chs.data.source.db.dao.GenreDao
 import com.chs.data.source.db.dao.TagDao
 import com.chs.data.source.db.entity.GenreEntity
+import com.chs.data.source.db.entity.TagEntity
 import com.chs.data.type.MediaSeason
 import com.chs.data.type.MediaSort
 import com.chs.data.type.MediaStatus
 import com.chs.domain.model.TagInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AnimeRepositoryImpl @Inject constructor(
@@ -79,7 +84,8 @@ class AnimeRepositoryImpl @Inject constructor(
         sortType: List<String>,
         season: String?,
         year: Int?,
-        genre: String?,
+        genres: List<String>?,
+        tags: List<String>?,
         status: String?
     ): Flow<PagingData<AnimeInfo>> {
         return Pager(
@@ -93,7 +99,8 @@ class AnimeRepositoryImpl @Inject constructor(
                 sort = sortType.map { MediaSort.safeValueOf(it) },
                 season = MediaSeason.entries.find { it.rawValue == season },
                 seasonYear = year,
-                genre = genre,
+                genres = genres,
+                tags = tags,
                 status = MediaStatus.entries.find { it.rawValue == season }
             )
         }.flow
@@ -176,48 +183,65 @@ class AnimeRepositoryImpl @Inject constructor(
         animeDao.delete(info.toAnimeEntity())
     }
 
-    override suspend fun getRecentGenreList() {
+    override suspend fun getRecentGenreTagList() {
         val data = apolloClient
             .query(GenreTagQuery())
             .execute()
             .data
 
-        val genreList: List<String> = try {
-            data?.genreCollection
-                ?.filterNotNull()
-                ?: emptyList()
+        withContext(Dispatchers.IO) {
+            val genreJob = async {
+                val list = data?.genreCollection
+                    ?.filterNotNull()
+                    ?: emptyList()
 
+                if (list.isEmpty()) return@async
 
-        } catch (e: Exception) {
-            emptyList()
-        }
+                genreDao.insertMultiple(
+                    *list.map {
+                        GenreEntity(it)
+                    }.toTypedArray()
+                )
+            }
 
-        val tagList: List<TagInfo> = try {
-            data?.mediaTagCollection
-                ?.filterNotNull()
-                ?.map {
-                    TagInfo(
-                        name = it.name,
-                        desc = it.description
-                    )
-                } ?: emptyList()
-        } catch (e: Exception) {
-            emptyList()
-        }
+            val tagJob = async {
+                val list = data?.mediaTagCollection
+                    ?.filterNotNull()
+                    ?.map {
+                        TagInfo(
+                            name = it.name,
+                            desc = it.description
+                        )
+                    } ?: emptyList()
 
+                if (list.isEmpty()) return@async
 
-        if (genreList.isNotEmpty()) {
-            genreDao.insertMultiple(
-                *genreList.map {
-                    GenreEntity(it)
-                }.toTypedArray()
-            )
+                tagDao.insertMultiple(
+                    *list.map {
+                        TagEntity(
+                            name = it.name,
+                            desc = it.desc
+                        )
+                    }.toTypedArray()
+                )
+            }
+
+            awaitAll(genreJob, tagJob)
         }
     }
 
     override suspend fun getSavedGenreList(): List<String> {
         return genreDao.getAllGenres().map {
             it.name
+        }
+    }
+
+    override suspend fun getSavedTagList(): List<TagInfo> {
+        return tagDao.getAllTags().map {
+            TagInfo(
+                name = it.name,
+                desc = it.desc
+            )
         }
     }
 }

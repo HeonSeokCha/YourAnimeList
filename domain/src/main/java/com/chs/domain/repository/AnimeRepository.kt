@@ -6,6 +6,7 @@ import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeRecommendList
 import com.chs.domain.model.AnimeThemeInfo
+import com.chs.domain.model.TagInfo
 import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
@@ -21,7 +22,8 @@ interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
         sortType: List<String>,
         season: String?,
         year: Int?,
-        genre: String?,
+        genres: List<String>?,
+        tags: List<String>?,
         status: String?
     ): Flow<PagingData<AnimeInfo>>
 
@@ -31,9 +33,11 @@ interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
 
     fun getAnimeDetailTheme(animeId: Int): Flow<Resource<AnimeThemeInfo>>
 
-    suspend fun getRecentGenreList()
+    suspend fun getRecentGenreTagList()
 
     suspend fun getSavedGenreList(): List<String>
+
+    suspend fun getSavedTagList(): List<TagInfo>
 
     override fun getSavedMediaInfoList(): Flow<List<AnimeInfo>>
 

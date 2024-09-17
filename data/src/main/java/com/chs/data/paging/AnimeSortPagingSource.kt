@@ -16,7 +16,8 @@ class AnimeSortPagingSource(
     private val sort: List<MediaSort>,
     private val season: MediaSeason?,
     private val seasonYear: Int?,
-    private val genre: String?,
+    private val genres: List<String>?,
+    private val tags: List<String>?,
     private val status: MediaStatus?
 ) : PagingSource<Int, AnimeInfo>() {
 
@@ -37,7 +38,8 @@ class AnimeSortPagingSource(
                         sort = Optional.present(sort),
                         season = Optional.presentIfNotNull(season),
                         seasonYear = Optional.presentIfNotNull(seasonYear),
-                        genre = Optional.presentIfNotNull(genre),
+                        genre = Optional.presentIfNotNull(genres),
+                        tags = Optional.presentIfNotNull(tags),
                         stauts = Optional.presentIfNotNull(status)
                     )
                 )

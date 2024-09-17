@@ -9,13 +9,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.chs.presentation.UiConst
 import com.chs.domain.usecase.GetAnimeFilteredListUseCase
-import com.chs.domain.usecase.GetRecentGenresUseCase
+import com.chs.domain.usecase.GetRecentGenresTagUseCase
+import com.chs.domain.usecase.GetSaveTagUseCase
 import com.chs.domain.usecase.GetSavedGenresUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -25,7 +23,8 @@ class SortedViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getAnimeFilteredListUseCase: GetAnimeFilteredListUseCase,
     private val getSavedGenresUsaCase: GetSavedGenresUseCase,
-    private val getRecentGenresUseCase: GetRecentGenresUseCase
+    private val getSavedTagUseCase: GetSaveTagUseCase,
+    private val getRecentGenresTagUseCase: GetRecentGenresTagUseCase
 ) : ViewModel() {
 
     var state by mutableStateOf(SortState())
@@ -113,14 +112,15 @@ class SortedViewModel @Inject constructor(
 
     private fun initFilterList() {
         viewModelScope.launch {
-            val genreList = withContext(Dispatchers.IO) {
-                if (getSavedGenresUsaCase().isEmpty()) {
-                    getRecentGenresUseCase()
-                }
-                getSavedGenresUsaCase()
+            if (getSavedGenresUsaCase().isEmpty() || getSavedTagUseCase().isEmpty()) {
+                getRecentGenresTagUseCase()
             }
+            val genreList = getSavedGenresUsaCase()
+            val tagList = getSavedTagUseCase()
+
             state = state.copy(
-                optionGenres = genreList.map { it to it }
+                optionGenres = genreList.map { it to it },
+                optionTags = tagList
             )
         }
     }
