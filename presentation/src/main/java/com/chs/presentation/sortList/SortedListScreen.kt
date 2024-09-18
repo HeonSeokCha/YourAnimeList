@@ -12,6 +12,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -23,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -37,6 +40,7 @@ import com.chs.presentation.ui.theme.Pink80
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SortedListScreen(
     state: SortState,
@@ -45,7 +49,7 @@ fun SortedListScreen(
 ) {
     val lazyGridScrollState = rememberLazyGridState()
     val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
-    var filterDialogShow: Int? by remember { mutableStateOf(null) }
+    var filterDialogShow by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     var isRefreshing by remember { mutableStateOf(false) }
@@ -87,35 +91,42 @@ fun SortedListScreen(
                         title = "Year",
                         subTitle = if (state.selectYear == null) "Any" else state.selectYear.toString()
                     ) {
-                        filterDialogShow = 0
+                        filterDialogShow = true
                     }
 
                     ItemSort(
                         title = "Season",
                         subTitle = state.selectSeason?.first ?: "Any"
                     ) {
-                        filterDialogShow = 1
+                        filterDialogShow = true
                     }
 
                     ItemSort(
                         title = "Sort",
                         subTitle = state.selectSort?.first ?: "Any"
                     ) {
-                        filterDialogShow = 2
+                        filterDialogShow = true
                     }
 
                     ItemSort(
                         title = "Status",
-                        subTitle = state.selectGenre ?: "Any"
+                        subTitle = state.selectStatus ?: "Any"
                     ) {
-                        filterDialogShow = 3
+                        filterDialogShow = true
                     }
 
                     ItemSort(
-                        title = "Genre",
-                        subTitle = state.selectGenre ?: "Any"
+                        title = "Genres",
+                        subTitle = state.selectGenre?.first() ?: "Any"
                     ) {
-                        filterDialogShow = 4
+                        filterDialogShow = true
+                    }
+
+                    ItemSort(
+                        title = "Tags",
+                        subTitle = state.selectTags?.first() ?: "Any"
+                    ) {
+                        filterDialogShow = true
                     }
                 }
             }
@@ -143,8 +154,7 @@ fun SortedListScreen(
 
                     is LoadState.Error -> {
                         item {
-                            ItemErrorImage(message = (pagingItems.loadState.refresh as LoadState.Error).error.message)
-                        }
+                            ItemErrorImage(message = (pagingItems.loadState.refresh as LoadState.Error).error.message) }
                     }
 
                     else -> Unit
@@ -170,49 +180,14 @@ fun SortedListScreen(
         }
     }
 
-    if (filterDialogShow != null) {
-        FilterDialog(
-            list = when (filterDialogShow) {
-                0 -> state.optionYears
-                1 -> state.optionSeason
-                2 -> state.optionSort
-                3 -> state.optionStatus
-                4 -> state.optionGenres
-                else -> state.optionYears
-            },
-            onDismiss = {
-                filterDialogShow = null
-            }, onClick = { selectValue ->
-                coroutineScope.launch {
-                    lazyGridScrollState.scrollToItem(0, 0)
-                }
-                when (filterDialogShow) {
-                    0 -> {
-                        onEvent(SortEvent.ChangeYearOption(selectValue.second.toInt()))
-                    }
-
-                    1 -> {
-                        onEvent(SortEvent.ChangeSeasonOption(selectValue))
-                    }
-
-                    2 -> {
-                        onEvent(SortEvent.ChangeSortOption(selectValue))
-                    }
-
-                    3 -> {
-                        onEvent(SortEvent.ChangeStatusOption(selectValue.second))
-                    }
-
-                    4 -> {
-                        onEvent(SortEvent.ChangeGenreOption(selectValue.second))
-                    }
-
-                    else -> Unit
-                }
-            }
-        )
+    if (filterDialogShow) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                filterDialogShow = false
+        }) {
+            SortFilterDialog(state)
+        }
     }
-
 }
 
 @Composable
@@ -231,4 +206,17 @@ private fun ItemSort(
     ) {
         Text(text = subTitle)
     }
+}
+
+@Preview
+@Composable
+private fun PreviewSortedListScreen() {
+    SortedListScreen(
+        state = SortState(),
+        onEvent = {
+
+        }, onActivityStart = { a, b ->
+
+        }
+    )
 }

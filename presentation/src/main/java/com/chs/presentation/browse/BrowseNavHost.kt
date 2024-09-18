@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -31,7 +30,8 @@ fun BrowseNavHost(
     val startMediaDestination: BrowseScreen =
         if (intent?.getStringExtra(UiConst.TARGET_TYPE) == UiConst.TARGET_MEDIA) {
             BrowseScreen.AnimeDetailScreen(
-                id = intent.getIntExtra(UiConst.TARGET_ID, 0), idMal = intent.getIntExtra(UiConst.TARGET_ID_MAL, 0)
+                id = intent.getIntExtra(UiConst.TARGET_ID, 0),
+                idMal = intent.getIntExtra(UiConst.TARGET_ID_MAL, 0)
             )
         } else {
             BrowseScreen.CharacterDetailScreen(
@@ -57,7 +57,6 @@ fun BrowseNavHost(
                 navController.navigate(it)
             }
         }
-
         composable<BrowseScreen.CharacterDetailScreen> {
             val arg = it.toRoute<BrowseScreen.CharacterDetailScreen>()
             val parentEntry = remember(it) {

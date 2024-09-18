@@ -14,7 +14,8 @@ sealed class Screen {
         val year: Int = 0,
         val season: String? = null,
         val sortOption: String? = null,
-        val genre: String? = null
+        val genre: String? = null,
+        val tags: String? = null
     ) : Screen()
 
     @Serializable

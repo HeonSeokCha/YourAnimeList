@@ -42,7 +42,7 @@ class SortedViewModel @Inject constructor(
         }
 
         val selectYear: Int = savedStateHandle[UiConst.KEY_YEAR] ?: 0
-        val selectGenre: String? = savedStateHandle[UiConst.KEY_GENRE]
+        val selectGenre: List<String>? = savedStateHandle[UiConst.KEY_GENRE]
 
         state = state.copy(
             selectSort = selectSort.name to selectSort.rawValue,
@@ -66,7 +66,8 @@ class SortedViewModel @Inject constructor(
                 },
                 season = state.selectSeason?.second,
                 year = state.selectYear,
-                genre = state.selectGenre,
+                genres = state.selectGenre,
+                tags = state.selectTags,
                 status = state.selectStatus
             ).cachedIn(viewModelScope)
         )
@@ -75,7 +76,9 @@ class SortedViewModel @Inject constructor(
     fun changeSortEvent(event: SortEvent) {
         when (event) {
 
-            is SortEvent.GetSortList -> Unit
+            is SortEvent.GetSortList -> {
+                getSortedAnime()
+            }
 
             is SortEvent.ChangeYearOption -> {
                 state = state.copy(
@@ -106,6 +109,12 @@ class SortedViewModel @Inject constructor(
                     selectStatus = event.value
                 )
             }
+
+            is SortEvent.ChangeTagOption -> {
+                state = state.copy(
+                    selectTags = event.value
+                )
+            }
         }
         getSortedAnime()
     }
@@ -119,7 +128,7 @@ class SortedViewModel @Inject constructor(
             val tagList = getSavedTagUseCase()
 
             state = state.copy(
-                optionGenres = genreList.map { it to it },
+                optionGenres = genreList,
                 optionTags = tagList
             )
         }

@@ -19,6 +19,7 @@ query AnimeListQuery(
             season: $season,
             seasonYear: $seasonYear,
             genre_in: $genre,
+            tag_in: $tags,
             type: ANIME,
             isAdult: false,
             status: $stauts

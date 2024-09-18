@@ -14,7 +14,6 @@ import java.util.*
 
 object UiConst {
     const val TARGET_MEDIA: String = "media"
-    const val TARGET_ANIME: String = "anime"
     const val TARGET_CHARA: String = "chara"
     const val TARGET_ID: String = "id"
     const val TARGET_ID_MAL: String = "idMal"
@@ -27,8 +26,6 @@ object UiConst {
     const val KEY_YEAR: String = "year"
     const val KEY_SORT: String = "sortOption"
     const val KEY_GENRE: String = "genre"
-    const val INFINITE_PAGER_COUNT = Int.MAX_VALUE
-    const val PAGER_CHANGE_DELAY = 5000L
     const val MAX_BANNER_SIZE: Int = 5
     const val BANNER_SIZE: Int = 6
     const val TEXT_UNKNOWN_ERROR: String = "Unknown Error.."
@@ -112,12 +109,19 @@ object UiConst {
         Pair("Thriller", "#224C80")
     )
 
-    val sortTypeList = SortType.entries
+    val sortTypeList = SortType.entries.map { it.name to it.rawValue }
 
-    val yearSortList = (Util.getCurrentYear() + 1 downTo 1980)
-        .map { it.toString() to it.toString() }
+    val yearSortList: List<Pair<String, String?>> = (Util.getVariationYear() downTo 1980)
+        .map { Pair(it.toString(), it.toString()) }
+        .toMutableList().apply {
+            this.add(0, Pair("Any", "0"))
+        }.toList()
 
-    val seasonFilterList = Season.entries
+    val seasonFilterList = Season.entries.map {
+        it.name to it.rawValue
+    }.toMutableList()
+        .apply { this.add(0, "Any" to "") }
+        .toList()
 
     val mediaStatus = hashMapOf(
         Pair("RELEASING", "Up Releasing" to 0xFF00BCD4),
@@ -125,6 +129,11 @@ object UiConst {
         Pair("NOT_YET_RELEASED", "Up Coming" to 0xFF673AB7)
     )
 
+    val mediaStatusSortList: List<Pair<String, String>> = mediaStatus.map {
+        it.value.first to it.key
+    }.toMutableList()
+        .apply { this.add(0, "Any" to "") }
+        .toList()
 
     val inlineContent = mapOf(
         Pair(

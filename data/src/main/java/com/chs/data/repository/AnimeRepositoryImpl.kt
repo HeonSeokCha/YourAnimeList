@@ -207,6 +207,7 @@ class AnimeRepositoryImpl @Inject constructor(
             val tagJob = async {
                 val list = data?.mediaTagCollection
                     ?.filterNotNull()
+                    ?.filter { it.isAdult == false }
                     ?.map {
                         TagInfo(
                             name = it.name,

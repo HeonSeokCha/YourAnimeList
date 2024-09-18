@@ -162,7 +162,7 @@ fun StudioDetailScreen(
 
             if (isShowFilterDialog) {
                 FilterDialog(
-                    list = UiConst.sortTypeList.map { it.name to it.rawValue },
+                    list = UiConst.sortTypeList,
                     onClick = { selectValue ->
                         coroutineScope.launch {
                             lazyGridScrollState.scrollToItem(0, 0)
