@@ -111,17 +111,10 @@ object UiConst {
 
     val sortTypeList = SortType.entries.map { it.name to it.rawValue }
 
-    val yearSortList: List<Pair<String, String?>> = (Util.getVariationYear() downTo 1980)
+    val yearSortList: List<Pair<String, String>> = (Util.getVariationYear() downTo 1980)
         .map { Pair(it.toString(), it.toString()) }
-        .toMutableList().apply {
-            this.add(0, Pair("Any", "0"))
-        }.toList()
 
-    val seasonFilterList = Season.entries.map {
-        it.name to it.rawValue
-    }.toMutableList()
-        .apply { this.add(0, "Any" to "") }
-        .toList()
+    val seasonFilterList = Season.entries.map { it.name to it.rawValue }
 
     val mediaStatus = hashMapOf(
         Pair("RELEASING", "Up Releasing" to 0xFF00BCD4),
@@ -131,9 +124,7 @@ object UiConst {
 
     val mediaStatusSortList: List<Pair<String, String>> = mediaStatus.map {
         it.value.first to it.key
-    }.toMutableList()
-        .apply { this.add(0, "Any" to "") }
-        .toList()
+    }
 
     val inlineContent = mapOf(
         Pair(

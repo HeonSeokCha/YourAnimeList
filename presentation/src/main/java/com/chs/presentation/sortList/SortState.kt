@@ -14,10 +14,10 @@ data class SortState(
     val selectGenre: List<String>? = null,
     val selectStatus: String? = null,
     val selectTags: List<String>? = null,
-    val optionYears: List<Pair<String, String?>> = UiConst.yearSortList,
+    val optionYears: List<Pair<String, String>> = UiConst.yearSortList,
     val optionSort: List<Pair<String, String>> = UiConst.sortTypeList,
-    val optionSeason: List<Pair<String, String?>> = UiConst.seasonFilterList,
+    val optionSeason: List<Pair<String, String>> = UiConst.seasonFilterList,
     val optionGenres: List<String> = emptyList(),
-    val optionStatus: List<Pair<String, String?>> = UiConst.mediaStatusSortList,
+    val optionStatus: List<Pair<String, String>> = UiConst.mediaStatusSortList,
     val optionTags: List<TagInfo> = emptyList()
 )

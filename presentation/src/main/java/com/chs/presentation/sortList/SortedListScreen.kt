@@ -154,7 +154,8 @@ fun SortedListScreen(
 
                     is LoadState.Error -> {
                         item {
-                            ItemErrorImage(message = (pagingItems.loadState.refresh as LoadState.Error).error.message) }
+                            ItemErrorImage(message = (pagingItems.loadState.refresh as LoadState.Error).error.message)
+                        }
                     }
 
                     else -> Unit
@@ -182,10 +183,11 @@ fun SortedListScreen(
 
     if (filterDialogShow) {
         ModalBottomSheet(
-            onDismissRequest = {
+            onDismissRequest = { filterDialogShow = false }
+        ) {
+            SortFilterDialog(state) {
                 filterDialogShow = false
-        }) {
-            SortFilterDialog(state)
+            }
         }
     }
 }

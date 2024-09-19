@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -19,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
@@ -44,10 +46,12 @@ import kotlin.math.exp
 @Composable
 fun SortFilterDialog(
     state: SortState,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(horizontal = 16.dp)
     ) {
 
         ItemExpandSingleBox(
@@ -55,42 +59,43 @@ fun SortFilterDialog(
             list = state.optionYears,
         ) { }
 
-        Spacer(Modifier.height(12.dp))
-
         ItemChipOptions(
             title = "Season",
             list = state.optionSeason,
         ) { }
-
-        Spacer(Modifier.height(12.dp))
 
         ItemExpandSingleBox(
             title = "Sort By",
             list = state.optionSort,
         ) { }
 
-        Spacer(Modifier.height(12.dp))
-
         ItemChipOptions(
             title = "Status By",
             list = state.optionStatus,
         ) { }
-
-        Spacer(Modifier.height(12.dp))
 
         ItemExpandingMultiBox(
             title = "Genres",
             list = state.optionGenres,
         ) { }
 
-        Spacer(Modifier.height(12.dp))
-
         ItemExpandingMultiBox(
             title = "Tags",
             list = state.optionTags.map { it.name },
         ) { }
 
-        Spacer(Modifier.height(12.dp))
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = 8.dp,
+                    start = 8.dp,
+                    end = 8.dp
+                ),
+            onClick = { onClick() }
+        ) {
+            Text("APPLY")
+        }
     }
 }
 
@@ -98,8 +103,8 @@ fun SortFilterDialog(
 @Composable
 private fun ItemExpandSingleBox(
     title: String,
-    list: List<Pair<String, String?>>,
-    selectValue: (Pair<String, String?>) -> Unit,
+    list: List<Pair<String, String>>,
+    selectValue: (Pair<String, String>?) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectOptions by remember { mutableStateOf("Any") }
@@ -118,7 +123,9 @@ private fun ItemExpandSingleBox(
     ) {
 
         TextField(
-            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryEditable),
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor(MenuAnchorType.PrimaryEditable),
             value = selectOptions,
             onValueChange = {},
             readOnly = true,
@@ -149,15 +156,17 @@ private fun ItemExpandSingleBox(
             }
         }
     }
+
+    Spacer(Modifier.height(12.dp))
 }
 
 @Composable
 private fun ItemChipOptions(
     title: String,
-    list: List<Pair<String, String?>>,
-    selectValue: (Pair<String, String?>) -> Unit
+    list: List<Pair<String, String>>,
+    selectValue: (Pair<String, String>?) -> Unit
 ) {
-    var selectIdx: Int by remember { mutableIntStateOf(0) }
+    var selectIdx: Int by remember { mutableIntStateOf(list.size) }
 
     Text(
         text = title,
@@ -175,8 +184,13 @@ private fun ItemChipOptions(
             Row(
                 modifier = Modifier
                     .clickable(onClick = {
-                        selectIdx = list.indexOf(options)
-                        selectValue(options)
+                        if (selectIdx == list.indexOf(options)) {
+                            selectIdx = list.size
+                            selectValue(null)
+                        } else {
+                            selectIdx = list.indexOf(options)
+                            selectValue(options)
+                        }
                     })
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.Center,
@@ -184,13 +198,15 @@ private fun ItemChipOptions(
             ) {
                 Text(
                     text = options.first,
-                    fontSize = 9.sp,
+                    fontSize = 11.sp,
                     maxLines = 2,
                     textAlign = TextAlign.Center
                 )
             }
         }
     }
+
+    Spacer(Modifier.height(12.dp))
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -198,7 +214,7 @@ private fun ItemChipOptions(
 private fun ItemExpandingMultiBox(
     title: String,
     list: List<String>,
-    selectValue: (List<String>) -> Unit
+    selectValue: (List<String>?) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     val selectIdx: MutableList<Int> = remember { mutableListOf() }
@@ -217,7 +233,9 @@ private fun ItemExpandingMultiBox(
     ) {
 
         TextField(
-            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryEditable),
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor(MenuAnchorType.PrimaryEditable),
             value = if (selectIdx.isNotEmpty()) {
                 if (selectIdx.size > 1) {
                     "${list[selectIdx.first()]} + ${selectIdx.size - 1}"
@@ -250,7 +268,12 @@ private fun ItemExpandingMultiBox(
                         } else {
                             selectIdx.add(list.indexOf(option))
                         }
-                        selectValue(selectIdx.map { list[it] })
+
+                        if (selectIdx.isEmpty()) {
+                            selectValue(null)
+                        } else {
+                            selectValue(selectIdx.map { list[it] })
+                        }
                         expanded = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
@@ -267,4 +290,6 @@ private fun ItemExpandingMultiBox(
             }
         }
     }
+
+    Spacer(Modifier.height(12.dp))
 }
