@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 sealed class Screen {
     @Serializable
     data class SortListScreen(
-        val year: Int = 0,
+        val year: Int? = null,
         val season: String? = null,
         val sortOption: String? = null,
         val genre: String? = null,

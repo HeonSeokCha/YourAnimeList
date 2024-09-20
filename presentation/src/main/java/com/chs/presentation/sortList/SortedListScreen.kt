@@ -30,10 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.chs.presentation.common.FilterDialog
+import com.chs.presentation.UiConst
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemErrorImage
-import com.chs.presentation.common.ItemNoResultImage
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.header
 import com.chs.presentation.ui.theme.Pink80
@@ -89,42 +88,59 @@ fun SortedListScreen(
                 ) {
                     ItemSort(
                         title = "Year",
-                        subTitle = if (state.selectYear == null) "Any" else state.selectYear.toString()
+                        subTitle = if (state.sortFilter.selectYear == null) "Any" else state.sortFilter.selectYear.toString()
                     ) {
                         filterDialogShow = true
                     }
 
                     ItemSort(
                         title = "Season",
-                        subTitle = state.selectSeason?.first ?: "Any"
+                        subTitle = UiConst.Season.entries.find { it.rawValue == state.sortFilter.selectSeason }?.name
+                            ?: "Any"
                     ) {
                         filterDialogShow = true
                     }
-
                     ItemSort(
                         title = "Sort",
-                        subTitle = state.selectSort?.first ?: "Any"
+                        subTitle = UiConst.SortType.entries.find { it.rawValue == state.sortFilter.selectSort }!!.name
                     ) {
                         filterDialogShow = true
                     }
 
                     ItemSort(
                         title = "Status",
-                        subTitle = state.selectStatus ?: "Any"
+                        subTitle = UiConst.mediaStatus.entries.find { it.key == state.sortFilter.selectStatus }?.value?.first
+                            ?: "Any"
                     ) {
                         filterDialogShow = true
                     }
 
                     ItemSort(
                         title = "Genres",
-                        subTitle = state.selectGenre?.first() ?: "Any"
+                        subTitle = if (state.sortFilter.selectGenre != null) {
+                            if (state.sortFilter.selectGenre!!.size == 1) {
+                                state.sortFilter.selectGenre!!.first()
+                            } else {
+                                "${state.sortFilter.selectGenre!!.first()} + ${state.sortFilter.selectGenre!!.size - 1}"
+                            }
+                        } else {
+                            "Any"
+                        }
                     ) {
                         filterDialogShow = true
                     }
 
                     ItemSort(
                         title = "Tags",
-                        subTitle = state.selectTags?.first() ?: "Any"
+                        subTitle = if (state.sortFilter.selectTags != null) {
+                            if (state.sortFilter.selectTags!!.size == 1) {
+                                state.sortFilter.selectTags!!.first()
+                            } else {
+                                "${state.sortFilter.selectTags!!.first()} + ${state.sortFilter.selectTags!!.size - 1}"
+                            }
+                        } else {
+                            "Any"
+                        }
                     ) {
                         filterDialogShow = true
                     }
@@ -185,7 +201,16 @@ fun SortedListScreen(
         ModalBottomSheet(
             onDismissRequest = { filterDialogShow = false }
         ) {
-            SortFilterDialog(state) {
+            SortFilterDialog(
+                selectedSortFilter = state.sortFilter,
+                yearOptionList = state.optionYears,
+                seasonOptionList = state.optionSeason,
+                sortOptionList = state.optionSort,
+                statusOptionList = state.optionStatus,
+                genreOptionList = state.optionGenres,
+                tagOptionList = state.optionTags,
+            ) {
+                onEvent(SortEvent.ChangeSortOption(it))
                 filterDialogShow = false
             }
         }

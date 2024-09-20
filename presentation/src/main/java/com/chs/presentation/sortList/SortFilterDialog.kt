@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -41,48 +42,76 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chs.domain.model.SortFilter
+import com.chs.domain.model.TagInfo
+import com.chs.presentation.UiConst
 import kotlin.math.exp
 
 @Composable
 fun SortFilterDialog(
-    state: SortState,
-    onClick: () -> Unit
+    selectedSortFilter: SortFilter,
+    yearOptionList: List<Pair<String, String>>,
+    seasonOptionList: List<Pair<String, String>>,
+    sortOptionList: List<Pair<String, String>>,
+    statusOptionList: List<Pair<String, String>>,
+    genreOptionList: List<String>,
+    tagOptionList: List<TagInfo>,
+    onClick: (SortFilter) -> Unit
 ) {
+    var sortOption: SortFilter = remember { SortFilter() }
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(horizontal = 16.dp)
     ) {
-
         ItemExpandSingleBox(
             title = "Year",
-            list = state.optionYears,
-        ) { }
+            list = yearOptionList,
+            initValue = sortOption.selectYear?.toString()
+        ) {
+            sortOption = sortOption.copy(selectYear = it?.second?.toInt())
+        }
 
         ItemChipOptions(
             title = "Season",
-            list = state.optionSeason,
-        ) { }
+            list = seasonOptionList,
+            initValue = ""
+        ) {
+            sortOption = sortOption.copy(selectSeason = it?.second)
+        }
 
         ItemExpandSingleBox(
             title = "Sort By",
-            list = state.optionSort,
-        ) { }
+            list = sortOptionList,
+            initValue = ""
+        ) {
+            sortOption =
+                sortOption.copy(selectSort = it?.second ?: UiConst.SortType.TRENDING.rawValue)
+        }
 
         ItemChipOptions(
             title = "Status By",
-            list = state.optionStatus,
-        ) { }
+            list = statusOptionList,
+            initValue = ""
+        ) {
+            sortOption = sortOption.copy(selectStatus = it?.second)
+        }
 
         ItemExpandingMultiBox(
             title = "Genres",
-            list = state.optionGenres,
-        ) { }
+            list = genreOptionList,
+            initValue = ""
+        ) {
+            sortOption = sortOption.copy(selectGenre = it)
+        }
 
         ItemExpandingMultiBox(
             title = "Tags",
-            list = state.optionTags.map { it.name },
-        ) { }
+            list = tagOptionList.map { it.name },
+            initValue = ""
+        ) {
+            sortOption = sortOption.copy(selectTags = it)
+        }
 
         Button(
             modifier = Modifier
@@ -92,7 +121,7 @@ fun SortFilterDialog(
                     start = 8.dp,
                     end = 8.dp
                 ),
-            onClick = { onClick() }
+            onClick = { onClick(sortOption) }
         ) {
             Text("APPLY")
         }
@@ -104,6 +133,7 @@ fun SortFilterDialog(
 private fun ItemExpandSingleBox(
     title: String,
     list: List<Pair<String, String>>,
+    initValue: String?,
     selectValue: (Pair<String, String>?) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -164,6 +194,7 @@ private fun ItemExpandSingleBox(
 private fun ItemChipOptions(
     title: String,
     list: List<Pair<String, String>>,
+    initValue: String?,
     selectValue: (Pair<String, String>?) -> Unit
 ) {
     var selectIdx: Int by remember { mutableIntStateOf(list.size) }
@@ -214,6 +245,7 @@ private fun ItemChipOptions(
 private fun ItemExpandingMultiBox(
     title: String,
     list: List<String>,
+    initValue: String?,
     selectValue: (List<String>?) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }

@@ -1,11 +1,8 @@
 package com.chs.presentation.sortList
 
+import com.chs.domain.model.SortFilter
+
 sealed class SortEvent {
     data object GetSortList : SortEvent()
-    data class ChangeYearOption(val value: Int) : SortEvent()
-    data class ChangeSeasonOption(val value: Pair<String, String>) : SortEvent()
-    data class ChangeSortOption(val value: Pair<String, String>) : SortEvent()
-    data class ChangeGenreOption(val value: List<String>) : SortEvent()
-    data class ChangeStatusOption(val value: String) : SortEvent()
-    data class ChangeTagOption(val value: List<String>) : SortEvent()
+    data class ChangeSortOption(val value: SortFilter) : SortEvent()
 }

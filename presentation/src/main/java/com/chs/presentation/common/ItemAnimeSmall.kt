@@ -114,7 +114,7 @@ fun ItemAnimeSmall(
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        if (item.seasonYear != 0) {
+                        if (item.seasonYear != null) {
                             Text(
                                 textAlign = TextAlign.Left,
                                 text = "${item.seasonYear}",

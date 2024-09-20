@@ -58,11 +58,11 @@ object UiConst {
     }
 
 
-    val animeCategorySortList: List<Pair<String, Triple<SortType, Int, String?>>> =
+    val animeCategorySortList: List<Pair<String, Triple<SortType, Int?, String?>>> =
         listOf(
             "TRENDING NOW" to Triple(
                 SortType.TRENDING,
-                0,
+                null,
                 null
             ),
             "POPULAR THIS SEASON" to Triple(
@@ -77,12 +77,12 @@ object UiConst {
             ),
             "ALL TIME POPULAR" to Triple(
                 SortType.POPULARITY,
-                0,
+                null,
                 null
             ),
             "TOP ANIME" to Triple(
                 SortType.AVERAGE,
-                0,
+                null,
                 null
             )
         )

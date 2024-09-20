@@ -171,7 +171,7 @@ private fun ItemRecommendCategory(
                 sortClick(
                     Screen.SortListScreen(
                         sortOption = title.second.first.rawValue,
-                        year = title.second.second ?: 0,
+                        year = title.second.second,
                         season = title.second.third
                     )
                 )
