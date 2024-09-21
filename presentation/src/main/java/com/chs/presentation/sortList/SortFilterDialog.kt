@@ -67,7 +67,7 @@ fun SortFilterDialog(
         ItemExpandSingleBox(
             title = "Year",
             list = yearOptionList,
-            initValue = sortOption.selectYear?.toString()
+            initValue = selectedSortFilter.selectYear?.toString()
         ) {
             sortOption = sortOption.copy(selectYear = it?.second?.toInt())
         }
@@ -75,7 +75,7 @@ fun SortFilterDialog(
         ItemChipOptions(
             title = "Season",
             list = seasonOptionList,
-            initValue = ""
+            initValue = selectedSortFilter.selectSeason
         ) {
             sortOption = sortOption.copy(selectSeason = it?.second)
         }
@@ -83,7 +83,7 @@ fun SortFilterDialog(
         ItemExpandSingleBox(
             title = "Sort By",
             list = sortOptionList,
-            initValue = ""
+            initValue = selectedSortFilter.selectSort
         ) {
             sortOption =
                 sortOption.copy(selectSort = it?.second ?: UiConst.SortType.TRENDING.rawValue)
@@ -92,7 +92,7 @@ fun SortFilterDialog(
         ItemChipOptions(
             title = "Status By",
             list = statusOptionList,
-            initValue = ""
+            initValue = selectedSortFilter.selectStatus
         ) {
             sortOption = sortOption.copy(selectStatus = it?.second)
         }
@@ -100,7 +100,7 @@ fun SortFilterDialog(
         ItemExpandingMultiBox(
             title = "Genres",
             list = genreOptionList,
-            initValue = ""
+            initValue = selectedSortFilter.selectGenre
         ) {
             sortOption = sortOption.copy(selectGenre = it)
         }
@@ -108,7 +108,7 @@ fun SortFilterDialog(
         ItemExpandingMultiBox(
             title = "Tags",
             list = tagOptionList.map { it.name },
-            initValue = ""
+            initValue = selectedSortFilter.selectTags
         ) {
             sortOption = sortOption.copy(selectTags = it)
         }
@@ -137,7 +137,7 @@ private fun ItemExpandSingleBox(
     selectValue: (Pair<String, String>?) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectOptions by remember { mutableStateOf("Any") }
+    var selectOptions by remember { mutableStateOf(list.find { it.second == initValue }?.first) }
 
     Text(
         text = title,
@@ -156,7 +156,7 @@ private fun ItemExpandSingleBox(
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(MenuAnchorType.PrimaryEditable),
-            value = selectOptions,
+            value = selectOptions ?: "Any",
             onValueChange = {},
             readOnly = true,
             singleLine = true,
@@ -197,7 +197,15 @@ private fun ItemChipOptions(
     initValue: String?,
     selectValue: (Pair<String, String>?) -> Unit
 ) {
-    var selectIdx: Int by remember { mutableIntStateOf(list.size) }
+    var selectIdx: Int by remember {
+        if (initValue == null) {
+            mutableIntStateOf(list.size)
+        } else {
+            mutableIntStateOf(
+                list.indexOf(list.find { it.second == initValue }!!)
+            )
+        }
+    }
 
     Text(
         text = title,
@@ -245,11 +253,11 @@ private fun ItemChipOptions(
 private fun ItemExpandingMultiBox(
     title: String,
     list: List<String>,
-    initValue: String?,
+    initValue: List<String>?,
     selectValue: (List<String>?) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val selectIdx: MutableList<Int> = remember { mutableListOf() }
+    val selectedList: MutableList<String> = remember { initValue?.toMutableList() ?: mutableListOf() }
 
     Text(
         text = title,
@@ -268,11 +276,11 @@ private fun ItemExpandingMultiBox(
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(MenuAnchorType.PrimaryEditable),
-            value = if (selectIdx.isNotEmpty()) {
-                if (selectIdx.size > 1) {
-                    "${list[selectIdx.first()]} + ${selectIdx.size - 1}"
+            value = if (selectedList.isNotEmpty()) {
+                if (selectedList.size > 1) {
+                    "${selectedList.first()} + ${selectedList.size - 1}"
                 } else {
-                    list[selectIdx.first()]
+                    selectedList.first()
                 }
             } else "Any",
             onValueChange = {},
@@ -295,22 +303,22 @@ private fun ItemExpandingMultiBox(
                 DropdownMenuItem(
                     text = { Text(option, style = MaterialTheme.typography.bodyLarge) },
                     onClick = {
-                        if (selectIdx.any { it == list.indexOf(option) }) {
-                            selectIdx.remove(list.indexOf(option))
+                        if (selectedList.any { it == option }) {
+                            selectedList.remove(option)
                         } else {
-                            selectIdx.add(list.indexOf(option))
+                            selectedList.add(option)
                         }
 
-                        if (selectIdx.isEmpty()) {
+                        if (selectedList.isEmpty()) {
                             selectValue(null)
                         } else {
-                            selectValue(selectIdx.map { list[it] })
+                            selectValue(selectedList)
                         }
                         expanded = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     leadingIcon = {
-                        if (selectIdx.any { it == list.indexOf(option) }) {
+                        if (selectedList.any { it == option }) {
                             Icon(
                                 imageVector = Icons.Default.Check,
                                 tint = Color.Black,
