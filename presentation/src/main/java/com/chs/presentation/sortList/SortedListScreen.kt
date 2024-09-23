@@ -1,5 +1,6 @@
 package com.chs.presentation.sortList
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -83,37 +84,31 @@ fun SortedListScreen(
                             start = 8.dp,
                             end = 8.dp
                         )
-                        .horizontalScroll(scrollState),
+                        .horizontalScroll(scrollState)
+                        .clickable { filterDialogShow = true },
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     ItemSort(
                         title = "Year",
                         subTitle = if (state.sortFilter.selectYear == null) "Any" else state.sortFilter.selectYear.toString()
-                    ) {
-                        filterDialogShow = true
-                    }
+                    )
 
                     ItemSort(
                         title = "Season",
                         subTitle = UiConst.Season.entries.find { it.rawValue == state.sortFilter.selectSeason }?.name
                             ?: "Any"
-                    ) {
-                        filterDialogShow = true
-                    }
+                    )
+
                     ItemSort(
                         title = "Sort",
                         subTitle = UiConst.SortType.entries.find { it.rawValue == state.sortFilter.selectSort }!!.name
-                    ) {
-                        filterDialogShow = true
-                    }
+                    )
 
                     ItemSort(
                         title = "Status",
                         subTitle = UiConst.mediaStatus.entries.find { it.key == state.sortFilter.selectStatus }?.value?.first
                             ?: "Any"
-                    ) {
-                        filterDialogShow = true
-                    }
+                    )
 
                     ItemSort(
                         title = "Genres",
@@ -126,9 +121,7 @@ fun SortedListScreen(
                         } else {
                             "Any"
                         }
-                    ) {
-                        filterDialogShow = true
-                    }
+                    )
 
                     ItemSort(
                         title = "Tags",
@@ -141,9 +134,7 @@ fun SortedListScreen(
                         } else {
                             "Any"
                         }
-                    ) {
-                        filterDialogShow = true
-                    }
+                    )
                 }
             }
 
@@ -221,18 +212,13 @@ fun SortedListScreen(
 private fun ItemSort(
     title: String,
     subTitle: String,
-    clickAble: () -> Unit
 ) {
     Text(
         text = title,
         color = Pink80
     )
-    TextButton(
-        colors = ButtonDefaults.textButtonColors(contentColor = Color.Black),
-        onClick = { clickAble() }
-    ) {
-        Text(text = subTitle)
-    }
+
+    Text(text = subTitle)
 }
 
 @Preview

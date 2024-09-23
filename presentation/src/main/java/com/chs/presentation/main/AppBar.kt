@@ -16,6 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.*
@@ -108,32 +109,37 @@ fun SearchAppBar(
     var isShowDialog by remember { mutableStateOf(false) }
 
     SearchBar(
-        modifier = Modifier
-            .fillMaxWidth(),
-        query = text,
-        onQueryChange = { text = it },
-        onSearch = {
-            isSearchActive = false
-            onSearch(it)
-        },
-        active = isSearchActive,
-        onActiveChange = { isSearchActive = it },
-        placeholder = { Text("Search here...") },
-        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-        trailingIcon = {
-            IconButton(onClick = {
-                if (text.isNotEmpty()) {
-                    text = ""
-                } else {
+        modifier = Modifier.fillMaxWidth(),
+        inputField = {
+            SearchBarDefaults.InputField(
+                query = text,
+                onQueryChange = { text = it },
+                onSearch = {
                     isSearchActive = false
+                    onSearch(it)
+                },
+                expanded = isSearchActive,
+                onExpandedChange = { isSearchActive = it },
+                placeholder = { Text("Search here...") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                trailingIcon = {
+                    IconButton(onClick = {
+                        if (text.isNotEmpty()) {
+                            text = ""
+                        } else {
+                            isSearchActive = false
+                        }
+                    }) {
+                        Icon(
+                            Icons.Default.Close,
+                            contentDescription = null
+                        )
+                    }
                 }
-            }) {
-                Icon(
-                    Icons.Default.Close,
-                    contentDescription = null
-                )
-            }
-        }
+            )
+        },
+        expanded = isSearchActive,
+        onExpandedChange = { isSearchActive = it }
     ) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp)

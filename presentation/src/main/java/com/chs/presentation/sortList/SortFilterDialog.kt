@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
@@ -37,6 +38,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import com.chs.domain.model.SortFilter
 import com.chs.domain.model.TagInfo
 import com.chs.presentation.UiConst
+import kotlinx.coroutines.selects.select
 import kotlin.math.exp
 
 @Composable
@@ -58,7 +61,7 @@ fun SortFilterDialog(
     tagOptionList: List<TagInfo>,
     onClick: (SortFilter) -> Unit
 ) {
-    var sortOption: SortFilter = remember { SortFilter() }
+    var sortOption: SortFilter = remember { selectedSortFilter }
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -1,13 +1,16 @@
 package com.chs.presentation.main
 
 import android.content.Intent
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -101,6 +104,7 @@ fun MainNavHost(
                     .distinctUntilChanged()
                     .filter { it.isNotEmpty() }
                     .collect {
+                        Log.e("CHS_123", it)
                         viewModel.onEvent(SearchEvent.ChangeSearchQuery(it))
                     }
             }
@@ -131,9 +135,10 @@ fun MainNavHost(
                 navController.getBackStackEntry(it.toRoute<Screen.SortListScreen>())
             }
             val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
+            val state by viewmodel.state.collectAsStateWithLifecycle()
 
             SortedListScreen(
-                state = viewmodel.state,
+                state = state,
                 onEvent = viewmodel::changeSortEvent
             ) { id, idMal ->
                 context.startActivity(

@@ -2,9 +2,11 @@ package com.chs.presentation.browse
 
 import android.content.Intent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -91,8 +93,9 @@ fun BrowseNavHost(
                 navController.getBackStackEntry(arg)
             }
             val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
+            val a by viewmodel.state.collectAsStateWithLifecycle()
             SortedListScreen(
-                state = viewmodel.state,
+                state = a,
                 onEvent = viewmodel::changeSortEvent
             ) { id, idMal ->
                 navController.navigate(BrowseScreen.AnimeDetailScreen(id = id, idMal = idMal))
