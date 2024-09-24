@@ -1,6 +1,8 @@
 package com.chs.presentation.sortList
 
-import androidx.compose.foundation.text.selection.DisableSelection
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,34 +14,24 @@ import com.chs.domain.usecase.GetSaveTagUseCase
 import com.chs.domain.usecase.GetSavedGenresUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.WhileSubscribed
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class SortedViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val getAnimeFilteredListUseCase: GetAnimeFilteredListUseCase,
     private val getSavedGenresUsaCase: GetSavedGenresUseCase,
     private val getSavedTagUseCase: GetSaveTagUseCase,
     private val getRecentGenresTagUseCase: GetRecentGenresTagUseCase
 ) : ViewModel() {
 
-    private var _state = MutableStateFlow(SortState())
-    val state = _state
-        .onStart { a() }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            SortState()
-        )
+    var state: SortState by mutableStateOf(SortState())
+        private set
 
-    private fun a() {
+
+    init {
         initFilterList()
 
         val selectSort = UiConst.SortType.entries.find {
@@ -53,8 +45,8 @@ class SortedViewModel @Inject constructor(
         val selectYear: Int? = savedStateHandle[UiConst.KEY_YEAR]
         val selectGenre: List<String>? = savedStateHandle[UiConst.KEY_GENRE]
 
-        _state.value = _state.value.copy(
-            sortFilter = _state.value.sortFilter.copy(
+        state = state.copy(
+            sortFilter = state.sortFilter.copy(
                 selectSort = selectSort.rawValue,
                 selectSeason = selectSeason?.rawValue,
                 selectYear = selectYear,
@@ -65,21 +57,21 @@ class SortedViewModel @Inject constructor(
     }
 
     private fun getSortedAnime() {
-        _state.value = _state.value.copy(
+        state = state.copy(
             animeSortPaging = getAnimeFilteredListUseCase(
-                sortType = if (_state.value.sortFilter.selectSort == UiConst.SortType.TRENDING.rawValue) {
+                sortType = if (state.sortFilter.selectSort == UiConst.SortType.TRENDING.rawValue) {
                     listOf(
                         UiConst.SortType.TRENDING.rawValue,
                         UiConst.SortType.POPULARITY.rawValue
                     )
                 } else {
-                    listOf(_state.value.sortFilter.selectSort)
+                    listOf(state.sortFilter.selectSort)
                 },
-                season = _state.value.sortFilter.selectSeason,
-                year = _state.value.sortFilter.selectYear,
-                genres = _state.value.sortFilter.selectGenre,
-                tags = _state.value.sortFilter.selectTags,
-                status = _state.value.sortFilter.selectStatus
+                season = state.sortFilter.selectSeason,
+                year = state.sortFilter.selectYear,
+                genres = state.sortFilter.selectGenre,
+                tags = state.sortFilter.selectTags,
+                status = state.sortFilter.selectStatus
             ).cachedIn(viewModelScope)
         )
     }
@@ -91,7 +83,7 @@ class SortedViewModel @Inject constructor(
             }
 
             is SortEvent.ChangeSortOption -> {
-                _state.value = _state.value.copy(
+                state = state.copy(
                     sortFilter = event.value
                 )
             }
@@ -107,7 +99,7 @@ class SortedViewModel @Inject constructor(
                 }
             }
 
-            _state.value = _state.value.copy(
+            state = state.copy(
                 optionGenres = getSavedGenresUsaCase(),
                 optionTags = getSavedTagUseCase()
             )

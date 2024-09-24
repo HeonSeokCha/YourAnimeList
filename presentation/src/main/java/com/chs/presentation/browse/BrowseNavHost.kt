@@ -93,9 +93,8 @@ fun BrowseNavHost(
                 navController.getBackStackEntry(arg)
             }
             val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
-            val a by viewmodel.state.collectAsStateWithLifecycle()
             SortedListScreen(
-                state = a,
+                state = viewmodel.state,
                 onEvent = viewmodel::changeSortEvent
             ) { id, idMal ->
                 navController.navigate(BrowseScreen.AnimeDetailScreen(id = id, idMal = idMal))

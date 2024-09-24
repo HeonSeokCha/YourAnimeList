@@ -135,10 +135,9 @@ fun MainNavHost(
                 navController.getBackStackEntry(it.toRoute<Screen.SortListScreen>())
             }
             val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
-            val state by viewmodel.state.collectAsStateWithLifecycle()
 
             SortedListScreen(
-                state = state,
+                state = viewmodel.state,
                 onEvent = viewmodel::changeSortEvent
             ) { id, idMal ->
                 context.startActivity(
