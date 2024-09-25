@@ -11,9 +11,6 @@ import com.chs.presentation.UiConst
 import com.chs.domain.usecase.GetStudioAnimeListUseCase
 import com.chs.domain.usecase.GetStudioDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

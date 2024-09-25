@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class SearchListDao : BaseDao<SearchHistoryEntity> {
     @Query("SELECT title FROM searchHistory ORDER BY createDate DESC LIMIT 10")
-    abstract suspend fun getSearchHistory(): List<String>
+    abstract fun getSearchHistory(): Flow<List<String>>
 
     @Delete
     abstract suspend fun deleteHistory(historyEntity: SearchHistoryEntity)

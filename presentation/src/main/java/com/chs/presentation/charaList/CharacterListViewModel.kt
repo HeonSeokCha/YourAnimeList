@@ -1,14 +1,15 @@
 package com.chs.presentation.charaList
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chs.domain.model.CharacterInfo
 import com.chs.domain.usecase.GetSavedCharaListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,15 +19,19 @@ class CharacterListViewModel @Inject constructor(
     private val getYourCharaListUseCase: GetSavedCharaListUseCase,
 ) : ViewModel() {
 
-    var state by mutableStateOf(CharaListState())
-        private set
+    private val _state: MutableStateFlow<List<CharacterInfo>> = MutableStateFlow(emptyList())
+    val state = _state
+        .onStart { getCharacterInfo() }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            emptyList()
+        )
 
-    init {
+    private fun getCharacterInfo() {
         viewModelScope.launch {
-            getYourCharaListUseCase().collect { charaInfo ->
-                state = state.copy(
-                    charaList = charaInfo
-                )
+            getYourCharaListUseCase().collectLatest { charaInfo ->
+                _state.update { charaInfo }
             }
         }
     }

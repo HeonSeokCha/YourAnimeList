@@ -17,11 +17,14 @@ import com.chs.presentation.UiConst
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.ui.theme.Pink80
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 @Composable
 fun SearchScreen(
     state: SearchMediaState,
+    searchQuery: String,
     onEvent: (SearchEvent) -> Unit,
     onBack: () -> Unit,
     onActivityStart: (String, Int, Int?) -> Unit
@@ -34,6 +37,14 @@ fun SearchScreen(
         onDispose {
             onBack()
         }
+    }
+
+
+    LaunchedEffect(searchQuery) {
+        snapshotFlow { searchQuery }
+            .distinctUntilChanged()
+            .filter { it.isNotEmpty() }
+            .collect { onEvent(SearchEvent.ChangeSearchQuery(it)) }
     }
 
     ItemPullToRefreshBox(
@@ -91,7 +102,10 @@ fun SearchScreen(
             ) { page ->
                 when (page) {
                     0 -> {
-                        SearchAnimeScreen(pagingItem = state.searchAnimeResultPaging) { item ->
+                        SearchAnimeScreen(
+                            searchQuery = searchQuery,
+                            pagingItem = state.searchAnimeResultPaging
+                        ) { item ->
                             onActivityStart(
                                 UiConst.TARGET_MEDIA,
                                 item.id,
@@ -101,9 +115,12 @@ fun SearchScreen(
                     }
 
                     1 -> {
-                        SearchCharaScreen(pagingItems = state.searchCharaResultPaging) { item ->
+                        SearchCharaScreen(
+                            searchQuery = searchQuery,
+                            pagingItems = state.searchCharaResultPaging
+                        ) { item ->
                             onActivityStart(
-                                UiConst.TARGET_MEDIA,
+                                UiConst.TARGET_CHARA,
                                 item.id,
                                 null
                             )

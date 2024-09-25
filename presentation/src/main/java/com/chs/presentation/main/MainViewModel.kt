@@ -1,5 +1,6 @@
 package com.chs.presentation.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.domain.usecase.DeleteSearchHistoryUseCase
@@ -8,7 +9,13 @@ import com.chs.domain.usecase.GetSearchHistoryUseCase
 import com.chs.domain.usecase.InsertSearchHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,42 +28,31 @@ class MainViewModel @Inject constructor(
     private val getRecentGenresTagUseCase: GetRecentGenresTagUseCase
 ) : ViewModel() {
 
-    private val _state: MutableStateFlow<MainState> = MutableStateFlow(MainState())
-    val state = _state.asStateFlow()
-
-    init {
-        getSearchHistory()
-        viewModelScope.launch {
+    private val _state: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
+    val state = _state
+        .onStart {
             getRecentGenresTagUseCase()
+            getSearchHistory()
         }
-    }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            emptyList()
+        )
 
-    fun getSearchHistory() {
+    private fun getSearchHistory() {
         viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    searchHistory = getSearchHistoryUseCase()
-                )
+            getSearchHistoryUseCase().collectLatest { list ->
+                _state.update { list }
             }
         }
     }
 
     fun insertSearchHistory(title: String) {
-        viewModelScope.launch {
-            insertSearchHistoryUseCase(title)
-        }
+        viewModelScope.launch { insertSearchHistoryUseCase(title) }
     }
 
     fun deleteSearchHistory(title: String) {
-        viewModelScope.launch {
-            deleteSearchHistoryUseCase(title)
-            _state.update {
-                it.copy(
-                    searchHistory = it.searchHistory.toMutableList().apply {
-                        this.remove(title)
-                    }
-                )
-            }
-        }
+        viewModelScope.launch { deleteSearchHistoryUseCase(title) }
     }
 }

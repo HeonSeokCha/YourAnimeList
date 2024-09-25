@@ -47,7 +47,7 @@ class SearchRepositoryImpl @Inject constructor(
         }.flow
     }
 
-    override suspend fun getSearchHistory(): List<String> {
+    override fun getSearchHistory(): Flow<List<String>> {
         return dao.getSearchHistory()
     }
 

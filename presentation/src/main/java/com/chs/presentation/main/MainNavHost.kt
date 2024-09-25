@@ -69,7 +69,8 @@ fun MainNavHost(
 
         composable<Screen.AnimeListScreen> {
             val viewModel: AnimeListViewModel = hiltViewModel()
-            AnimeListScreen(state = viewModel.state) { id, idMal ->
+            val list by viewModel.state.collectAsStateWithLifecycle()
+            AnimeListScreen(list = list) { id, idMal ->
                 context.startActivity(
                     Intent(
                         context, BrowseActivity::class.java
@@ -84,7 +85,8 @@ fun MainNavHost(
 
         composable<Screen.CharaListScreen> {
             val viewmodel: CharacterListViewModel = hiltViewModel()
-            CharaListScreen(state = viewmodel.state) { id ->
+            val list by viewmodel.state.collectAsStateWithLifecycle()
+            CharaListScreen(list = list) { id ->
                 context.startActivity(
                     Intent(
                         context, BrowseActivity::class.java
@@ -96,25 +98,15 @@ fun MainNavHost(
             }
         }
 
-        composable<Screen.SearchScreen> { it ->
+        composable<Screen.SearchScreen> {
             val viewModel: SearchMediaViewModel = hiltViewModel()
-
-            LaunchedEffect(searchQuery) {
-                snapshotFlow { searchQuery }
-                    .distinctUntilChanged()
-                    .filter { it.isNotEmpty() }
-                    .collect {
-                        Log.e("CHS_123", it)
-                        viewModel.onEvent(SearchEvent.ChangeSearchQuery(it))
-                    }
-            }
 
             SearchScreen(
                 state = viewModel.state,
+                searchQuery = searchQuery,
                 onBack = onBack,
                 onEvent = viewModel::onEvent
             ) { type, id, idMal ->
-
                 context.startActivity(
                     Intent(
                         context, BrowseActivity::class.java

@@ -7,16 +7,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.common.ItemCharaLarge
 import com.chs.presentation.common.ItemNoResultImage
 
 @Composable
 fun CharaListScreen(
-    state: CharaListState,
+    list: List<CharacterInfo>,
     onActivityStart: (Int) -> Unit
 ) {
 
-    if (state.charaList.isEmpty()) {
+    if (list.isEmpty()) {
         ItemNoResultImage()
     } else {
         LazyColumn(
@@ -25,7 +26,7 @@ fun CharaListScreen(
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             items(
-                state.charaList,
+                list,
                 key = { it.id }
             ) { charaInfo ->
                 ItemCharaLarge(character = charaInfo) {

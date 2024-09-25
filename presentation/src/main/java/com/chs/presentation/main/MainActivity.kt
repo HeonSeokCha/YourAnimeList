@@ -28,18 +28,12 @@ class MainActivity : ComponentActivity() {
             var searchQuery: String by remember { mutableStateOf("") }
             val state by viewModel.state.collectAsStateWithLifecycle()
 
-            LaunchedEffect(searchQuery) {
-                if (searchQuery.isNotEmpty()) {
-                    viewModel.getSearchHistory()
-                }
-            }
-
             YourAnimeListTheme {
                 Scaffold(
                     topBar = {
                         AppBar(
                             navController = navController,
-                            searchHistoryList = state.searchHistory,
+                            searchHistoryList = state,
                             onQueryChange = {
                                 if (it.isNotEmpty()) {
                                     viewModel.insertSearchHistory(it)

@@ -11,7 +11,7 @@ interface SearchRepository {
 
     fun getCharacterSearchResult(name: String): Flow<PagingData<CharacterInfo>>
 
-    suspend fun getSearchHistory(): List<String>
+    fun getSearchHistory(): Flow<List<String>>
 
     suspend fun insertSearchHistory(title: String)
 

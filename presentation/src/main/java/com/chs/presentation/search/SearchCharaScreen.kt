@@ -6,6 +6,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -15,14 +17,24 @@ import androidx.paging.compose.itemKey
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.common.ItemCharaLarge
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 
 @Composable
 fun SearchCharaScreen(
+    searchQuery: String,
     pagingItems: Flow<PagingData<CharacterInfo>>?,
     onClick: (CharacterInfo) -> Unit
 ) {
     val lazyColScrollState = rememberLazyListState()
     val charaItems = pagingItems?.collectAsLazyPagingItems()
+
+    LaunchedEffect(searchQuery) {
+        snapshotFlow { searchQuery }
+            .distinctUntilChanged()
+            .filter { it.isNotEmpty() }
+            .collect { lazyColScrollState.scrollToItem(0) }
+    }
 
     LazyColumn(
         modifier = Modifier
