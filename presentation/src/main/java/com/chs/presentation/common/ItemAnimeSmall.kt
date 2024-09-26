@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,8 +44,9 @@ fun ItemAnimeSmall(
             .clickable {
                 onClick()
             },
+        shape = RoundedCornerShape(5.dp),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = 2.dp,
         ),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
@@ -62,15 +64,16 @@ fun ItemAnimeSmall(
         ) {
             AsyncImage(
                 modifier = Modifier
+                    .width(130.dp)
+                    .height(180.dp)
+                    .clip(RoundedCornerShape(5.dp))
                     .placeholder(
                         visible = item == null,
                         highlight = PlaceholderHighlight.shimmer(),
-                    )
-                    .width(122.dp)
-                    .height(180.dp)
-                    .clip(RoundedCornerShape(5.dp)),
+                    ),
                 model = item?.imageUrl,
                 placeholder = ColorPainter(Color.LightGray),
+                contentScale = ContentScale.Crop,
                 contentDescription = null
             )
 

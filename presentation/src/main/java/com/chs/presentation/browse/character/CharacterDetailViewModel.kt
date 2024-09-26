@@ -46,7 +46,7 @@ class CharacterDetailViewModel @Inject constructor(
             }
 
             is CharaDetailEvent.DeleteCharaInfo -> {
-                insertCharacter(event.info)
+                deleteCharacter(event.info)
             }
 
             is CharaDetailEvent.GetCharaDetailInfo -> {

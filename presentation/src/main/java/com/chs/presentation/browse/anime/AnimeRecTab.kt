@@ -1,6 +1,7 @@
 package com.chs.presentation.browse.anime
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,6 +37,7 @@ fun AnimeRecScreen(
                 bottom = 8.dp
             ),
         state = scrollState,
+        contentPadding = PaddingValues(horizontal = 4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         if (lazyPagingItems != null) {

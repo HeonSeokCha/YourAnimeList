@@ -96,14 +96,15 @@ fun HomeScreen(
 
                             Row(
                                 modifier = Modifier
-                                    .height(16.dp)
-                                    .fillMaxWidth(),
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp),
                                 horizontalArrangement = Arrangement.Center,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 repeat(data.bannerList.size) { iteration ->
                                     val color =
-                                        if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
+                                        if (pagerState.currentPage == iteration) Color.DarkGray
+                                        else Color.LightGray
                                     Box(
                                         modifier = Modifier
                                             .padding(2.dp)

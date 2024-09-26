@@ -1,17 +1,13 @@
 package com.chs.presentation.browse.character
 
 import android.app.Activity
-import android.text.TextUtils
-import android.widget.TextView
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,7 +24,6 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,7 +47,6 @@ import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
@@ -60,7 +54,6 @@ import coil.compose.AsyncImage
 import com.chs.common.Resource
 import com.chs.presentation.UiConst
 import com.chs.domain.model.CharacterDetailInfo
-import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.R
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
