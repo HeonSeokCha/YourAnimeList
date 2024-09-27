@@ -1,7 +1,9 @@
 package com.chs.presentation.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,12 +12,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -52,7 +56,7 @@ fun ItemAnimeSmall(
             containerColor = Color.White
         )
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
@@ -60,47 +64,54 @@ fun ItemAnimeSmall(
                     start = 4.dp,
                     end = 4.dp,
                     bottom = 4.dp
-                )
+                ),
         ) {
-            AsyncImage(
+            Column(
                 modifier = Modifier
-                    .width(130.dp)
-                    .height(180.dp)
-                    .clip(RoundedCornerShape(5.dp))
-                    .placeholder(
-                        visible = item == null,
-                        highlight = PlaceholderHighlight.shimmer(),
-                    ),
-                model = item?.imageUrl,
-                placeholder = ColorPainter(Color.LightGray),
-                contentScale = ContentScale.Crop,
-                contentDescription = null
-            )
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .align(AbsoluteAlignment.TopLeft),
+            ) {
+                AsyncImage(
+                    modifier = Modifier
+                        .width(130.dp)
+                        .height(180.dp)
+                        .clip(RoundedCornerShape(5.dp))
+                        .placeholder(
+                            visible = item == null,
+                            highlight = PlaceholderHighlight.shimmer(),
+                        ),
+                    model = item?.imageUrl, placeholder = ColorPainter(Color.LightGray),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = null
+                )
 
-            Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
-            Text(
-                modifier = Modifier
-                    .placeholder(
-                        visible = item == null,
-                        highlight = PlaceholderHighlight.shimmer(),
-                    ),
-                text = item?.title ?: "title Preview",
-                color = Color.Gray,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                fontSize = 12.sp,
-                lineHeight = 16.sp
-            )
+
+                Text(
+                    modifier = Modifier
+                        .placeholder(
+                            visible = item == null,
+                            highlight = PlaceholderHighlight.shimmer(),
+                        ),
+                    text = item?.title ?: "title Preview",
+                    color = Color.Gray,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = 12.sp,
+                    lineHeight = 16.sp
+                )
+            }
 
             Column(
                 modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Bottom
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .align(AbsoluteAlignment.BottomLeft),
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(bottom = 4.dp)
                         .placeholder(
                             visible = item == null,
                             highlight = PlaceholderHighlight.shimmer(),
@@ -117,14 +128,16 @@ fun ItemAnimeSmall(
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        if (item.seasonYear != null) {
-                            Text(
-                                textAlign = TextAlign.Left,
-                                text = "${item.seasonYear}",
-                                color = Color.Gray,
-                                fontSize = 12.sp,
-                            )
-                        }
+                        Text(
+                            textAlign = TextAlign.Left,
+                            text = if (item.seasonYear == 0) {
+                                ""
+                            } else {
+                                "${item.seasonYear}"
+                            },
+                            color = Color.Gray,
+                            fontSize = 12.sp,
+                        )
 
                         Spacer(modifier = Modifier.width(4.dp))
 
