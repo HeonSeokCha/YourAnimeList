@@ -43,8 +43,7 @@ fun AnimeRecScreen(
         if (lazyPagingItems != null) {
             items(
                 count = lazyPagingItems.itemCount,
-                key = lazyPagingItems.itemKey(key = { it.id }),
-                contentType = lazyPagingItems.itemContentType()
+                key = lazyPagingItems.itemKey(key = { it.id })
             ) { index ->
                 val item = lazyPagingItems[index]
                 ItemAnimeLarge(item) {

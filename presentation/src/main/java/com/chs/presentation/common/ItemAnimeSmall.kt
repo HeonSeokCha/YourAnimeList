@@ -1,6 +1,5 @@
 package com.chs.presentation.common
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,8 +41,7 @@ fun ItemAnimeSmall(
     onClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier
-            .width(130.dp)
+        modifier = Modifier .width(130.dp)
             .height(280.dp)
             .clickable {
                 onClick()
@@ -81,7 +79,8 @@ fun ItemAnimeSmall(
                             visible = item == null,
                             highlight = PlaceholderHighlight.shimmer(),
                         ),
-                    model = item?.imageUrl, placeholder = ColorPainter(Color.LightGray),
+                    model = item?.imageUrl,
+                    placeholder = ColorPainter(Color.LightGray),
                     contentScale = ContentScale.Crop,
                     contentDescription = null
                 )
