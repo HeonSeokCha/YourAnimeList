@@ -43,14 +43,16 @@ class SortedViewModel @Inject constructor(
         }
 
         val selectYear: Int? = savedStateHandle[UiConst.KEY_YEAR]
-        val selectGenre: List<String>? = savedStateHandle[UiConst.KEY_GENRE]
+        val selectGenre: String? = savedStateHandle[UiConst.KEY_GENRE]
+        val selectTags: String? = savedStateHandle[UiConst.KEY_TAG]
 
         state = state.copy(
             sortFilter = state.sortFilter.copy(
                 selectSort = selectSort.rawValue,
                 selectSeason = selectSeason?.rawValue,
                 selectYear = selectYear,
-                selectGenre = selectGenre
+                selectGenre = if (selectGenre == null) null else listOf(selectGenre),
+                selectTags = if (selectTags == null) null else listOf(selectTags)
             ),
         )
         getSortedAnime()

@@ -26,6 +26,7 @@ object UiConst {
     const val KEY_YEAR: String = "year"
     const val KEY_SORT: String = "sortOption"
     const val KEY_GENRE: String = "genre"
+    const val KEY_TAG: String = "tag"
     const val MAX_BANNER_SIZE: Int = 5
     const val BANNER_SIZE: Int = 6
     const val TEXT_UNKNOWN_ERROR: String = "Unknown Error.."

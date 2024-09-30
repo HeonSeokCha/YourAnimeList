@@ -1,6 +1,5 @@
 package com.chs.presentation.sortList
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FabPosition
@@ -66,8 +65,8 @@ fun SortedListScreen(
             ExtendedFloatingActionButton(
                 onClick = { filterDialogShow = true },
                 expanded = listState.isScrollingUp(),
-                icon = { Icon(Icons.Filled.Search, null) },
-                text = { Text(text = "Extended FAB") },
+                icon = { Icon(Icons.Filled.Tune, null) },
+                text = { Text(text = "Filter") },
             )
         },
         floatingActionButtonPosition = FabPosition.End,
@@ -223,6 +222,7 @@ fun SortedListScreen(
                 genreOptionList = state.optionGenres,
                 tagOptionList = state.optionTags,
             ) {
+                coroutineScope.launch { listState.scrollToItem(0) }
                 onEvent(SortEvent.ChangeSortOption(it))
                 filterDialogShow = false
             }
