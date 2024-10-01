@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import com.chs.domain.model.SortFilter
 import com.chs.domain.model.TagInfo
 import com.chs.presentation.UiConst
+import com.chs.presentation.ui.theme.Red500
 import kotlinx.coroutines.selects.select
 import kotlin.math.exp
 
@@ -58,7 +59,7 @@ fun SortFilterDialog(
     sortOptionList: List<Pair<String, String>>,
     statusOptionList: List<Pair<String, String>>,
     genreOptionList: List<String>,
-    tagOptionList: List<TagInfo>,
+    tagOptionList: List<Pair<String, String?>>,
     onClick: (SortFilter) -> Unit
 ) {
     var sortOption: SortFilter = remember { selectedSortFilter }
@@ -110,7 +111,7 @@ fun SortFilterDialog(
 
         ItemExpandingMultiBox(
             title = "Tags",
-            list = tagOptionList.map { it.name },
+            list = tagOptionList.map { it.first },
             initValue = selectedSortFilter.selectTags
         ) {
             sortOption = sortOption.copy(selectTags = it)
@@ -218,10 +219,7 @@ private fun ItemChipOptions(
 
     Spacer(Modifier.height(8.dp))
 
-    TabRow(
-        selectedTabIndex = selectIdx,
-        containerColor = Color.LightGray
-    ) {
+    TabRow(selectedTabIndex = selectIdx) {
         list.forEach { options ->
             Row(
                 modifier = Modifier
@@ -260,7 +258,8 @@ private fun ItemExpandingMultiBox(
     selectValue: (List<String>?) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val selectedList: MutableList<String> = remember { initValue?.toMutableList() ?: mutableListOf() }
+    val selectedList: MutableList<String> =
+        remember { initValue?.toMutableList() ?: mutableListOf() }
 
     Text(
         text = title,
@@ -324,7 +323,7 @@ private fun ItemExpandingMultiBox(
                         if (selectedList.any { it == option }) {
                             Icon(
                                 imageVector = Icons.Default.Check,
-                                tint = Color.Black,
+                                tint = Red500,
                                 contentDescription = null
                             )
                         }

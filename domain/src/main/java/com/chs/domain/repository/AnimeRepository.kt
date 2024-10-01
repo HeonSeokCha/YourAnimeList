@@ -37,7 +37,7 @@ interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
 
     suspend fun getSavedGenreList(): List<String>
 
-    suspend fun getSavedTagList(): List<TagInfo>
+    suspend fun getSavedTagList(): List<Pair<String, String?>>
 
     override fun getSavedMediaInfoList(): Flow<List<AnimeInfo>>
 

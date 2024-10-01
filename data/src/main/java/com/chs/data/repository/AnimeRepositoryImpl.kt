@@ -209,10 +209,7 @@ class AnimeRepositoryImpl @Inject constructor(
                     ?.filterNotNull()
                     ?.filter { it.isAdult == false }
                     ?.map {
-                        TagInfo(
-                            name = it.name,
-                            desc = it.description
-                        )
+                        it.name to it.description
                     } ?: emptyList()
 
                 if (list.isEmpty()) return@async
@@ -220,8 +217,8 @@ class AnimeRepositoryImpl @Inject constructor(
                 tagDao.insertMultiple(
                     *list.map {
                         TagEntity(
-                            name = it.name,
-                            desc = it.desc
+                            name = it.first,
+                            desc = it.second
                         )
                     }.toTypedArray()
                 )
@@ -237,12 +234,9 @@ class AnimeRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getSavedTagList(): List<TagInfo> {
+    override suspend fun getSavedTagList(): List<Pair<String, String?>> {
         return tagDao.getAllTags().map {
-            TagInfo(
-                name = it.name,
-                desc = it.desc
-            )
+            it.name to it.desc
         }
     }
 }

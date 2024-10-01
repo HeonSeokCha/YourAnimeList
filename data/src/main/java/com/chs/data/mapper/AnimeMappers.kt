@@ -16,6 +16,7 @@ import com.chs.domain.model.TrailerInfo
 import com.chs.data.AnimeDetailInfoQuery
 import com.chs.data.HomeAnimeListQuery
 import com.chs.data.fragment.AnimeBasicInfo
+import com.chs.domain.model.TagInfo
 
 fun AnimeBasicInfo?.toAnimeInfo(): AnimeInfo {
     return AnimeInfo(
@@ -102,7 +103,14 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
                 thumbnailUrl = this?.trailer?.thumbnail
             ),
             type = this?.type?.rawValue ?: "Unknown",
-            genres = this?.genres ?: emptyList(),
+            genres = this?.genres,
+            tags = this?.tags?.filter { it != null && it.isAdult == false }?.map {
+                TagInfo(
+                    name = it?.name ?: "Unknown",
+                    desc = it?.description,
+                    ranking = it?.rank ?: 0
+                )
+            },
             episode = this?.episodes ?: 0,
             duration = this?.duration ?: 0,
             chapters = this?.chapters ?: 0,
@@ -123,14 +131,6 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
                     name = this?.studios?.nodes?.get(0)?.name ?: ""
                 )
             },
-            externalLinks = this?.externalLinks?.map {
-                ExternalLinkInfo(
-                    color = it?.color ?: "#ffffff",
-                    iconUrl = it?.icon,
-                    siteName = it?.site ?: "Unknown",
-                    linkUrl = it?.url ?: ""
-                )
-            } ?: emptyList(),
             characterList = this?.characters?.nodes?.map {
                 CharacterInfo(
                     id = it?.characterBasicInfo?.id ?: 0,

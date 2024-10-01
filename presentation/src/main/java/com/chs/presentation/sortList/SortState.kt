@@ -15,5 +15,5 @@ data class SortState(
     val optionSeason: List<Pair<String, String>> = UiConst.seasonFilterList,
     val optionGenres: List<String> = emptyList(),
     val optionStatus: List<Pair<String, String>> = UiConst.mediaStatusSortList,
-    val optionTags: List<TagInfo> = emptyList()
+    val optionTags: List<Pair<String, String?>> = emptyList()
 )
