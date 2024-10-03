@@ -41,11 +41,10 @@ fun ItemAnimeSmall(
     onClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier .width(130.dp)
+        modifier = Modifier
+            .width(130.dp)
             .height(280.dp)
-            .clickable {
-                onClick()
-            },
+            .clickable { onClick() },
         shape = RoundedCornerShape(5.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp,

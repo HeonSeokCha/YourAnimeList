@@ -2,6 +2,13 @@
 .gradle
 /local.properties
 /gradle.properties
+
+.*.iml
+.idea/
+.kotlin/
+misc.xml
+deploymentTargetDropDown.xml
+render.experimental.xmlDS_Store
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
