@@ -62,10 +62,7 @@ class SortedViewModel @Inject constructor(
         state = state.copy(
             animeSortPaging = getAnimeFilteredListUseCase(
                 sortType = if (state.sortFilter.selectSort == UiConst.SortType.TRENDING.rawValue) {
-                    listOf(
-                        UiConst.SortType.TRENDING.rawValue,
-                        UiConst.SortType.POPULARITY.rawValue
-                    )
+                    listOf(UiConst.SortType.TRENDING.rawValue)
                 } else {
                     listOf(state.sortFilter.selectSort)
                 },

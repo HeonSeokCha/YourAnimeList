@@ -37,7 +37,7 @@ query HomeAnimeList(
         perPage: 6
     ) {
         media(
-            sort: [TRENDING_DESC],
+            sort: [TRENDING_DESC, POPULARITY_DESC],
             type: ANIME
         ) {
             ... animeBasicInfo
