@@ -3,9 +3,6 @@ query GenreTagQuery {
     mediaTagCollection: MediaTagCollection {
         name,
         description,
-        category,
-        isMediaSpoiler,
-        isGeneralSpoiler,
         isAdult,
     }
 }

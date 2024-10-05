@@ -47,7 +47,8 @@ query AnimeDetailInfoQuery(
             name,
             rank,
             description,
-            isAdult
+            isAdult,
+            isMediaSpoiler
         }
 
         characters(sort: [ROLE,ID]) {

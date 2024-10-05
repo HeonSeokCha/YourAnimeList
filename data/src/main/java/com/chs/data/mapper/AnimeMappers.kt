@@ -108,7 +108,8 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
                 TagInfo(
                     name = it?.name ?: "Unknown",
                     desc = it?.description,
-                    ranking = it?.rank ?: 0
+                    ranking = it?.rank ?: 0,
+                    isSpoiler = it?.isMediaSpoiler ?: false
                 )
             },
             episode = this?.episodes ?: 0,
