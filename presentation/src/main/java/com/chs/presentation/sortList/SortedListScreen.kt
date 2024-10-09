@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -34,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.presentation.UiConst
@@ -41,6 +44,8 @@ import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemErrorImage
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.ui.theme.Pink80
+import com.chs.presentation.ui.theme.Red200
+import com.chs.presentation.ui.theme.Red500
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -100,22 +105,28 @@ fun SortedListScreen(
                         subTitle = if (state.sortFilter.selectYear == null) "Any" else state.sortFilter.selectYear.toString()
                     )
 
+                    Spacer(Modifier.width(8.dp))
+
                     ItemSort(
                         title = "Season",
                         subTitle = UiConst.Season.entries.find { it.rawValue == state.sortFilter.selectSeason }?.name
                             ?: "Any"
                     )
 
+                    Spacer(Modifier.width(8.dp))
+
                     ItemSort(
                         title = "Sort",
                         subTitle = UiConst.SortType.entries.find { it.rawValue == state.sortFilter.selectSort }!!.name
                     )
+                    Spacer(Modifier.width(8.dp))
 
                     ItemSort(
                         title = "Status",
                         subTitle = UiConst.mediaStatus.entries.find { it.key == state.sortFilter.selectStatus }?.value?.first
                             ?: "Any"
                     )
+                    Spacer(Modifier.width(8.dp))
 
                     ItemSort(
                         title = "Genres",
@@ -130,6 +141,8 @@ fun SortedListScreen(
                         }
                     )
 
+                    Spacer(Modifier.width(8.dp))
+
                     ItemSort(
                         title = "Tags",
                         subTitle = if (state.sortFilter.selectTags != null) {
@@ -142,6 +155,8 @@ fun SortedListScreen(
                             "Any"
                         }
                     )
+
+                    Spacer(Modifier.width(8.dp))
                 }
 
                 LazyVerticalGrid(
@@ -237,10 +252,16 @@ private fun ItemSort(
 ) {
     Text(
         text = title,
-        color = Pink80
+        fontSize = 12.sp,
     )
 
-    Text(text = subTitle)
+    Spacer(Modifier.width(8.dp))
+
+    Text(
+        text = subTitle,
+        fontSize = 13.sp,
+        color = Red500
+    )
 }
 
 @Composable
