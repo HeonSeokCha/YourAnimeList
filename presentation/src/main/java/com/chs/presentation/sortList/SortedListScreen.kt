@@ -105,28 +105,22 @@ fun SortedListScreen(
                         subTitle = if (state.sortFilter.selectYear == null) "Any" else state.sortFilter.selectYear.toString()
                     )
 
-                    Spacer(Modifier.width(8.dp))
-
                     ItemSort(
                         title = "Season",
                         subTitle = UiConst.Season.entries.find { it.rawValue == state.sortFilter.selectSeason }?.name
                             ?: "Any"
                     )
 
-                    Spacer(Modifier.width(8.dp))
-
                     ItemSort(
                         title = "Sort",
                         subTitle = UiConst.SortType.entries.find { it.rawValue == state.sortFilter.selectSort }!!.name
                     )
-                    Spacer(Modifier.width(8.dp))
 
                     ItemSort(
                         title = "Status",
                         subTitle = UiConst.mediaStatus.entries.find { it.key == state.sortFilter.selectStatus }?.value?.first
                             ?: "Any"
                     )
-                    Spacer(Modifier.width(8.dp))
 
                     ItemSort(
                         title = "Genres",
@@ -141,8 +135,6 @@ fun SortedListScreen(
                         }
                     )
 
-                    Spacer(Modifier.width(8.dp))
-
                     ItemSort(
                         title = "Tags",
                         subTitle = if (state.sortFilter.selectTags != null) {
@@ -155,8 +147,6 @@ fun SortedListScreen(
                             "Any"
                         }
                     )
-
-                    Spacer(Modifier.width(8.dp))
                 }
 
                 LazyVerticalGrid(
@@ -262,6 +252,8 @@ private fun ItemSort(
         fontSize = 13.sp,
         color = Red500
     )
+
+    Spacer(Modifier.width(8.dp))
 }
 
 @Composable

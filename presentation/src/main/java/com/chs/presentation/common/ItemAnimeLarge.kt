@@ -8,6 +8,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
@@ -40,7 +41,10 @@ fun ItemAnimeLarge(
         ),
         shape = RoundedCornerShape(5.dp)
     ) {
-        Row {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
             AsyncImage(
                 modifier = Modifier
                     .placeholder(
@@ -48,7 +52,8 @@ fun ItemAnimeLarge(
                         highlight = PlaceholderHighlight.shimmer()
                     )
                     .width(150.dp)
-                    .height(190.dp),
+                    .height(190.dp)
+                    .align(Alignment.CenterStart),
                 model = anime?.imageUrl,
                 placeholder = ColorPainter(Color.LightGray),
                 contentDescription = null,
@@ -59,9 +64,10 @@ fun ItemAnimeLarge(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(
-                        start = 8.dp,
+                        start = 158.dp,
                         top = 8.dp
                     )
+                    .align(Alignment.TopStart)
             ) {
                 Text(
                     modifier = Modifier
@@ -94,40 +100,46 @@ fun ItemAnimeLarge(
                     color = Color.White
                 )
 
-                if (anime != null) {
-                    Row(
-                        modifier = Modifier.padding(top = 8.dp)
-                    ) {
-                        if (anime.averageScore.isNotEmptyValue) {
-                            Text(
-                                text = buildAnnotatedString {
-                                    appendInlineContent(
-                                        UiConst.AVERAGE_SCORE_ID,
-                                        UiConst.AVERAGE_SCORE_ID
-                                    )
-                                    append("${anime.averageScore}")
-                                },
-                                inlineContent = UiConst.inlineContent,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                fontSize = 14.sp,
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                        }
+
+            }
+            if (anime != null) {
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(
+                            start = 158.dp,
+                            bottom = 32.dp
+                        )
+                ) {
+                    if (anime.averageScore.isNotEmptyValue) {
                         Text(
                             text = buildAnnotatedString {
                                 appendInlineContent(
-                                    UiConst.FAVOURITE_ID,
-                                    UiConst.FAVOURITE_ID
+                                    UiConst.AVERAGE_SCORE_ID,
+                                    UiConst.AVERAGE_SCORE_ID
                                 )
-                                append("${anime.favourites}")
+                                append("${anime.averageScore}")
                             },
                             inlineContent = UiConst.inlineContent,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
                             fontSize = 14.sp,
                         )
+                        Spacer(modifier = Modifier.width(8.dp))
                     }
+                    Text(
+                        text = buildAnnotatedString {
+                            appendInlineContent(
+                                UiConst.FAVOURITE_ID,
+                                UiConst.FAVOURITE_ID
+                            )
+                            append("${anime.favourites}")
+                        },
+                        inlineContent = UiConst.inlineContent,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        fontSize = 14.sp,
+                    )
                 }
             }
         }
