@@ -19,6 +19,7 @@ import androidx.paging.compose.itemKey
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.common.ItemAnimeLarge
+import com.chs.presentation.common.ItemNoResultImage
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -40,7 +41,7 @@ fun AnimeRecScreen(
         contentPadding = PaddingValues(horizontal = 4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        if (lazyPagingItems != null) {
+        if (lazyPagingItems != null && lazyPagingItems.itemCount != 0) {
             items(
                 count = lazyPagingItems.itemCount,
                 key = lazyPagingItems.itemKey(key = { it.id })
@@ -92,6 +93,10 @@ fun AnimeRecScreen(
                 }
 
                 else -> Unit
+            }
+        } else {
+            item {
+                ItemNoResultImage()
             }
         }
     }
