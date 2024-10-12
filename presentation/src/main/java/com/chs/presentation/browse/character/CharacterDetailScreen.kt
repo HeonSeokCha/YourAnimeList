@@ -3,7 +3,9 @@ package com.chs.presentation.browse.character
 import android.app.Activity
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.repeatable
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -63,6 +65,7 @@ import com.chs.presentation.common.PlaceholderHighlight
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.common.shimmer
+import dev.jeziellago.compose.markdowntext.MarkdownText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -148,7 +151,10 @@ fun CharacterDetailScreen(
                             ) {
                                 CharacterProfile(characterDetailInfo = null)
 
-                                CharacterDescription(description = null, expandedDescButton = false) { }
+                                CharacterDescription(
+                                    description = null,
+                                    expandedDescButton = false
+                                ) { }
                             }
                         }
                     }
@@ -353,15 +359,9 @@ private fun CharacterProfile(
                 ProfileText("Blood Type", characterDetailInfo.bloodType)
             }
         } else {
-
-            ProfileText(null, null)
-
-            ProfileText(null, null)
-
-            ProfileText(null, null)
-
-            ProfileText(null, null)
-
+            repeat(4) {
+                ProfileText(null, null)
+            }
         }
     }
 }
@@ -382,7 +382,7 @@ private fun ProfileText(
                     highlight = PlaceholderHighlight.shimmer()
                 ),
             text = "${title ?: UiConst.TITLE_PREVIEW}:  ",
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.SemiBold
         )
 
         Text(
@@ -415,26 +415,20 @@ private fun CharacterDescription(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        val spannedText = AnnotatedString.fromHtml(
-            htmlString = description ?: stringResource(id = R.string.lorem_ipsum)
-        )
-
         if (expandedDescButton) {
-            Text(
-                text = spannedText,
-                fontSize = 16.sp
+            MarkdownText(
+                markdown = description ?: stringResource(id = R.string.lorem_ipsum)
             )
         } else {
-            Text(
+            MarkdownText(
                 modifier = Modifier
                     .placeholder(
                         visible = description == null,
                         highlight = PlaceholderHighlight.shimmer()
                     ),
-                text = spannedText,
-                fontSize = 16.sp,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 5
+                markdown = description ?: stringResource(id = R.string.lorem_ipsum),
+                maxLines = 5,
+                truncateOnTextOverflow = true,
             )
         }
 

@@ -18,7 +18,7 @@ hilt = "2.52"
 kotlin = "2.0.20"
 ksp = "2.0.20-1.0.25"
 kotlin-coroutine = "1.9.0"
-ktor = "2.3.12"
+ktor = "3.0.0"
 apollo = "4.0.1"
 
 [libraries]
@@ -66,6 +66,7 @@ apollo-cache = { module = "com.apollographql.apollo:apollo-http-cache", version.
 ## etc
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 junit = "junit:junit:4.13.2"
+markdown-compose = "com.github.jeziellago:compose-markdown:0.5.4"
 
 [bundles]
 apollo = [

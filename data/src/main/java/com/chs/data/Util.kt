@@ -8,25 +8,21 @@ object Util {
         day: Int?
     ): String {
 
-        if (year == null) return ""
-
-        var datePattern: String = ""
-
-        datePattern += "$year"
+        var datePattern: String = if (year == null) "" else "$year /"
 
         if (month != null) {
             datePattern += if (month < 10) {
-                "-0$month"
+                "0$month"
             } else {
-                "-$month"
+                "$month"
             }
         }
 
         if (day != null) {
             datePattern += if (day < 10) {
-                "-0$day"
+                "/ 0$day"
             } else {
-                "-$day"
+                "/ $day"
             }
         }
 
