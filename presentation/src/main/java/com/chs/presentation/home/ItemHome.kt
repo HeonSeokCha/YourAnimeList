@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -47,10 +48,11 @@ fun ItemHomeBanner(
     banner: AnimHomeBannerInfo?,
     onClick: (Int, Int) -> Unit
 ) {
-    Row(
+    Box(
         modifier = Modifier
-            .background(Color.White)
             .fillMaxWidth()
+            .height(220.dp)
+            .background(Color.White)
             .clickable {
                 if (banner != null) {
                     onClick(
@@ -60,75 +62,109 @@ fun ItemHomeBanner(
                 }
             }
     ) {
+        AsyncImage(
+            modifier = Modifier
+                .fillMaxWidth(0.4f)
+                .height(220.dp)
+                .background(Color.LightGray)
+                .placeholder(
+                    visible = banner == null,
+                    highlight = PlaceholderHighlight.shimmer()
+                ),
+            model = banner?.animeInfo?.imageUrl,
+            placeholder = ColorPainter(
+                banner?.animeInfo?.imagePlaceColor?.color ?: Color.LightGray
+            ),
+            contentDescription = null,
+            contentScale = ContentScale.Crop
+        )
+
         Box(
             modifier = Modifier
-                .size(
-                    width = 150.dp,
-                    height = 220.dp
-                )
+                .fillMaxWidth(0.4f)
+                .fillMaxHeight(0.3f)
+                .align(Alignment.BottomStart)
+                .background(Color.Black.copy(alpha = 0.6f))
         ) {
-            AsyncImage(
+            Text(
                 modifier = Modifier
-                    .size(150.dp, 220.dp)
-                    .background(Color.LightGray)
+                    .padding(8.dp)
+                    .align(Alignment.TopStart)
                     .placeholder(
                         visible = banner == null,
                         highlight = PlaceholderHighlight.shimmer()
                     ),
-                model = banner?.animeInfo?.imageUrl,
-                placeholder = ColorPainter(
-                    banner?.animeInfo?.imagePlaceColor?.color ?: Color.LightGray
-                ),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
+                text = banner?.animeInfo?.title ?: UiConst.TITLE_PREVIEW,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 11.5.sp,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+                lineHeight = 14.sp
             )
 
-            Column(
+            Text(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .background(Color.Black.copy(alpha = 0.5f))
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .placeholder(
-                            visible = banner == null,
-                            highlight = PlaceholderHighlight.shimmer()
-                        ),
-                    text = banner?.animeInfo?.title ?: UiConst.TITLE_PREVIEW,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 11.5.sp,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis,
-                    lineHeight = 14.sp
-                )
+                    .padding(
+                        start = 8.dp,
+                        top = 8.dp,
+                    )
+                    .align(Alignment.BottomStart)
+                    .placeholder(
+                        visible = banner == null,
+                        highlight = PlaceholderHighlight.shimmer()
+                    ),
+                text = banner?.studioTitle ?: UiConst.TITLE_PREVIEW,
+                color = banner?.animeInfo?.imagePlaceColor?.color ?: Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 11.sp,
+                maxLines = 1, overflow = TextOverflow.Ellipsis ) }
 
-                Text(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .placeholder(
-                            visible = banner == null,
-                            highlight = PlaceholderHighlight.shimmer()
+
+        if (banner?.genres != null) {
+            FlowRow(
+                modifier = Modifier
+                    .fillMaxWidth(0.6f)
+                    .height(48.dp)
+                    .padding(start = 2.dp)
+                    .align(Alignment.BottomEnd),
+                verticalArrangement = Arrangement.Center
+            ) {
+                banner.genres.forEach { genre ->
+                    SuggestionChip(
+                        modifier = Modifier
+                            .height(24.dp)
+                            .padding(horizontal = 2.dp),
+                        onClick = { },
+                        label = {
+                            Text(
+                                text = genre ?: "Unknown",
+                                fontSize = 12.sp
+                            )
+                        }, colors = AssistChipDefaults.assistChipColors(
+                            containerColor = GENRE_COLOR[genre]?.color ?: Color.Black,
+                            labelColor = Color.White
+                        ), border = AssistChipDefaults.assistChipBorder(
+                            enabled = true,
+                            borderColor = GENRE_COLOR[genre]?.color ?: Color.Black
                         ),
-                    text = banner?.studioTitle ?: UiConst.TITLE_PREVIEW,
-                    color = banner?.animeInfo?.imagePlaceColor?.color ?: Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 11.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                }
             }
         }
 
-        Column(
-            modifier = Modifier
-                .height(220.dp)
-        ) {
+        if (banner?.episode != 0) {
             Text(
                 modifier = Modifier
-                    .padding(4.dp)
+                    .fillMaxWidth(0.6f)
+                    .padding(
+                        start = 4.dp,
+                        end = 4.dp,
+                        top = 8.dp,
+                        bottom = 4.dp
+                    )
+                    .align(Alignment.TopEnd)
                     .placeholder(
                         visible = banner == null,
                         highlight = PlaceholderHighlight.shimmer()
@@ -136,69 +172,48 @@ fun ItemHomeBanner(
                 text = "${banner?.episode} Episodes aired on",
                 fontSize = 12.sp
             )
-
-            Text(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .placeholder(
-                        visible = banner == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    ),
-                text = banner?.startDate ?: "",
-                fontSize = 12.sp
-            )
-
-            Text(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .placeholder(
-                        visible = banner == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    ),
-                text = AnnotatedString.fromHtml(
-                    htmlString = banner?.description ?: UiConst.TITLE_PREVIEW
-                ),
-                fontSize = 12.sp,
-                maxLines = 5,
-                overflow = TextOverflow.Ellipsis,
-                lineHeight = 14.sp
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            if (banner?.genres != null) {
-                FlowRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background("#eff7fb".color)
-                        .height(48.dp)
-                        .padding(start = 2.dp),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    banner.genres.forEach { genre ->
-                        SuggestionChip(
-                            modifier = Modifier
-                                .height(24.dp)
-                                .padding(horizontal = 2.dp),
-                            onClick = { },
-                            label = {
-                                Text(
-                                    text = genre ?: "Unknown",
-                                    fontSize = 12.sp
-                                )
-                            }, colors = AssistChipDefaults.assistChipColors(
-                                containerColor = GENRE_COLOR[genre]?.color ?: Color.Black,
-                                labelColor = Color.White
-                            ), border = AssistChipDefaults.assistChipBorder(
-                                enabled = true,
-                                borderColor = GENRE_COLOR[genre]?.color ?: Color.Black
-                            ),
-                            shape = RoundedCornerShape(16.dp)
-                        )
-                    }
-                }
-            }
         }
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth(0.6f)
+                .padding(
+                    start = 4.dp,
+                    end = 4.dp,
+                    top = 32.dp,
+                    bottom = 4.dp
+                )
+                .align(Alignment.TopEnd)
+                .placeholder(
+                    visible = banner == null,
+                    highlight = PlaceholderHighlight.shimmer()
+                ),
+            text = banner?.startDate ?: "",
+            fontSize = 12.sp
+        )
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth(0.6f)
+                .padding(
+                    start = 4.dp,
+                    end = 4.dp,
+                    top = 64.dp,
+                    bottom = 4.dp
+                )
+                .align(Alignment.TopEnd)
+                .placeholder(
+                    visible = banner == null,
+                    highlight = PlaceholderHighlight.shimmer()
+                ),
+            text = AnnotatedString.fromHtml(
+                htmlString = banner?.description ?: UiConst.TITLE_PREVIEW
+            ),
+            fontSize = 12.sp,
+            maxLines = 5,
+            overflow = TextOverflow.Ellipsis,
+            lineHeight = 14.sp
+        )
     }
 }
 
@@ -210,7 +225,7 @@ fun PreviewItemHomeBanner() {
         val animeInfo = AnimeInfo(
             id = 0,
             idMal = 0,
-            title = "Kimetsu no Yaiba: Yuukaku-henKimetsu no Yaiba: Yuukaku-henKimetsu no Yaiba: Yuukaku-henKimetsu no Yaiba: Yuukaku-hen",
+            title = "HunterXHunter(2011)",
             imageUrl = null,
             imagePlaceColor = "#dc866c",
             averageScore = 0,
@@ -224,10 +239,10 @@ fun PreviewItemHomeBanner() {
             AnimHomeBannerInfo(
                 animeInfo = animeInfo,
                 studioTitle = "TESt",
-                episode = "12",
+                episode = 12,
                 description = "The adventure is over but life goes on for an elf mage just beginning to learn what living is all about" +
                         "oes on for an elf mage just beginning to learn what living is all aboutoes on for an elf mage just beginning to learn what living is all about",
-                startDate = "2020/4/6",
+                startDate = "2020/04/6",
                 genres = List<String>(3) { "1234" }
             )
         ) { id, idMal ->

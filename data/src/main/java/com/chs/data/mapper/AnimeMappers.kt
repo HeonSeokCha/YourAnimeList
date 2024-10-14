@@ -45,7 +45,7 @@ fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
                     it?.startDate?.month,
                     it?.startDate?.day
                 ),
-                episode = (it?.episodes ?: 0).toString(),
+                episode = it?.episodes ?: 0,
                 genres = it?.genres?.take(2) ?: emptyList(),
                 studioTitle = it?.studios?.nodes?.firstOrNull()?.name ?: ""
             )
