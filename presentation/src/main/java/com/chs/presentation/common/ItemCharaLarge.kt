@@ -8,6 +8,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
@@ -41,24 +42,30 @@ fun ItemCharaLarge(
             containerColor = Pink80
         )
     ) {
-        Row {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             AsyncImage(
                 modifier = Modifier
+                    .fillMaxWidth(0.4f)
+                    .height(190.dp)
+                    .align(Alignment.TopStart)
                     .placeholder(
                         visible = character == null,
                         highlight = PlaceholderHighlight.shimmer()
-                    )
-                    .width(150.dp)
-                    .height(200.dp),
+                    ),
                 model = character?.imageUrl,
                 placeholder = ColorPainter(Color.LightGray),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
 
+
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth(0.6f)
+                    .align(Alignment.TopEnd)
                     .padding(
                         start = 8.dp,
                         top = 8.dp
@@ -91,24 +98,25 @@ fun ItemCharaLarge(
                     fontSize = 16.sp
                 )
 
-
-                Text(
-                    modifier = Modifier
-                        .placeholder(
-                            visible = character == null,
-                            highlight = PlaceholderHighlight.shimmer()
-                        ),
-                    text = buildAnnotatedString {
-                        appendInlineContent(
-                            UiConst.FAVOURITE_ID,
-                            UiConst.FAVOURITE_ID
-                        )
-                        append("${character?.favourites ?: 0}")
-                    },
-                    inlineContent = UiConst.inlineContent,
-                    color = Color.White,
-                    fontSize = 16.sp,
-                )
+                if (character?.favourites != 0) {
+                    Text(
+                        modifier = Modifier
+                            .placeholder(
+                                visible = character == null,
+                                highlight = PlaceholderHighlight.shimmer()
+                            ),
+                        text = buildAnnotatedString {
+                            appendInlineContent(
+                                UiConst.FAVOURITE_ID,
+                                UiConst.FAVOURITE_ID
+                            )
+                            append("${character?.favourites ?: 0}")
+                        },
+                        inlineContent = UiConst.inlineContent,
+                        color = Color.White,
+                        fontSize = 16.sp,
+                    )
+                }
             }
         }
     }

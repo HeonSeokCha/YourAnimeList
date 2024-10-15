@@ -340,8 +340,10 @@ private fun CharacterBanner(
 private fun CharacterProfile(
     characterDetailInfo: CharacterDetailInfo?
 ) {
-    Column {
-
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
         if (characterDetailInfo != null) {
             if (characterDetailInfo.birthDay.isNotEmpty()) {
                 ProfileText("Birthday", characterDetailInfo.birthDay)
@@ -405,7 +407,7 @@ private fun CharacterDescription(
 ) {
     Column(
         modifier = Modifier
-            .padding(bottom = 8.dp)
+            .padding(bottom = 16.dp)
             .animateContentSize(
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioMediumBouncy,
