@@ -29,7 +29,8 @@ fun CharacterDetailQuery.Character.toCharacterDetailInfo(): CharacterDetailInfo 
                 favourites = this.favourites ?: 0
             )
         },
-        description = this.description ?: "",
+        description = this.description?.split("!~")?.get(0) ?: "",
+        spoilerDesc = this.description?.split("!~")?.get(1) ?: "",
         birthDay = with(this.dateOfBirth) {
             Util.convertToDateFormat(this?.year, this?.month, this?.day)
         },

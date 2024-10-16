@@ -1,6 +1,7 @@
 package com.chs.presentation.browse.character
 
 import android.app.Activity
+import android.text.util.Linkify
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.repeatable
@@ -419,7 +420,11 @@ private fun CharacterDescription(
 
         if (expandedDescButton) {
             MarkdownText(
-                markdown = description ?: stringResource(id = R.string.lorem_ipsum)
+                markdown = description ?: stringResource(id = R.string.lorem_ipsum),
+                linkifyMask = Linkify.WEB_URLS,
+                onLinkClicked = {
+
+                }
             )
         } else {
             MarkdownText(
@@ -429,6 +434,7 @@ private fun CharacterDescription(
                         highlight = PlaceholderHighlight.shimmer()
                     ),
                 markdown = description ?: stringResource(id = R.string.lorem_ipsum),
+                linkifyMask = Linkify.WEB_URLS,
                 maxLines = 5,
                 truncateOnTextOverflow = true,
             )
