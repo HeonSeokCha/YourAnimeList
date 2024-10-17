@@ -2,6 +2,7 @@ package com.chs.presentation.browse.character
 
 import android.app.Activity
 import android.text.util.Linkify
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.repeatable
@@ -174,7 +175,7 @@ fun CharacterDetailScreen(
                                     CharacterProfile(characterDetailInfo = characterDetailInfo)
 
                                     CharacterDescription(
-                                        description = characterDetailInfo.description,
+                                        description = characterDetailInfo.spoilerDesc,
                                         expandedDescButton = expandedDescButton
                                     ) {
                                         expandedDescButton = !expandedDescButton
@@ -422,9 +423,7 @@ private fun CharacterDescription(
             MarkdownText(
                 markdown = description ?: stringResource(id = R.string.lorem_ipsum),
                 linkifyMask = Linkify.WEB_URLS,
-                onLinkClicked = {
-
-                }
+                onLinkClicked = { }
             )
         } else {
             MarkdownText(
@@ -437,6 +436,7 @@ private fun CharacterDescription(
                 linkifyMask = Linkify.WEB_URLS,
                 maxLines = 5,
                 truncateOnTextOverflow = true,
+                onLinkClicked = { }
             )
         }
 

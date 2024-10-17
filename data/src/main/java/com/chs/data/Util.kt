@@ -48,4 +48,18 @@ object Util {
         }
         return a
     }
+
+    fun convertSpoilerSentenceForDesc(
+        desc: String,
+        list: List<Pair<IntRange, String>>
+    ): String {
+        var a: String = desc
+        list.forEach {
+            a = a.replaceRange(
+                it.first.first - 2..it.first.last + 2,
+                "[isSpoiler](${it.second.replace(" ", "")})"
+            )
+        }
+        return a
+    }
 }
