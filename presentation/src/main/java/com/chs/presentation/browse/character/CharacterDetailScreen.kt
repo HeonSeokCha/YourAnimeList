@@ -62,6 +62,7 @@ import com.chs.presentation.R
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
+import com.chs.presentation.common.ItemMessageDialog
 import com.chs.presentation.common.ItemSaveButton
 import com.chs.presentation.common.PlaceholderHighlight
 import com.chs.presentation.common.ItemPullToRefreshBox
@@ -79,12 +80,13 @@ fun CharacterDetailScreen(
 ) {
 
     val activity = (LocalContext.current as? Activity)
-    var expandedDescButton by remember { mutableStateOf(false) }
     val pagingItem = state.animeList?.collectAsLazyPagingItems()
     val lazyVerticalStaggeredState = rememberLazyStaggeredGridState()
     val scrollState = rememberScrollState()
     var isRefreshing by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
+    var descDialogShow by remember { mutableStateOf(false) }
+    var spoilerDesc by remember { mutableStateOf("") }
 
     ItemPullToRefreshBox(
         isRefreshing = isRefreshing,
@@ -153,10 +155,7 @@ fun CharacterDetailScreen(
                             ) {
                                 CharacterProfile(characterDetailInfo = null)
 
-                                CharacterDescription(
-                                    description = null,
-                                    expandedDescButton = false
-                                ) { }
+                                CharacterDescription(description = null) { }
                             }
                         }
                     }
@@ -176,9 +175,9 @@ fun CharacterDetailScreen(
 
                                     CharacterDescription(
                                         description = characterDetailInfo.spoilerDesc,
-                                        expandedDescButton = expandedDescButton
                                     ) {
-                                        expandedDescButton = !expandedDescButton
+                                        spoilerDesc = it
+                                        descDialogShow = true
                                     }
                                 }
                             }
@@ -253,6 +252,15 @@ fun CharacterDetailScreen(
                     }
                 }
             }
+        }
+    }
+
+    if (descDialogShow) {
+        ItemMessageDialog(
+            message = spoilerDesc
+        ) {
+            spoilerDesc = ""
+            descDialogShow = false
         }
     }
 }
@@ -404,9 +412,10 @@ private fun ProfileText(
 @Composable
 private fun CharacterDescription(
     description: String?,
-    expandedDescButton: Boolean,
-    onClick: () -> Unit
+    onSpoilerClick: (String) -> Unit
 ) {
+
+    var expandedDescButton by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .padding(bottom = 16.dp)
@@ -418,12 +427,13 @@ private fun CharacterDescription(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         if (expandedDescButton) {
             MarkdownText(
                 markdown = description ?: stringResource(id = R.string.lorem_ipsum),
                 linkifyMask = Linkify.WEB_URLS,
-                onLinkClicked = { }
+                onLinkClicked = {
+                    onSpoilerClick(it.replace("%", " "))
+                }
             )
         } else {
             MarkdownText(
@@ -436,7 +446,10 @@ private fun CharacterDescription(
                 linkifyMask = Linkify.WEB_URLS,
                 maxLines = 5,
                 truncateOnTextOverflow = true,
-                onLinkClicked = { }
+                onLinkClicked = {
+
+                    onSpoilerClick(it.replace("%", " "))
+                }
             )
         }
 
@@ -449,7 +462,9 @@ private fun CharacterDescription(
                             top = 8.dp,
                             bottom = 8.dp
                         ),
-                    onClick = { onClick() }
+                    onClick = {
+                        expandedDescButton = !expandedDescButton
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.ArrowDownward,

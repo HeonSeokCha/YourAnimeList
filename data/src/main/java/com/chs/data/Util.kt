@@ -12,9 +12,17 @@ object Util {
 
         if (month != null) {
             datePattern += if (month < 10) {
-                " / 0$month"
+                if (year == null) {
+                    "0$month"
+                } else {
+                    " / 0$month"
+                }
             } else {
-                " / $month"
+                if (year == null) {
+                    "$month"
+                } else {
+                    " / $month"
+                }
             }
         }
 
@@ -54,11 +62,13 @@ object Util {
         list: List<Pair<IntRange, String>>
     ): String {
         var a: String = desc
+        var tempIdx: Int = 0
         list.forEach {
             a = a.replaceRange(
-                it.first.first - 2..it.first.last + 2,
-                "[isSpoiler](${it.second.replace(" ", "")})"
+                (it.first.first - 2) + (tempIdx * 9)..it.first.last + 2 + (tempIdx * 9),
+                "[isSpoiler](${it.second.replace(" ", "%")})"
             )
+            tempIdx += 1
         }
         return a
     }
