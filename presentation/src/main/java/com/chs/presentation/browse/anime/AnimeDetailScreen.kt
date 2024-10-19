@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -42,6 +43,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
@@ -49,6 +51,7 @@ import coil.compose.AsyncImage
 import com.chs.common.Constants
 import com.chs.common.Resource
 import com.chs.domain.model.AnimeDetailInfo
+import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.color
@@ -212,15 +215,15 @@ private fun AnimeDetailHeadBanner(
         Box {
             AsyncImage(
                 modifier = Modifier
-                    .placeholder(
-                        visible = animeDetailInfo == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    )
                     .fillMaxWidth()
                     .height(250.dp)
                     .background(
                         color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
                             ?: LightGray
+                    )
+                    .placeholder(
+                        visible = animeDetailInfo == null,
+                        highlight = PlaceholderHighlight.shimmer()
                     ),
                 model = animeDetailInfo?.bannerImage,
                 contentDescription = null,
@@ -242,116 +245,163 @@ private fun AnimeDetailHeadBanner(
 
         Column(
             modifier = Modifier
-                .align(Alignment.BottomStart)
+                .align(Alignment.TopStart)
+                .padding(start = 8.dp, top = 160.dp)
         ) {
-            Row {
-                AsyncImage(
+            AsyncImage(
+                modifier = Modifier
+                    .width(130.dp)
+                    .height(180.dp)
+                    .clip(RoundedCornerShape(5.dp))
+                    .background(
+                        color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
+                            ?: Gray
+                    )
+                    .placeholder(
+                        visible = animeDetailInfo == null,
+                        highlight = PlaceholderHighlight.shimmer()
+                    ),
+                model = animeDetailInfo?.animeInfo?.imageUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Crop
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(
+                    start = 146.dp,
+                    top = 258.dp
+                )
+        ) {
+            Text(
+                modifier = Modifier
+                    .placeholder(
+                        visible = animeDetailInfo == null,
+                        highlight = PlaceholderHighlight.shimmer()
+                    ),
+                text = animeDetailInfo?.animeInfo?.title ?: "title PreView Title PreView",
+                fontSize = 18.sp,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Start
+            )
+
+
+            Text(
+                modifier = Modifier
+                    .placeholder(
+                        visible = animeDetailInfo == null,
+                        highlight = PlaceholderHighlight.shimmer()
+                    )
+                    .padding(top = 8.dp),
+                text = if (animeDetailInfo?.animeInfo?.seasonYear.isNotEmptyValue
+                    && animeDetailInfo?.animeInfo?.status != null
+                ) {
+                    "${animeDetailInfo.animeInfo.format} ⦁ ${animeDetailInfo.animeInfo.seasonYear}"
+                } else {
+                    animeDetailInfo?.animeInfo?.format ?: "Title PreView"
+                }
+            )
+
+            Row(
+                modifier = Modifier.padding(top = 8.dp)
+            ) {
+                Text(
                     modifier = Modifier
                         .placeholder(
                             visible = animeDetailInfo == null,
                             highlight = PlaceholderHighlight.shimmer()
-                        )
-                        .width(130.dp)
-                        .height(180.dp)
-                        .padding(start = 8.dp)
-                        .clip(RoundedCornerShape(5.dp))
-                        .background(
-                            color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
-                                ?: LightGray
                         ),
-                    model = animeDetailInfo?.animeInfo?.imageUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop
+                    text = buildAnnotatedString {
+                        appendInlineContent(
+                            UiConst.AVERAGE_SCORE_ID,
+                            UiConst.AVERAGE_SCORE_ID
+                        )
+                        append("${animeDetailInfo?.animeInfo?.averageScore ?: 0}")
+                    },
+                    inlineContent = UiConst.inlineContent,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 13.sp,
                 )
 
-                Column(
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Text(
                     modifier = Modifier
-                        .padding(
-                            top = 104.dp,
-                            start = 16.dp,
-                            end = 16.dp
+                        .placeholder(
+                            visible = animeDetailInfo == null,
+                            highlight = PlaceholderHighlight.shimmer()
+                        ),
+                    text = buildAnnotatedString {
+                        appendInlineContent(
+                            UiConst.FAVOURITE_ID,
+                            UiConst.FAVOURITE_ID
                         )
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .placeholder(
-                                visible = animeDetailInfo == null,
-                                highlight = PlaceholderHighlight.shimmer()
-                            ),
-                        text = animeDetailInfo?.animeInfo?.title ?: "title PreView Title PreView",
-                        fontSize = 18.sp,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Start
-                    )
+                        append("${animeDetailInfo?.animeInfo?.favourites ?: 0}")
 
-
-                    Text(
-                        modifier = Modifier
-                            .placeholder(
-                                visible = animeDetailInfo == null,
-                                highlight = PlaceholderHighlight.shimmer()
-                            )
-                            .padding(top = 8.dp),
-                        text = if (animeDetailInfo?.animeInfo?.seasonYear.isNotEmptyValue
-                            && animeDetailInfo?.animeInfo?.status != null
-                        ) {
-                            "${animeDetailInfo.animeInfo.format} ⦁ ${animeDetailInfo.animeInfo.seasonYear}"
-                        } else {
-                            animeDetailInfo?.animeInfo?.format ?: "Title PreView"
-                        }
-                    )
-
-                    Row(
-                        modifier = Modifier.padding(top = 8.dp)
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .placeholder(
-                                    visible = animeDetailInfo == null,
-                                    highlight = PlaceholderHighlight.shimmer()
-                                ),
-                            text = buildAnnotatedString {
-                                appendInlineContent(
-                                    UiConst.AVERAGE_SCORE_ID,
-                                    UiConst.AVERAGE_SCORE_ID
-                                )
-                                append("${animeDetailInfo?.animeInfo?.averageScore ?: 0}")
-                            },
-                            inlineContent = UiConst.inlineContent,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 13.sp,
-                        )
-
-                        Spacer(modifier = Modifier.width(16.dp))
-
-                        Text(
-                            modifier = Modifier
-                                .placeholder(
-                                    visible = animeDetailInfo == null,
-                                    highlight = PlaceholderHighlight.shimmer()
-                                ),
-                            text = buildAnnotatedString {
-                                appendInlineContent(
-                                    UiConst.FAVOURITE_ID,
-                                    UiConst.FAVOURITE_ID
-                                )
-                                append("${animeDetailInfo?.animeInfo?.favourites ?: 0}")
-
-                            },
-                            inlineContent = UiConst.inlineContent,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 13.sp,
-                        )
-                    }
-                }
-            }
-
-            ItemSaveButton(
-                isSave = isAnimeSave
-            ) {
-                saveClick()
+                    },
+                    inlineContent = UiConst.inlineContent,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 13.sp,
+                )
             }
         }
+
+        ItemSaveButton(
+            modifier = Modifier
+                .align(Alignment.BottomCenter),
+            isSave = isAnimeSave
+        ) {
+            saveClick()
+        }
+    }
+}
+
+
+@Preview
+@Composable
+private fun PreviewAnimeDetail() {
+    val animeInfo = AnimeInfo(
+        id = 0,
+        idMal = 0,
+        title = "TEST123\n123",
+        imageUrl = null,
+        imagePlaceColor = null,
+        averageScore = 0,
+        favourites = 80,
+        seasonYear = 2024,
+        season = "",
+        format = "TV",
+        status = "RELEASING"
+    )
+    AnimeDetailHeadBanner(
+        animeDetailInfo = AnimeDetailInfo(
+            animeInfo = animeInfo,
+            titleEnglish = "",
+            titleNative = "",
+            description = "",
+            startDate = "",
+            endDate = "",
+            trailerInfo = null,
+            bannerImage = "",
+            type = "",
+            genres = null,
+            tags = null,
+            episode = 0,
+            duration = 0,
+            chapters = 0,
+            popularScore = 0,
+            meanScore = 0,
+            source = "",
+            animeRelationInfo = listOf(),
+            studioInfo = null,
+            characterList = listOf()
+        ),
+        isAnimeSave = false,
+        trailerClick = {},
+    ) {
+
     }
 }

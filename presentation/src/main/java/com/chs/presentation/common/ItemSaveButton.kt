@@ -10,17 +10,14 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ItemSaveButton(
+    modifier: Modifier = Modifier,
     isSave: Boolean,
     saveClick: () -> Unit
 ) {
     Button(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(
-                top = 8.dp,
-                start = 8.dp,
-                end = 8.dp
-            ),
+            .padding(8.dp),
         onClick = { saveClick() }
     ) {
         if (isSave) {
