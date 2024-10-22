@@ -1,7 +1,7 @@
 package com.chs.presentation.browse.studio
 
+import android.annotation.SuppressLint
 import android.app.Activity
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -36,9 +36,9 @@ import com.chs.presentation.UiConst
 import com.chs.domain.model.StudioDetailInfo
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
-import com.chs.presentation.common.FilterDialog
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemPullToRefreshBox
+import com.chs.presentation.sortList.ItemExpandSingleBox
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -53,7 +53,6 @@ fun StudioDetailScreen(
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val pagingItem = state.studioAnimeList?.collectAsLazyPagingItems()
-    var isShowFilterDialog by remember { mutableStateOf(false) }
     var isRefreshing by remember { mutableStateOf(false) }
 
     ItemPullToRefreshBox(
@@ -98,8 +97,17 @@ fun StudioDetailScreen(
                 )
             ) {
                 item(span = StaggeredGridItemSpan.FullLine) {
-                    StudioAnimeSort(state.sortOption.first) {
-                        isShowFilterDialog = true
+                    Column {
+                        ItemExpandSingleBox(
+                            title = "Sort",
+                            list = UiConst.sortTypeList,
+                            initValue = state.sortOption.first
+                        ) { selectValue ->
+                            coroutineScope.launch {
+                                lazyGridScrollState.scrollToItem(0, 0)
+                            }
+                            onEvent(StudioEvent.ChangeSortOption(selectValue!!))
+                        }
                     }
                 }
 
@@ -159,24 +167,11 @@ fun StudioDetailScreen(
                     }
                 }
             }
-
-            if (isShowFilterDialog) {
-                FilterDialog(
-                    list = UiConst.sortTypeList,
-                    onClick = { selectValue ->
-                        coroutineScope.launch {
-                            lazyGridScrollState.scrollToItem(0, 0)
-                        }
-                        onEvent(StudioEvent.ChangeSortOption(selectValue))
-                    }, onDismiss = {
-                        isShowFilterDialog = false
-                    }
-                )
-            }
         }
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 private fun StudioInfo(studioInfo: StudioDetailInfo?) {
     Column(
@@ -200,36 +195,8 @@ private fun StudioInfo(studioInfo: StudioDetailInfo?) {
                 tint = Color.Red
             )
             Text(
-                text = "${studioInfo?.favourites ?: 0}"
+                text = String.format("%,d", studioInfo?.favourites ?: 0)
             )
         }
-    }
-}
-
-
-@Composable
-private fun StudioAnimeSort(
-    sortOptionName: String,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                top = 8.dp,
-                bottom = 8.dp,
-                end = 8.dp
-            ),
-        horizontalArrangement = Arrangement.End
-    ) {
-        Text(
-            text = "Sort : "
-        )
-
-        Text(
-            modifier = Modifier
-                .clickable { onClick() },
-            text = sortOptionName
-        )
     }
 }
