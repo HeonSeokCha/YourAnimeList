@@ -37,8 +37,8 @@ import com.chs.domain.model.StudioDetailInfo
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
+import com.chs.presentation.common.ItemExpandSingleBox
 import com.chs.presentation.common.ItemPullToRefreshBox
-import com.chs.presentation.sortList.ItemExpandSingleBox
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

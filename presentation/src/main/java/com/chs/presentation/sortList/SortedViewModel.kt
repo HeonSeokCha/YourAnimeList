@@ -99,8 +99,10 @@ class SortedViewModel @Inject constructor(
             }
 
             state = state.copy(
-                optionGenres = getSavedGenresUsaCase(),
-                optionTags = getSavedTagUseCase()
+                sortOptions = state.sortOptions.copy(
+                    optionGenres = getSavedGenresUsaCase(),
+                    optionTags = getSavedTagUseCase()
+                )
             )
         }
     }

@@ -19,15 +19,10 @@ import com.chs.presentation.common.ItemExpandingMultiBox
 @Composable
 fun SortFilterDialog(
     selectedSortFilter: SortFilter,
-    yearOptionList: List<Pair<String, String>>,
-    seasonOptionList: List<Pair<String, String>>,
-    sortOptionList: List<Pair<String, String>>,
-    statusOptionList: List<Pair<String, String>>,
-    genreOptionList: List<String>,
-    tagOptionList: List<Pair<String, String?>>,
+    sortOptions: SortOptions,
     onClick: (SortFilter) -> Unit
 ) {
-    var sortOption: SortFilter = remember { selectedSortFilter }
+    var selectSortOptions: SortFilter = remember { selectedSortFilter }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -35,51 +30,51 @@ fun SortFilterDialog(
     ) {
         ItemExpandSingleBox(
             title = "Year",
-            list = yearOptionList,
+            list = sortOptions.optionYears,
             initValue = selectedSortFilter.selectYear?.toString()
         ) {
-            sortOption = sortOption.copy(selectYear = it?.second?.toInt())
+            selectSortOptions = selectSortOptions.copy(selectYear = it?.second?.toInt())
         }
 
         ItemChipOptions(
             title = "Season",
-            list = seasonOptionList,
+            list = sortOptions.optionSeason,
             initValue = selectedSortFilter.selectSeason
         ) {
-            sortOption = sortOption.copy(selectSeason = it?.second)
+            selectSortOptions = selectSortOptions.copy(selectSeason = it?.second)
         }
 
         ItemExpandSingleBox(
             title = "Sort By",
-            list = sortOptionList,
+            list = sortOptions.optionSort,
             initValue = selectedSortFilter.selectSort
         ) {
-            sortOption =
-                sortOption.copy(selectSort = it?.second ?: UiConst.SortType.TRENDING.rawValue)
+            selectSortOptions =
+                selectSortOptions.copy(selectSort = it?.second ?: UiConst.SortType.TRENDING.rawValue)
         }
 
         ItemChipOptions(
             title = "Status By",
-            list = statusOptionList,
+            list = sortOptions.optionStatus,
             initValue = selectedSortFilter.selectStatus
         ) {
-            sortOption = sortOption.copy(selectStatus = it?.second)
+            selectSortOptions = selectSortOptions.copy(selectStatus = it?.second)
         }
 
         ItemExpandingMultiBox(
             title = "Genres",
-            list = genreOptionList,
+            list = sortOptions.optionGenres,
             initValue = selectedSortFilter.selectGenre
         ) {
-            sortOption = sortOption.copy(selectGenre = it)
+            selectSortOptions = selectSortOptions.copy(selectGenre = it)
         }
 
         ItemExpandingMultiBox(
             title = "Tags",
-            list = tagOptionList.map { it.first },
+            list = sortOptions.optionTags.map { it.first },
             initValue = selectedSortFilter.selectTags
         ) {
-            sortOption = sortOption.copy(selectTags = it)
+            selectSortOptions = selectSortOptions.copy(selectTags = it)
         }
 
         Button(
@@ -90,7 +85,7 @@ fun SortFilterDialog(
                     start = 8.dp,
                     end = 8.dp
                 ),
-            onClick = { onClick(sortOption) }
+            onClick = { onClick(selectSortOptions) }
         ) {
             Text("APPLY")
         }

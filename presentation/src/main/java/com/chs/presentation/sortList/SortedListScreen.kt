@@ -220,12 +220,7 @@ fun SortedListScreen(
         ) {
             SortFilterDialog(
                 selectedSortFilter = state.sortFilter,
-                yearOptionList = state.optionYears,
-                seasonOptionList = state.optionSeason,
-                sortOptionList = state.optionSort,
-                statusOptionList = state.optionStatus,
-                genreOptionList = state.optionGenres,
-                tagOptionList = state.optionTags,
+                sortOptions = state.sortOptions
             ) {
                 coroutineScope.launch { listState.scrollToItem(0) }
                 onEvent(SortEvent.ChangeSortOption(it))
