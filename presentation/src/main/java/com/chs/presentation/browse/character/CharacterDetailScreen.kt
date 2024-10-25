@@ -327,7 +327,9 @@ private fun CharacterBanner(
                             UiConst.FAVOURITE_ID,
                             UiConst.FAVOURITE_ID
                         )
-                        append("${characterInfo?.characterInfo?.favourites ?: 0}")
+                        append(
+                            String.format("%,d", characterInfo?.characterInfo?.favourites ?: 0)
+                        )
 
                     },
                     inlineContent = UiConst.inlineContent,
@@ -427,7 +429,7 @@ private fun CharacterDescription(
         if (expandedDescButton) {
             MarkdownText(
                 markdown = description ?: stringResource(id = R.string.lorem_ipsum),
-                linkifyMask = Linkify.WEB_URLS,
+                linkifyMask = Linkify.EMAIL_ADDRESSES,
                 onLinkClicked = {
                     onSpoilerClick(it.replace("%", " "))
                 }
