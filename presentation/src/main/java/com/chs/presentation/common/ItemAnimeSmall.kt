@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
+import com.chs.presentation.isNotEmptyValue
 import com.chs.presentation.ui.theme.YourAnimeListTheme
 
 @Composable
@@ -139,7 +140,7 @@ fun ItemAnimeSmall(
 
                         Spacer(modifier = Modifier.width(4.dp))
 
-                        if (item.averageScore != 0) {
+                        if (item.averageScore.isNotEmptyValue) {
                             Text(
                                 textAlign = TextAlign.Right,
                                 text = buildAnnotatedString {

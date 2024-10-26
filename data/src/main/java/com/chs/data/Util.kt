@@ -64,7 +64,8 @@ object Util {
         var a: String = desc
         var tempIdx: Int = 0
         list.forEach {
-            a = a.replaceRange( (it.first.first - 2) + (tempIdx * 13)..it.first.last + 2 + (tempIdx * 13),
+            a = a.replaceRange(
+                (it.first.first - 2) + (tempIdx * 13)..it.first.last + 2 + (tempIdx * 13),
                 "==[isSpoiler](${it.second.replace(" ", "%")})=="
             )
             tempIdx += 1

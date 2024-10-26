@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.UiConst
+import com.chs.presentation.isNotEmptyValue
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.ui.theme.YourAnimeListTheme
 
@@ -98,7 +99,7 @@ fun ItemCharaLarge(
                     fontSize = 16.sp
                 )
 
-                if (character?.favourites != 0) {
+                if (character?.favourites.isNotEmptyValue) {
                     Text(
                         modifier = Modifier
                             .placeholder(

@@ -50,7 +50,9 @@ fun SortFilterDialog(
             initValue = selectedSortFilter.selectSort
         ) {
             selectSortOptions =
-                selectSortOptions.copy(selectSort = it?.second ?: UiConst.SortType.TRENDING.rawValue)
+                selectSortOptions.copy(
+                    selectSort = it?.second ?: UiConst.SortType.TRENDING.rawValue
+                )
         }
 
         ItemChipOptions(

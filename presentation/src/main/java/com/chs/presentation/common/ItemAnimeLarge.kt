@@ -127,19 +127,22 @@ fun ItemAnimeLarge(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                     }
-                    Text(
-                        text = buildAnnotatedString {
-                            appendInlineContent(
-                                UiConst.FAVOURITE_ID,
-                                UiConst.FAVOURITE_ID
-                            )
-                            append("${anime.favourites}")
-                        },
-                        inlineContent = UiConst.inlineContent,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        fontSize = 14.sp,
-                    )
+
+                    if (anime.favourites.isNotEmptyValue) {
+                        Text(
+                            text = buildAnnotatedString {
+                                appendInlineContent(
+                                    UiConst.FAVOURITE_ID,
+                                    UiConst.FAVOURITE_ID
+                                )
+                                append("${anime.favourites}")
+                            },
+                            inlineContent = UiConst.inlineContent,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            fontSize = 14.sp,
+                        )
+                    }
                 }
             }
         }

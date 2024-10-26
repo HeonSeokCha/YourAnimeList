@@ -308,44 +308,48 @@ private fun AnimeDetailHeadBanner(
             Row(
                 modifier = Modifier.padding(top = 8.dp)
             ) {
-                Text(
-                    modifier = Modifier
-                        .placeholder(
-                            visible = animeDetailInfo == null,
-                            highlight = PlaceholderHighlight.shimmer()
-                        ),
-                    text = buildAnnotatedString {
-                        appendInlineContent(
-                            UiConst.AVERAGE_SCORE_ID,
-                            UiConst.AVERAGE_SCORE_ID
-                        )
-                        append("${animeDetailInfo?.animeInfo?.averageScore ?: 0}")
-                    },
-                    inlineContent = UiConst.inlineContent,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp,
-                )
+                if (animeDetailInfo?.animeInfo?.averageScore.isNotEmptyValue) {
+                    Text(
+                        modifier = Modifier
+                            .placeholder(
+                                visible = animeDetailInfo == null,
+                                highlight = PlaceholderHighlight.shimmer()
+                            ),
+                        text = buildAnnotatedString {
+                            appendInlineContent(
+                                UiConst.AVERAGE_SCORE_ID,
+                                UiConst.AVERAGE_SCORE_ID
+                            )
+                            append("${animeDetailInfo?.animeInfo?.averageScore ?: 0}")
+                        },
+                        inlineContent = UiConst.inlineContent,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 13.sp,
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                }
 
-                Spacer(modifier = Modifier.width(16.dp))
 
-                Text(
-                    modifier = Modifier
-                        .placeholder(
-                            visible = animeDetailInfo == null,
-                            highlight = PlaceholderHighlight.shimmer()
-                        ),
-                    text = buildAnnotatedString {
-                        appendInlineContent(
-                            UiConst.FAVOURITE_ID,
-                            UiConst.FAVOURITE_ID
-                        )
-                        append("${animeDetailInfo?.animeInfo?.favourites ?: 0}")
+                if (animeDetailInfo?.animeInfo?.favourites.isNotEmptyValue) {
+                    Text(
+                        modifier = Modifier
+                            .placeholder(
+                                visible = animeDetailInfo == null,
+                                highlight = PlaceholderHighlight.shimmer()
+                            ),
+                        text = buildAnnotatedString {
+                            appendInlineContent(
+                                UiConst.FAVOURITE_ID,
+                                UiConst.FAVOURITE_ID
+                            )
+                            append("${animeDetailInfo?.animeInfo?.favourites ?: 0}")
 
-                    },
-                    inlineContent = UiConst.inlineContent,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp,
-                )
+                        },
+                        inlineContent = UiConst.inlineContent,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 13.sp,
+                    )
+                }
             }
         }
 

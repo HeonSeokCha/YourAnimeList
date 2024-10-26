@@ -101,7 +101,7 @@ class AnimeRepositoryImpl @Inject constructor(
                 seasonYear = year,
                 genres = genres,
                 tags = tags,
-                status = MediaStatus.entries.find { it.rawValue == season }
+                status = MediaStatus.entries.find { it.rawValue == status }
             )
         }.flow
     }
