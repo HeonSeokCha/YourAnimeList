@@ -1,0 +1,25 @@
+query ActorAnimeListQuery(
+    $id: Int
+    $sort: [MediaSort],
+    $page: Int
+) {
+    Staff(id: $id) {
+        characterMedia(
+            page: $page,
+            sort: $sort,
+            perPage: 10,
+        ) {
+            pageInfo {
+                ... pageBasicInfo
+            }
+            edges {
+                characters {
+                    ... characterBasicInfo
+                }
+                node {
+                    ... animeBasicInfo
+                }
+            }
+        }
+    }
+}

@@ -8,5 +8,4 @@ data class CharacterDetailInfo(
     val age: String,
     val gender: String,
     val bloodType: String,
-    val animeList: List<AnimeInfo>
 )

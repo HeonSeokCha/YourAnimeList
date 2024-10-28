@@ -51,7 +51,7 @@ fun ItemExpandingMultiBox(
 
         TextField(
             modifier = Modifier
-                .menuAnchor(MenuAnchorType.PrimaryEditable),
+                .menuAnchor(MenuAnchorType.PrimaryNotEditable),
             value = if (selectedList.isNotEmpty()) {
                 if (selectedList.size > 1) {
                     "${selectedList.first()} + ${selectedList.size - 1}"
@@ -62,19 +62,14 @@ fun ItemExpandingMultiBox(
             onValueChange = {},
             readOnly = true,
             singleLine = true,
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = expanded,
-                    modifier = Modifier.menuAnchor(MenuAnchorType.SecondaryEditable),
-                )
-            },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
         )
 
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            matchTextFieldWidth = false
+            matchTextFieldWidth = true
         ) {
             list.forEach { option ->
                 DropdownMenuItem(

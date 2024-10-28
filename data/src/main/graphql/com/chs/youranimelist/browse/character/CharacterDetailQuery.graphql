@@ -11,8 +11,17 @@ query CharacterDetailQuery($id: Int) {
         bloodType
         description
         media(sort: [POPULARITY_DESC]) {
-            nodes {
-                ...animeBasicInfo
+            edges {
+                voiceActors {
+                    id,
+                    name {
+                        full
+                    }
+                    image {
+                        medium,
+                        large
+                    },
+                }
             }
         }
     }

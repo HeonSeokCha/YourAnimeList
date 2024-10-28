@@ -1,6 +1,7 @@
 package com.chs.presentation.common
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -46,22 +47,17 @@ fun ItemExpandSingleBox(
 
         TextField(
             modifier = Modifier
-                .menuAnchor(MenuAnchorType.PrimaryEditable),
+                .menuAnchor(MenuAnchorType.PrimaryNotEditable),
             value = selectOptions ?: "Any",
             onValueChange = {},
             readOnly = true,
             singleLine = true,
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = expanded,
-                    modifier = Modifier.menuAnchor(MenuAnchorType.SecondaryEditable)
-                )
-            },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors()
         )
 
         ExposedDropdownMenu(
-            matchTextFieldWidth = false,
+            matchTextFieldWidth = true,
             expanded = expanded,
             onDismissRequest = { expanded = false },
         ) {

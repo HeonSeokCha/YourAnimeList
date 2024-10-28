@@ -1,0 +1,26 @@
+query ActorDetailQuery($id: Int) {
+    Staff(id: $id) {
+        name {
+            full,
+            native
+        },
+        image {
+            large
+        }
+        dateOfBirth {
+            year,
+            month,
+            day
+        },
+        dateOfDeath {
+            year,
+            month,
+            day
+        }
+        age,
+        gender,
+        homeTown,
+        description(asHtml: false),
+        yearsActive
+    }
+}

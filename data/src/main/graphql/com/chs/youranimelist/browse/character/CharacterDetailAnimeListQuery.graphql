@@ -2,7 +2,6 @@ query CharacterDetailAnimeListQuery(
     $id: Int,
     $sort: MediaSort,
     $page: Int
-
 ) {
     character: Character(id: $id) {
         media(

@@ -40,9 +40,6 @@ fun CharacterDetailQuery.Character.toCharacterDetailInfo(): CharacterDetailInfo 
         bloodType = this.bloodType ?: "",
         gender = this.gender ?: "",
         age = this.age ?: "",
-        animeList = this.media?.nodes?.map {
-            it?.animeBasicInfo.toAnimeInfo()
-        } ?: emptyList()
     )
 }
 
