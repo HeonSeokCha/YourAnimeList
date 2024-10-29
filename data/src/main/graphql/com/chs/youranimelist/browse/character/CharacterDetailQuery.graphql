@@ -10,7 +10,7 @@ query CharacterDetailQuery($id: Int) {
         }
         bloodType
         description
-        media(sort: [POPULARITY_DESC]) {
+        media {
             edges {
                 voiceActors {
                     id,
