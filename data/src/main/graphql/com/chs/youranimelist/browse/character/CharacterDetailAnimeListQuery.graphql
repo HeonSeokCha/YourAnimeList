@@ -12,8 +12,23 @@ query CharacterDetailAnimeListQuery(
             pageInfo {
                 ...pageBasicInfo
             }
-            nodes {
-                ... animeBasicInfo
+            edges {
+                voiceActorRoles(sort: [RELEVANCE, ID]) {
+                    roleNotes
+                    voiceActor {
+                        id
+                        name {
+                            userPreferred
+                        }
+                        image {
+                            large
+                        }
+                        language: languageV2
+                    }
+                }
+                node {
+                    ...animeBasicInfo
+                }
             }
         }
     }

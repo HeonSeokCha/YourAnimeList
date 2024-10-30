@@ -13,6 +13,8 @@ query ActorAnimeListQuery(
                 ... pageBasicInfo
             }
             edges {
+                characterRole
+                characterName
                 characters {
                     ... characterBasicInfo
                 }
