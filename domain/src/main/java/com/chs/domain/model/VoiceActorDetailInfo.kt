@@ -1,6 +1,6 @@
 package com.chs.domain.model
 
-data class ActorDetailInfo(
+data class VoiceActorDetailInfo(
     val name: String,
     val nativeName: String,
     val imageUrl: String?,

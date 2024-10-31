@@ -49,9 +49,9 @@ class CharaAnimePagingSource(
                 ?.media
 
             LoadResult.Page(
-                data = data?.nodes?.filter { it?.animeBasicInfo?.isAdult == false }
+                data = data?.edges?.filter { it?.node?.animeBasicInfo?.isAdult == false }
                     ?.map {
-                        it?.animeBasicInfo.toAnimeInfo()
+                        it?.node?.animeBasicInfo.toAnimeInfo()
                     } ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = if (data?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1

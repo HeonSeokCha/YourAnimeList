@@ -11,5 +11,6 @@ data class AnimeInfo(
     val season: String,
     val seasonYear: Int,
     val format: String,
-    val status: String
+    val status: String,
+    val voiceActorInfo: VoiceActorInfo? = null
 )

@@ -10,13 +10,25 @@ import com.chs.domain.model.AnimeRecommendList
 import com.chs.domain.model.AnimeRelationInfo
 import com.chs.domain.model.AnimeThemeInfo
 import com.chs.domain.model.CharacterInfo
-import com.chs.domain.model.ExternalLinkInfo
 import com.chs.domain.model.StudioInfo
 import com.chs.domain.model.TrailerInfo
 import com.chs.data.AnimeDetailInfoQuery
+import com.chs.data.CharacterDetailAnimeListQuery
 import com.chs.data.HomeAnimeListQuery
 import com.chs.data.fragment.AnimeBasicInfo
 import com.chs.domain.model.TagInfo
+import com.chs.domain.model.VoiceActorInfo
+
+fun CharacterDetailAnimeListQuery.Edge?.toAnimeInfo(): AnimeInfo {
+    return this?.node?.animeBasicInfo.toAnimeInfo().copy(
+        voiceActorInfo = VoiceActorInfo(
+            id = this?.voiceActorRoles?.first()?.voiceActor?.id ?: 0,
+            name = this?.voiceActorRoles?.first()?.voiceActor?.name?.userPreferred ?: "",
+            imageUrl = this?.voiceActorRoles?.first()?.voiceActor?.image?.large,
+            language = this?.voiceActorRoles?.first()?.voiceActor?.language ?: ""
+        )
+    )
+}
 
 fun AnimeBasicInfo?.toAnimeInfo(): AnimeInfo {
     return AnimeInfo(
