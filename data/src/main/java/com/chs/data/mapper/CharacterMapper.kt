@@ -8,13 +8,13 @@ import com.chs.domain.model.CharacterInfo
 import com.chs.data.fragment.CharacterBasicInfo
 
 
-fun CharacterBasicInfo.toCharacterInfo(): CharacterInfo {
+fun CharacterBasicInfo?.toCharacterInfo(): CharacterInfo {
     return CharacterInfo(
-        id = this.id,
-        name = this.name?.full ?: "",
-        nativeName = this.name?.native ?: "",
-        imageUrl = this.image?.large,
-        favourites = this.favourites ?: 0
+        id = this?.id ?: 0,
+        name = this?.name?.full ?: "",
+        nativeName = this?.name?.native ?: "",
+        imageUrl = this?.image?.large,
+        favourites = this?.favourites ?: 0
     )
 }
 

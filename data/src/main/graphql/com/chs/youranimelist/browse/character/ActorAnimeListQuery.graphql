@@ -4,7 +4,7 @@ query ActorAnimeListQuery(
     $page: Int
 ) {
     Staff(id: $id) {
-        characterMedia(
+        staffMedia(
             page: $page,
             sort: $sort,
             perPage: 10,
@@ -12,15 +12,8 @@ query ActorAnimeListQuery(
             pageInfo {
                 ... pageBasicInfo
             }
-            edges {
-                characterRole
-                characterName
-                characters {
-                    ... characterBasicInfo
-                }
-                node {
-                    ... animeBasicInfo
-                }
+            nodes {
+                ... animeBasicInfo
             }
         }
     }

@@ -1,0 +1,20 @@
+query ActorCharaListQuery(
+    $id: Int
+    $sort: [CharacterSort],
+    $page: Int
+) {
+    Staff(id: $id) {
+        characters(
+            page: $page,
+            sort: $sort,
+            perPage: 10,
+        ) {
+            pageInfo {
+                ... pageBasicInfo
+            }
+            nodes {
+                ... characterBasicInfo
+            }
+        }
+    }
+}
