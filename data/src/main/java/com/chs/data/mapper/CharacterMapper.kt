@@ -6,6 +6,7 @@ import com.chs.data.source.db.entity.CharacterEntity
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.data.fragment.CharacterBasicInfo
+import com.chs.domain.model.VoiceActorInfo
 
 
 fun CharacterBasicInfo?.toCharacterInfo(): CharacterInfo {
@@ -40,6 +41,20 @@ fun CharacterDetailQuery.Character.toCharacterDetailInfo(): CharacterDetailInfo 
         bloodType = this.bloodType ?: "",
         gender = this.gender ?: "",
         age = this.age ?: "",
+        voiceActorInfo = this.media?.edges?.mapNotNull { it ->
+            it?.voiceActors?.map { voiceActor ->
+                voiceActor.toVoiceActorInfo()
+            }
+        }!!.flatten()
+    )
+}
+
+fun CharacterDetailQuery.VoiceActor?.toVoiceActorInfo(): VoiceActorInfo {
+    return VoiceActorInfo(
+        id = this?.id ?: 0,
+        name = this?.name?.full ?: "",
+        imageUrl = this?.image?.large,
+        language = this?.languageV2 ?: ""
     )
 }
 
@@ -62,3 +77,5 @@ fun CharacterInfo.toCharacterEntity(): CharacterEntity {
         favorite = this.favourites
     )
 }
+
+fun

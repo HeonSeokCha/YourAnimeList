@@ -16,11 +16,12 @@ query CharacterDetailQuery($id: Int) {
                     id,
                     name {
                         full
+                        userPreferred
                     }
                     image {
-                        medium,
                         large
                     },
+                    languageV2
                 }
             }
         }

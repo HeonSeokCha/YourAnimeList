@@ -8,4 +8,5 @@ data class CharacterDetailInfo(
     val age: String,
     val gender: String,
     val bloodType: String,
+    val voiceActorInfo: List<VoiceActorInfo?>? = null,
 )
