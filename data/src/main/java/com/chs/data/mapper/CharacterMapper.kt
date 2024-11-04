@@ -1,11 +1,13 @@
 package com.chs.data.mapper
 
+import com.chs.data.ActorDetailQuery
 import com.chs.data.CharacterDetailQuery
 import com.chs.data.Util
 import com.chs.data.source.db.entity.CharacterEntity
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.data.fragment.CharacterBasicInfo
+import com.chs.domain.model.VoiceActorDetailInfo
 import com.chs.domain.model.VoiceActorInfo
 
 
@@ -41,8 +43,8 @@ fun CharacterDetailQuery.Character.toCharacterDetailInfo(): CharacterDetailInfo 
         bloodType = this.bloodType ?: "",
         gender = this.gender ?: "",
         age = this.age ?: "",
-        voiceActorInfo = this.media?.edges?.mapNotNull { it ->
-            it?.voiceActors?.map { voiceActor ->
+        voiceActorInfo = this.media?.edges?.mapNotNull {
+            it?.voiceActors?.mapNotNull { voiceActor ->
                 voiceActor.toVoiceActorInfo()
             }
         }!!.flatten()
@@ -52,7 +54,8 @@ fun CharacterDetailQuery.Character.toCharacterDetailInfo(): CharacterDetailInfo 
 fun CharacterDetailQuery.VoiceActor?.toVoiceActorInfo(): VoiceActorInfo {
     return VoiceActorInfo(
         id = this?.id ?: 0,
-        name = this?.name?.full ?: "",
+        name = this?.name?.userPreferred ?: "",
+        nativeName = this?.name?.native ?: "",
         imageUrl = this?.image?.large,
         language = this?.languageV2 ?: ""
     )
@@ -78,4 +81,29 @@ fun CharacterInfo.toCharacterEntity(): CharacterEntity {
     )
 }
 
-fun
+fun ActorDetailQuery.Data?.toVoiceActorDetailInfo(): VoiceActorDetailInfo {
+    return VoiceActorDetailInfo(
+        voiceActorInfo = VoiceActorInfo(
+            id = this?.Staff?.id ?: 0,
+            name = this?.Staff?.name?.userPreferred ?: "",
+            nativeName = this?.Staff?.name?.native ?: "",
+            language = this?.Staff?.language ?: "",
+            imageUrl = this?.Staff?.image?.large
+        ),
+        gender = this?.Staff?.gender ?: "",
+        birthDate = Util.convertToDateFormat(
+            year = this?.Staff?.dateOfBirth?.year,
+            month = this?.Staff?.dateOfBirth?.month,
+            day = this?.Staff?.dateOfBirth?.day
+        ),
+        deathDate = Util.convertToDateFormat(
+            year = this?.Staff?.dateOfDeath?.year,
+            month = this?.Staff?.dateOfDeath?.month,
+            day = this?.Staff?.dateOfDeath?.day
+        ),
+        homeTown = this?.Staff?.homeTown,
+        dateActive = this?.Staff?.yearsActive?.map { "$it" }?.joinToString { it } ?: "",
+        favorite = this?.Staff?.favourites ?: 0,
+        description = this?.Staff?.description ?: "",
+    )
+}

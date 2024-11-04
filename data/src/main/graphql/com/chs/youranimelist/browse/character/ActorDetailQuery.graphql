@@ -1,8 +1,9 @@
 query ActorDetailQuery($id: Int) {
     Staff(id: $id) {
+        id,
         name {
-            full,
-            native,
+            native
+            userPreferred
         },
         image {
             large
@@ -20,6 +21,7 @@ query ActorDetailQuery($id: Int) {
         age,
         gender,
         homeTown,
+        favourites,
         description(asHtml: false),
         yearsActive,
         language: languageV2

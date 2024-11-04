@@ -15,7 +15,7 @@ query CharacterDetailQuery($id: Int) {
                 voiceActors {
                     id,
                     name {
-                        full
+                        native
                         userPreferred
                     }
                     image {
