@@ -16,4 +16,7 @@ sealed class BrowseScreen {
 
     @Serializable
     data class StudioDetailScreen(val id: Int) : BrowseScreen()
+
+    @Serializable
+    data class ActorDetailScreen(val id: Int) : BrowseScreen()
 }

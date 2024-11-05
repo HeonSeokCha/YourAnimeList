@@ -32,10 +32,6 @@ class AnimeDetailViewModel @Inject constructor(
     private val animeMalId: Int = savedStateHandle[UiConst.TARGET_ID_MAL] ?: 0
 
     init {
-        state = state.copy(
-            animeId = animeId
-        )
-
         changeEvent(AnimeDetailEvent.GetAnimeDetailInfo)
     }
 

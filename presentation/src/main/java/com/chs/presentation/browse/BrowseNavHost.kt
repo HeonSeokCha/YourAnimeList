@@ -14,6 +14,8 @@ import androidx.navigation.toRoute
 import com.chs.presentation.browse.anime.AnimeDetailScreen
 import com.chs.presentation.browse.character.CharacterDetailScreen
 import com.chs.presentation.UiConst
+import com.chs.presentation.browse.actor.ActorDetailScreen
+import com.chs.presentation.browse.actor.ActorDetailViewModel
 import com.chs.presentation.browse.anime.AnimeDetailViewModel
 import com.chs.presentation.browse.character.CharacterDetailViewModel
 import com.chs.presentation.browse.studio.StudioDetailScreen
@@ -98,6 +100,21 @@ fun BrowseNavHost(
                 onEvent = viewmodel::changeSortEvent
             ) { id, idMal ->
                 navController.navigate(BrowseScreen.AnimeDetailScreen(id = id, idMal = idMal))
+            }
+        }
+
+        composable<BrowseScreen.ActorDetailScreen> {
+            val arg = it.toRoute<BrowseScreen.ActorDetailScreen>()
+            val parentEntry = remember(it) {
+                navController.getBackStackEntry(arg)
+            }
+
+            val viewModel: ActorDetailViewModel = hiltViewModel(parentEntry)
+            ActorDetailScreen(
+                state = viewModel.state,
+                onEvent = viewModel::changeEvent
+            ) {
+                navController.navigate(it)
             }
         }
     }

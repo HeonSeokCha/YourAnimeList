@@ -37,6 +37,11 @@ object UiConst {
         "RECOMMEND"
     )
 
+    val ACTOR_DETAIL_TAB_LIST: List<String> = listOf(
+        "ANIME",
+        "CHARACTER"
+    )
+
     enum class Season(
         val rawValue: String
     ) {

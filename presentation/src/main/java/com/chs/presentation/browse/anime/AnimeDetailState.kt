@@ -9,7 +9,6 @@ import com.chs.presentation.UiConst
 import kotlinx.coroutines.flow.Flow
 
 data class AnimeDetailState(
-    val animeId: Int? = null,
     val animeDetailInfo: Resource<AnimeDetailInfo> = Resource.Loading(),
     val animeThemes: Resource<AnimeThemeInfo> = Resource.Loading(),
     val tabNames: List<String> = UiConst.ANIME_DETAIL_TAB_LIST,
