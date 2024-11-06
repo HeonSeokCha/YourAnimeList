@@ -5,16 +5,20 @@ import android.text.util.Linkify
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
@@ -45,6 +49,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.fromHtml
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -73,7 +78,7 @@ import kotlinx.coroutines.launch
 fun CharacterDetailScreen(
     state: CharacterDetailState,
     onEvent: (CharaDetailEvent) -> Unit,
-    onNavigate: (BrowseScreen.AnimeDetailScreen) -> Unit
+    onNavigate: (BrowseScreen) -> Unit
 ) {
 
     val activity = (LocalContext.current as? Activity)
@@ -175,6 +180,56 @@ fun CharacterDetailScreen(
                                     ) {
                                         spoilerDesc = it
                                         descDialogShow = true
+                                    }
+
+                                    if (!characterDetailInfo.voiceActorInfo.isNullOrEmpty()) {
+                                        LazyRow(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                        ) {
+                                            items(characterDetailInfo.voiceActorInfo!!) { actorInfo ->
+                                                Column(
+                                                    modifier = Modifier
+                                                        .align(Alignment.CenterHorizontally)
+                                                        .clickable {
+                                                            onNavigate(
+                                                                BrowseScreen.ActorDetailScreen(
+                                                                    actorInfo!!.id
+                                                                )
+                                                            )
+                                                        }
+                                                ) {
+                                                    AsyncImage(
+                                                        modifier = Modifier
+                                                            .size(100.dp)
+                                                            .clip(RoundedCornerShape(100)),
+                                                        placeholder = ColorPainter(Color.LightGray),
+                                                        model = actorInfo?.imageUrl,
+                                                        contentDescription = null,
+                                                        contentScale = ContentScale.Crop,
+                                                    )
+
+                                                    Spacer(modifier = Modifier.height(4.dp))
+
+                                                    Text(
+                                                        text = actorInfo?.name ?: "",
+                                                        textAlign = TextAlign.Center,
+                                                        maxLines = 1,
+                                                        overflow = TextOverflow.Ellipsis
+                                                    )
+                                                    Spacer(modifier = Modifier.height(4.dp))
+
+                                                    Text(
+                                                        text = actorInfo?.language ?: "",
+                                                        textAlign = TextAlign.Center,
+                                                        maxLines = 1,
+                                                        overflow = TextOverflow.Ellipsis
+                                                    )
+                                                }
+                                            }
+                                        }
+
+                                        Spacer(modifier = Modifier.height(16.dp))
                                     }
                                 }
                             }

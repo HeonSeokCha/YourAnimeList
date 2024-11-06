@@ -47,7 +47,7 @@ fun CharacterDetailQuery.Character.toCharacterDetailInfo(): CharacterDetailInfo 
             it?.voiceActors?.mapNotNull { voiceActor ->
                 voiceActor.toVoiceActorInfo()
             }
-        }!!.flatten()
+        }!!.flatten().distinctBy { it.name }
     )
 }
 

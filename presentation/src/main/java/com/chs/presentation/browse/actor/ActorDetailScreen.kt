@@ -1,10 +1,18 @@
 package com.chs.presentation.browse.actor
 
 import android.app.Activity
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
@@ -20,8 +28,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chs.common.Resource
+import com.chs.domain.model.StudioDetailInfo
+import com.chs.domain.model.VoiceActorInfo
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemPullToRefreshBox
@@ -63,6 +74,7 @@ fun ActorDetailScreen(
                     }
 
                     is Resource.Success -> {
+
                     }
 
                     is Resource.Error -> {
@@ -123,5 +135,21 @@ fun ActorDetailScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ActorInfo(actorInfo: VoiceActorInfo?) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .padding(
+                top = 16.dp,
+                start = 16.dp,
+                end = 8.dp
+            ),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
     }
 }

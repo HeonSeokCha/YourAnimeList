@@ -23,6 +23,11 @@ query CharacterDetailQuery($id: Int) {
                     },
                     languageV2
                 }
+                node {
+                    title {
+                        userPreferred
+                    }
+                }
             }
         }
     }
