@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -60,6 +61,7 @@ import coil.compose.AsyncImage
 import com.chs.common.Resource
 import com.chs.presentation.UiConst
 import com.chs.domain.model.CharacterDetailInfo
+import com.chs.domain.model.VoiceActorInfo
 import com.chs.presentation.R
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
@@ -185,50 +187,17 @@ fun CharacterDetailScreen(
                                     if (!characterDetailInfo.voiceActorInfo.isNullOrEmpty()) {
                                         LazyRow(
                                             modifier = Modifier
-                                                .fillMaxWidth()
+                                                .fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.spacedBy(16.dp)
                                         ) {
                                             items(characterDetailInfo.voiceActorInfo!!) { actorInfo ->
-                                                Column(
-                                                    modifier = Modifier
-                                                        .align(Alignment.CenterHorizontally)
-                                                        .clickable {
-                                                            onNavigate(
-                                                                BrowseScreen.ActorDetailScreen(
-                                                                    actorInfo!!.id
-                                                                )
-                                                            )
-                                                        }
-                                                ) {
-                                                    AsyncImage(
-                                                        modifier = Modifier
-                                                            .size(100.dp)
-                                                            .clip(RoundedCornerShape(100)),
-                                                        placeholder = ColorPainter(Color.LightGray),
-                                                        model = actorInfo?.imageUrl,
-                                                        contentDescription = null,
-                                                        contentScale = ContentScale.Crop,
-                                                    )
-
-                                                    Spacer(modifier = Modifier.height(4.dp))
-
-                                                    Text(
-                                                        text = actorInfo?.name ?: "",
-                                                        textAlign = TextAlign.Center,
-                                                        maxLines = 1,
-                                                        overflow = TextOverflow.Ellipsis
-                                                    )
-                                                    Spacer(modifier = Modifier.height(4.dp))
-
-                                                    Text(
-                                                        text = actorInfo?.language ?: "",
-                                                        textAlign = TextAlign.Center,
-                                                        maxLines = 1,
-                                                        overflow = TextOverflow.Ellipsis
-                                                    )
+                                                if (actorInfo != null) {
+                                                    CharacterVoiceActorInfo(actorInfo) {
+                                                        onNavigate(it)
+                                                    }
                                                 }
                                             }
                                         }
-
                                         Spacer(modifier = Modifier.height(16.dp))
                                     }
                                 }
@@ -527,5 +496,52 @@ private fun CharacterDescription(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun CharacterVoiceActorInfo(
+    info: VoiceActorInfo,
+    onClick: (BrowseScreen.ActorDetailScreen) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .width(100.dp)
+            .clickable {
+                onClick(
+                    BrowseScreen.ActorDetailScreen(
+                        info.id
+                    )
+                )
+            },
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .size(100.dp)
+                .clip(RoundedCornerShape(100)),
+            placeholder = ColorPainter(Color.LightGray),
+            model = info.imageUrl,
+            contentDescription = null,
+            contentScale = ContentScale.Crop
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = info.name,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = info.language,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
