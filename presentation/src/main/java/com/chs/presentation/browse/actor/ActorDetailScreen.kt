@@ -126,19 +126,22 @@ fun ActorDetailScreen(
                         )
                     }
                 }
-            }
-        ) {
+            } ) {
             HorizontalPager(
                 state = pagerState,
                 userScrollEnabled = false
             ) { page ->
                 when (page) {
                     0 -> {
-
+                        ActorAnimeTab(state.actorAnimeList) {
+                            onNavigate(it)
+                        }
                     }
 
                     1 -> {
-
+                        ActorCharaTab(state.actorCharaList) {
+                            onNavigate(it)
+                        }
                     }
                 }
             }

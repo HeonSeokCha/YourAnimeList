@@ -80,7 +80,7 @@ fun AnimeCharaScreen(
 }
 
 @Composable
-private fun CharaImageItem(
+fun CharaImageItem(
     charaInfo: CharacterInfo?,
     onClick: (BrowseScreen.CharacterDetailScreen) -> Unit
 ) {

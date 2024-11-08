@@ -29,7 +29,7 @@ class VoiceActorCharaPagingSource(
                 ActorCharaListQuery(
                     id = Optional.present(voiceActorId),
                     page = Optional.present(page),
-                    sort = Optional.present(sortOptions)
+                    sort = Optional.present(listOf(CharacterSort.FAVOURITES_DESC))
                 )
             ).execute()
 
