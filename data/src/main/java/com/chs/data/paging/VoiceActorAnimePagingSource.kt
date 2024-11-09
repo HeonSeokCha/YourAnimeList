@@ -29,7 +29,11 @@ class VoiceActorAnimePagingSource(
                 ActorAnimeListQuery(
                     id = Optional.present(voiceActorId),
                     page = Optional.present(page),
-                    sort = Optional.present(sortOptions)
+                    sort = Optional.present(
+                        listOf(
+                            MediaSort.FAVOURITES_DESC
+                        )
+                    )
                 )
             ).execute()
 

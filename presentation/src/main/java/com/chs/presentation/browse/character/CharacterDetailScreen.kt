@@ -72,6 +72,7 @@ import com.chs.presentation.common.PlaceholderHighlight
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.common.shimmer
+import com.chs.presentation.ui.theme.Pink80
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -145,7 +146,7 @@ fun CharacterDetailScreen(
                 columns = StaggeredGridCells.Fixed(3),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalItemSpacing = 4.dp,
-                contentPadding = PaddingValues(horizontal = 4.dp)
+                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
             ) {
                 when (state.characterDetailInfo) {
                     is Resource.Loading -> {
@@ -402,7 +403,7 @@ private fun CharacterProfile(
 }
 
 @Composable
-private fun ProfileText(
+fun ProfileText(
     title: String?,
     values: String?
 ) {
@@ -437,8 +438,8 @@ private fun CharacterDescription(
     description: String?,
     onSpoilerClick: (String) -> Unit
 ) {
-
     var expandedDescButton by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .padding(bottom = 16.dp)
@@ -454,6 +455,7 @@ private fun CharacterDescription(
             MarkdownText(
                 markdown = description ?: stringResource(id = R.string.lorem_ipsum),
                 linkifyMask = Linkify.EMAIL_ADDRESSES,
+                syntaxHighlightColor = Pink80,
                 onLinkClicked = {
                     onSpoilerClick(it.replace("%", " "))
                 }
@@ -468,9 +470,9 @@ private fun CharacterDescription(
                 markdown = description ?: stringResource(id = R.string.lorem_ipsum),
                 linkifyMask = Linkify.WEB_URLS,
                 maxLines = 5,
+                syntaxHighlightColor = Pink80,
                 truncateOnTextOverflow = true,
                 onLinkClicked = {
-
                     onSpoilerClick(it.replace("%", " "))
                 }
             )
@@ -530,6 +532,7 @@ private fun CharacterVoiceActorInfo(
 
         Text(
             text = info.name,
+            fontSize = 12.sp,
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -539,6 +542,7 @@ private fun CharacterVoiceActorInfo(
 
         Text(
             text = info.language,
+            fontSize = 11.sp,
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
