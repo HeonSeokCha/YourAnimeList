@@ -241,7 +241,7 @@ private fun ActorInfo(actorInfo: VoiceActorDetailInfo?) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-
+//        VoiceActorDesc(desc = actorInfo?.description)
     }
 }
 
@@ -266,11 +266,15 @@ private fun VoiceActorProfile(
                 ProfileText("Gender", info.gender)
             }
 
+            if (info.dateActive.isNotEmpty()) {
+                ProfileText("Years active", info.dateActive)
+            }
+
             if (!info.homeTown.isNullOrEmpty()) {
                 ProfileText("Home Town", info.homeTown)
             }
         } else {
-            repeat(4) {
+            repeat(5) {
                 ProfileText(null, null)
             }
         }

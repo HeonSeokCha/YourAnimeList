@@ -102,7 +102,15 @@ fun ActorDetailQuery.Data?.toVoiceActorDetailInfo(): VoiceActorDetailInfo {
             day = this?.Staff?.dateOfDeath?.day
         ),
         homeTown = this?.Staff?.homeTown,
-        dateActive = this?.Staff?.yearsActive?.map { "$it" }?.joinToString { it } ?: "",
+        dateActive = this?.Staff?.yearsActive?.run {
+            if (this.isNotEmpty()) {
+                if (this.size == 1) {
+                    "${this.first()} - Present"
+                } else {
+                    "${this.first()} - ${this.last()}"
+                }
+            } else ""
+        } ?: "",
         favorite = this?.Staff?.favourites ?: 0,
         description = this?.Staff?.description ?: "",
     )
