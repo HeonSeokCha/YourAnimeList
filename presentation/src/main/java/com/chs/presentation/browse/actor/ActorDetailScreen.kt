@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -148,12 +149,27 @@ fun ActorDetailScreen(
             ) { page ->
                 when (page) {
                     0 -> {
+                        when (state.actorDetailInfo) {
+                            is Resource.Loading -> {
+                                VoiceActorProFile(null)
+                            }
+
+                            is Resource.Success -> {
+                                VoiceActorProFile(state.actorDetailInfo.data)
+
+                            }
+
+                            is Resource.Error -> {}
+                        }
+                    }
+
+                    1 -> {
                         ActorAnimeTab(state.actorAnimeList) {
                             onNavigate(it)
                         }
                     }
 
-                    1 -> {
+                    2 -> {
                         ActorCharaTab(state.actorCharaList) {
                             onNavigate(it)
                         }
@@ -234,25 +250,18 @@ private fun ActorInfo(actorInfo: VoiceActorDetailInfo?) {
                 )
             }
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        VoiceActorProfile(info = actorInfo)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-//        VoiceActorDesc(desc = actorInfo?.description)
     }
 }
 
 @Composable
-private fun VoiceActorProfile(
-    info: VoiceActorDetailInfo?
-) {
+private fun VoiceActorProFile(info: VoiceActorDetailInfo?) {
+
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
+            .padding(8.dp)
     ) {
+
         if (info != null) {
             if (info.birthDate.isNotEmpty()) {
                 ProfileText("Birthday", info.birthDate)
@@ -278,68 +287,15 @@ private fun VoiceActorProfile(
                 ProfileText(null, null)
             }
         }
-    }
-}
 
-@Composable
-private fun VoiceActorDesc(desc: String?) {
-    var expandedDescButton by remember { mutableStateOf(false) }
+        Spacer(modifier = Modifier.height(16.dp))
 
-    Column(
-        modifier = Modifier
-            .padding(bottom = 16.dp)
-            .animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessLow
-                )
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        if (expandedDescButton) {
-            MarkdownText(
-                markdown = desc ?: stringResource(id = R.string.lorem_ipsum),
-                linkifyMask = Linkify.EMAIL_ADDRESSES,
-                syntaxHighlightColor = Pink80,
-                onLinkClicked = {
-                }
-            )
-        } else {
-            MarkdownText(
-                modifier = Modifier
-                    .placeholder(
-                        visible = desc == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    ),
-                markdown = desc ?: stringResource(id = R.string.lorem_ipsum),
-                linkifyMask = Linkify.WEB_URLS,
-                maxLines = 5,
-                syntaxHighlightColor = Pink80,
-                truncateOnTextOverflow = true,
-                onLinkClicked = {
-                }
-            )
-        }
-        if (desc != null && desc.length > 200) {
-            if (!expandedDescButton) {
-                Button(
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(
-                            top = 8.dp,
-                            bottom = 8.dp
-                        ),
-                    onClick = {
-                        expandedDescButton = !expandedDescButton
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowDownward,
-                        contentDescription = null
-                    )
-                }
+        MarkdownText(
+            markdown = info?.description ?: stringResource(id = R.string.lorem_ipsum),
+            linkifyMask = Linkify.EMAIL_ADDRESSES,
+            syntaxHighlightColor = Pink80,
+            onLinkClicked = {
             }
-        }
+        )
     }
 }

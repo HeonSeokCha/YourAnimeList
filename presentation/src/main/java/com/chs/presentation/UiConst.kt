@@ -38,6 +38,7 @@ object UiConst {
     )
 
     val ACTOR_DETAIL_TAB_LIST: List<String> = listOf(
+        "OVERVIEW",
         "ANIME",
         "CHARACTER"
     )
