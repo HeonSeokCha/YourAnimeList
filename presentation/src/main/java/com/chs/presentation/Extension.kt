@@ -1,5 +1,6 @@
 package com.chs.presentation
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
@@ -16,6 +17,10 @@ val Int?.isNotEmptyValue
 
 val String?.isNotEmptyValue
     get() = this != null && this != ""
+
+val Int?.toPercentFormat
+    @SuppressLint("DefaultLocale")
+    get() = String.format("%,d", this ?: 0)
 
 @Composable
 fun Int.pxToDp(): Dp {

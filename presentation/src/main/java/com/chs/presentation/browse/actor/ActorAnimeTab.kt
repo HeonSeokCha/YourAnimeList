@@ -6,14 +6,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.common.ItemAnimeSmall
+import com.chs.presentation.common.ItemNoResultImage
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -36,7 +39,8 @@ fun ActorAnimeTab(
             vertical = 8.dp
         )
     ) {
-        if (pagingData != null) {
+
+        if (pagingData != null && pagingData.itemCount != 0) {
             items(pagingData.itemCount) {
                 ItemAnimeSmall(pagingData[it]) {
                     onClick(
@@ -46,6 +50,46 @@ fun ActorAnimeTab(
                         )
                     )
                 }
+            }
+
+            when (pagingData.loadState.refresh) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemAnimeSmall(null)
+                    }
+                }
+
+                is LoadState.Error -> {
+                    item {
+                        Text(
+                            text = "Something Wrong for Loading List."
+                        )
+                    }
+                }
+
+                else -> Unit
+            }
+
+            when (pagingData.loadState.append) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemAnimeSmall(null)
+                    }
+                }
+
+                is LoadState.Error -> {
+                    item {
+                        Text(
+                            text = "Something Wrong for Loading List."
+                        )
+                    }
+                }
+
+                else -> Unit
+            }
+        } else {
+            item {
+                ItemNoResultImage()
             }
         }
     }

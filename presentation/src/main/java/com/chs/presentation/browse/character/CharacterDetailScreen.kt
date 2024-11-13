@@ -72,6 +72,7 @@ import com.chs.presentation.common.PlaceholderHighlight
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.common.shimmer
+import com.chs.presentation.toPercentFormat
 import com.chs.presentation.ui.theme.Pink80
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import kotlinx.coroutines.delay
@@ -352,10 +353,7 @@ private fun CharacterBanner(
                             UiConst.FAVOURITE_ID,
                             UiConst.FAVOURITE_ID
                         )
-                        append(
-                            String.format("%,d", characterInfo?.characterInfo?.favourites ?: 0)
-                        )
-
+                        append(characterInfo?.characterInfo?.favourites.toPercentFormat)
                     },
                     inlineContent = UiConst.inlineContent,
                     fontWeight = FontWeight.Bold,

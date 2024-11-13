@@ -39,6 +39,7 @@ import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemExpandSingleBox
 import com.chs.presentation.common.ItemPullToRefreshBox
+import com.chs.presentation.toPercentFormat
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -194,9 +195,7 @@ private fun StudioInfo(studioInfo: StudioDetailInfo?) {
                 contentDescription = null,
                 tint = Color.Red
             )
-            Text(
-                text = String.format("%,d", studioInfo?.favourites ?: 0)
-            )
+            Text(text = studioInfo?.favourites.toPercentFormat)
         }
     }
 }
