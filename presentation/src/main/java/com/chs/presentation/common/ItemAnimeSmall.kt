@@ -75,10 +75,7 @@ fun ItemAnimeSmall(
                         .width(130.dp)
                         .height(180.dp)
                         .clip(RoundedCornerShape(5.dp))
-                        .placeholder(
-                            visible = item == null,
-                            highlight = PlaceholderHighlight.shimmer(),
-                        ),
+                        .placeholder(visible = item == null),
                     model = item?.imageUrl,
                     placeholder = ColorPainter(Color.LightGray),
                     contentScale = ContentScale.Crop,
@@ -90,10 +87,7 @@ fun ItemAnimeSmall(
 
                 Text(
                     modifier = Modifier
-                        .placeholder(
-                            visible = item == null,
-                            highlight = PlaceholderHighlight.shimmer(),
-                        ),
+                        .placeholder(visible = item == null),
                     text = item?.title ?: "title Preview",
                     color = Color.Gray,
                     maxLines = 2,
@@ -111,10 +105,7 @@ fun ItemAnimeSmall(
             ) {
                 Text(
                     modifier = Modifier
-                        .placeholder(
-                            visible = item == null,
-                            highlight = PlaceholderHighlight.shimmer(),
-                        ),
+                        .placeholder(visible = item == null),
                     text = UiConst.mediaStatus[item?.status]?.first ?: "FINISHED",
                     color = Color(UiConst.mediaStatus[item?.status]?.second ?: 0xFF888888),
                     fontSize = 12.sp

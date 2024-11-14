@@ -221,10 +221,7 @@ private fun AnimeDetailHeadBanner(
                         color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
                             ?: LightGray
                     )
-                    .placeholder(
-                        visible = animeDetailInfo == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    ),
+                    .placeholder(visible = animeDetailInfo == null),
                 model = animeDetailInfo?.bannerImage,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
@@ -257,10 +254,7 @@ private fun AnimeDetailHeadBanner(
                         color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
                             ?: Gray
                     )
-                    .placeholder(
-                        visible = animeDetailInfo == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    ),
+                    .placeholder(visible = animeDetailInfo == null),
                 model = animeDetailInfo?.animeInfo?.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
@@ -277,10 +271,7 @@ private fun AnimeDetailHeadBanner(
         ) {
             Text(
                 modifier = Modifier
-                    .placeholder(
-                        visible = animeDetailInfo == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    ),
+                    .placeholder(visible = animeDetailInfo == null),
                 text = animeDetailInfo?.animeInfo?.title ?: "title PreView Title PreView",
                 fontSize = 18.sp,
                 maxLines = 2,
@@ -291,10 +282,7 @@ private fun AnimeDetailHeadBanner(
 
             Text(
                 modifier = Modifier
-                    .placeholder(
-                        visible = animeDetailInfo == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    )
+                    .placeholder(visible = animeDetailInfo == null)
                     .padding(top = 8.dp),
                 text = if (animeDetailInfo?.animeInfo?.seasonYear.isNotEmptyValue
                     && animeDetailInfo?.animeInfo?.status != null
@@ -311,10 +299,7 @@ private fun AnimeDetailHeadBanner(
                 if (animeDetailInfo?.animeInfo?.averageScore.isNotEmptyValue) {
                     Text(
                         modifier = Modifier
-                            .placeholder(
-                                visible = animeDetailInfo == null,
-                                highlight = PlaceholderHighlight.shimmer()
-                            ),
+                            .placeholder(visible = animeDetailInfo == null),
                         text = buildAnnotatedString {
                             appendInlineContent(
                                 UiConst.AVERAGE_SCORE_ID,
@@ -333,10 +318,7 @@ private fun AnimeDetailHeadBanner(
                 if (animeDetailInfo?.animeInfo?.favourites.isNotEmptyValue) {
                     Text(
                         modifier = Modifier
-                            .placeholder(
-                                visible = animeDetailInfo == null,
-                                highlight = PlaceholderHighlight.shimmer()
-                            ),
+                            .placeholder(visible = animeDetailInfo == null),
                         text = buildAnnotatedString {
                             appendInlineContent(
                                 UiConst.FAVOURITE_ID,

@@ -184,7 +184,6 @@ fun Modifier.placeholder(
     visible: Boolean,
     color: Color = Color.Unspecified,
     shape: Shape = RectangleShape,
-    highlight: PlaceholderHighlight? = null,
     placeholderFadeTransitionSpec: @Composable Transition.Segment<Boolean>.() -> FiniteAnimationSpec<Float> = { spring() },
     contentFadeTransitionSpec: @Composable Transition.Segment<Boolean>.() -> FiniteAnimationSpec<Float> = { spring() },
 ): Modifier = composed {
@@ -193,6 +192,7 @@ fun Modifier.placeholder(
     val lastLayoutDirection = remember { Ref<LayoutDirection>() }
     val lastOutline = remember { Ref<Outline>() }
     val color = if (color.isSpecified) color else PlaceholderDefaults.color()
+    val highlight = PlaceholderHighlight.shimmer()
 
     // The current highlight animation progress
     var highlightProgress: Float by remember { mutableStateOf(0f) }

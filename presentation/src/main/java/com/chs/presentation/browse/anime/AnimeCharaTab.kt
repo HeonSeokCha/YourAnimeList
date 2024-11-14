@@ -99,7 +99,8 @@ fun CharaImageItem(
         AsyncImage(
             modifier = Modifier
                 .size(100.dp)
-                .clip(RoundedCornerShape(100)),
+                .clip(RoundedCornerShape(100))
+                .placeholder(visible = charaInfo == null),
             placeholder = ColorPainter(Color.LightGray),
             model = charaInfo?.imageUrl,
             contentDescription = null,
@@ -110,10 +111,7 @@ fun CharaImageItem(
 
         Text(
             modifier = Modifier
-                .placeholder(
-                    visible = charaInfo == null,
-                    highlight = PlaceholderHighlight.shimmer()
-                ),
+                .placeholder(visible = charaInfo == null),
             text = charaInfo?.name ?: "Character",
             textAlign = TextAlign.Center
         )

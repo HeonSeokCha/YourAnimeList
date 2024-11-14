@@ -67,10 +67,7 @@ fun ItemHomeBanner(
                 .fillMaxWidth(0.4f)
                 .height(220.dp)
                 .background(Color.LightGray)
-                .placeholder(
-                    visible = banner == null,
-                    highlight = PlaceholderHighlight.shimmer()
-                ),
+                .placeholder(visible = banner == null),
             model = banner?.animeInfo?.imageUrl,
             placeholder = ColorPainter(
                 banner?.animeInfo?.imagePlaceColor?.color ?: Color.LightGray
@@ -90,10 +87,7 @@ fun ItemHomeBanner(
                 modifier = Modifier
                     .padding(8.dp)
                     .align(Alignment.TopStart)
-                    .placeholder(
-                        visible = banner == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    ),
+                    .placeholder(visible = banner == null),
                 text = banner?.animeInfo?.title ?: UiConst.TITLE_PREVIEW,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
@@ -110,10 +104,7 @@ fun ItemHomeBanner(
                         top = 8.dp,
                     )
                     .align(Alignment.BottomStart)
-                    .placeholder(
-                        visible = banner == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    ),
+                    .placeholder(visible = banner == null),
                 text = banner?.studioTitle ?: UiConst.TITLE_PREVIEW,
                 color = banner?.animeInfo?.imagePlaceColor?.color ?: Color.White,
                 fontWeight = FontWeight.Bold,
@@ -165,10 +156,7 @@ fun ItemHomeBanner(
                         bottom = 4.dp
                     )
                     .align(Alignment.TopEnd)
-                    .placeholder(
-                        visible = banner == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    ),
+                    .placeholder(visible = banner == null),
                 text = "${banner?.episode} Episodes aired on",
                 fontSize = 12.sp
             )
@@ -184,10 +172,7 @@ fun ItemHomeBanner(
                     bottom = 4.dp
                 )
                 .align(Alignment.TopEnd)
-                .placeholder(
-                    visible = banner == null,
-                    highlight = PlaceholderHighlight.shimmer()
-                ),
+                .placeholder(visible = banner == null),
             text = banner?.startDate ?: "",
             fontSize = 12.sp
         )
@@ -202,10 +187,7 @@ fun ItemHomeBanner(
                     bottom = 4.dp
                 )
                 .align(Alignment.TopEnd)
-                .placeholder(
-                    visible = banner == null,
-                    highlight = PlaceholderHighlight.shimmer()
-                ),
+                .placeholder(visible = banner == null),
             text = AnnotatedString.fromHtml(
                 htmlString = banner?.description ?: UiConst.TITLE_PREVIEW
             ),

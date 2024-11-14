@@ -47,13 +47,10 @@ fun ItemAnimeLarge(
         ) {
             AsyncImage(
                 modifier = Modifier
-                    .placeholder(
-                        visible = anime == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    )
                     .width(150.dp)
                     .height(190.dp)
-                    .align(Alignment.CenterStart),
+                    .align(Alignment.CenterStart)
+                    .placeholder(visible = anime == null),
                 model = anime?.imageUrl,
                 placeholder = ColorPainter(Color.LightGray),
                 contentDescription = null,
@@ -71,10 +68,7 @@ fun ItemAnimeLarge(
             ) {
                 Text(
                     modifier = Modifier
-                        .placeholder(
-                            visible = anime == null,
-                            highlight = PlaceholderHighlight.shimmer()
-                        ),
+                        .placeholder(visible = anime == null),
                     text = anime?.title ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -87,10 +81,7 @@ fun ItemAnimeLarge(
 
                 Text(
                     modifier = Modifier
-                        .placeholder(
-                            visible = anime == null,
-                            highlight = PlaceholderHighlight.shimmer()
-                        ),
+                        .placeholder(visible = anime == null),
                     text = if (anime?.seasonYear.isNotEmptyValue) {
                         "${anime?.seasonYear ?: 2000} ⦁ " +
                                 (UiConst.mediaStatus[anime?.status]?.first ?: UiConst.UNKNOWN)

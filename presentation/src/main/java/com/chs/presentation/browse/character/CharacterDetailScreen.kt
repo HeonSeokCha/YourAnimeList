@@ -331,19 +331,13 @@ private fun CharacterBanner(
             ) {
                 Text(
                     modifier = Modifier
-                        .placeholder(
-                            visible = characterInfo?.characterInfo?.name == null,
-                            highlight = PlaceholderHighlight.shimmer()
-                        ),
+                        .placeholder(visible = characterInfo?.characterInfo?.name == null),
                     text = characterInfo?.characterInfo?.name ?: "Character PreView"
                 )
 
                 Text(
                     modifier = Modifier
-                        .placeholder(
-                            visible = characterInfo?.characterInfo?.nativeName == null,
-                            highlight = PlaceholderHighlight.shimmer()
-                        ),
+                        .placeholder(visible = characterInfo?.characterInfo?.nativeName == null),
                     text = characterInfo?.characterInfo?.nativeName ?: "Character PreView"
                 )
 
@@ -411,20 +405,14 @@ fun ProfileText(
     ) {
         Text(
             modifier = Modifier
-                .placeholder(
-                    visible = values == null,
-                    highlight = PlaceholderHighlight.shimmer()
-                ),
+                .placeholder(visible = values == null),
             text = "${title ?: UiConst.TITLE_PREVIEW}:  ",
             fontWeight = FontWeight.SemiBold
         )
 
         Text(
             modifier = Modifier
-                .placeholder(
-                    visible = values == null,
-                    highlight = PlaceholderHighlight.shimmer()
-                ),
+                .placeholder(visible = values == null),
             text = values ?: UiConst.TITLE_PREVIEW,
         )
     }
@@ -461,10 +449,7 @@ private fun CharacterDescription(
         } else {
             MarkdownText(
                 modifier = Modifier
-                    .placeholder(
-                        visible = description == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    ),
+                    .placeholder(visible = description == null),
                 markdown = description ?: stringResource(id = R.string.lorem_ipsum),
                 linkifyMask = Linkify.WEB_URLS,
                 maxLines = 5,

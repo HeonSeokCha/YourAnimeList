@@ -218,19 +218,13 @@ private fun ActorInfo(actorInfo: VoiceActorDetailInfo?) {
             ) {
                 Text(
                     modifier = Modifier
-                        .placeholder(
-                            visible = actorInfo == null,
-                            highlight = PlaceholderHighlight.shimmer()
-                        ),
+                        .placeholder(visible = actorInfo == null),
                     text = actorInfo?.voiceActorInfo?.name ?: "Character PreView"
                 )
 
                 Text(
                     modifier = Modifier
-                        .placeholder(
-                            visible = actorInfo == null,
-                            highlight = PlaceholderHighlight.shimmer()
-                        ),
+                        .placeholder(visible = actorInfo == null),
                     text = actorInfo?.voiceActorInfo?.nativeName ?: "Character PreView"
                 )
 

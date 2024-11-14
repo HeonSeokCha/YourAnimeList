@@ -52,10 +52,7 @@ fun ItemCharaLarge(
                     .fillMaxWidth(0.4f)
                     .height(190.dp)
                     .align(Alignment.TopStart)
-                    .placeholder(
-                        visible = character == null,
-                        highlight = PlaceholderHighlight.shimmer()
-                    ),
+                    .placeholder(visible = character == null),
                 model = character?.imageUrl,
                 placeholder = ColorPainter(Color.LightGray),
                 contentDescription = null,
@@ -75,10 +72,7 @@ fun ItemCharaLarge(
             ) {
                 Text(
                     modifier = Modifier
-                        .placeholder(
-                            visible = character == null,
-                            highlight = PlaceholderHighlight.shimmer()
-                        ),
+                        .placeholder(visible = character == null),
                     text = character?.name ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -89,10 +83,7 @@ fun ItemCharaLarge(
 
                 Text(
                     modifier = Modifier
-                        .placeholder(
-                            visible = character == null,
-                            highlight = PlaceholderHighlight.shimmer()
-                        ),
+                        .placeholder(visible = character == null),
                     text = character?.nativeName ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -102,10 +93,7 @@ fun ItemCharaLarge(
                 if (character?.favourites.isNotEmptyValue) {
                     Text(
                         modifier = Modifier
-                            .placeholder(
-                                visible = character == null,
-                                highlight = PlaceholderHighlight.shimmer()
-                            ),
+                            .placeholder(visible = character == null),
                         text = buildAnnotatedString {
                             appendInlineContent(
                                 UiConst.FAVOURITE_ID,
