@@ -17,6 +17,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.anime.CharaImageItem
+import com.chs.presentation.common.ItemNoResultImage
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -81,8 +82,8 @@ fun ActorCharaTab(
                 else -> Unit
             }
         } else {
-            item {
-                CharaImageItem(null) { }
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                ItemNoResultImage()
             }
         }
     }

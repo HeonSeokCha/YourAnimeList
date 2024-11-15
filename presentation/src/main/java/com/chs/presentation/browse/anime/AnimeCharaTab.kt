@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
@@ -69,7 +70,7 @@ fun AnimeCharaScreen(
             }
 
             is Resource.Error -> {
-                item {
+                item(span = { GridItemSpan(maxLineSpan) }) {
                     Text(
                         text = "Something Wrong for Loading List."
                     )
@@ -99,8 +100,7 @@ fun CharaImageItem(
         AsyncImage(
             modifier = Modifier
                 .size(100.dp)
-                .clip(RoundedCornerShape(100))
-                .placeholder(visible = charaInfo == null),
+                .clip(RoundedCornerShape(100)),
             placeholder = ColorPainter(Color.LightGray),
             model = charaInfo?.imageUrl,
             contentDescription = null,

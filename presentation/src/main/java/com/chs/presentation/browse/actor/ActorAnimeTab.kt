@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Text
@@ -88,7 +89,7 @@ fun ActorAnimeTab(
                 else -> Unit
             }
         } else {
-            item {
+            item(span = { GridItemSpan(maxLineSpan) }) {
                 ItemNoResultImage()
             }
         }

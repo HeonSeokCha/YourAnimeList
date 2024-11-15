@@ -8,6 +8,7 @@ query ActorAnimeListQuery(
             page: $page,
             sort: $sort,
             perPage: 10,
+            type: ANIME
         ) {
             pageInfo {
                 ... pageBasicInfo
