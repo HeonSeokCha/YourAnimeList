@@ -165,13 +165,13 @@ fun ActorDetailScreen(
                     }
 
                     1 -> {
-                        ActorAnimeTab(state.actorAnimeList) {
+                        ActorCharaTab(state.actorCharaList) {
                             onNavigate(it)
                         }
                     }
 
                     2 -> {
-                        ActorCharaTab(state.actorCharaList) {
+                        ActorAnimeTab(state.actorAnimeList) {
                             onNavigate(it)
                         }
                     }
