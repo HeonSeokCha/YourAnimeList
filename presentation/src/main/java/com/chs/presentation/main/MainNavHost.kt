@@ -48,8 +48,9 @@ fun MainNavHost(
     ) {
         composable<Screen.HomeScreen> {
             val viewModel: HomeViewModel = hiltViewModel()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             HomeScreen(
-                state = viewModel.state,
+                state = state,
                 event = viewModel::changeOption,
                 onNavigate = {
                     navController.navigate(it)
@@ -57,7 +58,8 @@ fun MainNavHost(
             ) { id, idMal ->
                 context.startActivity(
                     Intent(
-                        context, BrowseActivity::class.java
+                        context,
+                        BrowseActivity::class.java
                     ).apply {
                         this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
                         this.putExtra(UiConst.TARGET_ID, id)
@@ -73,7 +75,8 @@ fun MainNavHost(
             AnimeListScreen(list = list) { id, idMal ->
                 context.startActivity(
                     Intent(
-                        context, BrowseActivity::class.java
+                        context,
+                        BrowseActivity::class.java
                     ).apply {
                         this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
                         this.putExtra(UiConst.TARGET_ID, id)
@@ -89,7 +92,8 @@ fun MainNavHost(
             CharaListScreen(list = list) { id ->
                 context.startActivity(
                     Intent(
-                        context, BrowseActivity::class.java
+                        context,
+                        BrowseActivity::class.java
                     ).apply {
                         this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
                         this.putExtra(UiConst.TARGET_ID, id)
@@ -109,7 +113,8 @@ fun MainNavHost(
             ) { type, id, idMal ->
                 context.startActivity(
                     Intent(
-                        context, BrowseActivity::class.java
+                        context,
+                        BrowseActivity::class.java
                     ).apply {
                         putExtra(UiConst.TARGET_TYPE, type)
                         putExtra(UiConst.TARGET_ID, id)
@@ -127,14 +132,16 @@ fun MainNavHost(
                 navController.getBackStackEntry(it.toRoute<Screen.SortListScreen>())
             }
             val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
+            val state by viewmodel.state.collectAsStateWithLifecycle()
 
             SortedListScreen(
-                state = viewmodel.state,
+                state = state,
                 onEvent = viewmodel::changeSortEvent
             ) { id, idMal ->
                 context.startActivity(
                     Intent(
-                        context, BrowseActivity::class.java
+                        context,
+                        BrowseActivity::class.java
                     ).apply {
                         this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
                         this.putExtra(UiConst.TARGET_ID, id)

@@ -1,8 +1,5 @@
 package com.chs.presentation.sortList
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +11,11 @@ import com.chs.domain.usecase.GetSaveTagUseCase
 import com.chs.domain.usecase.GetSavedGenresUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -27,64 +29,62 @@ class SortedViewModel @Inject constructor(
     private val getRecentGenresTagUseCase: GetRecentGenresTagUseCase
 ) : ViewModel() {
 
-    var state: SortState by mutableStateOf(SortState())
-        private set
-
-
-    init {
-        initFilterList()
-
-        val selectSort = UiConst.SortType.entries.find {
-            it.rawValue == savedStateHandle[UiConst.KEY_SORT]
-        } ?: UiConst.SortType.TRENDING
-
-        val selectSeason = UiConst.Season.entries.find {
-            it.rawValue == savedStateHandle[UiConst.KEY_SEASON]
+    private var _state = MutableStateFlow(SortState())
+    val state = _state
+        .onStart {
+            initFilterList()
+            getSortedAnime()
         }
-
-        val selectYear: Int? = savedStateHandle[UiConst.KEY_YEAR]
-        val selectGenre: String? = savedStateHandle[UiConst.KEY_GENRE]
-        val selectTags: String? = savedStateHandle[UiConst.KEY_TAG]
-
-        state = state.copy(
-            sortFilter = state.sortFilter.copy(
-                selectSort = selectSort.rawValue,
-                selectSeason = selectSeason?.rawValue,
-                selectYear = selectYear,
-                selectGenre = if (selectGenre == null) null else listOf(selectGenre),
-                selectTags = if (selectTags == null) null else listOf(selectTags)
-            ),
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            _state.value
         )
-        getSortedAnime()
+
+    private val selectSort: UiConst.SortType = UiConst.SortType.entries.find {
+        it.rawValue == savedStateHandle[UiConst.KEY_SORT]
+    } ?: UiConst.SortType.TRENDING
+
+    private val selectSeason = UiConst.Season.entries.find {
+        it.rawValue == savedStateHandle[UiConst.KEY_SEASON]
     }
 
+    private val selectYear: Int? = savedStateHandle[UiConst.KEY_YEAR]
+    private val selectGenre: String? = savedStateHandle[UiConst.KEY_GENRE]
+    private val selectTags: String? = savedStateHandle[UiConst.KEY_TAG]
+
     private fun getSortedAnime() {
-        state = state.copy(
-            animeSortPaging = getAnimeFilteredListUseCase(
-                sortType = if (state.sortFilter.selectSort == UiConst.SortType.TRENDING.rawValue) {
-                    listOf(UiConst.SortType.TRENDING.rawValue)
-                } else {
-                    listOf(state.sortFilter.selectSort)
-                },
-                season = state.sortFilter.selectSeason,
-                year = state.sortFilter.selectYear,
-                genres = state.sortFilter.selectGenre,
-                tags = state.sortFilter.selectTags,
-                status = state.sortFilter.selectStatus
-            ).cachedIn(viewModelScope)
-        )
+        _state.update {
+            it.copy(
+                animeSortPaging = getAnimeFilteredListUseCase(
+                    sortType = if (it.sortFilter.selectSort == UiConst.SortType.TRENDING.rawValue) {
+                        listOf(UiConst.SortType.TRENDING.rawValue)
+                    } else {
+                        listOf(it.sortFilter.selectSort)
+                    },
+                    season = it.sortFilter.selectSeason,
+                    year = it.sortFilter.selectYear,
+                    genres = it.sortFilter.selectGenre,
+                    tags = it.sortFilter.selectTags,
+                    status = it.sortFilter.selectStatus
+                ).cachedIn(viewModelScope)
+            )
+        }
     }
 
     fun changeSortEvent(event: SortEvent) {
         when (event) {
             is SortEvent.GetSortList -> {
                 getSortedAnime()
+                return
             }
 
             is SortEvent.ChangeSortOption -> {
-                state = state.copy(
-                    sortFilter = event.value
-                )
+                _state.update {
+                    it.copy(
+                        sortFilter = event.value
+                    )
+                }
             }
         }
         getSortedAnime()
@@ -98,12 +98,21 @@ class SortedViewModel @Inject constructor(
                 }
             }
 
-            state = state.copy(
-                sortOptions = state.sortOptions.copy(
-                    optionGenres = getSavedGenresUsaCase(),
-                    optionTags = getSavedTagUseCase()
+            _state.update {
+                it.copy(
+                    sortFilter = it.sortFilter.copy(
+                        selectSort = selectSort.rawValue,
+                        selectSeason = selectSeason?.rawValue,
+                        selectYear = selectYear,
+                        selectGenre = if (selectGenre == null) null else listOf(selectGenre),
+                        selectTags = if (selectTags == null) null else listOf(selectTags)
+                    ),
+                    sortOptions = it.sortOptions.copy(
+                        optionGenres = getSavedGenresUsaCase(),
+                        optionTags = getSavedTagUseCase()
+                    )
                 )
-            )
+            }
         }
     }
 }

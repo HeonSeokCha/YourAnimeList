@@ -8,7 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.chs.domain.usecase.GetAnimeRecListUseCase
 import com.chs.presentation.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,12 +21,16 @@ class HomeViewModel @Inject constructor(
     private val getHomeListUseCase: GetAnimeRecListUseCase,
 ) : ViewModel() {
 
-    var state: HomeState by mutableStateOf(HomeState())
-        private set
-
-    init {
-        getHomeList()
-    }
+    private val _state = MutableStateFlow(HomeState())
+    val state = _state
+        .onStart {
+            getHomeList()
+        }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            _state.value
+        )
 
     fun changeOption(event: HomeEvent) {
         when (event) {
@@ -38,9 +46,11 @@ class HomeViewModel @Inject constructor(
                 currentYear = Util.getCurrentYear(),
                 variationYear = Util.getVariationYear()
             ).collect { result ->
-                state = state.copy(
-                    animeRecommendList = result
-                )
+                _state.update {
+                    it.copy(
+                        animeRecommendList = result
+                    )
+                }
             }
         }
     }

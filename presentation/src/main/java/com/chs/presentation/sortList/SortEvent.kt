@@ -5,4 +5,5 @@ import com.chs.domain.model.SortFilter
 sealed class SortEvent {
     data object GetSortList : SortEvent()
     data class ChangeSortOption(val value: SortFilter) : SortEvent()
+    data class ClickAnime(val animeId: Int)
 }
