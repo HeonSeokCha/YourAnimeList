@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getHomeListUseCase: GetAnimeRecListUseCase,
+    private val getHomeListUseCase: GetAnimeRecListUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
@@ -35,6 +35,7 @@ class HomeViewModel @Inject constructor(
     fun changeOption(event: HomeEvent) {
         when (event) {
             HomeEvent.GetHomeData -> getHomeList()
+            else -> Unit
         }
     }
 

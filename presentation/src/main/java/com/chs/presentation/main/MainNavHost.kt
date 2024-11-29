@@ -22,6 +22,7 @@ import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.charaList.CharaListScreen
 import com.chs.presentation.charaList.CharacterListViewModel
 import com.chs.presentation.home.HomeScreen
+import com.chs.presentation.home.HomeScreenRoot
 import com.chs.presentation.home.HomeViewModel
 import com.chs.presentation.search.SearchEvent
 import com.chs.presentation.search.SearchMediaViewModel
@@ -48,25 +49,25 @@ fun MainNavHost(
     ) {
         composable<Screen.HomeScreen> {
             val viewModel: HomeViewModel = hiltViewModel()
-            val state by viewModel.state.collectAsStateWithLifecycle()
-            HomeScreen(
-                state = state,
-                event = viewModel::changeOption,
-                onNavigate = {
+
+            HomeScreenRoot(
+                viewModel = viewModel,
+                onAnimeClick = { id, idMal ->
+                    context.startActivity(
+                        Intent(
+                            context,
+                            BrowseActivity::class.java
+                        ).apply {
+                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                            this.putExtra(UiConst.TARGET_ID, id)
+                            this.putExtra(UiConst.TARGET_ID_MAL, idMal)
+                        }
+                    )
+                },
+                onSortScreenClick = {
                     navController.navigate(it)
                 }
-            ) { id, idMal ->
-                context.startActivity(
-                    Intent(
-                        context,
-                        BrowseActivity::class.java
-                    ).apply {
-                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                        this.putExtra(UiConst.TARGET_ID, id)
-                        this.putExtra(UiConst.TARGET_ID_MAL, idMal)
-                    }
-                )
-            }
+            )
         }
 
         composable<Screen.AnimeListScreen> {

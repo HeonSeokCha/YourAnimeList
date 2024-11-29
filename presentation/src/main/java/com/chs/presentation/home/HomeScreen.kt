@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.common.Resource
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
@@ -34,11 +35,38 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
+fun HomeScreenRoot(
+    viewModel: HomeViewModel,
+    onAnimeClick: (Int, Int) -> Unit,
+    onSortScreenClick: (Screen.SortListScreen) -> Unit
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    HomeScreen(state = state) { event ->
+        when (event) {
+            is HomeEvent.NavigateSort -> {
+                onSortScreenClick(
+                    Screen.SortListScreen(
+                        year = event.year,
+                        season = event.season,
+                        sortOption = event.option
+                    )
+                )
+            }
+
+            is HomeEvent.ClickAnime -> {
+                onAnimeClick(event.id, event.idMal)
+            }
+
+            else -> Unit
+        }
+        viewModel.changeOption(event)
+    }
+}
+
+@Composable
 fun HomeScreen(
     state: HomeState,
     event: (HomeEvent) -> Unit,
-    onNavigate: (Screen.SortListScreen) -> Unit,
-    onStartActivity: (Int, Int) -> Unit
 ) {
     val pagerState = rememberPagerState { UiConst.BANNER_SIZE }
     var isRefreshing by remember { mutableStateOf(false) }
@@ -71,7 +99,7 @@ fun HomeScreen(
                         ItemRecommendCategory(
                             title = state.animeCategoryList[idx],
                             list = List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
-                            sortClick = { _ -> }, animeClick = { id, idMal -> }
+                            sortClick = { _,_,_ -> }, animeClick = { id, idMal -> }
                         )
                     }
                 }
@@ -90,7 +118,7 @@ fun HomeScreen(
                                 ItemHomeBanner(
                                     banner = data.bannerList[idx]
                                 ) { id, idMal ->
-                                    onStartActivity(id, idMal)
+                                    event(HomeEvent.ClickAnime(id = id, idMal = idMal))
                                 }
                             }
 
@@ -125,10 +153,18 @@ fun HomeScreen(
                             title = state.animeCategoryList[idx],
                             list = data?.animeBasicList?.get(idx)
                                 ?: List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
-                            sortClick = { route ->
-                                onNavigate(route)
+                            sortClick = { sortType, year, season ->
+                                event(
+                                    HomeEvent.NavigateSort(
+                                        year = year,
+                                        season = season,
+                                        option = sortType
+                                    )
+                                )
                             }, animeClick = { id, idMal ->
-                                onStartActivity(id, idMal)
+                                event(
+                                    HomeEvent.ClickAnime(id = id, idMal = idMal)
+                                )
                             }
                         )
                     }
@@ -148,7 +184,7 @@ fun HomeScreen(
 private fun ItemRecommendCategory(
     title: Pair<String, Triple<UiConst.SortType, Int?, String?>>,
     list: List<AnimeInfo?>,
-    sortClick: (Screen.SortListScreen) -> Unit,
+    sortClick: (String?, Int?, String?) -> Unit,
     animeClick: (Int, Int) -> Unit
 ) {
     Row(
@@ -170,11 +206,9 @@ private fun ItemRecommendCategory(
         IconButton(
             onClick = {
                 sortClick(
-                    Screen.SortListScreen(
-                        sortOption = title.second.first.rawValue,
-                        year = title.second.second,
-                        season = title.second.third
-                    )
+                    title.second.first.rawValue,
+                    title.second.second,
+                    title.second.third
                 )
             }
         ) {
