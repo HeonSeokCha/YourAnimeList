@@ -37,7 +37,7 @@ import com.chs.presentation.common.shimmer
 @Composable
 fun AnimeCharaScreen(
     state: Resource<AnimeDetailInfo>,
-    onClick: (BrowseScreen.CharacterDetailScreen) -> Unit
+    onClick: (Int) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = Modifier
@@ -64,7 +64,7 @@ fun AnimeCharaScreen(
                 val charaInfoList = state.data?.characterList ?: emptyList()
                 items(charaInfoList) { charaInfo ->
                     CharaImageItem(charaInfo = charaInfo) {
-                        onClick(it)
+                        onClick(charaInfo.id)
                     }
                 }
             }

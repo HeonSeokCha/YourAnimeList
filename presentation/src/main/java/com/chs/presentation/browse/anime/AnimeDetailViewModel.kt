@@ -6,11 +6,21 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.cachedIn
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.usecase.*
 import com.chs.presentation.UiConst
+import com.chs.presentation.browse.BrowseScreen
+import com.chs.presentation.main.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,15 +35,19 @@ class AnimeDetailViewModel @Inject constructor(
     private val getAnimeRecListUseCase: GetAnimeDetailRecListUseCase
 ) : ViewModel() {
 
-    var state by mutableStateOf(AnimeDetailState())
-        private set
+    private val _state = MutableStateFlow(AnimeDetailState())
+    val state = _state
+        .onStart {
+            initInfo()
+        }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            _state.value
+        )
 
-    private val animeId: Int = savedStateHandle[UiConst.TARGET_ID] ?: 0
-    private val animeMalId: Int = savedStateHandle[UiConst.TARGET_ID_MAL] ?: 0
-
-    init {
-        changeEvent(AnimeDetailEvent.GetAnimeDetailInfo)
-    }
+    private val animeId: Int = savedStateHandle.toRoute<BrowseScreen.AnimeDetailScreen>().id
+    private val animeMalId: Int = savedStateHandle.toRoute<BrowseScreen.AnimeDetailScreen>().idMal
 
     fun changeEvent(event: AnimeDetailEvent) {
         when (event) {
@@ -46,20 +60,28 @@ class AnimeDetailViewModel @Inject constructor(
             }
 
             is AnimeDetailEvent.GetAnimeDetailInfo -> {
-                getAnimeDetailInfo(animeId)
-                getAnimeTheme(animeMalId)
-                getAnimeRecList(animeId)
-                isSaveAnime(animeId)
+                initInfo()
             }
+
+            else -> Unit
         }
+    }
+
+    private fun initInfo() {
+        getAnimeDetailInfo(animeId)
+        getAnimeTheme(animeMalId)
+        getAnimeRecList(animeId)
+        isSaveAnime(animeId)
     }
 
     private fun getAnimeDetailInfo(id: Int) {
         viewModelScope.launch {
             getAnimeDetailUseCase(id).collect { result ->
-                state = state.copy(
-                    animeDetailInfo = result
-                )
+                _state.update {
+                    it.copy(
+                        animeDetailInfo = result
+                    )
+                }
             }
         }
     }
@@ -67,25 +89,31 @@ class AnimeDetailViewModel @Inject constructor(
     private fun getAnimeTheme(idMal: Int) {
         viewModelScope.launch {
             getAnimeThemeUseCase(idMal).collect { result ->
-                state = state.copy(
-                    animeThemes = result
-                )
+                _state.update {
+                    it.copy(
+                        animeThemes = result
+                    )
+                }
             }
         }
     }
 
     private fun getAnimeRecList(id: Int) {
-        state = state.copy(
-            animeRecList = getAnimeRecListUseCase(id).cachedIn(viewModelScope)
-        )
+        _state.update {
+            it.copy(
+                animeRecList = getAnimeRecListUseCase(id).cachedIn(viewModelScope)
+            )
+        }
     }
 
     private fun isSaveAnime(animeId: Int) {
-        viewModelScope.launch {
-            checkSaveAnimeUseCase(animeId).collect { savedAnimeInfo ->
-                state = state.copy(isSave = (savedAnimeInfo != null))
+        checkSaveAnimeUseCase(animeId).onEach { savedAnimeInfo ->
+            _state.update {
+                it.copy(
+                    isSave = savedAnimeInfo != null
+                )
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
     private fun insertAnime(anime: AnimeInfo?) {
@@ -98,7 +126,7 @@ class AnimeDetailViewModel @Inject constructor(
 
     private fun deleteAnime(anime: AnimeInfo?) {
         if (anime != null) {
-            if (state.isSave) {
+            if (state.value.isSave) {
                 viewModelScope.launch {
                     deleteAnimeUseCase(anime)
                 }

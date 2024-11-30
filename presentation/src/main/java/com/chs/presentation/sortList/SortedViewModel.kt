@@ -3,12 +3,14 @@ package com.chs.presentation.sortList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.cachedIn
 import com.chs.presentation.UiConst
 import com.chs.domain.usecase.GetAnimeFilteredListUseCase
 import com.chs.domain.usecase.GetRecentGenresTagUseCase
 import com.chs.domain.usecase.GetSaveTagUseCase
 import com.chs.domain.usecase.GetSavedGenresUseCase
+import com.chs.presentation.main.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +35,6 @@ class SortedViewModel @Inject constructor(
     val state = _state
         .onStart {
             initFilterList()
-            getSortedAnime()
         }
         .stateIn(
             viewModelScope,
@@ -42,16 +43,16 @@ class SortedViewModel @Inject constructor(
         )
 
     private val selectSort: UiConst.SortType = UiConst.SortType.entries.find {
-        it.rawValue == savedStateHandle[UiConst.KEY_SORT]
+        it.rawValue == savedStateHandle.toRoute<Screen.SortListScreen>().sortOption
     } ?: UiConst.SortType.TRENDING
 
     private val selectSeason = UiConst.Season.entries.find {
-        it.rawValue == savedStateHandle[UiConst.KEY_SEASON]
+        it.rawValue == savedStateHandle.toRoute<Screen.SortListScreen>().season
     }
 
-    private val selectYear: Int? = savedStateHandle[UiConst.KEY_YEAR]
-    private val selectGenre: String? = savedStateHandle[UiConst.KEY_GENRE]
-    private val selectTags: String? = savedStateHandle[UiConst.KEY_TAG]
+    private val selectYear: Int? = savedStateHandle.toRoute<Screen.SortListScreen>().year
+    private val selectGenre: String? = savedStateHandle.toRoute<Screen.SortListScreen>().genre
+    private val selectTags: String? = savedStateHandle.toRoute<Screen.SortListScreen>().tag
 
     private fun getSortedAnime() {
         _state.update {
@@ -113,6 +114,8 @@ class SortedViewModel @Inject constructor(
                     )
                 )
             }
+
+            getSortedAnime()
         }
     }
 }

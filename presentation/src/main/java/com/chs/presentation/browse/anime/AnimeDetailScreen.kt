@@ -1,7 +1,5 @@
 package com.chs.presentation.browse.anime
 
-import android.app.Activity
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,32 +45,86 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.chs.common.Constants
 import com.chs.common.Resource
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
+import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.color
 import com.chs.presentation.common.ItemSaveButton
-import com.chs.presentation.common.PlaceholderHighlight
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.common.placeholder
-import com.chs.presentation.common.shimmer
 import com.chs.presentation.isNotEmptyValue
 import com.chs.presentation.ui.theme.Pink80
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
+fun AnimeDetailScreenRoot(
+    viewModel: AnimeDetailViewModel,
+    onTrailerClick: (String) -> Unit,
+    onAnimeClick: (Int, Int) -> Unit,
+    onCharaClick: (Int) -> Unit,
+    onGenreClick: (String) -> Unit,
+    onTagClick: (String) -> Unit,
+    onSeasonYearClick: (Int, String) -> Unit,
+    onStudioClick: (Int) -> Unit,
+    onCloseClick: () -> Unit
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    AnimeDetailScreen(state = state) { event ->
+        when (event) {
+            AnimeDetailEvent.OnCloseClick -> {
+                onCloseClick()
+            }
+
+            is AnimeDetailEvent.OnAnimeClick -> {
+                onAnimeClick(
+                    event.id,
+                    event.idMal
+                )
+            }
+
+            is AnimeDetailEvent.OnCharaClick -> {
+                onCharaClick(event.id)
+            }
+
+            is AnimeDetailEvent.OnTrailerClick -> {
+                onTrailerClick(event.id)
+            }
+
+            is AnimeDetailEvent.OnGenreClick -> {
+                onGenreClick(event.genre)
+            }
+
+            is AnimeDetailEvent.OnSeasonYearClick -> {
+                onSeasonYearClick(event.year, event.season)
+            }
+
+            is AnimeDetailEvent.OnStudioClick -> {
+                onStudioClick(event.id)
+            }
+
+            is AnimeDetailEvent.OnTagClick -> {
+                onTagClick(event.tag)
+            }
+
+            else -> Unit
+        }
+        viewModel.changeEvent(event)
+    }
+}
+
+@Composable
 fun AnimeDetailScreen(
     state: AnimeDetailState,
     onEvent: (AnimeDetailEvent) -> Unit,
-    onNavigate: (Any) -> Unit
 ) {
-    val context = LocalContext.current
-    val activity = (LocalContext.current as? Activity)
     val pagerState = rememberPagerState { 3 }
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
@@ -110,12 +162,11 @@ fun AnimeDetailScreen(
                                 animeDetailInfo = data,
                                 isAnimeSave = state.isSave,
                                 trailerClick = { trailerId ->
-                                    context.startActivity(
-                                        Intent(
-                                            Intent.ACTION_VIEW,
-                                            "${Constants.YOUTUBE_BASE_URL}$trailerId".toUri()
+                                    if (trailerId != null) {
+                                        onEvent(
+                                            AnimeDetailEvent.OnTrailerClick(trailerId)
                                         )
-                                    )
+                                    }
                                 }, saveClick = {
                                     if (state.isSave) {
                                         onEvent(AnimeDetailEvent.DeleteAnimeInfo(data.animeInfo))
@@ -132,7 +183,7 @@ fun AnimeDetailScreen(
                     }
                 }
             }, onCloseClick = {
-                activity?.finish()
+                onEvent(AnimeDetailEvent.OnCloseClick)
             },
             stickyHeader = {
                 TabRow(
@@ -145,7 +196,7 @@ fun AnimeDetailScreen(
                         )
                     }
                 ) {
-                    state.tabNames.forEachIndexed { index, title ->
+                    UiConst.ANIME_DETAIL_TAB_LIST.forEachIndexed { index, title ->
                         Tab(
                             text = {
                                 Text(
@@ -162,7 +213,7 @@ fun AnimeDetailScreen(
                                 }
                             },
                             selectedContentColor = Pink80,
-                            unselectedContentColor = Color.Gray
+                            unselectedContentColor = Gray
                         )
                     }
                 }
@@ -177,21 +228,48 @@ fun AnimeDetailScreen(
                     0 -> {
                         AnimeOverViewScreen(
                             animeDetailState = state.animeDetailInfo,
-                            animeThemeState = state.animeThemes
-                        ) {
-                            onNavigate(it)
-                        }
+                            animeThemeState = state.animeThemes,
+                            onTagClick = { tag ->
+                                onEvent(
+                                    AnimeDetailEvent.OnTagClick(tag)
+                                )
+                            },
+                            onAnimeClick = { id, idMal ->
+                                onEvent(
+                                    AnimeDetailEvent.OnAnimeClick(id = id, idMal = idMal)
+                                )
+                            },
+                            onStudioClick = { id ->
+                                onEvent(
+                                    AnimeDetailEvent.OnStudioClick(id)
+                                )
+                            },
+                            onSeasonYearClick = { year, season ->
+                                onEvent(
+                                    AnimeDetailEvent.OnSeasonYearClick(year = year, season = season)
+                                )
+                            },
+                            onGenreClick = { genre ->
+                                onEvent(
+                                    AnimeDetailEvent.OnGenreClick(genre = genre)
+                                )
+                            }
+                        )
                     }
 
                     1 -> {
-                        AnimeCharaScreen(state = state.animeDetailInfo) {
-                            onNavigate(it)
+                        AnimeCharaScreen(state = state.animeDetailInfo) { id ->
+                            onEvent(
+                                AnimeDetailEvent.OnCharaClick(id)
+                            )
                         }
                     }
 
                     2 -> {
-                        AnimeRecScreen(animeRecList = state.animeRecList) {
-                            onNavigate(it)
+                        AnimeRecScreen(animeRecList = state.animeRecList) { id, idMal ->
+                            onEvent(
+                                AnimeDetailEvent.OnAnimeClick(id = id, idMal = idMal)
+                            )
                         }
                     }
                 }
