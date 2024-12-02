@@ -1,11 +1,9 @@
 package com.chs.presentation.browse
 
-import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -72,6 +70,7 @@ internal class BackgroundScrollConnection(
 fun CollapsingToolbarScaffold(
     scrollState: ScrollState,
     header: @Composable () -> Unit,
+    isShowTopBar: Boolean,
     onCloseClick: () -> Unit,
     stickyHeader: @Composable () -> Unit = { },
     content: @Composable () -> Unit
@@ -90,13 +89,13 @@ fun CollapsingToolbarScaffold(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(top = if (isShowTopBar) 56.dp else 0.dp)
                 .onSizeChanged { size ->
                     globalHeight = size.height
                 }
                 .verticalScroll(scrollState)
                 .nestedScroll(nestedScrollConnection)
         ) {
-
             Column {
                 HeadSection(
                     header = header,
@@ -116,16 +115,37 @@ fun CollapsingToolbarScaffold(
             }
         }
 
+        if (isShowTopBar) {
+            GradientTopBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .align(Alignment.TopStart)
+                    .background(Red500),
+                onCloseClick = onCloseClick
+            )
+        } else {
+            GradientTopBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .alpha(1f - visiblePercentage)
+                    .align(Alignment.TopStart)
+                    .background(Red500),
+                onCloseClick = onCloseClick
+            )
+        }
+    }
+}
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .alpha(1f - visiblePercentage)
-                .align(Alignment.TopStart)
-                .background(Red500)
-        )
-
+@Composable
+private fun GradientTopBar(
+    modifier: Modifier,
+    onCloseClick: () -> Unit
+) {
+    Box(
+        modifier = modifier
+    ) {
         IconButton(
             modifier = Modifier
                 .size(56.dp)
@@ -155,7 +175,6 @@ private fun HeadSection(
     var visiblePercentage by remember { mutableFloatStateOf(1f) }
 
     LaunchedEffect(visiblePercentage) {
-        Log.e("CHS_LOG", visiblePercentage.toString())
         onVisibleChange(visiblePercentage)
         onHide(visiblePercentage <= 0f)
     }

@@ -83,7 +83,9 @@ fun StudioDetailScreen(
                     is Resource.Error -> {}
 
                 }
-            }, onCloseClick = {
+            },
+            isShowTopBar = true,
+            onCloseClick = {
                 activity?.finish()
             }
         ) {

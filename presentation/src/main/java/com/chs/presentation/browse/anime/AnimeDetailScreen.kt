@@ -182,7 +182,9 @@ fun AnimeDetailScreen(
 
                     }
                 }
-            }, onCloseClick = {
+            },
+            isShowTopBar = false,
+            onCloseClick = {
                 onEvent(AnimeDetailEvent.OnCloseClick)
             },
             stickyHeader = {

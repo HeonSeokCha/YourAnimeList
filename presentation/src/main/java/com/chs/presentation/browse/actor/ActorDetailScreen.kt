@@ -109,6 +109,7 @@ fun ActorDetailScreen(
                     is Resource.Error -> {}
                 }
             },
+            isShowTopBar = true,
             onCloseClick = {
                 activity?.finish()
             }, stickyHeader = {

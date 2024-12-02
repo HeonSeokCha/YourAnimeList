@@ -5,7 +5,8 @@ import com.chs.domain.model.AnimeInfo
 sealed class AnimeDetailEvent {
     data object GetAnimeDetailInfo : AnimeDetailEvent()
     data class OnAnimeClick(
-        val id: Int, val idMal: Int
+        val id: Int,
+        val idMal: Int
     ) : AnimeDetailEvent()
 
     data class OnCharaClick(val id: Int) : AnimeDetailEvent()

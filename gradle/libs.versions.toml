@@ -2,7 +2,6 @@
 androidStudioGradlePlugin = "8.6.1"
 
 compileSdkVersion = "35"
-kotlinGradlePlugin = "2.0.20"
 minSdkVersion = "29"
 targetSdkVersion = "34"
 versionCode = "1"
@@ -15,7 +14,7 @@ room = "2.6.1"
 paging = "3.3.4"
 coil = "2.7.0"
 hilt = "2.52"
-kotlin = "2.0.20"
+kotlin = "2.0.21"
 ksp = "2.0.20-1.0.25"
 kotlin-coroutine = "1.9.0"
 ktor = "3.0.1"
@@ -48,7 +47,7 @@ javax-inject = { module = "javax.inject:javax.inject", version = "1" }
 ## Kotlin
 kotlin-coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutine" }
 kotlin-coroutine-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutine" }
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3"
 
 ## Ktor

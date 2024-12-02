@@ -54,6 +54,8 @@ class CharacterDetailViewModel @Inject constructor(
                 getCharacterDetailAnimeList(charaId)
                 isSaveCharacter(charaId)
             }
+
+            else -> Unit
         }
     }
 

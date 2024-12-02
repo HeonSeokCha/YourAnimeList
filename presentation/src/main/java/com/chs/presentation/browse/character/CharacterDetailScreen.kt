@@ -136,6 +136,7 @@ fun CharacterDetailScreen(
                 }
 
             },
+            isShowTopBar = true,
             onCloseClick = {
                 activity?.finish()
             }
