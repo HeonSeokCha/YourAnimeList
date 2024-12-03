@@ -83,7 +83,7 @@ fun AnimeCharaScreen(
 @Composable
 fun CharaImageItem(
     charaInfo: CharacterInfo?,
-    onClick: (BrowseScreen.CharacterDetailScreen) -> Unit
+    onClick: (BrowseScreen.CharacterDetail) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -91,7 +91,7 @@ fun CharaImageItem(
             .clickable {
                 if (charaInfo != null) {
                     onClick(
-                        BrowseScreen.CharacterDetailScreen(id = charaInfo.id)
+                        BrowseScreen.CharacterDetail(id = charaInfo.id)
                     )
                 }
             },

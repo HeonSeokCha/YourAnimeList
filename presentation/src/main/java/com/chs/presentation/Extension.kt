@@ -31,11 +31,11 @@ fun NavBackStackEntry?.fromRoute(): Screen? {
     return this?.destination?.route?.substringBefore("?")?.substringBefore("/")
         ?.substringAfterLast(".")?.let {
             return when (it) {
-                Screen.SearchScreen::class.simpleName -> Screen.SearchScreen
-                Screen.SortListScreen::class.simpleName -> Screen.SortListScreen()
-                Screen.HomeScreen::class.simpleName -> Screen.HomeScreen
-                Screen.AnimeListScreen::class.simpleName -> Screen.AnimeListScreen
-                Screen.CharaListScreen::class.simpleName -> Screen.CharaListScreen
+                Screen.Search::class.simpleName -> Screen.Search
+                Screen.SortList::class.simpleName -> Screen.SortList()
+                Screen.Home::class.simpleName -> Screen.Home
+                Screen.AnimeList::class.simpleName -> Screen.AnimeList
+                Screen.CharaList::class.simpleName -> Screen.CharaList
                 else -> null
             }
         }

@@ -36,7 +36,7 @@ fun AppBar(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     when (navBackStackEntry.fromRoute()) {
-        is Screen.SortListScreen -> {
+        is Screen.SortList -> {
             TopAppBar(
                 title = {},
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -51,7 +51,7 @@ fun AppBar(
             )
         }
 
-        Screen.SearchScreen -> {
+        Screen.Search -> {
             SearchAppBar(
                 searchHistoryList = searchHistoryList,
                 onSearch = {
@@ -76,7 +76,7 @@ fun AppBar(
                 ),
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate(Screen.SearchScreen)
+                        navController.navigate(Screen.Search)
                     }) {
                         Icon(
                             imageVector = Icons.TwoTone.Search,

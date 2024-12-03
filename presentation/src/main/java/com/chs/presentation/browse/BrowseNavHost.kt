@@ -22,6 +22,7 @@ import com.chs.presentation.browse.actor.ActorDetailScreen
 import com.chs.presentation.browse.actor.ActorDetailViewModel
 import com.chs.presentation.browse.anime.AnimeDetailScreenRoot
 import com.chs.presentation.browse.anime.AnimeDetailViewModel
+import com.chs.presentation.browse.character.CharacterDetailScreenRoot
 import com.chs.presentation.browse.character.CharacterDetailViewModel
 import com.chs.presentation.browse.studio.StudioDetailScreen
 import com.chs.presentation.browse.studio.StudioDetailViewModel
@@ -38,12 +39,12 @@ fun BrowseNavHost(
 
     val startMediaDestination: BrowseScreen =
         if (intent?.getStringExtra(UiConst.TARGET_TYPE) == UiConst.TARGET_MEDIA) {
-            BrowseScreen.AnimeDetailScreen(
+            BrowseScreen.AnimeDetail(
                 id = intent.getIntExtra(UiConst.TARGET_ID, 0),
                 idMal = intent.getIntExtra(UiConst.TARGET_ID_MAL, 0)
             )
         } else {
-            BrowseScreen.CharacterDetailScreen(
+            BrowseScreen.CharacterDetail(
                 id = intent!!.getIntExtra(UiConst.TARGET_ID, 0)
             )
         }
@@ -54,10 +55,10 @@ fun BrowseNavHost(
         startDestination = startMediaDestination
     ) {
 
-        composable<BrowseScreen.AnimeDetailScreen> {
+        composable<BrowseScreen.AnimeDetail> {
             val context = LocalContext.current
             val activity = (LocalContext.current as? Activity)
-            val arg = it.toRoute<BrowseScreen.AnimeDetailScreen>()
+            val arg = it.toRoute<BrowseScreen.AnimeDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
             }
@@ -77,32 +78,32 @@ fun BrowseNavHost(
                 },
                 onAnimeClick = { id, idMal ->
                     navController.navigate(
-                        BrowseScreen.AnimeDetailScreen(id = id, idMal = idMal)
+                        BrowseScreen.AnimeDetail(id = id, idMal = idMal)
                     )
                 },
                 onCharaClick = { id ->
                     navController.navigate(
-                        BrowseScreen.CharacterDetailScreen(id)
+                        BrowseScreen.CharacterDetail(id)
                     )
                 },
                 onStudioClick = { id ->
                     navController.navigate(
-                        BrowseScreen.StudioDetailScreen(id)
+                        BrowseScreen.StudioDetail(id)
                     )
                 },
                 onGenreClick = { genre ->
                     navController.navigate(
-                        Screen.SortListScreen(genre = genre)
+                        Screen.SortList(genre = genre)
                     )
                 },
                 onSeasonYearClick = { year, season ->
                     navController.navigate(
-                        Screen.SortListScreen(year = year, season = season)
+                        Screen.SortList(year = year, season = season)
                     )
                 },
                 onTagClick = { tag ->
                     navController.navigate(
-                        Screen.SortListScreen(
+                        Screen.SortList(
                             tag = tag,
                             sortOption = UiConst.SortType.POPULARITY.rawValue
                         )
@@ -110,22 +111,24 @@ fun BrowseNavHost(
                 }
             )
         }
-        composable<BrowseScreen.CharacterDetailScreen> {
-            val arg = it.toRoute<BrowseScreen.CharacterDetailScreen>()
+        composable<BrowseScreen.CharacterDetail> {
+            val arg = it.toRoute<BrowseScreen.CharacterDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
             }
             val viewmodel: CharacterDetailViewModel = hiltViewModel(parentEntry)
-            CharacterDetailScreen(
-                state = viewmodel.state,
-                onEvent = viewmodel::changeEvent
-            ) {
-                navController.navigate(it)
-            }
+            CharacterDetailScreenRoot(
+                viewModel = viewmodel,
+                onAnimeClick = { id: Int, idMal: Int ->
+
+                }, onVoiceActorClick = { id ->
+
+                }
+            )
         }
 
-        composable<BrowseScreen.StudioDetailScreen> {
-            val arg = it.toRoute<BrowseScreen.StudioDetailScreen>()
+        composable<BrowseScreen.StudioDetail> {
+            val arg = it.toRoute<BrowseScreen.StudioDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
             }
@@ -138,8 +141,8 @@ fun BrowseNavHost(
             }
         }
 
-        composable<Screen.SortListScreen> {
-            val arg = it.toRoute<Screen.SortListScreen>()
+        composable<Screen.SortList> {
+            val arg = it.toRoute<Screen.SortList>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
             }
@@ -149,12 +152,12 @@ fun BrowseNavHost(
                 state = state,
                 onEvent = viewmodel::changeSortEvent
             ) { id, idMal ->
-                navController.navigate(BrowseScreen.AnimeDetailScreen(id = id, idMal = idMal))
+                navController.navigate(BrowseScreen.AnimeDetail(id = id, idMal = idMal))
             }
         }
 
-        composable<BrowseScreen.ActorDetailScreen> {
-            val arg = it.toRoute<BrowseScreen.ActorDetailScreen>()
+        composable<BrowseScreen.ActorDetail> {
+            val arg = it.toRoute<BrowseScreen.ActorDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
             }

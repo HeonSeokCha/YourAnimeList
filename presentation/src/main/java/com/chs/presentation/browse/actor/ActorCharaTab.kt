@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun ActorCharaTab(
     info: Flow<PagingData<CharacterInfo>>?,
-    onClick: (BrowseScreen.CharacterDetailScreen) -> Unit
+    onClick: (BrowseScreen.CharacterDetail) -> Unit
 ) {
     val pagingData = info?.collectAsLazyPagingItems()
 

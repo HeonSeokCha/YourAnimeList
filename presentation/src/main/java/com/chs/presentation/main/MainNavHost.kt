@@ -1,12 +1,9 @@
 package com.chs.presentation.main
 
 import android.content.Intent
-import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,13 +21,10 @@ import com.chs.presentation.charaList.CharacterListViewModel
 import com.chs.presentation.home.HomeScreen
 import com.chs.presentation.home.HomeScreenRoot
 import com.chs.presentation.home.HomeViewModel
-import com.chs.presentation.search.SearchEvent
 import com.chs.presentation.search.SearchMediaViewModel
 import com.chs.presentation.search.SearchScreen
 import com.chs.presentation.sortList.SortedListScreen
 import com.chs.presentation.sortList.SortedViewModel
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 
 @Composable
 fun MainNavHost(
@@ -45,9 +39,9 @@ fun MainNavHost(
     NavHost(
         navController = navController,
         modifier = modifier,
-        startDestination = Screen.HomeScreen
+        startDestination = Screen.Home
     ) {
-        composable<Screen.HomeScreen> {
+        composable<Screen.Home> {
             val viewModel: HomeViewModel = hiltViewModel()
 
             HomeScreenRoot(
@@ -70,7 +64,7 @@ fun MainNavHost(
             )
         }
 
-        composable<Screen.AnimeListScreen> {
+        composable<Screen.AnimeList> {
             val viewModel: AnimeListViewModel = hiltViewModel()
             val list by viewModel.state.collectAsStateWithLifecycle()
             AnimeListScreen(list = list) { id, idMal ->
@@ -87,7 +81,7 @@ fun MainNavHost(
             }
         }
 
-        composable<Screen.CharaListScreen> {
+        composable<Screen.CharaList> {
             val viewmodel: CharacterListViewModel = hiltViewModel()
             val list by viewmodel.state.collectAsStateWithLifecycle()
             CharaListScreen(list = list) { id ->
@@ -103,7 +97,7 @@ fun MainNavHost(
             }
         }
 
-        composable<Screen.SearchScreen> {
+        composable<Screen.Search> {
             val viewModel: SearchMediaViewModel = hiltViewModel()
 
             SearchScreen(
@@ -128,9 +122,9 @@ fun MainNavHost(
             }
         }
 
-        composable<Screen.SortListScreen> {
+        composable<Screen.SortList> {
             val parentEntry = remember(it) {
-                navController.getBackStackEntry(it.toRoute<Screen.SortListScreen>())
+                navController.getBackStackEntry(it.toRoute<Screen.SortList>())
             }
             val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
             val state by viewmodel.state.collectAsStateWithLifecycle()

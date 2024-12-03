@@ -79,12 +79,20 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
+fun CharacterDetailScreenRoot(
+    viewModel: CharacterDetailViewModel,
+    onAnimeClick: (id: Int, idMal: Int) -> Unit,
+    onVoiceActorClick: (id: Int) -> Unit,
+) {
+
+
+}
+
+@Composable
 fun CharacterDetailScreen(
     state: CharacterDetailState,
     onEvent: (CharaDetailEvent) -> Unit,
-    onNavigate: (BrowseScreen) -> Unit
 ) {
-
     val activity = (LocalContext.current as? Activity)
     val pagingItem = state.animeList?.collectAsLazyPagingItems()
     val lazyVerticalStaggeredState = rememberLazyStaggeredGridState()
@@ -195,8 +203,8 @@ fun CharacterDetailScreen(
                                         ) {
                                             items(characterDetailInfo.voiceActorInfo!!) { actorInfo ->
                                                 if (actorInfo != null) {
-                                                    CharacterVoiceActorInfo(actorInfo) {
-                                                        onNavigate(it)
+                                                    CharacterVoiceActorInfo(actorInfo) { id ->
+                                                        CharaDetailEvent.OnVoiceActorClick(id)
                                                     }
                                                 }
                                             }
@@ -227,8 +235,8 @@ fun CharacterDetailScreen(
                             ItemAnimeSmall(
                                 item = anime,
                                 onClick = {
-                                    onNavigate(
-                                        BrowseScreen.AnimeDetailScreen(
+                                    onEvent(
+                                        CharaDetailEvent.OnAnimeClick(
                                             id = anime.id,
                                             idMal = anime.idMal
                                         )
@@ -488,17 +496,13 @@ private fun CharacterDescription(
 @Composable
 private fun CharacterVoiceActorInfo(
     info: VoiceActorInfo,
-    onClick: (BrowseScreen.ActorDetailScreen) -> Unit
+    onClick: (id: Int) -> Unit
 ) {
     Column(
         modifier = Modifier
             .width(100.dp)
             .clickable {
-                onClick(
-                    BrowseScreen.ActorDetailScreen(
-                        info.id
-                    )
-                )
+                onClick(info.id)
             },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

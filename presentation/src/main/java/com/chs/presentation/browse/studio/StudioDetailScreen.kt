@@ -47,7 +47,7 @@ import kotlinx.coroutines.launch
 fun StudioDetailScreen(
     state: StudioDetailState,
     onEvent: (StudioEvent) -> Unit,
-    onNavigate: (BrowseScreen.AnimeDetailScreen) -> Unit
+    onNavigate: (BrowseScreen.AnimeDetail) -> Unit
 ) {
     val activity: Activity? = LocalContext.current as? Activity
     val lazyGridScrollState = rememberLazyStaggeredGridState()
@@ -123,7 +123,7 @@ fun StudioDetailScreen(
                         if (animeInfo != null) {
                             ItemAnimeSmall(item = animeInfo) {
                                 onNavigate(
-                                    BrowseScreen.AnimeDetailScreen(
+                                    BrowseScreen.AnimeDetail(
                                         id = animeInfo.id,
                                         idMal = animeInfo.idMal
                                     )

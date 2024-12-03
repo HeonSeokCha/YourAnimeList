@@ -10,7 +10,6 @@ sealed class CharaDetailEvent {
         val idMal: Int
     ) : CharaDetailEvent()
 
-    data class OnCharaClick(val id: Int) : CharaDetailEvent()
     data class OnVoiceActorClick(val id: Int) : CharaDetailEvent()
     data class InsertCharaInfo(val info: CharacterInfo) : CharaDetailEvent()
     data class DeleteCharaInfo(val info: CharacterInfo) : CharaDetailEvent()

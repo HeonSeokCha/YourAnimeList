@@ -43,16 +43,16 @@ class SortedViewModel @Inject constructor(
         )
 
     private val selectSort: UiConst.SortType = UiConst.SortType.entries.find {
-        it.rawValue == savedStateHandle.toRoute<Screen.SortListScreen>().sortOption
+        it.rawValue == savedStateHandle.toRoute<Screen.SortList>().sortOption
     } ?: UiConst.SortType.TRENDING
 
     private val selectSeason = UiConst.Season.entries.find {
-        it.rawValue == savedStateHandle.toRoute<Screen.SortListScreen>().season
+        it.rawValue == savedStateHandle.toRoute<Screen.SortList>().season
     }
 
-    private val selectYear: Int? = savedStateHandle.toRoute<Screen.SortListScreen>().year
-    private val selectGenre: String? = savedStateHandle.toRoute<Screen.SortListScreen>().genre
-    private val selectTags: String? = savedStateHandle.toRoute<Screen.SortListScreen>().tag
+    private val selectYear: Int? = savedStateHandle.toRoute<Screen.SortList>().year
+    private val selectGenre: String? = savedStateHandle.toRoute<Screen.SortList>().genre
+    private val selectTags: String? = savedStateHandle.toRoute<Screen.SortList>().tag
 
     private fun getSortedAnime() {
         _state.update {

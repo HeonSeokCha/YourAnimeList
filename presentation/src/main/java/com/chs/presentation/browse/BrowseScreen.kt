@@ -6,17 +6,17 @@ import kotlinx.serialization.Serializable
 sealed class BrowseScreen {
 
     @Serializable
-    data class AnimeDetailScreen(
+    data class AnimeDetail(
         val id: Int,
         val idMal: Int
     ) : BrowseScreen()
 
     @Serializable
-    data class CharacterDetailScreen(val id: Int) : BrowseScreen()
+    data class CharacterDetail(val id: Int) : BrowseScreen()
 
     @Serializable
-    data class StudioDetailScreen(val id: Int) : BrowseScreen()
+    data class StudioDetail(val id: Int) : BrowseScreen()
 
     @Serializable
-    data class ActorDetailScreen(val id: Int) : BrowseScreen()
+    data class ActorDetail(val id: Int) : BrowseScreen()
 }

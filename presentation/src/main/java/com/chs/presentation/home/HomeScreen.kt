@@ -38,14 +38,14 @@ import kotlinx.coroutines.launch
 fun HomeScreenRoot(
     viewModel: HomeViewModel,
     onAnimeClick: (Int, Int) -> Unit,
-    onSortScreenClick: (Screen.SortListScreen) -> Unit
+    onSortScreenClick: (Screen.SortList) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     HomeScreen(state = state) { event ->
         when (event) {
             is HomeEvent.NavigateSort -> {
                 onSortScreenClick(
-                    Screen.SortListScreen(
+                    Screen.SortList(
                         year = event.year,
                         season = event.season,
                         sortOption = event.option

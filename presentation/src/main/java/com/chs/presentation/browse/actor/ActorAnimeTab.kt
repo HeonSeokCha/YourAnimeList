@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun ActorAnimeTab(
     info: Flow<PagingData<AnimeInfo>>?,
-    onClick: (BrowseScreen.AnimeDetailScreen) -> Unit
+    onClick: (BrowseScreen.AnimeDetail) -> Unit
 ) {
     val listState = rememberLazyGridState()
     val pagingData = info?.collectAsLazyPagingItems()
@@ -45,7 +45,7 @@ fun ActorAnimeTab(
             items(pagingData.itemCount) {
                 ItemAnimeSmall(pagingData[it]) {
                     onClick(
-                        BrowseScreen.AnimeDetailScreen(
+                        BrowseScreen.AnimeDetail(
                             id = pagingData[it]!!.id,
                             idMal = pagingData[it]!!.idMal
                         )

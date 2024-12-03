@@ -46,8 +46,8 @@ class AnimeDetailViewModel @Inject constructor(
             _state.value
         )
 
-    private val animeId: Int = savedStateHandle.toRoute<BrowseScreen.AnimeDetailScreen>().id
-    private val animeMalId: Int = savedStateHandle.toRoute<BrowseScreen.AnimeDetailScreen>().idMal
+    private val animeId: Int = savedStateHandle.toRoute<BrowseScreen.AnimeDetail>().id
+    private val animeMalId: Int = savedStateHandle.toRoute<BrowseScreen.AnimeDetail>().idMal
 
     fun changeEvent(event: AnimeDetailEvent) {
         when (event) {

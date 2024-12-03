@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class Screen {
     @Serializable
-    data class SortListScreen(
+    data class SortList(
         val year: Int? = null,
         val season: String? = null,
         val sortOption: String? = null,
@@ -19,16 +19,16 @@ sealed class Screen {
     ) : Screen()
 
     @Serializable
-    data object SearchScreen : Screen()
+    data object Search : Screen()
 
     @Serializable
-    data object HomeScreen : Screen()
+    data object Home : Screen()
 
     @Serializable
-    data object AnimeListScreen : Screen()
+    data object AnimeList : Screen()
 
     @Serializable
-    data object CharaListScreen : Screen()
+    data object CharaList : Screen()
 }
 
 enum class BottomNavigation(
@@ -36,7 +36,7 @@ enum class BottomNavigation(
     val icon: ImageVector,
     val route: Screen
 ) {
-    HOME("Home", Icons.Filled.Home, Screen.HomeScreen),
-    ANIME("Animation", Icons.Filled.LocalMovies, Screen.AnimeListScreen),
-    CHARA("Character", Icons.Filled.SupervisorAccount, Screen.CharaListScreen),
+    HOME("Home", Icons.Filled.Home, Screen.Home),
+    ANIME("Animation", Icons.Filled.LocalMovies, Screen.AnimeList),
+    CHARA("Character", Icons.Filled.SupervisorAccount, Screen.CharaList),
 }
