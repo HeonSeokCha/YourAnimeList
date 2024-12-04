@@ -1,6 +1,5 @@
 package com.chs.presentation.browse.character
 
-import android.app.Activity
 import android.text.util.Linkify
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -46,14 +45,13 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
@@ -63,15 +61,12 @@ import com.chs.presentation.UiConst
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.domain.model.VoiceActorInfo
 import com.chs.presentation.R
-import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemMessageDialog
 import com.chs.presentation.common.ItemSaveButton
-import com.chs.presentation.common.PlaceholderHighlight
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.common.placeholder
-import com.chs.presentation.common.shimmer
 import com.chs.presentation.toPercentFormat
 import com.chs.presentation.ui.theme.Pink80
 import dev.jeziellago.compose.markdowntext.MarkdownText
@@ -83,9 +78,31 @@ fun CharacterDetailScreenRoot(
     viewModel: CharacterDetailViewModel,
     onAnimeClick: (id: Int, idMal: Int) -> Unit,
     onVoiceActorClick: (id: Int) -> Unit,
+    onCloseClick: () -> Unit
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    CharacterDetailScreen(
+        state = state,
+        onEvent = { event ->
+            when (event) {
+                is CharaDetailEvent.OnAnimeClick -> {
+                    onAnimeClick(event.id, event.idMal)
+                }
 
+                is CharaDetailEvent.OnVoiceActorClick -> {
+                    onVoiceActorClick(event.id)
+                }
 
+                CharaDetailEvent.OnCloseClick -> {
+                    onCloseClick()
+                }
+
+                else -> Unit
+            }
+
+            viewModel.changeEvent(event)
+        }
+    )
 }
 
 @Composable
@@ -93,7 +110,6 @@ fun CharacterDetailScreen(
     state: CharacterDetailState,
     onEvent: (CharaDetailEvent) -> Unit,
 ) {
-    val activity = (LocalContext.current as? Activity)
     val pagingItem = state.animeList?.collectAsLazyPagingItems()
     val lazyVerticalStaggeredState = rememberLazyStaggeredGridState()
     val scrollState = rememberScrollState()
@@ -138,15 +154,12 @@ fun CharacterDetailScreen(
                         }
                     }
 
-                    is Resource.Error -> {
-
-                    }
+                    is Resource.Error -> {}
                 }
-
             },
             isShowTopBar = true,
             onCloseClick = {
-                activity?.finish()
+                onEvent(CharaDetailEvent.OnCloseClick)
             }
         ) {
             LazyVerticalStaggeredGrid(
@@ -204,7 +217,9 @@ fun CharacterDetailScreen(
                                             items(characterDetailInfo.voiceActorInfo!!) { actorInfo ->
                                                 if (actorInfo != null) {
                                                     CharacterVoiceActorInfo(actorInfo) { id ->
-                                                        CharaDetailEvent.OnVoiceActorClick(id)
+                                                        onEvent(
+                                                            CharaDetailEvent.OnVoiceActorClick(id)
+                                                        )
                                                     }
                                                 }
                                             }

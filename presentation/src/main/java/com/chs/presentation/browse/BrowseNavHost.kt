@@ -111,7 +111,9 @@ fun BrowseNavHost(
                 }
             )
         }
+
         composable<BrowseScreen.CharacterDetail> {
+            val activity = (LocalContext.current as? Activity)
             val arg = it.toRoute<BrowseScreen.CharacterDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
@@ -120,9 +122,15 @@ fun BrowseNavHost(
             CharacterDetailScreenRoot(
                 viewModel = viewmodel,
                 onAnimeClick = { id: Int, idMal: Int ->
-
+                    navController.navigate(
+                        BrowseScreen.AnimeDetail(id = id, idMal = idMal)
+                    )
                 }, onVoiceActorClick = { id ->
-
+                    navController.navigate(
+                        BrowseScreen.ActorDetail(id = id)
+                    )
+                }, onCloseClick = {
+                    activity?.finish()
                 }
             )
         }

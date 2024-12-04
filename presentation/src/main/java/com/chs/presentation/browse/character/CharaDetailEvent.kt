@@ -11,6 +11,7 @@ sealed class CharaDetailEvent {
     ) : CharaDetailEvent()
 
     data class OnVoiceActorClick(val id: Int) : CharaDetailEvent()
+    data object OnCloseClick : CharaDetailEvent()
     data class InsertCharaInfo(val info: CharacterInfo) : CharaDetailEvent()
     data class DeleteCharaInfo(val info: CharacterInfo) : CharaDetailEvent()
 }

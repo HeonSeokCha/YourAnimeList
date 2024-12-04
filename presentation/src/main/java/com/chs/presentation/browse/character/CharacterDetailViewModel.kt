@@ -1,13 +1,10 @@
 package com.chs.presentation.browse.character
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.cachedIn
-import com.chs.common.Resource
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.UiConst
 import com.chs.domain.usecase.DeleteCharaInfoUseCase
@@ -15,7 +12,15 @@ import com.chs.domain.usecase.GetCharaDetailAnimeListUseCase
 import com.chs.domain.usecase.GetCharaDetailUseCase
 import com.chs.domain.usecase.GetSavedCharaInfoUseCase
 import com.chs.domain.usecase.InsertCharaInfoUseCase
+import com.chs.presentation.browse.BrowseScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,10 +34,18 @@ class CharacterDetailViewModel @Inject constructor(
     private val deleteCharaUseCase: DeleteCharaInfoUseCase
 ) : ViewModel() {
 
-    var state by mutableStateOf(CharacterDetailState())
-        private set
+    private var _state = MutableStateFlow(CharacterDetailState())
+    val state = _state
+        .onStart {
+            getCharacterDetail(charaId)
+        }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            _state.value
+        )
 
-    private val charaId: Int = savedStateHandle[UiConst.TARGET_ID] ?: 0
+    private val charaId: Int = savedStateHandle.toRoute<BrowseScreen.CharacterDetail>().id
 
     init {
         changeEvent(CharaDetailEvent.GetCharaDetailInfo)
@@ -62,26 +75,38 @@ class CharacterDetailViewModel @Inject constructor(
     private fun getCharacterDetail(charaId: Int) {
         viewModelScope.launch {
             getCharaDetailUseCase(charaId).collect { result ->
-                state = state.copy(
-                    characterDetailInfo = result
-                )
+                _state.update {
+                    it.copy(
+                        characterDetailInfo = result
+                    )
+                }
             }
         }
     }
 
     private fun getCharacterDetailAnimeList(charaId: Int) {
-        state = state.copy(
-            animeList = getCharaAnimeListUseCase(charaId, UiConst.SortType.POPULARITY.rawValue)
-                .cachedIn(viewModelScope)
-        )
+        _state.update {
+
+            it.copy(
+                animeList = getCharaAnimeListUseCase(
+                    charaId,
+                    UiConst.SortType.POPULARITY.rawValue
+                )
+                    .cachedIn(viewModelScope)
+            )
+        }
     }
 
     private fun isSaveCharacter(charaId: Int) {
-        viewModelScope.launch {
-            checkSaveCharaUseCase(charaId).collect { charaInfo ->
-                state = state.copy(isSave = (charaInfo != null))
+        checkSaveCharaUseCase(charaId)
+            .onEach { charaInfo ->
+                _state.update {
+                    it.copy(
+                        isSave = charaInfo != null
+                    )
+                }
             }
-        }
+            .launchIn(viewModelScope)
     }
 
     private fun insertCharacter(characterInfo: CharacterInfo?) {
