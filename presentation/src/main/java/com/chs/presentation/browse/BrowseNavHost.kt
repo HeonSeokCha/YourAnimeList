@@ -25,6 +25,7 @@ import com.chs.presentation.browse.anime.AnimeDetailViewModel
 import com.chs.presentation.browse.character.CharacterDetailScreenRoot
 import com.chs.presentation.browse.character.CharacterDetailViewModel
 import com.chs.presentation.browse.studio.StudioDetailScreen
+import com.chs.presentation.browse.studio.StudioDetailScreenRoot
 import com.chs.presentation.browse.studio.StudioDetailViewModel
 import com.chs.presentation.main.Screen
 import com.chs.presentation.sortList.SortedListScreen
@@ -136,17 +137,25 @@ fun BrowseNavHost(
         }
 
         composable<BrowseScreen.StudioDetail> {
+            val activity = (LocalContext.current as? Activity)
             val arg = it.toRoute<BrowseScreen.StudioDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
             }
             val viewmodel: StudioDetailViewModel = hiltViewModel(parentEntry)
-            StudioDetailScreen(
-                state = viewmodel.state,
-                onEvent = viewmodel::changeEvent
-            ) {
-                navController.navigate(it)
-            }
+
+            StudioDetailScreenRoot(
+                viewModel = viewmodel,
+                onAnimeClick = { id, idMal ->
+                    navController.navigate(
+                        navController.navigate(
+                            BrowseScreen.AnimeDetail(id = id, idMal = idMal)
+                        )
+                    )
+                }, onCloseClick = {
+                    activity?.finish()
+                }
+            )
         }
 
         composable<Screen.SortList> {

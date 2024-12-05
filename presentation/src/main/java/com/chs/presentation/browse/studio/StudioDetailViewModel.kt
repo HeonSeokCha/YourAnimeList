@@ -1,16 +1,19 @@
 package com.chs.presentation.browse.studio
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.cachedIn
-import com.chs.presentation.UiConst
 import com.chs.domain.usecase.GetStudioAnimeListUseCase
 import com.chs.domain.usecase.GetStudioDetailUseCase
+import com.chs.presentation.browse.BrowseScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,47 +24,58 @@ class StudioDetailViewModel @Inject constructor(
     private val getStudioAnimeListUseCase: GetStudioAnimeListUseCase
 ) : ViewModel() {
 
-    var state by mutableStateOf(StudioDetailState())
-        private set
+    private val studioId: Int = savedStateHandle.toRoute<BrowseScreen.StudioDetail>().id
+    private var _state = MutableStateFlow(StudioDetailState())
+    val state = _state
+        .onStart {
+            getStudioDetailInfo(studioId)
+            getStudioAnimeList()
+        }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            _state.value
+        )
 
-    private val studioId: Int = savedStateHandle[UiConst.TARGET_ID] ?: 0
-
-    init {
-        state = state.copy(studioId = studioId)
-
-        changeEvent(StudioEvent.GetStudioInfo)
-    }
 
     private fun getStudioDetailInfo(studioId: Int) {
         viewModelScope.launch {
-            getStudioDetailUseCase(studioId).collect {
-                state = state.copy(
-                    studioDetailInfo = it
-                )
+            getStudioDetailUseCase(studioId).collect { studioInfo ->
+                _state.update {
+                    it.copy(
+                        studioDetailInfo = studioInfo
+                    )
+                }
             }
         }
     }
 
     private fun getStudioAnimeList() {
-        state = state.copy(
-            studioAnimeList = getStudioAnimeListUseCase(
-                studioId = state.studioId!!,
-                studioSort = state.sortOption.second
-            ).cachedIn(viewModelScope)
-        )
+        _state.update {
+            it.copy(
+                studioAnimeList = getStudioAnimeListUseCase(
+                    studioId = studioId,
+                    studioSort = it.sortOption.second
+                ).cachedIn(viewModelScope)
+            )
+        }
     }
 
-    fun changeEvent(event: StudioEvent) {
+    fun changeEvent(event: StudioDetailEvent) {
         when (event) {
-            is StudioEvent.ChangeSortOption -> {
-                state = state.copy(
-                    sortOption = event.value
-                )
+            is StudioDetailEvent.ChangeSortOption -> {
+                _state.update {
+                    it.copy(
+                        sortOption = event.value
+                    )
+                }
             }
 
-            is StudioEvent.GetStudioInfo -> {
+            is StudioDetailEvent.GetStudioDetailInfo -> {
                 getStudioDetailInfo(studioId)
             }
+
+            else -> return
         }
 
         getStudioAnimeList()

@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
@@ -44,10 +45,36 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
+fun StudioDetailScreenRoot(
+    viewModel: StudioDetailViewModel,
+    onAnimeClick: (id: Int, idMal: Int) -> Unit,
+    onCloseClick: () -> Unit
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    StudioDetailScreen(
+        state = state,
+        onEvent = { event ->
+            when (event) {
+                StudioDetailEvent.OnCloseClick -> {
+                    onCloseClick()
+                }
+
+                is StudioDetailEvent.AnimeClick -> {
+                    onAnimeClick(event.id, event.idMal)
+                }
+
+                else -> Unit
+            }
+            viewModel.changeEvent(event)
+        }
+    )
+}
+
+@Composable
 fun StudioDetailScreen(
     state: StudioDetailState,
-    onEvent: (StudioEvent) -> Unit,
-    onNavigate: (BrowseScreen.AnimeDetail) -> Unit
+    onEvent: (StudioDetailEvent) -> Unit,
 ) {
     val activity: Activity? = LocalContext.current as? Activity
     val lazyGridScrollState = rememberLazyStaggeredGridState()
@@ -62,7 +89,7 @@ fun StudioDetailScreen(
             isRefreshing = true
             coroutineScope.launch {
                 scrollState.scrollTo(0)
-                onEvent(StudioEvent.GetStudioInfo)
+                onEvent(StudioDetailEvent.GetStudioDetailInfo)
                 delay(500L)
                 isRefreshing = false
             }
@@ -109,7 +136,7 @@ fun StudioDetailScreen(
                             coroutineScope.launch {
                                 lazyGridScrollState.scrollToItem(0, 0)
                             }
-                            onEvent(StudioEvent.ChangeSortOption(selectValue!!))
+                            onEvent(StudioDetailEvent.ChangeSortOption(selectValue!!))
                         }
                     }
                 }
@@ -122,8 +149,8 @@ fun StudioDetailScreen(
                         val animeInfo = pagingItem[it]
                         if (animeInfo != null) {
                             ItemAnimeSmall(item = animeInfo) {
-                                onNavigate(
-                                    BrowseScreen.AnimeDetail(
+                                onEvent(
+                                    StudioDetailEvent.AnimeClick(
                                         id = animeInfo.id,
                                         idMal = animeInfo.idMal
                                     )

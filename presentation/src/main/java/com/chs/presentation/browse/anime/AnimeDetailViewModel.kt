@@ -1,8 +1,5 @@
 package com.chs.presentation.browse.anime
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,9 +7,7 @@ import androidx.navigation.toRoute
 import androidx.paging.cachedIn
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.usecase.*
-import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseScreen
-import com.chs.presentation.main.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
