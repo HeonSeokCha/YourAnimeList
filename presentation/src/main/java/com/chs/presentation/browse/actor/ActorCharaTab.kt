@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,7 +14,6 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.domain.model.CharacterInfo
-import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.anime.CharaImageItem
 import com.chs.presentation.common.ItemNoResultImage
 import kotlinx.coroutines.flow.Flow
@@ -23,7 +21,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun ActorCharaTab(
     info: Flow<PagingData<CharacterInfo>>?,
-    onClick: (BrowseScreen.CharacterDetail) -> Unit
+    onCharaClick: (Int) -> Unit
 ) {
     val pagingData = info?.collectAsLazyPagingItems()
 
@@ -40,8 +38,8 @@ fun ActorCharaTab(
     ) {
         if (pagingData != null && pagingData.itemCount != 0) {
             items(pagingData.itemCount) {
-                CharaImageItem(pagingData[it]) {
-                    onClick(it)
+                CharaImageItem(pagingData[it]) { charaInfo ->
+                    onCharaClick(charaInfo.id)
                 }
             }
 

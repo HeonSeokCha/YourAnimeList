@@ -48,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.chs.common.Resource
 import com.chs.domain.model.CharacterDetailInfo
@@ -58,6 +59,7 @@ import com.chs.presentation.R
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
+import com.chs.presentation.browse.character.CharaDetailEvent
 import com.chs.presentation.browse.character.ProfileText
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.common.PlaceholderHighlight
@@ -71,10 +73,40 @@ import kotlinx.coroutines.launch
 
 
 @Composable
+fun ActorDetailScreenRoot(
+    viewModel: ActorDetailViewModel,
+    onAnimeClick: (id: Int, idMal: Int) -> Unit,
+    onCharaClick: (id: Int) -> Unit,
+    onCloseClick: () -> Unit
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    ActorDetailScreen(
+        state = state,
+        onEvent = { event ->
+            when (event) {
+                is ActorDetailEvent.OnAnimeClick -> {
+                    onAnimeClick(event.id, event.id)
+                }
+
+                is ActorDetailEvent.OnCharaClick -> {
+                    onCharaClick(event.id)
+                }
+
+                ActorDetailEvent.OnCloseClick -> {
+                    onCloseClick()
+                }
+
+                else -> Unit
+            }
+        }
+    )
+}
+
+@Composable
 fun ActorDetailScreen(
     state: ActorDetailState,
-    onEvent: (ActorDetailEvent) -> Unit,
-    onNavigate: (BrowseScreen) -> Unit
+    onEvent: (ActorDetailEvent) -> Unit
 ) {
     val activity = (LocalContext.current as? Activity)
     var isRefreshing by remember { mutableStateOf(false) }
@@ -167,13 +199,17 @@ fun ActorDetailScreen(
 
                     1 -> {
                         ActorCharaTab(state.actorCharaList) {
-                            onNavigate(it)
+                            onEvent(
+                                ActorDetailEvent.OnCharaClick(it)
+                            )
                         }
                     }
 
                     2 -> {
-                        ActorAnimeTab(state.actorAnimeList) {
-                            onNavigate(it)
+                        ActorAnimeTab(state.actorAnimeList) { id: Int, idMal: Int ->
+                            onEvent(
+                                ActorDetailEvent.OnAnimeClick(id, idMal)
+                            )
                         }
                     }
                 }

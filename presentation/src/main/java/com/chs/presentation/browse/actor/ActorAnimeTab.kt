@@ -15,7 +15,6 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.domain.model.AnimeInfo
-import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemNoResultImage
 import kotlinx.coroutines.flow.Flow
@@ -23,7 +22,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun ActorAnimeTab(
     info: Flow<PagingData<AnimeInfo>>?,
-    onClick: (BrowseScreen.AnimeDetail) -> Unit
+    onAnimeClick: (id: Int, idMal: Int) -> Unit
 ) {
     val listState = rememberLazyGridState()
     val pagingData = info?.collectAsLazyPagingItems()
@@ -44,11 +43,9 @@ fun ActorAnimeTab(
         if (pagingData != null && pagingData.itemCount != 0) {
             items(pagingData.itemCount) {
                 ItemAnimeSmall(pagingData[it]) {
-                    onClick(
-                        BrowseScreen.AnimeDetail(
-                            id = pagingData[it]!!.id,
-                            idMal = pagingData[it]!!.idMal
-                        )
+                    onAnimeClick(
+                        pagingData[it]!!.id,
+                        pagingData[it]!!.idMal
                     )
                 }
             }

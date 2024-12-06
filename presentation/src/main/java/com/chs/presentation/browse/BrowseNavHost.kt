@@ -19,6 +19,7 @@ import com.chs.presentation.browse.anime.AnimeDetailScreen
 import com.chs.presentation.browse.character.CharacterDetailScreen
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.actor.ActorDetailScreen
+import com.chs.presentation.browse.actor.ActorDetailScreenRoot
 import com.chs.presentation.browse.actor.ActorDetailViewModel
 import com.chs.presentation.browse.anime.AnimeDetailScreenRoot
 import com.chs.presentation.browse.anime.AnimeDetailViewModel
@@ -174,18 +175,27 @@ fun BrowseNavHost(
         }
 
         composable<BrowseScreen.ActorDetail> {
+            val activity = (LocalContext.current as? Activity)
             val arg = it.toRoute<BrowseScreen.ActorDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
             }
 
             val viewModel: ActorDetailViewModel = hiltViewModel(parentEntry)
-            ActorDetailScreen(
-                state = viewModel.state,
-                onEvent = viewModel::changeEvent
-            ) {
-                navController.navigate(it)
-            }
+            ActorDetailScreenRoot(
+                viewModel = viewModel,
+                onAnimeClick = { id, idMal ->
+                    navController.navigate(
+                        BrowseScreen.AnimeDetail(id = id, idMal = idMal)
+                    )
+                }, onCharaClick = { id ->
+                    navController.navigate(
+                        BrowseScreen.CharacterDetail(id)
+                    )
+                }, onCloseClick = {
+                    activity?.finish()
+                }
+            )
         }
     }
 }
