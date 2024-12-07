@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.presentation.UiConst
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.ui.theme.Pink80
@@ -22,30 +23,48 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 @Composable
-fun SearchScreen(
-    state: SearchMediaState,
-    searchQuery: String,
-    onEvent: (SearchEvent) -> Unit,
-    onBack: () -> Unit,
-    onActivityStart: (String, Int, Int?) -> Unit
+fun SearchScreenRoot(
+    viewModel: SearchViewModel,
+    onAnimeClick: (Int, Int) -> Unit,
+    onCharaClick: (Int) -> Unit,
+    onQueryChange: (String) -> Unit,
+    onBackClick: () -> Unit
 ) {
-    val pagerState = rememberPagerState { state.tabList.size }
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    SearchScreen(
+        state = state,
+        onEvent = { event ->
+            when (event) {
+                is SearchEvent.OnAnimeClick -> {
+                    onAnimeClick(event.id, event.idMal)
+                }
+
+                is SearchEvent.OnCharaClick -> {
+                    onCharaClick(event.id)
+                }
+
+                is SearchEvent.OnChangeSearchQuery -> {
+                    onQueryChange(event.query)
+                }
+
+                SearchEvent.OnBackClick -> onBackClick()
+
+                else -> Unit
+            }
+            viewModel.onEvent(event)
+        }
+    )
+}
+
+@Composable
+fun SearchScreen(
+    state: SearchState,
+    onEvent: (SearchEvent) -> Unit,
+) {
+    val pagerState = rememberPagerState { 2 }
     val coroutineScope = rememberCoroutineScope()
     var isRefreshing by remember { mutableStateOf(false) }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            onBack()
-        }
-    }
-
-
-    LaunchedEffect(searchQuery) {
-        snapshotFlow { searchQuery }
-            .distinctUntilChanged()
-            .filter { it.isNotEmpty() }
-            .collect { onEvent(SearchEvent.ChangeSearchQuery(it)) }
-    }
 
     ItemPullToRefreshBox(
         isRefreshing = isRefreshing,
@@ -76,7 +95,7 @@ fun SearchScreen(
                     )
                 }
             ) {
-                state.tabList.forEachIndexed { index, title ->
+                UiConst.SEARCH_TAB_LIST.forEachIndexed { index, title ->
                     Tab(
                         text = {
                             Text(
@@ -86,7 +105,7 @@ fun SearchScreen(
                                 color = Pink80
                             )
                         },
-                        selected = pagerState.currentPage == index,
+                        selected = state.selectedTabIdx == index,
                         onClick = {
                             coroutineScope.launch {
                                 pagerState.scrollToPage(index)
@@ -103,26 +122,27 @@ fun SearchScreen(
                 when (page) {
                     0 -> {
                         SearchAnimeScreen(
-                            searchQuery = searchQuery,
+                            searchQuery = state.query,
                             pagingItem = state.searchAnimeResultPaging
                         ) { item ->
-                            onActivityStart(
-                                UiConst.TARGET_MEDIA,
-                                item.id,
-                                item.idMal
+                            onEvent(
+                                SearchEvent.OnAnimeClick(
+                                    id = item.id,
+                                    idMal = item.idMal
+                                )
                             )
                         }
                     }
 
                     1 -> {
                         SearchCharaScreen(
-                            searchQuery = searchQuery,
+                            searchQuery = state.query,
                             pagingItems = state.searchCharaResultPaging
                         ) { item ->
-                            onActivityStart(
-                                UiConst.TARGET_CHARA,
-                                item.id,
-                                null
+                            onEvent(
+                                SearchEvent.OnCharaClick(
+                                    id = item.id
+                                )
                             )
                         }
                     }

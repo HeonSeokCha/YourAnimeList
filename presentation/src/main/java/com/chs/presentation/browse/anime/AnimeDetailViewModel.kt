@@ -58,6 +58,14 @@ class AnimeDetailViewModel @Inject constructor(
                 initInfo()
             }
 
+            is AnimeDetailEvent.OnTabSelected -> {
+                _state.update {
+                    it.copy(
+                        selectTabIdx = event.idx
+                    )
+                }
+            }
+
             else -> Unit
         }
     }

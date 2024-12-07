@@ -27,6 +27,8 @@ object UiConst {
     const val BANNER_SIZE: Int = 6
     const val TEXT_UNKNOWN_ERROR: String = "Unknown Error.."
 
+    val SEARCH_TAB_LIST = listOf("ANIME", "CHARACTER")
+
     val ANIME_DETAIL_TAB_LIST: List<String> = listOf(
         "OVERVIEW",
         "CHARACTER",

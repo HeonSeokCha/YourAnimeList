@@ -18,10 +18,9 @@ import com.chs.presentation.animeList.AnimeListViewModel
 import com.chs.presentation.browse.BrowseActivity
 import com.chs.presentation.charaList.CharaListScreen
 import com.chs.presentation.charaList.CharacterListViewModel
-import com.chs.presentation.home.HomeScreen
 import com.chs.presentation.home.HomeScreenRoot
 import com.chs.presentation.home.HomeViewModel
-import com.chs.presentation.search.SearchMediaViewModel
+import com.chs.presentation.search.SearchViewModel
 import com.chs.presentation.search.SearchScreen
 import com.chs.presentation.sortList.SortedListScreen
 import com.chs.presentation.sortList.SortedViewModel
@@ -98,7 +97,7 @@ fun MainNavHost(
         }
 
         composable<Screen.Search> {
-            val viewModel: SearchMediaViewModel = hiltViewModel()
+            val viewModel: SearchViewModel = hiltViewModel()
 
             SearchScreen(
                 state = viewModel.state,

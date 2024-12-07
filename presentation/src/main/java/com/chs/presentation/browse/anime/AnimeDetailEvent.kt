@@ -22,6 +22,8 @@ sealed interface AnimeDetailEvent {
     data class InsertAnimeInfo(val info: AnimeInfo) : AnimeDetailEvent
     data class DeleteAnimeInfo(val info: AnimeInfo) : AnimeDetailEvent
 
+    data class OnTabSelected(val idx: Int) : AnimeDetailEvent
+
     data class OnTrailerClick(val id: String) : AnimeDetailEvent
     data object OnCloseClick : AnimeDetailEvent
 }

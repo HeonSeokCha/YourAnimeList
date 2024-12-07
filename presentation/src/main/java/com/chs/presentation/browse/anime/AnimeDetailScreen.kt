@@ -24,6 +24,7 @@ import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -130,6 +131,17 @@ fun AnimeDetailScreen(
     val scrollState = rememberScrollState()
     var isRefreshing by remember { mutableStateOf(false) }
 
+
+    LaunchedEffect(state.selectTabIdx) {
+        pagerState.animateScrollToPage(state.selectTabIdx)
+    }
+
+    LaunchedEffect(pagerState.currentPage) {
+        onEvent(
+            AnimeDetailEvent.OnTabSelected(pagerState.currentPage)
+        )
+    }
+
     ItemPullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = {
@@ -190,10 +202,11 @@ fun AnimeDetailScreen(
             stickyHeader = {
                 TabRow(
                     modifier = Modifier.fillMaxWidth(),
-                    selectedTabIndex = pagerState.currentPage,
+                    selectedTabIndex = state.selectTabIdx,
                     indicator = { tabPositions ->
                         SecondaryIndicator(
-                            modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+                            modifier = Modifier
+                                .tabIndicatorOffset(tabPositions[state.selectTabIdx]),
                             color = Pink80
                         )
                     }
@@ -208,7 +221,7 @@ fun AnimeDetailScreen(
                                     fontSize = 12.sp,
                                 )
                             },
-                            selected = pagerState.currentPage == index,
+                            selected = state.selectTabIdx == index,
                             onClick = {
                                 coroutineScope.launch {
                                     pagerState.animateScrollToPage(index)
