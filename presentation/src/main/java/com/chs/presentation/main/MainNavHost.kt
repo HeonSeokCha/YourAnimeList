@@ -22,6 +22,7 @@ import com.chs.presentation.home.HomeScreenRoot
 import com.chs.presentation.home.HomeViewModel
 import com.chs.presentation.search.SearchViewModel
 import com.chs.presentation.search.SearchScreen
+import com.chs.presentation.search.SearchScreenRoot
 import com.chs.presentation.sortList.SortedListScreen
 import com.chs.presentation.sortList.SortedViewModel
 
@@ -99,26 +100,29 @@ fun MainNavHost(
         composable<Screen.Search> {
             val viewModel: SearchViewModel = hiltViewModel()
 
-            SearchScreen(
-                state = viewModel.state,
-                searchQuery = searchQuery,
-                onBack = onBack,
-                onEvent = viewModel::onEvent
-            ) { type, id, idMal ->
-                context.startActivity(
+            SearchScreenRoot(
+                viewModel = viewModel,
+                onAnimeClick = { id, idMal ->
                     Intent(
                         context,
                         BrowseActivity::class.java
                     ).apply {
-                        putExtra(UiConst.TARGET_TYPE, type)
+                        putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
                         putExtra(UiConst.TARGET_ID, id)
-
-                        if (idMal != null) {
-                            putExtra(UiConst.TARGET_ID_MAL, idMal)
-                        }
+                        putExtra(UiConst.TARGET_ID_MAL, idMal)
                     }
-                )
-            }
+                },
+                onCharaClick = { id ->
+                    Intent(
+                        context,
+                        BrowseActivity::class.java
+                    ).apply {
+                        putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
+                        putExtra(UiConst.TARGET_ID, id)
+                    }
+                },
+                onBackClick = { navController.navigateUp() }
+            )
         }
 
         composable<Screen.SortList> {

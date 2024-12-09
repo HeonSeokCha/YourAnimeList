@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.filter
 fun SearchCharaScreen(
     searchQuery: String,
     pagingItems: Flow<PagingData<CharacterInfo>>?,
-    onClick: (CharacterInfo) -> Unit
+    onClick: (Int) -> Unit
 ) {
     val lazyColScrollState = rememberLazyListState()
     val charaItems = pagingItems?.collectAsLazyPagingItems()
@@ -48,9 +48,9 @@ fun SearchCharaScreen(
                 key = charaItems.itemKey(key = { it.id })
             ) { idx ->
                 val item = charaItems[idx]
-                ItemCharaLarge(item) {
+                ItemCharaLarge(item) { id ->
                     if (item != null) {
-                        onClick(item)
+                        onClick(id)
                     }
                 }
             }

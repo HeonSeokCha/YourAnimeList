@@ -27,7 +27,6 @@ fun SearchScreenRoot(
     viewModel: SearchViewModel,
     onAnimeClick: (Int, Int) -> Unit,
     onCharaClick: (Int) -> Unit,
-    onQueryChange: (String) -> Unit,
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -42,10 +41,6 @@ fun SearchScreenRoot(
 
                 is SearchEvent.OnCharaClick -> {
                     onCharaClick(event.id)
-                }
-
-                is SearchEvent.OnChangeSearchQuery -> {
-                    onQueryChange(event.query)
                 }
 
                 SearchEvent.OnBackClick -> onBackClick()
@@ -138,11 +133,9 @@ fun SearchScreen(
                         SearchCharaScreen(
                             searchQuery = state.query,
                             pagingItems = state.searchCharaResultPaging
-                        ) { item ->
+                        ) { charaId ->
                             onEvent(
-                                SearchEvent.OnCharaClick(
-                                    id = item.id
-                                )
+                                SearchEvent.OnCharaClick(id = charaId)
                             )
                         }
                     }
