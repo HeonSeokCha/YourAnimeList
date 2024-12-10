@@ -32,12 +32,10 @@ class SearchViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         query = event.query,
-                        searchAnimeResultPaging = searchAnimeUseCase(event.query).cachedIn(
-                            viewModelScope
-                        ),
-                        searchCharaResultPaging = searchCharaUseCase(event.query).cachedIn(
-                            viewModelScope
-                        )
+                        searchAnimeResultPaging = searchAnimeUseCase(event.query)
+                            .cachedIn(viewModelScope),
+                        searchCharaResultPaging = searchCharaUseCase(event.query)
+                            .cachedIn(viewModelScope)
                     )
                 }
             }
@@ -45,7 +43,7 @@ class SearchViewModel @Inject constructor(
             is SearchEvent.GetSearchAnimeResult -> {
                 _state.update {
                     it.copy(
-                        searchAnimeResultPaging = searchAnimeUseCase(it.query!!)
+                        searchAnimeResultPaging = searchAnimeUseCase(it.query)
                             .cachedIn(viewModelScope)
                     )
                 }
@@ -54,7 +52,7 @@ class SearchViewModel @Inject constructor(
             is SearchEvent.GetSearchCharaResult -> {
                 _state.update {
                     it.copy(
-                        searchCharaResultPaging = searchCharaUseCase(it.query!!)
+                        searchCharaResultPaging = searchCharaUseCase(it.query)
                             .cachedIn(viewModelScope)
                     )
                 }

@@ -29,7 +29,6 @@ fun SearchAnimeScreen(
     val lazyColScrollState = rememberLazyListState()
     val animeItems = pagingItem?.collectAsLazyPagingItems()
 
-
     LaunchedEffect(searchQuery) {
         snapshotFlow { searchQuery }
             .distinctUntilChanged()

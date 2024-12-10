@@ -61,6 +61,14 @@ fun SearchScreen(
     val coroutineScope = rememberCoroutineScope()
     var isRefreshing by remember { mutableStateOf(false) }
 
+    LaunchedEffect(state.selectedTabIdx) {
+        pagerState.animateScrollToPage(state.selectedTabIdx)
+    }
+
+    LaunchedEffect(pagerState.currentPage) {
+        onEvent(SearchEvent.OnTabSelected(pagerState.currentPage))
+    }
+
     ItemPullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = {
@@ -82,10 +90,10 @@ fun SearchScreen(
         ) {
             TabRow(
                 modifier = Modifier.fillMaxWidth(),
-                selectedTabIndex = pagerState.currentPage,
+                selectedTabIndex = state.selectedTabIdx,
                 indicator = { tabPositions ->
                     SecondaryIndicator(
-                        modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+                        modifier = Modifier.tabIndicatorOffset(tabPositions[state.selectedTabIdx]),
                         color = Pink80
                     )
                 }

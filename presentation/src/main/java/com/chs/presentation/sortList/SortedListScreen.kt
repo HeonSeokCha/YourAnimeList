@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.presentation.UiConst
@@ -49,12 +50,37 @@ import com.chs.presentation.ui.theme.Red500
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@Composable
+fun SortedListScreenRoot(
+    viewModel: SortedViewModel,
+    onClickAnime: (Int, Int) -> Unit
+) {
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    SortedListScreen(
+        state = state,
+        onEvent = { event ->
+            when (event) {
+                is SortEvent.ClickAnime -> {
+                    onClickAnime(
+                        event.id,
+                        event.idMal
+                    )
+                }
+
+                else -> Unit
+            }
+            viewModel.changeSortEvent(event)
+        }
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SortedListScreen(
     state: SortState,
-    onEvent: (SortEvent) -> Unit,
-    onActivityStart: (Int, Int) -> Unit
+    onEvent: (SortEvent) -> Unit
 ) {
     val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
     var filterDialogShow by remember { mutableStateOf(false) }
@@ -169,7 +195,12 @@ fun SortedListScreen(
                             val animeInfo = pagingItems[it]
                             ItemAnimeSmall(item = animeInfo) {
                                 if (animeInfo != null) {
-                                    onActivityStart(animeInfo.id, animeInfo.idMal)
+                                    onEvent(
+                                        SortEvent.ClickAnime(
+                                            id = animeInfo.id,
+                                            idMal = animeInfo.idMal
+                                        )
+                                    )
                                 }
                             }
                         }
@@ -275,8 +306,6 @@ private fun PreviewSortedListScreen() {
     SortedListScreen(
         state = SortState(),
         onEvent = {
-
-        }, onActivityStart = { a, b ->
 
         }
     )

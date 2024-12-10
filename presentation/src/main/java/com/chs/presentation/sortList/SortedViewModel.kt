@@ -86,9 +86,11 @@ class SortedViewModel @Inject constructor(
                         sortFilter = event.value
                     )
                 }
+                getSortedAnime()
             }
+
+            else -> Unit
         }
-        getSortedAnime()
     }
 
     private fun initFilterList() {
