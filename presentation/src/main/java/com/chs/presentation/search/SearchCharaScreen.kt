@@ -23,11 +23,11 @@ import kotlinx.coroutines.flow.filter
 @Composable
 fun SearchCharaScreen(
     searchQuery: String,
-    pagingItems: Flow<PagingData<CharacterInfo>>?,
+    pagingItems: Flow<PagingData<CharacterInfo>>,
     onClick: (Int) -> Unit
 ) {
     val lazyColScrollState = rememberLazyListState()
-    val charaItems = pagingItems?.collectAsLazyPagingItems()
+    val charaItems = pagingItems.collectAsLazyPagingItems()
 
     LaunchedEffect(searchQuery) {
         snapshotFlow { searchQuery }
@@ -42,54 +42,52 @@ fun SearchCharaScreen(
         state = lazyColScrollState,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        if (charaItems != null) {
-            items(
-                count = charaItems.itemCount,
-                key = charaItems.itemKey(key = { it.id })
-            ) { idx ->
-                val item = charaItems[idx]
-                ItemCharaLarge(item) { id ->
-                    if (item != null) {
-                        onClick(id)
-                    }
+        items(
+            count = charaItems.itemCount,
+            key = charaItems.itemKey(key = { it.id })
+        ) { idx ->
+            val item = charaItems[idx]
+            ItemCharaLarge(item) { id ->
+                if (item != null) {
+                    onClick(id)
+                }
+            }
+        }
+
+        when (charaItems.loadState.refresh) {
+            is LoadState.Loading -> {
+                items(10) {
+                    ItemCharaLarge(character = null) { }
                 }
             }
 
-            when (charaItems.loadState.refresh) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemCharaLarge(character = null) { }
-                    }
+            is LoadState.Error -> {
+                item {
+                    Text(
+                        text = "Something Wrong for Loading List."
+                    )
                 }
-
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
-                        )
-                    }
-                }
-
-                else -> Unit
             }
 
-            when (charaItems.loadState.append) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemCharaLarge(character = null) { }
-                    }
-                }
+            else -> Unit
+        }
 
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
-                        )
-                    }
+        when (charaItems.loadState.append) {
+            is LoadState.Loading -> {
+                items(10) {
+                    ItemCharaLarge(character = null) { }
                 }
-
-                else -> Unit
             }
+
+            is LoadState.Error -> {
+                item {
+                    Text(
+                        text = "Something Wrong for Loading List."
+                    )
+                }
+            }
+
+            else -> Unit
         }
     }
 }

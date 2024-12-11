@@ -1,10 +1,6 @@
 package com.chs.presentation.browse.actor
 
-import android.app.Activity
 import android.text.util.Linkify
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,10 +16,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDownward
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
@@ -35,13 +27,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -51,26 +41,18 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.chs.common.Resource
-import com.chs.domain.model.CharacterDetailInfo
-import com.chs.domain.model.StudioDetailInfo
 import com.chs.domain.model.VoiceActorDetailInfo
-import com.chs.domain.model.VoiceActorInfo
 import com.chs.presentation.R
 import com.chs.presentation.UiConst
-import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
-import com.chs.presentation.browse.character.CharaDetailEvent
 import com.chs.presentation.browse.character.ProfileText
 import com.chs.presentation.common.ItemPullToRefreshBox
-import com.chs.presentation.common.PlaceholderHighlight
 import com.chs.presentation.common.placeholder
-import com.chs.presentation.common.shimmer
 import com.chs.presentation.toPercentFormat
 import com.chs.presentation.ui.theme.Pink80
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
 
 @Composable
 fun ActorDetailScreenRoot(
@@ -108,7 +90,6 @@ fun ActorDetailScreen(
     state: ActorDetailState,
     onEvent: (ActorDetailEvent) -> Unit
 ) {
-    val activity = (LocalContext.current as? Activity)
     var isRefreshing by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
@@ -143,7 +124,7 @@ fun ActorDetailScreen(
             },
             isShowTopBar = true,
             onCloseClick = {
-                activity?.finish()
+                onEvent(ActorDetailEvent.OnCloseClick)
             }, stickyHeader = {
                 TabRow(
                     modifier = Modifier.fillMaxWidth(),
@@ -198,18 +179,22 @@ fun ActorDetailScreen(
                     }
 
                     1 -> {
-                        ActorCharaTab(state.actorCharaList) {
-                            onEvent(
-                                ActorDetailEvent.OnCharaClick(it)
-                            )
+                        if (state.actorCharaList != null) {
+                            ActorCharaTab(state.actorCharaList) {
+                                onEvent(
+                                    ActorDetailEvent.OnCharaClick(it)
+                                )
+                            }
                         }
                     }
 
                     2 -> {
-                        ActorAnimeTab(state.actorAnimeList) { id: Int, idMal: Int ->
-                            onEvent(
-                                ActorDetailEvent.OnAnimeClick(id, idMal)
-                            )
+                        if (state.actorAnimeList != null) {
+                            ActorAnimeTab(state.actorAnimeList) { id: Int, idMal: Int ->
+                                onEvent(
+                                    ActorDetailEvent.OnAnimeClick(id, idMal)
+                                )
+                            }
                         }
                     }
                 }

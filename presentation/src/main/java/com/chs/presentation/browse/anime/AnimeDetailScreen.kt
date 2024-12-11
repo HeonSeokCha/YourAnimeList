@@ -33,11 +33,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,15 +43,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.chs.common.Constants
 import com.chs.common.Resource
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
-import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.color
 import com.chs.presentation.common.ItemSaveButton
@@ -281,10 +276,12 @@ fun AnimeDetailScreen(
                     }
 
                     2 -> {
-                        AnimeRecScreen(animeRecList = state.animeRecList) { id, idMal ->
-                            onEvent(
-                                AnimeDetailEvent.OnAnimeClick(id = id, idMal = idMal)
-                            )
+                        if (state.animeRecList != null) {
+                            AnimeRecScreen(animeRecList = state.animeRecList) { id, idMal ->
+                                onEvent(
+                                    AnimeDetailEvent.OnAnimeClick(id = id, idMal = idMal)
+                                )
+                            }
                         }
                     }
                 }

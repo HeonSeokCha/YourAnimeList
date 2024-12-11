@@ -24,11 +24,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun AnimeRecScreen(
-    animeRecList: Flow<PagingData<AnimeInfo>>? = null,
+    animeRecList: Flow<PagingData<AnimeInfo>>,
     onNavigate: (Int, Int) -> Unit
 ) {
     val scrollState = rememberLazyListState()
-    val lazyPagingItems = animeRecList?.collectAsLazyPagingItems()
+    val lazyPagingItems = animeRecList.collectAsLazyPagingItems()
 
     LazyColumn(
         modifier = Modifier
@@ -41,61 +41,55 @@ fun AnimeRecScreen(
         contentPadding = PaddingValues(horizontal = 4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        if (lazyPagingItems != null && lazyPagingItems.itemCount != 0) {
-            items(
-                count = lazyPagingItems.itemCount,
-                key = lazyPagingItems.itemKey(key = { it.id })
-            ) { index ->
-                val item = lazyPagingItems[index]
-                ItemAnimeLarge(item) {
-                    if (item != null) {
-                        onNavigate(
-                            item.id,
-                            item.idMal
-                        )
-                    }
+        items(
+            count = lazyPagingItems.itemCount,
+            key = lazyPagingItems.itemKey(key = { it.id })
+        ) { index ->
+            val item = lazyPagingItems[index]
+            ItemAnimeLarge(item) {
+                if (item != null) {
+                    onNavigate(
+                        item.id,
+                        item.idMal
+                    )
+                }
+            }
+        }
+
+        when (lazyPagingItems.loadState.refresh) {
+            is LoadState.Loading -> {
+                items(10) {
+                    ItemAnimeLarge(anime = null) { }
                 }
             }
 
-            when (lazyPagingItems.loadState.refresh) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemAnimeLarge(anime = null) { }
-                    }
+            is LoadState.Error -> {
+                item {
+                    Text(
+                        text = "Something Wrong for Loading List."
+                    )
                 }
-
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
-                        )
-                    }
-                }
-
-                else -> Unit
             }
 
-            when (lazyPagingItems.loadState.append) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemAnimeLarge(anime = null) { }
-                    }
-                }
+            else -> Unit
+        }
 
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
-                        )
-                    }
+        when (lazyPagingItems.loadState.append) {
+            is LoadState.Loading -> {
+                items(10) {
+                    ItemAnimeLarge(anime = null) { }
                 }
+            }
 
-                else -> Unit
+            is LoadState.Error -> {
+                item {
+                    Text(
+                        text = "Something Wrong for Loading List."
+                    )
+                }
             }
-        } else {
-            item {
-                ItemNoResultImage()
-            }
+
+            else -> Unit
         }
     }
 }

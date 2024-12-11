@@ -124,27 +124,31 @@ fun SearchScreen(
             ) { page ->
                 when (page) {
                     0 -> {
-                        SearchAnimeScreen(
-                            searchQuery = state.query,
-                            pagingItem = state.searchAnimeResultPaging
-                        ) { item ->
-                            onEvent(
-                                SearchEvent.OnAnimeClick(
-                                    id = item.id,
-                                    idMal = item.idMal
+                        if (state.searchAnimeResultPaging != null) {
+                            SearchAnimeScreen(
+                                searchQuery = state.query,
+                                pagingItem = state.searchAnimeResultPaging
+                            ) { item ->
+                                onEvent(
+                                    SearchEvent.OnAnimeClick(
+                                        id = item.id,
+                                        idMal = item.idMal
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
 
                     1 -> {
-                        SearchCharaScreen(
-                            searchQuery = state.query,
-                            pagingItems = state.searchCharaResultPaging
-                        ) { charaId ->
-                            onEvent(
-                                SearchEvent.OnCharaClick(id = charaId)
-                            )
+                        if (state.searchCharaResultPaging != null) {
+                            SearchCharaScreen(
+                                searchQuery = state.query,
+                                pagingItems = state.searchCharaResultPaging
+                            ) { charaId ->
+                                onEvent(
+                                    SearchEvent.OnCharaClick(id = charaId)
+                                )
+                            }
                         }
                     }
                 }

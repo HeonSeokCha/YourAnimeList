@@ -21,11 +21,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun ActorAnimeTab(
-    info: Flow<PagingData<AnimeInfo>>?,
+    info: Flow<PagingData<AnimeInfo>>,
     onAnimeClick: (id: Int, idMal: Int) -> Unit
 ) {
     val listState = rememberLazyGridState()
-    val pagingData = info?.collectAsLazyPagingItems()
+    val pagingData = info.collectAsLazyPagingItems()
 
     LazyVerticalGrid(
         modifier = Modifier
@@ -40,55 +40,49 @@ fun ActorAnimeTab(
         )
     ) {
 
-        if (pagingData != null && pagingData.itemCount != 0) {
-            items(pagingData.itemCount) {
-                ItemAnimeSmall(pagingData[it]) {
-                    onAnimeClick(
-                        pagingData[it]!!.id,
-                        pagingData[it]!!.idMal
+        items(pagingData.itemCount) {
+            ItemAnimeSmall(pagingData[it]) {
+                onAnimeClick(
+                    pagingData[it]!!.id,
+                    pagingData[it]!!.idMal
+                )
+            }
+        }
+
+        when (pagingData.loadState.refresh) {
+            is LoadState.Loading -> {
+                items(10) {
+                    ItemAnimeSmall(null)
+                }
+            }
+
+            is LoadState.Error -> {
+                item {
+                    Text(
+                        text = "Something Wrong for Loading List."
                     )
                 }
             }
 
-            when (pagingData.loadState.refresh) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemAnimeSmall(null)
-                    }
-                }
+            else -> Unit
+        }
 
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
-                        )
-                    }
+        when (pagingData.loadState.append) {
+            is LoadState.Loading -> {
+                items(10) {
+                    ItemAnimeSmall(null)
                 }
-
-                else -> Unit
             }
 
-            when (pagingData.loadState.append) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemAnimeSmall(null)
-                    }
+            is LoadState.Error -> {
+                item {
+                    Text(
+                        text = "Something Wrong for Loading List."
+                    )
                 }
-
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
-                        )
-                    }
-                }
-
-                else -> Unit
             }
-        } else {
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                ItemNoResultImage()
-            }
+
+            else -> Unit
         }
     }
 }
