@@ -16,15 +16,16 @@ fun CharaListScreen(
     list: List<CharacterInfo>,
     onActivityStart: (Int) -> Unit
 ) {
-
-    if (list.isEmpty()) {
-        ItemNoResultImage()
-    } else {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        if (list.isEmpty()) {
+            item {
+                ItemNoResultImage()
+            }
+        } else {
             items(
                 list,
                 key = { it.id }

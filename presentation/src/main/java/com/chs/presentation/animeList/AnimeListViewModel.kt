@@ -24,8 +24,8 @@ class AnimeListViewModel @Inject constructor(
         .onStart { getAnimeList() }
         .stateIn(
             viewModelScope,
-            SharingStarted.Lazily,
-            emptyList()
+            SharingStarted.WhileSubscribed(5000L),
+            _state.value
         )
 
     private fun getAnimeList() {

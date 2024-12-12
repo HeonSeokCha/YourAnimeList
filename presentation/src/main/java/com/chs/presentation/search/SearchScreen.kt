@@ -26,8 +26,7 @@ import kotlinx.coroutines.launch
 fun SearchScreenRoot(
     viewModel: SearchViewModel,
     onAnimeClick: (Int, Int) -> Unit,
-    onCharaClick: (Int) -> Unit,
-    onBackClick: () -> Unit
+    onCharaClick: (Int) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -42,8 +41,6 @@ fun SearchScreenRoot(
                 is SearchEvent.OnCharaClick -> {
                     onCharaClick(event.id)
                 }
-
-                SearchEvent.OnBackClick -> onBackClick()
 
                 else -> Unit
             }

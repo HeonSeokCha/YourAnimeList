@@ -12,6 +12,4 @@ sealed interface SearchEvent {
 
     data object GetSearchAnimeResult : SearchEvent
     data object GetSearchCharaResult : SearchEvent
-
-    data object OnBackClick : SearchEvent
 }

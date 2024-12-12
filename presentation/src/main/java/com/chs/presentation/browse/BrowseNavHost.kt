@@ -30,6 +30,7 @@ import com.chs.presentation.browse.studio.StudioDetailScreenRoot
 import com.chs.presentation.browse.studio.StudioDetailViewModel
 import com.chs.presentation.main.Screen
 import com.chs.presentation.sortList.SortedListScreen
+import com.chs.presentation.sortList.SortedListScreenRoot
 import com.chs.presentation.sortList.SortedViewModel
 
 @Composable
@@ -165,13 +166,14 @@ fun BrowseNavHost(
                 navController.getBackStackEntry(arg)
             }
             val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
-            val state by viewmodel.state.collectAsStateWithLifecycle()
-            SortedListScreen(
-                state = state,
-                onEvent = viewmodel::changeSortEvent
-            ) { id, idMal ->
-                navController.navigate(BrowseScreen.AnimeDetail(id = id, idMal = idMal))
-            }
+            SortedListScreenRoot(
+                viewModel = viewmodel,
+                onClickAnime = { id, idMal ->
+                    navController.navigate(
+                        BrowseScreen.AnimeDetail(id = id, idMal = idMal)
+                    )
+                }
+            )
         }
 
         composable<BrowseScreen.ActorDetail> {

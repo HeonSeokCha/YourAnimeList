@@ -24,6 +24,7 @@ import com.chs.presentation.search.SearchViewModel
 import com.chs.presentation.search.SearchScreen
 import com.chs.presentation.search.SearchScreenRoot
 import com.chs.presentation.sortList.SortedListScreen
+import com.chs.presentation.sortList.SortedListScreenRoot
 import com.chs.presentation.sortList.SortedViewModel
 
 @Composable
@@ -120,8 +121,7 @@ fun MainNavHost(
                         putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
                         putExtra(UiConst.TARGET_ID, id)
                     }
-                },
-                onBackClick = { navController.navigateUp() }
+                }
             )
         }
 
@@ -130,23 +130,22 @@ fun MainNavHost(
                 navController.getBackStackEntry(it.toRoute<Screen.SortList>())
             }
             val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
-            val state by viewmodel.state.collectAsStateWithLifecycle()
 
-            SortedListScreen(
-                state = state,
-                onEvent = viewmodel::changeSortEvent
-            ) { id, idMal ->
-                context.startActivity(
-                    Intent(
-                        context,
-                        BrowseActivity::class.java
-                    ).apply {
-                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                        this.putExtra(UiConst.TARGET_ID, id)
-                        this.putExtra(UiConst.TARGET_ID_MAL, idMal)
-                    }
-                )
-            }
+            SortedListScreenRoot(
+                viewModel = viewmodel,
+                onClickAnime = { id, idMal ->
+                    context.startActivity(
+                        Intent(
+                            context,
+                            BrowseActivity::class.java
+                        ).apply {
+                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                            this.putExtra(UiConst.TARGET_ID, id)
+                            this.putExtra(UiConst.TARGET_ID_MAL, idMal)
+                        }
+                    )
+                }
+            )
         }
     }
 }

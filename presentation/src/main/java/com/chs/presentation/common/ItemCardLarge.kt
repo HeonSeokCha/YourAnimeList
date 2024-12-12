@@ -92,12 +92,6 @@ fun ItemCardLarge(
                 Text(
                     modifier = Modifier
                         .placeholder(visible = subTitle == null),
-//                    text = if (anime?.seasonYear.isNotEmptyValue) {
-//                        "${anime?.seasonYear ?: 2000} ⦁ " +
-//                                (UiConst.mediaStatus[anime?.status]?.first ?: UiConst.UNKNOWN)
-//                    } else {
-//                        UiConst.mediaStatus[anime?.status]?.first ?: UiConst.UNKNOWN
-//                    },
                     text = subTitle ?: UiConst.UNKNOWN,
                     color = Color.White
                 )
@@ -111,13 +105,20 @@ fun ItemCardLarge(
                         bottom = 16.dp
                     )
             ) {
-                if (scoreTitle[0].isNotEmptyValue) {
+                if (scoreTitle.first().isNotEmptyValue) {
                     Text(
                         text = buildAnnotatedString {
-                            appendInlineContent(
-                                UiConst.AVERAGE_SCORE_ID,
-                                UiConst.AVERAGE_SCORE_ID
-                            )
+                            if (scoreTitle.size > 1) {
+                                appendInlineContent(
+                                    UiConst.AVERAGE_SCORE_ID,
+                                    UiConst.AVERAGE_SCORE_ID
+                                )
+                            } else {
+                                appendInlineContent(
+                                    UiConst.FAVOURITE_ID,
+                                    UiConst.FAVOURITE_ID
+                                )
+                            }
                             append("${scoreTitle[0]}")
                         },
                         inlineContent = UiConst.inlineContent,
@@ -125,23 +126,25 @@ fun ItemCardLarge(
                         color = Color.White,
                         fontSize = 14.sp,
                     )
+
                     Spacer(modifier = Modifier.width(8.dp))
                 }
-
-                if (scoreTitle[1].isNotEmptyValue) {
-                    Text(
-                        text = buildAnnotatedString {
-                            appendInlineContent(
-                                UiConst.FAVOURITE_ID,
-                                UiConst.FAVOURITE_ID
-                            )
-                            append("${scoreTitle[1]}")
-                        },
-                        inlineContent = UiConst.inlineContent,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        fontSize = 14.sp,
-                    )
+                if (scoreTitle.size > 1) {
+                    if (scoreTitle.last().isNotEmptyValue) {
+                        Text(
+                            text = buildAnnotatedString {
+                                appendInlineContent(
+                                    UiConst.FAVOURITE_ID,
+                                    UiConst.FAVOURITE_ID
+                                )
+                                append("${scoreTitle[1]}")
+                            },
+                            inlineContent = UiConst.inlineContent,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            fontSize = 14.sp,
+                        )
+                    }
                 }
             }
         }

@@ -24,8 +24,8 @@ class CharacterListViewModel @Inject constructor(
         .onStart { getCharacterInfo() }
         .stateIn(
             viewModelScope,
-            SharingStarted.Lazily,
-            emptyList()
+            SharingStarted.WhileSubscribed(5000L),
+            _state.value
         )
 
     private fun getCharacterInfo() {

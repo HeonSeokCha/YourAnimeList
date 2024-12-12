@@ -239,11 +239,9 @@ fun SortedListScreen(
                         }
                     }
                 }
-
             }
         }
     }
-
 
     if (filterDialogShow) {
         ModalBottomSheet(
@@ -305,8 +303,6 @@ private fun LazyGridState.isScrollingUp(): Boolean {
 private fun PreviewSortedListScreen() {
     SortedListScreen(
         state = SortState(),
-        onEvent = {
-
-        }
+        onEvent = {}
     )
 }
