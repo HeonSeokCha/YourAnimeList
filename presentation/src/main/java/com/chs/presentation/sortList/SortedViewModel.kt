@@ -77,7 +77,6 @@ class SortedViewModel @Inject constructor(
         when (event) {
             is SortEvent.GetSortList -> {
                 getSortedAnime()
-                return
             }
 
             is SortEvent.ChangeSortOption -> {
@@ -86,7 +85,6 @@ class SortedViewModel @Inject constructor(
                         sortFilter = event.value
                     )
                 }
-                getSortedAnime()
             }
 
             else -> Unit

@@ -77,7 +77,5 @@ class StudioDetailViewModel @Inject constructor(
 
             else -> return
         }
-
-        getStudioAnimeList()
     }
 }

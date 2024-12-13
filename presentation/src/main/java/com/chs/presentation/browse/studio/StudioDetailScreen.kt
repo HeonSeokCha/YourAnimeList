@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -76,12 +77,15 @@ fun StudioDetailScreen(
     state: StudioDetailState,
     onEvent: (StudioDetailEvent) -> Unit,
 ) {
-    val activity: Activity? = LocalContext.current as? Activity
     val lazyGridScrollState = rememberLazyStaggeredGridState()
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val pagingItem = state.studioAnimeList?.collectAsLazyPagingItems()
     var isRefreshing by remember { mutableStateOf(false) }
+
+    LaunchedEffect(state.sortOption) {
+        onEvent(StudioDetailEvent.GetStudioDetailInfo)
+    }
 
     ItemPullToRefreshBox(
         isRefreshing = isRefreshing,
@@ -108,12 +112,11 @@ fun StudioDetailScreen(
                     }
 
                     is Resource.Error -> {}
-
                 }
             },
             isShowTopBar = true,
             onCloseClick = {
-                activity?.finish()
+                onEvent(StudioDetailEvent.OnCloseClick)
             }
         ) {
             LazyVerticalStaggeredGrid(
