@@ -41,7 +41,7 @@ import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemExpandSingleBox
 import com.chs.presentation.common.ItemPullToRefreshBox
-import com.chs.presentation.toPercentFormat
+import com.chs.presentation.toCommaFormat
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -227,7 +227,7 @@ private fun StudioInfo(studioInfo: StudioDetailInfo?) {
                 contentDescription = null,
                 tint = Color.Red
             )
-            Text(text = studioInfo?.favourites.toPercentFormat)
+            Text(text = studioInfo?.favourites.toCommaFormat)
         }
     }
 }

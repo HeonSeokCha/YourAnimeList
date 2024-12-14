@@ -48,7 +48,7 @@ import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.browse.character.ProfileText
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.common.placeholder
-import com.chs.presentation.toPercentFormat
+import com.chs.presentation.toCommaFormat
 import com.chs.presentation.ui.theme.Pink80
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import kotlinx.coroutines.delay
@@ -256,7 +256,7 @@ private fun ActorInfo(actorInfo: VoiceActorDetailInfo?) {
                             UiConst.FAVOURITE_ID,
                             UiConst.FAVOURITE_ID
                         )
-                        append(actorInfo?.favorite.toPercentFormat)
+                        append(actorInfo?.favorite.toCommaFormat)
 
                     },
                     inlineContent = UiConst.inlineContent,

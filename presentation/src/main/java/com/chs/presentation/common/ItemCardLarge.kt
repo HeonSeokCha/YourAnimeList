@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.chs.presentation.UiConst
 import com.chs.presentation.isNotEmptyValue
+import com.chs.presentation.toCommaFormat
 import com.chs.presentation.ui.theme.Pink80
 
 @Composable
@@ -105,21 +106,23 @@ fun ItemCardLarge(
                         bottom = 16.dp
                     )
             ) {
-                if (scoreTitle.first().isNotEmptyValue) {
+                scoreTitle.forEachIndexed { idx, score ->
                     Text(
                         text = buildAnnotatedString {
-                            if (scoreTitle.size > 1) {
-                                appendInlineContent(
-                                    UiConst.AVERAGE_SCORE_ID,
-                                    UiConst.AVERAGE_SCORE_ID
-                                )
-                            } else {
+                            if (idx == 0) {
                                 appendInlineContent(
                                     UiConst.FAVOURITE_ID,
                                     UiConst.FAVOURITE_ID
                                 )
+                            } else {
+                                appendInlineContent(
+                                    UiConst.AVERAGE_SCORE_ID,
+                                    UiConst.AVERAGE_SCORE_ID
+                                )
                             }
-                            append("${scoreTitle[0]}")
+                            if (score.isNotEmptyValue) {
+                                append(score.toCommaFormat)
+                            }
                         },
                         inlineContent = UiConst.inlineContent,
                         fontWeight = FontWeight.Bold,
@@ -128,23 +131,6 @@ fun ItemCardLarge(
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
-                }
-                if (scoreTitle.size > 1) {
-                    if (scoreTitle.last().isNotEmptyValue) {
-                        Text(
-                            text = buildAnnotatedString {
-                                appendInlineContent(
-                                    UiConst.FAVOURITE_ID,
-                                    UiConst.FAVOURITE_ID
-                                )
-                                append("${scoreTitle[1]}")
-                            },
-                            inlineContent = UiConst.inlineContent,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            fontSize = 14.sp,
-                        )
-                    }
                 }
             }
         }

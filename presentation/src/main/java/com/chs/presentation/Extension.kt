@@ -18,7 +18,7 @@ val Int?.isNotEmptyValue
 val String?.isNotEmptyValue
     get() = this != null && this != ""
 
-val Int?.toPercentFormat
+val Int?.toCommaFormat
     @SuppressLint("DefaultLocale")
     get() = String.format("%,d", this ?: 0)
 
