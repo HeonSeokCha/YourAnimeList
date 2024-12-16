@@ -143,9 +143,9 @@ private fun GradientTopBar(
     modifier: Modifier,
     onCloseClick: () -> Unit
 ) {
-    Box(
-        modifier = modifier
-    ) {
+    Box {
+        Box(modifier = modifier)
+
         IconButton(
             modifier = Modifier
                 .size(56.dp)

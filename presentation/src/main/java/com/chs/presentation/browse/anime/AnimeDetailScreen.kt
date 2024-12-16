@@ -356,6 +356,7 @@ private fun AnimeDetailHeadBanner(
                 .align(Alignment.TopStart)
                 .padding(
                     start = 146.dp,
+                    end = 8.dp,
                     top = 258.dp
                 )
         ) {
