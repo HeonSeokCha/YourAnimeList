@@ -3,14 +3,17 @@ package com.chs.presentation.common
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,26 +35,19 @@ fun ItemExpandSingleBox(
     var expanded by remember { mutableStateOf(false) }
     var selectOptions by remember { mutableStateOf(list.find { it.second == initValue }?.first) }
 
-    Text(
-        text = title,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.SemiBold
-    )
-
-    Spacer(Modifier.height(8.dp))
-
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = it }
     ) {
 
-        TextField(
+        OutlinedTextField(
             modifier = Modifier
                 .menuAnchor(MenuAnchorType.PrimaryNotEditable),
             value = selectOptions ?: "Any",
             onValueChange = {},
             readOnly = true,
             singleLine = true,
+            label = { Text(text = title) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors()
         )

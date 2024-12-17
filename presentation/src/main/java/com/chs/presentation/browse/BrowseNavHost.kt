@@ -57,7 +57,6 @@ fun BrowseNavHost(
         modifier = modifier,
         startDestination = startMediaDestination
     ) {
-
         composable<BrowseScreen.AnimeDetail> {
             val context = LocalContext.current
             val activity = (LocalContext.current as? Activity)
@@ -150,9 +149,7 @@ fun BrowseNavHost(
                 viewModel = viewmodel,
                 onAnimeClick = { id, idMal ->
                     navController.navigate(
-                        navController.navigate(
-                            BrowseScreen.AnimeDetail(id = id, idMal = idMal)
-                        )
+                        BrowseScreen.AnimeDetail(id = id, idMal = idMal)
                     )
                 }, onCloseClick = {
                     activity?.finish()

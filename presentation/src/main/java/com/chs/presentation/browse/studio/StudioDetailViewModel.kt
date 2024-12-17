@@ -28,7 +28,7 @@ class StudioDetailViewModel @Inject constructor(
     private var _state = MutableStateFlow(StudioDetailState())
     val state = _state
         .onStart {
-            getStudioDetailInfo(studioId)
+            getStudioDetailInfo()
             getStudioAnimeList()
         }
         .stateIn(
@@ -38,7 +38,7 @@ class StudioDetailViewModel @Inject constructor(
         )
 
 
-    private fun getStudioDetailInfo(studioId: Int) {
+    private fun getStudioDetailInfo() {
         viewModelScope.launch {
             getStudioDetailUseCase(studioId).collect { studioInfo ->
                 _state.update {
@@ -72,7 +72,8 @@ class StudioDetailViewModel @Inject constructor(
             }
 
             is StudioDetailEvent.GetStudioDetailInfo -> {
-                getStudioDetailInfo(studioId)
+                getStudioDetailInfo()
+                getStudioAnimeList()
             }
 
             else -> return

@@ -1,7 +1,6 @@
 package com.chs.presentation.browse.studio
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,9 +24,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
@@ -36,7 +36,6 @@ import androidx.paging.compose.itemKey
 import com.chs.common.Resource
 import com.chs.presentation.UiConst
 import com.chs.domain.model.StudioDetailInfo
-import com.chs.presentation.browse.BrowseScreen
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemExpandSingleBox
@@ -130,7 +129,11 @@ fun StudioDetailScreen(
                 )
             ) {
                 item(span = StaggeredGridItemSpan.FullLine) {
-                    Column {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.End
+                    ) {
                         ItemExpandSingleBox(
                             title = "Sort",
                             list = UiConst.sortTypeList,
@@ -230,4 +233,10 @@ private fun StudioInfo(studioInfo: StudioDetailInfo?) {
             Text(text = studioInfo?.favourites.toCommaFormat)
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewStudioScreen() {
+    StudioDetailScreen(state = StudioDetailState()) { }
 }
