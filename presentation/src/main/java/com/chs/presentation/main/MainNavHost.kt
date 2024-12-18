@@ -2,8 +2,10 @@ package com.chs.presentation.main
 
 import android.content.Intent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,12 +22,15 @@ import com.chs.presentation.charaList.CharaListScreen
 import com.chs.presentation.charaList.CharacterListViewModel
 import com.chs.presentation.home.HomeScreenRoot
 import com.chs.presentation.home.HomeViewModel
+import com.chs.presentation.search.SearchEvent
 import com.chs.presentation.search.SearchViewModel
 import com.chs.presentation.search.SearchScreen
 import com.chs.presentation.search.SearchScreenRoot
 import com.chs.presentation.sortList.SortedListScreen
 import com.chs.presentation.sortList.SortedListScreenRoot
 import com.chs.presentation.sortList.SortedViewModel
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 
 @Composable
 fun MainNavHost(
@@ -100,6 +105,13 @@ fun MainNavHost(
 
         composable<Screen.Search> {
             val viewModel: SearchViewModel = hiltViewModel()
+
+            LaunchedEffect(searchQuery) {
+                snapshotFlow { searchQuery }
+                    .distinctUntilChanged()
+                    .filter { it.isNotEmpty() }
+                    .collect { viewModel.onEvent(SearchEvent.OnChangeSearchQuery(it)) }
+            }
 
             SearchScreenRoot(
                 viewModel = viewModel,

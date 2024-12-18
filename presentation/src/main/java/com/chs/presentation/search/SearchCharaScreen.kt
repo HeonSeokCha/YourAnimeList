@@ -16,6 +16,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.common.ItemCharaLarge
+import com.chs.presentation.common.ItemNoResultImage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -69,7 +70,13 @@ fun SearchCharaScreen(
                 }
             }
 
-            else -> Unit
+            else -> {
+                if (charaItems.itemCount == 0) {
+                    item {
+                        ItemNoResultImage()
+                    }
+                }
+            }
         }
 
         when (charaItems.loadState.append) {

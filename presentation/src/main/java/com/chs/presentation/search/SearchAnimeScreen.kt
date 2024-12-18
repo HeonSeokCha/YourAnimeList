@@ -16,6 +16,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.common.ItemAnimeLarge
+import com.chs.presentation.common.ItemNoResultImage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -54,6 +55,8 @@ fun SearchAnimeScreen(
             }
         }
 
+
+
         when (animeItems.loadState.refresh) {
             is LoadState.Loading -> {
                 items(10) {
@@ -69,7 +72,13 @@ fun SearchAnimeScreen(
                 }
             }
 
-            else -> Unit
+            else -> {
+                if (animeItems.itemCount == 0) {
+                    item {
+                        ItemNoResultImage()
+                    }
+                }
+            }
         }
 
         when (animeItems.loadState.append) {

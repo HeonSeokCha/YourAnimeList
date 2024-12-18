@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -71,7 +72,13 @@ fun AnimeRecScreen(
                 }
             }
 
-            else -> Unit
+            else -> {
+                if (lazyPagingItems.itemCount == 0) {
+                    item {
+                        ItemNoResultImage()
+                    }
+                }
+            }
         }
 
         when (lazyPagingItems.loadState.append) {
