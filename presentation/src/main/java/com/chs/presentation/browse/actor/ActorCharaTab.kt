@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.browse.anime.CharaImageItem
 import com.chs.presentation.common.ItemNoResultImage
@@ -36,7 +37,10 @@ fun ActorCharaTab(
         ),
         columns = GridCells.Fixed(3)
     ) {
-        items(pagingData.itemCount) {
+        items(
+            count = pagingData.itemCount,
+            key = pagingData.itemKey { it.id }
+        ) {
             CharaImageItem(pagingData[it]) { charaInfo ->
                 onCharaClick(charaInfo.id)
             }
@@ -58,7 +62,13 @@ fun ActorCharaTab(
                 }
             }
 
-            else -> Unit
+            else -> {
+                if (pagingData.itemCount == 0) {
+                    item {
+                        ItemNoResultImage()
+                    }
+                }
+            }
         }
 
         when (pagingData.loadState.append) {

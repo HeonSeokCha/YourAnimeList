@@ -39,6 +39,7 @@ import com.chs.domain.model.StudioDetailInfo
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemExpandSingleBox
+import com.chs.presentation.common.ItemNoResultImage
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.toCommaFormat
 import kotlinx.coroutines.delay
@@ -180,7 +181,13 @@ fun StudioDetailScreen(
                             }
                         }
 
-                        else -> Unit
+                        else -> {
+                            if (pagingItem.itemCount == 0) {
+                                item {
+                                    ItemNoResultImage()
+                                }
+                            }
+                        }
                     }
 
 

@@ -81,6 +81,8 @@ fun ActorDetailScreenRoot(
 
                 else -> Unit
             }
+
+            viewModel.changeEvent(event)
         }
     )
 }

@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemNoResultImage
@@ -40,7 +41,10 @@ fun ActorAnimeTab(
         )
     ) {
 
-        items(pagingData.itemCount) {
+        items(
+            count = pagingData.itemCount,
+            key = pagingData.itemKey { it.id }
+        ) {
             ItemAnimeSmall(pagingData[it]) {
                 onAnimeClick(
                     pagingData[it]!!.id,
@@ -64,7 +68,13 @@ fun ActorAnimeTab(
                 }
             }
 
-            else -> Unit
+            else -> {
+                if (pagingData.itemCount == 0) {
+                    item {
+                        ItemNoResultImage()
+                    }
+                }
+            }
         }
 
         when (pagingData.loadState.append) {

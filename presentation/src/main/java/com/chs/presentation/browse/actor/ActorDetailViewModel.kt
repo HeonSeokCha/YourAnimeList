@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
+import androidx.paging.filter
+import com.chs.domain.model.AnimeInfo
 import com.chs.domain.usecase.GetActorAnimeListUseCase
 import com.chs.domain.usecase.GetActorCharaListUseCase
 import com.chs.domain.usecase.GetActorDetailInfoUseCase
@@ -16,6 +18,7 @@ import com.chs.presentation.browse.BrowseScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -75,7 +78,16 @@ class ActorDetailViewModel @Inject constructor(
                 actorAnimeList = getActorAnimeListUseCase(
                     actorId = actorId,
                     sortOptions = listOf(UiConst.SortType.NEWEST.rawValue)
-                ).cachedIn(viewModelScope)
+                ).map {
+                    val animeMap = mutableSetOf<AnimeInfo>()
+                    it.filter {
+                        if (animeMap.contains(it)) {
+                            false
+                        } else {
+                            animeMap.add(it)
+                        }
+                    }
+                }.cachedIn(viewModelScope)
             )
         }
     }

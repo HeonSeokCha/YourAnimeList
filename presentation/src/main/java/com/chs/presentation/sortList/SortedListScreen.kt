@@ -44,6 +44,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.presentation.UiConst
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemErrorImage
+import com.chs.presentation.common.ItemNoResultImage
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.ui.theme.Pink80
 import com.chs.presentation.ui.theme.Red200
@@ -223,7 +224,13 @@ fun SortedListScreen(
                                 }
                             }
 
-                            else -> Unit
+                            else -> {
+                                if (pagingItems.itemCount == 0) {
+                                    item {
+                                        ItemNoResultImage()
+                                    }
+                                }
+                            }
                         }
 
 
