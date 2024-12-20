@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.chs.presentation.UiConst
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemErrorImage
@@ -197,6 +198,7 @@ fun SortedListScreen(
 
                         items(
                             count = pagingItems.itemCount,
+                            key = pagingItems.itemKey { it.id }
                         ) {
                             val animeInfo = pagingItems[it]
                             ItemAnimeSmall(item = animeInfo) {

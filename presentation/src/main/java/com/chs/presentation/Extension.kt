@@ -7,7 +7,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
+import androidx.paging.PagingData
+import androidx.paging.filter
 import com.chs.presentation.main.Screen
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 val String.color
     get() = Color(android.graphics.Color.parseColor(this))
@@ -39,4 +43,17 @@ fun NavBackStackEntry?.fromRoute(): Screen? {
                 else -> null
             }
         }
+}
+
+fun <T : Any> Flow<PagingData<T>>.duplicatedMap(): Flow<PagingData<T>> {
+    return this.map {
+        val setOf = mutableSetOf<T>()
+        it.filter { data ->
+            if (setOf.contains(data)) {
+                false
+            } else {
+                setOf.add(data)
+            }
+        }
+    }
 }

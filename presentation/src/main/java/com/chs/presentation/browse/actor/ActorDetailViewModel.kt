@@ -1,8 +1,5 @@
 package com.chs.presentation.browse.actor
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +12,7 @@ import com.chs.domain.usecase.GetActorCharaListUseCase
 import com.chs.domain.usecase.GetActorDetailInfoUseCase
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseScreen
+import com.chs.presentation.duplicatedMap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -78,16 +76,8 @@ class ActorDetailViewModel @Inject constructor(
                 actorAnimeList = getActorAnimeListUseCase(
                     actorId = actorId,
                     sortOptions = listOf(UiConst.SortType.NEWEST.rawValue)
-                ).map {
-                    val animeMap = mutableSetOf<AnimeInfo>()
-                    it.filter {
-                        if (animeMap.contains(it)) {
-                            false
-                        } else {
-                            animeMap.add(it)
-                        }
-                    }
-                }.cachedIn(viewModelScope)
+                ).duplicatedMap()
+                    .cachedIn(viewModelScope)
             )
         }
     }

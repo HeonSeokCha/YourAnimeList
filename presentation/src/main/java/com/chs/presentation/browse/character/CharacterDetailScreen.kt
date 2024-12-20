@@ -64,6 +64,7 @@ import com.chs.presentation.R
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemMessageDialog
+import com.chs.presentation.common.ItemNoResultImage
 import com.chs.presentation.common.ItemSaveButton
 import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.common.placeholder
@@ -276,8 +277,13 @@ fun CharacterDetailScreen(
                             }
                         }
 
-                        else -> Unit
-
+                        else -> {
+                            if (pagingItem.itemCount == 0) {
+                                item {
+                                    ItemNoResultImage()
+                                }
+                            }
+                        }
                     }
 
                     when (pagingItem.loadState.append) {
