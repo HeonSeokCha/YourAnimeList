@@ -41,10 +41,7 @@ fun ActorAnimeTab(
         )
     ) {
 
-        items(
-            count = pagingData.itemCount,
-            key = pagingData.itemKey { it.id }
-        ) {
+        items(count = pagingData.itemCount) {
             ItemAnimeSmall(pagingData[it]) {
                 onAnimeClick(
                     pagingData[it]!!.id,

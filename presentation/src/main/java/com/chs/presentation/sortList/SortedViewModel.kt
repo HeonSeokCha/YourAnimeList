@@ -70,7 +70,6 @@ class SortedViewModel @Inject constructor(
                     tags = it.sortFilter.selectTags,
                     status = it.sortFilter.selectStatus
                 )
-                    .duplicatedMap()
                     .cachedIn(viewModelScope)
             )
         }

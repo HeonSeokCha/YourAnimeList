@@ -196,10 +196,7 @@ fun SortedListScreen(
                 ) {
                     if (pagingItems != null) {
 
-                        items(
-                            count = pagingItems.itemCount,
-                            key = pagingItems.itemKey { it.id }
-                        ) {
+                        items(count = pagingItems.itemCount) {
                             val animeInfo = pagingItems[it]
                             ItemAnimeSmall(item = animeInfo) {
                                 if (animeInfo != null) {

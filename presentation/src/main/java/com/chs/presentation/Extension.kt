@@ -45,15 +45,15 @@ fun NavBackStackEntry?.fromRoute(): Screen? {
         }
 }
 
-fun <T : Any> Flow<PagingData<T>>.duplicatedMap(): Flow<PagingData<T>> {
-    return this.map {
-        val setOf = mutableSetOf<T>()
-        it.filter { data ->
-            if (setOf.contains(data)) {
-                false
-            } else {
-                setOf.add(data)
-            }
-        }
-    }
-}
+//fun <T : Any> Flow<PagingData<T>>.duplicatedMap(): Flow<PagingData<T>> {
+//    return this.map {
+//        val setOf = mutableSetOf<T>()
+//        it.filter { data ->
+//            if (setOf.contains(data)) {
+//                false
+//            } else {
+//                setOf.add(data)
+//            }
+//        }
+//    }
+//}

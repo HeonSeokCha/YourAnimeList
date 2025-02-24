@@ -76,8 +76,7 @@ class ActorDetailViewModel @Inject constructor(
                 actorAnimeList = getActorAnimeListUseCase(
                     actorId = actorId,
                     sortOptions = listOf(UiConst.SortType.NEWEST.rawValue)
-                ).duplicatedMap()
-                    .cachedIn(viewModelScope)
+                ).cachedIn(viewModelScope)
             )
         }
     }
