@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDestination
 import androidx.paging.PagingData
 import androidx.paging.filter
 import com.chs.presentation.main.Screen
@@ -30,30 +31,3 @@ val Int?.toCommaFormat
 fun Int.pxToDp(): Dp {
     return (this / LocalDensity.current.density).dp
 }
-
-fun NavBackStackEntry?.fromRoute(): Screen? {
-    return this?.destination?.route?.substringBefore("?")?.substringBefore("/")
-        ?.substringAfterLast(".")?.let {
-            return when (it) {
-                Screen.Search::class.simpleName -> Screen.Search
-                Screen.SortList::class.simpleName -> Screen.SortList()
-                Screen.Home::class.simpleName -> Screen.Home
-                Screen.AnimeList::class.simpleName -> Screen.AnimeList
-                Screen.CharaList::class.simpleName -> Screen.CharaList
-                else -> null
-            }
-        }
-}
-
-//fun <T : Any> Flow<PagingData<T>>.duplicatedMap(): Flow<PagingData<T>> {
-//    return this.map {
-//        val setOf = mutableSetOf<T>()
-//        it.filter { data ->
-//            if (setOf.contains(data)) {
-//                false
-//            } else {
-//                setOf.add(data)
-//            }
-//        }
-//    }
-//}

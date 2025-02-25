@@ -20,10 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.chs.presentation.R
-import com.chs.presentation.fromRoute
 import com.chs.presentation.ui.theme.Red500
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,59 +35,55 @@ fun AppBar(
     onDeleteSearchHistory: (String) -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    when (navBackStackEntry.fromRoute()) {
-        is Screen.SortList -> {
-            TopAppBar(
-                title = {},
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Red500,
-                    navigationIconContentColor = Color.White
-                ),
-                navigationIcon = {
-                    IconButton(onClick = { navController.navigateUp() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "sort_screen_back")
-                    }
-                }
-            )
-        }
+    val currentDest = navBackStackEntry?.destination
 
-        Screen.Search -> {
-            SearchAppBar(
-                searchHistoryList = searchHistoryList,
-                onSearch = {
-                    onQueryChange(it)
-                }, onDeleteSearchHistory = {
-                    onDeleteSearchHistory(it)
+    if (currentDest?.hasRoute(Screen.SortList::class) == true) {
+        TopAppBar(
+            title = {},
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Red500,
+                navigationIconContentColor = Color.White
+            ),
+            navigationIcon = {
+                IconButton(onClick = { navController.navigateUp() }) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "sort_screen_back")
                 }
-            )
-        }
+            }
+        )
+    } else if (currentDest?.hasRoute(Screen.Search::class) == true) {
 
-        else -> {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.app_name),
-                        color = Color.White
+        SearchAppBar(
+            searchHistoryList = searchHistoryList,
+            onSearch = {
+                onQueryChange(it)
+            }, onDeleteSearchHistory = {
+                onDeleteSearchHistory(it)
+            }
+        )
+    } else {
+        TopAppBar(
+            title = {
+                Text(
+                    text = stringResource(R.string.app_name),
+                    color = Color.White
+                )
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Red500,
+                actionIconContentColor = Color.White
+            ),
+            actions = {
+                IconButton(onClick = {
+                    navController.navigate(Screen.Search)
+                }) {
+                    Icon(
+                        imageVector = Icons.TwoTone.Search,
+                        contentDescription = "home_screen_search"
                     )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Red500,
-                    actionIconContentColor = Color.White
-                ),
-                actions = {
-                    IconButton(onClick = {
-                        navController.navigate(Screen.Search)
-                    }) {
-                        Icon(
-                            imageVector = Icons.TwoTone.Search,
-                            contentDescription = "home_screen_search"
-                        )
-                    }
                 }
-            )
-        }
+            }
+        )
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)

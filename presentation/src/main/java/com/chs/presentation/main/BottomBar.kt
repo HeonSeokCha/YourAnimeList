@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -15,21 +17,13 @@ import com.chs.presentation.ui.theme.Red700
 @Composable
 fun BottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-        ?: BottomNavigation.HOME::class.qualifiedName.orEmpty()
+    val currentRoute = navBackStackEntry?.destination
 
-    val currentRouteTrimmed by remember(currentRoute) {
-        derivedStateOf { currentRoute.substringBefore("?") }
-    }
-
-    if (BottomNavigation.entries.any { it.route::class.qualifiedName == currentRoute }) {
+    if (BottomNavigation.entries.any { currentRoute?.hasRoute(it.route::class) == true }) {
         NavigationBar(containerColor = Red200) {
             BottomNavigation.entries.forEachIndexed { index, navItem ->
-                val isSelected by remember(currentRoute) {
-                    derivedStateOf { currentRouteTrimmed == navItem.route::class.qualifiedName }
-                }
                 NavigationBarItem(
-                    selected = isSelected,
+                    selected = currentRoute?.hasRoute(navItem.route::class) ?: false,
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Red700,
                         selectedTextColor = Red700,
@@ -49,6 +43,14 @@ fun BottomBar(navController: NavHostController) {
                     label = { Text(text = navItem.label) }
                 )
             }
+
+//
+//
+//        if (BottomNavigation.entries.any { it.route::class.qualifiedName == currentRoute }) {
+//
+//
+//        }
         }
     }
+
 }
