@@ -106,32 +106,32 @@ fun ItemCardLarge(
                         bottom = 16.dp
                     )
             ) {
-                scoreTitle.forEachIndexed { idx, score ->
-                    Text(
-                        text = buildAnnotatedString {
-                            if (idx == 0) {
-                                appendInlineContent(
-                                    UiConst.FAVOURITE_ID,
-                                    UiConst.FAVOURITE_ID
-                                )
-                            } else {
-                                appendInlineContent(
-                                    UiConst.AVERAGE_SCORE_ID,
-                                    UiConst.AVERAGE_SCORE_ID
-                                )
-                            }
-                            if (score.isNotEmptyValue) {
+                scoreTitle
+                    .filter { it.isNotEmptyValue }
+                    .forEachIndexed { idx, score ->
+                        Text(
+                            text = buildAnnotatedString {
+                                if (idx == 0) {
+                                    appendInlineContent(
+                                        UiConst.FAVOURITE_ID,
+                                        UiConst.FAVOURITE_ID
+                                    )
+                                } else {
+                                    appendInlineContent(
+                                        UiConst.AVERAGE_SCORE_ID,
+                                        UiConst.AVERAGE_SCORE_ID
+                                    )
+                                }
                                 append(score.toCommaFormat)
-                            }
-                        },
-                        inlineContent = UiConst.inlineContent,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        fontSize = 14.sp,
-                    )
+                            },
+                            inlineContent = UiConst.inlineContent,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            fontSize = 14.sp,
+                        )
 
-                    Spacer(modifier = Modifier.width(8.dp))
-                }
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
             }
         }
     }
