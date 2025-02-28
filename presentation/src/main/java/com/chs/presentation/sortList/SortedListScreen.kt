@@ -146,7 +146,7 @@ fun SortedListScreen(
 
                     ItemSort(
                         title = "Sort",
-                        subTitle = UiConst.SortType.entries.find { it.rawValue == state.sortFilter.selectSort }!!.name
+                        subTitle = UiConst.SortType.entries.find { it.rawValue == state.sortFilter.selectSort.first() }!!.name
                     )
 
                     ItemSort(
@@ -196,7 +196,10 @@ fun SortedListScreen(
                 ) {
                     if (pagingItems != null) {
 
-                        items(count = pagingItems.itemCount) {
+                        items(
+                            count = pagingItems.itemCount,
+                            key = pagingItems.itemKey { it.id }
+                        ) {
                             val animeInfo = pagingItems[it]
                             ItemAnimeSmall(item = animeInfo) {
                                 if (animeInfo != null) {

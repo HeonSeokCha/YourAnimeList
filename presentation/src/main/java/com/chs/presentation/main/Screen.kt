@@ -13,7 +13,7 @@ sealed class Screen {
     data class SortList(
         val year: Int? = null,
         val season: String? = null,
-        val sortOption: String? = null,
+        val sortOption: List<String> = listOf(),
         val genre: String? = null,
         val tag: String? = null
     ) : Screen()

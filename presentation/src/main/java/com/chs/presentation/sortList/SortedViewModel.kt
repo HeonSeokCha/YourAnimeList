@@ -42,9 +42,22 @@ class SortedViewModel @Inject constructor(
             _state.value
         )
 
-    private val selectSort: UiConst.SortType = UiConst.SortType.entries.find {
-        it.rawValue == savedStateHandle.toRoute<Screen.SortList>().sortOption
-    } ?: UiConst.SortType.TRENDING
+    private val selectSort: List<UiConst.SortType> =
+        savedStateHandle.toRoute<Screen.SortList>().sortOption
+            .run {
+                if (this.isEmpty()) {
+                    listOf(
+                        UiConst.SortType.POPULARITY,
+                        UiConst.SortType.AVERAGE,
+                    )
+                } else {
+                    this.map { rawValue ->
+                        UiConst.SortType.entries.find {
+                            it.rawValue == rawValue
+                        } ?: UiConst.SortType.TRENDING
+                    }
+                }
+            }
 
     private val selectSeason = UiConst.Season.entries.find {
         it.rawValue == savedStateHandle.toRoute<Screen.SortList>().season
@@ -58,11 +71,7 @@ class SortedViewModel @Inject constructor(
         _state.update {
             it.copy(
                 animeSortPaging = getAnimeFilteredListUseCase(
-                    sortType = if (it.sortFilter.selectSort == UiConst.SortType.TRENDING.rawValue) {
-                        listOf(UiConst.SortType.TRENDING.rawValue)
-                    } else {
-                        listOf(it.sortFilter.selectSort)
-                    },
+                    sortType = it.sortFilter.selectSort,
                     season = it.sortFilter.selectSeason,
                     year = it.sortFilter.selectYear,
                     genres = it.sortFilter.selectGenre,
@@ -103,7 +112,7 @@ class SortedViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     sortFilter = it.sortFilter.copy(
-                        selectSort = selectSort.rawValue,
+                        selectSort = selectSort.map { it.rawValue },
                         selectSeason = selectSeason?.rawValue,
                         selectYear = selectYear,
                         selectGenre = if (selectGenre == null) null else listOf(selectGenre),

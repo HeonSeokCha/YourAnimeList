@@ -10,6 +10,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.unit.em
+import com.chs.domain.model.SortFilter
+import com.chs.presentation.main.Screen
 import java.util.*
 
 object UiConst {
@@ -63,32 +65,31 @@ object UiConst {
     }
 
 
-    val animeCategorySortList: List<Pair<String, Triple<SortType, Int?, String?>>> =
+    val animeCategorySortList: List<Pair<String, Screen.SortList>> =
         listOf(
-            "TRENDING NOW" to Triple(
-                SortType.TRENDING,
-                null,
-                null
+            "TRENDING NOW" to Screen.SortList(
+                sortOption = listOf(
+                    SortType.TRENDING.rawValue,
+                    SortType.POPULARITY.rawValue
+                )
             ),
-            "POPULAR THIS SEASON" to Triple(
-                SortType.POPULARITY,
-                Util.getCurrentYear(),
-                Util.getCurrentSeason()
+            "POPULAR THIS SEASON" to Screen.SortList(
+                year = Util.getCurrentYear(),
+                season = Util.getCurrentSeason()
             ),
-            "UPCOMING NEXT SEASON" to Triple(
-                SortType.POPULARITY,
-                Util.getVariationYear(),
-                Util.getNextSeason()
+            "UPCOMING NEXT SEASON" to Screen.SortList(
+                year = Util.getVariationYear(),
+                season = Util.getNextSeason()
             ),
-            "ALL TIME POPULAR" to Triple(
-                SortType.POPULARITY,
-                null,
-                null
+            "ALL TIME POPULAR" to Screen.SortList(
+                sortOption = listOf(
+                    SortType.POPULARITY.rawValue
+                )
             ),
-            "TOP ANIME" to Triple(
-                SortType.AVERAGE,
-                null,
-                null
+            "TOP ANIME" to Screen.SortList(
+                sortOption = listOf(
+                    SortType.AVERAGE.rawValue
+                )
             )
         )
 

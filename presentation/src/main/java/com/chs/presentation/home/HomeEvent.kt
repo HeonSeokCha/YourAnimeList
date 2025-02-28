@@ -5,7 +5,7 @@ sealed class HomeEvent {
 
     data class NavigateSort(
         val year: Int?,
-        val option: String?,
+        val option: List<String>,
         val season: String?
     ) : HomeEvent()
 

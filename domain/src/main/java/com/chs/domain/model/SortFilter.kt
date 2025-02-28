@@ -1,7 +1,10 @@
 package com.chs.domain.model
 
 data class SortFilter(
-    val selectSort: String = "TRENDING_DESC",
+    val selectSort: List<String> = listOf(
+        "POPULARITY_DESC",
+        "SCORE_DESC"
+    ),
     val selectSeason: String? = null,
     val selectYear: Int? = null,
     val selectStatus: String? = null,

@@ -48,12 +48,11 @@ fun SortFilterDialog(
         ItemExpandSingleBox(
             title = "Sort By",
             list = sortOptions.optionSort,
-            initValue = selectedSortFilter.selectSort
+            initValue = selectedSortFilter.selectSort.first()
         ) {
-            selectSortOptions =
-                selectSortOptions.copy(
-                    selectSort = it?.second ?: UiConst.SortType.TRENDING.rawValue
-                )
+            if (it != null) {
+                selectSortOptions = selectSortOptions.copy(selectSort = listOf(it.second))
+            }
         }
 
         ItemChipOptions(

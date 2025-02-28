@@ -99,7 +99,7 @@ fun HomeScreen(
                         ItemRecommendCategory(
                             title = state.animeCategoryList[idx],
                             list = List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
-                            sortClick = { _,_,_ -> }, animeClick = { id, idMal -> }
+                            sortClick = { }, animeClick = { id, idMal -> }
                         )
                     }
                 }
@@ -153,12 +153,12 @@ fun HomeScreen(
                             title = state.animeCategoryList[idx],
                             list = data?.animeBasicList?.get(idx)
                                 ?: List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
-                            sortClick = { sortType, year, season ->
+                            sortClick = {
                                 event(
                                     HomeEvent.NavigateSort(
-                                        year = year,
-                                        season = season,
-                                        option = sortType
+                                        year = it.year,
+                                        season = it.season,
+                                        option = it.sortOption
                                     )
                                 )
                             }, animeClick = { id, idMal ->
@@ -182,9 +182,9 @@ fun HomeScreen(
 
 @Composable
 private fun ItemRecommendCategory(
-    title: Pair<String, Triple<UiConst.SortType, Int?, String?>>,
+    title: Pair<String, Screen.SortList>,
     list: List<AnimeInfo?>,
-    sortClick: (String?, Int?, String?) -> Unit,
+    sortClick: (Screen.SortList) -> Unit,
     animeClick: (Int, Int) -> Unit
 ) {
     Row(
@@ -205,11 +205,7 @@ private fun ItemRecommendCategory(
         )
         IconButton(
             onClick = {
-                sortClick(
-                    title.second.first.rawValue,
-                    title.second.second,
-                    title.second.third
-                )
+                sortClick(title.second)
             }
         ) {
             Icon(

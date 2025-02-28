@@ -2,6 +2,7 @@ package com.chs.presentation.browse
 
 import android.app.Activity
 import android.content.Intent
+import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -58,8 +59,7 @@ fun BrowseNavHost(
         startDestination = startMediaDestination
     ) {
         composable<BrowseScreen.AnimeDetail> {
-            val context = LocalContext.current
-            val activity = (LocalContext.current as? Activity)
+            val activity = LocalActivity.current
             val arg = it.toRoute<BrowseScreen.AnimeDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
@@ -71,7 +71,7 @@ fun BrowseNavHost(
                     activity?.finish()
                 },
                 onTrailerClick = { trailerId ->
-                    context.startActivity(
+                    activity?.startActivity(
                         Intent(
                             Intent.ACTION_VIEW,
                             "${Constants.YOUTUBE_BASE_URL}$trailerId".toUri()
@@ -105,17 +105,14 @@ fun BrowseNavHost(
                 },
                 onTagClick = { tag ->
                     navController.navigate(
-                        Screen.SortList(
-                            tag = tag,
-                            sortOption = UiConst.SortType.POPULARITY.rawValue
-                        )
+                        Screen.SortList(tag = tag)
                     )
                 }
             )
         }
 
         composable<BrowseScreen.CharacterDetail> {
-            val activity = (LocalContext.current as? Activity)
+            val activity = LocalActivity.current
             val arg = it.toRoute<BrowseScreen.CharacterDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
@@ -138,7 +135,7 @@ fun BrowseNavHost(
         }
 
         composable<BrowseScreen.StudioDetail> {
-            val activity = (LocalContext.current as? Activity)
+            val activity = LocalActivity.current
             val arg = it.toRoute<BrowseScreen.StudioDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
@@ -174,7 +171,7 @@ fun BrowseNavHost(
         }
 
         composable<BrowseScreen.ActorDetail> {
-            val activity = (LocalContext.current as? Activity)
+            val activity = LocalActivity.current
             val arg = it.toRoute<BrowseScreen.ActorDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
