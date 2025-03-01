@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
-import com.chs.domain.usecase.GetActorAnimeListUseCase
-import com.chs.domain.usecase.GetActorCharaListUseCase
+import com.chs.domain.usecase.GetActorMediaListUseCase
 import com.chs.domain.usecase.GetActorDetailInfoUseCase
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseScreen
@@ -23,8 +22,7 @@ import javax.inject.Inject
 class ActorDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getActorDetailInfoUseCase: GetActorDetailInfoUseCase,
-    private val getActorAnimeListUseCase: GetActorAnimeListUseCase,
-    private val getActorCharaListUseCase: GetActorCharaListUseCase
+    private val getActorMediaListUseCase: GetActorMediaListUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ActorDetailState())
@@ -32,7 +30,6 @@ class ActorDetailViewModel @Inject constructor(
         .onStart {
             getActorDetailInfo(actorId)
             getActorAnimeList(actorId)
-            getActorCharaList(actorId)
         }
         .stateIn(
             viewModelScope,
@@ -47,7 +44,6 @@ class ActorDetailViewModel @Inject constructor(
             is ActorDetailEvent.GetActorDetailInfo -> {
                 getActorDetailInfo(actorId)
                 getActorAnimeList(actorId)
-                getActorCharaList(actorId)
             }
 
             else -> Unit
@@ -69,18 +65,7 @@ class ActorDetailViewModel @Inject constructor(
     private fun getActorAnimeList(actorId: Int) {
         _state.update {
             it.copy(
-                actorAnimeList = getActorAnimeListUseCase(
-                    actorId = actorId,
-                    sortOptions = listOf(UiConst.SortType.NEWEST.rawValue)
-                ).cachedIn(viewModelScope)
-            )
-        }
-    }
-
-    private fun getActorCharaList(actorId: Int) {
-        _state.update {
-            it.copy(
-                actorCharaList = getActorCharaListUseCase(
+                actorAnimeList = getActorMediaListUseCase(
                     actorId = actorId,
                     sortOptions = listOf(UiConst.SortType.NEWEST.rawValue)
                 ).cachedIn(viewModelScope)

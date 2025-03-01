@@ -14,10 +14,5 @@ interface ActorRepository {
     fun getActorRelationAnimeList(
         actorId: Int,
         sortOptions: List<String>
-    ): Flow<PagingData<AnimeInfo>>
-
-    fun getActorRelationCharaList(
-        actorId: Int,
-        sortOptions: List<String>
-    ): Flow<PagingData<CharacterInfo>>
+    ): Flow<PagingData<Pair<CharacterInfo, AnimeInfo>>>
 }

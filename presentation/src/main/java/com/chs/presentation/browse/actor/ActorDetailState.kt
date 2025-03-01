@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 
 data class ActorDetailState(
     val actorDetailInfo: Resource<VoiceActorDetailInfo> = Resource.Loading(),
-    val actorAnimeList: Flow<PagingData<AnimeInfo>>? = null,
-    val actorCharaList: Flow<PagingData<CharacterInfo>>? = null,
+    val actorAnimeList: Flow<PagingData<Pair<CharacterInfo, AnimeInfo>>>? = null,
     val tabNames: List<String> = UiConst.ACTOR_DETAIL_TAB_LIST
 )

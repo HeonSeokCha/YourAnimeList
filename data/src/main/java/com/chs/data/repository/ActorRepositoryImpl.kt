@@ -10,8 +10,6 @@ import com.chs.common.Resource
 import com.chs.data.ActorDetailQuery
 import com.chs.data.mapper.toVoiceActorDetailInfo
 import com.chs.data.paging.VoiceActorAnimePagingSource
-import com.chs.data.paging.VoiceActorCharaPagingSource
-import com.chs.data.type.CharacterSort
 import com.chs.data.type.MediaSort
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
@@ -52,7 +50,7 @@ class ActorRepositoryImpl @Inject constructor(
     override fun getActorRelationAnimeList(
         actorId: Int,
         sortOptions: List<String>
-    ): Flow<PagingData<AnimeInfo>> {
+    ): Flow<PagingData<Pair<CharacterInfo, AnimeInfo>>> {
         return Pager(
             PagingConfig(
                 pageSize = Constants.PAGING_SIZE,
@@ -67,21 +65,4 @@ class ActorRepositoryImpl @Inject constructor(
         }.flow
     }
 
-    override fun getActorRelationCharaList(
-        actorId: Int,
-        sortOptions: List<String>
-    ): Flow<PagingData<CharacterInfo>> {
-        return Pager(
-            PagingConfig(
-                pageSize = Constants.PAGING_SIZE,
-                initialLoadSize = Constants.PAGING_SIZE * 3
-            )
-        ) {
-            VoiceActorCharaPagingSource(
-                apolloClient = apolloClient,
-                voiceActorId = actorId,
-                sortOptions = sortOptions.map { CharacterSort.safeValueOf(it) }
-            )
-        }.flow
-    }
 }

@@ -4,34 +4,34 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
-import com.chs.data.ActorAnimeListQuery
+import com.chs.data.ActorMediaListQuery
 import com.chs.data.mapper.toAnimeInfo
+import com.chs.data.mapper.toCharacterInfo
 import com.chs.data.type.MediaSort
 import com.chs.domain.model.AnimeInfo
+import com.chs.domain.model.CharacterInfo
 
 class VoiceActorAnimePagingSource(
     private val apolloClient: ApolloClient,
     private val voiceActorId: Int,
     private val sortOptions: List<MediaSort>
-) : PagingSource<Int, AnimeInfo>() {
+) : PagingSource<Int, Pair<CharacterInfo, AnimeInfo>>() {
 
-    override fun getRefreshKey(state: PagingState<Int, AnimeInfo>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Pair<CharacterInfo, AnimeInfo>>): Int? {
         return state.anchorPosition?.let { position ->
             val page = state.closestPageToPosition(position)
             page?.prevKey?.minus(1) ?: page?.nextKey?.plus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnimeInfo> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Pair<CharacterInfo, AnimeInfo>> {
         return try {
             val page = params.key ?: 1
             val response = apolloClient.query(
-                ActorAnimeListQuery(
+                ActorMediaListQuery(
                     id = Optional.present(voiceActorId),
                     page = Optional.present(page),
-                    sort = Optional.present(
-                        listOf(MediaSort.SCORE_DESC)
-                    )
+                    sort = Optional.present(sortOptions)
                 )
             ).execute()
 
@@ -43,11 +43,15 @@ class VoiceActorAnimePagingSource(
                 }
             }
 
-            val data = response.data!!.Staff?.staffMedia
+            val data = response.data!!.Staff?.characterMedia
+
 
             LoadResult.Page(
-                data = data?.nodes?.map { it?.animeBasicInfo.toAnimeInfo() }
-                    ?: emptyList(),
+                data = data?.edges
+                    ?.filter { it?.node?.animeBasicInfo?.isAdult != true }
+                    ?.map {
+                        it?.characters?.first()?.characterBasicInfo.toCharacterInfo() to it?.node?.animeBasicInfo.toAnimeInfo()
+                    } ?: emptyList(),
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = if (data?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
             )

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Text
@@ -14,16 +13,18 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemKey
 import com.chs.domain.model.AnimeInfo
+import com.chs.domain.model.CharacterInfo
+import com.chs.presentation.common.ItemActorMedia
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemNoResultImage
 import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun ActorAnimeTab(
-    info: Flow<PagingData<AnimeInfo>>,
-    onAnimeClick: (id: Int, idMal: Int) -> Unit
+fun ActorMediaTab(
+    info: Flow<PagingData<Pair<CharacterInfo, AnimeInfo>>>,
+    onAnimeClick: (id: Int, idMal: Int) -> Unit,
+    onCharaClick: (id: Int) -> Unit
 ) {
     val listState = rememberLazyGridState()
     val pagingData = info.collectAsLazyPagingItems()
@@ -42,12 +43,15 @@ fun ActorAnimeTab(
     ) {
 
         items(count = pagingData.itemCount) {
-            ItemAnimeSmall(pagingData[it]) {
-                onAnimeClick(
-                    pagingData[it]!!.id,
-                    pagingData[it]!!.idMal
-                )
-            }
+            ItemActorMedia(
+                info = pagingData[it],
+                onAnimeClick = { id, idMal ->
+                    onAnimeClick(id, idMal)
+                },
+                onCharaClick = { id ->
+                    onCharaClick(id)
+                }
+            )
         }
 
         when (pagingData.loadState.refresh) {

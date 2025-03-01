@@ -181,22 +181,19 @@ fun ActorDetailScreen(
                     }
 
                     1 -> {
-                        if (state.actorCharaList != null) {
-                            ActorCharaTab(state.actorCharaList) {
-                                onEvent(
-                                    ActorDetailEvent.OnCharaClick(it)
-                                )
-                            }
-                        }
-                    }
-
-                    2 -> {
                         if (state.actorAnimeList != null) {
-                            ActorAnimeTab(state.actorAnimeList) { id: Int, idMal: Int ->
-                                onEvent(
-                                    ActorDetailEvent.OnAnimeClick(id, idMal)
-                                )
-                            }
+                            ActorMediaTab(
+                                info = state.actorAnimeList,
+                                onAnimeClick = { id, idMal ->
+                                    onEvent(
+                                        ActorDetailEvent.OnAnimeClick(id, idMal)
+                                    )
+                                }, onCharaClick = { id ->
+                                    onEvent(
+                                        ActorDetailEvent.OnCharaClick(id)
+                                    )
+                                }
+                            )
                         }
                     }
                 }
