@@ -108,7 +108,6 @@ fun HomeScreen(
                     val data = state.animeRecommendList.data
                     item {
                         if (data?.bannerList != null) {
-
                             HorizontalPager(
                                 state = pagerState,
                                 modifier = Modifier

@@ -47,8 +47,6 @@ import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemErrorImage
 import com.chs.presentation.common.ItemNoResultImage
 import com.chs.presentation.common.ItemPullToRefreshBox
-import com.chs.presentation.ui.theme.Pink80
-import com.chs.presentation.ui.theme.Red200
 import com.chs.presentation.ui.theme.Red500
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

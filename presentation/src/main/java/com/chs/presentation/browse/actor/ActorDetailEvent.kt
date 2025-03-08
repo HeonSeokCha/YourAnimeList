@@ -11,4 +11,6 @@ sealed interface ActorDetailEvent {
     data object OnCloseClick : ActorDetailEvent
 
     data object GetActorDetailInfo : ActorDetailEvent
+
+    data class ChangeSortOption(val option: String) : ActorDetailEvent
 }

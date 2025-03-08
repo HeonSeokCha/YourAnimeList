@@ -116,6 +116,10 @@ object UiConst {
 
     val sortTypeList = SortType.entries.map { it.name to it.rawValue }
 
+    val sortTypeList2 = SortType.entries
+        .filterNot { it == SortType.TRENDING }
+        .map { it.name to it.rawValue }
+
     val yearSortList: List<Pair<String, String>> = (Util.getVariationYear() downTo 1980)
         .map { Pair(it.toString(), it.toString()) }
 

@@ -46,6 +46,17 @@ class ActorDetailViewModel @Inject constructor(
                 getActorAnimeList(actorId)
             }
 
+            is ActorDetailEvent.ChangeSortOption -> {
+                _state.update {
+                    it.copy(
+                        selectOption = UiConst.SortType.entries.find { it.rawValue == event.option }
+                            ?: UiConst.SortType.NEWEST
+                    )
+                }
+
+                getActorAnimeList(actorId)
+            }
+
             else -> Unit
         }
     }
@@ -62,12 +73,14 @@ class ActorDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getActorAnimeList(actorId: Int) {
+    private fun getActorAnimeList(
+        actorId: Int
+    ) {
         _state.update {
             it.copy(
                 actorAnimeList = getActorMediaListUseCase(
                     actorId = actorId,
-                    sortOptions = listOf(UiConst.SortType.NEWEST.rawValue)
+                    sortOptions = listOf(state.value.selectOption.rawValue)
                 ).cachedIn(viewModelScope)
             )
         }

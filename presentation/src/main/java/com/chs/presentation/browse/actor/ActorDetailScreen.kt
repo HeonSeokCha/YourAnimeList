@@ -22,6 +22,7 @@ import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -95,7 +96,12 @@ fun ActorDetailScreen(
     var isRefreshing by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
-    val pagerState = rememberPagerState { 3 }
+    val pagerState = rememberPagerState { 2 }
+    var isShowSortOption: Boolean by remember { mutableStateOf(false) }
+
+    LaunchedEffect(pagerState.currentPage) {
+        isShowSortOption = pagerState.currentPage == 1
+    }
 
     ItemPullToRefreshBox(
         isRefreshing = isRefreshing,
@@ -118,7 +124,13 @@ fun ActorDetailScreen(
                     }
 
                     is Resource.Success -> {
-                        ActorInfo(actorInfo = state.actorDetailInfo.data)
+                        Column {
+                            ActorInfo(actorInfo = state.actorDetailInfo.data)
+
+                            if (isShowSortOption) {
+
+                            }
+                        }
                     }
 
                     is Resource.Error -> {}
@@ -184,6 +196,7 @@ fun ActorDetailScreen(
                         if (state.actorAnimeList != null) {
                             ActorMediaTab(
                                 info = state.actorAnimeList,
+                                sortOptionName = state.selectOption.name,
                                 onAnimeClick = { id, idMal ->
                                     onEvent(
                                         ActorDetailEvent.OnAnimeClick(id, idMal)
@@ -191,6 +204,10 @@ fun ActorDetailScreen(
                                 }, onCharaClick = { id ->
                                     onEvent(
                                         ActorDetailEvent.OnCharaClick(id)
+                                    )
+                                }, onChangeSortEvent = { option ->
+                                    onEvent(
+                                        ActorDetailEvent.ChangeSortOption(option)
                                     )
                                 }
                             )
@@ -308,8 +325,7 @@ private fun VoiceActorProFile(info: VoiceActorDetailInfo?) {
             markdown = info?.description ?: stringResource(id = R.string.lorem_ipsum),
             linkifyMask = Linkify.EMAIL_ADDRESSES,
             syntaxHighlightColor = Pink80,
-            onLinkClicked = {
-            }
+            onLinkClicked = {}
         )
     }
 }

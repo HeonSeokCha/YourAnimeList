@@ -43,7 +43,7 @@ fun ItemExpandSingleBox(
         OutlinedTextField(
             modifier = Modifier
                 .menuAnchor(MenuAnchorType.PrimaryNotEditable),
-            value = selectOptions ?: "Any",
+            value = initValue ?: "Any",
             onValueChange = {},
             readOnly = true,
             singleLine = true,
