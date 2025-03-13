@@ -8,7 +8,8 @@ import com.chs.presentation.main.Screen
 
 data class HomeState(
     val animeCategoryList: List<Pair<String, Screen.SortList>> = UiConst.animeCategorySortList,
-    val animeRecommendList: Resource<AnimeRecommendList> = Resource.Loading(),
-    val isLoading: Boolean = false,
+    val animeRecommendList: AnimeRecommendList? = null,
+    val isLoading: Boolean = true,
+    val isRefreshing: Boolean = false,
     val errorMessage: String? = null
 )

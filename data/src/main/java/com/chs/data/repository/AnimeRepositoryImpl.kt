@@ -27,7 +27,8 @@ import com.chs.data.source.db.entity.TagEntity
 import com.chs.data.type.MediaSeason
 import com.chs.data.type.MediaSort
 import com.chs.data.type.MediaStatus
-import com.chs.domain.model.TagInfo
+import com.chs.domain.model.DataError
+import com.chs.domain.model.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -45,38 +46,35 @@ class AnimeRepositoryImpl @Inject constructor(
     private val tagDao: TagDao
 ) : AnimeRepository {
 
-    override fun getAnimeRecommendList(
+    override suspend fun getAnimeRecommendList(
         currentSeason: String,
         nextSeason: String,
         currentYear: Int,
         variationYear: Int
-    ): Flow<Resource<AnimeRecommendList>> {
-        return flow {
-            emit(Resource.Loading())
-            try {
-                val response = apolloClient
-                    .query(
-                        HomeAnimeListQuery(
-                            currentSeason = Optional.present(MediaSeason.valueOf(currentSeason)),
-                            nextSeason = Optional.present(MediaSeason.valueOf(nextSeason)),
-                            currentYear = Optional.present(currentYear),
-                            variationYear = Optional.present(variationYear)
-                        )
+    ): Result<AnimeRecommendList, DataError.RemoteError> {
+        return try {
+            val response = apolloClient
+                .query(
+                    HomeAnimeListQuery(
+                        currentSeason = Optional.present(MediaSeason.valueOf(currentSeason)),
+                        nextSeason = Optional.present(MediaSeason.valueOf(nextSeason)),
+                        currentYear = Optional.present(currentYear),
+                        variationYear = Optional.present(variationYear)
                     )
-                    .execute()
+                )
+                .execute()
 
-                if (response.data == null) {
-                    return@flow if (response.exception == null) {
-                        emit(Resource.Error(response.errors!!.first().message))
-                    } else {
-                        emit(Resource.Error(response.exception!!.message))
-                    }
+            if (response.data == null) {
+                return if (response.exception == null) {
+                    Result.Error(DataError.RemoteError(response.errors!!.first().message))
+                } else {
+                    Result.Error(DataError.RemoteError(response.exception!!.message))
                 }
-
-                emit(Resource.Success(response.data.toAnimeRecommendList()))
-            } catch (e: Exception) {
-                emit(Resource.Error(e.message.toString()))
             }
+
+            Result.Success(response.data.toAnimeRecommendList())
+        } catch (e: Exception) {
+            Result.Error(DataError.RemoteError(e.message))
         }
     }
 

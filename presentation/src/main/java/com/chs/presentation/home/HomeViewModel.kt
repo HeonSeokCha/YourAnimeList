@@ -1,10 +1,9 @@
 package com.chs.presentation.home
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chs.domain.model.onError
+import com.chs.domain.model.onSuccess
 import com.chs.domain.usecase.GetAnimeRecListUseCase
 import com.chs.presentation.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,21 +34,37 @@ class HomeViewModel @Inject constructor(
     fun changeOption(event: HomeEvent) {
         when (event) {
             HomeEvent.GetHomeData -> getHomeList()
+            HomeEvent.OnRefresh -> {
+                _state.update { it.copy(isRefreshing = true) }
+                getHomeList()
+            }
+
             else -> Unit
         }
     }
 
     private fun getHomeList() {
+        _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             getHomeListUseCase(
                 currentSeason = Util.getCurrentSeason(),
                 nextSeason = Util.getNextSeason(),
                 currentYear = Util.getCurrentYear(),
                 variationYear = Util.getVariationYear()
-            ).collect { result ->
+            ).onSuccess { data ->
                 _state.update {
                     it.copy(
-                        animeRecommendList = result
+                        isLoading = false,
+                        isRefreshing = false,
+                        animeRecommendList = data,
+                    )
+                }
+            }.onError { error ->
+                _state.update {
+                    it.copy(
+                        errorMessage = error.message,
+                        isLoading = false,
+                        isRefreshing = false
                     )
                 }
             }
