@@ -29,6 +29,7 @@ import com.chs.data.type.MediaSort
 import com.chs.data.type.MediaStatus
 import com.chs.domain.model.DataError
 import com.chs.domain.model.Result
+import com.chs.domain.model.SortFilter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -79,12 +80,7 @@ class AnimeRepositoryImpl @Inject constructor(
     }
 
     override fun getAnimeFilteredList(
-        sortType: List<String>,
-        season: String?,
-        year: Int?,
-        genres: List<String>?,
-        tags: List<String>?,
-        status: String?
+        filter: SortFilter
     ): Flow<PagingData<AnimeInfo>> {
         return Pager(
             PagingConfig(
@@ -94,12 +90,12 @@ class AnimeRepositoryImpl @Inject constructor(
         ) {
             AnimeSortPagingSource(
                 apolloClient = apolloClient,
-                sort = sortType.map { MediaSort.safeValueOf(it) },
-                season = MediaSeason.entries.find { it.rawValue == season },
-                seasonYear = year,
-                genres = genres,
-                tags = tags,
-                status = MediaStatus.entries.find { it.rawValue == status }
+                sort = filter.selectSort.map { MediaSort.safeValueOf(it) },
+                season = MediaSeason.entries.find { it.rawValue == filter.selectSeason },
+                seasonYear = filter.selectYear,
+                genres = filter.selectGenre,
+                tags = filter.selectTags,
+                status = MediaStatus.entries.find { it.rawValue == filter.selectStatus }
             )
         }.flow
     }

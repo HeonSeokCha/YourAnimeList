@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
+import com.chs.domain.model.SortFilter
 import com.chs.presentation.UiConst
 import com.chs.domain.usecase.GetAnimeFilteredListUseCase
 import com.chs.domain.usecase.GetRecentGenresTagUseCase
@@ -70,14 +71,9 @@ class SortedViewModel @Inject constructor(
     private fun getSortedAnime() {
         _state.update {
             it.copy(
-                animeSortPaging = getAnimeFilteredListUseCase(
-                    sortType = it.sortFilter.selectSort,
-                    season = it.sortFilter.selectSeason,
-                    year = it.sortFilter.selectYear,
-                    genres = it.sortFilter.selectGenre,
-                    tags = it.sortFilter.selectTags,
-                    status = it.sortFilter.selectStatus
-                )
+                isRefresh = false,
+                isLoading = false,
+                animeSortPaging = getAnimeFilteredListUseCase(it.sortFilter)
                     .cachedIn(viewModelScope)
             )
         }
@@ -95,6 +91,21 @@ class SortedViewModel @Inject constructor(
                         sortFilter = event.value
                     )
                 }
+            }
+
+            SortEvent.OnChangeDialogState -> {
+                _state.update {
+                    it.copy(
+                        isShowDialog = !it.isShowDialog
+                    )
+                }
+            }
+
+            SortEvent.OnRefresh -> {
+                _state.update {
+                    it.copy(isRefresh = true)
+                }
+                getSortedAnime()
             }
 
             else -> Unit

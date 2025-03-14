@@ -84,10 +84,8 @@ fun SortedListScreen(
     onEvent: (SortEvent) -> Unit
 ) {
     val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
-    var filterDialogShow by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
-    var isRefreshing by remember { mutableStateOf(false) }
     val listState = rememberLazyGridState()
 
     LaunchedEffect(state.sortFilter) {
@@ -99,7 +97,7 @@ fun SortedListScreen(
             .fillMaxSize(),
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                onClick = { filterDialogShow = true },
+                onClick = { onEvent(SortEvent.OnChangeDialogState) },
                 expanded = listState.isScrollingUp(),
                 icon = { Icon(Icons.Filled.Tune, null) },
                 text = { Text(text = "Filter") },
@@ -109,13 +107,10 @@ fun SortedListScreen(
     ) {
 
         ItemPullToRefreshBox(
-            isRefreshing = isRefreshing,
+            isRefreshing = state.isRefresh,
             onRefresh = {
-                isRefreshing = true
                 coroutineScope.launch {
-                    onEvent(SortEvent.GetSortList)
-                    delay(500L)
-                    isRefreshing = false
+                    onEvent(SortEvent.OnRefresh)
                 }
             }
         ) {
@@ -255,9 +250,9 @@ fun SortedListScreen(
         }
     }
 
-    if (filterDialogShow) {
+    if (state.isShowDialog) {
         ModalBottomSheet(
-            onDismissRequest = { filterDialogShow = false }
+            onDismissRequest = { onEvent(SortEvent.OnChangeDialogState) }
         ) {
             SortFilterDialog(
                 selectedSortFilter = state.sortFilter,
@@ -265,7 +260,7 @@ fun SortedListScreen(
             ) {
                 coroutineScope.launch { listState.scrollToItem(0) }
                 onEvent(SortEvent.ChangeSortOption(it))
-                filterDialogShow = false
+                onEvent(SortEvent.OnChangeDialogState)
             }
         }
     }
