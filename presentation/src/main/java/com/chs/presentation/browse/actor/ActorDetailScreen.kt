@@ -118,23 +118,7 @@ fun ActorDetailScreen(
         CollapsingToolbarScaffold(
             scrollState = scrollState,
             header = {
-                when (state.actorDetailInfo) {
-                    is Resource.Loading -> {
-                        ActorInfo(actorInfo = null)
-                    }
-
-                    is Resource.Success -> {
-                        Column {
-                            ActorInfo(actorInfo = state.actorDetailInfo.data)
-
-                            if (isShowSortOption) {
-
-                            }
-                        }
-                    }
-
-                    is Resource.Error -> {}
-                }
+                ActorInfo(actorInfo = state.actorDetailInfo)
             },
             isShowTopBar = true,
             onCloseClick = {
@@ -178,18 +162,7 @@ fun ActorDetailScreen(
             ) { page ->
                 when (page) {
                     0 -> {
-                        when (state.actorDetailInfo) {
-                            is Resource.Loading -> {
-                                VoiceActorProFile(null)
-                            }
-
-                            is Resource.Success -> {
-                                VoiceActorProFile(state.actorDetailInfo.data)
-
-                            }
-
-                            is Resource.Error -> {}
-                        }
+                        VoiceActorProFile(state.actorDetailInfo)
                     }
 
                     1 -> {

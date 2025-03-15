@@ -13,6 +13,8 @@ import com.chs.data.paging.VoiceActorAnimePagingSource
 import com.chs.data.type.MediaSort
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
+import com.chs.domain.model.DataError
+import com.chs.domain.model.Result
 import com.chs.domain.model.VoiceActorDetailInfo
 import com.chs.domain.repository.ActorRepository
 import kotlinx.coroutines.flow.Flow
@@ -23,27 +25,23 @@ class ActorRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
 ) : ActorRepository {
 
-    override fun getActorDetailInfo(actorId: Int): Flow<Resource<VoiceActorDetailInfo>> {
-        return flow {
-            emit(Resource.Loading())
-            try {
-                val response = apolloClient
-                    .query(ActorDetailQuery(Optional.present(actorId)))
-                    .execute()
+    override suspend fun getActorDetailInfo(actorId: Int): Result<VoiceActorDetailInfo, DataError.RemoteError> {
+        return try {
+            val response = apolloClient
+                .query(ActorDetailQuery(Optional.present(actorId)))
+                .execute()
 
-                if (response.data == null) {
-                    return@flow if (response.exception == null) {
-                        emit(Resource.Error(response.errors!!.first().message))
-                    } else {
-                        emit(Resource.Error(response.exception!!.message))
-                    }
+            if (response.data == null) {
+                return if (response.exception == null) {
+                    Result.Error(DataError.RemoteError(response.errors!!.first().message))
+                } else {
+                    Result.Error(DataError.RemoteError(response.exception!!.message))
                 }
-
-                emit(Resource.Success(response.data.toVoiceActorDetailInfo()))
-
-            } catch (e: Exception) {
-                emit(Resource.Error(e.message.toString()))
             }
+
+            Result.Success(response.data.toVoiceActorDetailInfo())
+        } catch (e: Exception) {
+            Result.Error(DataError.RemoteError(e.message))
         }
     }
 

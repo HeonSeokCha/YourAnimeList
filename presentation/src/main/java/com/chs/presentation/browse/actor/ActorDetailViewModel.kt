@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
+import com.chs.domain.model.onError
+import com.chs.domain.model.onSuccess
 import com.chs.domain.usecase.GetActorMediaListUseCase
 import com.chs.domain.usecase.GetActorDetailInfoUseCase
 import com.chs.presentation.UiConst
@@ -63,13 +65,22 @@ class ActorDetailViewModel @Inject constructor(
 
     private fun getActorDetailInfo(actorId: Int) {
         viewModelScope.launch {
-            getActorDetailInfoUseCase(actorId).collect { result ->
-                _state.update {
-                    it.copy(
-                        actorDetailInfo = result
-                    )
+            getActorDetailInfoUseCase(actorId)
+                .onSuccess { success ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            actorDetailInfo = success
+                        )
+                    }
+                }.onError { error ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            isError = error.message
+                        )
+                    }
                 }
-            }
         }
     }
 
