@@ -100,28 +100,25 @@ class AnimeRepositoryImpl @Inject constructor(
         }.flow
     }
 
-    override fun getAnimeDetailInfo(animeId: Int): Flow<Resource<AnimeDetailInfo>> {
-        return flow {
-            emit(Resource.Loading())
-            try {
-                val response = apolloClient
-                    .query(
-                        AnimeDetailInfoQuery(Optional.present(animeId))
-                    )
-                    .execute()
+    override suspend fun getAnimeDetailInfo(animeId: Int): Result<AnimeDetailInfo, DataError.RemoteError> {
+        return try {
+            val response = apolloClient
+                .query(
+                    AnimeDetailInfoQuery(Optional.present(animeId))
+                )
+                .execute()
 
-                if (response.data == null) {
-                    return@flow if (response.exception == null) {
-                        emit(Resource.Error(response.errors!!.first().message))
-                    } else {
-                        emit(Resource.Error(response.exception!!.message))
-                    }
+            if (response.data == null) {
+                return if (response.exception == null) {
+                    Result.Error(DataError.RemoteError(response.errors!!.first().message))
+                } else {
+                    Result.Error(DataError.RemoteError(response.exception!!.message))
                 }
-
-                emit(Resource.Success(response.data!!.toAnimeDetailInfo()))
-            } catch (e: Exception) {
-                emit(Resource.Error(e.message.toString()))
             }
+
+            Result.Success(response.data!!.toAnimeDetailInfo())
+        } catch (e: Exception) {
+            Result.Error(DataError.RemoteError(e.message))
         }
     }
 
@@ -139,18 +136,11 @@ class AnimeRepositoryImpl @Inject constructor(
         }.flow
     }
 
-    override fun getAnimeDetailTheme(animeId: Int): Flow<Resource<AnimeThemeInfo>> {
-        return flow {
-            emit(Resource.Loading())
-            try {
-                emit(
-                    Resource.Success(
-                        jikanService.getAnimeTheme(animeId).toAnimeThemeInfo()
-                    )
-                )
-            } catch (e: Exception) {
-                emit(Resource.Error(e.message.toString()))
-            }
+    override suspend fun getAnimeDetailTheme(animeId: Int): Result<AnimeThemeInfo, DataError.RemoteError> {
+        return try {
+            Result.Success(jikanService.getAnimeTheme(animeId).toAnimeThemeInfo())
+        } catch (e: Exception) {
+            Result.Error(DataError.RemoteError(e.message))
         }
     }
 

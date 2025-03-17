@@ -3,7 +3,7 @@ package com.chs.presentation.browse.anime
 import com.chs.domain.model.AnimeInfo
 
 sealed interface AnimeDetailEvent {
-    data object GetAnimeDetailInfo : AnimeDetailEvent
+    data object OnRefresh : AnimeDetailEvent
     data class OnAnimeClick(
         val id: Int,
         val idMal: Int

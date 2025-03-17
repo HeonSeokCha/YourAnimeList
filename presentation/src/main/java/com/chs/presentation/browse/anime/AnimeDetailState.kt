@@ -9,10 +9,12 @@ import com.chs.presentation.UiConst
 import kotlinx.coroutines.flow.Flow
 
 data class AnimeDetailState(
-    val animeDetailInfo: Resource<AnimeDetailInfo> = Resource.Loading(),
-    val animeThemes: Resource<AnimeThemeInfo> = Resource.Loading(),
+    val animeDetailInfo: AnimeDetailInfo? = null,
+    val animeThemes: AnimeThemeInfo? = null,
     val animeRecList: Flow<PagingData<AnimeInfo>>? = null,
     val selectTabIdx: Int = 0,
-    val isSave: Boolean = false
+    val isSave: Boolean = false,
+    val isRefresh: Boolean = false,
+    val isError: String? = null
 )
 

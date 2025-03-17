@@ -36,7 +36,7 @@ import com.chs.presentation.common.shimmer
 
 @Composable
 fun AnimeCharaScreen(
-    state: Resource<AnimeDetailInfo>,
+    info: AnimeDetailInfo?,
     onClick: (Int) -> Unit
 ) {
     LazyVerticalGrid(
@@ -53,28 +53,11 @@ fun AnimeCharaScreen(
         ),
         columns = GridCells.Fixed(3)
     ) {
-        when (state) {
-            is Resource.Loading -> {
-                items(12) {
-                    CharaImageItem(charaInfo = null) { }
-                }
-            }
 
-            is Resource.Success -> {
-                val charaInfoList = state.data?.characterList ?: emptyList()
-                items(charaInfoList) { charaInfo ->
-                    CharaImageItem(charaInfo = charaInfo) {
-                        onClick(charaInfo.id)
-                    }
-                }
-            }
-
-            is Resource.Error -> {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    Text(
-                        text = "Something Wrong for Loading List."
-                    )
-                }
+        val charaInfoList = info?.characterList ?: emptyList()
+        items(charaInfoList) { charaInfo ->
+            CharaImageItem(charaInfo = charaInfo) {
+                onClick(charaInfo.id)
             }
         }
     }

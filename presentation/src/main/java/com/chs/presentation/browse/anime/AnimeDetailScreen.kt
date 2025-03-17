@@ -124,8 +124,6 @@ fun AnimeDetailScreen(
     val pagerState = rememberPagerState { 3 }
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
-    var isRefreshing by remember { mutableStateOf(false) }
-
 
     LaunchedEffect(state.selectTabIdx) {
         pagerState.animateScrollToPage(state.selectTabIdx)
@@ -138,57 +136,37 @@ fun AnimeDetailScreen(
     }
 
     ItemPullToRefreshBox(
-        isRefreshing = isRefreshing,
+        isRefreshing = state.isRefresh,
         onRefresh = {
-            isRefreshing = true
             coroutineScope.launch {
                 pagerState.scrollToPage(0)
-                onEvent(AnimeDetailEvent.GetAnimeDetailInfo)
-                delay(500L)
-                isRefreshing = false
             }
+
+            onEvent(AnimeDetailEvent.OnRefresh)
         }
     ) {
         CollapsingToolbarScaffold(
             scrollState = scrollState,
             header = {
-                when (state.animeDetailInfo) {
-                    is Resource.Loading -> {
-                        AnimeDetailHeadBanner(
-                            animeDetailInfo = null,
-                            isAnimeSave = false,
-                            trailerClick = {},
-                            saveClick = {}
-                        )
-                    }
-
-                    is Resource.Success -> {
-                        val data = state.animeDetailInfo.data
-                        if (data != null) {
-                            AnimeDetailHeadBanner(
-                                animeDetailInfo = data,
-                                isAnimeSave = state.isSave,
-                                trailerClick = { trailerId ->
-                                    if (trailerId != null) {
-                                        onEvent(
-                                            AnimeDetailEvent.OnTrailerClick(trailerId)
-                                        )
-                                    }
-                                }, saveClick = {
-                                    if (state.isSave) {
-                                        onEvent(AnimeDetailEvent.DeleteAnimeInfo(data.animeInfo))
-                                    } else {
-                                        onEvent(AnimeDetailEvent.InsertAnimeInfo(data.animeInfo))
-                                    }
-                                }
+                AnimeDetailHeadBanner(
+                    animeDetailInfo = state.animeDetailInfo,
+                    isAnimeSave = state.isSave,
+                    trailerClick = { trailerId ->
+                        if (trailerId != null) {
+                            onEvent(
+                                AnimeDetailEvent.OnTrailerClick(trailerId)
                             )
                         }
-                    }
+                    }, saveClick = {
+                        if (state.animeDetailInfo == null) return@AnimeDetailHeadBanner
 
-                    is Resource.Error -> {
-
+                        if (state.isSave) {
+                            onEvent(AnimeDetailEvent.DeleteAnimeInfo(state.animeDetailInfo.animeInfo))
+                        } else {
+                            onEvent(AnimeDetailEvent.InsertAnimeInfo(state.animeDetailInfo.animeInfo))
+                        }
                     }
-                }
+                )
             },
             isShowTopBar = false,
             onCloseClick = {
@@ -239,36 +217,12 @@ fun AnimeDetailScreen(
                         AnimeOverViewScreen(
                             animeDetailState = state.animeDetailInfo,
                             animeThemeState = state.animeThemes,
-                            onTagClick = { tag ->
-                                onEvent(
-                                    AnimeDetailEvent.OnTagClick(tag)
-                                )
-                            },
-                            onAnimeClick = { id, idMal ->
-                                onEvent(
-                                    AnimeDetailEvent.OnAnimeClick(id = id, idMal = idMal)
-                                )
-                            },
-                            onStudioClick = { id ->
-                                onEvent(
-                                    AnimeDetailEvent.OnStudioClick(id)
-                                )
-                            },
-                            onSeasonYearClick = { year, season ->
-                                onEvent(
-                                    AnimeDetailEvent.OnSeasonYearClick(year = year, season = season)
-                                )
-                            },
-                            onGenreClick = { genre ->
-                                onEvent(
-                                    AnimeDetailEvent.OnGenreClick(genre = genre)
-                                )
-                            }
+                            onEvent = { onEvent(it) },
                         )
                     }
 
                     1 -> {
-                        AnimeCharaScreen(state = state.animeDetailInfo) { id ->
+                        AnimeCharaScreen(state.animeDetailInfo) { id ->
                             onEvent(
                                 AnimeDetailEvent.OnCharaClick(id)
                             )

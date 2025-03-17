@@ -23,11 +23,11 @@ interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
 
     fun getAnimeFilteredList(filter: SortFilter): Flow<PagingData<AnimeInfo>>
 
-    fun getAnimeDetailInfo(animeId: Int): Flow<Resource<AnimeDetailInfo>>
+    suspend fun getAnimeDetailInfo(animeId: Int): Result<AnimeDetailInfo, DataError.RemoteError>
 
     fun getAnimeDetailInfoRecommendList(animeId: Int): Flow<PagingData<AnimeInfo>>
 
-    fun getAnimeDetailTheme(animeId: Int): Flow<Resource<AnimeThemeInfo>>
+    suspend fun getAnimeDetailTheme(animeId: Int): Result<AnimeThemeInfo, DataError.RemoteError>
 
     suspend fun getRecentGenreTagList()
 

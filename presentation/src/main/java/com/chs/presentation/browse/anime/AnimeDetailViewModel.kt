@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
 import com.chs.domain.model.AnimeInfo
+import com.chs.domain.model.onError
+import com.chs.domain.model.onSuccess
 import com.chs.domain.usecase.*
 import com.chs.presentation.browse.BrowseScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,8 +56,10 @@ class AnimeDetailViewModel @Inject constructor(
                 deleteAnime(event.info)
             }
 
-            is AnimeDetailEvent.GetAnimeDetailInfo -> {
-                initInfo()
+            is AnimeDetailEvent.OnRefresh -> {
+                viewModelScope.launch {
+                    initInfo()
+                }
             }
 
             is AnimeDetailEvent.OnTabSelected -> {
@@ -70,35 +74,35 @@ class AnimeDetailViewModel @Inject constructor(
         }
     }
 
-    private fun initInfo() {
+    private suspend fun initInfo() {
         getAnimeDetailInfo(animeId)
         getAnimeTheme(animeMalId)
         getAnimeRecList(animeId)
         isSaveAnime(animeId)
     }
 
-    private fun getAnimeDetailInfo(id: Int) {
-        viewModelScope.launch {
-            getAnimeDetailUseCase(id).collect { result ->
+    private suspend fun getAnimeDetailInfo(id: Int) {
+        getAnimeDetailUseCase(id)
+            .onSuccess { success ->
                 _state.update {
                     it.copy(
-                        animeDetailInfo = result
+                        animeDetailInfo = success
                     )
                 }
             }
-        }
     }
 
-    private fun getAnimeTheme(idMal: Int) {
-        viewModelScope.launch {
-            getAnimeThemeUseCase(idMal).collect { result ->
+    private suspend fun getAnimeTheme(idMal: Int) {
+        getAnimeThemeUseCase(idMal)
+            .onSuccess { success ->
                 _state.update {
                     it.copy(
-                        animeThemes = result
+                        animeThemes = success
                     )
                 }
+            }.onError { error ->
+                _state.update { it.copy(isError = error.message) }
             }
-        }
     }
 
     private fun getAnimeRecList(id: Int) {
