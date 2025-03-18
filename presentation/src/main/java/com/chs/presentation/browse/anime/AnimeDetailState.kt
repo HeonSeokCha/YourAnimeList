@@ -14,7 +14,6 @@ data class AnimeDetailState(
     val animeRecList: Flow<PagingData<AnimeInfo>>? = null,
     val selectTabIdx: Int = 0,
     val isSave: Boolean = false,
-    val isRefresh: Boolean = false,
     val isError: String? = null
 )
 

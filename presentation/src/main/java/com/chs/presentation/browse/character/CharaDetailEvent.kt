@@ -3,8 +3,6 @@ package com.chs.presentation.browse.character
 import com.chs.domain.model.CharacterInfo
 
 sealed interface CharaDetailEvent {
-    data object GetCharaDetailInfo : CharaDetailEvent
-
     data class OnAnimeClick(
         val id: Int,
         val idMal: Int

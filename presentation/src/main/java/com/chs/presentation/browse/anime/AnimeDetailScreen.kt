@@ -134,108 +134,96 @@ fun AnimeDetailScreen(
             AnimeDetailEvent.OnTabSelected(pagerState.currentPage)
         )
     }
-
-    ItemPullToRefreshBox(
-        isRefreshing = state.isRefresh,
-        onRefresh = {
-            coroutineScope.launch {
-                pagerState.scrollToPage(0)
-            }
-
-            onEvent(AnimeDetailEvent.OnRefresh)
-        }
-    ) {
-        CollapsingToolbarScaffold(
-            scrollState = scrollState,
-            header = {
-                AnimeDetailHeadBanner(
-                    animeDetailInfo = state.animeDetailInfo,
-                    isAnimeSave = state.isSave,
-                    trailerClick = { trailerId ->
-                        if (trailerId != null) {
-                            onEvent(
-                                AnimeDetailEvent.OnTrailerClick(trailerId)
-                            )
-                        }
-                    }, saveClick = {
-                        if (state.animeDetailInfo == null) return@AnimeDetailHeadBanner
-
-                        if (state.isSave) {
-                            onEvent(AnimeDetailEvent.DeleteAnimeInfo(state.animeDetailInfo.animeInfo))
-                        } else {
-                            onEvent(AnimeDetailEvent.InsertAnimeInfo(state.animeDetailInfo.animeInfo))
-                        }
-                    }
-                )
-            },
-            isShowTopBar = false,
-            onCloseClick = {
-                onEvent(AnimeDetailEvent.OnCloseClick)
-            },
-            stickyHeader = {
-                TabRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    selectedTabIndex = state.selectTabIdx,
-                    indicator = { tabPositions ->
-                        SecondaryIndicator(
-                            modifier = Modifier
-                                .tabIndicatorOffset(tabPositions[state.selectTabIdx]),
-                            color = Pink80
+    CollapsingToolbarScaffold(
+        scrollState = scrollState,
+        header = {
+            AnimeDetailHeadBanner(
+                animeDetailInfo = state.animeDetailInfo,
+                isAnimeSave = state.isSave,
+                trailerClick = { trailerId ->
+                    if (trailerId != null) {
+                        onEvent(
+                            AnimeDetailEvent.OnTrailerClick(trailerId)
                         )
                     }
-                ) {
-                    UiConst.ANIME_DETAIL_TAB_LIST.forEachIndexed { index, title ->
-                        Tab(
-                            text = {
-                                Text(
-                                    text = title,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    fontSize = 12.sp,
-                                )
-                            },
-                            selected = state.selectTabIdx == index,
-                            onClick = {
-                                coroutineScope.launch {
-                                    pagerState.animateScrollToPage(index)
-                                }
-                            },
-                            selectedContentColor = Pink80,
-                            unselectedContentColor = Gray
+                }, saveClick = {
+                    if (state.animeDetailInfo == null) return@AnimeDetailHeadBanner
+
+                    if (state.isSave) {
+                        onEvent(AnimeDetailEvent.DeleteAnimeInfo(state.animeDetailInfo.animeInfo))
+                    } else {
+                        onEvent(AnimeDetailEvent.InsertAnimeInfo(state.animeDetailInfo.animeInfo))
+                    }
+                }
+            )
+        },
+        isShowTopBar = false,
+        onCloseClick = {
+            onEvent(AnimeDetailEvent.OnCloseClick)
+        },
+        stickyHeader = {
+            TabRow(
+                modifier = Modifier.fillMaxWidth(),
+                selectedTabIndex = state.selectTabIdx,
+                indicator = { tabPositions ->
+                    SecondaryIndicator(
+                        modifier = Modifier
+                            .tabIndicatorOffset(tabPositions[state.selectTabIdx]),
+                        color = Pink80
+                    )
+                }
+            ) {
+                UiConst.ANIME_DETAIL_TAB_LIST.forEachIndexed { index, title ->
+                    Tab(
+                        text = {
+                            Text(
+                                text = title,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                fontSize = 12.sp,
+                            )
+                        },
+                        selected = state.selectTabIdx == index,
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        },
+                        selectedContentColor = Pink80,
+                        unselectedContentColor = Gray
+                    )
+                }
+            }
+        }
+    ) {
+
+        HorizontalPager(
+            state = pagerState,
+            userScrollEnabled = false
+        ) { page ->
+            when (page) {
+                0 -> {
+                    AnimeOverViewScreen(
+                        animeDetailState = state.animeDetailInfo,
+                        animeThemeState = state.animeThemes,
+                        onEvent = { onEvent(it) },
+                    )
+                }
+
+                1 -> {
+                    AnimeCharaScreen(state.animeDetailInfo) { id ->
+                        onEvent(
+                            AnimeDetailEvent.OnCharaClick(id)
                         )
                     }
                 }
-            }
-        ) {
 
-            HorizontalPager(
-                state = pagerState,
-                userScrollEnabled = false
-            ) { page ->
-                when (page) {
-                    0 -> {
-                        AnimeOverViewScreen(
-                            animeDetailState = state.animeDetailInfo,
-                            animeThemeState = state.animeThemes,
-                            onEvent = { onEvent(it) },
-                        )
-                    }
-
-                    1 -> {
-                        AnimeCharaScreen(state.animeDetailInfo) { id ->
+                2 -> {
+                    if (state.animeRecList != null) {
+                        AnimeRecScreen(animeRecList = state.animeRecList) { id, idMal ->
                             onEvent(
-                                AnimeDetailEvent.OnCharaClick(id)
+                                AnimeDetailEvent.OnAnimeClick(id = id, idMal = idMal)
                             )
-                        }
-                    }
-
-                    2 -> {
-                        if (state.animeRecList != null) {
-                            AnimeRecScreen(animeRecList = state.animeRecList) { id, idMal ->
-                                onEvent(
-                                    AnimeDetailEvent.OnAnimeClick(id = id, idMal = idMal)
-                                )
-                            }
                         }
                     }
                 }

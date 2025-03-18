@@ -56,12 +56,6 @@ class AnimeDetailViewModel @Inject constructor(
                 deleteAnime(event.info)
             }
 
-            is AnimeDetailEvent.OnRefresh -> {
-                viewModelScope.launch {
-                    initInfo()
-                }
-            }
-
             is AnimeDetailEvent.OnTabSelected -> {
                 _state.update {
                     it.copy(

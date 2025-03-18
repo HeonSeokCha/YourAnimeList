@@ -1,13 +1,12 @@
 package com.chs.domain.repository
 
 import androidx.paging.PagingData
-import com.chs.common.Resource
 import com.chs.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface CharacterRepository : BaseMediaRepository<CharacterInfo> {
 
-    fun getCharacterDetailInfo(characterId: Int): Flow<Resource<CharacterDetailInfo>>
+    suspend fun getCharacterDetailInfo(characterId: Int): Result<CharacterDetailInfo, DataError.RemoteError>
 
     fun getCharacterDetailAnimeList(
         characterId: Int,

@@ -114,194 +114,127 @@ fun CharacterDetailScreen(
     val pagingItem = state.animeList?.collectAsLazyPagingItems()
     val lazyVerticalStaggeredState = rememberLazyStaggeredGridState()
     val scrollState = rememberScrollState()
-    var isRefreshing by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     var descDialogShow by remember { mutableStateOf(false) }
     var spoilerDesc by remember { mutableStateOf("") }
 
-    ItemPullToRefreshBox(
-        isRefreshing = isRefreshing,
-        onRefresh = {
-            isRefreshing = true
-            coroutineScope.launch {
-                scrollState.scrollTo(0)
-                onEvent(CharaDetailEvent.GetCharaDetailInfo)
-                delay(500L)
-                isRefreshing = false
+    if (pagingItem != null) {
+        when (pagingItem.loadState.refresh) {
+            is LoadState.Loading -> {
+            }
+
+            is LoadState.Error -> {
+            }
+
+            else -> {
             }
         }
-    ) {
-        CollapsingToolbarScaffold(
-            scrollState = scrollState,
-            header = {
-                when (state.characterDetailInfo) {
-                    is Resource.Loading -> {
-                        CharacterBanner(characterInfo = null, isSave = false) { }
-                    }
 
-                    is Resource.Success -> {
-                        val characterDetailInfo = state.characterDetailInfo.data
-                        CharacterBanner(
-                            characterInfo = characterDetailInfo,
-                            isSave = state.isSave,
-                        ) {
-                            if (characterDetailInfo != null) {
-                                if (state.isSave) {
-                                    onEvent(CharaDetailEvent.DeleteCharaInfo(characterDetailInfo.characterInfo))
-                                } else {
-                                    onEvent(CharaDetailEvent.InsertCharaInfo(characterDetailInfo.characterInfo))
-                                }
-                            }
-                        }
-                    }
+        when (pagingItem.loadState.append) {
+            is LoadState.Loading -> {}
 
-                    is Resource.Error -> {}
-                }
-            },
-            isShowTopBar = true,
-            onCloseClick = {
-                onEvent(CharaDetailEvent.OnCloseClick)
-            }
-        ) {
-            LazyVerticalStaggeredGrid(
-                modifier = Modifier
-                    .fillMaxSize(),
-                state = lazyVerticalStaggeredState,
-                columns = StaggeredGridCells.Fixed(3),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalItemSpacing = 4.dp,
-                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
+            is LoadState.Error -> {}
+
+            else -> Unit
+        }
+    }
+
+    CollapsingToolbarScaffold(
+        scrollState = scrollState,
+        header = {
+            val characterDetailInfo = state.characterDetailInfo
+            CharacterBanner(
+                characterInfo = characterDetailInfo,
+                isSave = state.isSave,
             ) {
-                when (state.characterDetailInfo) {
-                    is Resource.Loading -> {
-                        item(span = StaggeredGridItemSpan.FullLine) {
-                            Column(
-                                modifier = Modifier
-                                    .padding(
-                                        start = 8.dp,
-                                        end = 8.dp
-                                    )
-                            ) {
-                                CharacterProfile(characterDetailInfo = null)
-
-                                CharacterDescription(description = null) { }
-                            }
-                        }
+                if (characterDetailInfo != null) {
+                    if (state.isSave) {
+                        onEvent(CharaDetailEvent.DeleteCharaInfo(characterDetailInfo.characterInfo))
+                    } else {
+                        onEvent(CharaDetailEvent.InsertCharaInfo(characterDetailInfo.characterInfo))
                     }
+                }
+            }
+        },
+        isShowTopBar = true,
+        onCloseClick = {
+            onEvent(CharaDetailEvent.OnCloseClick)
+        }
+    ) {
+        LazyVerticalStaggeredGrid(
+            modifier = Modifier
+                .fillMaxSize(),
+            state = lazyVerticalStaggeredState,
+            columns = StaggeredGridCells.Fixed(3),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalItemSpacing = 4.dp,
+            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
+        ) {
 
-                    is Resource.Success -> {
-                        val characterDetailInfo = state.characterDetailInfo.data
-                        item(span = StaggeredGridItemSpan.FullLine) {
-                            Column(
+            val characterDetailInfo = state.characterDetailInfo
+            item(span = StaggeredGridItemSpan.FullLine) {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                ) {
+                    if (characterDetailInfo != null) {
+                        CharacterProfile(characterDetailInfo = characterDetailInfo)
+
+                        CharacterDescription(
+                            description = characterDetailInfo.spoilerDesc,
+                        ) {
+                            spoilerDesc = it
+                            descDialogShow = true
+                        }
+
+                        if (!characterDetailInfo.voiceActorInfo.isNullOrEmpty()) {
+                            LazyRow(
                                 modifier = Modifier
-                                    .padding(
-                                        start = 8.dp,
-                                        end = 8.dp
-                                    )
+                                    .fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(16.dp)
                             ) {
-                                if (characterDetailInfo != null) {
-                                    CharacterProfile(characterDetailInfo = characterDetailInfo)
-
-                                    CharacterDescription(
-                                        description = characterDetailInfo.spoilerDesc,
-                                    ) {
-                                        spoilerDesc = it
-                                        descDialogShow = true
-                                    }
-
-                                    if (!characterDetailInfo.voiceActorInfo.isNullOrEmpty()) {
-                                        LazyRow(
-                                            modifier = Modifier
-                                                .fillMaxWidth(),
-                                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                                        ) {
-                                            items(characterDetailInfo.voiceActorInfo!!) { actorInfo ->
-                                                if (actorInfo != null) {
-                                                    CharacterVoiceActorInfo(actorInfo) { id ->
-                                                        onEvent(
-                                                            CharaDetailEvent.OnVoiceActorClick(id)
-                                                        )
-                                                    }
-                                                }
-                                            }
+                                items(characterDetailInfo.voiceActorInfo!!) { actorInfo ->
+                                    if (actorInfo != null) {
+                                        CharacterVoiceActorInfo(actorInfo) { id ->
+                                            onEvent(
+                                                CharaDetailEvent.OnVoiceActorClick(id)
+                                            )
                                         }
-                                        Spacer(modifier = Modifier.height(16.dp))
                                     }
                                 }
                             }
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        item {
-                            Text(
-                                text = "Something Wrong for Loading List."
-                            )
+                            Spacer(modifier = Modifier.height(16.dp))
                         }
                     }
                 }
+            }
 
-                if (pagingItem != null) {
-                    items(
-                        count = pagingItem.itemCount,
-                        key = pagingItem.itemKey { it.id }
-                    ) {
-                        val anime = pagingItem[it]
-                        if (anime != null) {
-                            ItemAnimeSmall(
-                                item = anime,
-                                onClick = {
-                                    onEvent(
-                                        CharaDetailEvent.OnAnimeClick(
-                                            id = anime.id,
-                                            idMal = anime.idMal
-                                        )
+            if (state.isError != null) {
+                item {
+                    Text(
+                        text = "Something Wrong for Loading List."
+                    )
+                }
+            }
+
+            if (pagingItem != null) {
+                items(
+                    count = pagingItem.itemCount,
+                    key = pagingItem.itemKey { it.id }
+                ) {
+                    val anime = pagingItem[it]
+                    if (anime != null) {
+                        ItemAnimeSmall(
+                            item = anime,
+                            onClick = {
+                                onEvent(
+                                    CharaDetailEvent.OnAnimeClick(
+                                        id = anime.id,
+                                        idMal = anime.idMal
                                     )
-                                }
-                            )
-                        }
-                    }
-
-                    when (pagingItem.loadState.refresh) {
-                        is LoadState.Loading -> {
-                            items(10) {
-                                ItemAnimeSmall(item = null)
-                            }
-                        }
-
-                        is LoadState.Error -> {
-                            item {
-                                Text(
-                                    text = "Something Wrong for Loading List."
                                 )
                             }
-                        }
-
-                        else -> {
-                            if (pagingItem.itemCount == 0) {
-                                item {
-                                    ItemNoResultImage()
-                                }
-                            }
-                        }
-                    }
-
-                    when (pagingItem.loadState.append) {
-                        is LoadState.Loading -> {
-                            items(10) {
-                                ItemAnimeSmall(item = null)
-                            }
-                        }
-
-                        is LoadState.Error -> {
-                            item {
-                                Text(
-                                    text = "Something Wrong for Loading List."
-                                )
-                            }
-                        }
-
-                        else -> Unit
+                        )
                     }
                 }
             }

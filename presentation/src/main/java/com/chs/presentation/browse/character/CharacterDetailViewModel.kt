@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
 import com.chs.domain.model.CharacterInfo
+import com.chs.domain.model.onError
+import com.chs.domain.model.onSuccess
 import com.chs.presentation.UiConst
 import com.chs.domain.usecase.DeleteCharaInfoUseCase
 import com.chs.domain.usecase.GetCharaDetailAnimeListUseCase
@@ -38,6 +40,8 @@ class CharacterDetailViewModel @Inject constructor(
     val state = _state
         .onStart {
             getCharacterDetail(charaId)
+            getCharacterDetailAnimeList(charaId)
+            isSaveCharacter(charaId)
         }
         .stateIn(
             viewModelScope,
@@ -46,10 +50,6 @@ class CharacterDetailViewModel @Inject constructor(
         )
 
     private val charaId: Int = savedStateHandle.toRoute<BrowseScreen.CharacterDetail>().id
-
-    init {
-        changeEvent(CharaDetailEvent.GetCharaDetailInfo)
-    }
 
     fun changeEvent(event: CharaDetailEvent) {
         when (event) {
@@ -62,37 +62,39 @@ class CharacterDetailViewModel @Inject constructor(
                 deleteCharacter(event.info)
             }
 
-            is CharaDetailEvent.GetCharaDetailInfo -> {
-                getCharacterDetail(charaId)
-                getCharacterDetailAnimeList(charaId)
-                isSaveCharacter(charaId)
-            }
-
             else -> Unit
         }
     }
 
     private fun getCharacterDetail(charaId: Int) {
         viewModelScope.launch {
-            getCharaDetailUseCase(charaId).collect { result ->
-                _state.update {
-                    it.copy(
-                        characterDetailInfo = result
-                    )
+            getCharaDetailUseCase(charaId)
+                .onSuccess { success ->
+                    _state.update {
+                        it.copy(
+                            isRefresh = false,
+                            characterDetailInfo = success
+                        )
+                    }
                 }
-            }
+                .onError { error ->
+                    _state.update {
+                        it.copy(
+                            isRefresh = false,
+                            isError = error.message
+                        )
+                    }
+                }
         }
     }
 
     private fun getCharacterDetailAnimeList(charaId: Int) {
         _state.update {
-
             it.copy(
                 animeList = getCharaAnimeListUseCase(
-                    charaId,
-                    UiConst.SortType.POPULARITY.rawValue
-                )
-                    .cachedIn(viewModelScope)
+                    charaId = charaId,
+                    sort = UiConst.SortType.POPULARITY.rawValue
+                ).cachedIn(viewModelScope)
             )
         }
     }

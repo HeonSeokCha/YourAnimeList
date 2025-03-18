@@ -7,7 +7,6 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
 import com.chs.data.CharacterDetailQuery
 import com.chs.common.Constants
-import com.chs.common.Resource
 import com.chs.data.mapper.toCharacterDetailInfo
 import com.chs.data.mapper.toCharacterEntity
 import com.chs.data.mapper.toCharacterInfo
@@ -18,8 +17,9 @@ import com.chs.domain.model.CharacterDetailInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.domain.repository.CharacterRepository
 import com.chs.data.type.MediaSort
+import com.chs.domain.model.DataError
+import com.chs.domain.model.Result
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -28,26 +28,22 @@ class CharacterRepositoryImpl @Inject constructor(
     private val dao: CharaListDao
 ) : CharacterRepository {
 
-    override fun getCharacterDetailInfo(characterId: Int): Flow<Resource<CharacterDetailInfo>> {
-        return flow {
-            emit(Resource.Loading())
-            try {
-                val response = apolloClient
-                    .query(CharacterDetailQuery(Optional.present(characterId)))
-                    .execute()
+    override suspend fun getCharacterDetailInfo(characterId: Int): Result<CharacterDetailInfo, DataError.RemoteError> {
+        return try {
+            val response = apolloClient
+                .query(CharacterDetailQuery(Optional.present(characterId)))
+                .execute()
 
-                if (response.data == null) {
-                    return@flow if (response.exception == null) {
-                        emit(Resource.Error(response.errors!!.first().message))
-                    } else {
-                        emit(Resource.Error(response.exception!!.message))
-                    }
+            if (response.data == null) {
+                return if (response.exception == null) {
+                    Result.Error(DataError.RemoteError(response.errors!!.first().message))
+                } else {
+                    Result.Error(DataError.RemoteError(response.exception!!.message))
                 }
-
-                emit(Resource.Success(response.data?.character?.toCharacterDetailInfo()!!))
-            } catch (e: Exception) {
-                emit(Resource.Error(e.message.toString()))
             }
+            Result.Success(response.data?.character?.toCharacterDetailInfo()!!)
+        } catch (e: Exception) {
+            Result.Error(DataError.RemoteError(e.message))
         }
     }
 
