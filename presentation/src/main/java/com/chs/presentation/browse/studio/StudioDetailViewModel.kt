@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
+import com.chs.domain.model.onError
+import com.chs.domain.model.onSuccess
 import com.chs.domain.usecase.GetStudioAnimeListUseCase
 import com.chs.domain.usecase.GetStudioDetailUseCase
 import com.chs.presentation.browse.BrowseScreen
@@ -40,19 +42,29 @@ class StudioDetailViewModel @Inject constructor(
 
     private fun getStudioDetailInfo() {
         viewModelScope.launch {
-            getStudioDetailUseCase(studioId).collect { studioInfo ->
-                _state.update {
-                    it.copy(
-                        studioDetailInfo = studioInfo
-                    )
+            getStudioDetailUseCase(studioId)
+                .onSuccess { success ->
+                    _state.update {
+                        it.copy(
+                            studioDetailInfo = success
+                        )
+                    }
+
+                }.onError { error ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            isError = error.message
+                        )
+                    }
                 }
-            }
         }
     }
 
     private fun getStudioAnimeList() {
         _state.update {
             it.copy(
+                isLoading = false,
                 studioAnimeList = getStudioAnimeListUseCase(
                     studioId = studioId,
                     studioSort = it.sortOption.second
@@ -66,14 +78,20 @@ class StudioDetailViewModel @Inject constructor(
             is StudioDetailEvent.ChangeSortOption -> {
                 _state.update {
                     it.copy(
+                        isLoading = true,
                         sortOption = event.value
                     )
                 }
+                getStudioAnimeList()
             }
 
-            is StudioDetailEvent.GetStudioDetailInfo -> {
-                getStudioDetailInfo()
-                getStudioAnimeList()
+            StudioDetailEvent.OnError -> {
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        isError = "Something loading to Error..."
+                    )
+                }
             }
 
             else -> return

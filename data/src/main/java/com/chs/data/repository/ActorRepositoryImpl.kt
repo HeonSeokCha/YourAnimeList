@@ -14,18 +14,17 @@ import com.chs.data.type.MediaSort
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.domain.model.DataError
-import com.chs.domain.model.Result
+import com.chs.domain.model.DataResult
 import com.chs.domain.model.VoiceActorDetailInfo
 import com.chs.domain.repository.ActorRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class ActorRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
 ) : ActorRepository {
 
-    override suspend fun getActorDetailInfo(actorId: Int): Result<VoiceActorDetailInfo, DataError.RemoteError> {
+    override suspend fun getActorDetailInfo(actorId: Int): DataResult<VoiceActorDetailInfo, DataError.RemoteError> {
         return try {
             val response = apolloClient
                 .query(ActorDetailQuery(Optional.present(actorId)))
@@ -33,15 +32,15 @@ class ActorRepositoryImpl @Inject constructor(
 
             if (response.data == null) {
                 return if (response.exception == null) {
-                    Result.Error(DataError.RemoteError(response.errors!!.first().message))
+                    DataResult.Error(DataError.RemoteError(response.errors!!.first().message))
                 } else {
-                    Result.Error(DataError.RemoteError(response.exception!!.message))
+                    DataResult.Error(DataError.RemoteError(response.exception!!.message))
                 }
             }
 
-            Result.Success(response.data.toVoiceActorDetailInfo())
+            DataResult.Success(response.data.toVoiceActorDetailInfo())
         } catch (e: Exception) {
-            Result.Error(DataError.RemoteError(e.message))
+            DataResult.Error(DataError.RemoteError(e.message))
         }
     }
 

@@ -2,7 +2,6 @@ package com.chs.presentation.browse.studio
 
 sealed interface StudioDetailEvent {
     data class ChangeSortOption(val value: Pair<String, String>) : StudioDetailEvent
-    data object GetStudioDetailInfo : StudioDetailEvent
 
     data class AnimeClick(
         val id: Int,
@@ -10,4 +9,6 @@ sealed interface StudioDetailEvent {
     ) : StudioDetailEvent
 
     data object OnCloseClick : StudioDetailEvent
+
+    data object OnError : StudioDetailEvent
 }

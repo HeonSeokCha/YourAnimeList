@@ -6,7 +6,6 @@ import androidx.paging.PagingData
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
 import com.chs.common.Constants
-import com.chs.common.Resource
 import com.chs.data.AnimeDetailInfoQuery
 import com.chs.data.GenreTagQuery
 import com.chs.data.HomeAnimeListQuery
@@ -28,13 +27,12 @@ import com.chs.data.type.MediaSeason
 import com.chs.data.type.MediaSort
 import com.chs.data.type.MediaStatus
 import com.chs.domain.model.DataError
-import com.chs.domain.model.Result
+import com.chs.domain.model.DataResult
 import com.chs.domain.model.SortFilter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -52,7 +50,7 @@ class AnimeRepositoryImpl @Inject constructor(
         nextSeason: String,
         currentYear: Int,
         variationYear: Int
-    ): Result<AnimeRecommendList, DataError.RemoteError> {
+    ): DataResult<AnimeRecommendList, DataError.RemoteError> {
         return try {
             val response = apolloClient
                 .query(
@@ -67,15 +65,15 @@ class AnimeRepositoryImpl @Inject constructor(
 
             if (response.data == null) {
                 return if (response.exception == null) {
-                    Result.Error(DataError.RemoteError(response.errors!!.first().message))
+                    DataResult.Error(DataError.RemoteError(response.errors!!.first().message))
                 } else {
-                    Result.Error(DataError.RemoteError(response.exception!!.message))
+                    DataResult.Error(DataError.RemoteError(response.exception!!.message))
                 }
             }
 
-            Result.Success(response.data.toAnimeRecommendList())
+            DataResult.Success(response.data.toAnimeRecommendList())
         } catch (e: Exception) {
-            Result.Error(DataError.RemoteError(e.message))
+            DataResult.Error(DataError.RemoteError(e.message))
         }
     }
 
@@ -100,7 +98,7 @@ class AnimeRepositoryImpl @Inject constructor(
         }.flow
     }
 
-    override suspend fun getAnimeDetailInfo(animeId: Int): Result<AnimeDetailInfo, DataError.RemoteError> {
+    override suspend fun getAnimeDetailInfo(animeId: Int): DataResult<AnimeDetailInfo, DataError.RemoteError> {
         return try {
             val response = apolloClient
                 .query(
@@ -110,15 +108,15 @@ class AnimeRepositoryImpl @Inject constructor(
 
             if (response.data == null) {
                 return if (response.exception == null) {
-                    Result.Error(DataError.RemoteError(response.errors!!.first().message))
+                    DataResult.Error(DataError.RemoteError(response.errors!!.first().message))
                 } else {
-                    Result.Error(DataError.RemoteError(response.exception!!.message))
+                    DataResult.Error(DataError.RemoteError(response.exception!!.message))
                 }
             }
 
-            Result.Success(response.data!!.toAnimeDetailInfo())
+            DataResult.Success(response.data!!.toAnimeDetailInfo())
         } catch (e: Exception) {
-            Result.Error(DataError.RemoteError(e.message))
+            DataResult.Error(DataError.RemoteError(e.message))
         }
     }
 
@@ -136,11 +134,11 @@ class AnimeRepositoryImpl @Inject constructor(
         }.flow
     }
 
-    override suspend fun getAnimeDetailTheme(animeId: Int): Result<AnimeThemeInfo, DataError.RemoteError> {
+    override suspend fun getAnimeDetailTheme(animeId: Int): DataResult<AnimeThemeInfo, DataError.RemoteError> {
         return try {
-            Result.Success(jikanService.getAnimeTheme(animeId).toAnimeThemeInfo())
+            DataResult.Success(jikanService.getAnimeTheme(animeId).toAnimeThemeInfo())
         } catch (e: Exception) {
-            Result.Error(DataError.RemoteError(e.message))
+            DataResult.Error(DataError.RemoteError(e.message))
         }
     }
 

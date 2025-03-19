@@ -8,12 +8,15 @@ import com.apollographql.apollo.api.Optional
 import com.chs.data.StudioQuery
 import com.chs.common.Constants
 import com.chs.common.Resource
+import com.chs.data.mapper.toCharacterDetailInfo
 import com.chs.data.mapper.toStudioDetailInfo
 import com.chs.data.paging.StudioAnimePagingSource
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.StudioDetailInfo
 import com.chs.domain.repository.StudioRepository
 import com.chs.data.type.MediaSort
+import com.chs.domain.model.DataError
+import com.chs.domain.model.DataResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -21,26 +24,21 @@ import javax.inject.Inject
 class StudioRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient
 ) : StudioRepository {
-    override fun getStudioDetailInfo(studioId: Int): Flow<Resource<StudioDetailInfo>> {
-        return flow {
-            emit(Resource.Loading())
-            try {
-                val response = apolloClient
-                    .query(StudioQuery(id = Optional.present(studioId)))
-                    .execute()
-
-                if (response.data == null) {
-                    return@flow if (response.exception == null) {
-                        emit(Resource.Error(response.errors!!.first().message))
-                    } else {
-                        emit(Resource.Error(response.exception!!.message))
-                    }
+    override suspend fun getStudioDetailInfo(studioId: Int): DataResult<StudioDetailInfo, DataError.RemoteError> {
+        return try {
+            val response = apolloClient
+                .query(StudioQuery(id = Optional.present(studioId)))
+                .execute()
+            if (response.data == null) {
+                return if (response.exception == null) {
+                    DataResult.Error(DataError.RemoteError(response.errors!!.first().message))
+                } else {
+                    DataResult.Error(DataError.RemoteError(response.exception!!.message))
                 }
-
-                emit(Resource.Success(response.data?.toStudioDetailInfo()!!))
-            } catch (e: Exception) {
-                emit(Resource.Error(e.message.toString()))
             }
+            DataResult.Success(response.data?.toStudioDetailInfo()!!)
+        } catch (e: Exception) {
+            DataResult.Error(DataError.RemoteError(e.message))
         }
     }
 

@@ -18,7 +18,7 @@ import com.chs.domain.model.CharacterInfo
 import com.chs.domain.repository.CharacterRepository
 import com.chs.data.type.MediaSort
 import com.chs.domain.model.DataError
-import com.chs.domain.model.Result
+import com.chs.domain.model.DataResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -28,7 +28,7 @@ class CharacterRepositoryImpl @Inject constructor(
     private val dao: CharaListDao
 ) : CharacterRepository {
 
-    override suspend fun getCharacterDetailInfo(characterId: Int): Result<CharacterDetailInfo, DataError.RemoteError> {
+    override suspend fun getCharacterDetailInfo(characterId: Int): DataResult<CharacterDetailInfo, DataError.RemoteError> {
         return try {
             val response = apolloClient
                 .query(CharacterDetailQuery(Optional.present(characterId)))
@@ -36,14 +36,14 @@ class CharacterRepositoryImpl @Inject constructor(
 
             if (response.data == null) {
                 return if (response.exception == null) {
-                    Result.Error(DataError.RemoteError(response.errors!!.first().message))
+                    DataResult.Error(DataError.RemoteError(response.errors!!.first().message))
                 } else {
-                    Result.Error(DataError.RemoteError(response.exception!!.message))
+                    DataResult.Error(DataError.RemoteError(response.exception!!.message))
                 }
             }
-            Result.Success(response.data?.character?.toCharacterDetailInfo()!!)
+            DataResult.Success(response.data?.character?.toCharacterDetailInfo()!!)
         } catch (e: Exception) {
-            Result.Error(DataError.RemoteError(e.message))
+            DataResult.Error(DataError.RemoteError(e.message))
         }
     }
 

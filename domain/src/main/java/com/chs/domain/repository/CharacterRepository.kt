@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CharacterRepository : BaseMediaRepository<CharacterInfo> {
 
-    suspend fun getCharacterDetailInfo(characterId: Int): Result<CharacterDetailInfo, DataError.RemoteError>
+    suspend fun getCharacterDetailInfo(characterId: Int): DataResult<CharacterDetailInfo, DataError.RemoteError>
 
     fun getCharacterDetailAnimeList(
         characterId: Int,

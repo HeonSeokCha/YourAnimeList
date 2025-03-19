@@ -7,9 +7,8 @@ import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeRecommendList
 import com.chs.domain.model.AnimeThemeInfo
 import com.chs.domain.model.DataError
-import com.chs.domain.model.Result
+import com.chs.domain.model.DataResult
 import com.chs.domain.model.SortFilter
-import com.chs.domain.model.TagInfo
 import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
@@ -19,15 +18,15 @@ interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
         nextSeason: String,
         currentYear: Int,
         variationYear: Int
-    ): Result<AnimeRecommendList, DataError.RemoteError>
+    ): DataResult<AnimeRecommendList, DataError.RemoteError>
 
     fun getAnimeFilteredList(filter: SortFilter): Flow<PagingData<AnimeInfo>>
 
-    suspend fun getAnimeDetailInfo(animeId: Int): Result<AnimeDetailInfo, DataError.RemoteError>
+    suspend fun getAnimeDetailInfo(animeId: Int): DataResult<AnimeDetailInfo, DataError.RemoteError>
 
     fun getAnimeDetailInfoRecommendList(animeId: Int): Flow<PagingData<AnimeInfo>>
 
-    suspend fun getAnimeDetailTheme(animeId: Int): Result<AnimeThemeInfo, DataError.RemoteError>
+    suspend fun getAnimeDetailTheme(animeId: Int): DataResult<AnimeThemeInfo, DataError.RemoteError>
 
     suspend fun getRecentGenreTagList()
 

@@ -1,6 +1,7 @@
 package com.chs.presentation.browse.studio
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,22 +28,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.chs.common.Resource
 import com.chs.presentation.UiConst
 import com.chs.domain.model.StudioDetailInfo
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemExpandSingleBox
 import com.chs.presentation.common.ItemNoResultImage
-import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.toCommaFormat
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -81,132 +80,103 @@ fun StudioDetailScreen(
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val pagingItem = state.studioAnimeList?.collectAsLazyPagingItems()
-    var isRefreshing by remember { mutableStateOf(false) }
-
-    LaunchedEffect(state.sortOption) {
-        onEvent(StudioDetailEvent.GetStudioDetailInfo)
+    var isAppending by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    LaunchedEffect(state.isError) {
+        if (state.isError != null) {
+            Toast.makeText(context, "Error ${state.isError}", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 
-    ItemPullToRefreshBox(
-        isRefreshing = isRefreshing,
-        onRefresh = {
-            isRefreshing = true
-            coroutineScope.launch {
-                scrollState.scrollTo(0)
-                onEvent(StudioDetailEvent.GetStudioDetailInfo)
-                delay(500L)
-                isRefreshing = false
+    if (pagingItem != null) {
+        when (pagingItem.loadState.refresh) {
+
+            is LoadState.Error -> {
+                onEvent(StudioDetailEvent.OnError)
             }
+
+            else -> Unit
+        }
+
+        when (pagingItem.loadState.append) {
+            is LoadState.Loading -> {
+                isAppending = true
+            }
+
+            is LoadState.Error -> {
+                onEvent(StudioDetailEvent.OnError)
+                isAppending = false
+            }
+
+            else -> isAppending = false
+        }
+    }
+
+    CollapsingToolbarScaffold(
+        scrollState = scrollState,
+        header = {
+            StudioInfo(studioInfo = state.studioDetailInfo)
+        },
+        isShowTopBar = true,
+        onCloseClick = {
+            onEvent(StudioDetailEvent.OnCloseClick)
         }
     ) {
-        CollapsingToolbarScaffold(
-            scrollState = scrollState,
-            header = {
-                when (state.studioDetailInfo) {
-                    is Resource.Loading -> {
-                        StudioInfo(studioInfo = null)
-                    }
-
-                    is Resource.Success -> {
-                        StudioInfo(studioInfo = state.studioDetailInfo.data)
-                    }
-
-                    is Resource.Error -> {}
-                }
-            },
-            isShowTopBar = true,
-            onCloseClick = {
-                onEvent(StudioDetailEvent.OnCloseClick)
-            }
+        LazyVerticalStaggeredGrid(
+            state = lazyGridScrollState,
+            columns = StaggeredGridCells.Adaptive(100.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalItemSpacing = 4.dp,
+            contentPadding = PaddingValues(
+                horizontal = 4.dp,
+                vertical = 4.dp
+            )
         ) {
-            LazyVerticalStaggeredGrid(
-                state = lazyGridScrollState,
-                columns = StaggeredGridCells.Adaptive(100.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalItemSpacing = 4.dp,
-                contentPadding = PaddingValues(
-                    horizontal = 4.dp,
-                    vertical = 4.dp
-                )
-            ) {
-                item(span = StaggeredGridItemSpan.FullLine) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.End
-                    ) {
-                        ItemExpandSingleBox(
-                            title = "Sort",
-                            list = UiConst.sortTypeList,
-                            initValue = state.sortOption.first
-                        ) { selectValue ->
-                            coroutineScope.launch {
-                                lazyGridScrollState.scrollToItem(0, 0)
-                            }
-                            onEvent(StudioDetailEvent.ChangeSortOption(selectValue!!))
+            item(span = StaggeredGridItemSpan.FullLine) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.End
+                ) {
+                    ItemExpandSingleBox(
+                        title = "Sort",
+                        list = UiConst.sortTypeList,
+                        initValue = state.sortOption.first
+                    ) { selectValue ->
+                        coroutineScope.launch {
+                            lazyGridScrollState.scrollToItem(0, 0)
+                        }
+                        onEvent(StudioDetailEvent.ChangeSortOption(selectValue!!))
+                    }
+                }
+            }
+
+            if (state.isLoading) {
+                items(10) {
+                    ItemAnimeSmall(item = null) { }
+                }
+            } else {
+                items(
+                    count = pagingItem!!.itemCount,
+                    key = pagingItem.itemKey { it.id }
+                ) {
+                    val animeInfo = pagingItem[it]
+                    if (animeInfo != null) {
+                        ItemAnimeSmall(item = animeInfo) {
+                            onEvent(
+                                StudioDetailEvent.AnimeClick(
+                                    id = animeInfo.id,
+                                    idMal = animeInfo.idMal
+                                )
+                            )
                         }
                     }
                 }
 
-                if (pagingItem != null) {
-                    items(
-                        count = pagingItem.itemCount,
-                        key = pagingItem.itemKey { it.id }
-                    ) {
-                        val animeInfo = pagingItem[it]
-                        if (animeInfo != null) {
-                            ItemAnimeSmall(item = animeInfo) {
-                                onEvent(
-                                    StudioDetailEvent.AnimeClick(
-                                        id = animeInfo.id,
-                                        idMal = animeInfo.idMal
-                                    )
-                                )
-                            }
-                        }
-                    }
-
-                    when (pagingItem.loadState.refresh) {
-                        is LoadState.Loading -> {
-                            items(10) {
-                                ItemAnimeSmall(item = null)
-                            }
-                        }
-
-                        is LoadState.Error -> {
-                            item {
-                                Text(
-                                    text = "Something Wrong for Loading List."
-                                )
-                            }
-                        }
-
-                        else -> {
-                            if (pagingItem.itemCount == 0) {
-                                item {
-                                    ItemNoResultImage()
-                                }
-                            }
-                        }
-                    }
-
-
-                    when (pagingItem.loadState.append) {
-                        is LoadState.Loading -> {
-                            items(10) {
-                                ItemAnimeSmall(item = null)
-                            }
-                        }
-
-                        is LoadState.Error -> {
-                            item {
-                                Text(
-                                    text = "Something Wrong for Loading List."
-                                )
-                            }
-                        }
-
-                        else -> Unit
+                if (isAppending) {
+                    items(6) {
+                        ItemAnimeSmall(item = null) { }
                     }
                 }
             }
