@@ -14,10 +14,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,15 +23,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.chs.common.Resource
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
 import com.chs.presentation.common.ItemAnimeSmall
-import com.chs.presentation.common.ItemErrorImage
-import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.main.Screen
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreenRoot(
@@ -44,9 +35,26 @@ fun HomeScreenRoot(
     onSortScreenClick: (Screen.SortList) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val event by viewModel.event.collectAsStateWithLifecycle(HomeEvent.Idle)
+    val context = LocalContext.current
+
+    LaunchedEffect(event) {
+        when (event) {
+            is HomeEvent.ShowToast -> {
+                Toast.makeText(
+                    context,
+                    (event as HomeEvent.ShowToast).message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            else -> Unit
+        }
+    }
+
     HomeScreen(state = state) { event ->
         when (event) {
-            is HomeEvent.NavigateSort -> {
+            is HomeEvent.Navigate.Sort -> {
                 onSortScreenClick(
                     Screen.SortList(
                         year = event.year,
@@ -56,13 +64,12 @@ fun HomeScreenRoot(
                 )
             }
 
-            is HomeEvent.ClickAnime -> {
+            is HomeEvent.Navigate.Anime -> {
                 onAnimeClick(event.id, event.idMal)
             }
 
             else -> Unit
         }
-        viewModel.changeOption(event)
     }
 }
 
@@ -72,104 +79,87 @@ fun HomeScreen(
     event: (HomeEvent) -> Unit,
 ) {
     val pagerState = rememberPagerState { UiConst.BANNER_SIZE }
-    val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
 
-    LaunchedEffect(state.errorMessage) {
-        if (state.errorMessage.isNullOrEmpty()) return@LaunchedEffect
-        Toast.makeText(context, state.errorMessage, Toast.LENGTH_SHORT).show()
-    }
-
-    ItemPullToRefreshBox(
-        isRefreshing = state.isRefreshing,
-        onRefresh = {
-            coroutineScope.launch {
-                pagerState.scrollToPage(0)
-                event(HomeEvent.OnRefresh)
-            }
-        }
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (state.isLoading) {
-                item {
-                    ItemHomeBanner(banner = null) { _, _ -> }
-                }
+        if (state.isLoading) {
+            item {
+                ItemHomeBanner(banner = null) { _, _ -> }
+            }
 
-                items(6) { idx ->
-                    ItemRecommendCategory(
-                        title = state.animeCategoryList[idx],
-                        list = List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
-                        sortClick = { }, animeClick = { id, idMal -> }
-                    )
-                }
-            } else {
+            items(6) { idx ->
+                ItemRecommendCategory(
+                    title = state.animeCategoryList[idx],
+                    list = List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
+                    sortClick = { }, animeClick = { id, idMal -> }
+                )
+            }
+        } else {
 
-                val data = state.animeRecommendList
-                item {
-                    if (data?.bannerList != null) {
-                        HorizontalPager(
-                            state = pagerState,
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            key = { data.bannerList[it].animeInfo.id }
-                        ) { idx ->
-                            ItemHomeBanner(
-                                banner = data.bannerList[idx]
-                            ) { id, idMal ->
-                                event(HomeEvent.ClickAnime(id = id, idMal = idMal))
-                            }
+            val data = state.animeRecommendList
+            item {
+                if (data?.bannerList != null) {
+                    HorizontalPager(
+                        state = pagerState,
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        key = { data.bannerList[it].animeInfo.id }
+                    ) { idx ->
+                        ItemHomeBanner(
+                            banner = data.bannerList[idx]
+                        ) { id, idMal ->
+                            event(HomeEvent.Navigate.Anime(id = id, idMal = idMal))
                         }
+                    }
 
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            repeat(data.bannerList.size) { iteration ->
-                                val color =
-                                    if (pagerState.currentPage == iteration) Color.DarkGray
-                                    else Color.LightGray
-                                Box(
-                                    modifier = Modifier
-                                        .padding(2.dp)
-                                        .clip(CircleShape)
-                                        .background(color)
-                                        .size(10.dp)
-                                )
-                            }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        repeat(data.bannerList.size) { iteration ->
+                            val color =
+                                if (pagerState.currentPage == iteration) Color.DarkGray
+                                else Color.LightGray
+                            Box(
+                                modifier = Modifier
+                                    .padding(2.dp)
+                                    .clip(CircleShape)
+                                    .background(color)
+                                    .size(10.dp)
+                            )
                         }
                     }
                 }
+            }
 
-                items(
-                    data?.animeBasicList?.size ?: UiConst.MAX_BANNER_SIZE,
-                    key = { state.animeCategoryList[it].first }
-                ) { idx ->
-                    ItemRecommendCategory(
-                        title = state.animeCategoryList[idx],
-                        list = data?.animeBasicList?.get(idx)
-                            ?: List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
-                        sortClick = {
-                            event(
-                                HomeEvent.NavigateSort(
-                                    year = it.year,
-                                    season = it.season,
-                                    option = it.sortOption
-                                )
+            items(
+                data?.animeBasicList?.size ?: UiConst.MAX_BANNER_SIZE,
+                key = { state.animeCategoryList[it].first }
+            ) { idx ->
+                ItemRecommendCategory(
+                    title = state.animeCategoryList[idx],
+                    list = data?.animeBasicList?.get(idx)
+                        ?: List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
+                    sortClick = {
+                        event(
+                            HomeEvent.Navigate.Sort(
+                                year = it.year,
+                                season = it.season,
+                                option = it.sortOption
                             )
-                        }, animeClick = { id, idMal ->
-                            event(
-                                HomeEvent.ClickAnime(id = id, idMal = idMal)
-                            )
-                        }
-                    )
-                }
+                        )
+                    }, animeClick = { id, idMal ->
+                        event(
+                            HomeEvent.Navigate.Anime(id = id, idMal = idMal)
+                        )
+                    }
+                )
             }
         }
     }

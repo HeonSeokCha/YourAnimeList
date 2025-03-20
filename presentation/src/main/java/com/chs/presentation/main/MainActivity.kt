@@ -51,10 +51,7 @@ class MainActivity : ComponentActivity() {
                     MainNavHost(
                         navController = navController,
                         modifier = Modifier.padding(it),
-                        searchQuery = searchQuery,
-                        onBack = {
-                            searchQuery = ""
-                        },
+                        searchQuery = searchQuery
                     )
                 }
             }

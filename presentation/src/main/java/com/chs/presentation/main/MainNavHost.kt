@@ -1,6 +1,8 @@
 package com.chs.presentation.main
 
 import android.content.Intent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,15 +39,15 @@ fun MainNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     searchQuery: String,
-    onBack: () -> Unit,
 ) {
-
     val context = LocalContext.current
 
     NavHost(
         navController = navController,
         modifier = modifier,
-        startDestination = Screen.Home
+        startDestination = Screen.Home,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
     ) {
         composable<Screen.Home> {
             val viewModel: HomeViewModel = hiltViewModel()
@@ -72,8 +74,8 @@ fun MainNavHost(
 
         composable<Screen.AnimeList> {
             val viewModel: AnimeListViewModel = hiltViewModel()
-            val list by viewModel.state.collectAsStateWithLifecycle()
-            AnimeListScreen(list = list) { id, idMal ->
+            val state by viewModel.state.collectAsStateWithLifecycle()
+            AnimeListScreen(state) { id, idMal ->
                 context.startActivity(
                     Intent(
                         context,
@@ -89,8 +91,8 @@ fun MainNavHost(
 
         composable<Screen.CharaList> {
             val viewmodel: CharacterListViewModel = hiltViewModel()
-            val list by viewmodel.state.collectAsStateWithLifecycle()
-            CharaListScreen(list = list) { id ->
+            val state by viewmodel.state.collectAsStateWithLifecycle()
+            CharaListScreen(state) { id ->
                 context.startActivity(
                     Intent(
                         context,

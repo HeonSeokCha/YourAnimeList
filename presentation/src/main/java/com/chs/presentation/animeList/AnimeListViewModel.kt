@@ -19,19 +19,24 @@ class AnimeListViewModel @Inject constructor(
     private val getYourAnimeListUseCase: GetSavedAnimeListUseCase
 ) : ViewModel() {
 
-    private val _state: MutableStateFlow<List<AnimeInfo>> = MutableStateFlow(emptyList())
+    private val _state: MutableStateFlow<AnimeListState> = MutableStateFlow(AnimeListState())
     val state = _state
         .onStart { getAnimeList() }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            _state.value
+            AnimeListState()
         )
 
     private fun getAnimeList() {
         viewModelScope.launch {
-            getYourAnimeListUseCase().collectLatest { animeInfo ->
-                _state.update { animeInfo }
+            getYourAnimeListUseCase().collect { animeInfo ->
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        list = animeInfo
+                    )
+                }
             }
         }
     }

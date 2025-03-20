@@ -13,11 +13,10 @@ import com.chs.presentation.common.ItemNoResultImage
 
 @Composable
 fun CharaListScreen(
-    list: List<CharacterInfo>,
+    state: CharaListState,
     onActivityStart: (Int) -> Unit
 ) {
-
-    if (list.isEmpty()) {
+    if (!state.isLoading && state.list.isEmpty()) {
         ItemNoResultImage()
     } else {
         LazyColumn(
@@ -25,12 +24,18 @@ fun CharaListScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            items(
-                list,
-                key = { it.id }
-            ) { charaInfo ->
-                ItemCharaLarge(character = charaInfo) {
-                    onActivityStart(charaInfo.id)
+            if (state.isLoading) {
+                items(10) {
+                    ItemCharaLarge(null) { }
+                }
+            } else {
+                items(
+                    items = state.list,
+                    key = { it.id }
+                ) { charaInfo ->
+                    ItemCharaLarge(character = charaInfo) {
+                        onActivityStart(charaInfo.id)
+                    }
                 }
             }
         }

@@ -7,9 +7,11 @@ import com.chs.domain.model.onSuccess
 import com.chs.domain.usecase.GetAnimeRecListUseCase
 import com.chs.presentation.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -28,23 +30,13 @@ class HomeViewModel @Inject constructor(
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            _state.value
+            HomeState()
         )
 
-    fun changeOption(event: HomeEvent) {
-        when (event) {
-            HomeEvent.GetHomeData -> getHomeList()
-            HomeEvent.OnRefresh -> {
-                _state.update { it.copy(isRefreshing = true) }
-                getHomeList()
-            }
-
-            else -> Unit
-        }
-    }
+    private val _event: Channel<HomeEvent> = Channel()
+    val event = _event.receiveAsFlow()
 
     private fun getHomeList() {
-        _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             getHomeListUseCase(
                 currentSeason = Util.getCurrentSeason(),
@@ -55,18 +47,13 @@ class HomeViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         isLoading = false,
-                        isRefreshing = false,
                         animeRecommendList = data,
                     )
                 }
             }.onError { error ->
-                _state.update {
-                    it.copy(
-                        errorMessage = error.message,
-                        isLoading = false,
-                        isRefreshing = false
-                    )
-                }
+                _state.update { it.copy(isLoading = false) }
+
+                _event.send(HomeEvent.ShowToast(error.message.toString()))
             }
         }
     }

@@ -2,6 +2,7 @@ package com.chs.presentation.animeList
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -11,10 +12,10 @@ import com.chs.presentation.common.ItemNoResultImage
 
 @Composable
 fun AnimeListScreen(
-    list: List<AnimeInfo>,
+    state: AnimeListState,
     onStartActivity: (Int, Int) -> Unit
 ) {
-    if (list.isEmpty()) {
+    if (!state.isLoading && state.list.isEmpty()) {
         ItemNoResultImage()
     } else {
         LazyColumn(
@@ -25,15 +26,20 @@ fun AnimeListScreen(
                 vertical = 4.dp
             )
         ) {
-            items(
-                list.size,
-                key = { list[it].id }
-            ) { idx ->
-                ItemAnimeLarge(anime = list[idx]) {
-                    onStartActivity(list[idx].id, list[idx].idMal)
+            if (state.isLoading) {
+                items(10) {
+                    ItemAnimeLarge(null) {}
+                }
+            } else {
+                items(
+                    items = state.list,
+                    key = { it.id }
+                ) { animeInfo ->
+                    ItemAnimeLarge(anime = animeInfo) {
+                        onStartActivity(animeInfo.id, animeInfo.idMal)
+                    }
                 }
             }
         }
-
     }
 }
