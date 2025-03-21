@@ -118,23 +118,27 @@ fun MainNavHost(
             SearchScreenRoot(
                 viewModel = viewModel,
                 onAnimeClick = { id, idMal ->
-                    Intent(
-                        context,
-                        BrowseActivity::class.java
-                    ).apply {
-                        putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-                        putExtra(UiConst.TARGET_ID, id)
-                        putExtra(UiConst.TARGET_ID_MAL, idMal)
-                    }
+                    context.startActivity(
+                        Intent(
+                            context,
+                            BrowseActivity::class.java
+                        ).apply {
+                            putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
+                            putExtra(UiConst.TARGET_ID, id)
+                            putExtra(UiConst.TARGET_ID_MAL, idMal)
+                        }
+                    )
                 },
                 onCharaClick = { id ->
-                    Intent(
-                        context,
-                        BrowseActivity::class.java
-                    ).apply {
-                        putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
-                        putExtra(UiConst.TARGET_ID, id)
-                    }
+                    context.startActivity(
+                        Intent(
+                            context,
+                            BrowseActivity::class.java
+                        ).apply {
+                            putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
+                            putExtra(UiConst.TARGET_ID, id)
+                        }
+                    )
                 }
             )
         }

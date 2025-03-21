@@ -11,11 +11,14 @@ import com.chs.domain.model.onSuccess
 import com.chs.domain.usecase.*
 import com.chs.presentation.browse.BrowseScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -40,8 +43,11 @@ class AnimeDetailViewModel @Inject constructor(
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            _state.value
+            AnimeDetailState()
         )
+
+    private val _animeDetailEvent: Channel<AnimeDetailEvent> = Channel()
+    val animeDetailEvent = _animeDetailEvent.receiveAsFlow()
 
     private val animeId: Int = savedStateHandle.toRoute<BrowseScreen.AnimeDetail>().id
     private val animeMalId: Int = savedStateHandle.toRoute<BrowseScreen.AnimeDetail>().idMal
@@ -58,9 +64,7 @@ class AnimeDetailViewModel @Inject constructor(
 
             is AnimeDetailEvent.OnTabSelected -> {
                 _state.update {
-                    it.copy(
-                        selectTabIdx = event.idx
-                    )
+                    it.copy(selectTabIdx = event.idx)
                 }
             }
 
@@ -90,48 +94,38 @@ class AnimeDetailViewModel @Inject constructor(
         getAnimeThemeUseCase(idMal)
             .onSuccess { success ->
                 _state.update {
-                    it.copy(
-                        animeThemes = success
-                    )
+                    it.copy(animeThemes = success)
                 }
             }.onError { error ->
-                _state.update { it.copy(isError = error.message) }
+                _animeDetailEvent.send(AnimeDetailEvent.OnError)
             }
     }
 
     private fun getAnimeRecList(id: Int) {
         _state.update {
-            it.copy(
-                animeRecList = getAnimeRecListUseCase(id).cachedIn(viewModelScope)
-            )
+            it.copy(animeRecList = getAnimeRecListUseCase(id).cachedIn(viewModelScope))
         }
     }
 
     private fun isSaveAnime(animeId: Int) {
-        checkSaveAnimeUseCase(animeId).onEach { savedAnimeInfo ->
-            _state.update {
-                it.copy(
-                    isSave = savedAnimeInfo != null
-                )
-            }
-        }.launchIn(viewModelScope)
-    }
-
-    private fun insertAnime(anime: AnimeInfo?) {
-        if (anime != null) {
-            viewModelScope.launch {
-                insertAnimeUseCase(anime)
+        viewModelScope.launch {
+            checkSaveAnimeUseCase(animeId).collect { savedAnimeInfo ->
+                _state.update {
+                    it.copy(isSave = savedAnimeInfo != null)
+                }
             }
         }
     }
 
-    private fun deleteAnime(anime: AnimeInfo?) {
-        if (anime != null) {
-            if (state.value.isSave) {
-                viewModelScope.launch {
-                    deleteAnimeUseCase(anime)
-                }
-            }
+    private fun insertAnime(anime: AnimeInfo) {
+        viewModelScope.launch {
+            insertAnimeUseCase(anime)
+        }
+    }
+
+    private fun deleteAnime(anime: AnimeInfo) {
+        viewModelScope.launch {
+            deleteAnimeUseCase(anime)
         }
     }
 }

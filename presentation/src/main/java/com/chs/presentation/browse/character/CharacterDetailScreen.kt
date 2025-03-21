@@ -1,6 +1,7 @@
 package com.chs.presentation.browse.character
 
 import android.text.util.Linkify
+import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -32,6 +33,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -82,26 +84,39 @@ fun CharacterDetailScreenRoot(
     onCloseClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val charaEvent by viewModel.charaDetailEvent.collectAsStateWithLifecycle(CharaDetailEvent.Idle)
+    val context = LocalContext.current
+
+    LaunchedEffect(charaEvent) {
+        when (charaEvent) {
+            CharaDetailEvent.OnError -> {
+                Toast.makeText(context, "Something error in load Data..", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+            else -> Unit
+        }
+    }
+
     CharacterDetailScreen(
         state = state,
-        onEvent = { event ->
-            when (event) {
-                is CharaDetailEvent.OnAnimeClick -> {
-                    onAnimeClick(event.id, event.idMal)
+        onEvent = { sideEffect ->
+            when (sideEffect) {
+
+                is CharaDetailEvent.ClickButton.Anime -> {
+                    onAnimeClick(sideEffect.id, sideEffect.idMal)
                 }
 
-                is CharaDetailEvent.OnVoiceActorClick -> {
-                    onVoiceActorClick(event.id)
+                is CharaDetailEvent.ClickButton.VoiceActor -> {
+                    onVoiceActorClick(sideEffect.id)
                 }
 
-                CharaDetailEvent.OnCloseClick -> {
+                CharaDetailEvent.ClickButton.Close -> {
                     onCloseClick()
                 }
 
-                else -> Unit
+                else -> viewModel.changeEvent(sideEffect)
             }
-
-            viewModel.changeEvent(event)
         }
     )
 }
@@ -147,19 +162,17 @@ fun CharacterDetailScreen(
                 characterInfo = characterDetailInfo,
                 isSave = state.isSave,
             ) {
-                if (characterDetailInfo != null) {
-                    if (state.isSave) {
-                        onEvent(CharaDetailEvent.DeleteCharaInfo(characterDetailInfo.characterInfo))
-                    } else {
-                        onEvent(CharaDetailEvent.InsertCharaInfo(characterDetailInfo.characterInfo))
-                    }
+                if (characterDetailInfo == null) return@CharacterBanner
+                if (state.isSave == null) return@CharacterBanner
+                if (state.isSave) {
+                    onEvent(CharaDetailEvent.DeleteCharaInfo(characterDetailInfo.characterInfo))
+                } else {
+                    onEvent(CharaDetailEvent.InsertCharaInfo(characterDetailInfo.characterInfo))
                 }
             }
         },
         isShowTopBar = true,
-        onCloseClick = {
-            onEvent(CharaDetailEvent.OnCloseClick)
-        }
+        onCloseClick = { onEvent(CharaDetailEvent.ClickButton.Close) }
     ) {
         LazyVerticalStaggeredGrid(
             modifier = Modifier
@@ -197,7 +210,7 @@ fun CharacterDetailScreen(
                                     if (actorInfo != null) {
                                         CharacterVoiceActorInfo(actorInfo) { id ->
                                             onEvent(
-                                                CharaDetailEvent.OnVoiceActorClick(id)
+                                                CharaDetailEvent.ClickButton.VoiceActor(id)
                                             )
                                         }
                                     }
@@ -206,14 +219,6 @@ fun CharacterDetailScreen(
                             Spacer(modifier = Modifier.height(16.dp))
                         }
                     }
-                }
-            }
-
-            if (state.isError != null) {
-                item {
-                    Text(
-                        text = "Something Wrong for Loading List."
-                    )
                 }
             }
 
@@ -228,7 +233,7 @@ fun CharacterDetailScreen(
                             item = anime,
                             onClick = {
                                 onEvent(
-                                    CharaDetailEvent.OnAnimeClick(
+                                    CharaDetailEvent.ClickButton.Anime(
                                         id = anime.id,
                                         idMal = anime.idMal
                                     )
@@ -255,7 +260,7 @@ fun CharacterDetailScreen(
 @Composable
 private fun CharacterBanner(
     characterInfo: CharacterDetailInfo?,
-    isSave: Boolean,
+    isSave: Boolean?,
     onClick: () -> Unit
 ) {
     Column(

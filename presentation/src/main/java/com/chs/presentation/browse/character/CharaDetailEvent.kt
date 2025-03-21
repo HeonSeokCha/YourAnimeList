@@ -2,14 +2,21 @@ package com.chs.presentation.browse.character
 
 import com.chs.domain.model.CharacterInfo
 
-sealed interface CharaDetailEvent {
-    data class OnAnimeClick(
-        val id: Int,
-        val idMal: Int
-    ) : CharaDetailEvent
+sealed class CharaDetailEvent {
+    data object Idle : CharaDetailEvent()
 
-    data class OnVoiceActorClick(val id: Int) : CharaDetailEvent
-    data object OnCloseClick : CharaDetailEvent
-    data class InsertCharaInfo(val info: CharacterInfo) : CharaDetailEvent
-    data class DeleteCharaInfo(val info: CharacterInfo) : CharaDetailEvent
+    sealed class ClickButton {
+        data class Anime(
+            val id: Int,
+            val idMal: Int
+        ) : CharaDetailEvent()
+
+        data class VoiceActor(val id: Int) : CharaDetailEvent()
+        data object Close : CharaDetailEvent()
+    }
+
+    data class InsertCharaInfo(val info: CharacterInfo) : CharaDetailEvent()
+    data class DeleteCharaInfo(val info: CharacterInfo) : CharaDetailEvent()
+
+    data object OnError : CharaDetailEvent()
 }

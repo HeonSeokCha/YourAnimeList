@@ -52,20 +52,20 @@ fun HomeScreenRoot(
         }
     }
 
-    HomeScreen(state = state) { event ->
-        when (event) {
+    HomeScreen(state = state) { sideEffect ->
+        when (sideEffect) {
             is HomeEvent.Navigate.Sort -> {
                 onSortScreenClick(
                     Screen.SortList(
-                        year = event.year,
-                        season = event.season,
-                        sortOption = event.option
+                        year = sideEffect.year,
+                        season = sideEffect.season,
+                        sortOption = sideEffect.option
                     )
                 )
             }
 
             is HomeEvent.Navigate.Anime -> {
-                onAnimeClick(event.id, event.idMal)
+                onAnimeClick(sideEffect.id, sideEffect.idMal)
             }
 
             else -> Unit

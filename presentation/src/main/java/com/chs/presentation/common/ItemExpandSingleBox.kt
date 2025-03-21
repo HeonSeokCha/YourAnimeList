@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,14 +43,14 @@ fun ItemExpandSingleBox(
             readOnly = true,
             singleLine = true,
             label = { Text(text = title) },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = ExposedDropdownMenuDefaults.textFieldColors()
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) }
         )
 
         ExposedDropdownMenu(
             matchTextFieldWidth = true,
             expanded = expanded,
             onDismissRequest = { expanded = false },
+            containerColor = Color.White
         ) {
             list.forEach { option ->
                 DropdownMenuItem(

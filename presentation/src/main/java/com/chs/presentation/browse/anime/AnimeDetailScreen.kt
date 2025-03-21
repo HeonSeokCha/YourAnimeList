@@ -1,5 +1,7 @@
 package com.chs.presentation.browse.anime
 
+import android.widget.Toast
+import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +38,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -72,47 +75,58 @@ fun AnimeDetailScreenRoot(
     onCloseClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val animeDetailEvent by viewModel.animeDetailEvent.collectAsStateWithLifecycle(AnimeDetailEvent.Idle)
+    val context = LocalContext.current
+
+    LaunchedEffect(animeDetailEvent) {
+        when (animeDetailEvent) {
+            AnimeDetailEvent.OnError -> {
+                Toast.makeText(context, "Something error in load Data..", Toast.LENGTH_SHORT).show()
+            }
+
+            else -> Unit
+        }
+    }
 
     AnimeDetailScreen(state = state) { event ->
         when (event) {
-            AnimeDetailEvent.OnCloseClick -> {
+            AnimeDetailEvent.ClickButton.Close -> {
                 onCloseClick()
             }
 
-            is AnimeDetailEvent.OnAnimeClick -> {
+            is AnimeDetailEvent.ClickButton.Anime -> {
                 onAnimeClick(
                     event.id,
                     event.idMal
                 )
             }
 
-            is AnimeDetailEvent.OnCharaClick -> {
+            is AnimeDetailEvent.ClickButton.Chara -> {
                 onCharaClick(event.id)
             }
 
-            is AnimeDetailEvent.OnTrailerClick -> {
+            is AnimeDetailEvent.ClickButton.Trailer -> {
                 onTrailerClick(event.id)
             }
 
-            is AnimeDetailEvent.OnGenreClick -> {
+            is AnimeDetailEvent.ClickButton.Genre -> {
                 onGenreClick(event.genre)
             }
 
-            is AnimeDetailEvent.OnSeasonYearClick -> {
+            is AnimeDetailEvent.ClickButton.SeasonYear -> {
                 onSeasonYearClick(event.year, event.season)
             }
 
-            is AnimeDetailEvent.OnStudioClick -> {
+            is AnimeDetailEvent.ClickButton.Studio -> {
                 onStudioClick(event.id)
             }
 
-            is AnimeDetailEvent.OnTagClick -> {
+            is AnimeDetailEvent.ClickButton.Tag -> {
                 onTagClick(event.tag)
             }
 
-            else -> Unit
+            else -> viewModel.changeEvent(event)
         }
-        viewModel.changeEvent(event)
     }
 }
 
@@ -142,14 +156,12 @@ fun AnimeDetailScreen(
                 isAnimeSave = state.isSave,
                 trailerClick = { trailerId ->
                     if (trailerId != null) {
-                        onEvent(
-                            AnimeDetailEvent.OnTrailerClick(trailerId)
-                        )
+                        onEvent(AnimeDetailEvent.ClickButton.Trailer(trailerId))
                     }
                 }, saveClick = {
                     if (state.animeDetailInfo == null) return@AnimeDetailHeadBanner
 
-                    if (state.isSave) {
+                    if (state.isSave!!) {
                         onEvent(AnimeDetailEvent.DeleteAnimeInfo(state.animeDetailInfo.animeInfo))
                     } else {
                         onEvent(AnimeDetailEvent.InsertAnimeInfo(state.animeDetailInfo.animeInfo))
@@ -158,9 +170,7 @@ fun AnimeDetailScreen(
             )
         },
         isShowTopBar = false,
-        onCloseClick = {
-            onEvent(AnimeDetailEvent.OnCloseClick)
-        },
+        onCloseClick = { onEvent(AnimeDetailEvent.ClickButton.Close) },
         stickyHeader = {
             TabRow(
                 modifier = Modifier.fillMaxWidth(),
@@ -212,9 +222,7 @@ fun AnimeDetailScreen(
 
                 1 -> {
                     AnimeCharaScreen(state.animeDetailInfo) { id ->
-                        onEvent(
-                            AnimeDetailEvent.OnCharaClick(id)
-                        )
+                        onEvent(AnimeDetailEvent.ClickButton.Chara(id))
                     }
                 }
 
@@ -222,7 +230,7 @@ fun AnimeDetailScreen(
                     if (state.animeRecList != null) {
                         AnimeRecScreen(animeRecList = state.animeRecList) { id, idMal ->
                             onEvent(
-                                AnimeDetailEvent.OnAnimeClick(id = id, idMal = idMal)
+                                AnimeDetailEvent.ClickButton.Anime(id = id, idMal = idMal)
                             )
                         }
                     }
@@ -235,7 +243,7 @@ fun AnimeDetailScreen(
 @Composable
 private fun AnimeDetailHeadBanner(
     animeDetailInfo: AnimeDetailInfo?,
-    isAnimeSave: Boolean,
+    isAnimeSave: Boolean?,
     trailerClick: (trailerId: String?) -> Unit,
     saveClick: () -> Unit
 ) {
