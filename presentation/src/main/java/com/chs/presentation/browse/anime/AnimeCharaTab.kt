@@ -26,13 +26,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.chs.common.Resource
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.browse.BrowseScreen
-import com.chs.presentation.common.PlaceholderHighlight
 import com.chs.presentation.common.placeholder
-import com.chs.presentation.common.shimmer
 
 @Composable
 fun AnimeCharaScreen(

@@ -48,18 +48,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.chs.common.Resource
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.color
 import com.chs.presentation.common.ItemSaveButton
-import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.isNotEmptyValue
 import com.chs.presentation.ui.theme.Pink80
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable

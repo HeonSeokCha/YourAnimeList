@@ -17,8 +17,8 @@ import com.chs.domain.model.CharacterDetailInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.domain.repository.CharacterRepository
 import com.chs.data.type.MediaSort
-import com.chs.domain.model.DataError
-import com.chs.domain.model.DataResult
+import com.chs.common.DataError
+import com.chs.common.DataResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

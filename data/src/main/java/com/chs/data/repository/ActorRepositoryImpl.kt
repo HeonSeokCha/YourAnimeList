@@ -6,15 +6,14 @@ import androidx.paging.PagingData
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
 import com.chs.common.Constants
-import com.chs.common.Resource
 import com.chs.data.ActorDetailQuery
 import com.chs.data.mapper.toVoiceActorDetailInfo
 import com.chs.data.paging.VoiceActorAnimePagingSource
 import com.chs.data.type.MediaSort
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
-import com.chs.domain.model.DataError
-import com.chs.domain.model.DataResult
+import com.chs.common.DataError
+import com.chs.common.DataResult
 import com.chs.domain.model.VoiceActorDetailInfo
 import com.chs.domain.repository.ActorRepository
 import kotlinx.coroutines.flow.Flow

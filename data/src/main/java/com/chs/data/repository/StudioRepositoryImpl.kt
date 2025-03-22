@@ -7,18 +7,15 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
 import com.chs.data.StudioQuery
 import com.chs.common.Constants
-import com.chs.common.Resource
-import com.chs.data.mapper.toCharacterDetailInfo
 import com.chs.data.mapper.toStudioDetailInfo
 import com.chs.data.paging.StudioAnimePagingSource
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.StudioDetailInfo
 import com.chs.domain.repository.StudioRepository
 import com.chs.data.type.MediaSort
-import com.chs.domain.model.DataError
-import com.chs.domain.model.DataResult
+import com.chs.common.DataError
+import com.chs.common.DataResult
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class StudioRepositoryImpl @Inject constructor(

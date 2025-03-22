@@ -26,8 +26,8 @@ import com.chs.data.source.db.entity.TagEntity
 import com.chs.data.type.MediaSeason
 import com.chs.data.type.MediaSort
 import com.chs.data.type.MediaStatus
-import com.chs.domain.model.DataError
-import com.chs.domain.model.DataResult
+import com.chs.common.DataError
+import com.chs.common.DataResult
 import com.chs.domain.model.SortFilter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

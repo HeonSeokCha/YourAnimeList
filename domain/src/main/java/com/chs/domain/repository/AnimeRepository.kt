@@ -1,13 +1,12 @@
 package com.chs.domain.repository
 
 import androidx.paging.PagingData
-import com.chs.common.Resource
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeRecommendList
 import com.chs.domain.model.AnimeThemeInfo
-import com.chs.domain.model.DataError
-import com.chs.domain.model.DataResult
+import com.chs.common.DataError
+import com.chs.common.DataResult
 import com.chs.domain.model.SortFilter
 import kotlinx.coroutines.flow.Flow
 

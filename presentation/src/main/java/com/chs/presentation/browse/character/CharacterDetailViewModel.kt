@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
 import com.chs.domain.model.CharacterInfo
-import com.chs.domain.model.onError
-import com.chs.domain.model.onSuccess
+import com.chs.common.onError
+import com.chs.common.onSuccess
 import com.chs.presentation.UiConst
 import com.chs.domain.usecase.DeleteCharaInfoUseCase
 import com.chs.domain.usecase.GetCharaDetailAnimeListUseCase
@@ -19,8 +19,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn

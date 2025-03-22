@@ -2,8 +2,8 @@ package com.chs.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.domain.model.onError
-import com.chs.domain.model.onSuccess
+import com.chs.common.onError
+import com.chs.common.onSuccess
 import com.chs.domain.usecase.GetAnimeRecListUseCase
 import com.chs.presentation.Util
 import dagger.hilt.android.lifecycle.HiltViewModel

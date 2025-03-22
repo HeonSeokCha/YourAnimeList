@@ -58,7 +58,6 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
-import com.chs.common.Resource
 import com.chs.presentation.UiConst
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.domain.model.VoiceActorInfo
@@ -66,15 +65,11 @@ import com.chs.presentation.R
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemMessageDialog
-import com.chs.presentation.common.ItemNoResultImage
 import com.chs.presentation.common.ItemSaveButton
-import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.toCommaFormat
 import com.chs.presentation.ui.theme.Pink80
 import dev.jeziellago.compose.markdowntext.MarkdownText
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun CharacterDetailScreenRoot(

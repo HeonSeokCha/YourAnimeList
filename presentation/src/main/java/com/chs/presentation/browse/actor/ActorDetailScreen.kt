@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.chs.common.Resource
 import com.chs.domain.model.VoiceActorDetailInfo
 import com.chs.presentation.R
 import com.chs.presentation.UiConst

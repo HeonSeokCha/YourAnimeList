@@ -1,8 +1,8 @@
 package com.chs.domain.usecase
 
 import com.chs.domain.model.AnimeRecommendList
-import com.chs.domain.model.DataError
-import com.chs.domain.model.DataResult
+import com.chs.common.DataError
+import com.chs.common.DataResult
 import com.chs.domain.repository.AnimeRepository
 import javax.inject.Inject
 

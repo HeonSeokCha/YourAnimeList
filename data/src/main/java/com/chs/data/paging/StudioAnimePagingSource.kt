@@ -52,7 +52,7 @@ class StudioAnimePagingSource(
                 data = data?.nodes?.map {
                     it?.animeBasicInfo.toAnimeInfo()
                 } ?: emptyList(),
-                prevKey = if (page == 1) null else page - 1,
+                prevKey = null,
                 nextKey = if (data?.pageInfo?.pageBasicInfo?.hasNextPage == true) page + 1 else null
             )
 
