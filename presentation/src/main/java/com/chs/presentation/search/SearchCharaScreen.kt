@@ -23,19 +23,11 @@ import kotlinx.coroutines.flow.filter
 
 @Composable
 fun SearchCharaScreen(
-    searchQuery: String,
-    pagingItems: Flow<PagingData<CharacterInfo>>,
-    onClick: (Int) -> Unit
+    pagingItems: Flow<PagingData<CharacterInfo>>?,
+    onEvent: (SearchEvent) -> Unit
 ) {
     val lazyColScrollState = rememberLazyListState()
-    val charaItems = pagingItems.collectAsLazyPagingItems()
-
-    LaunchedEffect(searchQuery) {
-        snapshotFlow { searchQuery }
-            .distinctUntilChanged()
-            .filter { it.isNotEmpty() }
-            .collect { lazyColScrollState.scrollToItem(0) }
-    }
+    val charaItems = pagingItems?.collectAsLazyPagingItems()
 
     LazyColumn(
         modifier = Modifier
@@ -43,58 +35,63 @@ fun SearchCharaScreen(
         state = lazyColScrollState,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        items(
-            count = charaItems.itemCount,
-            key = charaItems.itemKey(key = { it.id })
-        ) { idx ->
-            val item = charaItems[idx]
-            ItemCharaLarge(item) { id ->
-                if (item != null) {
-                    onClick(id)
-                }
-            }
-        }
-
-        when (charaItems.loadState.refresh) {
-            is LoadState.Loading -> {
-                items(10) {
-                    ItemCharaLarge(character = null) { }
-                }
-            }
-
-            is LoadState.Error -> {
-                item {
-                    Text(
-                        text = "Something Wrong for Loading List."
-                    )
-                }
-            }
-
-            else -> {
-                if (charaItems.itemCount == 0) {
-                    item {
-                        ItemNoResultImage()
+        if (charaItems != null) {
+            items(
+                count = charaItems.itemCount,
+                key = charaItems.itemKey(key = { it.id })
+            ) { idx ->
+                val item = charaItems[idx]
+                ItemCharaLarge(item) { id ->
+                    if (item != null) {
+                        onEvent(
+                            SearchEvent.Click.Chara(id = id)
+                        )
                     }
                 }
             }
-        }
 
-        when (charaItems.loadState.append) {
-            is LoadState.Loading -> {
-                items(10) {
-                    ItemCharaLarge(character = null) { }
+            when (charaItems.loadState.refresh) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemCharaLarge(character = null) { }
+                    }
+                }
+
+                is LoadState.Error -> {
+                    item {
+                        Text(
+                            text = "Something Wrong for Loading List."
+                        )
+                    }
+                }
+
+                else -> {
+                    if (charaItems.itemCount == 0) {
+                        item {
+                            ItemNoResultImage()
+                        }
+                    }
                 }
             }
 
-            is LoadState.Error -> {
-                item {
-                    Text(
-                        text = "Something Wrong for Loading List."
-                    )
+            when (charaItems.loadState.append) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemCharaLarge(character = null) { }
+                    }
                 }
-            }
 
-            else -> Unit
+                is LoadState.Error -> {
+                    item {
+                        Text(
+                            text = "Something Wrong for Loading List."
+                        )
+                    }
+                }
+
+                else -> Unit
+            }
         }
+
     }
 }

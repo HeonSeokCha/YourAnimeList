@@ -1,16 +1,22 @@
 package com.chs.presentation.browse.actor
 
-sealed interface ActorDetailEvent {
-    data class OnAnimeClick(
-        val id: Int,
-        val idMal: Int
-    ) : ActorDetailEvent
+sealed class ActorDetailEvent {
+    data object Idle : ActorDetailEvent()
 
-    data class OnCharaClick(val id: Int) : ActorDetailEvent
+    sealed class ClickBtn {
+        data class Anime(
+            val id: Int,
+            val idMal: Int
+        ) : ActorDetailEvent()
 
-    data object OnCloseClick : ActorDetailEvent
+        data class Chara(val id: Int) : ActorDetailEvent()
 
-    data object GetActorDetailInfo : ActorDetailEvent
+        data class TabIdx(val idx: Int) : ActorDetailEvent()
 
-    data class ChangeSortOption(val option: String) : ActorDetailEvent
+        data object Close : ActorDetailEvent()
+    }
+
+    data class ChangeSortOption(val option: String) : ActorDetailEvent()
+
+    data object OnError : ActorDetailEvent()
 }

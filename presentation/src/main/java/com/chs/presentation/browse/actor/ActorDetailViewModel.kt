@@ -12,9 +12,11 @@ import com.chs.domain.usecase.GetActorDetailInfoUseCase
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.BrowseScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -36,27 +38,30 @@ class ActorDetailViewModel @Inject constructor(
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            _state.value
+            ActorDetailState()
         )
+
+    private val _actorEvent: Channel<ActorDetailEvent> = Channel()
+    val actorEvent = _actorEvent.receiveAsFlow()
 
     private val actorId: Int = savedStateHandle.toRoute<BrowseScreen.ActorDetail>().id
 
     fun changeEvent(event: ActorDetailEvent) {
         when (event) {
-            is ActorDetailEvent.GetActorDetailInfo -> {
-                getActorDetailInfo(actorId)
-                getActorAnimeList(actorId)
-            }
-
             is ActorDetailEvent.ChangeSortOption -> {
                 _state.update {
                     it.copy(
+                        isLoading = true,
                         selectOption = UiConst.SortType.entries.find { it.rawValue == event.option }
                             ?: UiConst.SortType.NEWEST
                     )
                 }
 
                 getActorAnimeList(actorId)
+            }
+
+            is ActorDetailEvent.ClickBtn.TabIdx -> {
+                _state.update { it.copy(tabIdx = event.idx) }
             }
 
             else -> Unit
@@ -74,19 +79,13 @@ class ActorDetailViewModel @Inject constructor(
                         )
                     }
                 }.onError { error ->
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            isError = error.message
-                        )
-                    }
+                    _state.update { it.copy(isLoading = false) }
+                    _actorEvent.send(ActorDetailEvent.OnError)
                 }
         }
     }
 
-    private fun getActorAnimeList(
-        actorId: Int
-    ) {
+    private fun getActorAnimeList(actorId: Int) {
         _state.update {
             it.copy(
                 actorAnimeList = getActorMediaListUseCase(

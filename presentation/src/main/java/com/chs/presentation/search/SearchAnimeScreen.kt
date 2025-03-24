@@ -23,19 +23,11 @@ import kotlinx.coroutines.flow.filter
 
 @Composable
 fun SearchAnimeScreen(
-    searchQuery: String,
-    pagingItem: Flow<PagingData<AnimeInfo>>,
-    onClick: (AnimeInfo) -> Unit
+    pagingItem: Flow<PagingData<AnimeInfo>>?,
+    onEvent: (SearchEvent) -> Unit
 ) {
     val lazyColScrollState = rememberLazyListState()
-    val animeItems = pagingItem.collectAsLazyPagingItems()
-
-    LaunchedEffect(searchQuery) {
-        snapshotFlow { searchQuery }
-            .distinctUntilChanged()
-            .filter { it.isNotEmpty() }
-            .collect { lazyColScrollState.scrollToItem(0) }
-    }
+    val animeItems = pagingItem?.collectAsLazyPagingItems()
 
     LazyColumn(
         modifier = Modifier
@@ -43,60 +35,66 @@ fun SearchAnimeScreen(
         state = lazyColScrollState,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        items(
-            count = animeItems.itemCount,
-            key = animeItems.itemKey(key = { it.id })
-        ) { index ->
-            val item = animeItems[index]
-            ItemAnimeLarge(anime = item) {
-                if (item != null) {
-                    onClick(item)
-                }
-            }
-        }
-
-
-
-        when (animeItems.loadState.refresh) {
-            is LoadState.Loading -> {
-                items(10) {
-                    ItemAnimeLarge(anime = null) { }
-                }
-            }
-
-            is LoadState.Error -> {
-                item {
-                    Text(
-                        text = "Something Wrong for Loading List."
-                    )
-                }
-            }
-
-            else -> {
-                if (animeItems.itemCount == 0) {
-                    item {
-                        ItemNoResultImage()
+        if (animeItems != null) {
+            items(
+                count = animeItems.itemCount,
+                key = animeItems.itemKey(key = { it.id })
+            ) { index ->
+                val item = animeItems[index]
+                ItemAnimeLarge(anime = item) {
+                    if (item != null) {
+                        onEvent(
+                            SearchEvent.Click.Anime(
+                                id = item.id,
+                                idMal = item.idMal
+                            )
+                        )
                     }
                 }
             }
-        }
 
-        when (animeItems.loadState.append) {
-            is LoadState.Loading -> {
-                items(10) {
-                    ItemAnimeLarge(anime = null) { }
+            when (animeItems.loadState.refresh) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemAnimeLarge(anime = null) { }
+                    }
+                }
+
+                is LoadState.Error -> {
+                    item {
+                        Text(
+                            text = "Something Wrong for Loading List."
+                        )
+                    }
+                }
+
+                else -> {
+                    if (animeItems.itemCount == 0) {
+                        item {
+                            ItemNoResultImage()
+                        }
+                    }
                 }
             }
 
-            is LoadState.Error -> {
-                item {
-                    Text(
-                        text = "Something Wrong for Loading List."
-                    )
+            when (animeItems.loadState.append) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemAnimeLarge(anime = null) { }
+                    }
                 }
-            }
 
-            else -> Unit
+                is LoadState.Error -> {
+                    item {
+                        Text(
+                            text = "Something Wrong for Loading List."
+                        )
+                    }
+                }
+
+                else -> Unit
+            }
         }
+
     }
 }

@@ -6,10 +6,13 @@ import androidx.paging.cachedIn
 import com.chs.domain.usecase.GetAnimeSearchResultUseCase
 import com.chs.domain.usecase.GetCharaSearchResultUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,15 +26,17 @@ class SearchViewModel @Inject constructor(
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            _state.value
+            SearchState()
         )
+
+    private val _event: Channel<SearchEvent> = Channel()
+    val event = _event.receiveAsFlow()
 
     fun onEvent(event: SearchEvent) {
         when (event) {
             is SearchEvent.OnChangeSearchQuery -> {
                 _state.update {
                     it.copy(
-                        query = event.query,
                         searchAnimeResultPaging = searchAnimeUseCase(event.query)
                             .cachedIn(viewModelScope),
                         searchCharaResultPaging = searchCharaUseCase(event.query)
@@ -40,29 +45,17 @@ class SearchViewModel @Inject constructor(
                 }
             }
 
-            is SearchEvent.GetSearchAnimeResult -> {
-                _state.update {
-                    it.copy(
-                        searchAnimeResultPaging = searchAnimeUseCase(it.query)
-                            .cachedIn(viewModelScope)
-                    )
-                }
-            }
-
-            is SearchEvent.GetSearchCharaResult -> {
-                _state.update {
-                    it.copy(
-                        searchCharaResultPaging = searchCharaUseCase(it.query)
-                            .cachedIn(viewModelScope)
-                    )
-                }
-            }
-
-            is SearchEvent.OnTabSelected -> {
+            is SearchEvent.Click.TabIdx -> {
                 _state.update {
                     it.copy(
                         selectedTabIdx = event.idx
                     )
+                }
+            }
+
+            SearchEvent.OnError -> {
+                viewModelScope.launch {
+                    _event.send(SearchEvent.OnError)
                 }
             }
 

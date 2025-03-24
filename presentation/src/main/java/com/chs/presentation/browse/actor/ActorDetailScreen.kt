@@ -1,6 +1,7 @@
 package com.chs.presentation.browse.actor
 
 import android.text.util.Linkify
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -62,27 +64,37 @@ fun ActorDetailScreenRoot(
     onCloseClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val actorEvent by viewModel.actorEvent.collectAsStateWithLifecycle(ActorDetailEvent.Idle)
+    val context = LocalContext.current
+
+    LaunchedEffect(actorEvent) {
+        when (actorEvent) {
+            ActorDetailEvent.OnError -> {
+                Toast.makeText(context, "Something error in load Data..", Toast.LENGTH_SHORT).show()
+            }
+
+            else -> Unit
+        }
+    }
 
     ActorDetailScreen(
         state = state,
         onEvent = { event ->
             when (event) {
-                is ActorDetailEvent.OnAnimeClick -> {
+                is ActorDetailEvent.ClickBtn.Anime -> {
                     onAnimeClick(event.id, event.id)
                 }
 
-                is ActorDetailEvent.OnCharaClick -> {
+                is ActorDetailEvent.ClickBtn.Chara -> {
                     onCharaClick(event.id)
                 }
 
-                ActorDetailEvent.OnCloseClick -> {
+                ActorDetailEvent.ClickBtn.Close -> {
                     onCloseClick()
                 }
 
-                else -> Unit
+                else -> viewModel.changeEvent(event)
             }
-
-            viewModel.changeEvent(event)
         }
     )
 }
@@ -92,98 +104,83 @@ fun ActorDetailScreen(
     state: ActorDetailState,
     onEvent: (ActorDetailEvent) -> Unit
 ) {
-    var isRefreshing by remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val pagerState = rememberPagerState { 2 }
-    var isShowSortOption: Boolean by remember { mutableStateOf(false) }
 
-    LaunchedEffect(pagerState.currentPage) {
-        isShowSortOption = pagerState.currentPage == 1
+    LaunchedEffect(state.tabIdx) {
+        pagerState.animateScrollToPage(state.tabIdx)
     }
 
-    ItemPullToRefreshBox(
-        isRefreshing = isRefreshing,
-        onRefresh = {
-            isRefreshing = true
-            coroutineScope.launch {
-                scrollState.scrollTo(0)
-                onEvent(ActorDetailEvent.GetActorDetailInfo)
-                delay(500L)
-                isRefreshing = false
-            }
-        }
-    ) {
-        CollapsingToolbarScaffold(
-            scrollState = scrollState,
-            header = {
-                ActorInfo(actorInfo = state.actorDetailInfo)
-            },
-            isShowTopBar = true,
-            onCloseClick = {
-                onEvent(ActorDetailEvent.OnCloseClick)
-            }, stickyHeader = {
-                TabRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    selectedTabIndex = pagerState.currentPage,
-                    indicator = { tabPositions ->
-                        SecondaryIndicator(
-                            modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
-                            color = Pink80
-                        )
-                    }
-                ) {
-                    state.tabNames.forEachIndexed { index, title ->
-                        Tab(
-                            text = {
-                                Text(
-                                    text = title,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    fontSize = 12.sp,
-                                )
-                            },
-                            selected = pagerState.currentPage == index,
-                            onClick = {
-                                coroutineScope.launch {
-                                    pagerState.animateScrollToPage(index)
-                                }
-                            },
-                            selectedContentColor = Pink80,
-                            unselectedContentColor = Color.Gray
-                        )
-                    }
-                }
-            }) {
-            HorizontalPager(
-                state = pagerState,
-                userScrollEnabled = false
-            ) { page ->
-                when (page) {
-                    0 -> {
-                        VoiceActorProFile(state.actorDetailInfo)
-                    }
+    LaunchedEffect(pagerState.currentPage) {
+        onEvent(ActorDetailEvent.ClickBtn.TabIdx(pagerState.currentPage))
+    }
 
-                    1 -> {
-                        if (state.actorAnimeList != null) {
-                            ActorMediaTab(
-                                info = state.actorAnimeList,
-                                sortOptionName = state.selectOption.name,
-                                onAnimeClick = { id, idMal ->
-                                    onEvent(
-                                        ActorDetailEvent.OnAnimeClick(id, idMal)
-                                    )
-                                }, onCharaClick = { id ->
-                                    onEvent(
-                                        ActorDetailEvent.OnCharaClick(id)
-                                    )
-                                }, onChangeSortEvent = { option ->
-                                    onEvent(
-                                        ActorDetailEvent.ChangeSortOption(option)
-                                    )
-                                }
+    CollapsingToolbarScaffold(
+        scrollState = scrollState,
+        header = {
+            ActorInfo(actorInfo = state.actorDetailInfo)
+        },
+        isShowTopBar = true,
+        onCloseClick = {
+            onEvent(ActorDetailEvent.ClickBtn.Close)
+        }, stickyHeader = {
+            TabRow(
+                modifier = Modifier.fillMaxWidth(),
+                selectedTabIndex = state.tabIdx,
+                indicator = { tabPositions ->
+                    SecondaryIndicator(
+                        modifier = Modifier.tabIndicatorOffset(tabPositions[state.tabIdx]),
+                        color = Pink80
+                    )
+                }
+            ) {
+                state.tabNames.forEachIndexed { index, title ->
+                    Tab(
+                        text = {
+                            Text(
+                                text = title,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                fontSize = 12.sp,
                             )
-                        }
+                        }, selected = state.tabIdx == index,
+                        onClick = {
+                            onEvent(ActorDetailEvent.ClickBtn.TabIdx(index))
+                        },
+                        selectedContentColor = Pink80,
+                        unselectedContentColor = Color.Gray
+                    )
+                }
+            }
+        }) {
+        HorizontalPager(
+            state = pagerState,
+            userScrollEnabled = false
+        ) { page ->
+            when (page) {
+                0 -> {
+                    VoiceActorProFile(state.actorDetailInfo)
+                }
+
+                1 -> {
+                    if (state.actorAnimeList != null) {
+                        ActorMediaTab(
+                            info = state.actorAnimeList,
+                            sortOptionName = state.selectOption.name,
+                            onAnimeClick = { id, idMal ->
+                                onEvent(
+                                    ActorDetailEvent.ClickBtn.Anime(id, idMal)
+                                )
+                            }, onCharaClick = { id ->
+                                onEvent(
+                                    ActorDetailEvent.ClickBtn.Chara(id)
+                                )
+                            }, onChangeSortEvent = { option ->
+                                onEvent(
+                                    ActorDetailEvent.ChangeSortOption(option)
+                                )
+                            }
+                        )
                     }
                 }
             }

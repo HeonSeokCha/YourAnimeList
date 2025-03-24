@@ -40,7 +40,6 @@ import com.chs.domain.model.StudioDetailInfo
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemExpandSingleBox
-import com.chs.presentation.common.ItemNoResultImage
 import com.chs.presentation.toCommaFormat
 import kotlinx.coroutines.launch
 
@@ -51,22 +50,34 @@ fun StudioDetailScreenRoot(
     onCloseClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val studioEvent by viewModel.event.collectAsStateWithLifecycle(StudioDetailEvent.Idle)
+
+    val context = LocalContext.current
+
+    LaunchedEffect(studioEvent) {
+        when (studioEvent) {
+            StudioDetailEvent.OnError -> {
+                Toast.makeText(context, "Something error in load Data..", Toast.LENGTH_SHORT).show()
+            }
+
+            else -> Unit
+        }
+    }
 
     StudioDetailScreen(
         state = state,
         onEvent = { event ->
             when (event) {
-                StudioDetailEvent.OnCloseClick -> {
+                StudioDetailEvent.ClickBtn.Close -> {
                     onCloseClick()
                 }
 
-                is StudioDetailEvent.AnimeClick -> {
+                is StudioDetailEvent.ClickBtn.Anime -> {
                     onAnimeClick(event.id, event.idMal)
                 }
 
-                else -> Unit
+                else -> viewModel.changeEvent(event)
             }
-            viewModel.changeEvent(event)
         }
     )
 }
@@ -81,13 +92,6 @@ fun StudioDetailScreen(
     val scrollState = rememberScrollState()
     val pagingItem = state.studioAnimeList?.collectAsLazyPagingItems()
     var isAppending by remember { mutableStateOf(false) }
-    val context = LocalContext.current
-    LaunchedEffect(state.isError) {
-        if (state.isError != null) {
-            Toast.makeText(context, "Error ${state.isError}", Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
 
     if (pagingItem != null) {
         when (pagingItem.loadState.refresh) {
@@ -120,7 +124,7 @@ fun StudioDetailScreen(
         },
         isShowTopBar = true,
         onCloseClick = {
-            onEvent(StudioDetailEvent.OnCloseClick)
+            onEvent(StudioDetailEvent.ClickBtn.Close)
         }
     ) {
         LazyVerticalStaggeredGrid(
@@ -147,7 +151,7 @@ fun StudioDetailScreen(
                         coroutineScope.launch {
                             lazyGridScrollState.scrollToItem(0, 0)
                         }
-                        onEvent(StudioDetailEvent.ChangeSortOption(selectValue!!))
+                        onEvent(StudioDetailEvent.ClickBtn.SortOption(selectValue!!))
                     }
                 }
             }
@@ -165,7 +169,7 @@ fun StudioDetailScreen(
                     if (animeInfo != null) {
                         ItemAnimeSmall(item = animeInfo) {
                             onEvent(
-                                StudioDetailEvent.AnimeClick(
+                                StudioDetailEvent.ClickBtn.Anime(
                                     id = animeInfo.id,
                                     idMal = animeInfo.idMal
                                 )

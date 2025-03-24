@@ -7,12 +7,11 @@ import com.chs.domain.model.StudioDetailInfo
 import kotlinx.coroutines.flow.Flow
 
 data class StudioDetailState(
-    val studioId: Int? = null,
     val studioDetailInfo: StudioDetailInfo? = null,
     val studioAnimeList: Flow<PagingData<AnimeInfo>>? = null,
-    val isLoading: Boolean = true,
-    val isError: String? = null,
+    val tabIdx: Int = 0,
     val sortOption: Pair<String, String> = UiConst.SortType.NEWEST.run {
         this.name to this.rawValue
-    }
+    },
+    val isLoading: Boolean = true,
 )

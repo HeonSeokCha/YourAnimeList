@@ -1,15 +1,20 @@
 package com.chs.presentation.search
 
-sealed interface SearchEvent {
-    data class OnChangeSearchQuery(val query: String) : SearchEvent
-    data class OnAnimeClick(
-        val id: Int,
-        val idMal: Int
-    ) : SearchEvent
+sealed class SearchEvent {
 
-    data class OnCharaClick(val id: Int) : SearchEvent
-    data class OnTabSelected(val idx: Int) : SearchEvent
+    data object Idle : SearchEvent()
 
-    data object GetSearchAnimeResult : SearchEvent
-    data object GetSearchCharaResult : SearchEvent
+    sealed class Click {
+        data class Anime(
+            val id: Int,
+            val idMal: Int
+        ) : SearchEvent()
+
+        data class Chara(val id: Int) : SearchEvent()
+        data class TabIdx(val idx: Int) : SearchEvent()
+    }
+
+    data class OnChangeSearchQuery(val query: String) : SearchEvent()
+
+    data object OnError : SearchEvent()
 }

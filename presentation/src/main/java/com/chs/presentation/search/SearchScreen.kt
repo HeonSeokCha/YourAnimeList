@@ -1,5 +1,6 @@
 package com.chs.presentation.search
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,15 +13,11 @@ import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.presentation.UiConst
-import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.ui.theme.Pink80
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.launch
 
 @Composable
 fun SearchScreenRoot(
@@ -29,22 +26,33 @@ fun SearchScreenRoot(
     onCharaClick: (Int) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val searchEvent by viewModel.event.collectAsStateWithLifecycle(SearchEvent.Idle)
+    val context = LocalContext.current
+
+    LaunchedEffect(searchEvent) {
+        when (searchEvent) {
+            SearchEvent.OnError -> {
+                Toast.makeText(context, "Something error in load Data..", Toast.LENGTH_SHORT).show()
+            }
+
+            else -> Unit
+        }
+    }
 
     SearchScreen(
         state = state,
         onEvent = { event ->
             when (event) {
-                is SearchEvent.OnAnimeClick -> {
+                is SearchEvent.Click.Anime -> {
                     onAnimeClick(event.id, event.idMal)
                 }
 
-                is SearchEvent.OnCharaClick -> {
+                is SearchEvent.Click.Chara -> {
                     onCharaClick(event.id)
                 }
 
-                else -> Unit
+                else -> viewModel.onEvent(event)
             }
-            viewModel.onEvent(event)
         }
     )
 }
@@ -55,98 +63,61 @@ fun SearchScreen(
     onEvent: (SearchEvent) -> Unit,
 ) {
     val pagerState = rememberPagerState { 2 }
-    val coroutineScope = rememberCoroutineScope()
-    var isRefreshing by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.selectedTabIdx) {
         pagerState.animateScrollToPage(state.selectedTabIdx)
     }
 
     LaunchedEffect(pagerState.currentPage) {
-        onEvent(SearchEvent.OnTabSelected(pagerState.currentPage))
+        onEvent(SearchEvent.Click.TabIdx(pagerState.currentPage))
     }
 
-    ItemPullToRefreshBox(
-        isRefreshing = isRefreshing,
-        onRefresh = {
-            isRefreshing = true
-            coroutineScope.launch {
-                when (pagerState.currentPage) {
-                    0 -> onEvent(SearchEvent.GetSearchAnimeResult)
-                    1 -> onEvent(SearchEvent.GetSearchCharaResult)
-                    else -> Unit
-                }
-                delay(500L)
-                isRefreshing = false
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        TabRow(
+            modifier = Modifier.fillMaxWidth(),
+            selectedTabIndex = state.selectedTabIdx,
+            indicator = { tabPositions ->
+                SecondaryIndicator(
+                    modifier = Modifier.tabIndicatorOffset(tabPositions[state.selectedTabIdx]),
+                    color = Pink80
+                )
+            }
+        ) {
+            UiConst.SEARCH_TAB_LIST.forEachIndexed { index, title ->
+                Tab(
+                    text = {
+                        Text(
+                            text = title,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Pink80
+                        )
+                    },
+                    selected = state.selectedTabIdx == index,
+                    onClick = {
+                        onEvent(SearchEvent.Click.TabIdx(index))
+                    }
+                )
             }
         }
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            TabRow(
-                modifier = Modifier.fillMaxWidth(),
-                selectedTabIndex = state.selectedTabIdx,
-                indicator = { tabPositions ->
-                    SecondaryIndicator(
-                        modifier = Modifier.tabIndicatorOffset(tabPositions[state.selectedTabIdx]),
-                        color = Pink80
-                    )
-                }
-            ) {
-                UiConst.SEARCH_TAB_LIST.forEachIndexed { index, title ->
-                    Tab(
-                        text = {
-                            Text(
-                                text = title,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                color = Pink80
-                            )
-                        },
-                        selected = state.selectedTabIdx == index,
-                        onClick = {
-                            coroutineScope.launch {
-                                pagerState.scrollToPage(index)
-                            }
-                        }
-                    )
-                }
-            }
 
-            HorizontalPager(
-                state = pagerState,
-                userScrollEnabled = false
-            ) { page ->
-                when (page) {
-                    0 -> {
-                        if (state.searchAnimeResultPaging != null) {
-                            SearchAnimeScreen(
-                                searchQuery = state.query,
-                                pagingItem = state.searchAnimeResultPaging
-                            ) { item ->
-                                onEvent(
-                                    SearchEvent.OnAnimeClick(
-                                        id = item.id,
-                                        idMal = item.idMal
-                                    )
-                                )
-                            }
-                        }
+        HorizontalPager(
+            state = pagerState,
+            userScrollEnabled = false
+        ) { page ->
+            when (page) {
+                0 -> {
+                    SearchAnimeScreen(pagingItem = state.searchAnimeResultPaging) {
+                        onEvent(it)
                     }
+                }
 
-                    1 -> {
-                        if (state.searchCharaResultPaging != null) {
-                            SearchCharaScreen(
-                                searchQuery = state.query,
-                                pagingItems = state.searchCharaResultPaging
-                            ) { charaId ->
-                                onEvent(
-                                    SearchEvent.OnCharaClick(id = charaId)
-                                )
-                            }
-                        }
+                1 -> {
+                    SearchCharaScreen(pagingItems = state.searchCharaResultPaging) {
+                        onEvent(it)
                     }
                 }
             }

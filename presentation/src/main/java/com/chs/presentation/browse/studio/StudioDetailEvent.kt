@@ -1,14 +1,19 @@
 package com.chs.presentation.browse.studio
 
-sealed interface StudioDetailEvent {
-    data class ChangeSortOption(val value: Pair<String, String>) : StudioDetailEvent
+sealed class StudioDetailEvent {
 
-    data class AnimeClick(
-        val id: Int,
-        val idMal: Int
-    ) : StudioDetailEvent
+    data object Idle : StudioDetailEvent()
 
-    data object OnCloseClick : StudioDetailEvent
+    sealed class ClickBtn {
+        data class SortOption(val value: Pair<String, String>) : StudioDetailEvent()
+        data class Anime(
+            val id: Int,
+            val idMal: Int
+        ) : StudioDetailEvent()
 
-    data object OnError : StudioDetailEvent
+        data object Close : StudioDetailEvent()
+        data class TabIdx(val idx: Int) : StudioDetailEvent()
+    }
+
+    data object OnError : StudioDetailEvent()
 }

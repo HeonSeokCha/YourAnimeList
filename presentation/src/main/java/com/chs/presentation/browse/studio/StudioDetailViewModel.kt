@@ -3,6 +3,7 @@ package com.chs.presentation.browse.studio
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
 import com.chs.common.onError
@@ -11,9 +12,11 @@ import com.chs.domain.usecase.GetStudioAnimeListUseCase
 import com.chs.domain.usecase.GetStudioDetailUseCase
 import com.chs.presentation.browse.BrowseScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,6 +30,9 @@ class StudioDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val studioId: Int = savedStateHandle.toRoute<BrowseScreen.StudioDetail>().id
+    private val _event: Channel<StudioDetailEvent> = Channel()
+    val event = _event.receiveAsFlow()
+
     private var _state = MutableStateFlow(StudioDetailState())
     val state = _state
         .onStart {
@@ -36,7 +42,7 @@ class StudioDetailViewModel @Inject constructor(
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            _state.value
+            StudioDetailState()
         )
 
 
@@ -51,12 +57,7 @@ class StudioDetailViewModel @Inject constructor(
                     }
 
                 }.onError { error ->
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            isError = error.message
-                        )
-                    }
+                    _event.send(StudioDetailEvent.OnError)
                 }
         }
     }
@@ -75,7 +76,7 @@ class StudioDetailViewModel @Inject constructor(
 
     fun changeEvent(event: StudioDetailEvent) {
         when (event) {
-            is StudioDetailEvent.ChangeSortOption -> {
+            is StudioDetailEvent.ClickBtn.SortOption -> {
                 _state.update {
                     it.copy(
                         isLoading = true,
@@ -85,12 +86,15 @@ class StudioDetailViewModel @Inject constructor(
                 getStudioAnimeList()
             }
 
-            StudioDetailEvent.OnError -> {
+            is StudioDetailEvent.ClickBtn.TabIdx -> {
                 _state.update {
-                    it.copy(
-                        isLoading = false,
-                        isError = "Something loading to Error..."
-                    )
+                    it.copy(tabIdx = event.idx)
+                }
+            }
+
+            StudioDetailEvent.OnError -> {
+                viewModelScope.launch {
+                    _event.send(StudioDetailEvent.OnError)
                 }
             }
 
