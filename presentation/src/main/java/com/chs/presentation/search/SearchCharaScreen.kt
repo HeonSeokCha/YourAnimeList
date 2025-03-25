@@ -92,6 +92,5 @@ fun SearchCharaScreen(
                 else -> Unit
             }
         }
-
     }
 }

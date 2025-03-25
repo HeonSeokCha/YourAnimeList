@@ -163,25 +163,23 @@ fun ActorDetailScreen(
                 }
 
                 1 -> {
-                    if (state.actorAnimeList != null) {
-                        ActorMediaTab(
-                            info = state.actorAnimeList,
-                            sortOptionName = state.selectOption.name,
-                            onAnimeClick = { id, idMal ->
-                                onEvent(
-                                    ActorDetailEvent.ClickBtn.Anime(id, idMal)
-                                )
-                            }, onCharaClick = { id ->
-                                onEvent(
-                                    ActorDetailEvent.ClickBtn.Chara(id)
-                                )
-                            }, onChangeSortEvent = { option ->
-                                onEvent(
-                                    ActorDetailEvent.ChangeSortOption(option)
-                                )
-                            }
-                        )
-                    }
+                    ActorMediaTab(
+                        info = state.actorAnimeList,
+                        sortOptionName = state.selectOption.name,
+                        onAnimeClick = { id, idMal ->
+                            onEvent(
+                                ActorDetailEvent.ClickBtn.Anime(id, idMal)
+                            )
+                        }, onCharaClick = { id ->
+                            onEvent(
+                                ActorDetailEvent.ClickBtn.Chara(id)
+                            )
+                        }, onChangeSortEvent = { option ->
+                            onEvent(
+                                ActorDetailEvent.ChangeSortOption(option)
+                            )
+                        }
+                    )
                 }
             }
         }

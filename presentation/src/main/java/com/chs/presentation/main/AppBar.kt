@@ -1,6 +1,7 @@
 package com.chs.presentation.main
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
@@ -24,6 +26,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.chs.presentation.R
+import com.chs.presentation.ui.theme.Red200
 import com.chs.presentation.ui.theme.Red500
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,13 +54,14 @@ fun AppBar(
             }
         )
     } else if (currentDest?.hasRoute(Screen.Search::class) == true) {
-
         SearchAppBar(
             searchHistoryList = searchHistoryList,
             onSearch = {
                 onQueryChange(it)
             }, onDeleteSearchHistory = {
                 onDeleteSearchHistory(it)
+            }, onBack = {
+                navController.navigateUp()
             }
         )
     } else {
@@ -73,9 +77,11 @@ fun AppBar(
                 actionIconContentColor = Color.White
             ),
             actions = {
-                IconButton(onClick = {
-                    navController.navigate(Screen.Search)
-                }) {
+                IconButton(
+                    onClick = {
+                        navController.navigate(Screen.Search)
+                    }
+                ) {
                     Icon(
                         imageVector = Icons.TwoTone.Search,
                         contentDescription = "home_screen_search"
@@ -90,6 +96,7 @@ fun AppBar(
 @Composable
 fun SearchAppBar(
     onSearch: (String) -> Unit,
+    onBack: () -> Unit,
     searchHistoryList: List<String>,
     onDeleteSearchHistory: (String) -> Unit
 ) {
@@ -98,9 +105,13 @@ fun SearchAppBar(
     var isShowDialog by remember { mutableStateOf(false) }
 
     SearchBar(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Red500),
         inputField = {
             SearchBarDefaults.InputField(
+                modifier = Modifier
+                    .background(Red500),
                 query = text,
                 onQueryChange = { text = it },
                 onSearch = {
@@ -110,44 +121,56 @@ fun SearchAppBar(
                 expanded = isSearchActive,
                 onExpandedChange = { isSearchActive = it },
                 placeholder = { Text("Search here...") },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                trailingIcon = {
+                leadingIcon = {
                     IconButton(onClick = {
-                        if (text.isNotEmpty()) {
-                            text = ""
-                        } else {
+                        if (isSearchActive) {
                             isSearchActive = false
+                        } else {
+                            onBack()
                         }
                     }) {
-                        Icon(
-                            Icons.Default.Close,
-                            contentDescription = null
-                        )
+                        Icon(Icons.Default.ArrowBack, contentDescription = null)
                     }
-                }
+                },
+                trailingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                colors = SearchBarDefaults.inputFieldColors(
+                    unfocusedTrailingIconColor = Color.White,
+                    focusedTrailingIconColor = Color.White,
+                    unfocusedLeadingIconColor = Color.White,
+                    focusedLeadingIconColor = Color.White,
+                    focusedPlaceholderColor = Color.White,
+                    unfocusedPlaceholderColor = Color.White,
+                    unfocusedTextColor = Color.White,
+                    focusedTextColor = Color.White
+                )
             )
         },
         expanded = isSearchActive,
-        onExpandedChange = { isSearchActive = it }
+        onExpandedChange = { isSearchActive = it },
+        colors = SearchBarColors(
+            containerColor = Red200,
+            dividerColor = Color.LightGray
+        )
     ) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(searchHistoryList) { title ->
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 14.dp)
-                    .combinedClickable(
-                        onClick = {
-                            text = title
-                            isSearchActive = false
-                            onSearch(title)
-                        },
-                        onLongClick = {
-                            text = title
-                            isShowDialog = true
-                        }
-                    )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 14.dp)
+                        .combinedClickable(
+                            onClick = {
+                                text = title
+                                isSearchActive = false
+                                onSearch(title)
+                            },
+                            onLongClick = {
+                                text = title
+                                isShowDialog = true
+                            }
+                        )
                 ) {
                     Icon(
                         modifier = Modifier.padding(end = 10.dp),

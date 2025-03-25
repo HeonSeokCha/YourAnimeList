@@ -31,14 +31,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ActorMediaTab(
-    info: Flow<PagingData<Pair<CharacterInfo, AnimeInfo>>>,
+    info: Flow<PagingData<Pair<CharacterInfo, AnimeInfo>>>?,
     sortOptionName: String,
     onAnimeClick: (id: Int, idMal: Int) -> Unit,
     onCharaClick: (id: Int) -> Unit,
     onChangeSortEvent: (String) -> Unit
 ) {
     val listState = rememberLazyGridState()
-    val pagingData = info.collectAsLazyPagingItems()
+    val pagingData = info?.collectAsLazyPagingItems()
     val coroutineScope = rememberCoroutineScope()
 
     LazyVerticalGrid(
@@ -74,61 +74,63 @@ fun ActorMediaTab(
             }
         }
 
-        items(
-            count = pagingData.itemCount,
-            key = pagingData.itemKey { "${it.first.id}/${it.second.id}" }
-        ) {
-            ItemActorMedia(
-                info = pagingData[it],
-                onAnimeClick = { id, idMal ->
-                    onAnimeClick(id, idMal)
-                },
-                onCharaClick = { id ->
-                    onCharaClick(id)
-                }
-            )
-        }
-
-        when (pagingData.loadState.refresh) {
-            is LoadState.Loading -> {
-                items(10) {
-                    ItemAnimeSmall(null)
-                }
+        if (pagingData != null) {
+            items(
+                count = pagingData.itemCount,
+                key = pagingData.itemKey { "${it.first.id}/${it.second.id}" }
+            ) {
+                ItemActorMedia(
+                    info = pagingData[it],
+                    onAnimeClick = { id, idMal ->
+                        onAnimeClick(id, idMal)
+                    },
+                    onCharaClick = { id ->
+                        onCharaClick(id)
+                    }
+                )
             }
 
-            is LoadState.Error -> {
-                item {
-                    Text(
-                        text = "Something Wrong for Loading List."
-                    )
+            when (pagingData.loadState.refresh) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemAnimeSmall(null)
+                    }
                 }
-            }
 
-            else -> {
-                if (pagingData.itemCount == 0) {
+                is LoadState.Error -> {
                     item {
-                        ItemNoResultImage()
+                        Text(
+                            text = "Something Wrong for Loading List."
+                        )
+                    }
+                }
+
+                else -> {
+                    if (pagingData.itemCount == 0) {
+                        item {
+                            ItemNoResultImage()
+                        }
                     }
                 }
             }
-        }
 
-        when (pagingData.loadState.append) {
-            is LoadState.Loading -> {
-                items(10) {
-                    ItemAnimeSmall(null)
+            when (pagingData.loadState.append) {
+                is LoadState.Loading -> {
+                    items(10) {
+                        ItemAnimeSmall(null)
+                    }
                 }
-            }
 
-            is LoadState.Error -> {
-                item {
-                    Text(
-                        text = "Something Wrong for Loading List."
-                    )
+                is LoadState.Error -> {
+                    item {
+                        Text(
+                            text = "Something Wrong for Loading List."
+                        )
+                    }
                 }
-            }
 
-            else -> Unit
+                else -> Unit
+            }
         }
     }
 }
