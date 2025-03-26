@@ -1,26 +1,34 @@
 package com.chs.presentation.main
 
+import android.app.appsearch.SearchResults
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.input.delete
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
@@ -28,6 +36,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.chs.presentation.R
 import com.chs.presentation.ui.theme.Red200
 import com.chs.presentation.ui.theme.Red500
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -100,61 +109,68 @@ fun SearchAppBar(
     searchHistoryList: List<String>,
     onDeleteSearchHistory: (String) -> Unit
 ) {
-    var text by remember { mutableStateOf("") }
-    var isSearchActive by remember { mutableStateOf(false) }
     var isShowDialog by remember { mutableStateOf(false) }
-
-    SearchBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Red500),
-        inputField = {
+    val scope = rememberCoroutineScope()
+    val searchBarState = rememberSearchBarState()
+    val textFieldState = rememberTextFieldState()
+    val inputField =
+        @Composable {
             SearchBarDefaults.InputField(
-                modifier = Modifier
-                    .background(Red500),
-                query = text,
-                onQueryChange = { text = it },
+                shape = RectangleShape,
+                searchBarState = searchBarState,
+                textFieldState = textFieldState,
                 onSearch = {
-                    isSearchActive = false
+                    scope.launch {
+                        searchBarState.animateToCollapsed()
+                    }
                     onSearch(it)
                 },
-                expanded = isSearchActive,
-                onExpandedChange = { isSearchActive = it },
                 placeholder = { Text("Search here...") },
                 leadingIcon = {
-                    IconButton(onClick = {
-                        if (isSearchActive) {
-                            isSearchActive = false
-                        } else {
-                            onBack()
+                    IconButton(
+                        onClick = {
+                            if (searchBarState.currentValue == SearchBarValue.Expanded) {
+                                scope.launch { searchBarState.animateToCollapsed() }
+                            } else onBack()
                         }
-                    }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = null)
+                    ) {
+                        Icon(Icons.AutoMirrored.Default.ArrowBack, contentDescription = "Back")
                     }
                 },
                 trailingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 colors = SearchBarDefaults.inputFieldColors(
+                    focusedContainerColor = Red200,
+                    unfocusedContainerColor = Red500,
+                    focusedTrailingIconColor = Color.Black,
                     unfocusedTrailingIconColor = Color.White,
-                    focusedTrailingIconColor = Color.White,
+                    focusedLeadingIconColor = Color.Black,
                     unfocusedLeadingIconColor = Color.White,
-                    focusedLeadingIconColor = Color.White,
-                    focusedPlaceholderColor = Color.White,
+                    focusedPlaceholderColor = Color.Black,
                     unfocusedPlaceholderColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    focusedTextColor = Color.White
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.White
                 )
             )
-        },
-        expanded = isSearchActive,
-        onExpandedChange = { isSearchActive = it },
-        colors = SearchBarColors(
+        }
+
+    SearchBar(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(TopAppBarDefaults.MediumAppBarCollapsedHeight),
+        shape = RectangleShape,
+        state = searchBarState,
+        inputField = inputField
+    )
+
+    ExpandedFullScreenSearchBar(
+        state = searchBarState,
+        inputField = inputField,
+        colors = SearchBarDefaults.colors(
             containerColor = Red200,
-            dividerColor = Color.LightGray
+            inputFieldColors = TextFieldDefaults.colors()
         )
     ) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(searchHistoryList) { title ->
                 Row(
                     modifier = Modifier
@@ -162,12 +178,18 @@ fun SearchAppBar(
                         .padding(all = 14.dp)
                         .combinedClickable(
                             onClick = {
-                                text = title
-                                isSearchActive = false
+                                textFieldState.edit {
+                                    delete(0, length)
+                                    append(title)
+                                }
+                                scope.launch { searchBarState.animateToCollapsed() }
                                 onSearch(title)
                             },
                             onLongClick = {
-                                text = title
+                                textFieldState.edit {
+                                    delete(0, length)
+                                    append(title)
+                                }
                                 isShowDialog = true
                             }
                         )
@@ -181,30 +203,29 @@ fun SearchAppBar(
                 }
             }
         }
+    }
 
-        if (isShowDialog) {
-            AlertDialog(
-                onDismissRequest = { isShowDialog = false },
-                title = { Text(text = text) },
-                text = { Text(text = "Are You Sure Delete Search History?") },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            isShowDialog = false
-                            onDeleteSearchHistory(text)
-                        }) {
-                        Text("Delete")
-                    }
-                },
-                dismissButton = {
-                    Button(
-                        onClick = {
-                            isShowDialog = false
-                        }) {
-                        Text("Cancel")
-                    }
+    if (isShowDialog) {
+        AlertDialog(
+            onDismissRequest = { isShowDialog = false },
+            title = { Text(text = textFieldState.text.toString()) },
+            text = { Text(text = "Are You Sure Delete Search History?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        isShowDialog = false
+                        onDeleteSearchHistory(
+                            textFieldState.text.toString()
+                        )
+                    }) {
+                    Text("Delete")
                 }
-            )
-        }
+            },
+            dismissButton = {
+                Button(onClick = { isShowDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
     }
 }
