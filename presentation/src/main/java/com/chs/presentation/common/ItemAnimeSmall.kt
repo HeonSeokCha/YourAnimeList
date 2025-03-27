@@ -70,20 +70,16 @@ fun ItemAnimeSmall(
                     .wrapContentHeight()
                     .align(AbsoluteAlignment.TopLeft),
             ) {
-                AsyncImage(
+                ShimmerImage(
                     modifier = Modifier
                         .width(130.dp)
                         .height(180.dp)
                         .clip(RoundedCornerShape(5.dp))
                         .placeholder(visible = item == null),
-                    model = item?.imageUrl,
-                    placeholder = ColorPainter(Color.LightGray),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = null
+                    url = item?.imageUrl,
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
-
 
                 Text(
                     modifier = Modifier

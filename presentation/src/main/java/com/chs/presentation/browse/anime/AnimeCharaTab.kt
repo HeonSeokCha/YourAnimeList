@@ -29,6 +29,7 @@ import coil.compose.AsyncImage
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.presentation.browse.BrowseScreen
+import com.chs.presentation.common.ShimmerImage
 import com.chs.presentation.common.placeholder
 
 @Composable
@@ -77,14 +78,11 @@ fun CharaImageItem(
             },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        AsyncImage(
+        ShimmerImage(
             modifier = Modifier
                 .size(100.dp)
                 .clip(RoundedCornerShape(100)),
-            placeholder = ColorPainter(Color.LightGray),
-            model = charaInfo?.imageUrl,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
+            url = charaInfo?.imageUrl
         )
 
         Spacer(modifier = Modifier.height(4.dp))

@@ -38,6 +38,7 @@ import com.chs.presentation.UiConst
 import com.chs.presentation.UiConst.GENRE_COLOR
 import com.chs.presentation.color
 import com.chs.presentation.common.PlaceholderHighlight
+import com.chs.presentation.common.ShimmerImage
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.common.shimmer
 import com.chs.presentation.ui.theme.YourAnimeListTheme
@@ -62,18 +63,12 @@ fun ItemHomeBanner(
                 }
             }
     ) {
-        AsyncImage(
+        ShimmerImage(
             modifier = Modifier
                 .fillMaxWidth(0.4f)
-                .height(220.dp)
-                .background(Color.LightGray)
-                .placeholder(visible = banner == null),
-            model = banner?.animeInfo?.imageUrl,
-            placeholder = ColorPainter(
-                banner?.animeInfo?.imagePlaceColor?.color ?: Color.LightGray
-            ),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
+                .height(220.dp),
+            url = banner?.animeInfo?.imageUrl,
+            color = banner?.animeInfo?.imagePlaceColor?.color ?: Color.LightGray
         )
 
         Box(
@@ -109,7 +104,9 @@ fun ItemHomeBanner(
                 color = banner?.animeInfo?.imagePlaceColor?.color ?: Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 11.sp,
-                maxLines = 1, overflow = TextOverflow.Ellipsis ) }
+                maxLines = 1, overflow = TextOverflow.Ellipsis
+            )
+        }
 
 
         if (banner?.genres != null) {
@@ -126,7 +123,12 @@ fun ItemHomeBanner(
                         modifier = Modifier
                             .height(24.dp)
                             .padding(horizontal = 2.dp),
-                        onClick = { },
+                        onClick = {
+                            onClick(
+                                banner.animeInfo.id,
+                                banner.animeInfo.idMal
+                            )
+                        },
                         label = {
                             Text(
                                 text = genre ?: "Unknown",

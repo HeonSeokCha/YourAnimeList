@@ -24,6 +24,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberFloatingToolbarState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -47,6 +49,9 @@ import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemErrorImage
 import com.chs.presentation.common.ItemNoResultImage
 import com.chs.presentation.common.ItemPullToRefreshBox
+import com.chs.presentation.ui.theme.Pink80
+import com.chs.presentation.ui.theme.PurpleGrey80
+import com.chs.presentation.ui.theme.Red200
 import com.chs.presentation.ui.theme.Red500
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -85,11 +90,20 @@ fun SortedListScreen(
 ) {
     val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
     val coroutineScope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState()
     val scrollState = rememberScrollState()
     val listState = rememberLazyGridState()
 
     LaunchedEffect(state.sortFilter) {
         onEvent(SortEvent.GetSortList)
+    }
+
+    LaunchedEffect(state.isShowDialog) {
+        if (state.isShowDialog) {
+            sheetState.show()
+        } else {
+            sheetState.hide()
+        }
     }
 
     Scaffold(
@@ -101,6 +115,7 @@ fun SortedListScreen(
                 expanded = listState.isScrollingUp(),
                 icon = { Icon(Icons.Filled.Tune, null) },
                 text = { Text(text = "Filter") },
+                containerColor = Red200
             )
         },
         floatingActionButtonPosition = FabPosition.End,
@@ -252,7 +267,9 @@ fun SortedListScreen(
 
     if (state.isShowDialog) {
         ModalBottomSheet(
-            onDismissRequest = { onEvent(SortEvent.OnChangeDialogState) }
+            onDismissRequest = {
+                onEvent(SortEvent.OnChangeDialogState)
+            }
         ) {
             SortFilterDialog(
                 selectedSortFilter = state.sortFilter,

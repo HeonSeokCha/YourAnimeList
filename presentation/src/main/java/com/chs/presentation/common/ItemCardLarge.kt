@@ -56,16 +56,12 @@ fun ItemCardLarge(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            AsyncImage(
+            ShimmerImage(
                 modifier = Modifier
                     .width(150.dp)
                     .height(190.dp)
-                    .align(Alignment.CenterStart)
-                    .placeholder(visible = imageUrl == null),
-                model = imageUrl,
-                placeholder = ColorPainter(Color.LightGray),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
+                    .align(Alignment.CenterStart),
+                url = imageUrl
             )
 
             Column(

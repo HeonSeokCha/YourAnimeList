@@ -98,7 +98,6 @@ fun HomeScreen(
                 )
             }
         } else {
-
             val data = state.animeRecommendList
             item {
                 if (data?.bannerList != null) {
