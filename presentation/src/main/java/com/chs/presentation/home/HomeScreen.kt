@@ -82,8 +82,9 @@ fun HomeScreen(
 
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxSize()
+            .background(Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (state.isLoading) {
             item {
@@ -117,7 +118,8 @@ fun HomeScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 8.dp),
+                            .padding(top = 8.dp)
+                            .background(Color.White),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -174,6 +176,7 @@ private fun ItemRecommendCategory(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .background(Color.White)
             .padding(
                 start = 8.dp,
                 end = 8.dp

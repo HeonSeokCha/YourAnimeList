@@ -3,13 +3,10 @@ package com.chs.presentation.search
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -76,16 +73,7 @@ fun SearchScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        TabRow(
-            modifier = Modifier.fillMaxWidth(),
-            selectedTabIndex = state.selectedTabIdx,
-            indicator = { tabPositions ->
-                SecondaryIndicator(
-                    modifier = Modifier.tabIndicatorOffset(tabPositions[state.selectedTabIdx]),
-                    color = Pink80
-                )
-            }
-        ) {
+        SecondaryTabRow(state.selectedTabIdx) {
             UiConst.SEARCH_TAB_LIST.forEachIndexed { index, title ->
                 Tab(
                     text = {

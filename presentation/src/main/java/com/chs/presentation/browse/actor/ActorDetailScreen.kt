@@ -17,6 +17,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
@@ -49,6 +50,7 @@ import com.chs.presentation.UiConst
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.browse.character.ProfileText
 import com.chs.presentation.common.ItemPullToRefreshBox
+import com.chs.presentation.common.ShimmerImage
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.toCommaFormat
 import com.chs.presentation.ui.theme.Pink80
@@ -124,16 +126,7 @@ fun ActorDetailScreen(
         onCloseClick = {
             onEvent(ActorDetailEvent.ClickBtn.Close)
         }, stickyHeader = {
-            TabRow(
-                modifier = Modifier.fillMaxWidth(),
-                selectedTabIndex = state.tabIdx,
-                indicator = { tabPositions ->
-                    SecondaryIndicator(
-                        modifier = Modifier.tabIndicatorOffset(tabPositions[state.tabIdx]),
-                        color = Pink80
-                    )
-                }
-            ) {
+            SecondaryTabRow(state.tabIdx) {
                 state.tabNames.forEachIndexed { index, title ->
                     Tab(
                         text = {
@@ -200,14 +193,11 @@ private fun ActorInfo(actorInfo: VoiceActorDetailInfo?) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            AsyncImage(
+            ShimmerImage(
                 modifier = Modifier
                     .size(150.dp)
                     .clip(RoundedCornerShape(100)),
-                model = actorInfo?.voiceActorInfo?.imageUrl,
-                placeholder = ColorPainter(Color.LightGray),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
+                url = actorInfo?.voiceActorInfo?.imageUrl,
             )
 
             Column(

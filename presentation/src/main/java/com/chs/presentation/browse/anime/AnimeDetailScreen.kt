@@ -1,7 +1,6 @@
 package com.chs.presentation.browse.anime
 
 import android.widget.Toast
-import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,24 +19,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.LightGray
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -47,13 +40,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.color
 import com.chs.presentation.common.ItemSaveButton
+import com.chs.presentation.common.ShimmerImage
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.isNotEmptyValue
 import com.chs.presentation.ui.theme.Pink80
@@ -169,16 +162,8 @@ fun AnimeDetailScreen(
         isShowTopBar = false,
         onCloseClick = { onEvent(AnimeDetailEvent.ClickButton.Close) },
         stickyHeader = {
-            TabRow(
-                modifier = Modifier.fillMaxWidth(),
-                selectedTabIndex = state.selectTabIdx,
-                indicator = { tabPositions ->
-                    SecondaryIndicator(
-                        modifier = Modifier
-                            .tabIndicatorOffset(tabPositions[state.selectTabIdx]),
-                        color = Pink80
-                    )
-                }
+            SecondaryTabRow(
+                selectedTabIndex = state.selectTabIdx
             ) {
                 UiConst.ANIME_DETAIL_TAB_LIST.forEachIndexed { index, title ->
                     Tab(
@@ -250,18 +235,15 @@ private fun AnimeDetailHeadBanner(
             .height(440.dp)
     ) {
         Box {
-            AsyncImage(
+            ShimmerImage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(250.dp)
                     .background(
                         color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
                             ?: LightGray
-                    )
-                    .placeholder(visible = animeDetailInfo == null),
-                model = animeDetailInfo?.bannerImage,
-                contentDescription = null,
-                contentScale = ContentScale.Crop
+                    ),
+                url = animeDetailInfo?.bannerImage
             )
 
             if (animeDetailInfo?.trailerInfo != null) {
@@ -282,7 +264,7 @@ private fun AnimeDetailHeadBanner(
                 .align(Alignment.TopStart)
                 .padding(start = 8.dp, top = 160.dp)
         ) {
-            AsyncImage(
+            ShimmerImage(
                 modifier = Modifier
                     .width(130.dp)
                     .height(180.dp)
@@ -290,11 +272,8 @@ private fun AnimeDetailHeadBanner(
                     .background(
                         color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
                             ?: Gray
-                    )
-                    .placeholder(visible = animeDetailInfo == null),
-                model = animeDetailInfo?.animeInfo?.imageUrl,
-                contentDescription = null,
-                contentScale = ContentScale.Crop
+                    ),
+                url = animeDetailInfo?.animeInfo?.imageUrl
             )
         }
 

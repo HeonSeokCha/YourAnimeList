@@ -77,24 +77,20 @@ fun ItemActorMedia(
                         .width(130.dp)
                         .height(200.dp)
                 ) {
-                    AsyncImage(
+                    ShimmerImage(
                         modifier = Modifier
                             .width(130.dp)
                             .height(200.dp)
                             .clip(RoundedCornerShape(5.dp))
-                            .placeholder(visible = info == null)
                             .clickable {
                                 if (info?.first != null) {
                                     onCharaClick(info.first.id)
                                 }
                             },
-                        model = info?.first?.imageUrl,
-                        placeholder = ColorPainter(Color.LightGray),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = null
+                        url = info?.first?.imageUrl
                     )
 
-                    AsyncImage(
+                    ShimmerImage(
                         modifier = Modifier
                             .width(55.dp)
                             .height(80.dp)
@@ -103,7 +99,6 @@ fun ItemActorMedia(
                                 width = 2.dp,
                                 color = Color.White,
                             )
-                            .placeholder(visible = info == null)
                             .align(AbsoluteAlignment.BottomRight)
                             .clickable {
                                 if (info?.second != null) {
@@ -113,10 +108,7 @@ fun ItemActorMedia(
                                     )
                                 }
                             },
-                        model = info?.second?.imageUrl,
-                        placeholder = ColorPainter(Color.LightGray),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = null
+                        url = info?.second?.imageUrl
                     )
                 }
 

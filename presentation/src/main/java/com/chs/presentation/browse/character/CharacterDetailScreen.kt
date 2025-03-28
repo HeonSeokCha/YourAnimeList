@@ -66,6 +66,7 @@ import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemMessageDialog
 import com.chs.presentation.common.ItemSaveButton
+import com.chs.presentation.common.ShimmerImage
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.toCommaFormat
 import com.chs.presentation.ui.theme.Pink80
@@ -124,7 +125,6 @@ fun CharacterDetailScreen(
     val pagingItem = state.animeList?.collectAsLazyPagingItems()
     val lazyVerticalStaggeredState = rememberLazyStaggeredGridState()
     val scrollState = rememberScrollState()
-    val coroutineScope = rememberCoroutineScope()
     var descDialogShow by remember { mutableStateOf(false) }
     var spoilerDesc by remember { mutableStateOf("") }
 
@@ -271,14 +271,11 @@ private fun CharacterBanner(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            AsyncImage(
+            ShimmerImage(
                 modifier = Modifier
                     .size(150.dp)
                     .clip(RoundedCornerShape(100)),
-                model = characterInfo?.characterInfo?.imageUrl,
-                placeholder = ColorPainter(Color.LightGray),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
+                url = characterInfo?.characterInfo?.imageUrl,
             )
 
             Column(
@@ -460,14 +457,11 @@ private fun CharacterVoiceActorInfo(
             },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        AsyncImage(
+        ShimmerImage(
             modifier = Modifier
                 .size(100.dp)
                 .clip(RoundedCornerShape(100)),
-            placeholder = ColorPainter(Color.LightGray),
-            model = info.imageUrl,
-            contentDescription = null,
-            contentScale = ContentScale.Crop
+            url = info.imageUrl
         )
 
         Spacer(modifier = Modifier.height(4.dp))
