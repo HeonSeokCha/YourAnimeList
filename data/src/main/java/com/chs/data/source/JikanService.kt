@@ -8,7 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class KtorJikanService @Inject constructor(
+class JikanService @Inject constructor(
     private val client: HttpClient
 ) {
     suspend fun getAnimeTheme(malId: Int): JikanAnimeDataDto {

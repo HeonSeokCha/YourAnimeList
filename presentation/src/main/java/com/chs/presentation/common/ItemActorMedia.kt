@@ -47,7 +47,12 @@ fun ItemActorMedia(
     Card(
         modifier = Modifier
             .width(130.dp)
-            .height(280.dp),
+            .height(280.dp)
+            .clickable {
+                if (info?.first == null) return@clickable
+
+                onCharaClick(info.first.id)
+            },
         shape = RoundedCornerShape(5.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp,
@@ -56,88 +61,72 @@ fun ItemActorMedia(
             containerColor = Color.White
         )
     ) {
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    top = 4.dp,
-                    start = 4.dp,
-                    end = 4.dp,
-                    bottom = 4.dp
-                ),
+                .padding(4.dp),
+            verticalArrangement = Arrangement.Top
         ) {
-            Column(
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .align(AbsoluteAlignment.TopLeft),
+                    .width(130.dp)
+                    .height(200.dp)
             ) {
-                Box(
+                ShimmerImage(
                     modifier = Modifier
                         .width(130.dp)
                         .height(200.dp)
-                ) {
-                    ShimmerImage(
-                        modifier = Modifier
-                            .width(130.dp)
-                            .height(200.dp)
-                            .clip(RoundedCornerShape(5.dp))
-                            .clickable {
-                                if (info?.first != null) {
-                                    onCharaClick(info.first.id)
-                                }
-                            },
-                        url = info?.first?.imageUrl
-                    )
-
-                    ShimmerImage(
-                        modifier = Modifier
-                            .width(55.dp)
-                            .height(80.dp)
-                            .clip(RoundedCornerShape(bottomEnd = 5.dp))
-                            .border(
-                                width = 2.dp,
-                                color = Color.White,
-                            )
-                            .align(AbsoluteAlignment.BottomRight)
-                            .clickable {
-                                if (info?.second != null) {
-                                    onAnimeClick(
-                                        info.second.id,
-                                        info.second.idMal
-                                    )
-                                }
-                            },
-                        url = info?.second?.imageUrl
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-
-                Text(
-                    modifier = Modifier
-                        .placeholder(visible = info == null),
-                    text = info?.first?.name ?: UiConst.TITLE_PREVIEW,
-                    color = Color.Gray,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 12.sp,
-                    lineHeight = 16.sp
+                        .clip(RoundedCornerShape(5.dp)),
+                    url = info?.first?.imageUrl
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
+                ShimmerImage(
                     modifier = Modifier
-                        .placeholder(visible = info == null),
-                    text = info?.second?.title ?: UiConst.TITLE_PREVIEW,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 12.sp,
-                    lineHeight = 16.sp
+                        .width(60.dp)
+                        .height(90.dp)
+                        .clip(RoundedCornerShape(bottomEnd = 5.dp))
+                        .border(
+                            width = 2.dp,
+                            color = Color.White,
+                        )
+                        .align(AbsoluteAlignment.BottomRight)
+                        .clickable {
+                            if (info?.second == null) return@clickable
+
+                            onAnimeClick(
+                                info.second.id,
+                                info.second.idMal
+                            )
+                        },
+                    url = info?.second?.imageUrl
                 )
             }
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+
+            Text(
+                modifier = Modifier
+                    .placeholder(visible = info == null),
+                text = info?.first?.name ?: UiConst.TITLE_PREVIEW,
+                color = Color.Gray,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                fontSize = 12.sp,
+                lineHeight = 16.sp
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                modifier = Modifier
+                    .placeholder(visible = info == null),
+                text = info?.second?.title ?: UiConst.TITLE_PREVIEW,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                fontSize = 12.sp,
+                lineHeight = 16.sp
+            )
         }
     }
 }

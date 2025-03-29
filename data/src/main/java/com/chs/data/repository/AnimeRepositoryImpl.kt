@@ -14,7 +14,7 @@ import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.AnimeRecommendList
 import com.chs.domain.model.AnimeThemeInfo
 import com.chs.domain.repository.AnimeRepository
-import com.chs.data.source.KtorJikanService
+import com.chs.data.source.JikanService
 import com.chs.data.source.db.dao.AnimeListDao
 import com.chs.data.mapper.*
 import com.chs.data.paging.AnimeRecPagingSource
@@ -39,7 +39,7 @@ import javax.inject.Inject
 
 class AnimeRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
-    private val jikanService: KtorJikanService,
+    private val jikanService: JikanService,
     private val animeDao: AnimeListDao,
     private val genreDao: GenreDao,
     private val tagDao: TagDao
