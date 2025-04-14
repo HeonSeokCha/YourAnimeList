@@ -4,12 +4,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,6 +21,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.chs.presentation.ui.theme.Pink80
+import com.chs.presentation.ui.theme.Red500
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,24 +42,32 @@ fun ItemExpandSingleBox(
 
         OutlinedTextField(
             modifier = Modifier
-                .menuAnchor(MenuAnchorType.PrimaryNotEditable),
-            value = initValue ?: "Any",
+                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
+            value = selectOptions ?: "Any",
             onValueChange = {},
             readOnly = true,
             singleLine = true,
             label = { Text(text = title) },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) }
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedPlaceholderColor = Color.White,
+                focusedPlaceholderColor = Color.White
+            )
         )
 
         ExposedDropdownMenu(
-            matchTextFieldWidth = true,
             expanded = expanded,
             onDismissRequest = { expanded = false },
             containerColor = Color.White
         ) {
             list.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option.first, style = MaterialTheme.typography.bodyLarge) },
+                    text = {
+                        Text(
+                            text = option.first,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    },
                     onClick = {
                         selectOptions = option.first
                         selectValue(option)
@@ -66,5 +79,5 @@ fun ItemExpandSingleBox(
         }
     }
 
-    Spacer(Modifier.height(12.dp))
+    Spacer(Modifier.height(16.dp))
 }

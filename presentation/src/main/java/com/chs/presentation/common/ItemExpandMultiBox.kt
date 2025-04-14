@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
@@ -51,7 +52,7 @@ fun ItemExpandingMultiBox(
 
         TextField(
             modifier = Modifier
-                .menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
             value = if (selectedList.isNotEmpty()) {
                 if (selectedList.size > 1) {
                     "${selectedList.first()} + ${selectedList.size - 1}"
@@ -69,7 +70,6 @@ fun ItemExpandingMultiBox(
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            matchTextFieldWidth = true
         ) {
             list.forEach { option ->
                 DropdownMenuItem(
@@ -103,5 +103,5 @@ fun ItemExpandingMultiBox(
         }
     }
 
-    Spacer(Modifier.height(12.dp))
+    Spacer(Modifier.height(16.dp))
 }

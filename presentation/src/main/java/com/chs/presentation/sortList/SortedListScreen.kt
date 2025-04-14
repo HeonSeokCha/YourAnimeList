@@ -277,7 +277,6 @@ fun SortedListScreen(
             ) {
                 coroutineScope.launch { listState.scrollToItem(0) }
                 onEvent(SortEvent.ChangeSortOption(it))
-                onEvent(SortEvent.OnChangeDialogState)
             }
         }
     }

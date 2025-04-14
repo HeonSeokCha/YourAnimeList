@@ -88,16 +88,15 @@ class SortedViewModel @Inject constructor(
             is SortEvent.ChangeSortOption -> {
                 _state.update {
                     it.copy(
-                        sortFilter = event.value
+                        sortFilter = event.value,
+                        isShowDialog = !it.isShowDialog
                     )
                 }
             }
 
             SortEvent.OnChangeDialogState -> {
                 _state.update {
-                    it.copy(
-                        isShowDialog = !it.isShowDialog
-                    )
+                    it.copy(isShowDialog = !it.isShowDialog)
                 }
             }
 

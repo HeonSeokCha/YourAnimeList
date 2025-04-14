@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chs.presentation.ui.theme.Red200
 
 @Composable
 fun ItemChipOptions(
@@ -29,7 +30,7 @@ fun ItemChipOptions(
 ) {
     var selectIdx: Int by remember {
         if (initValue == null) {
-            mutableIntStateOf(list.size)
+            mutableIntStateOf(0)
         } else {
             mutableIntStateOf(
                 list.indexOf(list.find { it.second == initValue }!!)
@@ -45,7 +46,10 @@ fun ItemChipOptions(
 
     Spacer(Modifier.height(8.dp))
 
-    SecondaryTabRow(selectedTabIndex = selectIdx) {
+    SecondaryTabRow(
+        containerColor = Red200,
+        selectedTabIndex = selectIdx
+    ) {
         list.forEach { options ->
             Row(
                 modifier = Modifier
