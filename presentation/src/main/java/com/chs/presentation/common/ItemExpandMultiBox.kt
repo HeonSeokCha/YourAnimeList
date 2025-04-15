@@ -1,6 +1,7 @@
 package com.chs.presentation.common
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -12,18 +13,23 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chs.presentation.ui.theme.Red500
+import java.util.Collections.addAll
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,24 +40,19 @@ fun ItemExpandingMultiBox(
     selectValue: (List<String>?) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val selectedList: MutableList<String> =
-        remember { initValue?.toMutableList() ?: mutableListOf() }
-
-    Text(
-        text = title,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.SemiBold
-    )
-
-    Spacer(Modifier.height(8.dp))
+    val selectedList = remember {
+        mutableStateListOf<String>().apply {
+            initValue?.let { this.addAll(it) }
+        }
+    }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = it },
     ) {
-
-        TextField(
+        OutlinedTextField(
             modifier = Modifier
+                .fillMaxWidth()
                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
             value = if (selectedList.isNotEmpty()) {
                 if (selectedList.size > 1) {
@@ -63,8 +64,12 @@ fun ItemExpandingMultiBox(
             onValueChange = {},
             readOnly = true,
             singleLine = true,
+            label = { Text(text = title) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedPlaceholderColor = Color.White,
+                focusedPlaceholderColor = Color.White
+            )
         )
 
         ExposedDropdownMenu(
@@ -86,7 +91,6 @@ fun ItemExpandingMultiBox(
                         } else {
                             selectValue(selectedList)
                         }
-                        expanded = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     leadingIcon = {

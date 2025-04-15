@@ -1,6 +1,7 @@
 package com.chs.presentation.common
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,6 +43,7 @@ fun ItemExpandSingleBox(
 
         OutlinedTextField(
             modifier = Modifier
+                .fillMaxWidth()
                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
             value = selectOptions ?: "Any",
             onValueChange = {},
