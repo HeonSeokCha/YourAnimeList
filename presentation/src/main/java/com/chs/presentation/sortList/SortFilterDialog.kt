@@ -25,6 +25,7 @@ fun SortFilterDialog(
     onClick: (SortFilter) -> Unit
 ) {
     var selectSortOptions: SortFilter = remember { selectedSortFilter }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,7 +40,7 @@ fun SortFilterDialog(
             selectSortOptions = selectSortOptions.copy(selectYear = it?.second?.toInt())
         }
 
-        ItemChipOptions(
+        ItemExpandSingleBox(
             title = "Season",
             list = sortOptions.optionSeason,
             initValue = selectedSortFilter.selectSeason
@@ -57,12 +58,14 @@ fun SortFilterDialog(
             }
         }
 
-        ItemChipOptions(
+        ItemExpandSingleBox(
             title = "Status By",
             list = sortOptions.optionStatus,
             initValue = selectedSortFilter.selectStatus
         ) {
-            selectSortOptions = selectSortOptions.copy(selectStatus = it?.second)
+            if (it != null) {
+                selectSortOptions = selectSortOptions.copy(selectStatus = it?.second)
+            }
         }
 
         ItemExpandingMultiBox(
