@@ -89,7 +89,7 @@ fun ItemCardLarge(
                 Text(
                     modifier = Modifier
                         .placeholder(visible = subTitle == null),
-                    text = subTitle ?: UiConst.UNKNOWN,
+                    text = subTitle ?: UiConst.TITLE_PREVIEW,
                     color = Color.White
                 )
             }
@@ -106,6 +106,8 @@ fun ItemCardLarge(
                     .filter { it.isNotEmptyValue }
                     .forEachIndexed { idx, score ->
                         Text(
+                            modifier = Modifier
+                                .placeholder(visible = title == null),
                             text = buildAnnotatedString {
                                 if (idx == 0) {
                                     appendInlineContent(

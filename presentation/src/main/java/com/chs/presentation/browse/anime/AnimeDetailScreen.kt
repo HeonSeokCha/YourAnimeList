@@ -138,6 +138,7 @@ fun AnimeDetailScreen(
             AnimeDetailEvent.OnTabSelected(pagerState.currentPage)
         )
     }
+
     CollapsingToolbarScaffold(
         scrollState = scrollState,
         header = {

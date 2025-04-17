@@ -15,9 +15,9 @@ fun ItemAnimeLarge(
         title = anime?.title,
         subTitle = if (anime?.seasonYear.isNotEmptyValue) {
             "${anime?.seasonYear ?: 2000} ⦁ " +
-                    (UiConst.mediaStatus[anime?.status]?.first ?: UiConst.UNKNOWN)
+                    (UiConst.mediaStatus[anime?.status]?.first)
         } else {
-            UiConst.mediaStatus[anime?.status]?.first ?: UiConst.UNKNOWN
+            UiConst.mediaStatus[anime?.status]?.first
         },
         scoreTitle = listOf(
             anime?.averageScore,
