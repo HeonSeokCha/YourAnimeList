@@ -13,9 +13,10 @@ import androidx.paging.filter
 import com.chs.presentation.main.Screen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import androidx.core.graphics.toColorInt
 
 val String.color
-    get() = Color(android.graphics.Color.parseColor(this))
+    get() = Color(this.toColorInt())
 
 val Int?.isNotEmptyValue
     get() = this != null && this != 0

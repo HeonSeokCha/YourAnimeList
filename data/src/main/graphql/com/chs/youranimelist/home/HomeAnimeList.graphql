@@ -16,7 +16,7 @@ query HomeAnimeList(
             format: TV
         ) {
             ... animeBasicInfo
-            description(asHtml: false)
+            description(asHtml: true)
             episodes
             startDate {
                 year

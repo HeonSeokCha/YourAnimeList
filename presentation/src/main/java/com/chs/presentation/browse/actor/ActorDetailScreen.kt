@@ -1,6 +1,5 @@
 package com.chs.presentation.browse.actor
 
-import android.text.util.Linkify
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,44 +18,32 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
 import com.chs.domain.model.VoiceActorDetailInfo
 import com.chs.presentation.R
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.browse.character.ProfileText
-import com.chs.presentation.common.ItemPullToRefreshBox
 import com.chs.presentation.common.ShimmerImage
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.toCommaFormat
 import com.chs.presentation.ui.theme.Pink80
-import dev.jeziellago.compose.markdowntext.MarkdownText
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun ActorDetailScreenRoot(
@@ -278,11 +265,18 @@ private fun VoiceActorProFile(info: VoiceActorDetailInfo?) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        MarkdownText(
-            markdown = info?.description ?: stringResource(id = R.string.lorem_ipsum),
-            linkifyMask = Linkify.EMAIL_ADDRESSES,
-            syntaxHighlightColor = Pink80,
-            onLinkClicked = {}
+        val spannedText = AnnotatedString.fromHtml(
+            htmlString = info?.description ?: stringResource(id = R.string.lorem_ipsum),
+            linkInteractionListener = {
+
+            }
+        )
+
+        Text(
+            modifier = Modifier
+                .placeholder(visible = info == null),
+            text = spannedText,
+            fontSize = 16.sp
         )
     }
 }

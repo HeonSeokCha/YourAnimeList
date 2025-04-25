@@ -9,7 +9,7 @@ query CharacterDetailQuery($id: Int) {
             day
         }
         bloodType
-        description
+        description(asHtml: true)
         media {
             edges {
                 voiceActors {

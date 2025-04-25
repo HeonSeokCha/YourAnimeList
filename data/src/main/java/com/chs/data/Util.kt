@@ -72,4 +72,8 @@ object Util {
         }
         return a
     }
+
+    fun convertSpoilerFromHtml(desc: String): String {
+        return desc
+    }
 }

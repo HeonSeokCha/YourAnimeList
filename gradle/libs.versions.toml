@@ -8,25 +8,25 @@ versionCode = "1"
 versionName = "1.0"
 
 activity = "1.10.1"
-compose-ui = "1.7.8"
+compose-ui = "1.8.0"
 lifecycle = "2.8.7"
-room = "2.6.1"
+room = "2.7.1"
 paging = "3.3.6"
 coil = "2.7.0"
-hilt = "2.55"
-kotlin = "2.1.10"
-ksp = "2.1.10-1.0.30"
+hilt = "2.56.2"
+kotlin = "2.1.20"
+ksp = "2.1.20-2.0.0"
 kotlin-coroutine = "1.9.0"
-ktor = "3.0.2"
+ktor = "3.1.2"
 apollo = "4.1.1"
 
 [libraries]
 # AndroidX
-androidX-core-ktx = "androidx.core:core-ktx:1.15.0"
+androidX-core-ktx = "androidx.core:core-ktx:1.16.0"
 androidX-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
 androidX-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity"}
-androidX-compose-material-icon-extend = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-ui"}
-androidX-compose-material3 = "androidx.compose.material3:material3:1.4.0-alpha11"
+androidX-compose-material-icon-extend = "androidx.compose.material:material-icons-extended:1.7.8"
+androidX-compose-material3 = "androidx.compose.material3:material3:1.4.0-alpha13"
 androidX-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui" }
 androidX-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-ui" }
 androidX-navigation-compose = "androidx.navigation:navigation-compose:2.8.9"
@@ -48,7 +48,7 @@ javax-inject = { module = "javax.inject:javax.inject", version = "1" }
 kotlin-coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutine" }
 kotlin-coroutine-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutine" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3"
+kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1"
 
 ## Ktor
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor"}
@@ -66,7 +66,6 @@ apollo-ktor = "com.apollographql.ktor:apollo-engine-ktor:0.1.1"
 ## etc
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 junit = "junit:junit:4.13.2"
-markdown-compose = "com.github.jeziellago:compose-markdown:0.5.4"
 
 [bundles]
 apollo = [

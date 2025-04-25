@@ -22,7 +22,7 @@ query ActorDetailQuery($id: Int) {
         gender,
         homeTown,
         favourites,
-        description(asHtml: false),
+        description(asHtml: true),
         yearsActive,
         language: languageV2
     }

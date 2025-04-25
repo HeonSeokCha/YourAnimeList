@@ -47,8 +47,11 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -57,20 +60,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import coil.compose.AsyncImage
 import com.chs.presentation.UiConst
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.domain.model.VoiceActorInfo
 import com.chs.presentation.R
 import com.chs.presentation.browse.CollapsingToolbarScaffold
+import com.chs.presentation.common.HtmlText
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemMessageDialog
 import com.chs.presentation.common.ItemSaveButton
 import com.chs.presentation.common.ShimmerImage
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.toCommaFormat
-import com.chs.presentation.ui.theme.Pink80
-import dev.jeziellago.compose.markdowntext.MarkdownText
 
 @Composable
 fun CharacterDetailScreenRoot(
@@ -397,29 +398,28 @@ private fun CharacterDescription(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (expandedDescButton) {
-            MarkdownText(
-                markdown = description ?: stringResource(id = R.string.lorem_ipsum),
-                linkifyMask = Linkify.EMAIL_ADDRESSES,
-                syntaxHighlightColor = Pink80,
-                onLinkClicked = {
-                    onSpoilerClick(it.replace("%", " "))
-                }
-            )
-        } else {
-            MarkdownText(
-                modifier = Modifier
-                    .placeholder(visible = description == null),
-                markdown = description ?: stringResource(id = R.string.lorem_ipsum),
-                linkifyMask = Linkify.WEB_URLS,
-                maxLines = 5,
-                syntaxHighlightColor = Pink80,
-                truncateOnTextOverflow = true,
-                onLinkClicked = {
-                    onSpoilerClick(it.replace("%", " "))
-                }
-            )
-        }
+        val spannedText = AnnotatedString.fromHtml(
+            htmlString = description ?: stringResource(id = R.string.lorem_ipsum),
+            linkInteractionListener = {
+
+            }
+        )
+
+        HtmlText(html = description ?: "")
+
+//        if (expandedDescButton) {
+//            Text(
+//                text = spannedText
+//            )
+//        } else {
+//            Text(
+//                modifier = Modifier
+//                    .placeholder(visible = description == null),
+//                text = spannedText,
+//                maxLines = 5,
+//                overflow = TextOverflow.Ellipsis
+//            )
+//        }
 
         if (description != null && description.length > 200) {
             if (!expandedDescButton) {

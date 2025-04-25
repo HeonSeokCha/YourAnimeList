@@ -19,7 +19,7 @@ import com.chs.presentation.UiConst
 @Composable
 fun ItemNoResultImage() {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

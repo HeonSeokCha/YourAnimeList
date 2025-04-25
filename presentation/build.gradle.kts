@@ -53,5 +53,4 @@ dependencies {
     implementation(libs.androidX.paging.compose)
     implementation(libs.coil.compose)
     implementation(libs.kotlin.serialization)
-    implementation(libs.markdown.compose)
 }

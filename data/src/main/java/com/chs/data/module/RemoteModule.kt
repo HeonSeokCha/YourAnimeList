@@ -7,6 +7,7 @@ import com.apollographql.apollo.cache.http.httpCache
 import com.apollographql.apollo.cache.http.httpFetchPolicy
 import com.apollographql.ktor.ktorClient
 import com.chs.common.Constants
+import com.chs.data.source.CustomHttpLogger
 import com.chs.data.source.JikanService
 import dagger.Module
 import dagger.Provides
@@ -15,6 +16,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.*
@@ -24,6 +26,7 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import javax.inject.Singleton
+import kotlin.time.Duration.Companion.seconds
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -33,9 +36,15 @@ object RemoteModule {
     @Provides
     fun providerKtorHttpClient(): HttpClient {
         return HttpClient(Android) {
-//            install(Logging) {
-//                level = LogLevel.ALL
-//            }
+            install(Logging) {
+                logger = CustomHttpLogger()
+                level = LogLevel.ALL
+            }
+
+            install(HttpTimeout) {
+                this.connectTimeoutMillis = 60.seconds.inWholeMilliseconds
+                this.socketTimeoutMillis = 60.seconds.inWholeMilliseconds
+            }
         }
     }
 
