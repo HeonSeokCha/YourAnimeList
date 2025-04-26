@@ -8,7 +8,6 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
@@ -50,12 +49,27 @@ fun HtmlText(
                             addStyle(style = it, start = startIndex, end = endIndex)
                         }
                     }
+
                     is UnderlineSpan -> {
-                        addStyle(SpanStyle(textDecoration = TextDecoration.Underline), start = startIndex, end = endIndex)
+                        addStyle(
+                            SpanStyle(textDecoration = TextDecoration.Underline),
+                            start = startIndex,
+                            end = endIndex
+                        )
                     }
+
                     is URLSpan -> {
-                        addStyle(style = hyperlinkStyle.toSpanStyle(), start = startIndex, end = endIndex)
-                        addStringAnnotation(tag = Tag.Hyperlink.name, annotation = span.url, start = startIndex, end = endIndex)
+                        addStyle(
+                            style = hyperlinkStyle.toSpanStyle(),
+                            start = startIndex,
+                            end = endIndex
+                        )
+                        addStringAnnotation(
+                            tag = Tag.Hyperlink.name,
+                            annotation = span.url,
+                            start = startIndex,
+                            end = endIndex
+                        )
                     }
                 }
             }
@@ -71,9 +85,14 @@ fun HtmlText(
         maxLines = maxLines,
         onTextLayout = onTextLayout
     ) {
-        annotatedText.getStringAnnotations(tag = Tag.Hyperlink.name, start = it, end = it).firstOrNull()?.let {
-            onHyperlinkClick(it.item)
-        }
+        annotatedText.getStringAnnotations(
+            tag = Tag.Hyperlink.name,
+            start = it,
+            end = it
+        ).firstOrNull()
+            ?.let {
+                onHyperlinkClick(it.item)
+            }
     }
 }
 
@@ -81,10 +100,15 @@ private fun StyleSpan.toSpanStyle(): SpanStyle? {
     return when (style) {
         Typeface.BOLD -> SpanStyle(fontWeight = FontWeight.Bold)
         Typeface.ITALIC -> SpanStyle(fontStyle = FontStyle.Italic)
-        Typeface.BOLD_ITALIC -> SpanStyle(fontWeight = FontWeight.Bold, fontStyle = FontStyle.Italic)
+        Typeface.BOLD_ITALIC -> SpanStyle(
+            fontWeight = FontWeight.Bold,
+            fontStyle = FontStyle.Italic
+        )
+
         else -> null
     }
 }
+
 private enum class Tag {
     Hyperlink
 }

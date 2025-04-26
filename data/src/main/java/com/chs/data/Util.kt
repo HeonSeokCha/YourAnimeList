@@ -37,27 +37,69 @@ object Util {
         return datePattern
     }
 
-    fun findSpoilerStringList(desc: String): List<Pair<IntRange, String>> {
+//    fun findSpoilerStringListFromMarkDown(desc: String): List<Pair<IntRange, String>> {
+//        val a: ArrayList<Pair<IntRange, String>> = arrayListOf()
+//        var lastFindIdx: Int = 0
+//        while (true) {
+//            if (desc.indexOf(string = "~!", startIndex = lastFindIdx) == -1) break
+//
+//            val findSpoilerStartIdx: Int = desc.indexOf(string = "~!", startIndex = lastFindIdx) + 2
+//            val findSpoilerLastIdx: Int =
+//                desc.indexOf(string = "!~", startIndex = findSpoilerStartIdx) - 1
+//
+//            a.add(
+//                findSpoilerStartIdx..findSpoilerLastIdx to
+//                        desc.substring(findSpoilerStartIdx..findSpoilerLastIdx)
+//            )
+//
+//            lastFindIdx = findSpoilerLastIdx
+//        }
+//        return a
+//    }
+
+//    fun convertSpoilerSentenceForDescFromMarkDown(
+//        desc: String,
+//        list: List<Pair<IntRange, String>>
+//    ): String {
+//        var a: String = desc
+//        var tempIdx: Int = 0
+//        list.forEach {
+//            a = a.replaceRange(
+//                (it.first.first - 2) + (tempIdx * 13)..it.first.last + 2 + (tempIdx * 13),
+//                "==[isSpoiler](${it.second.replace(" ", "%")})=="
+//            )
+//            tempIdx += 1
+//        }
+//        return a
+//    }
+
+    fun findSpoilerFromHtml(desc: String): List<Pair<IntRange, String>> {
         val a: ArrayList<Pair<IntRange, String>> = arrayListOf()
         var lastFindIdx: Int = 0
         while (true) {
-            if (desc.indexOf(string = "~!", startIndex = lastFindIdx) == -1) break
+            if (desc.indexOf(
+                    string = "<span class='markdown_spoiler'><span>",
+                    startIndex = lastFindIdx
+                ) == -1
+            ) break
 
-            val findSpoilerStartIdx: Int = desc.indexOf(string = "~!", startIndex = lastFindIdx) + 2
+            val findSpoilerStartIdx: Int =
+                desc.indexOf(
+                    string = "<span class='markdown_spoiler'><span>",
+                    startIndex = lastFindIdx
+                )
             val findSpoilerLastIdx: Int =
-                desc.indexOf(string = "!~", startIndex = findSpoilerStartIdx) - 1
+                desc.indexOf(string = "</span></span>", startIndex = findSpoilerStartIdx) + 13
 
             a.add(
-                findSpoilerStartIdx..findSpoilerLastIdx to
-                        desc.substring(findSpoilerStartIdx..findSpoilerLastIdx)
+                findSpoilerStartIdx..findSpoilerLastIdx to desc.substring(findSpoilerStartIdx..findSpoilerLastIdx)
             )
-
             lastFindIdx = findSpoilerLastIdx
         }
         return a
     }
 
-    fun convertSpoilerSentenceForDesc(
+    fun convertSpoilerFromHtml(
         desc: String,
         list: List<Pair<IntRange, String>>
     ): String {
@@ -65,15 +107,11 @@ object Util {
         var tempIdx: Int = 0
         list.forEach {
             a = a.replaceRange(
-                (it.first.first - 2) + (tempIdx * 13)..it.first.last + 2 + (tempIdx * 13),
-                "==[isSpoiler](${it.second.replace(" ", "%")})=="
+                (it.first.first + tempIdx..it.first.last + tempIdx),
+                "<a href=>Spoiler, click to view</a>"
             )
-            tempIdx += 1
+            tempIdx += 35 - it.second.length
         }
         return a
-    }
-
-    fun convertSpoilerFromHtml(desc: String): String {
-        return desc
     }
 }

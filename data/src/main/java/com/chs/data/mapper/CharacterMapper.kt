@@ -32,10 +32,9 @@ fun CharacterDetailQuery.Character.toCharacterDetailInfo(): CharacterDetailInfo 
                 favourites = this.favourites ?: 0
             )
         },
-        description = this.description ?: "",
-        spoilerDesc = Util.convertSpoilerSentenceForDesc(
+        spoilerDesc = Util.convertSpoilerFromHtml(
             desc = this.description ?: "",
-            list = Util.findSpoilerStringList(this.description ?: "")
+            list = Util.findSpoilerFromHtml(this.description ?: "")
         ),
         birthDay = with(this.dateOfBirth) {
             Util.convertToDateFormat(this?.year, this?.month, this?.day)

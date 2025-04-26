@@ -40,6 +40,7 @@ import com.chs.presentation.R
 import com.chs.presentation.UiConst
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.browse.character.ProfileText
+import com.chs.presentation.common.HtmlText
 import com.chs.presentation.common.ShimmerImage
 import com.chs.presentation.common.placeholder
 import com.chs.presentation.toCommaFormat
@@ -265,18 +266,10 @@ private fun VoiceActorProFile(info: VoiceActorDetailInfo?) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        val spannedText = AnnotatedString.fromHtml(
-            htmlString = info?.description ?: stringResource(id = R.string.lorem_ipsum),
-            linkInteractionListener = {
-
-            }
-        )
-
-        Text(
+        HtmlText(
             modifier = Modifier
                 .placeholder(visible = info == null),
-            text = spannedText,
-            fontSize = 16.sp
+            html = info?.description ?: stringResource(id = R.string.lorem_ipsum)
         )
     }
 }

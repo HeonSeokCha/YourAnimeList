@@ -398,28 +398,22 @@ private fun CharacterDescription(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val spannedText = AnnotatedString.fromHtml(
-            htmlString = description ?: stringResource(id = R.string.lorem_ipsum),
-            linkInteractionListener = {
+        if (expandedDescButton) {
+            HtmlText(
+                html = description ?: stringResource(id = R.string.lorem_ipsum),
+                onHyperlinkClick = {
 
-            }
-        )
-
-        HtmlText(html = description ?: "")
-
-//        if (expandedDescButton) {
-//            Text(
-//                text = spannedText
-//            )
-//        } else {
-//            Text(
-//                modifier = Modifier
-//                    .placeholder(visible = description == null),
-//                text = spannedText,
-//                maxLines = 5,
-//                overflow = TextOverflow.Ellipsis
-//            )
-//        }
+                }
+            )
+        } else {
+            HtmlText(
+                modifier = Modifier
+                    .placeholder(visible = description == null),
+                html = description ?: stringResource(id = R.string.lorem_ipsum),
+                maxLines = 5,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
 
         if (description != null && description.length > 200) {
             if (!expandedDescButton) {
