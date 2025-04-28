@@ -87,9 +87,9 @@ object Util {
                 desc.indexOf(
                     string = "<span class='markdown_spoiler'><span>",
                     startIndex = lastFindIdx
-                )
+                ) + 37
             val findSpoilerLastIdx: Int =
-                desc.indexOf(string = "</span></span>", startIndex = findSpoilerStartIdx) + 13
+                desc.indexOf(string = "</span></span>", startIndex = findSpoilerStartIdx) - 1
 
             a.add(
                 findSpoilerStartIdx..findSpoilerLastIdx to desc.substring(findSpoilerStartIdx..findSpoilerLastIdx)
@@ -104,13 +104,15 @@ object Util {
         list: List<Pair<IntRange, String>>
     ): String {
         var a: String = desc
-        var tempIdx: Int = 0
-        list.forEach {
+        var tempIdx: Int = 1
+        list.forEachIndexed { idx, value ->
+            val b = "<a href=\"${value.second}\">Spoiler, click to view</a>"
+
             a = a.replaceRange(
-                (it.first.first + tempIdx..it.first.last + tempIdx),
-                "<a href=>Spoiler, click to view</a>"
+                (value.first.first - ((idx + 1) * 37) + tempIdx..value.first.last + ((idx + 1) * 14) - tempIdx),
+                b
             )
-            tempIdx += 35 - it.second.length
+            tempIdx += b.length - value.second.length - 14
         }
         return a
     }

@@ -386,6 +386,7 @@ private fun CharacterDescription(
     onSpoilerClick: (String) -> Unit
 ) {
     var expandedDescButton by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -402,7 +403,7 @@ private fun CharacterDescription(
             HtmlText(
                 html = description ?: stringResource(id = R.string.lorem_ipsum),
                 onHyperlinkClick = {
-
+                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                 }
             )
         } else {
@@ -411,7 +412,10 @@ private fun CharacterDescription(
                     .placeholder(visible = description == null),
                 html = description ?: stringResource(id = R.string.lorem_ipsum),
                 maxLines = 5,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                onHyperlinkClick = {
+                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                }
             )
         }
 
