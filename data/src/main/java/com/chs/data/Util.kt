@@ -104,15 +104,15 @@ object Util {
         list: List<Pair<IntRange, String>>
     ): String {
         var a: String = desc
-        var tempIdx: Int = 1
         list.forEachIndexed { idx, value ->
             val b = "<a href=\"${value.second}\">Spoiler, click to view</a>"
 
+            val realTextStart = a.indexOf(value.second, 0) - 37
+
             a = a.replaceRange(
-                (value.first.first - ((idx + 1) * 37) + tempIdx..value.first.last + ((idx + 1) * 14) - tempIdx),
+                realTextStart..realTextStart + b.length + 13,
                 b
             )
-            tempIdx += b.length - value.second.length - 14
         }
         return a
     }

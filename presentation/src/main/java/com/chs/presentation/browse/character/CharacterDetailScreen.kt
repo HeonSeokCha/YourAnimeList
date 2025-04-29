@@ -403,7 +403,7 @@ private fun CharacterDescription(
             HtmlText(
                 html = description ?: stringResource(id = R.string.lorem_ipsum),
                 onHyperlinkClick = {
-                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    onSpoilerClick(it)
                 }
             )
         } else {
@@ -414,7 +414,7 @@ private fun CharacterDescription(
                 maxLines = 5,
                 overflow = TextOverflow.Ellipsis,
                 onHyperlinkClick = {
-                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    onSpoilerClick(it)
                 }
             )
         }
