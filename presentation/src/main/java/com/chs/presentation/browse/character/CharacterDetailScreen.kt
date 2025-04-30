@@ -67,16 +67,19 @@ import com.chs.presentation.R
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.common.HtmlText
 import com.chs.presentation.common.ItemAnimeSmall
-import com.chs.presentation.common.ItemMessageDialog
 import com.chs.presentation.common.ItemSaveButton
+import com.chs.presentation.common.ItemSpoilerDialog
 import com.chs.presentation.common.ShimmerImage
 import com.chs.presentation.common.placeholder
+import com.chs.presentation.getIdFromLink
+import com.chs.presentation.isHrefContent
 import com.chs.presentation.toCommaFormat
 
 @Composable
 fun CharacterDetailScreenRoot(
     viewModel: CharacterDetailViewModel,
     onAnimeClick: (id: Int, idMal: Int) -> Unit,
+    onCharaClick: (id: Int) -> Unit,
     onVoiceActorClick: (id: Int) -> Unit,
     onCloseClick: () -> Unit
 ) {
@@ -106,6 +109,10 @@ fun CharacterDetailScreenRoot(
 
                 is CharaDetailEvent.ClickButton.VoiceActor -> {
                     onVoiceActorClick(sideEffect.id)
+                }
+
+                is CharaDetailEvent.ClickButton.Character -> {
+                    onCharaClick(sideEffect.id)
                 }
 
                 CharaDetailEvent.ClickButton.Close -> {
@@ -192,6 +199,21 @@ fun CharacterDetailScreen(
                         CharacterDescription(
                             description = characterDetailInfo.spoilerDesc,
                         ) {
+                            if (isHrefContent(it)) {
+                                getIdFromLink(
+                                    link = it,
+                                    onAnime = {
+                                        onEvent(CharaDetailEvent.ClickButton.Anime(it, it))
+                                    },
+                                    onChara = {
+                                        onEvent(CharaDetailEvent.ClickButton.Character(it))
+                                    },
+                                    onBrowser = {
+
+                                    }
+                                )
+                                return@CharacterDescription
+                            }
                             spoilerDesc = it
                             descDialogShow = true
                         }
@@ -243,7 +265,7 @@ fun CharacterDetailScreen(
     }
 
     if (descDialogShow) {
-        ItemMessageDialog(
+        ItemSpoilerDialog(
             message = spoilerDesc
         ) {
             spoilerDesc = ""
@@ -386,7 +408,6 @@ private fun CharacterDescription(
     onSpoilerClick: (String) -> Unit
 ) {
     var expandedDescButton by remember { mutableStateOf(false) }
-    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -419,24 +440,20 @@ private fun CharacterDescription(
             )
         }
 
-        if (description != null && description.length > 200) {
-            if (!expandedDescButton) {
-                Button(
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(
-                            top = 8.dp,
-                            bottom = 8.dp
-                        ),
-                    onClick = {
-                        expandedDescButton = !expandedDescButton
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowDownward,
-                        contentDescription = null
-                    )
-                }
+        if (!expandedDescButton) {
+            Button(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(
+                        top = 8.dp,
+                        bottom = 8.dp
+                    ),
+                onClick = { expandedDescButton = !expandedDescButton }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowDownward,
+                    contentDescription = null
+                )
             }
         }
     }

@@ -124,7 +124,13 @@ fun BrowseNavHost(
                     navController.navigate(
                         BrowseScreen.AnimeDetail(id = id, idMal = idMal)
                     )
-                }, onVoiceActorClick = { id ->
+                },
+                onCharaClick = { id ->
+                    navController.navigate(
+                        BrowseScreen.CharacterDetail(id = id)
+                    )
+                },
+                onVoiceActorClick = { id ->
                     navController.navigate(
                         BrowseScreen.ActorDetail(id = id)
                     )

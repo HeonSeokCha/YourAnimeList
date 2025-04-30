@@ -6,14 +6,14 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 
 @Composable
-fun ItemMessageDialog(
+fun ItemSpoilerDialog(
     message: String,
     onDismiss: () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
         text = {
-            Text(text = message)
+            HtmlText(message)
         }, confirmButton = {
             TextButton(onClick = { onDismiss() }) {
                 Text("Confirm")

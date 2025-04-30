@@ -82,7 +82,6 @@ object RemoteModule {
                 directory = context.cacheDir,
                 maxSize = 100 * 1024 * 1024
             )
-            .httpFetchPolicy(HttpFetchPolicy.CacheFirst)
             .build()
     }
 }

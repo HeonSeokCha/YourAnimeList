@@ -11,6 +11,8 @@ sealed class CharaDetailEvent {
             val idMal: Int
         ) : CharaDetailEvent()
 
+        data class Character(val id: Int) : CharaDetailEvent()
+
         data class VoiceActor(val id: Int) : CharaDetailEvent()
         data object Close : CharaDetailEvent()
     }

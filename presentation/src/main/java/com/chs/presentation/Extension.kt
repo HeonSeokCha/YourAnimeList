@@ -32,3 +32,36 @@ val Int?.toCommaFormat
 fun Int.pxToDp(): Dp {
     return (this / LocalDensity.current.density).dp
 }
+
+fun isHrefContent(desc: String): Boolean {
+    if (desc.startsWith("https://anilist.co/")) {
+        return true
+    }
+
+    if (desc.startsWith("https://")) {
+        return true
+    }
+
+    return false
+}
+
+fun getIdFromLink(
+    link: String,
+    onAnime: (id: Int) -> Unit,
+    onChara: (id: Int) -> Unit,
+    onBrowser: (String) -> Unit
+) {
+    val type = link.split("https://anilist.co/")[1]
+
+    if (type.startsWith("character")) {
+        onChara(type.split("character/")[1].toInt())
+        return
+    }
+
+    if (type.startsWith("anime")) {
+        onAnime(type.split("anime/")[1].split("/")[0].toInt())
+        return
+    }
+
+    onBrowser(link)
+}
