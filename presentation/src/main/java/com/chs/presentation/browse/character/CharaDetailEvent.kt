@@ -12,7 +12,7 @@ sealed class CharaDetailEvent {
         ) : CharaDetailEvent()
 
         data class Character(val id: Int) : CharaDetailEvent()
-
+        data class Link(val url: String) : CharaDetailEvent()
         data class VoiceActor(val id: Int) : CharaDetailEvent()
         data object Close : CharaDetailEvent()
     }

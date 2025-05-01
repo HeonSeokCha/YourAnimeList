@@ -44,6 +44,8 @@ import com.chs.presentation.browse.character.ProfileText
 import com.chs.presentation.common.HtmlText
 import com.chs.presentation.common.ShimmerImage
 import com.chs.presentation.common.placeholder
+import com.chs.presentation.getIdFromLink
+import com.chs.presentation.isHrefContent
 import com.chs.presentation.toCommaFormat
 import com.chs.presentation.ui.theme.Pink80
 
@@ -52,6 +54,7 @@ fun ActorDetailScreenRoot(
     viewModel: ActorDetailViewModel,
     onAnimeClick: (id: Int, idMal: Int) -> Unit,
     onCharaClick: (id: Int) -> Unit,
+    onLinkClick: (url: String) -> Unit,
     onCloseClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -78,6 +81,10 @@ fun ActorDetailScreenRoot(
 
                 is ActorDetailEvent.ClickBtn.Chara -> {
                     onCharaClick(event.id)
+                }
+
+                is ActorDetailEvent.ClickBtn.Link -> {
+                    onLinkClick(event.url)
                 }
 
                 ActorDetailEvent.ClickBtn.Close -> {
@@ -141,7 +148,9 @@ fun ActorDetailScreen(
         ) { page ->
             when (page) {
                 0 -> {
-                    VoiceActorProFile(state.actorDetailInfo)
+                    VoiceActorProFile(state.actorDetailInfo) {
+                        onEvent(it)
+                    }
                 }
 
                 1 -> {
@@ -231,7 +240,10 @@ private fun ActorInfo(actorInfo: VoiceActorDetailInfo?) {
 }
 
 @Composable
-private fun VoiceActorProFile(info: VoiceActorDetailInfo?) {
+private fun VoiceActorProFile(
+    info: VoiceActorDetailInfo?,
+    onEvent: (ActorDetailEvent) -> Unit
+) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -271,7 +283,26 @@ private fun VoiceActorProFile(info: VoiceActorDetailInfo?) {
         HtmlText(
             modifier = Modifier
                 .placeholder(visible = info == null),
-            html = info?.description ?: stringResource(id = R.string.lorem_ipsum)
+            html = info?.description ?: stringResource(id = R.string.lorem_ipsum),
+            onHyperlinkClick = {
+                if (isHrefContent(it)) {
+                    getIdFromLink(
+                        link = it,
+                        onAnime = {
+                            onEvent(ActorDetailEvent.ClickBtn.Anime(it, it))
+                        },
+                        onChara = {
+                            onEvent(ActorDetailEvent.ClickBtn.Chara(it))
+                        },
+                        onBrowser = {
+                            onEvent(ActorDetailEvent.ClickBtn.Link(it))
+                        }
+                    )
+                    return@HtmlText
+                }
+
+
+            }
         )
     }
 }

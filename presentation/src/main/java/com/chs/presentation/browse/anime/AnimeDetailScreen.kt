@@ -62,6 +62,7 @@ fun AnimeDetailScreenRoot(
     onTagClick: (String) -> Unit,
     onSeasonYearClick: (Int, String) -> Unit,
     onStudioClick: (Int) -> Unit,
+    onLinkClick: (String) -> Unit,
     onCloseClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -113,6 +114,10 @@ fun AnimeDetailScreenRoot(
 
             is AnimeDetailEvent.ClickButton.Tag -> {
                 onTagClick(event.tag)
+            }
+
+            is AnimeDetailEvent.ClickButton.Link -> {
+                onLinkClick(event.url)
             }
 
             else -> viewModel.changeEvent(event)

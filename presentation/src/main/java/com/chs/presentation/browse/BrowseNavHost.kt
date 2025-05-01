@@ -1,36 +1,27 @@
 package com.chs.presentation.browse
 
-import android.app.Activity
 import android.content.Intent
 import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.chs.common.Constants
-import com.chs.presentation.browse.anime.AnimeDetailScreen
-import com.chs.presentation.browse.character.CharacterDetailScreen
 import com.chs.presentation.UiConst
-import com.chs.presentation.browse.actor.ActorDetailScreen
 import com.chs.presentation.browse.actor.ActorDetailScreenRoot
 import com.chs.presentation.browse.actor.ActorDetailViewModel
 import com.chs.presentation.browse.anime.AnimeDetailScreenRoot
 import com.chs.presentation.browse.anime.AnimeDetailViewModel
 import com.chs.presentation.browse.character.CharacterDetailScreenRoot
 import com.chs.presentation.browse.character.CharacterDetailViewModel
-import com.chs.presentation.browse.studio.StudioDetailScreen
 import com.chs.presentation.browse.studio.StudioDetailScreenRoot
 import com.chs.presentation.browse.studio.StudioDetailViewModel
 import com.chs.presentation.main.Screen
-import com.chs.presentation.sortList.SortedListScreen
 import com.chs.presentation.sortList.SortedListScreenRoot
 import com.chs.presentation.sortList.SortedViewModel
 
@@ -41,6 +32,7 @@ fun BrowseNavHost(
     intent: Intent?
 ) {
 
+    val activity = LocalActivity.current
     val startMediaDestination: BrowseScreen =
         if (intent?.getStringExtra(UiConst.TARGET_TYPE) == UiConst.TARGET_MEDIA) {
             BrowseScreen.AnimeDetail(
@@ -59,7 +51,6 @@ fun BrowseNavHost(
         startDestination = startMediaDestination
     ) {
         composable<BrowseScreen.AnimeDetail> {
-            val activity = LocalActivity.current
             val arg = it.toRoute<BrowseScreen.AnimeDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
@@ -103,6 +94,9 @@ fun BrowseNavHost(
                         Screen.SortList(year = year, season = season)
                     )
                 },
+                onLinkClick = { url ->
+                    activity?.startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
+                },
                 onTagClick = { tag ->
                     navController.navigate(
                         Screen.SortList(tag = tag)
@@ -112,7 +106,6 @@ fun BrowseNavHost(
         }
 
         composable<BrowseScreen.CharacterDetail> {
-            val activity = LocalActivity.current
             val arg = it.toRoute<BrowseScreen.CharacterDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
@@ -134,14 +127,19 @@ fun BrowseNavHost(
                     navController.navigate(
                         BrowseScreen.ActorDetail(id = id)
                     )
-                }, onCloseClick = {
+                },
+                onLinkClick = { url ->
+                    activity?.startActivity(
+                        Intent(Intent.ACTION_VIEW, url.toUri())
+                    )
+                },
+                onCloseClick = {
                     activity?.finish()
                 }
             )
         }
 
         composable<BrowseScreen.StudioDetail> {
-            val activity = LocalActivity.current
             val arg = it.toRoute<BrowseScreen.StudioDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
@@ -177,7 +175,6 @@ fun BrowseNavHost(
         }
 
         composable<BrowseScreen.ActorDetail> {
-            val activity = LocalActivity.current
             val arg = it.toRoute<BrowseScreen.ActorDetail>()
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
@@ -190,11 +187,18 @@ fun BrowseNavHost(
                     navController.navigate(
                         BrowseScreen.AnimeDetail(id = id, idMal = idMal)
                     )
-                }, onCharaClick = { id ->
+                },
+                onCharaClick = { id ->
                     navController.navigate(
                         BrowseScreen.CharacterDetail(id)
                     )
-                }, onCloseClick = {
+                },
+                onLinkClick = { url ->
+                    activity?.startActivity(
+                        Intent(Intent.ACTION_VIEW, url.toUri())
+                    )
+                },
+                onCloseClick = {
                     activity?.finish()
                 }
             )

@@ -51,10 +51,12 @@ fun getIdFromLink(
     onChara: (id: Int) -> Unit,
     onBrowser: (String) -> Unit
 ) {
+    if (!link.startsWith("https://anilist.co/")) return onBrowser(link)
+
     val type = link.split("https://anilist.co/")[1]
 
     if (type.startsWith("character")) {
-        onChara(type.split("character/")[1].toInt())
+        onChara(type.split("character/")[1].split("/")[0].toInt())
         return
     }
 
@@ -62,6 +64,4 @@ fun getIdFromLink(
         onAnime(type.split("anime/")[1].split("/")[0].toInt())
         return
     }
-
-    onBrowser(link)
 }

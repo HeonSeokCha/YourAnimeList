@@ -9,6 +9,8 @@ sealed class ActorDetailEvent {
             val idMal: Int
         ) : ActorDetailEvent()
 
+        data class Link(val url: String) : ActorDetailEvent()
+
         data class Chara(val id: Int) : ActorDetailEvent()
 
         data class TabIdx(val idx: Int) : ActorDetailEvent()

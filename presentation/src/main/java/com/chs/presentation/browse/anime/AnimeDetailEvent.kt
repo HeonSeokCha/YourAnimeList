@@ -21,6 +21,7 @@ sealed class AnimeDetailEvent {
 
         data class Studio(val id: Int) : AnimeDetailEvent()
         data class Trailer(val id: String) : AnimeDetailEvent()
+        data class Link(val url: String) : AnimeDetailEvent()
         data object Close : AnimeDetailEvent()
     }
 

@@ -1,6 +1,5 @@
 package com.chs.presentation.browse.character
 
-import android.text.util.Linkify
 import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -37,21 +36,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -81,6 +73,7 @@ fun CharacterDetailScreenRoot(
     onAnimeClick: (id: Int, idMal: Int) -> Unit,
     onCharaClick: (id: Int) -> Unit,
     onVoiceActorClick: (id: Int) -> Unit,
+    onLinkClick: (url: String) -> Unit,
     onCloseClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -88,8 +81,7 @@ fun CharacterDetailScreenRoot(
     val context = LocalContext.current
 
     LaunchedEffect(charaEvent) {
-        when (charaEvent) {
-            CharaDetailEvent.OnError -> {
+        when (charaEvent) { CharaDetailEvent.OnError -> {
                 Toast.makeText(context, "Something error in load Data..", Toast.LENGTH_SHORT)
                     .show()
             }
@@ -113,6 +105,10 @@ fun CharacterDetailScreenRoot(
 
                 is CharaDetailEvent.ClickButton.Character -> {
                     onCharaClick(sideEffect.id)
+                }
+
+                is CharaDetailEvent.ClickButton.Link -> {
+                    onLinkClick(sideEffect.url)
                 }
 
                 CharaDetailEvent.ClickButton.Close -> {
@@ -209,7 +205,7 @@ fun CharacterDetailScreen(
                                         onEvent(CharaDetailEvent.ClickButton.Character(it))
                                     },
                                     onBrowser = {
-
+                                        onEvent(CharaDetailEvent.ClickButton.Link(it))
                                     }
                                 )
                                 return@CharacterDescription
@@ -405,7 +401,7 @@ fun ProfileText(
 @Composable
 private fun CharacterDescription(
     description: String?,
-    onSpoilerClick: (String) -> Unit
+    onHrefClick: (String) -> Unit
 ) {
     var expandedDescButton by remember { mutableStateOf(false) }
 
@@ -424,7 +420,7 @@ private fun CharacterDescription(
             HtmlText(
                 html = description ?: stringResource(id = R.string.lorem_ipsum),
                 onHyperlinkClick = {
-                    onSpoilerClick(it)
+                    onHrefClick(it)
                 }
             )
         } else {
@@ -435,7 +431,7 @@ private fun CharacterDescription(
                 maxLines = 5,
                 overflow = TextOverflow.Ellipsis,
                 onHyperlinkClick = {
-                    onSpoilerClick(it)
+                    onHrefClick(it)
                 }
             )
         }
