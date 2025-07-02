@@ -1,7 +1,6 @@
 plugins {
     kotlin("android")
     alias(libs.plugins.android.application)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
 }
 
@@ -60,9 +59,9 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.common)
     implementation(projects.data)
-
     implementation(libs.bundles.compose)
+    implementation(libs.koin.android)
+    implementation(libs.koin.annotations)
+    ksp(libs.koin.ksp.compiler)
 
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
 }

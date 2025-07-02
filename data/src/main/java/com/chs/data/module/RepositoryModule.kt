@@ -10,37 +10,13 @@ import com.chs.domain.repository.AnimeRepository
 import com.chs.domain.repository.CharacterRepository
 import com.chs.domain.repository.SearchRepository
 import com.chs.domain.repository.StudioRepository
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
-    @Binds
-    abstract fun bindAnimeRepository(
-        animeRepositoryImpl: AnimeRepositoryImpl
-    ): AnimeRepository
-
-    @Binds
-    abstract fun bindCharacterRepository(
-        characterRepositoryImpl: CharacterRepositoryImpl
-    ): CharacterRepository
-
-    @Binds
-    abstract fun bindStudioRepository(
-        studioRepositoryImpl: StudioRepositoryImpl
-    ): StudioRepository
-
-    @Binds
-    abstract fun bindSearchRepository(
-        searchRepositoryImpl: SearchRepositoryImpl
-    ): SearchRepository
-
-    @Binds
-    abstract fun bindActorRepository(
-        actorRepositoryImpl: ActorRepositoryImpl
-    ): ActorRepository
-
+val provideRepositoryModule = module {
+    singleOf(::AnimeRepositoryImpl) { bind<AnimeRepository>() }
+    singleOf(::CharacterRepositoryImpl) { bind<CharacterRepository>() }
+    singleOf(::SearchRepositoryImpl) { bind<SearchRepository>() }
+    singleOf(::ActorRepositoryImpl) { bind<ActorRepository>() }
 }

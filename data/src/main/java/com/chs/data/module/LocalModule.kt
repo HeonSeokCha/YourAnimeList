@@ -8,25 +8,28 @@ import com.chs.data.source.db.dao.CharaListDao
 import com.chs.data.source.db.dao.GenreDao
 import com.chs.data.source.db.dao.SearchListDao
 import com.chs.data.source.db.dao.TagDao
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object LocalModule {
+val LocalModule = module {
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            AnimeListDatabase::class.java,
+            "animeList_db"
+        ).build()
+    }
+
+
+
+}
+
+object LocalModulse {
 
     @Provides
     @Singleton
     fun provideYourListDatabases(@ApplicationContext app: Context): AnimeListDatabase {
-        return Room.databaseBuilder(
-            app,
-            AnimeListDatabase::class.java,
-            "animeList_db"
-        ).build()
+        return
     }
 
     @Provides

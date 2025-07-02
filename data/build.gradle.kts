@@ -1,6 +1,5 @@
 plugins {
     kotlin("android")
-    alias(libs.plugins.hilt)
     alias(libs.plugins.apollo)
     alias(libs.plugins.android.library)
     alias(libs.plugins.ksp)
@@ -15,6 +14,9 @@ kotlin {
         release {
             kotlin.srcDir("build/generated/ksp/release/kotlin")
         }
+    }
+    ksp {
+        arg("KOIN_CONFIG_CHECK","true")
     }
 }
 
@@ -57,8 +59,10 @@ dependencies {
     implementation(libs.androidX.paging.compose)
     implementation(libs.kotlin.coroutine.android)
     implementation(libs.kotlin.serialization)
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+
+    implementation(libs.koin.android)
+    implementation(libs.koin.annotations)
+    ksp(libs.koin.ksp.compiler)
 
     implementation(libs.androidX.room.ktx)
     ksp(libs.androidX.room.compiler)

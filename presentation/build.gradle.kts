@@ -1,7 +1,6 @@
 plugins {
     kotlin("android")
     alias(libs.plugins.android.library)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
@@ -44,9 +43,11 @@ android {
 dependencies {
     implementation(projects.domain)
     implementation(projects.common)
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.navigation.compose)
-    ksp(libs.hilt.compiler)
+
+    implementation(libs.bundles.koin)
+    implementation(libs.bundles.koin)
+    implementation(libs.koin.annotations)
+    ksp(libs.koin.ksp.compiler)
 
     implementation(libs.bundles.compose)
     implementation(libs.androidX.navigation.compose)
