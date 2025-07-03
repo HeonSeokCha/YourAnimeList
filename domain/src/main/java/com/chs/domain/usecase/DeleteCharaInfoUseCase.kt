@@ -2,9 +2,8 @@ package com.chs.domain.usecase
 
 import com.chs.domain.model.CharacterInfo
 import com.chs.domain.repository.CharacterRepository
-import javax.inject.Inject
 
-class DeleteCharaInfoUseCase @Inject constructor(
+class DeleteCharaInfoUseCase(
     private val repository: CharacterRepository
 ) {
     suspend operator fun invoke(info: CharacterInfo) {

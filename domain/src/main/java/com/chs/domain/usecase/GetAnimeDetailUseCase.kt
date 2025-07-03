@@ -4,9 +4,8 @@ import com.chs.domain.model.AnimeDetailInfo
 import com.chs.common.DataError
 import com.chs.common.DataResult
 import com.chs.domain.repository.AnimeRepository
-import javax.inject.Inject
 
-class GetAnimeDetailUseCase @Inject constructor(
+class GetAnimeDetailUseCase(
     private val repository: AnimeRepository
 ) {
     suspend operator fun invoke(animeId: Int): DataResult<AnimeDetailInfo, DataError.RemoteError> {

@@ -4,9 +4,8 @@ import com.chs.common.DataError
 import com.chs.common.DataResult
 import com.chs.domain.model.StudioDetailInfo
 import com.chs.domain.repository.StudioRepository
-import javax.inject.Inject
 
-class GetStudioDetailUseCase @Inject constructor(
+class GetStudioDetailUseCase(
     private val repository: StudioRepository
 ) {
     suspend operator fun invoke(studioId: Int): DataResult<StudioDetailInfo, DataError.RemoteError> {

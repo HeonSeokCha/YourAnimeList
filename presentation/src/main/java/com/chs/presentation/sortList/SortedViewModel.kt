@@ -5,14 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
-import com.chs.domain.model.SortFilter
 import com.chs.presentation.UiConst
 import com.chs.domain.usecase.GetAnimeFilteredListUseCase
 import com.chs.domain.usecase.GetRecentGenresTagUseCase
 import com.chs.domain.usecase.GetSaveTagUseCase
 import com.chs.domain.usecase.GetSavedGenresUseCase
 import com.chs.presentation.main.Screen
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,10 +19,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-@HiltViewModel
-class SortedViewModel @Inject constructor(
+class SortedViewModel(
     savedStateHandle: SavedStateHandle,
     private val getAnimeFilteredListUseCase: GetAnimeFilteredListUseCase,
     private val getSavedGenresUsaCase: GetSavedGenresUseCase,

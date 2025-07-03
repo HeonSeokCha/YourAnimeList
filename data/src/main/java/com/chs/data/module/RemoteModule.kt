@@ -1,6 +1,5 @@
 package com.chs.data.module
 
-import android.content.Context
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.cache.http.httpCache
 import com.apollographql.ktor.ktorClient
@@ -8,7 +7,6 @@ import com.chs.common.Constants
 import com.chs.data.source.CustomHttpLogger
 import com.chs.data.source.JikanService
 import io.ktor.client.*
-import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.*
@@ -20,14 +18,10 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.annotation.Factory
-import org.koin.core.annotation.Single
-import org.koin.core.annotation.Singleton
 import org.koin.dsl.module
 import kotlin.time.Duration.Companion.seconds
 
 val provideRemoteModule = module {
-
     single {
         HttpClient(Android) {
             install(Logging) {

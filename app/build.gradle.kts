@@ -49,8 +49,10 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_21.toString()
     }
-    packagingOptions {
-        resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 }
 
@@ -63,5 +65,4 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp.compiler)
-
 }

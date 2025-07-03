@@ -16,9 +16,8 @@ import com.chs.data.type.MediaSort
 import com.chs.common.DataError
 import com.chs.common.DataResult
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class StudioRepositoryImpl @Inject constructor(
+class StudioRepositoryImpl(
     private val apolloClient: ApolloClient
 ) : StudioRepository {
     override suspend fun getStudioDetailInfo(studioId: Int): DataResult<StudioDetailInfo, DataError.RemoteError> {

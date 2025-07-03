@@ -1,9 +1,8 @@
 package com.chs.domain.usecase
 
 import com.chs.domain.repository.AnimeRepository
-import javax.inject.Inject
 
-class GetRecentGenresTagUseCase @Inject constructor(
+class GetRecentGenresTagUseCase(
     private val repository: AnimeRepository
 ) {
     suspend operator fun invoke() {

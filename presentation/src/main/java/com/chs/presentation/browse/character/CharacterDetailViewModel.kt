@@ -15,7 +15,6 @@ import com.chs.domain.usecase.GetCharaDetailUseCase
 import com.chs.domain.usecase.GetSavedCharaInfoUseCase
 import com.chs.domain.usecase.InsertCharaInfoUseCase
 import com.chs.presentation.browse.BrowseScreen
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,10 +23,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class CharacterDetailViewModel @Inject constructor(
+class CharacterDetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val getCharaDetailUseCase: GetCharaDetailUseCase,
     private val getCharaAnimeListUseCase: GetCharaDetailAnimeListUseCase,

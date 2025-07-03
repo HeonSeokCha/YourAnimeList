@@ -1,9 +1,8 @@
 package com.chs.domain.usecase
 
 import com.chs.domain.repository.AnimeRepository
-import javax.inject.Inject
 
-class GetSaveTagUseCase @Inject constructor(
+class GetSaveTagUseCase(
     private val repository: AnimeRepository
 ) {
     suspend operator fun invoke(): List<Pair<String, String?>> {

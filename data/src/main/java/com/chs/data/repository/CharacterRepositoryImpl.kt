@@ -21,9 +21,8 @@ import com.chs.common.DataError
 import com.chs.common.DataResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class CharacterRepositoryImpl @Inject constructor(
+class CharacterRepositoryImpl(
     private val apolloClient: ApolloClient,
     private val dao: CharaListDao
 ) : CharacterRepository {

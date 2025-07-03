@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,6 +23,7 @@ import com.chs.presentation.browse.studio.StudioDetailViewModel
 import com.chs.presentation.main.Screen
 import com.chs.presentation.sortList.SortedListScreenRoot
 import com.chs.presentation.sortList.SortedViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BrowseNavHost(
@@ -55,7 +55,7 @@ fun BrowseNavHost(
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
             }
-            val viewmodel: AnimeDetailViewModel = hiltViewModel(parentEntry)
+            val viewmodel: AnimeDetailViewModel = koinViewModel(parentEntry)
             AnimeDetailScreenRoot(
                 viewModel = viewmodel,
                 onCloseClick = {
@@ -110,7 +110,7 @@ fun BrowseNavHost(
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
             }
-            val viewmodel: CharacterDetailViewModel = hiltViewModel(parentEntry)
+            val viewmodel: CharacterDetailViewModel = koinViewModel(parentEntry)
             CharacterDetailScreenRoot(
                 viewModel = viewmodel,
                 onAnimeClick = { id: Int, idMal: Int ->
@@ -144,7 +144,7 @@ fun BrowseNavHost(
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
             }
-            val viewmodel: StudioDetailViewModel = hiltViewModel(parentEntry)
+            val viewmodel: StudioDetailViewModel = koinViewModel(parentEntry)
 
             StudioDetailScreenRoot(
                 viewModel = viewmodel,
@@ -163,7 +163,7 @@ fun BrowseNavHost(
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(arg)
             }
-            val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
+            val viewmodel: SortedViewModel = koinViewModel(parentEntry)
             SortedListScreenRoot(
                 viewModel = viewmodel,
                 onClickAnime = { id, idMal ->
@@ -180,7 +180,7 @@ fun BrowseNavHost(
                 navController.getBackStackEntry(arg)
             }
 
-            val viewModel: ActorDetailViewModel = hiltViewModel(parentEntry)
+            val viewModel: ActorDetailViewModel = koinViewModel(parentEntry)
             ActorDetailScreenRoot(
                 viewModel = viewModel,
                 onAnimeClick = { id, idMal ->

@@ -7,21 +7,15 @@ import com.chs.domain.usecase.DeleteSearchHistoryUseCase
 import com.chs.domain.usecase.GetRecentGenresTagUseCase
 import com.chs.domain.usecase.GetSearchHistoryUseCase
 import com.chs.domain.usecase.InsertSearchHistoryUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.WhileSubscribed
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(
+class MainViewModel(
     private val getSearchHistoryUseCase: GetSearchHistoryUseCase,
     private val insertSearchHistoryUseCase: InsertSearchHistoryUseCase,
     private val deleteSearchHistoryUseCase: DeleteSearchHistoryUseCase,

@@ -10,7 +10,6 @@ import com.chs.common.onError
 import com.chs.common.onSuccess
 import com.chs.domain.usecase.*
 import com.chs.presentation.browse.BrowseScreen
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,10 +18,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AnimeDetailViewModel @Inject constructor(
+class AnimeDetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val getAnimeDetailUseCase: GetAnimeDetailUseCase,
     private val checkSaveAnimeUseCase: GetSavedAnimeInfoUseCase,

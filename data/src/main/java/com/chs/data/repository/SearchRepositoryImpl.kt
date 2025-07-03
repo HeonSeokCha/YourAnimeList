@@ -13,9 +13,8 @@ import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class SearchRepositoryImpl @Inject constructor(
+class SearchRepositoryImpl(
     private val apolloClient: ApolloClient,
     private val dao: SearchListDao
 ) : SearchRepository {

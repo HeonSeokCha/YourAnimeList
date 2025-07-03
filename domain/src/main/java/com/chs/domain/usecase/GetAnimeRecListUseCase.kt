@@ -4,9 +4,8 @@ import com.chs.domain.model.AnimeRecommendList
 import com.chs.common.DataError
 import com.chs.common.DataResult
 import com.chs.domain.repository.AnimeRepository
-import javax.inject.Inject
 
-class GetAnimeRecListUseCase @Inject constructor(
+class GetAnimeRecListUseCase(
     private val repository: AnimeRepository
 ) {
     suspend operator fun invoke(

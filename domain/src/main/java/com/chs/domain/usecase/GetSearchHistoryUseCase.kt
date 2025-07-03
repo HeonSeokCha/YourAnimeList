@@ -2,12 +2,11 @@ package com.chs.domain.usecase
 
 import com.chs.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class GetSearchHistoryUseCase @Inject constructor(
+class GetSearchHistoryUseCase(
     private val repository: SearchRepository
 ) {
-    suspend operator fun invoke(): Flow<List<String>> {
+    operator fun invoke(): Flow<List<String>> {
         return repository.getSearchHistory()
     }
 }

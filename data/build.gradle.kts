@@ -60,7 +60,7 @@ dependencies {
     implementation(libs.kotlin.coroutine.android)
     implementation(libs.kotlin.serialization)
 
-    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp.compiler)
 

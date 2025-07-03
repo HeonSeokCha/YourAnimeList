@@ -17,9 +17,8 @@ import com.chs.common.DataResult
 import com.chs.domain.model.VoiceActorDetailInfo
 import com.chs.domain.repository.ActorRepository
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class ActorRepositoryImpl @Inject constructor(
+class ActorRepositoryImpl(
     private val apolloClient: ApolloClient,
 ) : ActorRepository {
 

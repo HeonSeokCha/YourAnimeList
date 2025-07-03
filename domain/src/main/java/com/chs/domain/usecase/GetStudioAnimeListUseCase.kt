@@ -4,9 +4,8 @@ import androidx.paging.PagingData
 import com.chs.domain.model.AnimeInfo
 import com.chs.domain.repository.StudioRepository
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class GetStudioAnimeListUseCase @Inject constructor(
+class GetStudioAnimeListUseCase(
     private val repository: StudioRepository
 ) {
     operator fun invoke(

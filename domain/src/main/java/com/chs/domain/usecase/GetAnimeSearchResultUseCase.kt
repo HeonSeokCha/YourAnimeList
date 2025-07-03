@@ -2,12 +2,10 @@ package com.chs.domain.usecase
 
 import androidx.paging.PagingData
 import com.chs.domain.model.AnimeInfo
-import com.chs.domain.repository.AnimeRepository
 import com.chs.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class GetAnimeSearchResultUseCase @Inject constructor(
+class GetAnimeSearchResultUseCase(
     private val repository: SearchRepository
 ) {
     operator fun invoke(query: String): Flow<PagingData<AnimeInfo>> {

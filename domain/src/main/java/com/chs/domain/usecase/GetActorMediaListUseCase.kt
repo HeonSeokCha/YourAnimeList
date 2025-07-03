@@ -5,9 +5,8 @@ import com.chs.domain.model.AnimeInfo
 import com.chs.domain.model.CharacterInfo
 import com.chs.domain.repository.ActorRepository
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class GetActorMediaListUseCase @Inject constructor(
+class GetActorMediaListUseCase(
     private val repository: ActorRepository
 ) {
     operator fun invoke(
