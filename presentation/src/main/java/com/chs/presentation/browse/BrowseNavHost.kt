@@ -51,11 +51,7 @@ fun BrowseNavHost(
         startDestination = startMediaDestination
     ) {
         composable<BrowseScreen.AnimeDetail> {
-            val arg = it.toRoute<BrowseScreen.AnimeDetail>()
-            val parentEntry = remember(it) {
-                navController.getBackStackEntry(arg)
-            }
-            val viewmodel: AnimeDetailViewModel = koinViewModel(parentEntry)
+            val viewmodel: AnimeDetailViewModel = koinViewModel()
             AnimeDetailScreenRoot(
                 viewModel = viewmodel,
                 onCloseClick = {
@@ -106,11 +102,7 @@ fun BrowseNavHost(
         }
 
         composable<BrowseScreen.CharacterDetail> {
-            val arg = it.toRoute<BrowseScreen.CharacterDetail>()
-            val parentEntry = remember(it) {
-                navController.getBackStackEntry(arg)
-            }
-            val viewmodel: CharacterDetailViewModel = koinViewModel(parentEntry)
+            val viewmodel: CharacterDetailViewModel = koinViewModel()
             CharacterDetailScreenRoot(
                 viewModel = viewmodel,
                 onAnimeClick = { id: Int, idMal: Int ->
@@ -140,11 +132,7 @@ fun BrowseNavHost(
         }
 
         composable<BrowseScreen.StudioDetail> {
-            val arg = it.toRoute<BrowseScreen.StudioDetail>()
-            val parentEntry = remember(it) {
-                navController.getBackStackEntry(arg)
-            }
-            val viewmodel: StudioDetailViewModel = koinViewModel(parentEntry)
+            val viewmodel: StudioDetailViewModel = koinViewModel()
 
             StudioDetailScreenRoot(
                 viewModel = viewmodel,
@@ -159,11 +147,7 @@ fun BrowseNavHost(
         }
 
         composable<Screen.SortList> {
-            val arg = it.toRoute<Screen.SortList>()
-            val parentEntry = remember(it) {
-                navController.getBackStackEntry(arg)
-            }
-            val viewmodel: SortedViewModel = koinViewModel(parentEntry)
+            val viewmodel: SortedViewModel = koinViewModel()
             SortedListScreenRoot(
                 viewModel = viewmodel,
                 onClickAnime = { id, idMal ->
@@ -175,12 +159,7 @@ fun BrowseNavHost(
         }
 
         composable<BrowseScreen.ActorDetail> {
-            val arg = it.toRoute<BrowseScreen.ActorDetail>()
-            val parentEntry = remember(it) {
-                navController.getBackStackEntry(arg)
-            }
-
-            val viewModel: ActorDetailViewModel = koinViewModel(parentEntry)
+            val viewModel: ActorDetailViewModel = koinViewModel()
             ActorDetailScreenRoot(
                 viewModel = viewModel,
                 onAnimeClick = { id, idMal ->
