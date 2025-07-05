@@ -32,6 +32,7 @@ import com.chs.presentation.sortList.SortedListScreenRoot
 import com.chs.presentation.sortList.SortedViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainNavHost(
@@ -49,7 +50,7 @@ fun MainNavHost(
         exitTransition = { ExitTransition.None }
     ) {
         composable<Screen.Home> {
-            val viewModel: HomeViewModel = hiltViewModel()
+            val viewModel: HomeViewModel = koinViewModel()
 
             HomeScreenRoot(
                 viewModel = viewModel,
@@ -72,7 +73,7 @@ fun MainNavHost(
         }
 
         composable<Screen.AnimeList> {
-            val viewModel: AnimeListViewModel = hiltViewModel()
+            val viewModel: AnimeListViewModel = koinViewModel()
             val state by viewModel.state.collectAsStateWithLifecycle()
             AnimeListScreen(state) { id, idMal ->
                 context.startActivity(
@@ -89,7 +90,7 @@ fun MainNavHost(
         }
 
         composable<Screen.CharaList> {
-            val viewmodel: CharacterListViewModel = hiltViewModel()
+            val viewmodel: CharacterListViewModel = koinViewModel()
             val state by viewmodel.state.collectAsStateWithLifecycle()
             CharaListScreen(state) { id ->
                 context.startActivity(
@@ -105,7 +106,7 @@ fun MainNavHost(
         }
 
         composable<Screen.Search> {
-            val viewModel: SearchViewModel = hiltViewModel()
+            val viewModel: SearchViewModel = koinViewModel()
 
             LaunchedEffect(searchQuery) {
                 snapshotFlow { searchQuery }
@@ -143,10 +144,7 @@ fun MainNavHost(
         }
 
         composable<Screen.SortList> {
-            val parentEntry = remember(it) {
-                navController.getBackStackEntry(it.toRoute<Screen.SortList>())
-            }
-            val viewmodel: SortedViewModel = hiltViewModel(parentEntry)
+            val viewmodel: SortedViewModel = koinViewModel()
 
             SortedListScreenRoot(
                 viewModel = viewmodel,

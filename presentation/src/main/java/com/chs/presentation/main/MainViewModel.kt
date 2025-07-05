@@ -1,6 +1,5 @@
 package com.chs.presentation.main
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.domain.usecase.DeleteSearchHistoryUseCase

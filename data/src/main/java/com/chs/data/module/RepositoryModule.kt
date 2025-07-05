@@ -85,24 +85,3 @@ val provideRepositoryModule = module {
     factory { InsertAnimeInfoUseCase(get()) }
     factory { GetSavedGenresUseCase(get()) }
 }
-
-@Module
-class RepositoryModule {
-
-    @Factory(binds = [AnimeRepository::class])
-    fun todoRepository(
-        apolloClient: ApolloClient,
-        jikanService: JikanService,
-        animeDao: AnimeListDao,
-        genreDao: GenreDao,
-        tagDao: TagDao
-    ): AnimeRepositoryImpl {
-        return AnimeRepositoryImpl(
-            apolloClient = apolloClient,
-            jikanService = jikanService,
-            animeDao = animeDao,
-            genreDao = genreDao,
-            tagDao = tagDao
-        )
-    }
-}
