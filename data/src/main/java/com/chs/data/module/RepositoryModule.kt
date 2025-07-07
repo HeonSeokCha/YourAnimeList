@@ -1,15 +1,10 @@
 package com.chs.data.module
 
-import com.apollographql.apollo.ApolloClient
 import com.chs.data.repository.ActorRepositoryImpl
 import com.chs.data.repository.AnimeRepositoryImpl
 import com.chs.data.repository.CharacterRepositoryImpl
 import com.chs.data.repository.SearchRepositoryImpl
 import com.chs.data.repository.StudioRepositoryImpl
-import com.chs.data.source.JikanService
-import com.chs.data.source.db.dao.AnimeListDao
-import com.chs.data.source.db.dao.GenreDao
-import com.chs.data.source.db.dao.TagDao
 import com.chs.domain.repository.ActorRepository
 import com.chs.domain.repository.AnimeRepository
 import com.chs.domain.repository.CharacterRepository
@@ -42,11 +37,6 @@ import com.chs.domain.usecase.GetStudioDetailUseCase
 import com.chs.domain.usecase.InsertAnimeInfoUseCase
 import com.chs.domain.usecase.InsertCharaInfoUseCase
 import com.chs.domain.usecase.InsertSearchHistoryUseCase
-import io.ktor.client.HttpClient
-import org.koin.android.annotation.KoinViewModel
-import org.koin.core.annotation.Factory
-import org.koin.core.annotation.Module
-import org.koin.core.annotation.Single
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -56,6 +46,7 @@ val provideRepositoryModule = module {
     singleOf(::CharacterRepositoryImpl) { bind<CharacterRepository>() }
     singleOf(::SearchRepositoryImpl) { bind<SearchRepository>() }
     singleOf(::ActorRepositoryImpl) { bind<ActorRepository>() }
+    singleOf(::StudioRepositoryImpl) { bind<StudioRepository>() }
 
     factory { DeleteAnimeInfoUseCase(get()) }
     factory { GetRecentGenresTagUseCase(get()) }
