@@ -11,15 +11,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.chs.presentation.ui.theme.*
+import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: MainViewModel by viewModel()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val viewModel: MainViewModel = koinViewModel()
             val navController: NavHostController = rememberNavController()
             var searchQuery: String by remember { mutableStateOf("") }
             val state by viewModel.state.collectAsStateWithLifecycle()

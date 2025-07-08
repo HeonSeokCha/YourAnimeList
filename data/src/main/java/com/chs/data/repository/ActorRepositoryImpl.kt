@@ -18,9 +18,7 @@ import com.chs.domain.model.VoiceActorDetailInfo
 import com.chs.domain.repository.ActorRepository
 import kotlinx.coroutines.flow.Flow
 
-class ActorRepositoryImpl(
-    private val apolloClient: ApolloClient,
-) : ActorRepository {
+class ActorRepositoryImpl(private val apolloClient: ApolloClient) : ActorRepository {
 
     override suspend fun getActorDetailInfo(actorId: Int): DataResult<VoiceActorDetailInfo, DataError.RemoteError> {
         return try {

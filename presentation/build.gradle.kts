@@ -7,6 +7,12 @@ plugins {
     id("kotlin-parcelize")
 }
 
+kotlin {
+    ksp {
+        arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
+    }
+}
+
 android {
     namespace = "com.chs.presentation"
     compileSdk = libs.versions.compileSdkVersion.get().toInt()
@@ -44,7 +50,6 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.common)
 
-    implementation(libs.bundles.koin)
     implementation(libs.bundles.koin)
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp.compiler)

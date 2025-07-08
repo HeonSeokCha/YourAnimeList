@@ -1,14 +1,15 @@
 package com.chs.youranimelist
 
 import android.app.Application
-import com.chs.data.module.provideLocalModule
-import com.chs.data.module.provideRemoteModule
+import com.chs.data.module.LocalModule
+import com.chs.data.module.RemoteModule
+import com.chs.data.module.RepositoryModule
 import com.chs.data.module.provideRepositoryModule
 import com.chs.presentation.providePresentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-
+import org.koin.ksp.generated.module
 
 class YourAnimeApplication : Application() {
     override fun onCreate() {
@@ -18,9 +19,10 @@ class YourAnimeApplication : Application() {
             androidContext(this@YourAnimeApplication)
             modules(
                 provideRepositoryModule,
-                provideRemoteModule,
-                provideLocalModule,
-                providePresentationModule
+                RemoteModule().module,
+                LocalModule().module,
+                providePresentationModule,
+                RepositoryModule().module
             )
         }
     }

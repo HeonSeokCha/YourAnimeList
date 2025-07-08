@@ -1,23 +1,40 @@
 package com.chs.data.module
 
+import android.content.Context
 import androidx.room.Room
 import com.chs.data.source.db.AnimeListDatabase
-import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module
+import com.chs.data.source.db.dao.AnimeListDao
+import com.chs.data.source.db.dao.CharaListDao
+import com.chs.data.source.db.dao.GenreDao
+import com.chs.data.source.db.dao.SearchListDao
+import com.chs.data.source.db.dao.TagDao
+import org.koin.core.annotation.Factory
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Single
 
-val provideLocalModule = module {
-    single {
-        Room.databaseBuilder(
-            androidContext(),
+@Module
+class LocalModule {
+    @Single
+    fun provideRoom(context: Context): AnimeListDatabase {
+        return Room.databaseBuilder(
+            context,
             AnimeListDatabase::class.java,
             "animeList_db"
         ).build()
     }
 
-    single { get<AnimeListDatabase>().animeListDao }
-    single { get<AnimeListDatabase>().tagDao }
-    single { get<AnimeListDatabase>().charaListDao }
-    single { get<AnimeListDatabase>().searchListDao }
-    single { get<AnimeListDatabase>().genreDao }
-    single { get<AnimeListDatabase>().tagDao }
+    @Factory
+    fun provideAnimeListDao(db: AnimeListDatabase): AnimeListDao = db.animeListDao
+
+    @Factory
+    fun provideTagDao(db: AnimeListDatabase): TagDao = db.tagDao
+
+    @Factory
+    fun provideCharaListDao(db: AnimeListDatabase): CharaListDao = db.charaListDao
+
+    @Factory
+    fun provideSearchListDao(db: AnimeListDatabase): SearchListDao = db.searchListDao
+
+    @Factory
+    fun provideGenreDao(db: AnimeListDatabase): GenreDao = db.genreDao
 }
