@@ -13,6 +13,9 @@ kotlin {
             kotlin.srcDir("build/generated/ksp/release/kotlin")
         }
     }
+    ksp {
+        arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
+    }
 }
 
 android {
