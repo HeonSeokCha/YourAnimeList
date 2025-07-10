@@ -86,32 +86,32 @@ class RepositoryModule {
     ): StudioRepositoryImpl = StudioRepositoryImpl(apolloClient)
 }
 
-val provideRepositoryModule = module {
-    factory { DeleteAnimeInfoUseCase(get()) }
-    factory { GetRecentGenresTagUseCase(get()) }
-    factory { GetAnimeFilteredListUseCase(get()) }
-    factory { GetAnimeSearchResultUseCase(get()) }
-    factory { DeleteCharaInfoUseCase(get()) }
-    factory { GetActorMediaListUseCase(get()) }
-    factory { GetCharaDetailUseCase(get()) }
-    factory { GetAnimeThemeUseCase(get()) }
-    factory { InsertSearchHistoryUseCase(get()) }
-    factory { GetSavedAnimeInfoUseCase(get()) }
-    factory { InsertCharaInfoUseCase(get()) }
-    factory { DeleteSearchHistoryUseCase(get()) }
-    factory { GetStudioAnimeListUseCase(get()) }
-    factory { GetSavedCharaInfoUseCase(get()) }
-    factory { GetAnimeDetailUseCase(get()) }
-    factory { GetActorDetailInfoUseCase(get()) }
-    factory { GetSavedAnimeListUseCase(get()) }
-    factory { GetSearchHistoryUseCase(get()) }
-    factory { GetAnimeRecListUseCase(get()) }
-    factory { GetSaveTagUseCase(get()) }
-    factory { GetSavedCharaListUseCase(get()) }
-    factory { GetStudioDetailUseCase(get()) }
-    factory { GetCharaSearchResultUseCase(get()) }
-    factory { GetAnimeDetailRecListUseCase(get()) }
-    factory { GetCharaDetailAnimeListUseCase(get()) }
-    factory { InsertAnimeInfoUseCase(get()) }
-    factory { GetSavedGenresUseCase(get()) }
-}
+//val provideRepositoryModule = module {
+//    factory { DeleteAnimeInfoUseCase(get()) }
+//    factory { GetRecentGenresTagUseCase(get()) }
+//    factory { GetAnimeFilteredListUseCase(get()) }
+//    factory { GetAnimeSearchResultUseCase(get()) }
+//    factory { DeleteCharaInfoUseCase(get()) }
+//    factory { GetActorMediaListUseCase(get()) }
+//    factory { GetCharaDetailUseCase(get()) }
+//    factory { GetAnimeThemeUseCase(get()) }
+//    factory { InsertSearchHistoryUseCase(get()) }
+//    factory { GetSavedAnimeInfoUseCase(get()) }
+//    factory { InsertCharaInfoUseCase(get()) }
+//    factory { DeleteSearchHistoryUseCase(get()) }
+//    factory { GetStudioAnimeListUseCase(get()) }
+//    factory { GetSavedCharaInfoUseCase(get()) }
+//    factory { GetAnimeDetailUseCase(get()) }
+//    factory { GetActorDetailInfoUseCase(get()) }
+//    factory { GetSavedAnimeListUseCase(get()) }
+//    factory { GetSearchHistoryUseCase(get()) }
+//    factory { GetAnimeRecListUseCase(get()) }
+//    factory { GetSaveTagUseCase(get()) }
+//    factory { GetSavedCharaListUseCase(get()) }
+//    factory { GetStudioDetailUseCase(get()) }
+//    factory { GetCharaSearchResultUseCase(get()) }
+//    factory { GetAnimeDetailRecListUseCase(get()) }
+//    factory { GetCharaDetailAnimeListUseCase(get()) }
+//    factory { InsertAnimeInfoUseCase(get()) }
+//    factory { GetSavedGenresUseCase(get()) }
+//}

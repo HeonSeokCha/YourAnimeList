@@ -4,7 +4,7 @@ import android.app.Application
 import com.chs.data.module.LocalModule
 import com.chs.data.module.RemoteModule
 import com.chs.data.module.RepositoryModule
-import com.chs.data.module.provideRepositoryModule
+import com.chs.data.module.UseCaseModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -18,10 +18,10 @@ class YourAnimeApplication : Application() {
             androidLogger()
             androidContext(this@YourAnimeApplication)
             modules(
-                provideRepositoryModule,
                 RemoteModule().module,
                 LocalModule().module,
                 RepositoryModule().module,
+                UseCaseModule().module,
                 defaultModule
             )
         }
