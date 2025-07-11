@@ -83,6 +83,8 @@ class AnimeDetailViewModel(
                         animeDetailInfo = success
                     )
                 }
+            }.onError {
+                _animeDetailEvent.send(AnimeDetailEvent.OnError)
             }
     }
 
