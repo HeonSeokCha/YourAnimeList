@@ -161,10 +161,7 @@ fun StudioDetailScreen(
                     ItemAnimeSmall(item = null) { }
                 }
             } else {
-                items(
-                    count = pagingItem!!.itemCount,
-                    key = pagingItem.itemKey { it.id }
-                ) {
+                items(count = pagingItem!!.itemCount) {
                     val animeInfo = pagingItem[it]
                     if (animeInfo != null) {
                         ItemAnimeSmall(item = animeInfo) {

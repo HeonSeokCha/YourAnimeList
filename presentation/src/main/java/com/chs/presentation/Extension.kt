@@ -1,23 +1,16 @@
 package com.chs.presentation
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavDestination
-import androidx.paging.PagingData
-import androidx.paging.filter
-import com.chs.presentation.main.Screen
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import androidx.core.graphics.toColorInt
 
 val String.color
     get() = Color(this.toColorInt())
-
 val Int?.isNotEmptyValue
     get() = this != null && this != 0
 
@@ -30,7 +23,10 @@ val Int?.toCommaFormat
 
 @Composable
 fun Int.pxToDp(): Dp {
-    return (this / LocalDensity.current.density).dp
+    (this / LocalDensity.current.density).dp.run {
+        chsLog(this.toString())
+        return this
+    }
 }
 
 fun isHrefContent(desc: String): Boolean {
@@ -64,4 +60,8 @@ fun getIdFromLink(
         onAnime(type.split("anime/")[1].split("/")[0].toInt())
         return
     }
+}
+
+fun chsLog(message: String?) {
+    Log.e("CHS_123", message.toString())
 }

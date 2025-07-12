@@ -89,6 +89,8 @@ class AnimeDetailViewModel(
     }
 
     private suspend fun getAnimeTheme(idMal: Int) {
+        if (idMal == 0) return
+
         getAnimeThemeUseCase(idMal)
             .onSuccess { success ->
                 _state.update {

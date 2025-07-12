@@ -1,6 +1,7 @@
 package com.chs.presentation.browse.anime
 
 import android.widget.Toast
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -25,7 +27,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,6 +47,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.domain.model.AnimeDetailInfo
 import com.chs.domain.model.AnimeInfo
 import com.chs.presentation.UiConst
+import com.chs.presentation.browse.CollapsingLayout
 import com.chs.presentation.browse.CollapsingToolbarScaffold
 import com.chs.presentation.color
 import com.chs.presentation.common.ItemSaveButton
@@ -144,8 +149,7 @@ fun AnimeDetailScreen(
         )
     }
 
-    CollapsingToolbarScaffold(
-        scrollState = scrollState,
+    CollapsingLayout(
         header = {
             AnimeDetailHeadBanner(
                 animeDetailInfo = state.animeDetailInfo,
@@ -165,9 +169,7 @@ fun AnimeDetailScreen(
                 }
             )
         },
-        isShowTopBar = false,
-        onCloseClick = { onEvent(AnimeDetailEvent.ClickButton.Close) },
-        stickyHeader = {
+        content = {
             SecondaryTabRow(
                 selectedTabIndex = state.selectTabIdx
             ) {
@@ -192,40 +194,156 @@ fun AnimeDetailScreen(
                     )
                 }
             }
-        }
-    ) {
 
-        HorizontalPager(
-            state = pagerState,
-            userScrollEnabled = false
-        ) { page ->
-            when (page) {
-                0 -> {
-                    AnimeOverViewScreen(
-                        animeDetailState = state.animeDetailInfo,
-                        animeThemeState = state.animeThemes,
-                        onEvent = { onEvent(it) },
-                    )
-                }
-
-                1 -> {
-                    AnimeCharaScreen(state.animeDetailInfo) { id ->
-                        onEvent(AnimeDetailEvent.ClickButton.Chara(id))
+            HorizontalPager(
+                state = pagerState,
+                userScrollEnabled = false
+            ) { page ->
+                when (page) {
+                    0 -> {
+                        AnimeOverViewScreen(
+                            animeDetailState = state.animeDetailInfo,
+                            animeThemeState = state.animeThemes,
+                            onEvent = { onEvent(it) },
+                        )
                     }
-                }
 
-                2 -> {
-                    if (state.animeRecList != null) {
-                        AnimeRecScreen(animeRecList = state.animeRecList) { id, idMal ->
-                            onEvent(
-                                AnimeDetailEvent.ClickButton.Anime(id = id, idMal = idMal)
-                            )
+                    1 -> {
+                        AnimeCharaScreen(state.animeDetailInfo) { id ->
+                            onEvent(AnimeDetailEvent.ClickButton.Chara(id))
+                        }
+                    }
+
+                    2 -> {
+                        if (state.animeRecList != null) {
+                            AnimeRecScreen(animeRecList = state.animeRecList) { id, idMal ->
+                                onEvent(
+                                    AnimeDetailEvent.ClickButton.Anime(id = id, idMal = idMal)
+                                )
+                            }
                         }
                     }
                 }
             }
+        },
+        onCloseClick = {
+            onEvent(AnimeDetailEvent.ClickButton.Close)
         }
-    }
+    )
+
+//    CollapsingToolbarScaffold(
+//        scrollState = scrollState,
+//        header = {
+//            AnimeDetailHeadBanner(
+//                animeDetailInfo = state.animeDetailInfo,
+//                isAnimeSave = state.isSave,
+//                trailerClick = { trailerId ->
+//                    if (trailerId != null) {
+//                        onEvent(AnimeDetailEvent.ClickButton.Trailer(trailerId))
+//                    }
+//                }, saveClick = {
+//                    if (state.animeDetailInfo == null) return@AnimeDetailHeadBanner
+//
+//                    if (state.isSave!!) {
+//                        onEvent(AnimeDetailEvent.DeleteAnimeInfo(state.animeDetailInfo.animeInfo))
+//                    } else {
+//                        onEvent(AnimeDetailEvent.InsertAnimeInfo(state.animeDetailInfo.animeInfo))
+//                    }
+//                }
+//            )
+//        },
+//        isShowTopBar = false,
+//        onCloseClick = { onEvent(AnimeDetailEvent.ClickButton.Close) },
+//        stickyHeader = {
+//            SecondaryTabRow(
+//                selectedTabIndex = state.selectTabIdx
+//            ) {
+//                UiConst.ANIME_DETAIL_TAB_LIST.forEachIndexed { index, title ->
+//                    Tab(
+//                        text = {
+//                            Text(
+//                                text = title,
+//                                maxLines = 1,
+//                                overflow = TextOverflow.Ellipsis,
+//                                fontSize = 12.sp,
+//                            )
+//                        },
+//                        selected = state.selectTabIdx == index,
+//                        onClick = {
+//                            coroutineScope.launch {
+//                                pagerState.animateScrollToPage(index)
+//                            }
+//                        },
+//                        selectedContentColor = Pink80,
+//                        unselectedContentColor = Gray
+//                    )
+//                }
+//            }
+//
+//
+//            HorizontalPager(
+//                state = pagerState,
+//                userScrollEnabled = false
+//            ) { page ->
+//                when (page) {
+//                    0 -> {
+//                        AnimeOverViewScreen(
+//                            animeDetailState = state.animeDetailInfo,
+//                            animeThemeState = state.animeThemes,
+//                            onEvent = { onEvent(it) },
+//                        )
+//                    }
+//
+//                    1 -> {
+//                        AnimeCharaScreen(state.animeDetailInfo) { id ->
+//                            onEvent(AnimeDetailEvent.ClickButton.Chara(id))
+//                        }
+//                    }
+//
+//                    2 -> {
+//                        if (state.animeRecList != null) {
+//                            AnimeRecScreen(animeRecList = state.animeRecList) { id, idMal ->
+//                                onEvent(
+//                                    AnimeDetailEvent.ClickButton.Anime(id = id, idMal = idMal)
+//                                )
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    ) {
+//        HorizontalPager(
+//            state = pagerState,
+//            userScrollEnabled = false
+//        ) { page ->
+//            when (page) {
+//                0 -> {
+//                    AnimeOverViewScreen(
+//                        animeDetailState = state.animeDetailInfo,
+//                        animeThemeState = state.animeThemes,
+//                        onEvent = { onEvent(it) },
+//                    )
+//                }
+//
+//                1 -> {
+//                    AnimeCharaScreen(state.animeDetailInfo) { id ->
+//                        onEvent(AnimeDetailEvent.ClickButton.Chara(id))
+//                    }
+//                }
+//
+//                2 -> {
+//                    if (state.animeRecList != null) {
+//                        AnimeRecScreen(animeRecList = state.animeRecList) { id, idMal ->
+//                            onEvent(
+//                                AnimeDetailEvent.ClickButton.Anime(id = id, idMal = idMal)
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 }
 
 @Composable

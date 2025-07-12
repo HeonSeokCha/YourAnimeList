@@ -2,19 +2,28 @@ package com.chs.presentation.browse
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +43,7 @@ import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
+import com.chs.presentation.chsLog
 import com.chs.presentation.pxToDp
 import com.chs.presentation.ui.theme.Red500
 
@@ -91,28 +101,43 @@ fun CollapsingToolbarScaffold(
                 .fillMaxSize()
                 .padding(top = if (isShowTopBar) 56.dp else 0.dp)
                 .onSizeChanged { size ->
+                    chsLog("${size.height}")
                     globalHeight = size.height
                 }
                 .verticalScroll(scrollState)
                 .nestedScroll(nestedScrollConnection)
         ) {
-            Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = globalHeight.pxToDp(), max = globalHeight.dp)
+            ) {
                 HeadSection(
                     header = header,
                     onHide = { isHide ->
                         isHeaderHide = isHide
                     }, onVisibleChange = { visiblePercentage = it }
                 )
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(globalHeight.pxToDp())
-                ) {
-                    stickyHeader()
-                    content()
-                }
+                stickyHeader()
+                content()
             }
+//            Column {
+//                HeadSection(
+//                    header = header,
+//                    onHide = { isHide ->
+//                        isHeaderHide = isHide
+//                    }, onVisibleChange = { visiblePercentage = it }
+//                )
+//
+//                Column(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(globalHeight.pxToDp())
+//                ) {
+//                    stickyHeader()
+//                    content()
+//                }
+//            }
         }
 
         if (isShowTopBar) {
@@ -192,5 +217,54 @@ private fun HeadSection(
             .alpha(visiblePercentage)
     ) {
         header()
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CollapsingLayout(
+    onCloseClick: () -> Unit,
+    header: @Composable () -> Unit,
+    content: @Composable () -> Unit,
+) {
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    var visiblePercentage by remember { mutableFloatStateOf(0f) }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                title = {
+                    HeadSection(
+                        header = header,
+                        onHide = { isHide ->
+                            isHeaderHide = isHide
+                        }, onVisibleChange = { visiblePercentage = it }
+                    )
+                },
+                scrollBehavior = scrollBehavior
+            )
+
+            GradientTopBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .alpha(1f - visiblePercentage)
+                    .background(Red500),
+                onCloseClick = onCloseClick
+            )
+        },
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+        ) {
+            content()
+        }
     }
 }
