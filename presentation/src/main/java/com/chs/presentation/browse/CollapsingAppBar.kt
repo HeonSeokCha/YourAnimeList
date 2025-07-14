@@ -13,8 +13,11 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -40,12 +43,19 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
+import com.chs.presentation.R
 import com.chs.presentation.chsLog
 import com.chs.presentation.pxToDp
 import com.chs.presentation.ui.theme.Red500
+import com.germainkevin.collapsingtopbar.CollapsingTopBar
+import com.germainkevin.collapsingtopbar.CollapsingTopBarScrollBehavior
+import com.germainkevin.collapsingtopbar.rememberCollapsingTopBarScrollBehavior
+import kotlin.math.roundToInt
 
 private var isHeaderHide: Boolean = false
 
@@ -235,7 +245,17 @@ fun CollapsingLayout(
         topBar = {
             TopAppBar(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .layout { measurable, constraints ->
+                        val paddingCompensation = 16.dp.toPx().roundToInt()
+                        val adjustedConstraints = constraints.copy(
+                            maxWidth = constraints.maxWidth + paddingCompensation
+                        )
+                        val placeable = measurable.measure(adjustedConstraints)
+                        layout(placeable.width, placeable.height) {
+                            placeable.place(-paddingCompensation / 2, 0)
+                        }
+                    },
                 title = {
                     HeadSection(
                         header = header,
