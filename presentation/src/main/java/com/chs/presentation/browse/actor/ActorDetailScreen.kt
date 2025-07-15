@@ -39,7 +39,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.domain.model.VoiceActorDetailInfo
 import com.chs.presentation.R
 import com.chs.presentation.UiConst
-import com.chs.presentation.browse.CollapsingToolbarScaffold
+import com.chs.presentation.browse.CollapsingLayout
 import com.chs.presentation.browse.character.ProfileText
 import com.chs.presentation.common.HtmlText
 import com.chs.presentation.common.ShimmerImage
@@ -113,35 +113,30 @@ fun ActorDetailScreen(
         onEvent(ActorDetailEvent.ClickBtn.TabIdx(pagerState.currentPage))
     }
 
-    CollapsingToolbarScaffold(
-        scrollState = scrollState,
-        header = {
-            ActorInfo(actorInfo = state.actorDetailInfo)
-        },
+    CollapsingLayout(
+        header = { ActorInfo(actorInfo = state.actorDetailInfo) },
         isShowTopBar = true,
-        onCloseClick = {
-            onEvent(ActorDetailEvent.ClickBtn.Close)
-        }, stickyHeader = {
-            SecondaryTabRow(state.tabIdx) {
-                state.tabNames.forEachIndexed { index, title ->
-                    Tab(
-                        text = {
-                            Text(
-                                text = title,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                fontSize = 12.sp,
-                            )
-                        }, selected = state.tabIdx == index,
-                        onClick = {
-                            onEvent(ActorDetailEvent.ClickBtn.TabIdx(index))
-                        },
-                        selectedContentColor = Pink80,
-                        unselectedContentColor = Color.Gray
-                    )
-                }
+        onCloseClick = { onEvent(ActorDetailEvent.ClickBtn.Close) }
+    ) {
+        SecondaryTabRow(state.tabIdx) {
+            state.tabNames.forEachIndexed { index, title ->
+                Tab(
+                    text = {
+                        Text(
+                            text = title,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            fontSize = 12.sp,
+                        )
+                    }, selected = state.tabIdx == index,
+                    onClick = {
+                        onEvent(ActorDetailEvent.ClickBtn.TabIdx(index))
+                    },
+                    selectedContentColor = Pink80,
+                    unselectedContentColor = Color.Gray
+                )
             }
-        }) {
+        }
         HorizontalPager(
             state = pagerState,
             userScrollEnabled = false

@@ -56,7 +56,7 @@ import com.chs.presentation.UiConst
 import com.chs.domain.model.CharacterDetailInfo
 import com.chs.domain.model.VoiceActorInfo
 import com.chs.presentation.R
-import com.chs.presentation.browse.CollapsingToolbarScaffold
+import com.chs.presentation.browse.CollapsingLayout
 import com.chs.presentation.common.HtmlText
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemSaveButton
@@ -153,8 +153,7 @@ fun CharacterDetailScreen(
         }
     }
 
-    CollapsingToolbarScaffold(
-        scrollState = scrollState,
+    CollapsingLayout(
         header = {
             val characterDetailInfo = state.characterDetailInfo
             CharacterBanner(

@@ -34,10 +34,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemKey
 import com.chs.presentation.UiConst
 import com.chs.domain.model.StudioDetailInfo
-import com.chs.presentation.browse.CollapsingToolbarScaffold
+import com.chs.presentation.browse.CollapsingLayout
 import com.chs.presentation.common.ItemAnimeSmall
 import com.chs.presentation.common.ItemExpandSingleBox
 import com.chs.presentation.toCommaFormat
@@ -117,8 +116,7 @@ fun StudioDetailScreen(
         }
     }
 
-    CollapsingToolbarScaffold(
-        scrollState = scrollState,
+    CollapsingLayout(
         header = {
             StudioInfo(studioInfo = state.studioDetailInfo)
         },
