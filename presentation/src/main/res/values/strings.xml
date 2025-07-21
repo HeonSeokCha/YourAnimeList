@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">YourAnimeList</string>
-    <string name="home">Home</string>
-    <string name="anime_list">Anime</string>
-    <string name="chara_list">Character</string>
-    <string name="title_activity_anime_detail">AnimeDetailActivity</string>
-    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque dolor vitae eros euismod, non venenatis eros ornare. Vestibulum sit amet lacus dapibus velit viverra porttitor in sed odio. In laoreet non magna vitae tempus. Fusce maximus laoreet posuere. Donec nec lectus et ligula porta posuere id id libero. Pellentesque vel augue ex. Etiam in sapien et enim tincidunt cursus et ac dolor. Integer ut imperdiet turpis. Maecenas sagittis consectetur neque non ultrices. Nulla mattis a justo a lobortis. In vitae nisl imperdiet, semper erat ac, eleifend risus. Aliquam porttitor sem et scelerisque vestibulum. Aliquam non pharetra enim. Aliquam euismod imperdiet erat, non efficitur turpis bibendum eget. Mauris vitae luctus velit.</string>
-    <string name="title_preview">Kimetsu no Yaiba: Katanakaji no Sato-hen</string>
-</resources>

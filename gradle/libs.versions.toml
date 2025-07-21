@@ -9,10 +9,10 @@ versionName = "1.0"
 
 activity = "1.10.1"
 compose-ui = "1.8.3"
-lifecycle = "2.9.1"
+lifecycle = "2.9.2"
 room = "2.7.2"
 paging = "3.3.6"
-coil = "2.7.0"
+coil = "3.2.0"
 kotlin = "2.2.0"
 ksp = "2.2.0-2.0.2"
 koin-core = "4.1.0"
@@ -20,6 +20,8 @@ koin-annotation = "2.1.0"
 kotlin-coroutine = "1.10.2"
 ktor = "3.2.2"
 apollo = "4.3.1"
+compose-plugin = "1.8.2"
+sqlite = "2.5.2"
 
 [libraries]
 # AndroidX
@@ -27,15 +29,18 @@ androidX-core-ktx = "androidx.core:core-ktx:1.16.0"
 androidX-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
 androidX-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity"}
 androidX-compose-material-icon-extend = "androidx.compose.material:material-icons-extended:1.7.8"
-androidX-compose-material3 = "androidx.compose.material3:material3:1.4.0-alpha17"
+androidX-compose-material3 = "androidx.compose.material3:material3:1.4.0-alpha18"
 androidX-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui" }
 androidX-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-ui" }
-androidX-navigation-compose = "androidx.navigation:navigation-compose:2.9.1"
+androidX-navigation-compose = "androidx.navigation:navigation-compose:2.9.2"
 androidX-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle"}
 androidX-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle"}
 
-androidX-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
-androidX-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-runtime-android = { module = "androidx.room:room-runtime-android", version.ref = "room" }
+sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 androidX-paging-commons = { module = "androidx.paging:paging-common", version.ref = "paging" }
 androidX-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
 
@@ -55,11 +60,11 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
 
 ## Ktor
-ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor"}
-ktor-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor"}
-ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor"}
-ktor-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor"}
-ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor"}
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-serialization = {module = "io.ktor:ktor-serialization-kotlinx-json", version.ref="ktor"}
+ktor-client-content-negotiation = {module = "io.ktor:ktor-client-content-negotiation", version.ref= "ktor"}
 
 ## Apollo
 apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo"}
@@ -67,8 +72,12 @@ apollo-api = { module = "com.apollographql.apollo:apollo-api", version.ref = "ap
 apollo-cache = { module = "com.apollographql.apollo:apollo-http-cache", version.ref = "apollo"}
 apollo-ktor = "com.apollographql.ktor:apollo-engine-ktor:0.1.1"
 
-## etc
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+## Coil
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
+coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
+
 junit = "junit:junit:4.13.2"
 
 [bundles]
@@ -78,28 +87,26 @@ apollo = [
     "apollo-cache",
     "apollo-ktor"
 ]
-ktor = [
-    "ktor-core",
-    "ktor-android",
-    "ktor-serialization",
-    "ktor-negotiation",
-    "ktor-logging"
+
+coil = [
+    "coil",
+    "coil-network-ktor",
+    "coil-compose",
+    "coil-compose-core"
 ]
-compose = [
-    "androidX-core-ktx",
-    "androidX-compose-ui",
-    "androidX-activity-compose",
-    "androidX-compose-material-icon-extend",
-    "androidX-compose-material3",
-    "androidX-compose-ui-tooling-preview",
-    "androidX-compose-ui-tooling",
-    "androidX-lifecycle-viewmodel-compose",
-    "androidX-lifecycle-runtime-compose"
+ktor = [
+    "ktor-client-core",
+    "ktor-client-content-negotiation",
+    "ktor-serialization"
 ]
 koin = [
     "koin-compose",
     "koin-compose-viewmodel",
     "koin-compose-viewmodel-navigation"
+]
+room = [
+    "room-runtime",
+    "sqlite-bundled"
 ]
 
 [plugins]
@@ -110,3 +117,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+room = { id = "androidx.room", version.ref = "room" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidStudioGradlePlugin" }
