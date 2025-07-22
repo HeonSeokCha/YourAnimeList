@@ -1,0 +1,30 @@
+query AnimeListQuery(
+    $page: Int,
+    $sort: [MediaSort],
+    $season: MediaSeason,
+    $seasonYear: Int,
+    $genre: [String],
+    $stauts: MediaStatus,
+    $tags: [String]
+) {
+   page: Page(
+        page: $page,
+        perPage: 10
+    ) {
+        pageInfo {
+            ...pageBasicInfo
+        }
+        media(
+            sort: $sort,
+            season: $season,
+            seasonYear: $seasonYear,
+            genre_in: $genre,
+            tag_in: $tags,
+            type: ANIME,
+            isAdult: false,
+            status: $stauts
+        ) {
+            ... animeBasicInfo
+        }
+    }
+}

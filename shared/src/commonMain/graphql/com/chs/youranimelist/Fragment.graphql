@@ -1,0 +1,37 @@
+fragment animeBasicInfo on Media {
+    id
+    idMal
+    title {
+        romaji
+        english
+    }
+    coverImage {
+        large
+        color
+    }
+    averageScore
+    favourites
+    season
+    seasonYear
+    format
+    status(version: 2)
+    isAdult
+}
+
+fragment characterBasicInfo on Character {
+    id
+    name {
+        full
+        native
+    }
+    image {
+        large
+    }
+    favourites
+}
+
+fragment pageBasicInfo on PageInfo {
+    currentPage
+    lastPage
+    hasNextPage
+}

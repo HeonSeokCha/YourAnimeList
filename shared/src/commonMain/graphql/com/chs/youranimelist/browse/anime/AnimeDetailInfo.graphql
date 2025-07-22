@@ -1,0 +1,67 @@
+query AnimeDetailInfoQuery(
+    $id: Int
+) {
+    Media(id: $id) {
+        ... animeBasicInfo
+        title {
+            english
+            native
+        }
+        bannerImage
+        description(asHtml: true)
+        startDate {
+            year
+            month
+            day
+        }
+        endDate {
+            year
+            month
+            day
+        }
+        trailer {
+            id
+            thumbnail
+        }
+        type
+        genres
+        synonyms
+        episodes
+        duration
+        chapters
+        volumes
+        meanScore
+        popularity
+        source
+        relations {
+            edges {
+                id
+                relationType(version: 2)
+                node {
+                    ... animeBasicInfo
+                }
+            }
+        }
+
+        tags {
+            name,
+            rank,
+            description,
+            isAdult,
+            isMediaSpoiler
+        }
+
+        characters(sort: [ROLE,ID]) {
+            nodes {
+                ...characterBasicInfo
+            }
+        }
+
+        studios (isMain: true) {
+            nodes {
+                id
+                name
+            }
+        }
+    }
+}

@@ -1,0 +1,28 @@
+query ActorMediaListQuery(
+    $id: Int
+    $sort: [MediaSort],
+    $page: Int
+) {
+    Staff(id: $id) {
+        characterMedia(
+            page: $page
+            perPage: 10,
+            sort: $sort
+        ) {
+            pageInfo {
+                ... pageBasicInfo
+            }
+
+            edges {
+                characterRole
+                characterName
+                node {
+                    ... animeBasicInfo
+                }
+                characters {
+                    ... characterBasicInfo
+                }
+            }
+        }
+    }
+}

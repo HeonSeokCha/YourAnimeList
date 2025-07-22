@@ -1,0 +1,10 @@
+query GenreTagQuery {
+    genreCollection: GenreCollection
+    mediaTagCollection: MediaTagCollection {
+        name,
+        category,
+        rank,
+        description,
+        isAdult,
+    }
+}

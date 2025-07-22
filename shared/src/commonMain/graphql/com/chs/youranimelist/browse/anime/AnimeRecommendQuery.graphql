@@ -1,0 +1,25 @@
+query AnimeRecommendQuery(
+    $id: Int,
+    $page: Int
+) {
+    Media(
+        id: $id,
+        isAdult: false
+    ) {
+        recommendations(
+            page: $page,
+            perPage: 10,
+            sort: [RATING_DESC, ID]
+        ) {
+            pageInfo {
+                ...pageBasicInfo
+            }
+            nodes {
+                rating
+                mediaRecommendation {
+                    ...animeBasicInfo
+                }
+            }
+        }
+    }
+}

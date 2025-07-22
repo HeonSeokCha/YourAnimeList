@@ -12,6 +12,12 @@ plugins {
     alias(libs.plugins.apollo)
 }
 
+apollo {
+    service("anilist") {
+        packageName.set("com.chs.youranimelist.data")
+    }
+}
+
 kotlin {
     sourceSets.commonMain {
         kotlin.srcDir("build/generated/ksp/metadata")
@@ -60,20 +66,23 @@ kotlin {
                 implementation(compose.components.uiToolingPreview)
                 implementation(compose.components.resources)
 
-                implementation(libs.androidX.lifecycle.runtime.compose)
-                implementation(libs.androidX.lifecycle.viewmodel.compose)
-                implementation(libs.androidX.navigation.compose)
+                implementation(libs.jetbrain.lifecycle.runtime.compose)
+                implementation(libs.jetbrain.lifecycle.viewmodel.compose)
+                implementation(libs.jetbrain.navigation.compose)
                 implementation(libs.kotlin.coroutine.core)
 
                 implementation(libs.bundles.ktor)
-
                 implementation(libs.kotlin.serialization)
 
+                implementation(libs.bundles.apollo)
 
-                api(libs.koin.core)
+                implementation(libs.koin.core)
+                api(libs.koin.annotations)
                 implementation(libs.bundles.koin)
                 implementation(libs.bundles.coil)
                 implementation(libs.bundles.room)
+
+                implementation(libs.androidX.paging.compose)
             }
         }
     }
@@ -110,9 +119,7 @@ android {
     buildFeatures {
         compose = true
     }
-    dependencies {
-//        debugImplementation(libs.compose.ui.tooling)
-    }
+    dependencies {}
 }
 
 
@@ -122,12 +129,16 @@ room {
 
 dependencies {
     implementation(libs.androidX.compose.material3)
-    // Room
-    add("kspCommonMainMetadata", libs.room.compiler)
+    ksp(libs.room.compiler)
+    add("kspCommonMainMetadata", libs.koin.ksp.compiler)
+    add("kspAndroid", libs.koin.ksp.compiler)
+    add("kspIosX64", libs.koin.ksp.compiler)
+    add("kspIosArm64", libs.koin.ksp.compiler)
+    add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
 }
 
-project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-    if(name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-}
+//project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
+//    if (name != "kspCommonMainKotlinMetadata") {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
+//}

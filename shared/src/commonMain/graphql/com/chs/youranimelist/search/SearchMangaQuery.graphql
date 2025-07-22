@@ -1,0 +1,23 @@
+query SearchMangaQuery(
+    $page: Int,
+    $search: String
+) {
+    page: Page(
+        page: $page,
+        perPage: 10
+    ) {
+        pageInfo {
+            ...pageBasicInfo
+        }
+        media(
+            search: $search,
+            type: MANGA,
+            sort: [FAVOURITES_DESC],
+            isAdult: false
+        ) {
+            title {
+                english
+            }
+        }
+    }
+}

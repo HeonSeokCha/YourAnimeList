@@ -1,0 +1,34 @@
+query CharacterDetailQuery($id: Int) {
+    character: Character(id: $id) {
+        ...characterBasicInfo
+        gender
+        age
+        dateOfBirth {
+            year
+            month
+            day
+        }
+        bloodType
+        description(asHtml: true)
+        media {
+            edges {
+                voiceActors {
+                    id,
+                    name {
+                        native
+                        userPreferred
+                    }
+                    image {
+                        large
+                    },
+                    languageV2
+                }
+                node {
+                    title {
+                        userPreferred
+                    }
+                }
+            }
+        }
+    }
+}
