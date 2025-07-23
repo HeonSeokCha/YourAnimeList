@@ -1,12 +1,12 @@
-package com.chs.data.paging
+package com.chs.youranimelist.data.paging
 
-import androidx.paging.PagingSource
-import androidx.paging.PagingState
+import app.cash.paging.PagingSource
+import app.cash.paging.PagingState
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
-import com.chs.data.SearchCharacterQuery
-import com.chs.domain.model.CharacterInfo
-import com.chs.data.mapper.toCharacterInfo
+import com.chs.youranimelist.data.SearchCharacterQuery
+import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.data.mapper.toCharacterInfo
 
 class SearchCharacterPagingSource(
     private val apolloClient: ApolloClient,

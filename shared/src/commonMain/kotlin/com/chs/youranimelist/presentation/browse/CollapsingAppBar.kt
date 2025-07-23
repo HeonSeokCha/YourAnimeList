@@ -34,7 +34,7 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
-import presentation.ui.theme.Red500
+import com.chs.youranimelist.presentation.ui.theme.Red500
 import kotlin.math.roundToInt
 
 @Composable

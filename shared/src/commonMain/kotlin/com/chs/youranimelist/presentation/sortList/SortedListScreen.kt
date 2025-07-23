@@ -39,16 +39,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemKey
-import presentation.UiConst
-import presentation.common.ItemAnimeSmall
-import presentation.common.ItemErrorImage
-import presentation.common.ItemNoResultImage
-import presentation.common.ItemPullToRefreshBox
-import presentation.ui.theme.Red200
-import presentation.ui.theme.Red500
+import app.cash.paging.LoadState
+import app.cash.paging.LoadStateError
+import app.cash.paging.LoadStateLoading
+import app.cash.paging.compose.collectAsLazyPagingItems
+import app.cash.paging.compose.itemKey
+import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.presentation.common.ItemAnimeSmall
+import com.chs.youranimelist.presentation.common.ItemErrorImage
+import com.chs.youranimelist.presentation.common.ItemNoResultImage
+import com.chs.youranimelist.presentation.common.ItemPullToRefreshBox
+import com.chs.youranimelist.presentation.ui.theme.Red200
+import com.chs.youranimelist.presentation.ui.theme.Red500
 import kotlinx.coroutines.launch
 
 @Composable
@@ -209,15 +211,15 @@ fun SortedListScreen(
                         }
 
                         when (pagingItems.loadState.refresh) {
-                            is LoadState.Loading -> {
+                            is LoadStateLoading -> {
                                 items(10) {
                                     ItemAnimeSmall(item = null)
                                 }
                             }
 
-                            is LoadState.Error -> {
+                            is LoadStateError -> {
                                 item {
-                                    ItemErrorImage(message = (pagingItems.loadState.refresh as LoadState.Error).error.message)
+                                    ItemErrorImage(message = (pagingItems.loadState.refresh as LoadStateError).error.message)
                                 }
                             }
 
@@ -232,15 +234,15 @@ fun SortedListScreen(
 
 
                         when (pagingItems.loadState.append) {
-                            is LoadState.Loading -> {
+                            is LoadStateLoading -> {
                                 items(10) {
                                     ItemAnimeSmall(item = null)
                                 }
                             }
 
-                            is LoadState.Error -> {
+                            is LoadStateError -> {
                                 item {
-                                    ItemErrorImage(message = (pagingItems.loadState.append as LoadState.Error).error.message)
+                                    ItemErrorImage(message = (pagingItems.loadState.append as LoadStateError).error.message)
                                 }
                             }
 

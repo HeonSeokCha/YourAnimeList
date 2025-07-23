@@ -23,10 +23,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.chs.domain.model.AnimeInfo
-import com.chs.domain.model.CharacterInfo
-import presentation.UiConst
-import presentation.ui.theme.YourAnimeListTheme
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
 
 @Composable
 fun ItemActorMedia(

@@ -65,6 +65,7 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(compose.components.resources)
+                implementation(compose.materialIconsExtended)
 
                 implementation(libs.jetbrain.lifecycle.runtime.compose)
                 implementation(libs.jetbrain.lifecycle.viewmodel.compose)
@@ -82,7 +83,8 @@ kotlin {
                 implementation(libs.bundles.coil)
                 implementation(libs.bundles.room)
 
-                implementation(libs.androidX.paging.compose)
+                implementation(libs.cashapp.paging.common)
+                implementation(libs.cashapp.paging.compose)
             }
         }
     }
@@ -122,23 +124,30 @@ android {
     dependencies {}
 }
 
+ksp {
+    arg("room.schemaLocation", "${projectDir}/schemas")
+    arg("KOIN_CONFIG_CHECK", "true")
+}
 
 room {
     schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
-    implementation(libs.androidX.compose.material3)
-    ksp(libs.room.compiler)
-    add("kspCommonMainMetadata", libs.koin.ksp.compiler)
-    add("kspAndroid", libs.koin.ksp.compiler)
-    add("kspIosX64", libs.koin.ksp.compiler)
-    add("kspIosArm64", libs.koin.ksp.compiler)
-    add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
+    listOf(
+        "kspAndroid",
+        // "kspJvm",
+        "kspIosSimulatorArm64",
+        "kspIosX64",
+        "kspIosArm64"
+    ).forEach {
+        add(it, libs.room.compiler)
+        add(it, libs.koin.ksp.compiler)
+    }
 }
 
-//project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-//    if (name != "kspCommonMainKotlinMetadata") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//}
+project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}

@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import presentation.ui.theme.Pink80
+import com.chs.youranimelist.presentation.ui.theme.Pink80
 
 @Composable
 fun LoadingIndicator(color: Color = Pink80) {

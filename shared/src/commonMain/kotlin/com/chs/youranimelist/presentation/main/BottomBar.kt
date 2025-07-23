@@ -7,9 +7,9 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import presentation.ui.theme.Red200
-import presentation.ui.theme.Red500
-import presentation.ui.theme.Red700
+import com.chs.youranimelist.presentation.ui.theme.Red200
+import com.chs.youranimelist.presentation.ui.theme.Red500
+import com.chs.youranimelist.presentation.ui.theme.Red700
 
 @Composable
 fun BottomBar(navController: NavHostController) {

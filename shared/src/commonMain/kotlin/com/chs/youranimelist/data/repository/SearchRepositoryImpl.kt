@@ -1,17 +1,17 @@
-package com.chs.data.repository
+package com.chs.youranimelist.data.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import app.cash.paging.Pager
+import app.cash.paging.PagingConfig
+import app.cash.paging.PagingData
 import com.apollographql.apollo.ApolloClient
 import com.chs.common.Constants
-import com.chs.data.paging.SearchAnimePagingSource
-import com.chs.data.paging.SearchCharacterPagingSource
-import com.chs.data.source.db.dao.SearchListDao
-import com.chs.data.source.db.entity.SearchHistoryEntity
-import com.chs.domain.model.AnimeInfo
-import com.chs.domain.model.CharacterInfo
-import com.chs.domain.repository.SearchRepository
+import com.chs.youranimelist.data.paging.SearchAnimePagingSource
+import com.chs.youranimelist.data.paging.SearchCharacterPagingSource
+import com.chs.youranimelist.data.source.db.dao.SearchListDao
+import com.chs.youranimelist.data.source.db.entity.SearchHistoryEntity
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
 
 class SearchRepositoryImpl(

@@ -1,4 +1,4 @@
-package com.chs.data
+package com.chs.youranimelist.data
 
 
 object Util {

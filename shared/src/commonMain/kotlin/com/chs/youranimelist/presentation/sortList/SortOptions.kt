@@ -1,6 +1,6 @@
 package com.chs.youranimelist.presentation.sortList
 
-import presentation.UiConst
+import com.chs.youranimelist.presentation.UiConst
 
 data class SortOptions(
     val optionYears: List<Pair<String, String>> = UiConst.yearSortList,

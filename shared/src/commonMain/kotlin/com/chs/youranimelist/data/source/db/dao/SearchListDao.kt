@@ -1,9 +1,9 @@
-package com.chs.data.source.db.dao
+package com.chs.youranimelist.data.source.db.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
-import com.chs.data.source.db.entity.SearchHistoryEntity
+import com.chs.youranimelist.data.source.db.entity.SearchHistoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

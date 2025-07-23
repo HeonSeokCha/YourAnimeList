@@ -1,9 +1,9 @@
 package com.chs.youranimelist.domain.usecase
 
-import com.chs.domain.model.AnimeRecommendList
+import com.chs.youranimelist.domain.model.AnimeRecommendList
 import com.chs.common.DataError
 import com.chs.common.DataResult
-import com.chs.domain.repository.AnimeRepository
+import com.chs.youranimelist.domain.repository.AnimeRepository
 
 class GetAnimeRecListUseCase(
     private val repository: AnimeRepository

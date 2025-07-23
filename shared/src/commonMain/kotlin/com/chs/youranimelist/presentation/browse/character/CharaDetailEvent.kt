@@ -1,6 +1,6 @@
 package com.chs.youranimelist.presentation.browse.character
 
-import com.chs.domain.model.CharacterInfo
+import com.chs.youranimelist.domain.model.CharacterInfo
 
 sealed class CharaDetailEvent {
     data object Idle : CharaDetailEvent()

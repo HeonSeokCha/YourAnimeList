@@ -1,7 +1,7 @@
-package com.chs.data.source
+package com.chs.youranimelist.data.source
 
 import android.util.Log
-import com.chs.data.model.JikanAnimeDataDto
+import com.chs.youranimelist.data.model.JikanAnimeDataDto
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.logging.Logger

@@ -17,6 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -34,18 +35,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.chs.domain.model.VoiceActorDetailInfo
+import com.chs.youranimelist.domain.model.VoiceActorDetailInfo
 import com.chs.presentation.R
-import presentation.UiConst
-import presentation.browse.CollapsingLayout
-import presentation.browse.character.ProfileText
-import presentation.common.HtmlText
-import presentation.common.ShimmerImage
-import presentation.common.placeholder
-import presentation.getIdFromLink
-import presentation.isHrefContent
-import presentation.toCommaFormat
-import presentation.ui.theme.Pink80
+import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.presentation.browse.CollapsingLayout
+import com.chs.youranimelist.presentation.browse.character.ProfileText
+import com.chs.youranimelist.presentation.common.HtmlText
+import com.chs.youranimelist.presentation.common.ShimmerImage
+import com.chs.youranimelist.presentation.common.placeholder
+import com.chs.youranimelist.presentation.getIdFromLink
+import com.chs.youranimelist.presentation.isHrefContent
+import com.chs.youranimelist.presentation.toCommaFormat
+import com.chs.youranimelist.presentation.ui.theme.Pink80
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ActorDetailScreenRoot(
@@ -95,6 +97,7 @@ fun ActorDetailScreenRoot(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActorDetailScreen(
     state: ActorDetailState,

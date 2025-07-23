@@ -1,13 +1,13 @@
 package com.chs.youranimelist.domain.repository
 
-import androidx.paging.PagingData
-import com.chs.domain.model.AnimeDetailInfo
-import com.chs.domain.model.AnimeInfo
-import com.chs.domain.model.AnimeRecommendList
-import com.chs.domain.model.AnimeThemeInfo
+import app.cash.paging.PagingData
+import com.chs.youranimelist.domain.model.AnimeDetailInfo
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.AnimeRecommendList
+import com.chs.youranimelist.domain.model.AnimeThemeInfo
 import com.chs.common.DataError
 import com.chs.common.DataResult
-import com.chs.domain.model.SortFilter
+import com.chs.youranimelist.domain.model.SortFilter
 import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository : BaseMediaRepository<AnimeInfo> {

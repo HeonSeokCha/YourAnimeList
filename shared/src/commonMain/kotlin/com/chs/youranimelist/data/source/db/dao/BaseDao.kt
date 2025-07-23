@@ -1,4 +1,4 @@
-package com.chs.data.source.db.dao
+package com.chs.youranimelist.data.source.db.dao
 
 import androidx.room.Delete
 import androidx.room.Insert

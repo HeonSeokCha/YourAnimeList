@@ -1,8 +1,8 @@
-package com.chs.data.mapper
+package com.chs.youranimelist.data.mapper
 
-import com.chs.data.StudioQuery
-import com.chs.domain.model.StudioDetailInfo
-import com.chs.domain.model.StudioInfo
+import com.chs.youranimelist.data.StudioQuery
+import com.chs.youranimelist.domain.model.StudioDetailInfo
+import com.chs.youranimelist.domain.model.StudioInfo
 
 fun StudioQuery.Data.toStudioDetailInfo(): StudioDetailInfo {
     return StudioDetailInfo(

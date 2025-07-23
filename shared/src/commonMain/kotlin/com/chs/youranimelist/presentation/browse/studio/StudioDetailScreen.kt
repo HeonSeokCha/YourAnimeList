@@ -1,7 +1,5 @@
 package com.chs.youranimelist.presentation.browse.studio
 
-import android.annotation.SuppressLint
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,18 +25,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
-import presentation.UiConst
-import com.chs.domain.model.StudioDetailInfo
-import presentation.browse.CollapsingLayout
-import presentation.common.ItemAnimeSmall
-import presentation.common.ItemExpandSingleBox
-import presentation.toCommaFormat
+import app.cash.paging.LoadStateError
+import app.cash.paging.LoadStateLoading
+import app.cash.paging.compose.collectAsLazyPagingItems
+import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.domain.model.StudioDetailInfo
+import com.chs.youranimelist.presentation.browse.CollapsingLayout
+import com.chs.youranimelist.presentation.common.ItemAnimeSmall
+import com.chs.youranimelist.presentation.common.ItemExpandSingleBox
+import com.chs.youranimelist.presentation.toCommaFormat
 import kotlinx.coroutines.launch
 
 @Composable
@@ -50,12 +47,10 @@ fun StudioDetailScreenRoot(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val studioEvent by viewModel.event.collectAsStateWithLifecycle(StudioDetailEvent.Idle)
 
-    val context = LocalContext.current
 
     LaunchedEffect(studioEvent) {
         when (studioEvent) {
             StudioDetailEvent.OnError -> {
-                Toast.makeText(context, "Something error in load Data..", Toast.LENGTH_SHORT).show()
             }
 
             else -> Unit
@@ -93,7 +88,7 @@ fun StudioDetailScreen(
     if (pagingItem != null) {
         when (pagingItem.loadState.refresh) {
 
-            is LoadState.Error -> {
+            is LoadStateError -> {
                 onEvent(StudioDetailEvent.OnError)
             }
 
@@ -101,11 +96,11 @@ fun StudioDetailScreen(
         }
 
         when (pagingItem.loadState.append) {
-            is LoadState.Loading -> {
+            is LoadStateLoading -> {
                 isAppending = true
             }
 
-            is LoadState.Error -> {
+            is LoadStateError -> {
                 onEvent(StudioDetailEvent.OnError)
                 isAppending = false
             }

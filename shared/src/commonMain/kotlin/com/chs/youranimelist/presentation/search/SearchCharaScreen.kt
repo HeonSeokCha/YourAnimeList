@@ -8,13 +8,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemKey
-import com.chs.domain.model.CharacterInfo
-import presentation.common.ItemCharaLarge
-import presentation.common.ItemNoResultImage
+import app.cash.paging.LoadState
+import app.cash.paging.LoadStateError
+import app.cash.paging.LoadStateLoading
+import app.cash.paging.PagingData
+import app.cash.paging.compose.collectAsLazyPagingItems
+import app.cash.paging.compose.itemKey
+import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.presentation.common.ItemCharaLarge
+import com.chs.youranimelist.presentation.common.ItemNoResultImage
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -47,13 +49,13 @@ fun SearchCharaScreen(
             }
 
             when (charaItems.loadState.refresh) {
-                is LoadState.Loading -> {
+                is LoadStateLoading -> {
                     items(10) {
                         ItemCharaLarge(character = null) { }
                     }
                 }
 
-                is LoadState.Error -> {
+                is LoadStateError -> {
                     item {
                         Text(
                             text = "Something Wrong for Loading List."
@@ -71,13 +73,13 @@ fun SearchCharaScreen(
             }
 
             when (charaItems.loadState.append) {
-                is LoadState.Loading -> {
+                is LoadStateLoading -> {
                     items(10) {
                         ItemCharaLarge(character = null) { }
                     }
                 }
 
-                is LoadState.Error -> {
+                is LoadStateError -> {
                     item {
                         Text(
                             text = "Something Wrong for Loading List."

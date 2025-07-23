@@ -1,9 +1,9 @@
 package com.chs.youranimelist.presentation.common
 
 import androidx.compose.runtime.Composable
-import presentation.UiConst
-import com.chs.domain.model.AnimeInfo
-import presentation.isNotEmptyValue
+import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.presentation.isNotEmptyValue
 
 @Composable
 fun ItemAnimeLarge(

@@ -25,15 +25,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.chs.domain.model.AnimHomeBannerInfo
-import com.chs.domain.model.AnimeInfo
-import presentation.UiConst
-import presentation.UiConst.GENRE_COLOR
-import presentation.color
-import presentation.common.ShimmerImage
-import presentation.common.placeholder
-import presentation.ui.theme.YourAnimeListTheme
-import presentation.color
+import com.chs.youranimelist.domain.model.AnimHomeBannerInfo
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.presentation.UiConst.GENRE_COLOR
+import com.chs.youranimelist.presentation.color
+import com.chs.youranimelist.presentation.common.ShimmerImage
+import com.chs.youranimelist.presentation.common.placeholder
+import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
+import com.chs.youranimelist.presentation.color
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

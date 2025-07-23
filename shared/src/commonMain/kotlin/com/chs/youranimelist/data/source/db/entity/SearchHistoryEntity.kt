@@ -1,4 +1,4 @@
-package com.chs.data.source.db.entity
+package com.chs.youranimelist.data.source.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

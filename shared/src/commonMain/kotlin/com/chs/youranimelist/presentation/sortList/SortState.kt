@@ -1,8 +1,8 @@
 package com.chs.youranimelist.presentation.sortList
 
-import androidx.paging.PagingData
-import com.chs.domain.model.AnimeInfo
-import com.chs.domain.model.SortFilter
+import app.cash.paging.PagingData
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.SortFilter
 import kotlinx.coroutines.flow.Flow
 
 data class SortState(

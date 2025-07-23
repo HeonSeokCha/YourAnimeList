@@ -1,11 +1,11 @@
 package com.chs.youranimelist.domain.repository
 
-import androidx.paging.PagingData
-import com.chs.domain.model.AnimeInfo
-import com.chs.domain.model.CharacterInfo
+import app.cash.paging.PagingData
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.common.DataError
 import com.chs.common.DataResult
-import com.chs.domain.model.VoiceActorDetailInfo
+import com.chs.youranimelist.domain.model.VoiceActorDetailInfo
 import kotlinx.coroutines.flow.Flow
 
 interface ActorRepository {

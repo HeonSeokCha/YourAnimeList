@@ -15,17 +15,19 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemKey
-import com.chs.domain.model.AnimeInfo
-import com.chs.domain.model.CharacterInfo
-import presentation.UiConst
-import presentation.common.ItemActorMedia
-import presentation.common.ItemAnimeSmall
-import presentation.common.ItemExpandSingleBox
-import presentation.common.ItemNoResultImage
+import app.cash.paging.LoadState
+import app.cash.paging.LoadStateError
+import app.cash.paging.LoadStateLoading
+import app.cash.paging.PagingData
+import app.cash.paging.compose.collectAsLazyPagingItems
+import app.cash.paging.compose.itemKey
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.presentation.common.ItemActorMedia
+import com.chs.youranimelist.presentation.common.ItemAnimeSmall
+import com.chs.youranimelist.presentation.common.ItemExpandSingleBox
+import com.chs.youranimelist.presentation.common.ItemNoResultImage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -91,13 +93,13 @@ fun ActorMediaTab(
             }
 
             when (pagingData.loadState.refresh) {
-                is LoadState.Loading -> {
+                is LoadStateLoading -> {
                     items(10) {
                         ItemAnimeSmall(null)
                     }
                 }
 
-                is LoadState.Error -> {
+                is LoadStateError -> {
                     item {
                         Text(
                             text = "Something Wrong for Loading List."
@@ -115,13 +117,13 @@ fun ActorMediaTab(
             }
 
             when (pagingData.loadState.append) {
-                is LoadState.Loading -> {
+                is LoadStateLoading -> {
                     items(10) {
                         ItemAnimeSmall(null)
                     }
                 }
 
-                is LoadState.Error -> {
+                is LoadStateError -> {
                     item {
                         Text(
                             text = "Something Wrong for Loading List."

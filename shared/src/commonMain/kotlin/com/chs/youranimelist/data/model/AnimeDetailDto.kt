@@ -1,4 +1,4 @@
-package com.chs.data.model
+package com.chs.youranimelist.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

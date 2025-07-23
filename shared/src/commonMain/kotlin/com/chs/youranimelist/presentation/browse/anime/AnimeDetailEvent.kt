@@ -1,6 +1,6 @@
 package com.chs.youranimelist.presentation.browse.anime
 
-import com.chs.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.AnimeInfo
 
 sealed class AnimeDetailEvent {
     data object Idle : AnimeDetailEvent()

@@ -1,13 +1,13 @@
-package com.chs.data.paging
+package com.chs.youranimelist.data.paging
 
-import androidx.paging.PagingSource
-import androidx.paging.PagingState
+import app.cash.paging.PagingSource
+import app.cash.paging.PagingState
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
-import com.chs.data.StudioAnimeQuery
-import com.chs.data.mapper.toAnimeInfo
-import com.chs.domain.model.AnimeInfo
-import com.chs.data.type.MediaSort
+import com.chs.youranimelist.data.StudioAnimeQuery
+import com.chs.youranimelist.data.mapper.toAnimeInfo
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.data.type.MediaSort
 
 class StudioAnimePagingSource(
     private val apolloClient: ApolloClient,

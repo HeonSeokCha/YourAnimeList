@@ -1,9 +1,9 @@
 package com.chs.youranimelist.domain.usecase
 
-import com.chs.domain.model.CharacterDetailInfo
+import com.chs.youranimelist.domain.model.CharacterDetailInfo
 import com.chs.common.DataError
 import com.chs.common.DataResult
-import com.chs.domain.repository.CharacterRepository
+import com.chs.youranimelist.domain.repository.CharacterRepository
 
 class GetCharaDetailUseCase(
     private val repository: CharacterRepository

@@ -1,7 +1,7 @@
 package com.chs.youranimelist.domain.usecase
 
-import com.chs.domain.model.AnimeInfo
-import com.chs.domain.repository.AnimeRepository
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.repository.AnimeRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetSavedAnimeInfoUseCase(

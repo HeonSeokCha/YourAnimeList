@@ -2,8 +2,8 @@ package com.chs.youranimelist.domain.usecase
 
 import com.chs.common.DataError
 import com.chs.common.DataResult
-import com.chs.domain.model.VoiceActorDetailInfo
-import com.chs.domain.repository.ActorRepository
+import com.chs.youranimelist.domain.model.VoiceActorDetailInfo
+import com.chs.youranimelist.domain.repository.ActorRepository
 
 class GetActorDetailInfoUseCase(
     private val repository: ActorRepository

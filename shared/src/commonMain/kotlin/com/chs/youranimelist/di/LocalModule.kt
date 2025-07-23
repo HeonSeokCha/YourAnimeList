@@ -1,11 +1,11 @@
 package com.chs.youranimelist.di
 
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.chs.data.source.db.dao.AnimeListDao
-import com.chs.data.source.db.dao.CharaListDao
-import com.chs.data.source.db.dao.GenreDao
-import com.chs.data.source.db.dao.SearchListDao
-import com.chs.data.source.db.dao.TagDao
+import com.chs.youranimelist.data.source.db.dao.AnimeListDao
+import com.chs.youranimelist.data.source.db.dao.CharaListDao
+import com.chs.youranimelist.data.source.db.dao.GenreDao
+import com.chs.youranimelist.data.source.db.dao.SearchListDao
+import com.chs.youranimelist.data.source.db.dao.TagDao
 import com.chs.youranimelist.data.source.db.AnimeListDatabase
 import com.chs.youranimelist.data.source.db.DatabaseFactory
 import kotlinx.coroutines.Dispatchers

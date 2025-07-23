@@ -13,15 +13,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemKey
-import com.chs.domain.model.AnimeInfo
-import presentation.common.ItemAnimeLarge
-import presentation.common.ItemNoResultImage
+import app.cash.paging.LoadStateError
+import app.cash.paging.LoadStateLoading
+import app.cash.paging.PagingData
+import app.cash.paging.compose.collectAsLazyPagingItems
+import app.cash.paging.compose.itemKey
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.presentation.common.ItemAnimeLarge
+import com.chs.youranimelist.presentation.common.ItemNoResultImage
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -34,13 +34,11 @@ fun AnimeRecScreen(
     var isLoading by remember { mutableStateOf(false) }
     var isEmpty by remember { mutableStateOf(false) }
     var isAppending by remember { mutableStateOf(false) }
-    val context = LocalContext.current
 
     when (lazyPagingItems.loadState.refresh) {
-        is LoadState.Loading -> isLoading = true
+        is LoadStateLoading -> isLoading = true
 
-        is LoadState.Error -> {
-            Toast.makeText(context, "Something error in load Data..", Toast.LENGTH_SHORT).show()
+        is LoadStateError -> {
             isLoading = false
         }
 
@@ -51,7 +49,7 @@ fun AnimeRecScreen(
     }
 
     isAppending = when (lazyPagingItems.loadState.append) {
-        is LoadState.Loading -> true
+        is LoadStateLoading -> true
 
         else -> false
     }

@@ -6,8 +6,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import presentation.common.ItemAnimeLarge
-import presentation.common.ItemNoResultImage
+import com.chs.youranimelist.presentation.common.ItemNoResultImage
+import com.chs.youranimelist.presentation.common.ItemAnimeLarge
+import com.chs.youranimelist.presentation.common.ItemNoResultImage
 
 @Composable
 fun AnimeListScreen(

@@ -24,10 +24,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import presentation.UiConst
-import presentation.isNotEmptyValue
-import presentation.toCommaFormat
-import presentation.ui.theme.Pink80
+import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.presentation.isNotEmptyValue
+import com.chs.youranimelist.presentation.toCommaFormat
+import com.chs.youranimelist.presentation.ui.theme.Pink80
 
 @Composable
 fun ItemCardLarge(

@@ -1,21 +1,21 @@
-package com.chs.data.mapper
+package com.chs.youranimelist.data.mapper
 
-import com.chs.data.Util
-import com.chs.data.model.JikanAnimeDataDto
-import com.chs.data.source.db.entity.AnimeEntity
-import com.chs.domain.model.AnimeDetailInfo
-import com.chs.domain.model.AnimeInfo
-import com.chs.domain.model.AnimHomeBannerInfo
-import com.chs.domain.model.AnimeRecommendList
-import com.chs.domain.model.AnimeRelationInfo
-import com.chs.domain.model.AnimeThemeInfo
-import com.chs.domain.model.CharacterInfo
-import com.chs.domain.model.StudioInfo
-import com.chs.domain.model.TrailerInfo
-import com.chs.data.AnimeDetailInfoQuery
-import com.chs.data.HomeAnimeListQuery
-import com.chs.data.fragment.AnimeBasicInfo
-import com.chs.domain.model.TagInfo
+import com.chs.youranimelist.data.Util
+import com.chs.youranimelist.data.model.JikanAnimeDataDto
+import com.chs.youranimelist.data.source.db.entity.AnimeEntity
+import com.chs.youranimelist.data.AnimeDetailInfoQuery
+import com.chs.youranimelist.data.HomeAnimeListQuery
+import com.chs.youranimelist.data.fragment.AnimeBasicInfo
+import com.chs.youranimelist.domain.model.AnimeDetailInfo
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.AnimHomeBannerInfo
+import com.chs.youranimelist.domain.model.AnimeRecommendList
+import com.chs.youranimelist.domain.model.AnimeRelationInfo
+import com.chs.youranimelist.domain.model.AnimeThemeInfo
+import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.domain.model.StudioInfo
+import com.chs.youranimelist.domain.model.TrailerInfo
+import com.chs.youranimelist.domain.model.TagInfo
 
 fun AnimeBasicInfo?.toAnimeInfo(): AnimeInfo {
     return AnimeInfo(

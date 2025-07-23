@@ -7,8 +7,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import presentation.common.ItemCharaLarge
-import presentation.common.ItemNoResultImage
+import com.chs.youranimelist.presentation.common.ItemCharaLarge
+import com.chs.youranimelist.presentation.common.ItemNoResultImage
 
 @Composable
 fun CharaListScreen(

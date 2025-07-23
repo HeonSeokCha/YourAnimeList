@@ -23,10 +23,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.chs.domain.model.AnimeInfo
-import presentation.UiConst
-import presentation.common.ItemAnimeSmall
-import presentation.main.Screen
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.presentation.common.ItemAnimeSmall
+import com.chs.youranimelist.presentation.main.Screen
 
 @Composable
 fun HomeScreenRoot(

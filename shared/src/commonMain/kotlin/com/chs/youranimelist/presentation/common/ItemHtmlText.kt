@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.core.text.parseAsHtml
-import presentation.ui.theme.Red500
+import com.chs.youranimelist.presentation.ui.theme.Red500
 
 @Composable
 fun HtmlText(

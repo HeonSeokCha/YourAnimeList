@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SecondaryTabRow
@@ -39,18 +40,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.chs.domain.model.AnimeDetailInfo
-import com.chs.domain.model.AnimeInfo
-import presentation.UiConst
-import presentation.browse.CollapsingLayout
-import presentation.color
-import presentation.common.ItemSaveButton
-import presentation.common.ShimmerImage
-import presentation.common.placeholder
-import presentation.isNotEmptyValue
-import presentation.ui.theme.Pink80
+import com.chs.youranimelist.domain.model.AnimeDetailInfo
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.presentation.browse.CollapsingLayout
+import com.chs.youranimelist.presentation.color
+import com.chs.youranimelist.presentation.common.ItemSaveButton
+import com.chs.youranimelist.presentation.common.ShimmerImage
+import com.chs.youranimelist.presentation.common.placeholder
+import com.chs.youranimelist.presentation.isNotEmptyValue
+import com.chs.youranimelist.presentation.ui.theme.Pink80
 import kotlinx.coroutines.launch
-import presentation.color
+import com.chs.youranimelist.presentation.color
 
 @Composable
 fun AnimeDetailScreenRoot(
@@ -125,6 +126,7 @@ fun AnimeDetailScreenRoot(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimeDetailScreen(
     state: AnimeDetailState,

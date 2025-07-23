@@ -1,8 +1,8 @@
 package com.chs.youranimelist.presentation.search
 
-import androidx.paging.PagingData
-import com.chs.domain.model.AnimeInfo
-import com.chs.domain.model.CharacterInfo
+import app.cash.paging.PagingData
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.CharacterInfo
 import kotlinx.coroutines.flow.Flow
 
 data class SearchState(

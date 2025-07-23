@@ -1,8 +1,8 @@
 package com.chs.youranimelist.domain.usecase
 
-import androidx.paging.PagingData
-import com.chs.domain.model.CharacterInfo
-import com.chs.domain.repository.SearchRepository
+import app.cash.paging.PagingData
+import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetCharaSearchResultUseCase(

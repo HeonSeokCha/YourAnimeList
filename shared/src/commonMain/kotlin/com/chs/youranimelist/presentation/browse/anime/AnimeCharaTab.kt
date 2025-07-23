@@ -20,11 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.chs.domain.model.AnimeDetailInfo
-import com.chs.domain.model.CharacterInfo
-import presentation.browse.BrowseScreen
-import presentation.common.ShimmerImage
-import presentation.common.placeholder
+import com.chs.youranimelist.domain.model.AnimeDetailInfo
+import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.presentation.browse.BrowseScreen
+import com.chs.youranimelist.presentation.common.ShimmerImage
+import com.chs.youranimelist.presentation.common.placeholder
 
 @Composable
 fun AnimeCharaScreen(

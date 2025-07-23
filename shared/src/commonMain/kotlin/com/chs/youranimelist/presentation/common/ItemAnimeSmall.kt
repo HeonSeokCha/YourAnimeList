@@ -28,10 +28,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.chs.domain.model.AnimeInfo
-import presentation.UiConst
-import presentation.isNotEmptyValue
-import presentation.ui.theme.YourAnimeListTheme
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.presentation.isNotEmptyValue
+import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
 
 @Composable
 fun ItemAnimeSmall(

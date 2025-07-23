@@ -8,9 +8,9 @@ import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
 fun BrowseApp() {
     val navController = rememberNavController()
     YourAnimeListTheme {
-        BrowseNavHost(
-            navController = navController,
-            intent = intent
-        )
+//        BrowseNavHost(
+//            navController = navController,
+//            intent = intent
+//        )
     }
 }

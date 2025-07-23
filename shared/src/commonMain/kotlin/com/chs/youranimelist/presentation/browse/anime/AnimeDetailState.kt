@@ -1,9 +1,9 @@
 package com.chs.youranimelist.presentation.browse.anime
 
-import androidx.paging.PagingData
-import com.chs.domain.model.AnimeDetailInfo
-import com.chs.domain.model.AnimeInfo
-import com.chs.domain.model.AnimeThemeInfo
+import app.cash.paging.PagingData
+import com.chs.youranimelist.domain.model.AnimeDetailInfo
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.AnimeThemeInfo
 import kotlinx.coroutines.flow.Flow
 
 data class AnimeDetailState(

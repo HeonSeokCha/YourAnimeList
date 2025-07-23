@@ -9,18 +9,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.chs.common.Constants
-import presentation.UiConst
-import presentation.browse.actor.ActorDetailScreenRoot
-import presentation.browse.actor.ActorDetailViewModel
-import presentation.browse.anime.AnimeDetailScreenRoot
-import presentation.browse.anime.AnimeDetailViewModel
-import presentation.browse.character.CharacterDetailScreenRoot
-import presentation.browse.character.CharacterDetailViewModel
-import presentation.browse.studio.StudioDetailScreenRoot
-import presentation.browse.studio.StudioDetailViewModel
-import presentation.main.Screen
-import presentation.sortList.SortedListScreenRoot
-import presentation.sortList.SortedViewModel
+import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.presentation.browse.actor.ActorDetailScreenRoot
+import com.chs.youranimelist.presentation.browse.actor.ActorDetailViewModel
+import com.chs.youranimelist.presentation.browse.anime.AnimeDetailScreenRoot
+import com.chs.youranimelist.presentation.browse.anime.AnimeDetailViewModel
+import com.chs.youranimelist.presentation.browse.character.CharacterDetailScreenRoot
+import com.chs.youranimelist.presentation.browse.character.CharacterDetailViewModel
+import com.chs.youranimelist.presentation.browse.studio.StudioDetailScreenRoot
+import com.chs.youranimelist.presentation.browse.studio.StudioDetailViewModel
+import com.chs.youranimelist.presentation.main.Screen
+import com.chs.youranimelist.presentation.sortList.SortedListScreenRoot
+import com.chs.youranimelist.presentation.sortList.SortedViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

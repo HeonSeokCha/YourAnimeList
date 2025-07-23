@@ -1,6 +1,6 @@
 package com.chs.youranimelist.domain.usecase
 
-import com.chs.domain.repository.SearchRepository
+import com.chs.youranimelist.domain.repository.SearchRepository
 
 class DeleteSearchHistoryUseCase(
     private val searchRepository: SearchRepository

@@ -10,9 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.chs.domain.model.SortFilter
-import presentation.common.ItemExpandSingleBox
-import presentation.common.ItemExpandingMultiBox
+import com.chs.youranimelist.domain.model.SortFilter
+import com.chs.youranimelist.presentation.common.ItemExpandSingleBox
+import com.chs.youranimelist.presentation.common.ItemExpandingMultiBox
 
 @Composable
 fun SortFilterDialog(

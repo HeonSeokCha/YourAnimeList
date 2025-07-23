@@ -1,21 +1,21 @@
-package com.chs.data.repository
+package com.chs.youranimelist.data.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import app.cash.paging.Pager
+import app.cash.paging.PagingConfig
+import app.cash.paging.PagingData
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
 import com.chs.common.Constants
-import com.chs.data.ActorDetailQuery
-import com.chs.data.mapper.toVoiceActorDetailInfo
-import com.chs.data.paging.VoiceActorAnimePagingSource
-import com.chs.data.type.MediaSort
-import com.chs.domain.model.AnimeInfo
-import com.chs.domain.model.CharacterInfo
+import com.chs.youranimelist.data.ActorDetailQuery
+import com.chs.youranimelist.data.mapper.toVoiceActorDetailInfo
+import com.chs.youranimelist.data.paging.VoiceActorAnimePagingSource
+import com.chs.youranimelist.data.type.MediaSort
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.common.DataError
 import com.chs.common.DataResult
-import com.chs.domain.model.VoiceActorDetailInfo
-import com.chs.domain.repository.ActorRepository
+import com.chs.youranimelist.domain.model.VoiceActorDetailInfo
+import com.chs.youranimelist.domain.repository.ActorRepository
 import kotlinx.coroutines.flow.Flow
 
 class ActorRepositoryImpl(private val apolloClient: ApolloClient) : ActorRepository {

@@ -1,6 +1,5 @@
 package com.chs.youranimelist.presentation.browse.character
 
-import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -39,8 +38,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -49,22 +46,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemKey
-import presentation.UiConst
-import com.chs.domain.model.CharacterDetailInfo
-import com.chs.domain.model.VoiceActorInfo
-import com.chs.presentation.R
-import presentation.browse.CollapsingLayout
-import presentation.common.HtmlText
-import presentation.common.ItemAnimeSmall
-import presentation.common.ItemSaveButton
-import presentation.common.ItemSpoilerDialog
-import presentation.common.ShimmerImage
-import presentation.common.placeholder
-import presentation.getIdFromLink
-import presentation.isHrefContent
-import presentation.toCommaFormat
+import app.cash.paging.LoadStateError
+import app.cash.paging.LoadStateLoading
+import app.cash.paging.compose.collectAsLazyPagingItems
+import app.cash.paging.compose.itemKey
+import app.cash.paging.paging.compose.collectAsLazyPagingItems
+import app.cash.paging.paging.compose.itemKey
+import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.domain.model.CharacterDetailInfo
+import com.chs.youranimelist.domain.model.VoiceActorInfo
+import com.chs.youranimelist.presentation.browse.CollapsingLayout
+import com.chs.youranimelist.presentation.common.HtmlText
+import com.chs.youranimelist.presentation.common.ItemAnimeSmall
+import com.chs.youranimelist.presentation.common.ItemSaveButton
+import com.chs.youranimelist.presentation.common.ItemSpoilerDialog
+import com.chs.youranimelist.presentation.common.ShimmerImage
+import com.chs.youranimelist.presentation.common.placeholder
+import com.chs.youranimelist.presentation.getIdFromLink
+import com.chs.youranimelist.presentation.isHrefContent
+import com.chs.youranimelist.presentation.toCommaFormat
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun CharacterDetailScreenRoot(
@@ -77,12 +78,10 @@ fun CharacterDetailScreenRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val charaEvent by viewModel.charaDetailEvent.collectAsStateWithLifecycle(CharaDetailEvent.Idle)
-    val context = LocalContext.current
 
     LaunchedEffect(charaEvent) {
         when (charaEvent) { CharaDetailEvent.OnError -> {
-                Toast.makeText(context, "Something error in load Data..", Toast.LENGTH_SHORT)
-                    .show()
+
             }
 
             else -> Unit
@@ -132,10 +131,10 @@ fun CharacterDetailScreen(
 
     if (pagingItem != null) {
         when (pagingItem.loadState.refresh) {
-            is LoadState.Loading -> {
+            is LoadStateLoading -> {
             }
 
-            is LoadState.Error -> {
+            is LoadStateError -> {
             }
 
             else -> {
@@ -143,9 +142,9 @@ fun CharacterDetailScreen(
         }
 
         when (pagingItem.loadState.append) {
-            is LoadState.Loading -> {}
+            is LoadStateLoading -> {}
 
-            is LoadState.Error -> {}
+            is LoadStateError -> {}
 
             else -> Unit
         }
@@ -217,7 +216,7 @@ fun CharacterDetailScreen(
                                     .fillMaxWidth(),
                                 horizontalArrangement = Arrangement.spacedBy(16.dp)
                             ) {
-                                items(characterDetailInfo.voiceActorInfo!!) { actorInfo ->
+                                items(characterDetailInfo.voiceActorInfo) { actorInfo ->
                                     if (actorInfo != null) {
                                         CharacterVoiceActorInfo(actorInfo) { id ->
                                             onEvent(

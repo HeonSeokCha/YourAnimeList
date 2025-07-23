@@ -1,6 +1,6 @@
 package com.chs.youranimelist.domain.usecase
 
-import com.chs.domain.repository.AnimeRepository
+import com.chs.youranimelist.domain.repository.AnimeRepository
 
 class GetSaveTagUseCase(
     private val repository: AnimeRepository

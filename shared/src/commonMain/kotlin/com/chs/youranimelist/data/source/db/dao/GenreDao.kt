@@ -1,8 +1,8 @@
-package com.chs.data.source.db.dao
+package com.chs.youranimelist.data.source.db.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.chs.data.source.db.entity.GenreEntity
+import com.chs.youranimelist.data.source.db.entity.GenreEntity
 
 @Dao
 abstract class GenreDao : BaseDao<GenreEntity> {

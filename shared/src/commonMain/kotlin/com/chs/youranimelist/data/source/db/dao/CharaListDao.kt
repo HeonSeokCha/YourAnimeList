@@ -1,8 +1,8 @@
-package com.chs.data.source.db.dao
+package com.chs.youranimelist.data.source.db.dao
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import com.chs.data.source.db.entity.CharacterEntity
+import com.chs.youranimelist.data.source.db.entity.CharacterEntity
 
 @Dao
 abstract class CharaListDao : BaseDao<CharacterEntity> {

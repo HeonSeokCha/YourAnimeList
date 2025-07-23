@@ -1,6 +1,6 @@
 package com.chs.youranimelist.presentation.sortList
 
-import com.chs.domain.model.SortFilter
+import com.chs.youranimelist.domain.model.SortFilter
 
 sealed interface SortEvent {
     data object GetSortList : SortEvent

@@ -1,6 +1,6 @@
 package com.chs.youranimelist.presentation.animeList
 
-import com.chs.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.AnimeInfo
 
 data class AnimeListState(
     val isLoading: Boolean = true,

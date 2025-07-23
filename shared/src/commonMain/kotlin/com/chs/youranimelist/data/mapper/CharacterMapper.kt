@@ -1,14 +1,14 @@
-package com.chs.data.mapper
+package com.chs.youranimelist.data.mapper
 
-import com.chs.data.ActorDetailQuery
-import com.chs.data.CharacterDetailQuery
-import com.chs.data.Util
-import com.chs.data.source.db.entity.CharacterEntity
-import com.chs.domain.model.CharacterDetailInfo
-import com.chs.domain.model.CharacterInfo
-import com.chs.data.fragment.CharacterBasicInfo
-import com.chs.domain.model.VoiceActorDetailInfo
-import com.chs.domain.model.VoiceActorInfo
+import com.chs.youranimelist.data.ActorDetailQuery
+import com.chs.youranimelist.data.CharacterDetailQuery
+import com.chs.youranimelist.data.Util
+import com.chs.youranimelist.data.source.db.entity.CharacterEntity
+import com.chs.youranimelist.domain.model.CharacterDetailInfo
+import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.data.fragment.CharacterBasicInfo
+import com.chs.youranimelist.domain.model.VoiceActorDetailInfo
+import com.chs.youranimelist.domain.model.VoiceActorInfo
 
 
 fun CharacterBasicInfo?.toCharacterInfo(): CharacterInfo {

@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.common.onError
 import com.chs.common.onSuccess
-import com.chs.domain.usecase.GetAnimeRecListUseCase
-import presentation.Util
+import com.chs.youranimelist.domain.usecase.GetAnimeRecListUseCase
+import com.chs.youranimelist.presentation.Util
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

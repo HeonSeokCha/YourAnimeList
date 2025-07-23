@@ -2,7 +2,7 @@ package com.chs.youranimelist.presentation.animeList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.domain.usecase.GetSavedAnimeListUseCase
+import com.chs.youranimelist.domain.usecase.GetSavedAnimeListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart

@@ -4,12 +4,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import androidx.paging.cachedIn
-import com.chs.domain.model.AnimeInfo
+import app.cash.paging.cachedIn
+import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.common.onError
 import com.chs.common.onSuccess
-import com.chs.domain.usecase.*
-import presentation.browse.BrowseScreen
+import com.chs.youranimelist.domain.usecase.*
+import com.chs.youranimelist.presentation.browse.BrowseScreen
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

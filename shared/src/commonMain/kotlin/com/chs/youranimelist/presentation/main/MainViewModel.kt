@@ -2,10 +2,10 @@ package com.chs.youranimelist.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.domain.usecase.DeleteSearchHistoryUseCase
-import com.chs.domain.usecase.GetRecentGenresTagUseCase
-import com.chs.domain.usecase.GetSearchHistoryUseCase
-import com.chs.domain.usecase.InsertSearchHistoryUseCase
+import com.chs.youranimelist.domain.usecase.DeleteSearchHistoryUseCase
+import com.chs.youranimelist.domain.usecase.GetRecentGenresTagUseCase
+import com.chs.youranimelist.domain.usecase.GetSearchHistoryUseCase
+import com.chs.youranimelist.domain.usecase.InsertSearchHistoryUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest

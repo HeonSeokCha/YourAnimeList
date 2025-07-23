@@ -2,8 +2,8 @@ package com.chs.youranimelist.presentation.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.chs.domain.model.CharacterInfo
-import presentation.ui.theme.YourAnimeListTheme
+import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
 
 @Composable
 fun ItemCharaLarge(
