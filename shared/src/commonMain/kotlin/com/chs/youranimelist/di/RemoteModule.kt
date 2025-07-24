@@ -2,12 +2,15 @@ package com.chs.youranimelist.di
 
 
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.network.http.HttpEngine
 import com.apollographql.ktor.ktorClient
 import com.chs.common.Constants
 import com.chs.youranimelist.data.source.CustomHttpLogger
+import com.chs.youranimelist.data.source.HttpEngineFactory
 import com.chs.youranimelist.data.source.JikanService
 import io.ktor.client.*
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.HttpClientEngineFactory
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -18,15 +21,15 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
+import org.koin.dsl.module
 import kotlin.time.Duration.Companion.seconds
 
-@Module
-class RemoteModule {
-    @Single
-    fun provideHttpClient(engine: HttpClientEngine): HttpClient {
-        return HttpClient(engine) {
+val remoteModule = module {
+    single {
+        return@single HttpClient(get<HttpClientEngine>()) {
             install(Logging) {
                 logger = CustomHttpLogger()
                 level = LogLevel.ALL
@@ -39,18 +42,16 @@ class RemoteModule {
         }
     }
 
-    @Single
-    fun provideApolloClient(httpClient: HttpClient): ApolloClient {
-        return ApolloClient.Builder()
+    single {
+        return@single ApolloClient.Builder()
             .serverUrl(Constants.ANILIST_API_URL)
-            .ktorClient(httpClient)
+            .ktorClient(get<HttpClient>())
             .build()
     }
 
-    @Single
-    fun provideJikanService(httpClient: HttpClient): JikanService {
-        return JikanService(
-            httpClient.config {
+    single {
+        return@single JikanService(
+            get<HttpClient>().config {
                 install(ContentNegotiation) {
                     json(Json { ignoreUnknownKeys = true })
                 }

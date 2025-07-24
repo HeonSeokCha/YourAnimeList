@@ -1,6 +1,5 @@
 package com.chs.youranimelist.data.source
 
-import android.util.Log
 import com.chs.youranimelist.data.model.JikanAnimeDataDto
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -15,6 +14,5 @@ class JikanService(private val client: HttpClient) {
 
 class CustomHttpLogger : Logger {
     override fun log(message: String) {
-        Log.d("loggerTag", message)
     }
 }

@@ -79,6 +79,7 @@ kotlin {
 
                 implementation(libs.koin.core)
                 api(libs.koin.annotations)
+
                 implementation(libs.bundles.koin)
                 implementation(libs.bundles.coil)
                 implementation(libs.bundles.room)
@@ -136,7 +137,6 @@ room {
 dependencies {
     listOf(
         "kspAndroid",
-        // "kspJvm",
         "kspIosSimulatorArm64",
         "kspIosX64",
         "kspIosArm64"
