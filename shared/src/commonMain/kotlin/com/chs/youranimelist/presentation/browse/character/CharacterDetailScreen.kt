@@ -63,6 +63,8 @@ import com.chs.youranimelist.presentation.getIdFromLink
 import com.chs.youranimelist.presentation.isHrefContent
 import com.chs.youranimelist.presentation.toCommaFormat
 import org.jetbrains.compose.resources.stringResource
+import com.chs.youranimelist.res.Res
+import com.chs.youranimelist.res.lorem_ipsum
 
 @Composable
 fun CharacterDetailScreenRoot(
@@ -411,7 +413,7 @@ private fun CharacterDescription(
     ) {
         if (expandedDescButton) {
             HtmlText(
-                html = description ?: stringResource(id = R.string.lorem_ipsum),
+                html = description ?: stringResource(Res.string.lorem_ipsum),
                 onHyperlinkClick = {
                     onHrefClick(it)
                 }
@@ -420,7 +422,7 @@ private fun CharacterDescription(
             HtmlText(
                 modifier = Modifier
                     .placeholder(visible = description == null),
-                html = description ?: stringResource(id = R.string.lorem_ipsum),
+                html = description ?: stringResource(Res.string.lorem_ipsum),
                 maxLines = 5,
                 overflow = TextOverflow.Ellipsis,
                 onHyperlinkClick = {

@@ -177,7 +177,6 @@ fun StudioDetailScreen(
     }
 }
 
-@SuppressLint("DefaultLocale")
 @Composable
 private fun StudioInfo(studioInfo: StudioDetailInfo?) {
     Column(

@@ -16,26 +16,26 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MainApp() {
-    val viewModel: MainViewModel = koinViewModel()
+//    val viewModel: MainViewModel = koinViewModel()
     val navController: NavHostController = rememberNavController()
     var searchQuery: String by remember { mutableStateOf("") }
-    val state by viewModel.state.collectAsStateWithLifecycle()
+//    val state by viewModel.state.collectAsStateWithLifecycle()
 
     YourAnimeListTheme {
         Scaffold(
             topBar = {
-                AppBar(
-                    navController = navController,
-                    searchHistoryList = state,
-                    onQueryChange = {
-                        if (it.isNotEmpty()) {
-                            viewModel.insertSearchHistory(it)
-                        }
-                        searchQuery = it
-                    }, onDeleteSearchHistory = {
-                        viewModel.deleteSearchHistory(it)
-                    }
-                )
+//                AppBar(
+//                    navController = navController,
+//                    searchHistoryList = state,
+//                    onQueryChange = {
+//                        if (it.isNotEmpty()) {
+//                            viewModel.insertSearchHistory(it)
+//                        }
+//                        searchQuery = it
+//                    }, onDeleteSearchHistory = {
+//                        viewModel.deleteSearchHistory(it)
+//                    }
+//                )
             },
             bottomBar = {
                 BottomBar(navController)

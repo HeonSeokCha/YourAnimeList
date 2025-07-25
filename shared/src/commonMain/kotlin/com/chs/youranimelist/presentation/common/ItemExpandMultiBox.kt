@@ -46,8 +46,7 @@ fun ItemExpandingMultiBox(
     ) {
         OutlinedTextField(
             modifier = Modifier
-                .fillMaxWidth()
-                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
+                .fillMaxWidth(),
             value = if (selectedList.isNotEmpty()) {
                 if (selectedList.size > 1) {
                     "${selectedList.first()} + ${selectedList.size - 1}"

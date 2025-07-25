@@ -27,8 +27,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.chs.youranimelist.presentation.ui.theme.Red200
 import com.chs.youranimelist.presentation.ui.theme.Red500
+import com.chs.youranimelist.res.Res
+import com.chs.youranimelist.res.app_name
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
+import kotlin.math.exp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,7 +72,7 @@ fun AppBar(
         TopAppBar(
             title = {
                 Text(
-                    text = stringResource(R.string.app_name),
+                    text = stringResource(Res.string.app_name),
                     color = Color.White
                 )
             },
@@ -93,7 +96,8 @@ fun AppBar(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchAppBar(
     onSearch: (String) -> Unit,
@@ -102,18 +106,20 @@ fun SearchAppBar(
     onDeleteSearchHistory: (String) -> Unit
 ) {
     var isShowDialog by remember { mutableStateOf(false) }
+    var searchBarState by remember { mutableStateOf(false) }
+    var textState by remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
-    val searchBarState = rememberSearchBarState()
     val textFieldState = rememberTextFieldState()
     val inputField =
         @Composable {
             SearchBarDefaults.InputField(
-                shape = RectangleShape,
-                searchBarState = searchBarState,
-                textFieldState = textFieldState,
+                query = textState,
+                expanded = searchBarState,
+                onExpandedChange = { searchBarState = it },
+                onQueryChange = { textState = it },
                 onSearch = {
                     scope.launch {
-                        searchBarState.animateToCollapsed()
+                        searchBarState = false
                     }
                     onSearch(it)
                 },
@@ -121,8 +127,8 @@ fun SearchAppBar(
                 leadingIcon = {
                     IconButton(
                         onClick = {
-                            if (searchBarState.currentValue == SearchBarValue.Expanded) {
-                                scope.launch { searchBarState.animateToCollapsed() }
+                            if (searchBarState) {
+                                scope.launch { searchBarState = false}
                             } else onBack()
                         }
                     ) {
@@ -130,18 +136,6 @@ fun SearchAppBar(
                     }
                 },
                 trailingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                colors = SearchBarDefaults.inputFieldColors(
-                    focusedContainerColor = Red200,
-                    unfocusedContainerColor = Red500,
-                    focusedTrailingIconColor = Color.Black,
-                    unfocusedTrailingIconColor = Color.White,
-                    focusedLeadingIconColor = Color.Black,
-                    unfocusedLeadingIconColor = Color.White,
-                    focusedPlaceholderColor = Color.Black,
-                    unfocusedPlaceholderColor = Color.White,
-                    focusedTextColor = Color.Black,
-                    unfocusedTextColor = Color.White
-                )
             )
         }
 
@@ -149,18 +143,10 @@ fun SearchAppBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(TopAppBarDefaults.MediumAppBarCollapsedHeight),
-        shape = RectangleShape,
-        state = searchBarState,
-        inputField = inputField
-    )
-
-    ExpandedFullScreenSearchBar(
-        state = searchBarState,
         inputField = inputField,
-        colors = SearchBarDefaults.colors(
-            containerColor = Red200,
-            inputFieldColors = TextFieldDefaults.colors()
-        )
+        expanded = searchBarState,
+        shape = RectangleShape,
+        onExpandedChange = { it -> searchBarState = it}
     ) {
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(searchHistoryList) { title ->
@@ -174,7 +160,7 @@ fun SearchAppBar(
                                     delete(0, length)
                                     append(title)
                                 }
-                                scope.launch { searchBarState.animateToCollapsed() }
+                                searchBarState = false
                                 onSearch(title)
                             },
                             onLongClick = {
@@ -195,7 +181,28 @@ fun SearchAppBar(
                 }
             }
         }
+
     }
+
+//    SearchBar(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .height(TopAppBarDefaults.MediumAppBarCollapsedHeight),
+//        shape = RectangleShape,
+//        state = searchBarState,
+//        inputField = inputField
+//    )
+//
+//    ExpandedFullScreenSearchBar(
+//        state = searchBarState,
+//        inputField = inputField,
+//        colors = SearchBarDefaults.colors(
+//            containerColor = Red200,
+//            inputFieldColors = TextFieldDefaults.colors()
+//        )
+//    ) {
+//
+//    }
 
     if (isShowDialog) {
         AlertDialog(

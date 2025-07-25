@@ -1,6 +1,5 @@
 package com.chs.youranimelist.presentation.browse.actor
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,6 +43,8 @@ import com.chs.youranimelist.presentation.getIdFromLink
 import com.chs.youranimelist.presentation.isHrefContent
 import com.chs.youranimelist.presentation.toCommaFormat
 import com.chs.youranimelist.presentation.ui.theme.Pink80
+import com.chs.youranimelist.res.Res
+import com.chs.youranimelist.res.lorem_ipsum
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -273,7 +274,7 @@ private fun VoiceActorProFile(
         HtmlText(
             modifier = Modifier
                 .placeholder(visible = info == null),
-            html = info?.description ?: stringResource(id = R.string.lorem_ipsum),
+            html = info?.description ?: stringResource(Res.string.lorem_ipsum),
             onHyperlinkClick = {
                 if (isHrefContent(it)) {
                     getIdFromLink(

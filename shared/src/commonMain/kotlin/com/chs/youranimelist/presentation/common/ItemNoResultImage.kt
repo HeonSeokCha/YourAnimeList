@@ -12,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.res.Res
+import com.chs.youranimelist.res.ico_no_result
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -22,7 +24,7 @@ fun ItemNoResultImage() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ico_no_result),
+            painter = painterResource(Res.drawable.ico_no_result),
             contentDescription = null
         )
     }
@@ -39,7 +41,7 @@ fun ItemErrorImage(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ico_no_result),
+            painter = painterResource(Res.drawable.ico_no_result),
             contentDescription = null
         )
 

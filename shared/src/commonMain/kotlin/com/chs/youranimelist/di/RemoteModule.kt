@@ -2,15 +2,12 @@ package com.chs.youranimelist.di
 
 
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.network.http.HttpEngine
 import com.apollographql.ktor.ktorClient
 import com.chs.common.Constants
 import com.chs.youranimelist.data.source.CustomHttpLogger
-import com.chs.youranimelist.data.source.HttpEngineFactory
 import com.chs.youranimelist.data.source.JikanService
 import io.ktor.client.*
 import io.ktor.client.engine.HttpClientEngine
-import io.ktor.client.engine.HttpClientEngineFactory
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest

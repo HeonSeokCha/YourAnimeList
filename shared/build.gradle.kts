@@ -78,6 +78,7 @@ kotlin {
                 implementation(libs.bundles.apollo)
 
                 implementation(libs.koin.core)
+                api(libs.koin.annotations)
 
                 implementation(libs.bundles.koin)
                 implementation(libs.bundles.coil)
@@ -112,6 +113,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -141,8 +143,14 @@ dependencies {
         "kspIosArm64"
     ).forEach {
         add(it, libs.room.compiler)
-//        add(it, libs.koin.ksp.compiler)
+        add(it, libs.koin.ksp.compiler)
     }
+}
+
+compose.resources {
+    publicResClass = false
+    packageOfResClass = "com.chs.youranimelist.res"
+    generateResClass = auto
 }
 
 project.tasks.withType(KotlinCompilationTask::class.java).configureEach {

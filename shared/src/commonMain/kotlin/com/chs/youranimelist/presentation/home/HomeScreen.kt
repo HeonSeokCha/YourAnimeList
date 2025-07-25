@@ -36,16 +36,11 @@ fun HomeScreenRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val event by viewModel.event.collectAsStateWithLifecycle(HomeEvent.Idle)
-    val context = LocalContext.current
 
     LaunchedEffect(event) {
         when (event) {
             is HomeEvent.ShowToast -> {
-                Toast.makeText(
-                    context,
-                    (event as HomeEvent.ShowToast).message,
-                    Toast.LENGTH_SHORT
-                ).show()
+
             }
 
             else -> Unit
