@@ -13,8 +13,9 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             platformModule,
             localModule,
             remoteModule,
-            RepositoryModule().module,
-            UseCaseModule().module,
+            repositoryModule,
+            useCaseModule,
+            viewModelModule
         )
     }
 }

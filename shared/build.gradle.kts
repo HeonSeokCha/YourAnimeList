@@ -78,7 +78,6 @@ kotlin {
                 implementation(libs.bundles.apollo)
 
                 implementation(libs.koin.core)
-                api(libs.koin.annotations)
 
                 implementation(libs.bundles.koin)
                 implementation(libs.bundles.coil)
@@ -142,7 +141,7 @@ dependencies {
         "kspIosArm64"
     ).forEach {
         add(it, libs.room.compiler)
-        add(it, libs.koin.ksp.compiler)
+//        add(it, libs.koin.ksp.compiler)
     }
 }
 

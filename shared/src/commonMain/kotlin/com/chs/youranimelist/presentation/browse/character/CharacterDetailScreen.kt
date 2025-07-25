@@ -45,13 +45,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.LoadState
 import app.cash.paging.LoadStateError
 import app.cash.paging.LoadStateLoading
 import app.cash.paging.compose.collectAsLazyPagingItems
 import app.cash.paging.compose.itemKey
-import app.cash.paging.paging.compose.collectAsLazyPagingItems
-import app.cash.paging.paging.compose.itemKey
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.domain.model.CharacterDetailInfo
 import com.chs.youranimelist.domain.model.VoiceActorInfo

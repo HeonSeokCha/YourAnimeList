@@ -37,6 +37,7 @@ import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemExpandSingleBox
 import com.chs.youranimelist.presentation.toCommaFormat
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun StudioDetailScreenRoot(
@@ -204,7 +205,7 @@ private fun StudioInfo(studioInfo: StudioDetailInfo?) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview()
 @Composable
 private fun PreviewStudioScreen() {
     StudioDetailScreen(state = StudioDetailState()) { }

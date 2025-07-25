@@ -27,8 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.youranimelist.domain.model.VoiceActorDetailInfo
-import com.chs.presentation.R
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.browse.CollapsingLayout
 import com.chs.youranimelist.presentation.browse.character.ProfileText
@@ -59,12 +56,10 @@ fun ActorDetailScreenRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val actorEvent by viewModel.actorEvent.collectAsStateWithLifecycle(ActorDetailEvent.Idle)
-    val context = LocalContext.current
 
     LaunchedEffect(actorEvent) {
         when (actorEvent) {
             ActorDetailEvent.OnError -> {
-                Toast.makeText(context, "Something error in load Data..", Toast.LENGTH_SHORT).show()
             }
 
             else -> Unit
