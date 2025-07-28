@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -32,11 +33,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
 import com.chs.youranimelist.domain.model.VoiceActorDetailInfo
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.browse.CollapsingLayout
 import com.chs.youranimelist.presentation.browse.character.ProfileText
-import com.chs.youranimelist.presentation.common.HtmlText
 import com.chs.youranimelist.presentation.common.ShimmerImage
 import com.chs.youranimelist.presentation.common.placeholder
 import com.chs.youranimelist.presentation.getIdFromLink
@@ -218,7 +219,7 @@ private fun ActorInfo(actorInfo: VoiceActorDetailInfo?) {
                             UiConst.FAVOURITE_ID,
                             UiConst.FAVOURITE_ID
                         )
-                        append(actorInfo?.favorite.toCommaFormat)
+                        append(actorInfo?.favorite.toCommaFormat())
 
                     },
                     inlineContent = UiConst.inlineContent,
@@ -271,29 +272,12 @@ private fun VoiceActorProFile(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        HtmlText(
+        val desc = info?.description ?: stringResource(Res.string.lorem_ipsum)
+
+        Text(
             modifier = Modifier
                 .placeholder(visible = info == null),
-            html = info?.description ?: stringResource(Res.string.lorem_ipsum),
-            onHyperlinkClick = {
-                if (isHrefContent(it)) {
-                    getIdFromLink(
-                        link = it,
-                        onAnime = {
-                            onEvent(ActorDetailEvent.ClickBtn.Anime(it, it))
-                        },
-                        onChara = {
-                            onEvent(ActorDetailEvent.ClickBtn.Chara(it))
-                        },
-                        onBrowser = {
-                            onEvent(ActorDetailEvent.ClickBtn.Link(it))
-                        }
-                    )
-                    return@HtmlText
-                }
-
-
-            }
+            text = remember(desc) { htmlToAnnotatedString(desc) }
         )
     }
 }

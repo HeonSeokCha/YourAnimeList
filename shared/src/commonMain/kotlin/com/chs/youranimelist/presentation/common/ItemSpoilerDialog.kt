@@ -4,6 +4,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
 
 @Composable
 fun ItemSpoilerDialog(
@@ -13,7 +15,7 @@ fun ItemSpoilerDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         text = {
-            HtmlText(message)
+            Text(text = remember(message) { htmlToAnnotatedString(message) })
         }, confirmButton = {
             TextButton(onClick = { onDismiss() }) {
                 Text("Confirm")

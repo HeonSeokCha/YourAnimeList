@@ -1,6 +1,5 @@
 package com.chs.youranimelist.presentation.main
 
-import android.content.Intent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
@@ -8,12 +7,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.domain.model.BrowseInfo
+import com.chs.youranimelist.domain.model.MediaType
 import com.chs.youranimelist.presentation.animeList.AnimeListScreen
 import com.chs.youranimelist.presentation.animeList.AnimeListViewModel
 import com.chs.youranimelist.presentation.charaList.CharaListScreen
@@ -34,6 +33,7 @@ fun MainNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     searchQuery: String,
+    browseInfo: (BrowseInfo) -> Unit
 ) {
 
     NavHost(
@@ -49,16 +49,7 @@ fun MainNavHost(
             HomeScreenRoot(
                 viewModel = viewModel,
                 onAnimeClick = { id, idMal ->
-//                    context.startActivity(
-//                        Intent(
-//                            context,
-//                            BrowseActivity::class.java
-//                        ).apply {
-//                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-//                            this.putExtra(UiConst.TARGET_ID, id)
-//                            this.putExtra(UiConst.TARGET_ID_MAL, idMal)
-//                        }
-//                    )
+                    browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = id))
                 },
                 onSortScreenClick = {
                     navController.navigate(it)
@@ -70,16 +61,7 @@ fun MainNavHost(
             val viewModel: AnimeListViewModel = koinViewModel()
             val state by viewModel.state.collectAsStateWithLifecycle()
             AnimeListScreen(state) { id, idMal ->
-//                context.startActivity(
-//                    Intent(
-//                        context,
-//                        BrowseActivity::class.java
-//                    ).apply {
-//                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-//                        this.putExtra(UiConst.TARGET_ID, id)
-//                        this.putExtra(UiConst.TARGET_ID_MAL, idMal)
-//                    }
-//                )
+                browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = id))
             }
         }
 
@@ -87,15 +69,7 @@ fun MainNavHost(
             val viewmodel: CharacterListViewModel = koinViewModel()
             val state by viewmodel.state.collectAsStateWithLifecycle()
             CharaListScreen(state) { id ->
-//                context.startActivity(
-//                    Intent(
-//                        context,
-//                        BrowseActivity::class.java
-//                    ).apply {
-//                        this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
-//                        this.putExtra(UiConst.TARGET_ID, id)
-//                    }
-//                )
+                browseInfo(BrowseInfo(type = MediaType.CHARACTER, id = id))
             }
         }
 
@@ -112,27 +86,10 @@ fun MainNavHost(
             SearchScreenRoot(
                 viewModel = viewModel,
                 onAnimeClick = { id, idMal ->
-//                    context.startActivity(
-//                        Intent(
-//                            context,
-//                            BrowseActivity::class.java
-//                        ).apply {
-//                            putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-//                            putExtra(UiConst.TARGET_ID, id)
-//                            putExtra(UiConst.TARGET_ID_MAL, idMal)
-//                        }
-//                    )
+                    browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = id))
                 },
                 onCharaClick = { id ->
-//                    context.startActivity(
-//                        Intent(
-//                            context,
-//                            BrowseActivity::class.java
-//                        ).apply {
-//                            putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_CHARA)
-//                            putExtra(UiConst.TARGET_ID, id)
-//                        }
-//                    )
+                    browseInfo(BrowseInfo(type = MediaType.CHARACTER, id = id))
                 }
             )
         }
@@ -143,16 +100,7 @@ fun MainNavHost(
             SortedListScreenRoot(
                 viewModel = viewmodel,
                 onClickAnime = { id, idMal ->
-//                    context.startActivity(
-//                        Intent(
-//                            context,
-//                            BrowseActivity::class.java
-//                        ).apply {
-//                            this.putExtra(UiConst.TARGET_TYPE, UiConst.TARGET_MEDIA)
-//                            this.putExtra(UiConst.TARGET_ID, id)
-//                            this.putExtra(UiConst.TARGET_ID_MAL, idMal)
-//                        }
-//                    )
+                    browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = id))
                 }
             )
         }

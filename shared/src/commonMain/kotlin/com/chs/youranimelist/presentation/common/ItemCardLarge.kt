@@ -117,7 +117,7 @@ fun ItemCardLarge(
                                         UiConst.AVERAGE_SCORE_ID
                                     )
                                 }
-                                append(score.toCommaFormat)
+                                append(score.toCommaFormat())
                             },
                             inlineContent = UiConst.inlineContent,
                             fontWeight = FontWeight.Bold,

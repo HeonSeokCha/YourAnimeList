@@ -81,6 +81,8 @@ coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 
+
+htmlText = "be.digitalia.compose.htmlconverter:htmlconverter:1.1.0"
 junit = "junit:junit:4.13.2"
 
 [bundles]

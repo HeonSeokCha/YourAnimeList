@@ -199,7 +199,7 @@ private fun StudioInfo(studioInfo: StudioDetailInfo?) {
                 contentDescription = null,
                 tint = Color.Red
             )
-            Text(text = studioInfo?.favourites.toCommaFormat)
+            Text(text = studioInfo?.favourites.toCommaFormat())
         }
     }
 }

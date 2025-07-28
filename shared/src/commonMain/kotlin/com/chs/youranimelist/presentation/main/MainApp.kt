@@ -11,31 +11,32 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.chs.youranimelist.domain.model.BrowseInfo
 import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun MainApp() {
-//    val viewModel: MainViewModel = koinViewModel()
+fun MainApp(onBrowse: (BrowseInfo) -> Unit) {
+    val viewModel: MainViewModel = koinViewModel()
     val navController: NavHostController = rememberNavController()
     var searchQuery: String by remember { mutableStateOf("") }
-//    val state by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     YourAnimeListTheme {
         Scaffold(
             topBar = {
-//                AppBar(
-//                    navController = navController,
-//                    searchHistoryList = state,
-//                    onQueryChange = {
-//                        if (it.isNotEmpty()) {
-//                            viewModel.insertSearchHistory(it)
-//                        }
-//                        searchQuery = it
-//                    }, onDeleteSearchHistory = {
-//                        viewModel.deleteSearchHistory(it)
-//                    }
-//                )
+                AppBar(
+                    navController = navController,
+                    searchHistoryList = state,
+                    onQueryChange = {
+                        if (it.isNotEmpty()) {
+                            viewModel.insertSearchHistory(it)
+                        }
+                        searchQuery = it
+                    }, onDeleteSearchHistory = {
+                        viewModel.deleteSearchHistory(it)
+                    }
+                )
             },
             bottomBar = {
                 BottomBar(navController)
@@ -44,7 +45,8 @@ fun MainApp() {
             MainNavHost(
                 navController = navController,
                 modifier = Modifier.padding(it),
-                searchQuery = searchQuery
+                searchQuery = searchQuery,
+                browseInfo = { onBrowse(it) }
             )
         }
     }

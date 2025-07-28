@@ -1,6 +1,5 @@
 package com.chs.youranimelist.presentation.browse.anime
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,12 +30,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.LightGray
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -51,7 +48,7 @@ import com.chs.youranimelist.presentation.common.placeholder
 import com.chs.youranimelist.presentation.isNotEmptyValue
 import com.chs.youranimelist.presentation.ui.theme.Pink80
 import kotlinx.coroutines.launch
-import com.chs.youranimelist.presentation.color
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AnimeDetailScreenRoot(
@@ -68,13 +65,10 @@ fun AnimeDetailScreenRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val animeDetailEvent by viewModel.animeDetailEvent.collectAsStateWithLifecycle(AnimeDetailEvent.Idle)
-    val context = LocalContext.current
 
     LaunchedEffect(animeDetailEvent) {
         when (animeDetailEvent) {
-            AnimeDetailEvent.OnError -> {
-                Toast.makeText(context, "Something error in load Data..", Toast.LENGTH_SHORT).show()
-            }
+            AnimeDetailEvent.OnError -> {}
 
             else -> Unit
         }
@@ -247,7 +241,7 @@ private fun AnimeDetailHeadBanner(
                     .fillMaxWidth()
                     .height(250.dp)
                     .background(
-                        color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
+                        color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color()
                             ?: LightGray
                     ),
                 url = animeDetailInfo?.bannerImage
@@ -277,7 +271,7 @@ private fun AnimeDetailHeadBanner(
                     .height(180.dp)
                     .clip(RoundedCornerShape(5.dp))
                     .background(
-                        color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color
+                        color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color()
                             ?: Gray
                     ),
                 url = animeDetailInfo?.animeInfo?.imageUrl

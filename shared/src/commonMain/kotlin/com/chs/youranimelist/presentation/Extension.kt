@@ -1,25 +1,30 @@
 package com.chs.youranimelist.presentation
 
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.toColorInt
 
-val String.color
-    get() = Color(this.toColorInt())
+fun String.color(): Color {
+    val color = removePrefix("#")
+    val parsedColor = when (color.length) {
+        6 -> color.toLong(16) or 0x00000000FF000000 // Add alpha = 255 if not provided
+        8 -> color.toLong(16) // Includes alpha channel
+        else -> throw IllegalArgumentException("Unknown color format: $this")
+    }
+    return Color(parsedColor)
+}
+
 val Int?.isNotEmptyValue
     get() = this != null && this != 0
 
 val String?.isNotEmptyValue
     get() = this != null && this != ""
 
-val Int?.toCommaFormat
-    @SuppressLint("DefaultLocale")
-    get() = String.format("%,d", this ?: 0)
+fun Int?.toCommaFormat(): String = this?.let {
+    it.toString().reversed().chunked(3).joinToString(",").reversed()
+} ?: ""
 
 @Composable
 fun Int.pxToDp(): Dp {
@@ -63,5 +68,4 @@ fun getIdFromLink(
 }
 
 fun chsLog(message: String?) {
-    Log.e("CHS_123", message.toString())
 }

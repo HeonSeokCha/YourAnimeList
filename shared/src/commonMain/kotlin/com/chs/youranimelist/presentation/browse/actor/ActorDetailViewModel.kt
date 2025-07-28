@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class ActorDetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val getActorDetailInfoUseCase: GetActorDetailInfoUseCase,
-    private val getActorMediaListUseCase: GetActorMediaListUseCase,
+    private val getActorMediaListUseCase: GetActorMediaListUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ActorDetailState())

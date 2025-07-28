@@ -1,15 +1,12 @@
 package com.chs.youranimelist.presentation.browse
 
-import android.content.Intent
-import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.chs.common.Constants
-import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.domain.model.BrowseInfo
+import com.chs.youranimelist.domain.model.MediaType
 import com.chs.youranimelist.presentation.browse.actor.ActorDetailScreenRoot
 import com.chs.youranimelist.presentation.browse.actor.ActorDetailViewModel
 import com.chs.youranimelist.presentation.browse.anime.AnimeDetailScreenRoot
@@ -21,25 +18,26 @@ import com.chs.youranimelist.presentation.browse.studio.StudioDetailViewModel
 import com.chs.youranimelist.presentation.main.Screen
 import com.chs.youranimelist.presentation.sortList.SortedListScreenRoot
 import com.chs.youranimelist.presentation.sortList.SortedViewModel
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun BrowseNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    intent: Intent?
+    browseInfo: BrowseInfo,
+    onLinkClick: (String) -> Unit,
+    onClose: () -> Unit
 ) {
 
-    val activity = LocalActivity.current
     val startMediaDestination: BrowseScreen =
-        if (intent?.getStringExtra(UiConst.TARGET_TYPE) == UiConst.TARGET_MEDIA) {
+        if (browseInfo.type == MediaType.MEDIA) {
             BrowseScreen.AnimeDetail(
-                id = intent.getIntExtra(UiConst.TARGET_ID, 0),
-                idMal = intent.getIntExtra(UiConst.TARGET_ID_MAL, 0)
+                id = browseInfo.id,
+                idMal = browseInfo.idMal
             )
         } else {
             BrowseScreen.CharacterDetail(
-                id = intent!!.getIntExtra(UiConst.TARGET_ID, 0)
+                id = browseInfo.id
             )
         }
 
@@ -53,15 +51,10 @@ fun BrowseNavHost(
             AnimeDetailScreenRoot(
                 viewModel = viewmodel,
                 onCloseClick = {
-                    activity?.finish()
+                    onClose()
                 },
                 onTrailerClick = { trailerId ->
-                    activity?.startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            "${Constants.YOUTUBE_BASE_URL}$trailerId".toUri()
-                        )
-                    )
+                    onLinkClick(trailerId)
                 },
                 onAnimeClick = { id, idMal ->
                     navController.navigate(
@@ -89,7 +82,7 @@ fun BrowseNavHost(
                     )
                 },
                 onLinkClick = { url ->
-                    activity?.startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
+                    onLinkClick(url)
                 },
                 onTagClick = { tag ->
                     navController.navigate(
@@ -119,12 +112,10 @@ fun BrowseNavHost(
                     )
                 },
                 onLinkClick = { url ->
-                    activity?.startActivity(
-                        Intent(Intent.ACTION_VIEW, url.toUri())
-                    )
+                    onLinkClick(url)
                 },
                 onCloseClick = {
-                    activity?.finish()
+                    onClose()
                 }
             )
         }
@@ -139,7 +130,7 @@ fun BrowseNavHost(
                         BrowseScreen.AnimeDetail(id = id, idMal = idMal)
                     )
                 }, onCloseClick = {
-                    activity?.finish()
+                    onClose()
                 }
             )
         }
@@ -171,12 +162,10 @@ fun BrowseNavHost(
                     )
                 },
                 onLinkClick = { url ->
-                    activity?.startActivity(
-                        Intent(Intent.ACTION_VIEW, url.toUri())
-                    )
+                    onLinkClick(url)
                 },
                 onCloseClick = {
-                    activity?.finish()
+                    onClose()
                 }
             )
         }

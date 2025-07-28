@@ -86,6 +86,8 @@ kotlin {
 
                 implementation(libs.cashapp.paging.common)
                 implementation(libs.cashapp.paging.compose)
+
+                implementation(libs.htmlText)
             }
         }
     }

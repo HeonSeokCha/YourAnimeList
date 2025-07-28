@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -49,11 +50,11 @@ import app.cash.paging.LoadStateError
 import app.cash.paging.LoadStateLoading
 import app.cash.paging.compose.collectAsLazyPagingItems
 import app.cash.paging.compose.itemKey
+import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.domain.model.CharacterDetailInfo
 import com.chs.youranimelist.domain.model.VoiceActorInfo
 import com.chs.youranimelist.presentation.browse.CollapsingLayout
-import com.chs.youranimelist.presentation.common.HtmlText
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemSaveButton
 import com.chs.youranimelist.presentation.common.ItemSpoilerDialog
@@ -321,7 +322,7 @@ private fun CharacterBanner(
                             UiConst.FAVOURITE_ID,
                             UiConst.FAVOURITE_ID
                         )
-                        append(characterInfo?.characterInfo?.favourites.toCommaFormat)
+                        append(characterInfo?.characterInfo?.favourites.toCommaFormat())
                     },
                     inlineContent = UiConst.inlineContent,
                     fontWeight = FontWeight.Bold,
@@ -411,23 +412,27 @@ private fun CharacterDescription(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (expandedDescButton) {
-            HtmlText(
-                html = description ?: stringResource(Res.string.lorem_ipsum),
-                onHyperlinkClick = {
-                    onHrefClick(it)
+        val desc = description ?: stringResource(Res.string.lorem_ipsum)
+        val convertedText = remember(desc) {
+            htmlToAnnotatedString(
+                desc,
+                linkInteractionListener = { link ->
+                    if (link is LinkAnnotation.Url) {
+                        onHrefClick(link.url)
+                    }
                 }
             )
+        }
+        if (expandedDescButton) {
+            Text(text = convertedText)
+
         } else {
-            HtmlText(
+            Text(
                 modifier = Modifier
                     .placeholder(visible = description == null),
-                html = description ?: stringResource(Res.string.lorem_ipsum),
+                text = convertedText,
                 maxLines = 5,
                 overflow = TextOverflow.Ellipsis,
-                onHyperlinkClick = {
-                    onHrefClick(it)
-                }
             )
         }
 

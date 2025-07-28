@@ -15,16 +15,16 @@ import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
 import com.chs.youranimelist.domain.model.AnimHomeBannerInfo
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.presentation.UiConst
@@ -33,7 +33,7 @@ import com.chs.youranimelist.presentation.color
 import com.chs.youranimelist.presentation.common.ShimmerImage
 import com.chs.youranimelist.presentation.common.placeholder
 import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
-import com.chs.youranimelist.presentation.color
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -60,7 +60,7 @@ fun ItemHomeBanner(
                 .fillMaxWidth(0.4f)
                 .height(220.dp),
             url = banner?.animeInfo?.imageUrl,
-            color = banner?.animeInfo?.imagePlaceColor?.color ?: Color.LightGray
+            color = banner?.animeInfo?.imagePlaceColor?.color() ?: Color.LightGray
         )
 
         Box(
@@ -93,7 +93,7 @@ fun ItemHomeBanner(
                     .align(Alignment.BottomStart)
                     .placeholder(visible = banner == null),
                 text = banner?.studioTitle ?: UiConst.TITLE_PREVIEW,
-                color = banner?.animeInfo?.imagePlaceColor?.color ?: Color.White,
+                color = banner?.animeInfo?.imagePlaceColor?.color() ?: Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 11.sp,
                 maxLines = 1, overflow = TextOverflow.Ellipsis
@@ -127,11 +127,11 @@ fun ItemHomeBanner(
                                 fontSize = 12.sp
                             )
                         }, colors = AssistChipDefaults.assistChipColors(
-                            containerColor = GENRE_COLOR[genre]?.color ?: Color.Black,
+                            containerColor = GENRE_COLOR[genre]?.color() ?: Color.Black,
                             labelColor = Color.White
                         ), border = AssistChipDefaults.assistChipBorder(
                             enabled = true,
-                            borderColor = GENRE_COLOR[genre]?.color ?: Color.Black
+                            borderColor = GENRE_COLOR[genre]?.color() ?: Color.Black
                         ),
                         shape = RoundedCornerShape(16.dp)
                     )
@@ -171,6 +171,7 @@ fun ItemHomeBanner(
             fontSize = 12.sp
         )
 
+        val desc = banner?.description ?: UiConst.TITLE_PREVIEW
         Text(
             modifier = Modifier
                 .fillMaxWidth(0.6f)
@@ -182,9 +183,7 @@ fun ItemHomeBanner(
                 )
                 .align(Alignment.TopEnd)
                 .placeholder(visible = banner == null),
-            text = AnnotatedString.fromHtml(
-                htmlString = banner?.description ?: UiConst.TITLE_PREVIEW
-            ),
+            text = remember(desc) { htmlToAnnotatedString(desc) },
             fontSize = 12.sp,
             maxLines = 5,
             overflow = TextOverflow.Ellipsis,

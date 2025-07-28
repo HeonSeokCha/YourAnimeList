@@ -84,7 +84,10 @@ private fun HeadSection(
             .onGloballyPositioned { layoutCoordinates ->
                 visiblePercentage = layoutCoordinates.boundsInRoot().height / contentHeight
             }
-            .onSizeChanged { contentHeight = it.height }
+            .onSizeChanged {
+                println("Size changed: ${it.height}")
+                contentHeight = it.height
+            }
             .alpha(visiblePercentage)
     ) {
         header()

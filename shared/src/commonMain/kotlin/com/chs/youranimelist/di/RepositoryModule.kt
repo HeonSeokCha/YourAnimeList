@@ -1,9 +1,11 @@
 package com.chs.youranimelist.di
 
+import com.chs.youranimelist.data.repository.ActorRepositoryImpl
 import com.chs.youranimelist.data.repository.AnimeRepositoryImpl
 import com.chs.youranimelist.data.repository.CharacterRepositoryImpl
 import com.chs.youranimelist.data.repository.SearchRepositoryImpl
 import com.chs.youranimelist.data.repository.StudioRepositoryImpl
+import com.chs.youranimelist.domain.repository.ActorRepository
 import com.chs.youranimelist.domain.repository.AnimeRepository
 import com.chs.youranimelist.domain.repository.CharacterRepository
 import com.chs.youranimelist.domain.repository.SearchRepository
@@ -17,4 +19,5 @@ val repositoryModule = module {
     singleOf(::CharacterRepositoryImpl).bind<CharacterRepository>()
     singleOf(::SearchRepositoryImpl).bind<SearchRepository>()
     singleOf(::StudioRepositoryImpl).bind<StudioRepository>()
+    singleOf(::ActorRepositoryImpl).bind<ActorRepository>()
 }
