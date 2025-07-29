@@ -4,7 +4,7 @@ import app.cash.paging.Pager
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
 import com.apollographql.apollo.ApolloClient
-import com.chs.common.Constants
+import com.chs.youranimelist.util.Constants
 import com.chs.youranimelist.data.paging.SearchAnimePagingSource
 import com.chs.youranimelist.data.paging.SearchCharacterPagingSource
 import com.chs.youranimelist.data.source.db.dao.SearchListDao

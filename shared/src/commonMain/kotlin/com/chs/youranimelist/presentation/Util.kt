@@ -1,37 +1,53 @@
 package com.chs.youranimelist.presentation
 
-import java.util.*
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 object Util {
 
+    @OptIn(ExperimentalTime::class)
     fun getCurrentSeason(): String {
-        val calendar = Calendar.getInstance()
-        return when (calendar.get(Calendar.MONTH)) {
-            in Calendar.APRIL..Calendar.JUNE -> UiConst.Season.SPRING.rawValue
-            in Calendar.JULY..Calendar.SEPTEMBER -> UiConst.Season.SUMMER.rawValue
-            in Calendar.OCTOBER..Calendar.DECEMBER -> UiConst.Season.FALL.rawValue
-            in Calendar.JANUARY..Calendar.MARCH -> UiConst.Season.WINTER.rawValue
+        val now: Instant = Clock.System.now()
+        val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+        return when (today.month) {
+            in Month.APRIL..Month.JUNE -> UiConst.Season.SPRING.rawValue
+            in Month.JULY..Month.SEPTEMBER -> UiConst.Season.SUMMER.rawValue
+            in Month.OCTOBER..Month.DECEMBER -> UiConst.Season.FALL.rawValue
+            in Month.JANUARY..Month.MARCH -> UiConst.Season.WINTER.rawValue
             else -> UiConst.Season.WINTER.rawValue
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     fun getNextSeason(): String {
-        val calendar = Calendar.getInstance()
-        return when (calendar.get(Calendar.MONTH)) {
-            in Calendar.APRIL..Calendar.JUNE -> UiConst.Season.SUMMER.rawValue
-            in Calendar.JULY..Calendar.SEPTEMBER -> UiConst.Season.FALL.rawValue
-            in Calendar.OCTOBER..Calendar.DECEMBER -> UiConst.Season.WINTER.rawValue
-            in Calendar.JANUARY..Calendar.MARCH -> UiConst.Season.SPRING.rawValue
+        val now: Instant = Clock.System.now()
+        val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
+        return when (today.month) {
+            in Month.APRIL..Month.JUNE -> UiConst.Season.SUMMER.rawValue
+            in Month.JULY..Month.SEPTEMBER -> UiConst.Season.FALL.rawValue
+            in Month.OCTOBER..Month.DECEMBER -> UiConst.Season.WINTER.rawValue
+            in Month.JANUARY..Month.MARCH -> UiConst.Season.SPRING.rawValue
             else -> UiConst.Season.WINTER.rawValue
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     fun getVariationYear(): Int {
-        val calendar = Calendar.getInstance()
-        return if (calendar.get(Calendar.MONTH) in Calendar.OCTOBER..Calendar.DECEMBER) {
-            calendar.get(Calendar.YEAR) + 1
-        } else calendar.get(Calendar.YEAR)
+        val now: Instant = Clock.System.now()
+        val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
+        return if (today.month in Month.OCTOBER..Month.DECEMBER) today.year + 1 else today.year
     }
 
-    fun getCurrentYear(): Int = Calendar.getInstance().get(Calendar.YEAR)
+    @OptIn(ExperimentalTime::class)
+    fun getCurrentYear(): Int {
+        val now: Instant = Clock.System.now()
+        val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
+        return today.year
+    }
 }

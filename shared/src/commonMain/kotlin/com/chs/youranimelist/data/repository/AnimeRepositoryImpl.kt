@@ -5,7 +5,7 @@ import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
-import com.chs.common.Constants
+import com.chs.youranimelist.util.Constants
 import com.chs.youranimelist.data.AnimeDetailInfoQuery
 import com.chs.youranimelist.data.GenreTagQuery
 import com.chs.youranimelist.data.HomeAnimeListQuery
@@ -26,8 +26,8 @@ import com.chs.youranimelist.data.source.db.entity.TagEntity
 import com.chs.youranimelist.data.type.MediaSeason
 import com.chs.youranimelist.data.type.MediaSort
 import com.chs.youranimelist.data.type.MediaStatus
-import com.chs.common.DataError
-import com.chs.common.DataResult
+import com.chs.youranimelist.util.DataError
+import com.chs.youranimelist.util.DataResult
 import com.chs.youranimelist.domain.model.SortFilter
 import com.chs.youranimelist.data.mapper.toAnimeDetailInfo
 import com.chs.youranimelist.data.mapper.toAnimeEntity

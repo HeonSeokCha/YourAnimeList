@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import app.cash.paging.cachedIn
 import com.chs.youranimelist.domain.model.AnimeInfo
-import com.chs.common.onError
-import com.chs.common.onSuccess
+import com.chs.youranimelist.util.onError
+import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.domain.usecase.*
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 import kotlinx.coroutines.channels.Channel

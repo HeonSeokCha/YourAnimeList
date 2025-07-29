@@ -6,7 +6,7 @@ import app.cash.paging.PagingData
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
 import com.chs.youranimelist.data.CharacterDetailQuery
-import com.chs.common.Constants
+import com.chs.youranimelist.util.Constants
 import com.chs.youranimelist.data.mapper.toCharacterDetailInfo
 import com.chs.youranimelist.data.mapper.toCharacterEntity
 import com.chs.youranimelist.data.mapper.toCharacterInfo
@@ -17,8 +17,8 @@ import com.chs.youranimelist.domain.model.CharacterDetailInfo
 import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.youranimelist.domain.repository.CharacterRepository
 import com.chs.youranimelist.data.type.MediaSort
-import com.chs.common.DataError
-import com.chs.common.DataResult
+import com.chs.youranimelist.util.DataError
+import com.chs.youranimelist.util.DataResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import app.cash.paging.cachedIn
 import com.chs.youranimelist.domain.model.CharacterInfo
-import com.chs.common.onError
-import com.chs.common.onSuccess
+import com.chs.youranimelist.util.onError
+import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.domain.usecase.DeleteCharaInfoUseCase
 import com.chs.youranimelist.domain.usecase.GetCharaDetailAnimeListUseCase

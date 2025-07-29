@@ -1,8 +1,8 @@
 package com.chs.youranimelist.domain.usecase
 
 import com.chs.youranimelist.domain.model.CharacterDetailInfo
-import com.chs.common.DataError
-import com.chs.common.DataResult
+import com.chs.youranimelist.util.DataError
+import com.chs.youranimelist.util.DataResult
 import com.chs.youranimelist.domain.repository.CharacterRepository
 
 class GetCharaDetailUseCase(

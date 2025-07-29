@@ -6,15 +6,15 @@ import app.cash.paging.PagingData
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
 import com.chs.youranimelist.data.StudioQuery
-import com.chs.common.Constants
+import com.chs.youranimelist.util.Constants
 import com.chs.youranimelist.data.mapper.toStudioDetailInfo
 import com.chs.youranimelist.data.paging.StudioAnimePagingSource
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.StudioDetailInfo
 import com.chs.youranimelist.domain.repository.StudioRepository
 import com.chs.youranimelist.data.type.MediaSort
-import com.chs.common.DataError
-import com.chs.common.DataResult
+import com.chs.youranimelist.util.DataError
+import com.chs.youranimelist.util.DataResult
 import kotlinx.coroutines.flow.Flow
 
 class StudioRepositoryImpl(

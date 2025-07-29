@@ -1,4 +1,4 @@
-package com.chs.common
+package com.chs.youranimelist.util
 
 object Constants {
     const val ANILIST_API_URL: String = "https://graphql.anilist.co/v2"

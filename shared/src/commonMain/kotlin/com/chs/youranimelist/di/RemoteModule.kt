@@ -3,7 +3,7 @@ package com.chs.youranimelist.di
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.ktor.ktorClient
-import com.chs.common.Constants
+import com.chs.youranimelist.util.Constants
 import com.chs.youranimelist.data.source.CustomHttpLogger
 import com.chs.youranimelist.data.source.JikanService
 import io.ktor.client.*

@@ -5,8 +5,8 @@ import com.chs.youranimelist.domain.model.AnimeDetailInfo
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.AnimeRecommendList
 import com.chs.youranimelist.domain.model.AnimeThemeInfo
-import com.chs.common.DataError
-import com.chs.common.DataResult
+import com.chs.youranimelist.util.DataError
+import com.chs.youranimelist.util.DataResult
 import com.chs.youranimelist.domain.model.SortFilter
 import kotlinx.coroutines.flow.Flow
 

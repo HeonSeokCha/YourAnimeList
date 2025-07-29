@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import app.cash.paging.cachedIn
-import com.chs.common.onError
-import com.chs.common.onSuccess
+import com.chs.youranimelist.util.onError
+import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.domain.usecase.GetActorMediaListUseCase
 import com.chs.youranimelist.domain.usecase.GetActorDetailInfoUseCase
 import com.chs.youranimelist.presentation.UiConst

@@ -1,4 +1,4 @@
-package com.chs.common
+package com.chs.youranimelist.util
 
 interface Error
 
@@ -9,7 +9,7 @@ sealed interface DataError : Error {
 
 sealed interface DataResult<out D, out E : Error> {
     data class Success<out D>(val data: D) : DataResult<D, Nothing>
-    data class Error<out E : com.chs.common.Error>(val error: E) : DataResult<Nothing, E>
+    data class Error<out E : com.chs.youranimelist.util.Error>(val error: E) : DataResult<Nothing, E>
 }
 
 inline fun <T, E : Error, R> DataResult<T, E>.map(map: (T) -> R): DataResult<R, E> {

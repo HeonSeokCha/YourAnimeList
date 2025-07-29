@@ -88,6 +88,7 @@ kotlin {
                 implementation(libs.cashapp.paging.compose)
 
                 implementation(libs.htmlText)
+                implementation(libs.dateTime)
             }
         }
     }

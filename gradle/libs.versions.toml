@@ -83,6 +83,7 @@ coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 
 
 htmlText = "be.digitalia.compose.htmlconverter:htmlconverter:1.1.0"
+dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1"
 junit = "junit:junit:4.13.2"
 
 [bundles]

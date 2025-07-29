@@ -2,8 +2,8 @@ package com.chs.youranimelist.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chs.common.onError
-import com.chs.common.onSuccess
+import com.chs.youranimelist.util.onError
+import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.domain.usecase.GetAnimeRecListUseCase
 import com.chs.youranimelist.presentation.Util
 import kotlinx.coroutines.channels.Channel
