@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
@@ -32,7 +33,7 @@ import app.cash.paging.LoadStateLoading
 import app.cash.paging.compose.collectAsLazyPagingItems
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.domain.model.StudioDetailInfo
-import com.chs.youranimelist.presentation.browse.CollapsingLayout
+import com.chs.youranimelist.presentation.browse.CollapsingToolbarScaffold
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemExpandSingleBox
 import com.chs.youranimelist.presentation.toCommaFormat
@@ -85,6 +86,7 @@ fun StudioDetailScreen(
     val coroutineScope = rememberCoroutineScope()
     val pagingItem = state.studioAnimeList?.collectAsLazyPagingItems()
     var isAppending by remember { mutableStateOf(false) }
+    val scrollState = rememberScrollState()
 
     if (pagingItem != null) {
         when (pagingItem.loadState.refresh) {
@@ -110,7 +112,8 @@ fun StudioDetailScreen(
         }
     }
 
-    CollapsingLayout(
+    CollapsingToolbarScaffold(
+        scrollState = scrollState,
         header = {
             StudioInfo(studioInfo = state.studioDetailInfo)
         },

@@ -1,5 +1,6 @@
 package com.chs.youranimelist.presentation.browse
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,14 +10,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,15 +25,119 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.boundsInRoot
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
+import com.chs.youranimelist.presentation.pxToDp
 import com.chs.youranimelist.presentation.ui.theme.Red500
-import kotlin.math.roundToInt
+
+private var isHeaderHide: Boolean = false
+
+internal class BackgroundScrollConnection(
+    private val scrollState: ScrollState
+) : NestedScrollConnection {
+
+    override fun onPreScroll(
+        available: Offset,
+        source: NestedScrollSource
+    ): Offset {
+        val dy = available.y
+
+        return when {
+            isHeaderHide -> {
+                Offset.Zero
+            }
+
+            dy < 0 -> {
+                scrollState.dispatchRawDelta(dy * -1)
+                Offset(0f, dy)
+            }
+
+            else -> {
+                Offset.Zero
+            }
+        }
+    }
+}
+
+@Composable
+fun CollapsingToolbarScaffold(
+    scrollState: ScrollState,
+    header: @Composable () -> Unit,
+    isShowTopBar: Boolean,
+    onCloseClick: () -> Unit,
+    stickyHeader: @Composable () -> Unit = { },
+    content: @Composable () -> Unit
+) {
+    val nestedScrollConnection = remember {
+        BackgroundScrollConnection(scrollState)
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 32.dp)
+    ) {
+        var globalHeight by remember { mutableIntStateOf(0) }
+        var visiblePercentage by remember { mutableFloatStateOf(0f) }
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = if (isShowTopBar) 56.dp else 0.dp)
+                .onSizeChanged { size ->
+                    globalHeight = size.height
+                }
+                .verticalScroll(scrollState)
+                .nestedScroll(nestedScrollConnection)
+        ) {
+            Column {
+                HeadSection(
+                    header = header,
+                    onHide = { isHide ->
+                        isHeaderHide = isHide
+                    }, onVisibleChange = { visiblePercentage = it }
+                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(globalHeight.pxToDp())
+                ) {
+                    stickyHeader()
+                    content()
+                }
+            }
+        }
+
+        if (isShowTopBar) {
+            GradientTopBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .align(Alignment.TopStart)
+                    .background(Red500),
+                onCloseClick = onCloseClick
+            )
+        } else {
+            GradientTopBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .alpha(1f - visiblePercentage)
+                    .align(Alignment.TopStart)
+                    .background(Red500),
+                onCloseClick = onCloseClick
+            )
+        }
+    }
+}
 
 @Composable
 private fun GradientTopBar(
@@ -66,8 +168,8 @@ private fun GradientTopBar(
 
 @Composable
 private fun HeadSection(
-    modifier: Modifier = Modifier,
     header: @Composable () -> Unit,
+    onHide: (Boolean) -> Unit,
     onVisibleChange: (Float) -> Unit
 ) {
     var contentHeight by remember { mutableIntStateOf(0) }
@@ -75,92 +177,21 @@ private fun HeadSection(
 
     LaunchedEffect(visiblePercentage) {
         onVisibleChange(visiblePercentage)
+        onHide(visiblePercentage <= 0f)
     }
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .onGloballyPositioned { layoutCoordinates ->
                 visiblePercentage = layoutCoordinates.boundsInRoot().height / contentHeight
             }
             .onSizeChanged {
-                println("Size changed: ${it.height}")
                 contentHeight = it.height
             }
             .alpha(visiblePercentage)
     ) {
         header()
-    }
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CollapsingLayout(
-    onCloseClick: () -> Unit,
-    isShowTopBar: Boolean,
-    header: @Composable () -> Unit,
-    content: @Composable () -> Unit,
-) {
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    var visiblePercentage by remember { mutableFloatStateOf(0f) }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .layout { measurable, constraints ->
-                        val startPaddingCompensation = 16.dp.toPx().roundToInt()
-                        val topPadding = if (isShowTopBar) 0 else (56.dp.toPx().roundToInt() / 2)
-                        val adjustedConstraints = constraints.copy(
-                            maxWidth = constraints.maxWidth + startPaddingCompensation
-                        )
-                        val placeable = measurable.measure(adjustedConstraints)
-                        layout(placeable.width, placeable.height) {
-                            placeable.place(-startPaddingCompensation / 2, -topPadding)
-                        }
-                    },
-                title = {
-                    HeadSection(
-                        modifier = if (isShowTopBar) Modifier.padding(top = 28.dp) else Modifier,
-                        header = header,
-                        onVisibleChange = { visiblePercentage = it }
-                    )
-                },
-                scrollBehavior = scrollBehavior
-            )
-
-            if (isShowTopBar) {
-                GradientTopBar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                        .background(Red500),
-                    onCloseClick = onCloseClick
-                )
-            } else {
-                GradientTopBar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                        .alpha(1f - visiblePercentage)
-                        .background(Red500),
-                    onCloseClick = onCloseClick
-                )
-            }
-        },
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 32.dp)
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-        ) {
-            content()
-        }
     }
 }

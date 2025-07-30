@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
@@ -54,7 +55,7 @@ import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.domain.model.CharacterDetailInfo
 import com.chs.youranimelist.domain.model.VoiceActorInfo
-import com.chs.youranimelist.presentation.browse.CollapsingLayout
+import com.chs.youranimelist.presentation.browse.CollapsingToolbarScaffold
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemSaveButton
 import com.chs.youranimelist.presentation.common.ItemSpoilerDialog
@@ -128,6 +129,7 @@ fun CharacterDetailScreen(
     val lazyVerticalStaggeredState = rememberLazyStaggeredGridState()
     var descDialogShow by remember { mutableStateOf(false) }
     var spoilerDesc by remember { mutableStateOf("") }
+    val scrollState = rememberScrollState()
 
     if (pagingItem != null) {
         when (pagingItem.loadState.refresh) {
@@ -150,7 +152,8 @@ fun CharacterDetailScreen(
         }
     }
 
-    CollapsingLayout(
+    CollapsingToolbarScaffold(
+        scrollState = scrollState,
         header = {
             val characterDetailInfo = state.characterDetailInfo
             CharacterBanner(

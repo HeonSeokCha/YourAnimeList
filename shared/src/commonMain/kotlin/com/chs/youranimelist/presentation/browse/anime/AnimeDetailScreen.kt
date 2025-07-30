@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
@@ -40,7 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.youranimelist.domain.model.AnimeDetailInfo
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.presentation.UiConst
-import com.chs.youranimelist.presentation.browse.CollapsingLayout
+import com.chs.youranimelist.presentation.browse.CollapsingToolbarScaffold
 import com.chs.youranimelist.presentation.color
 import com.chs.youranimelist.presentation.common.ItemSaveButton
 import com.chs.youranimelist.presentation.common.ShimmerImage
@@ -128,6 +129,7 @@ fun AnimeDetailScreen(
 ) {
     val pagerState = rememberPagerState { 3 }
     val coroutineScope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
 
     LaunchedEffect(state.selectTabIdx) {
         pagerState.animateScrollToPage(state.selectTabIdx)
@@ -139,7 +141,8 @@ fun AnimeDetailScreen(
         )
     }
 
-    CollapsingLayout(
+    CollapsingToolbarScaffold(
+        scrollState = scrollState,
         header = {
             AnimeDetailHeadBanner(
                 animeDetailInfo = state.animeDetailInfo,

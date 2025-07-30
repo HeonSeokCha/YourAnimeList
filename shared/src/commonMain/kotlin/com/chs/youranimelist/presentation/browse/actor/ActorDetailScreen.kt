@@ -36,12 +36,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
 import com.chs.youranimelist.domain.model.VoiceActorDetailInfo
 import com.chs.youranimelist.presentation.UiConst
-import com.chs.youranimelist.presentation.browse.CollapsingLayout
+import com.chs.youranimelist.presentation.browse.CollapsingToolbarScaffold
 import com.chs.youranimelist.presentation.browse.character.ProfileText
 import com.chs.youranimelist.presentation.common.ShimmerImage
 import com.chs.youranimelist.presentation.common.placeholder
-import com.chs.youranimelist.presentation.getIdFromLink
-import com.chs.youranimelist.presentation.isHrefContent
 import com.chs.youranimelist.presentation.toCommaFormat
 import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.res.Res
@@ -101,6 +99,7 @@ fun ActorDetailScreen(
     onEvent: (ActorDetailEvent) -> Unit
 ) {
     val pagerState = rememberPagerState { 2 }
+    val scrollState = rememberScrollState()
 
     LaunchedEffect(state.tabIdx) {
         pagerState.animateScrollToPage(state.tabIdx)
@@ -110,7 +109,8 @@ fun ActorDetailScreen(
         onEvent(ActorDetailEvent.ClickBtn.TabIdx(pagerState.currentPage))
     }
 
-    CollapsingLayout(
+    CollapsingToolbarScaffold(
+        scrollState = scrollState,
         header = { ActorInfo(actorInfo = state.actorDetailInfo) },
         isShowTopBar = true,
         onCloseClick = { onEvent(ActorDetailEvent.ClickBtn.Close) }
