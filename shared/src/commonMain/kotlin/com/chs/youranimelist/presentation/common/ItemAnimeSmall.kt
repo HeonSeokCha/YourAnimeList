@@ -25,13 +25,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.isNotEmptyValue
 import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ItemAnimeSmall(
@@ -72,7 +72,7 @@ fun ItemAnimeSmall(
                         .width(130.dp)
                         .height(180.dp)
                         .clip(RoundedCornerShape(5.dp))
-                        .placeholder(visible = item == null),
+                        .shimmer(visible = item == null),
                     url = item?.imageUrl,
                 )
 
@@ -80,7 +80,7 @@ fun ItemAnimeSmall(
 
                 Text(
                     modifier = Modifier
-                        .placeholder(visible = item == null),
+                        .shimmer(visible = item == null),
                     text = item?.title ?: "title Preview",
                     color = Color.Gray,
                     maxLines = 2,
@@ -98,7 +98,7 @@ fun ItemAnimeSmall(
             ) {
                 Text(
                     modifier = Modifier
-                        .placeholder(visible = item == null),
+                        .shimmer(visible = item == null),
                     text = UiConst.mediaStatus[item?.status]?.first ?: "FINISHED",
                     color = Color(UiConst.mediaStatus[item?.status]?.second ?: 0xFF888888),
                     fontSize = 12.sp

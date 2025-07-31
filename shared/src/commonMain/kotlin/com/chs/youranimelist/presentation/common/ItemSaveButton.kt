@@ -23,7 +23,7 @@ fun ItemSaveButton(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .placeholder(visible = isSave == null),
+            .shimmer(visible = isSave == null),
         onClick = {
             if (isSave == null) return@Button
             saveClick()

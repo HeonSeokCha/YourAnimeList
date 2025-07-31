@@ -20,13 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ItemActorMedia(
@@ -97,7 +97,7 @@ fun ItemActorMedia(
 
             Text(
                 modifier = Modifier
-                    .placeholder(visible = info == null),
+                    .shimmer(visible = info == null),
                 text = info?.first?.name ?: UiConst.TITLE_PREVIEW,
                 color = Color.Gray,
                 maxLines = 2,
@@ -110,7 +110,7 @@ fun ItemActorMedia(
 
             Text(
                 modifier = Modifier
-                    .placeholder(visible = info == null),
+                    .shimmer(visible = info == null),
                 text = info?.second?.title ?: UiConst.TITLE_PREVIEW,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,

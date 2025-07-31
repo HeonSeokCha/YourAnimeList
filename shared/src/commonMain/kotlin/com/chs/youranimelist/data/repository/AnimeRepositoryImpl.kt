@@ -35,6 +35,7 @@ import com.chs.youranimelist.data.mapper.toAnimeInfo
 import com.chs.youranimelist.data.mapper.toAnimeRecommendList
 import com.chs.youranimelist.data.mapper.toAnimeThemeInfo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow

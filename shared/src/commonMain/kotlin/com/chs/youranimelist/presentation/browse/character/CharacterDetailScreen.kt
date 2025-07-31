@@ -60,7 +60,7 @@ import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemSaveButton
 import com.chs.youranimelist.presentation.common.ItemSpoilerDialog
 import com.chs.youranimelist.presentation.common.ShimmerImage
-import com.chs.youranimelist.presentation.common.placeholder
+import com.chs.youranimelist.presentation.common.shimmer
 import com.chs.youranimelist.presentation.getIdFromLink
 import com.chs.youranimelist.presentation.isHrefContent
 import com.chs.youranimelist.presentation.toCommaFormat
@@ -309,13 +309,13 @@ private fun CharacterBanner(
             ) {
                 Text(
                     modifier = Modifier
-                        .placeholder(visible = characterInfo?.characterInfo?.name == null),
+                        .shimmer(visible = characterInfo?.characterInfo?.name == null),
                     text = characterInfo?.characterInfo?.name ?: "Character PreView"
                 )
 
                 Text(
                     modifier = Modifier
-                        .placeholder(visible = characterInfo?.characterInfo?.nativeName == null),
+                        .shimmer(visible = characterInfo?.characterInfo?.nativeName == null),
                     text = characterInfo?.characterInfo?.nativeName ?: "Character PreView"
                 )
 
@@ -383,14 +383,14 @@ fun ProfileText(
     ) {
         Text(
             modifier = Modifier
-                .placeholder(visible = values == null),
+                .shimmer(visible = values == null),
             text = "${title ?: UiConst.TITLE_PREVIEW}:  ",
             fontWeight = FontWeight.SemiBold
         )
 
         Text(
             modifier = Modifier
-                .placeholder(visible = values == null),
+                .shimmer(visible = values == null),
             text = values ?: UiConst.TITLE_PREVIEW,
         )
     }
@@ -432,7 +432,7 @@ private fun CharacterDescription(
         } else {
             Text(
                 modifier = Modifier
-                    .placeholder(visible = description == null),
+                    .shimmer(visible = description == null),
                 text = convertedText,
                 maxLines = 5,
                 overflow = TextOverflow.Ellipsis,

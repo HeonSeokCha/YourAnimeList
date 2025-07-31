@@ -1,6 +1,5 @@
 package com.chs.youranimelist.presentation.search
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
@@ -11,7 +10,6 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.youranimelist.presentation.UiConst
@@ -25,12 +23,10 @@ fun SearchScreenRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val searchEvent by viewModel.event.collectAsStateWithLifecycle(SearchEvent.Idle)
-    val context = LocalContext.current
 
     LaunchedEffect(searchEvent) {
         when (searchEvent) {
             SearchEvent.OnError -> {
-                Toast.makeText(context, "Something error in load Data..", Toast.LENGTH_SHORT).show()
             }
 
             else -> Unit

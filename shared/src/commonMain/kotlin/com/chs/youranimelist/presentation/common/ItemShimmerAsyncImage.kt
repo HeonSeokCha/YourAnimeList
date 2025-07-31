@@ -24,7 +24,7 @@ fun ShimmerImage(
     var isLoading by remember { mutableStateOf(true) }
     AsyncImage(
         modifier = modifier
-            .placeholder(visible = isLoading),
+            .shimmer(visible = isLoading),
         placeholder = ColorPainter(color),
         model = ImageRequest.Builder(context)
             .data(url)

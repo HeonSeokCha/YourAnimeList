@@ -45,7 +45,7 @@ import com.chs.youranimelist.presentation.browse.CollapsingToolbarScaffold
 import com.chs.youranimelist.presentation.color
 import com.chs.youranimelist.presentation.common.ItemSaveButton
 import com.chs.youranimelist.presentation.common.ShimmerImage
-import com.chs.youranimelist.presentation.common.placeholder
+import com.chs.youranimelist.presentation.common.shimmer
 import com.chs.youranimelist.presentation.isNotEmptyValue
 import com.chs.youranimelist.presentation.ui.theme.Pink80
 import kotlinx.coroutines.launch
@@ -292,7 +292,7 @@ private fun AnimeDetailHeadBanner(
         ) {
             Text(
                 modifier = Modifier
-                    .placeholder(visible = animeDetailInfo == null),
+                    .shimmer(visible = animeDetailInfo == null),
                 text = animeDetailInfo?.animeInfo?.title ?: "title PreView Title PreView",
                 fontSize = 18.sp,
                 maxLines = 2,
@@ -303,7 +303,7 @@ private fun AnimeDetailHeadBanner(
 
             Text(
                 modifier = Modifier
-                    .placeholder(visible = animeDetailInfo == null)
+                    .shimmer(visible = animeDetailInfo == null)
                     .padding(top = 8.dp),
                 text = if (animeDetailInfo?.animeInfo?.seasonYear.isNotEmptyValue
                     && animeDetailInfo?.animeInfo?.status != null
@@ -320,7 +320,7 @@ private fun AnimeDetailHeadBanner(
                 if (animeDetailInfo?.animeInfo?.averageScore.isNotEmptyValue) {
                     Text(
                         modifier = Modifier
-                            .placeholder(visible = animeDetailInfo == null),
+                            .shimmer(visible = animeDetailInfo == null),
                         text = buildAnnotatedString {
                             appendInlineContent(
                                 UiConst.AVERAGE_SCORE_ID,
@@ -339,7 +339,7 @@ private fun AnimeDetailHeadBanner(
                 if (animeDetailInfo?.animeInfo?.favourites.isNotEmptyValue) {
                     Text(
                         modifier = Modifier
-                            .placeholder(visible = animeDetailInfo == null),
+                            .shimmer(visible = animeDetailInfo == null),
                         text = buildAnnotatedString {
                             appendInlineContent(
                                 UiConst.FAVOURITE_ID,

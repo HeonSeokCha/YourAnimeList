@@ -65,7 +65,7 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(compose.components.resources)
-                implementation(compose.materialIconsExtended)
+                implementation(libs.jetbrain.compose.material.icon.extend)
 
                 implementation(libs.jetbrain.lifecycle.runtime.compose)
                 implementation(libs.jetbrain.lifecycle.viewmodel.compose)

@@ -31,7 +31,7 @@ import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.UiConst.GENRE_COLOR
 import com.chs.youranimelist.presentation.color
 import com.chs.youranimelist.presentation.common.ShimmerImage
-import com.chs.youranimelist.presentation.common.placeholder
+import com.chs.youranimelist.presentation.common.shimmer
 import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -74,7 +74,7 @@ fun ItemHomeBanner(
                 modifier = Modifier
                     .padding(8.dp)
                     .align(Alignment.TopStart)
-                    .placeholder(visible = banner == null),
+                    .shimmer(visible = banner == null),
                 text = banner?.animeInfo?.title ?: UiConst.TITLE_PREVIEW,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
@@ -91,7 +91,7 @@ fun ItemHomeBanner(
                         top = 8.dp,
                     )
                     .align(Alignment.BottomStart)
-                    .placeholder(visible = banner == null),
+                    .shimmer(visible = banner == null),
                 text = banner?.studioTitle ?: UiConst.TITLE_PREVIEW,
                 color = banner?.animeInfo?.imagePlaceColor?.color() ?: Color.White,
                 fontWeight = FontWeight.Bold,
@@ -150,7 +150,7 @@ fun ItemHomeBanner(
                         bottom = 4.dp
                     )
                     .align(Alignment.TopEnd)
-                    .placeholder(visible = banner == null),
+                    .shimmer(visible = banner == null),
                 text = "${banner?.episode} Episodes aired on",
                 fontSize = 12.sp
             )
@@ -166,7 +166,7 @@ fun ItemHomeBanner(
                     bottom = 4.dp
                 )
                 .align(Alignment.TopEnd)
-                .placeholder(visible = banner == null),
+                .shimmer(visible = banner == null),
             text = banner?.startDate ?: "",
             fontSize = 12.sp
         )
@@ -182,7 +182,7 @@ fun ItemHomeBanner(
                     bottom = 4.dp
                 )
                 .align(Alignment.TopEnd)
-                .placeholder(visible = banner == null),
+                .shimmer(visible = banner == null),
             text = remember(desc) { htmlToAnnotatedString(desc) },
             fontSize = 12.sp,
             maxLines = 5,

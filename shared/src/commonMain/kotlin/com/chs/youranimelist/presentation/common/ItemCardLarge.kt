@@ -72,7 +72,7 @@ fun ItemCardLarge(
             ) {
                 Text(
                     modifier = Modifier
-                        .placeholder(visible = title == null),
+                        .shimmer(visible = title == null),
                     text = title ?: UiConst.TITLE_PREVIEW,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -85,7 +85,7 @@ fun ItemCardLarge(
 
                 Text(
                     modifier = Modifier
-                        .placeholder(visible = subTitle == null),
+                        .shimmer(visible = subTitle == null),
                     text = subTitle ?: UiConst.TITLE_PREVIEW,
                     color = Color.White
                 )
@@ -104,7 +104,7 @@ fun ItemCardLarge(
                     .forEachIndexed { idx, score ->
                         Text(
                             modifier = Modifier
-                                .placeholder(visible = title == null),
+                                .shimmer(visible = title == null),
                             text = buildAnnotatedString {
                                 if (idx == 0) {
                                     appendInlineContent(

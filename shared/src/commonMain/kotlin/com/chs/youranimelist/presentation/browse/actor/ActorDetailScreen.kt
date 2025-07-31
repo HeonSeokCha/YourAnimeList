@@ -39,7 +39,7 @@ import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.browse.CollapsingToolbarScaffold
 import com.chs.youranimelist.presentation.browse.character.ProfileText
 import com.chs.youranimelist.presentation.common.ShimmerImage
-import com.chs.youranimelist.presentation.common.placeholder
+import com.chs.youranimelist.presentation.common.shimmer
 import com.chs.youranimelist.presentation.toCommaFormat
 import com.chs.youranimelist.presentation.ui.theme.Pink80
 import com.chs.youranimelist.res.Res
@@ -203,13 +203,13 @@ private fun ActorInfo(actorInfo: VoiceActorDetailInfo?) {
             ) {
                 Text(
                     modifier = Modifier
-                        .placeholder(visible = actorInfo == null),
+                        .shimmer(visible = actorInfo == null),
                     text = actorInfo?.voiceActorInfo?.name ?: "Character PreView"
                 )
 
                 Text(
                     modifier = Modifier
-                        .placeholder(visible = actorInfo == null),
+                        .shimmer(visible = actorInfo == null),
                     text = actorInfo?.voiceActorInfo?.nativeName ?: "Character PreView"
                 )
 
@@ -276,7 +276,7 @@ private fun VoiceActorProFile(
 
         Text(
             modifier = Modifier
-                .placeholder(visible = info == null),
+                .shimmer(visible = info == null),
             text = remember(desc) { htmlToAnnotatedString(desc) }
         )
     }

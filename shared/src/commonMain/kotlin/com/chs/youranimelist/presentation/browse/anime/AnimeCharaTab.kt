@@ -24,7 +24,7 @@ import com.chs.youranimelist.domain.model.AnimeDetailInfo
 import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.common.ShimmerImage
-import com.chs.youranimelist.presentation.common.placeholder
+import com.chs.youranimelist.presentation.common.shimmer
 
 @Composable
 fun AnimeCharaScreen(
@@ -83,7 +83,7 @@ fun CharaImageItem(
 
         Text(
             modifier = Modifier
-                .placeholder(visible = charaInfo == null),
+                .shimmer(visible = charaInfo == null),
             text = charaInfo?.name ?: "Character",
             textAlign = TextAlign.Center
         )

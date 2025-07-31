@@ -35,11 +35,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import app.cash.paging.LoadState
 import app.cash.paging.LoadStateError
 import app.cash.paging.LoadStateLoading
 import app.cash.paging.compose.collectAsLazyPagingItems
@@ -52,6 +50,7 @@ import com.chs.youranimelist.presentation.common.ItemPullToRefreshBox
 import com.chs.youranimelist.presentation.ui.theme.Red200
 import com.chs.youranimelist.presentation.ui.theme.Red500
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun SortedListScreenRoot(
