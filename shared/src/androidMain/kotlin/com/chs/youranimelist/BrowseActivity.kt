@@ -6,9 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
-import androidx.navigation.compose.rememberNavController
 import com.chs.youranimelist.domain.model.BrowseInfo
 import com.chs.youranimelist.domain.model.MediaType
 import com.chs.youranimelist.presentation.UiConst
