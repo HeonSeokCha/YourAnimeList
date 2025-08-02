@@ -14,10 +14,9 @@ cashapp-paging = "3.3.0-alpha02-0.5.1"
 coil = "3.3.0"
 kotlin = "2.2.0"
 ksp = "2.2.0-2.0.2"
-koin-core = "4.1.0"
-koin-annotation = "2.1.0"
+koin-core = "4.1.1-Beta1"
 kotlin-coroutine = "1.10.2"
-ktor = "3.2.2"
+ktor = "3.2.3"
 apollo = "4.3.2"
 compose-plugin = "1.9.0-beta01"
 sqlite = "2.5.2"
@@ -32,6 +31,7 @@ androidX-navigation-compose = "androidx.navigation:navigation-compose:2.9.3"
 jetbrain-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrin-lifecycle" }
 jetbrain-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrin-lifecycle" }
 jetbrain-navigation-compose = "org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha13"
+jetbrain-matreial3 = "org.jetbrains.compose.material3:material3:1.9.0-alpha04"
 
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
@@ -46,8 +46,6 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-cor
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-core" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin-core" }
 koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-compose-viewmodel-navigation", version.ref = "koin-core" }
-koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotation" }
-koin-ksp-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotation" }
 
 ## Kotlin
 kotlin-coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutine" }

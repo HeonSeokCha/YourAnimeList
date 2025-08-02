@@ -10,6 +10,7 @@ import com.chs.youranimelist.presentation.home.HomeViewModel
 import com.chs.youranimelist.presentation.main.MainViewModel
 import com.chs.youranimelist.presentation.search.SearchViewModel
 import com.chs.youranimelist.presentation.sortList.SortedViewModel
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module

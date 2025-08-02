@@ -61,10 +61,10 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(compose.foundation)
-                implementation(compose.material3)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(compose.components.resources)
+                implementation(libs.jetbrain.matreial3)
                 implementation(libs.jetbrain.compose.material.icon.extend)
 
                 implementation(libs.jetbrain.lifecycle.runtime.compose)
@@ -78,7 +78,6 @@ kotlin {
                 implementation(libs.bundles.apollo)
 
                 implementation(libs.koin.core)
-                api(libs.koin.annotations)
 
                 implementation(libs.bundles.koin)
                 implementation(libs.bundles.coil)
@@ -146,7 +145,6 @@ dependencies {
         "kspIosArm64"
     ).forEach {
         add(it, libs.room.compiler)
-        add(it, libs.koin.ksp.compiler)
     }
 }
 

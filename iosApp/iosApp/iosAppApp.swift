@@ -11,7 +11,7 @@ import shared
 @main
 struct iosAppApp: App {
     init() {
-        ModuleHelperKt.doInitKoin()
+        InitKoinKt.doInitKoin()
     }
     
     var body: some Scene {
