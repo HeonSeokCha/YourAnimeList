@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
@@ -82,7 +83,6 @@ fun CollapsingToolbarScaffold(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 32.dp)
     ) {
         var globalHeight by remember { mutableIntStateOf(0) }
         var visiblePercentage by remember { mutableFloatStateOf(0f) }
@@ -120,7 +120,6 @@ fun CollapsingToolbarScaffold(
             GradientTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
                     .align(Alignment.TopStart)
                     .background(Red500),
                 onCloseClick = onCloseClick
@@ -129,7 +128,6 @@ fun CollapsingToolbarScaffold(
             GradientTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
                     .alpha(1f - visiblePercentage)
                     .align(Alignment.TopStart)
                     .background(Red500),
@@ -145,24 +143,31 @@ private fun GradientTopBar(
     onCloseClick: () -> Unit
 ) {
     Box {
-        Box(modifier = modifier)
-
-        IconButton(
-            modifier = Modifier
-                .size(56.dp)
-                .align(Alignment.TopStart)
-                .padding(
-                    top = 4.dp,
-                    start = 4.dp
-                ),
-            onClick = { onCloseClick() }
+        Box(
+            modifier = modifier
+                .padding(top = 32.dp)
+                .height(56.dp)
         ) {
-            Icon(
-                imageVector = Icons.Filled.Close,
-                tint = White,
-                contentDescription = null
-            )
+            IconButton(
+                modifier = Modifier
+                    .size(56.dp)
+                    .align(Alignment.TopStart),
+                onClick = { onCloseClick() }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Close,
+                    tint = White,
+                    contentDescription = null
+                )
+            }
         }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(32.dp)
+                .background(Color.Transparent)
+        )
     }
 }
 

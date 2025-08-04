@@ -16,77 +16,14 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel {
-        MainViewModel(
-            get(),
-            get(),
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        HomeViewModel(
-            get()
-        )
-    }
-    viewModel {
-        AnimeListViewModel(
-            get()
-        )
-    }
-    viewModel {
-        AnimeDetailViewModel(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        ActorDetailViewModel(
-            get(),
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        CharacterDetailViewModel(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        StudioDetailViewModel(
-            get(),
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        CharacterListViewModel(
-            get()
-        )
-    }
-    viewModel {
-        SearchViewModel(
-            get(),
-            get()
-        )
-    }
-    viewModel {
-        SortedViewModel(
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
-    }
+    viewModelOf(::MainViewModel)
+    viewModelOf(::HomeViewModel)
+    viewModelOf(::AnimeListViewModel)
+    viewModelOf(::AnimeDetailViewModel)
+    viewModelOf(::ActorDetailViewModel)
+    viewModelOf(::CharacterDetailViewModel)
+    viewModelOf(::StudioDetailViewModel)
+    viewModelOf(::CharacterListViewModel)
+    viewModelOf(::SearchViewModel)
+    viewModelOf(::SortedViewModel)
 }
