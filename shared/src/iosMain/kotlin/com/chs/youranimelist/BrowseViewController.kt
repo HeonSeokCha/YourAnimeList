@@ -3,12 +3,12 @@ package com.chs.youranimelist
 import androidx.compose.ui.window.ComposeUIViewController
 import com.chs.youranimelist.domain.model.BrowseInfo
 import com.chs.youranimelist.presentation.browse.BrowseApp
-import com.chs.youranimelist.presentation.main.MainApp
-import platform.UIKit.UIViewController
+import platform.UIKit.UINavigationController
 
 fun BrowseViewController(
-    controller: UIViewController,
-    info: BrowseInfo
+    controller: UINavigationController,
+    info: BrowseInfo,
+    onClose: () -> Unit
 ) = ComposeUIViewController(
     configure = {
         enforceStrictPlistSanityCheck = false
@@ -17,8 +17,6 @@ fun BrowseViewController(
     BrowseApp(
         browseInfo = info,
         onLinkClick = {},
-        onClose = {
-            controller.dismissViewControllerAnimated(true) {}
-        }
+        onClose = { controller.popViewControllerAnimated(true) }
     )
 }
