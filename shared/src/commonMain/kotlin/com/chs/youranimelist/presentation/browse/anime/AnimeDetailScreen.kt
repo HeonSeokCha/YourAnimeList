@@ -260,7 +260,7 @@ private fun AnimeDetailHeadBanner(
                     modifier = Modifier
                         .align(Alignment.Center),
                     onClick = {
-                        trailerClick(animeDetailInfo.trailerInfo!!.id)
+                        trailerClick(animeDetailInfo.trailerInfo.id)
                     }
                 ) {
                     Icon(Icons.Filled.PlayArrow, null)

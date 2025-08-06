@@ -20,19 +20,11 @@ fun MainViewController(): UIViewController = ComposeUIViewController(
         val secondViewController = BrowseViewController(
             controller = rootViewController!!,
             info = BrowseInfo(type = it.type, id = it.id, idMal = it.idMal)
-        ) {
-
-        }
+        )
 
         rootViewController.pushViewController(
             viewController = secondViewController,
             animated = true
         )
-//
-//        rootViewController.presentViewController(
-//            secondViewController,
-//            animated = false,
-//            completion = null
-//        )
     }
 }

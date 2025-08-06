@@ -54,7 +54,7 @@ fun BrowseNavHost(
                     onClose()
                 },
                 onTrailerClick = { trailerId ->
-                    onLinkClick(trailerId)
+                    onLinkClick("https://youtube.com/watch?v=$trailerId}")
                 },
                 onAnimeClick = { id, idMal ->
                     navController.navigate(
