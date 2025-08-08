@@ -68,4 +68,5 @@ fun getIdFromLink(
 }
 
 fun chsLog(message: String?) {
+    println(message)
 }
