@@ -29,7 +29,6 @@ fun Int?.toCommaFormat(): String = this?.let {
 @Composable
 fun Int.pxToDp(): Dp {
     (this / LocalDensity.current.density).dp.run {
-        chsLog(this.toString())
         return this
     }
 }

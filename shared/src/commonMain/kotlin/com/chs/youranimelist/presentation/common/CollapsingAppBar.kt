@@ -1,4 +1,4 @@
-package com.chs.youranimelist.presentation.browse
+package com.chs.youranimelist.presentation.common
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -90,7 +90,7 @@ fun CollapsingToolbarScaffold(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = if (isShowTopBar) 56.dp else 0.dp)
+                .padding(top = if (isShowTopBar) 88.dp else 0.dp)
                 .onSizeChanged { size ->
                     globalHeight = size.height
                 }
@@ -131,7 +131,10 @@ fun CollapsingToolbarScaffold(
                     .alpha(1f - visiblePercentage)
                     .align(Alignment.TopStart)
                     .background(Red500),
-                onCloseClick = onCloseClick
+                onCloseClick = {
+                    if (visiblePercentage > 0.5f) return@GradientTopBar
+                    onCloseClick()
+                }
             )
         }
     }

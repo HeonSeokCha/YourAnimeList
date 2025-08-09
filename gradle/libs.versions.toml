@@ -62,6 +62,7 @@ ktor-client-content-negotiation = {module = "io.ktor:ktor-client-content-negotia
 ## Apollo
 apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo"}
 apollo-api = { module = "com.apollographql.apollo:apollo-api", version.ref = "apollo"}
+apollo-normal-cache = { module = "com.apollographql.apollo:apollo-normalized-cache", version.ref = "apollo" }
 apollo-ktor = "com.apollographql.ktor:apollo-engine-ktor:0.1.1"
 
 ## Coil
@@ -73,13 +74,13 @@ coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 
 htmlText = "be.digitalia.compose.htmlconverter:htmlconverter:1.1.0"
 dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1"
-junit = "junit:junit:4.13.2"
 
 [bundles]
 apollo = [
     "apollo-runtime",
     "apollo-api",
-    "apollo-ktor"
+    "apollo-ktor",
+    "apollo-normal-cache"
 ]
 
 coil = [

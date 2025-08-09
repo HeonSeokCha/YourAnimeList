@@ -33,7 +33,7 @@ import app.cash.paging.LoadStateLoading
 import app.cash.paging.compose.collectAsLazyPagingItems
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.domain.model.StudioDetailInfo
-import com.chs.youranimelist.presentation.browse.CollapsingToolbarScaffold
+import com.chs.youranimelist.presentation.common.CollapsingToolbarScaffold
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemExpandSingleBox
 import com.chs.youranimelist.presentation.toCommaFormat

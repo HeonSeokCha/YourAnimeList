@@ -55,7 +55,7 @@ import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.domain.model.CharacterDetailInfo
 import com.chs.youranimelist.domain.model.VoiceActorInfo
-import com.chs.youranimelist.presentation.browse.CollapsingToolbarScaffold
+import com.chs.youranimelist.presentation.common.CollapsingToolbarScaffold
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemSaveButton
 import com.chs.youranimelist.presentation.common.ItemSpoilerDialog

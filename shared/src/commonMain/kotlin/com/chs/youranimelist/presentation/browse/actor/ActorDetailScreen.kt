@@ -36,7 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
 import com.chs.youranimelist.domain.model.VoiceActorDetailInfo
 import com.chs.youranimelist.presentation.UiConst
-import com.chs.youranimelist.presentation.browse.CollapsingToolbarScaffold
+import com.chs.youranimelist.presentation.common.CollapsingToolbarScaffold
 import com.chs.youranimelist.presentation.browse.character.ProfileText
 import com.chs.youranimelist.presentation.common.ShimmerImage
 import com.chs.youranimelist.presentation.common.shimmer

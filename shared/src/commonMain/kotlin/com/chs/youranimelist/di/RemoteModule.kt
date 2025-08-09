@@ -2,6 +2,8 @@ package com.chs.youranimelist.di
 
 
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.cache.normalized.api.MemoryCacheFactory
+import com.apollographql.apollo.cache.normalized.normalizedCache
 import com.apollographql.ktor.ktorClient
 import com.chs.youranimelist.util.Constants
 import com.chs.youranimelist.data.source.CustomHttpLogger
@@ -37,9 +39,12 @@ val remoteModule = module {
     }
 
     single {
+        val cache = MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024)
+
         return@single ApolloClient.Builder()
             .serverUrl(Constants.ANILIST_API_URL)
             .ktorClient(get<HttpClient>())
+            .normalizedCache(cache)
             .build()
     }
 
