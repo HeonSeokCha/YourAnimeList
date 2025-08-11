@@ -3,11 +3,14 @@ package com.chs.youranimelist.presentation.common
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -20,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.chs.youranimelist.presentation.ui.theme.Red500
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,7 +75,16 @@ fun ItemExpandSingleBox(
                         selectValue(option)
                         expanded = false
                     },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                    leadingIcon = {
+                        if (selectOptions == option.first) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                tint = Red500,
+                                contentDescription = null
+                            )
+                        }
+                    }
                 )
             }
         }

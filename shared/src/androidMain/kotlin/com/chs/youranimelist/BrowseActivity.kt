@@ -15,10 +15,8 @@ import com.chs.youranimelist.presentation.browse.BrowseApp
 class BrowseActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             val activity = LocalActivity.current
-
             val browseInfo =
                 if (intent?.getStringExtra(UiConst.TARGET_TYPE) == MediaType.MEDIA.name) {
                     BrowseInfo(
