@@ -1,6 +1,6 @@
 package com.chs.youranimelist.presentation.browse.studio
 
-import app.cash.paging.PagingData
+import androidx.paging.PagingData
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.StudioDetailInfo

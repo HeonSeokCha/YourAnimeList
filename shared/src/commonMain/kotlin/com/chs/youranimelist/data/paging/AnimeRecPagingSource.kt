@@ -1,7 +1,7 @@
 package com.chs.youranimelist.data.paging
 
-import app.cash.paging.PagingSource
-import app.cash.paging.PagingState
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
 import com.chs.youranimelist.data.AnimeRecommendQuery

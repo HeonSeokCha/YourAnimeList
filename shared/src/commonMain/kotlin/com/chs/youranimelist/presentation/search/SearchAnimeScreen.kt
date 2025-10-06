@@ -8,12 +8,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.cash.paging.LoadState
-import app.cash.paging.LoadStateError
-import app.cash.paging.LoadStateLoading
-import app.cash.paging.PagingData
-import app.cash.paging.compose.collectAsLazyPagingItems
-import app.cash.paging.compose.itemKey
+import androidx.paging.LoadState
+import androidx.paging.LoadState.Error
+import androidx.paging.LoadState.Loading
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.presentation.common.ItemAnimeLarge
 import com.chs.youranimelist.presentation.common.ItemNoResultImage
@@ -52,13 +52,13 @@ fun SearchAnimeScreen(
             }
 
             when (animeItems.loadState.refresh) {
-                is LoadStateLoading -> {
+                is LoadState.Loading -> {
                     items(10) {
                         ItemAnimeLarge(anime = null) { }
                     }
                 }
 
-                is LoadStateError -> {
+                is LoadState.Error -> {
                     item {
                         Text(
                             text = "Something Wrong for Loading List."
@@ -76,13 +76,13 @@ fun SearchAnimeScreen(
             }
 
             when (animeItems.loadState.append) {
-                is LoadStateLoading -> {
+                is LoadState.Loading -> {
                     items(10) {
                         ItemAnimeLarge(anime = null) { }
                     }
                 }
 
-                is LoadStateError -> {
+                is LoadState.Error -> {
                     item {
                         Text(
                             text = "Something Wrong for Loading List."

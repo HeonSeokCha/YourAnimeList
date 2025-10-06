@@ -50,31 +50,11 @@ fun HomeAnimeListQuery.Data?.toAnimeRecommendList(): AnimeRecommendList {
             )
         } ?: emptyList(),
         animeBasicList = listOf(
-            this?.trending?.media?.map {
-                with(it?.animeBasicInfo) {
-                    this.toAnimeInfo()
-                }
-            } ?: emptyList(),
-            this?.popular?.media?.map {
-                with(it?.animeBasicInfo) {
-                    this.toAnimeInfo()
-                }
-            } ?: emptyList(),
-            this?.upComming?.media?.map {
-                with(it?.animeBasicInfo) {
-                    this.toAnimeInfo()
-                }
-            } ?: emptyList(),
-            this?.allTime?.media?.map {
-                with(it?.animeBasicInfo) {
-                    this.toAnimeInfo()
-                }
-            } ?: emptyList(),
-            this?.topList?.media?.map {
-                with(it?.animeBasicInfo) {
-                    this.toAnimeInfo()
-                }
-            } ?: emptyList(),
+            this?.trending?.media?.map { it?.animeBasicInfo.toAnimeInfo() } ?: emptyList(),
+            this?.popular?.media?.map { it?.animeBasicInfo.toAnimeInfo() } ?: emptyList(),
+            this?.upComming?.media?.map { it?.animeBasicInfo.toAnimeInfo() } ?: emptyList(),
+            this?.allTime?.media?.map { it?.animeBasicInfo.toAnimeInfo() } ?: emptyList(),
+            this?.topList?.media?.map { it?.animeBasicInfo.toAnimeInfo() } ?: emptyList()
         )
     )
 }

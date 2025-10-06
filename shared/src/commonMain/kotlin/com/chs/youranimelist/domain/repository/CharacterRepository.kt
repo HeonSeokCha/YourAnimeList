@@ -1,6 +1,6 @@
 package com.chs.youranimelist.domain.repository
 
-import app.cash.paging.PagingData
+import androidx.paging.PagingData
 import com.chs.youranimelist.util.DataError
 import com.chs.youranimelist.util.DataResult
 import com.chs.youranimelist.domain.model.*

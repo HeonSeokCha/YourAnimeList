@@ -35,7 +35,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ItemAnimeSmall(
-    item: AnimeInfo?,
+    item: AnimeInfo? = null,
     onClick: () -> Unit = {}
 ) {
     Card(
@@ -105,12 +105,13 @@ fun ItemAnimeSmall(
                 )
 
 
-                if (item != null) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 2.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    if (item != null) {
                         Text(
                             textAlign = TextAlign.Left,
                             text = if (item.seasonYear == 0) {
@@ -121,8 +122,6 @@ fun ItemAnimeSmall(
                             color = Color.Gray,
                             fontSize = 12.sp,
                         )
-
-                        Spacer(modifier = Modifier.width(4.dp))
 
                         if (item.averageScore.isNotEmptyValue) {
                             Text(

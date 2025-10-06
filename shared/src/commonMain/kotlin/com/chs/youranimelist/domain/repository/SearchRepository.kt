@@ -1,6 +1,6 @@
 package com.chs.youranimelist.domain.repository
 
-import app.cash.paging.PagingData
+import androidx.paging.PagingData
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.CharacterInfo
 import kotlinx.coroutines.flow.Flow

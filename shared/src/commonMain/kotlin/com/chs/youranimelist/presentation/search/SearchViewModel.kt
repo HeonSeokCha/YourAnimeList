@@ -2,7 +2,7 @@ package com.chs.youranimelist.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.cash.paging.cachedIn
+import androidx.paging.cachedIn
 import com.chs.youranimelist.domain.usecase.GetAnimeSearchResultUseCase
 import com.chs.youranimelist.domain.usecase.GetCharaSearchResultUseCase
 import kotlinx.coroutines.channels.Channel

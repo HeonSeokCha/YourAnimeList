@@ -61,35 +61,6 @@ object UiConst {
         TRENDING("TRENDING_DESC")
     }
 
-
-    val animeCategorySortList: List<Pair<String, Screen.SortList>> =
-        listOf(
-            "TRENDING NOW" to Screen.SortList(
-                sortOption = listOf(
-                    SortType.TRENDING.rawValue,
-                    SortType.POPULARITY.rawValue
-                )
-            ),
-            "POPULAR THIS SEASON" to Screen.SortList(
-                year = Util.getCurrentYear(),
-                season = Util.getCurrentSeason()
-            ),
-            "UPCOMING NEXT SEASON" to Screen.SortList(
-                year = Util.getVariationYear(),
-                season = Util.getNextSeason()
-            ),
-            "ALL TIME POPULAR" to Screen.SortList(
-                sortOption = listOf(
-                    SortType.POPULARITY.rawValue
-                )
-            ),
-            "TOP ANIME" to Screen.SortList(
-                sortOption = listOf(
-                    SortType.AVERAGE.rawValue
-                )
-            )
-        )
-
     val GENRE_COLOR = hashMapOf(
         Pair("Action", "#24687B"),
         Pair("Adventure", "#014037"),

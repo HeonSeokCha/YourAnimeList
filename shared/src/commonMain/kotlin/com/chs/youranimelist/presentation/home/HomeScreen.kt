@@ -22,54 +22,50 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.CategoryType
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.main.Screen
+import com.chs.youranimelist.util.Constants
 
 @Composable
 fun HomeScreenRoot(
     viewModel: HomeViewModel,
-    onAnimeClick: (Int, Int) -> Unit,
-    onSortScreenClick: (Screen.SortList) -> Unit
+    onNavigateAnimeDetail: (Int, Int) -> Unit,
+    onNavigateSort: (Screen.SortList) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val event by viewModel.event.collectAsStateWithLifecycle(HomeEvent.Idle)
 
-    LaunchedEffect(event) {
-        when (event) {
-            is HomeEvent.ShowToast -> {
+    LaunchedEffect(Unit) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is HomeEffect.NavigateAnimeDetail -> {
+                    onNavigateAnimeDetail(effect.id, effect.idMal)
+                }
 
-            }
-
-            else -> Unit
-        }
-    }
-
-    HomeScreen(state = state) { sideEffect ->
-        when (sideEffect) {
-            is HomeEvent.Navigate.Sort -> {
-                onSortScreenClick(
-                    Screen.SortList(
-                        year = sideEffect.year,
-                        season = sideEffect.season,
-                        sortOption = sideEffect.option
+                is HomeEffect.NavigateSort -> {
+                    onNavigateSort(
+                        Screen.SortList(
+                            year = effect.year,
+                            season = effect.season,
+                            sortOption = effect.option
+                        )
                     )
-                )
+                }
             }
-
-            is HomeEvent.Navigate.Anime -> {
-                onAnimeClick(sideEffect.id, sideEffect.idMal)
-            }
-
-            else -> Unit
         }
     }
+
+    HomeScreen(
+        state,
+        onIntent = viewModel::handleIntent
+    )
 }
 
 @Composable
 fun HomeScreen(
     state: HomeState,
-    event: (HomeEvent) -> Unit,
+    onIntent: (HomeIntent) -> Unit,
 ) {
     val pagerState = rememberPagerState { UiConst.BANNER_SIZE }
 
@@ -79,32 +75,32 @@ fun HomeScreen(
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        if (state.isLoading) {
-            item {
-                ItemHomeBanner(banner = null) { _, _ -> }
+        when {
+            state.isLoading || state.animeRecommendList == null -> {
+                item {
+                    ItemHomeBanner()
+                }
+
+                items(state.animeCategoryList.size) { idx ->
+                    ItemRecommendCategory(info = state.animeCategoryList[idx])
+                }
             }
 
-            items(6) { idx ->
-                ItemRecommendCategory(
-                    title = state.animeCategoryList[idx],
-                    list = List(UiConst.MAX_BANNER_SIZE) { null },
-                    sortClick = { }, animeClick = { id, idMal -> }
-                )
+            state.isError -> {
+
             }
-        } else {
-            val data = state.animeRecommendList
-            item {
-                if (data?.bannerList != null) {
+
+            else -> {
+                val data = state.animeRecommendList
+                item {
                     HorizontalPager(
                         state = pagerState,
                         modifier = Modifier
                             .fillMaxWidth(),
                         key = { data.bannerList[it].animeInfo.id }
                     ) { idx ->
-                        ItemHomeBanner(
-                            banner = data.bannerList[idx]
-                        ) { id, idMal ->
-                            event(HomeEvent.Navigate.Anime(id = id, idMal = idMal))
+                        ItemHomeBanner(banner = data.bannerList[idx]) { id, idMal ->
+                            onIntent(HomeIntent.ClickAnime(id = id, idMal = idMal))
                         }
                     }
 
@@ -130,30 +126,20 @@ fun HomeScreen(
                         }
                     }
                 }
-            }
 
-            items(
-                data?.animeBasicList?.size ?: UiConst.MAX_BANNER_SIZE,
-                key = { state.animeCategoryList[it].first }
-            ) { idx ->
-                ItemRecommendCategory(
-                    title = state.animeCategoryList[idx],
-                    list = data?.animeBasicList?.get(idx)
-                        ?: List<AnimeInfo?>(UiConst.MAX_BANNER_SIZE) { null },
-                    sortClick = {
-                        event(
-                            HomeEvent.Navigate.Sort(
-                                year = it.year,
-                                season = it.season,
-                                option = it.sortOption
-                            )
-                        )
-                    }, animeClick = { id, idMal ->
-                        event(
-                            HomeEvent.Navigate.Anime(id = id, idMal = idMal)
-                        )
-                    }
-                )
+                items(
+                    data.animeBasicList.size,
+                    key = { state.animeCategoryList[it].title }
+                ) { idx ->
+                    ItemRecommendCategory(
+                        info = state.animeCategoryList[idx],
+                        list = data.animeBasicList[idx],
+                        clickAnime = { id, idMal ->
+                            onIntent(HomeIntent.ClickAnime(id = id, idMal = idMal))
+                        },
+                        clickCategoryType = { onIntent(HomeIntent.ClickCategory(it)) }
+                    )
+                }
             }
         }
     }
@@ -161,10 +147,10 @@ fun HomeScreen(
 
 @Composable
 private fun ItemRecommendCategory(
-    title: Pair<String, Screen.SortList>,
-    list: List<AnimeInfo?>,
-    sortClick: (Screen.SortList) -> Unit,
-    animeClick: (Int, Int) -> Unit
+    info: CategoryType,
+    list: List<AnimeInfo?> = emptyList(),
+    clickAnime: (Int, Int) -> Unit = { _, _ -> },
+    clickCategoryType: (CategoryType) -> Unit = {}
 ) {
     Row(
         modifier = Modifier
@@ -178,16 +164,13 @@ private fun ItemRecommendCategory(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = title.first,
+            text = info.title,
             fontSize = 16.sp,
             color = Color.Gray,
             fontWeight = FontWeight.Bold
         )
-        IconButton(
-            onClick = {
-                sortClick(title.second)
-            }
-        ) {
+
+        IconButton(onClick = { clickCategoryType(info) }) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 tint = Color.Gray,
@@ -202,19 +185,24 @@ private fun ItemRecommendCategory(
         contentPadding = PaddingValues(horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        items(
-            count = list.size,
-            key = { list[it]?.id ?: it }
-        ) {
-            val item = list[it]
-            ItemAnimeSmall(
-                item = item,
-                onClick = {
-                    if (item != null) {
-                        animeClick(item.id, item.idMal)
+        if (list.isEmpty()) {
+            items(count = UiConst.MAX_BANNER_SIZE) {
+                ItemAnimeSmall()
+            }
+        } else {
+            items(
+                count = list.size,
+                key = { list[it]?.id ?: it }
+            ) {
+                val item = list[it]
+                ItemAnimeSmall(
+                    item = item,
+                    onClick = {
+                        if (item == null) return@ItemAnimeSmall
+                        clickAnime(item.id, item.idMal)
                     }
-                }
-            )
+                )
+            }
         }
     }
 }

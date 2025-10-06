@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import app.cash.paging.cachedIn
+import androidx.paging.cachedIn
 import com.chs.youranimelist.domain.usecase.GetAnimeFilteredListUseCase
 import com.chs.youranimelist.domain.usecase.GetRecentGenresTagUseCase
 import com.chs.youranimelist.domain.usecase.GetSaveTagUseCase

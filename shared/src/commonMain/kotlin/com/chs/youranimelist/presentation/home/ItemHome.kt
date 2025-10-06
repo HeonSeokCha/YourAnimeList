@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -38,8 +37,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ItemHomeBanner(
-    banner: AnimHomeBannerInfo?,
-    onClick: (Int, Int) -> Unit
+    banner: AnimHomeBannerInfo? = null,
+    onClick: (Int, Int) -> Unit = { _, _ -> }
 ) {
     Box(
         modifier = Modifier
@@ -47,12 +46,11 @@ fun ItemHomeBanner(
             .height(220.dp)
             .background(Color.White)
             .clickable {
-                if (banner != null) {
-                    onClick(
-                        banner.animeInfo.id,
-                        banner.animeInfo.idMal
-                    )
-                }
+                if (banner == null) return@clickable
+                onClick(
+                    banner.animeInfo.id,
+                    banner.animeInfo.idMal
+                )
             }
     ) {
         ShimmerImage(

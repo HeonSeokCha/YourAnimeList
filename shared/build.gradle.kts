@@ -83,8 +83,8 @@ kotlin {
                 implementation(libs.bundles.coil)
                 implementation(libs.bundles.room)
 
-                implementation(libs.cashapp.paging.common)
-                implementation(libs.cashapp.paging.compose)
+                implementation(libs.android.paging.common)
+                implementation(libs.android.paging.compose)
 
                 implementation(libs.htmlText)
                 implementation(libs.dateTime)

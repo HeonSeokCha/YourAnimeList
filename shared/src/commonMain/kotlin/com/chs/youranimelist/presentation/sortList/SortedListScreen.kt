@@ -38,10 +38,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import app.cash.paging.LoadStateError
-import app.cash.paging.LoadStateLoading
-import app.cash.paging.compose.collectAsLazyPagingItems
-import app.cash.paging.compose.itemKey
+import androidx.paging.LoadState
+import androidx.paging.LoadState.Error
+import androidx.paging.LoadState.Loading
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemErrorImage
@@ -210,15 +211,15 @@ fun SortedListScreen(
                         }
 
                         when (pagingItems.loadState.refresh) {
-                            is LoadStateLoading -> {
+                            is LoadState.Loading -> {
                                 items(10) {
                                     ItemAnimeSmall(item = null)
                                 }
                             }
 
-                            is LoadStateError -> {
+                            is LoadState.Error -> {
                                 item {
-                                    ItemErrorImage(message = (pagingItems.loadState.refresh as LoadStateError).error.message)
+                                    ItemErrorImage(message = (pagingItems.loadState.refresh as LoadState.Error).error.message)
                                 }
                             }
 
@@ -233,15 +234,15 @@ fun SortedListScreen(
 
 
                         when (pagingItems.loadState.append) {
-                            is LoadStateLoading -> {
+                            is LoadState.Loading -> {
                                 items(10) {
                                     ItemAnimeSmall(item = null)
                                 }
                             }
 
-                            is LoadStateError -> {
+                            is LoadState.Error -> {
                                 item {
-                                    ItemErrorImage(message = (pagingItems.loadState.append as LoadStateError).error.message)
+                                    ItemErrorImage(message = (pagingItems.loadState.append as LoadState.Error).error.message)
                                 }
                             }
 

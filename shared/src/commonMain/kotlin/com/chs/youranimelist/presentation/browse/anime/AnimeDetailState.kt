@@ -1,6 +1,6 @@
 package com.chs.youranimelist.presentation.browse.anime
 
-import app.cash.paging.PagingData
+import androidx.paging.PagingData
 import com.chs.youranimelist.domain.model.AnimeDetailInfo
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.AnimeThemeInfo

@@ -13,11 +13,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.cash.paging.LoadStateError
-import app.cash.paging.LoadStateLoading
-import app.cash.paging.PagingData
-import app.cash.paging.compose.collectAsLazyPagingItems
-import app.cash.paging.compose.itemKey
+import androidx.paging.LoadState
+import androidx.paging.LoadState.Error
+import androidx.paging.LoadState.Loading
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.presentation.common.ItemAnimeLarge
 import com.chs.youranimelist.presentation.common.ItemNoResultImage
@@ -35,9 +36,9 @@ fun AnimeRecScreen(
     var isAppending by remember { mutableStateOf(false) }
 
     when (lazyPagingItems.loadState.refresh) {
-        is LoadStateLoading -> isLoading = true
+        is LoadState.Loading -> isLoading = true
 
-        is LoadStateError -> {
+        is LoadState.Error -> {
             isLoading = false
         }
 
@@ -48,7 +49,7 @@ fun AnimeRecScreen(
     }
 
     isAppending = when (lazyPagingItems.loadState.append) {
-        is LoadStateLoading -> true
+        is LoadState.Loading -> true
 
         else -> false
     }

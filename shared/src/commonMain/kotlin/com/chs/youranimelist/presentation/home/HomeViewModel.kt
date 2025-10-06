@@ -2,10 +2,14 @@ package com.chs.youranimelist.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chs.youranimelist.domain.model.CategoryType
 import com.chs.youranimelist.util.onError
 import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.domain.usecase.GetAnimeRecListUseCase
+import com.chs.youranimelist.presentation.UiConst.SortType
 import com.chs.youranimelist.presentation.Util
+import com.chs.youranimelist.presentation.home.HomeEffect.*
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,6 +23,7 @@ class HomeViewModel(
     private val getHomeListUseCase: GetAnimeRecListUseCase
 ) : ViewModel() {
 
+    private var getAnimeJob: Job? = null
     private val _state = MutableStateFlow(HomeState())
     val state = _state
         .onStart {
@@ -27,14 +32,80 @@ class HomeViewModel(
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            HomeState()
+            _state.value
         )
 
-    private val _event: Channel<HomeEvent> = Channel()
-    val event = _event.receiveAsFlow()
+    private val _effect: Channel<HomeEffect> = Channel(Channel.BUFFERED)
+    val effect = _effect.receiveAsFlow()
+
+    fun handleIntent(intent: HomeIntent) {
+        when (intent) {
+            is HomeIntent.ClickAnime -> {
+                _effect.trySend(
+                    NavigateAnimeDetail(
+                        id = intent.id,
+                        idMal = intent.idMal
+                    )
+                )
+            }
+
+            is HomeIntent.ClickCategory -> {
+                when (intent.categoryType) {
+                    CategoryType.TRENDING -> {
+                        _effect.trySend(
+                            HomeEffect.NavigateSort(
+                                option = listOf(
+                                    SortType.TRENDING.rawValue,
+                                    SortType.POPULARITY.rawValue
+                                )
+                            )
+                        )
+                    }
+
+                    CategoryType.POPULAR -> {
+                        _effect.trySend(
+                            HomeEffect.NavigateSort(
+                                year = Util.getCurrentYear(),
+                                season = Util.getCurrentSeason()
+                            )
+                        )
+                    }
+
+                    CategoryType.UPCOMMING -> {
+                        _effect.trySend(
+                            HomeEffect.NavigateSort(
+                                year = Util.getVariationYear(),
+                                season = Util.getNextSeason()
+                            )
+                        )
+                    }
+
+                    CategoryType.ALLTIME -> {
+                        _effect.trySend(
+                            HomeEffect.NavigateSort(
+                                option = listOf(SortType.POPULARITY.rawValue)
+                            )
+                        )
+                    }
+
+                    CategoryType.TOP -> {
+                        _effect.trySend(
+                            HomeEffect.NavigateSort(
+                                option = listOf(
+                                    SortType.AVERAGE.rawValue
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
 
     private fun getHomeList() {
-        viewModelScope.launch {
+        getAnimeJob?.cancel()
+        getAnimeJob = viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
             getHomeListUseCase(
                 currentSeason = Util.getCurrentSeason(),
                 nextSeason = Util.getNextSeason(),
@@ -48,10 +119,18 @@ class HomeViewModel(
                     )
                 }
             }.onError { error ->
-                _state.update { it.copy(isLoading = false) }
-
-                _event.send(HomeEvent.ShowToast(error.message.toString()))
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        isError = true
+                    )
+                }
             }
         }
+    }
+
+    override fun onCleared() {
+        getAnimeJob?.cancel()
+        super.onCleared()
     }
 }

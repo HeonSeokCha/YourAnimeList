@@ -47,10 +47,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import app.cash.paging.LoadStateError
-import app.cash.paging.LoadStateLoading
-import app.cash.paging.compose.collectAsLazyPagingItems
-import app.cash.paging.compose.itemKey
+import androidx.paging.LoadState
+import androidx.paging.LoadState.Error
+import androidx.paging.LoadState.Loading
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.domain.model.CharacterDetailInfo
@@ -133,10 +134,10 @@ fun CharacterDetailScreen(
 
     if (pagingItem != null) {
         when (pagingItem.loadState.refresh) {
-            is LoadStateLoading -> {
+            is LoadState.Loading -> {
             }
 
-            is LoadStateError -> {
+            is LoadState.Error -> {
             }
 
             else -> {
@@ -144,9 +145,9 @@ fun CharacterDetailScreen(
         }
 
         when (pagingItem.loadState.append) {
-            is LoadStateLoading -> {}
+            is LoadState.Loading -> {}
 
-            is LoadStateError -> {}
+            is LoadState.Error -> {}
 
             else -> Unit
         }

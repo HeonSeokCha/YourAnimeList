@@ -47,7 +47,7 @@ fun MainApp(onBrowse: (BrowseInfo) -> Unit) {
                 navController = navController,
                 modifier = Modifier.padding(it),
                 searchQuery = searchQuery,
-                browseInfo = { onBrowse(it) }
+                browseInfo = onBrowse
             )
         }
     }

@@ -15,12 +15,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.cash.paging.LoadState
-import app.cash.paging.LoadStateError
-import app.cash.paging.LoadStateLoading
-import app.cash.paging.PagingData
-import app.cash.paging.compose.collectAsLazyPagingItems
-import app.cash.paging.compose.itemKey
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.youranimelist.presentation.UiConst
@@ -93,13 +91,13 @@ fun ActorMediaTab(
             }
 
             when (pagingData.loadState.refresh) {
-                is LoadStateLoading -> {
+                is LoadState.Loading -> {
                     items(10) {
                         ItemAnimeSmall(null)
                     }
                 }
 
-                is LoadStateError -> {
+                is LoadState.Error -> {
                     item {
                         Text(
                             text = "Something Wrong for Loading List."
@@ -117,13 +115,13 @@ fun ActorMediaTab(
             }
 
             when (pagingData.loadState.append) {
-                is LoadStateLoading -> {
+                is LoadState.Loading -> {
                     items(10) {
                         ItemAnimeSmall(null)
                     }
                 }
 
-                is LoadStateError -> {
+                is LoadState.Error -> {
                     item {
                         Text(
                             text = "Something Wrong for Loading List."

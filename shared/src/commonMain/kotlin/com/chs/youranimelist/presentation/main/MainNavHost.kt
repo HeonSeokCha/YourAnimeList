@@ -48,11 +48,11 @@ fun MainNavHost(
 
             HomeScreenRoot(
                 viewModel = viewModel,
-                onAnimeClick = { id, idMal ->
+                onNavigateAnimeDetail = { id, idMal ->
                     browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = id))
                 },
-                onSortScreenClick = {
-                    navController.navigate(it)
+                onNavigateSort = { sortInfo ->
+                    navController.navigate(sortInfo)
                 }
             )
         }

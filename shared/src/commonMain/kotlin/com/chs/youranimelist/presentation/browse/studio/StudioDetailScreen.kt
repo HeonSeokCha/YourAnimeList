@@ -28,9 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import app.cash.paging.LoadStateError
-import app.cash.paging.LoadStateLoading
-import app.cash.paging.compose.collectAsLazyPagingItems
+import androidx.paging.LoadState
+import androidx.paging.LoadState.Error
+import androidx.paging.LoadState.Loading
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.domain.model.StudioDetailInfo
 import com.chs.youranimelist.presentation.common.CollapsingToolbarScaffold
@@ -91,7 +92,7 @@ fun StudioDetailScreen(
     if (pagingItem != null) {
         when (pagingItem.loadState.refresh) {
 
-            is LoadStateError -> {
+            is LoadState.Error -> {
                 onEvent(StudioDetailEvent.OnError)
             }
 
@@ -99,11 +100,11 @@ fun StudioDetailScreen(
         }
 
         when (pagingItem.loadState.append) {
-            is LoadStateLoading -> {
+            is LoadState.Loading -> {
                 isAppending = true
             }
 
-            is LoadStateError -> {
+            is LoadState.Error -> {
                 onEvent(StudioDetailEvent.OnError)
                 isAppending = false
             }

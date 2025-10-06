@@ -1,8 +1,8 @@
 package com.chs.youranimelist.data.repository
 
-import app.cash.paging.Pager
-import app.cash.paging.PagingConfig
-import app.cash.paging.PagingData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.apollographql.apollo.ApolloClient
 import com.chs.youranimelist.util.Constants
 import com.chs.youranimelist.data.paging.SearchAnimePagingSource
