@@ -8,17 +8,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.chs.youranimelist.domain.model.BrowseInfo
 import com.chs.youranimelist.domain.model.MediaType
-import com.chs.youranimelist.presentation.animeList.AnimeListScreen
-import com.chs.youranimelist.presentation.animeList.AnimeListViewModel
-import com.chs.youranimelist.presentation.charaList.CharaListScreen
-import com.chs.youranimelist.presentation.charaList.CharacterListViewModel
-import com.chs.youranimelist.presentation.home.HomeScreenRoot
-import com.chs.youranimelist.presentation.home.HomeViewModel
+import com.chs.youranimelist.presentation.bottom.animeList.AnimeListScreen
+import com.chs.youranimelist.presentation.bottom.animeList.AnimeListScreenRoot
+import com.chs.youranimelist.presentation.bottom.animeList.AnimeListViewModel
+import com.chs.youranimelist.presentation.bottom.charaList.CharaListScreen
+import com.chs.youranimelist.presentation.bottom.charaList.CharaListScreenRoot
+import com.chs.youranimelist.presentation.bottom.charaList.CharacterListViewModel
+import com.chs.youranimelist.presentation.bottom.home.HomeScreenRoot
+import com.chs.youranimelist.presentation.bottom.home.HomeViewModel
 import com.chs.youranimelist.presentation.search.SearchEvent
 import com.chs.youranimelist.presentation.search.SearchViewModel
 import com.chs.youranimelist.presentation.search.SearchScreenRoot
@@ -59,18 +62,18 @@ fun MainNavHost(
 
         composable<Screen.AnimeList> {
             val viewModel: AnimeListViewModel = koinViewModel()
-            val state by viewModel.state.collectAsStateWithLifecycle()
-            AnimeListScreen(state) { id, idMal ->
-                browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = id))
-            }
+            AnimeListScreenRoot(
+                viewModel = viewModel,
+                onNavigateAnimeDetail = browseInfo
+            )
         }
 
         composable<Screen.CharaList> {
-            val viewmodel: CharacterListViewModel = koinViewModel()
-            val state by viewmodel.state.collectAsStateWithLifecycle()
-            CharaListScreen(state) { id ->
-                browseInfo(BrowseInfo(type = MediaType.CHARACTER, id = id))
-            }
+            val viewModel: CharacterListViewModel = koinViewModel()
+            CharaListScreenRoot(
+                viewModel = viewModel,
+                onNavigateCharaDetail = browseInfo
+            )
         }
 
         composable<Screen.Search> {

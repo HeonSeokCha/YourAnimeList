@@ -7,8 +7,8 @@ import com.chs.youranimelist.presentation.isNotEmptyValue
 
 @Composable
 fun ItemAnimeLarge(
-    anime: AnimeInfo?,
-    clickAble: () -> Unit
+    anime: AnimeInfo? = null,
+    clickAble: () -> Unit = {}
 ) {
     ItemCardLarge(
         imageUrl = anime?.imageUrl,

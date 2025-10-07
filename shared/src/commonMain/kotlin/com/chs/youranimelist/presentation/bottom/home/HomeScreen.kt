@@ -1,4 +1,4 @@
-package com.chs.youranimelist.presentation.home
+package com.chs.youranimelist.presentation.bottom.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,7 +26,6 @@ import com.chs.youranimelist.domain.model.CategoryType
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.main.Screen
-import com.chs.youranimelist.util.Constants
 
 @Composable
 fun HomeScreenRoot(

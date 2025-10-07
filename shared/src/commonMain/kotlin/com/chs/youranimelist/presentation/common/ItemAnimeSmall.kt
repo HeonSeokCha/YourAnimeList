@@ -54,12 +54,7 @@ fun ItemAnimeSmall(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    top = 4.dp,
-                    start = 4.dp,
-                    end = 4.dp,
-                    bottom = 4.dp
-                ),
+                .padding(4.dp),
         ) {
             Column(
                 modifier = Modifier

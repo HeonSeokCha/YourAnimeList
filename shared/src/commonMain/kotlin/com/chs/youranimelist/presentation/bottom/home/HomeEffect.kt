@@ -1,4 +1,4 @@
-package com.chs.youranimelist.presentation.home
+package com.chs.youranimelist.presentation.bottom.home
 
 sealed interface HomeEffect {
     data class NavigateAnimeDetail(val id: Int, val idMal: Int) : HomeEffect

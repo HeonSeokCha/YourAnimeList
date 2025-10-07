@@ -1,4 +1,4 @@
-package com.chs.youranimelist.presentation.home
+package com.chs.youranimelist.presentation.bottom.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +33,7 @@ import com.chs.youranimelist.presentation.common.ShimmerImage
 import com.chs.youranimelist.presentation.common.shimmer
 import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlin.collections.get
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

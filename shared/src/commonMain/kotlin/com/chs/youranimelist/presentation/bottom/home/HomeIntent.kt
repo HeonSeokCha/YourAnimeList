@@ -1,4 +1,4 @@
-package com.chs.youranimelist.presentation.home
+package com.chs.youranimelist.presentation.bottom.home
 
 import com.chs.youranimelist.domain.model.CategoryType
 

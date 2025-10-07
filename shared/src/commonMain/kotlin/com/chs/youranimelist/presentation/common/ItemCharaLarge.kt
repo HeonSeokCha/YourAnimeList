@@ -7,8 +7,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ItemCharaLarge(
-    character: CharacterInfo?,
-    onClick: (Int) -> Unit
+    character: CharacterInfo? = null,
+    onClick: (Int) -> Unit = {}
 ) {
     ItemCardLarge(
         imageUrl = character?.imageUrl,

@@ -1,4 +1,4 @@
-package com.chs.youranimelist.presentation.home
+package com.chs.youranimelist.presentation.bottom.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +8,7 @@ import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.domain.usecase.GetAnimeRecListUseCase
 import com.chs.youranimelist.presentation.UiConst.SortType
 import com.chs.youranimelist.presentation.Util
-import com.chs.youranimelist.presentation.home.HomeEffect.*
+import com.chs.youranimelist.presentation.bottom.home.HomeEffect.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,7 +53,7 @@ class HomeViewModel(
                 when (intent.categoryType) {
                     CategoryType.TRENDING -> {
                         _effect.trySend(
-                            HomeEffect.NavigateSort(
+                            NavigateSort(
                                 option = listOf(
                                     SortType.TRENDING.rawValue,
                                     SortType.POPULARITY.rawValue
@@ -64,7 +64,7 @@ class HomeViewModel(
 
                     CategoryType.POPULAR -> {
                         _effect.trySend(
-                            HomeEffect.NavigateSort(
+                            NavigateSort(
                                 year = Util.getCurrentYear(),
                                 season = Util.getCurrentSeason()
                             )
@@ -73,7 +73,7 @@ class HomeViewModel(
 
                     CategoryType.UPCOMMING -> {
                         _effect.trySend(
-                            HomeEffect.NavigateSort(
+                            NavigateSort(
                                 year = Util.getVariationYear(),
                                 season = Util.getNextSeason()
                             )
@@ -82,7 +82,7 @@ class HomeViewModel(
 
                     CategoryType.ALLTIME -> {
                         _effect.trySend(
-                            HomeEffect.NavigateSort(
+                            NavigateSort(
                                 option = listOf(SortType.POPULARITY.rawValue)
                             )
                         )
@@ -90,7 +90,7 @@ class HomeViewModel(
 
                     CategoryType.TOP -> {
                         _effect.trySend(
-                            HomeEffect.NavigateSort(
+                            NavigateSort(
                                 option = listOf(
                                     SortType.AVERAGE.rawValue
                                 )

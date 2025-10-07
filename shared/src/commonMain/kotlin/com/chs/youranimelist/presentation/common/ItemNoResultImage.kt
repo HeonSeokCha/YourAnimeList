@@ -2,6 +2,7 @@ package com.chs.youranimelist.presentation.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,11 +18,12 @@ import com.chs.youranimelist.res.ico_no_result
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun ItemNoResultImage() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+fun ItemNoResultImage(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
     ) {
         Image(
             painter = painterResource(Res.drawable.ico_no_result),
