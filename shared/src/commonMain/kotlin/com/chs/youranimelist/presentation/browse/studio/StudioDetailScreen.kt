@@ -32,6 +32,7 @@ import androidx.paging.LoadState
 import androidx.paging.LoadState.Error
 import androidx.paging.LoadState.Loading
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.chs.youranimelist.domain.model.SortType
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.domain.model.StudioDetailInfo
 import com.chs.youranimelist.presentation.common.CollapsingToolbarScaffold
@@ -141,8 +142,8 @@ fun StudioDetailScreen(
                 ) {
                     ItemExpandSingleBox(
                         title = "Sort",
-                        list = UiConst.sortTypeList,
-                        initValue = state.sortOption.first
+                        list = SortType.entries.toList(),
+                        initValue = state.sortOption
                     ) { selectValue ->
                         coroutineScope.launch {
                             lazyGridScrollState.scrollToItem(0, 0)

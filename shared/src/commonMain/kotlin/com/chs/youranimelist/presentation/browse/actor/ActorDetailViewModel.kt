@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
+import com.chs.youranimelist.domain.model.SortType
 import com.chs.youranimelist.util.onError
 import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.domain.usecase.GetActorMediaListUseCase
@@ -49,8 +50,7 @@ class ActorDetailViewModel(
                 _state.update {
                     it.copy(
                         isLoading = true,
-                        selectOption = UiConst.SortType.entries.find { it.rawValue == event.option }
-                            ?: UiConst.SortType.NEWEST
+                        selectOption = event.option
                     )
                 }
 

@@ -3,10 +3,10 @@ package com.chs.youranimelist.presentation.bottom.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chs.youranimelist.domain.model.CategoryType
+import com.chs.youranimelist.domain.model.SortType
 import com.chs.youranimelist.util.onError
 import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.domain.usecase.GetAnimeRecListUseCase
-import com.chs.youranimelist.presentation.UiConst.SortType
 import com.chs.youranimelist.presentation.Util
 import com.chs.youranimelist.presentation.bottom.home.HomeEffect.*
 import kotlinx.coroutines.Job

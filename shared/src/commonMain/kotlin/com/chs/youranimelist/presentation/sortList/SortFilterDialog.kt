@@ -16,11 +16,9 @@ import com.chs.youranimelist.presentation.common.ItemExpandingMultiBox
 
 @Composable
 fun SortFilterDialog(
-    selectedSortFilter: SortFilter,
-    sortOptions: SortOptions,
-    onClick: (SortFilter) -> Unit
+    state: SortState,
+    onIntent: (SortIntent) -> Unit
 ) {
-    var selectSortOptions: SortFilter = remember { selectedSortFilter }
 
     Column(
         modifier = Modifier
@@ -30,55 +28,49 @@ fun SortFilterDialog(
     ) {
         ItemExpandSingleBox(
             title = "Year",
-            list = sortOptions.optionYears,
-            initValue = selectedSortFilter.selectYear?.toString()
-        ) {
-            selectSortOptions = selectSortOptions.copy(selectYear = it?.second?.toInt())
-        }
+            list = state.sortOptions.optionYears,
+            initValue = state.sortFilter.selectYear?.toString(),
+            selectValue = { onIntent(SortIntent.OnChangeYear(it?.toInt())) }
+        )
 
         ItemExpandSingleBox(
             title = "Season",
-            list = sortOptions.optionSeason,
-            initValue = selectedSortFilter.selectSeason
-        ) {
-            selectSortOptions = selectSortOptions.copy(selectSeason = it?.second)
-        }
+            list = state.sortOptions.optionSeason,
+            initValue = state.sortFilter.selectSeason,
+            selectValue = { onIntent(SortIntent.OnChangeSeason(it)) }
+        )
 
         ItemExpandSingleBox(
             title = "Sort By",
-            list = sortOptions.optionSort,
-            initValue = selectedSortFilter.selectSort.first()
+            list = state.sortOptions.optionSort,
+            initValue = state.sortFilter.selectSort.first()
         ) {
-            if (it != null) {
-                selectSortOptions = selectSortOptions.copy(selectSort = listOf(it.second))
-            }
+            if (it == null) return@ItemExpandSingleBox
+            onIntent(SortIntent.OnChangeSort(it))
         }
 
         ItemExpandSingleBox(
             title = "Status By",
-            list = sortOptions.optionStatus,
-            initValue = selectedSortFilter.selectStatus
+            list = state.sortOptions.optionStatus,
+            initValue = state.sortFilter.selectStatus
         ) {
-            if (it != null) {
-                selectSortOptions = selectSortOptions.copy(selectStatus = it?.second)
-            }
+            if (it == null) return@ItemExpandSingleBox
+            onIntent(SortIntent.OnChangeStatus(it))
         }
 
         ItemExpandingMultiBox(
             title = "Genres",
-            list = sortOptions.optionGenres,
-            initValue = selectedSortFilter.selectGenre
-        ) {
-            selectSortOptions = selectSortOptions.copy(selectGenre = it)
-        }
+            list = state.sortOptions.optionGenres,
+            initValue = state.sortFilter.selectGenre,
+            selectValue = { onIntent(SortIntent.OnChangeGenres(it)) }
+        )
 
         ItemExpandingMultiBox(
             title = "Tags",
-            list = sortOptions.optionTags.map { it.first },
-            initValue = selectedSortFilter.selectTags
-        ) {
-            selectSortOptions = selectSortOptions.copy(selectTags = it)
-        }
+            list = state.sortOptions.optionTags.map { it.first },
+            initValue = state.sortFilter.selectTags,
+            selectValue = { onIntent(SortIntent.OnChangeTags(it)) }
+        )
 
         Button(
             modifier = Modifier
@@ -88,7 +80,7 @@ fun SortFilterDialog(
                     start = 8.dp,
                     end = 8.dp
                 ),
-            onClick = { onClick(selectSortOptions) }
+            onClick = { onIntent(SortIntent.ClickFilterApply) }
         ) {
             Text("APPLY")
         }

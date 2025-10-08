@@ -64,7 +64,7 @@ class StudioDetailViewModel(
                 isLoading = false,
                 studioAnimeList = getStudioAnimeListUseCase(
                     studioId = studioId,
-                    studioSort = it.sortOption.second
+                    studioSort = it.sortOption.rawValue
                 ).cachedIn(viewModelScope)
             )
         }

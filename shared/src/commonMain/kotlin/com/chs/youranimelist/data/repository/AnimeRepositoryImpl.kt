@@ -93,12 +93,12 @@ class AnimeRepositoryImpl(
         ) {
             AnimeSortPagingSource(
                 apolloClient = apolloClient,
-                sort = filter.selectSort.map { MediaSort.safeValueOf(it) },
-                season = MediaSeason.entries.find { it.rawValue == filter.selectSeason },
+                sort = filter.selectSort.map { MediaSort.safeValueOf(it.rawValue) },
+                season = MediaSeason.entries.find { it.rawValue == filter.selectSeason?.rawValue },
                 seasonYear = filter.selectYear,
                 genres = filter.selectGenre,
                 tags = filter.selectTags,
-                status = MediaStatus.entries.find { it.rawValue == filter.selectStatus }
+                status = MediaStatus.entries.find { it.rawValue == filter.selectStatus?.rawValue }
             )
         }.flow
     }

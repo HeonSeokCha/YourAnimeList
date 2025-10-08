@@ -1,5 +1,6 @@
 package com.chs.youranimelist.presentation
 
+import com.chs.youranimelist.domain.model.SeasonType
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
@@ -16,11 +17,11 @@ object Util {
         val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
 
         return when (today.month) {
-            in Month.APRIL..Month.JUNE -> UiConst.Season.SPRING.rawValue
-            in Month.JULY..Month.SEPTEMBER -> UiConst.Season.SUMMER.rawValue
-            in Month.OCTOBER..Month.DECEMBER -> UiConst.Season.FALL.rawValue
-            in Month.JANUARY..Month.MARCH -> UiConst.Season.WINTER.rawValue
-            else -> UiConst.Season.WINTER.rawValue
+            in Month.APRIL..Month.JUNE -> SeasonType.SPRING.rawValue
+            in Month.JULY..Month.SEPTEMBER -> SeasonType.SUMMER.rawValue
+            in Month.OCTOBER..Month.DECEMBER -> SeasonType.FALL.rawValue
+            in Month.JANUARY..Month.MARCH -> SeasonType.WINTER.rawValue
+            else -> SeasonType.WINTER.rawValue
         }
     }
 
@@ -29,11 +30,11 @@ object Util {
         val now: Instant = Clock.System.now()
         val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
         return when (today.month) {
-            in Month.APRIL..Month.JUNE -> UiConst.Season.SUMMER.rawValue
-            in Month.JULY..Month.SEPTEMBER -> UiConst.Season.FALL.rawValue
-            in Month.OCTOBER..Month.DECEMBER -> UiConst.Season.WINTER.rawValue
-            in Month.JANUARY..Month.MARCH -> UiConst.Season.SPRING.rawValue
-            else -> UiConst.Season.WINTER.rawValue
+            in Month.APRIL..Month.JUNE -> SeasonType.SUMMER.rawValue
+            in Month.JULY..Month.SEPTEMBER -> SeasonType.FALL.rawValue
+            in Month.OCTOBER..Month.DECEMBER -> SeasonType.WINTER.rawValue
+            in Month.JANUARY..Month.MARCH -> SeasonType.SPRING.rawValue
+            else -> SeasonType.WINTER.rawValue
         }
     }
 

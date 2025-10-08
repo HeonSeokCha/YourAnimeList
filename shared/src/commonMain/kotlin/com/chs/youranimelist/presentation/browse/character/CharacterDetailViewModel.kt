@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
 import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.domain.model.SortType
 import com.chs.youranimelist.util.onError
 import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.presentation.UiConst
@@ -85,7 +86,7 @@ class CharacterDetailViewModel(
             it.copy(
                 animeList = getCharaAnimeListUseCase(
                     charaId = charaId,
-                    sort = UiConst.SortType.POPULARITY.rawValue
+                    sort = SortType.POPULARITY.rawValue
                 ).cachedIn(viewModelScope)
             )
         }

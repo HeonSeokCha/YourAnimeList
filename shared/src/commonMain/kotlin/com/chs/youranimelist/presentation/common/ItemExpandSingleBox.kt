@@ -27,11 +27,80 @@ import com.chs.youranimelist.presentation.ui.theme.Red500
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun <T : Enum<T>> ItemExpandSingleBox(
+    title: String,
+    list: List<T>,
+    initValue: T?,
+    selectValue: (T?) -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectOptions by remember { mutableStateOf(list.find { it == initValue }) }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it }
+    ) {
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
+            value = selectOptions?.name ?: "Any",
+            onValueChange = {},
+            readOnly = true,
+            singleLine = true,
+            label = { Text(text = title) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedPlaceholderColor = Color.White,
+                focusedPlaceholderColor = Color.White
+            )
+        )
+
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            containerColor = Color.White
+        ) {
+            list.forEach { option ->
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = option.name,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    },
+                    onClick = {
+                        selectOptions = option
+                        selectValue(option)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                    leadingIcon = {
+                        if (selectOptions == option) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                tint = Red500,
+                                contentDescription = null
+                            )
+                        }
+                    }
+                )
+            }
+        }
+    }
+
+    Spacer(Modifier.height(16.dp))
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun ItemExpandSingleBox(
     title: String,
     list: List<Pair<String, String>>,
     initValue: String?,
-    selectValue: (Pair<String, String>?) -> Unit,
+    selectValue: (String?) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectOptions by remember { mutableStateOf(list.find { it.second == initValue }?.first) }
@@ -72,7 +141,7 @@ fun ItemExpandSingleBox(
                     },
                     onClick = {
                         selectOptions = option.first
-                        selectValue(option)
+                        selectValue(option.first)
                         expanded = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,

@@ -39,10 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
-import androidx.paging.LoadState.Error
-import androidx.paging.LoadState.Loading
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import com.chs.youranimelist.domain.model.SeasonType
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemErrorImage
@@ -63,19 +62,7 @@ fun SortedListScreenRoot(
 
     SortedListScreen(
         state = state,
-        onEvent = { event ->
-            when (event) {
-                is SortEvent.ClickAnime -> {
-                    onClickAnime(
-                        event.id,
-                        event.idMal
-                    )
-                }
-
-                else -> Unit
-            }
-            viewModel.changeSortEvent(event)
-        }
+        onIntent = viewModel::handleIntent,
     )
 }
 
@@ -83,7 +70,7 @@ fun SortedListScreenRoot(
 @Composable
 fun SortedListScreen(
     state: SortState,
-    onEvent: (SortEvent) -> Unit
+    onIntent: (SortIntent) -> Unit
 ) {
     val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
     val coroutineScope = rememberCoroutineScope()
@@ -91,16 +78,12 @@ fun SortedListScreen(
     val scrollState = rememberScrollState()
     val listState = rememberLazyGridState()
 
-    LaunchedEffect(state.sortFilter) {
-        onEvent(SortEvent.GetSortList)
-    }
-
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                onClick = { onEvent(SortEvent.OnChangeDialogState) },
+                onClick = { onIntent(SortIntent.ClickFilterDialog) },
                 expanded = listState.isScrollingUp(),
                 icon = { Icon(Icons.Filled.Tune, null) },
                 text = { Text(text = "Filter") },
@@ -112,11 +95,7 @@ fun SortedListScreen(
 
         ItemPullToRefreshBox(
             isRefreshing = state.isRefresh,
-            onRefresh = {
-                coroutineScope.launch {
-                    onEvent(SortEvent.OnRefresh)
-                }
-            }
+            onRefresh = { }
         ) {
             Column(
                 modifier = Modifier
@@ -137,44 +116,42 @@ fun SortedListScreen(
 
                     ItemSort(
                         title = "Season",
-                        subTitle = UiConst.Season.entries.find { it.rawValue == state.sortFilter.selectSeason }?.name
-                            ?: "Any"
+                        subTitle = state.sortFilter.selectSeason?.name ?: "Any"
                     )
 
                     ItemSort(
                         title = "Sort",
-                        subTitle = UiConst.SortType.entries.find { it.rawValue == state.sortFilter.selectSort.first() }!!.name
+                        subTitle = state.sortFilter.selectSort.first().name
                     )
 
                     ItemSort(
                         title = "Status",
-                        subTitle = UiConst.mediaStatus.entries.find { it.key == state.sortFilter.selectStatus }?.value?.first
-                            ?: "Any"
+                        subTitle = state.sortFilter.selectStatus?.name ?: "Any"
                     )
 
                     ItemSort(
                         title = "Genres",
-                        subTitle = if (state.sortFilter.selectGenre != null) {
-                            if (state.sortFilter.selectGenre!!.size == 1) {
-                                state.sortFilter.selectGenre!!.first()
-                            } else {
-                                "${state.sortFilter.selectGenre!!.first()} + ${state.sortFilter.selectGenre!!.size - 1}"
-                            }
-                        } else {
+                        subTitle = if (state.sortFilter.selectGenre.isNullOrEmpty()) {
                             "Any"
+                        } else {
+                            if (state.sortFilter.selectGenre.size == 1) {
+                                state.sortFilter.selectGenre.first()
+                            } else {
+                                "${state.sortFilter.selectGenre.first()} + ${state.sortFilter.selectGenre.size - 1}"
+                            }
                         }
                     )
 
                     ItemSort(
                         title = "Tags",
-                        subTitle = if (state.sortFilter.selectTags != null) {
-                            if (state.sortFilter.selectTags!!.size == 1) {
-                                state.sortFilter.selectTags!!.first()
-                            } else {
-                                "${state.sortFilter.selectTags!!.first()} + ${state.sortFilter.selectTags!!.size - 1}"
-                            }
-                        } else {
+                        subTitle = if (state.sortFilter.selectTags.isNullOrEmpty()) {
                             "Any"
+                        } else {
+                            if (state.sortFilter.selectTags.size == 1) {
+                                state.sortFilter.selectTags.first()
+                            } else {
+                                "${state.sortFilter.selectTags.first()} + ${state.sortFilter.selectTags.size - 1}"
+                            }
                         }
                     )
                 }
@@ -199,14 +176,13 @@ fun SortedListScreen(
                         ) {
                             val animeInfo = pagingItems[it]
                             ItemAnimeSmall(item = animeInfo) {
-                                if (animeInfo != null) {
-                                    onEvent(
-                                        SortEvent.ClickAnime(
-                                            id = animeInfo.id,
-                                            idMal = animeInfo.idMal
-                                        )
+                                if (animeInfo == null) return@ItemAnimeSmall
+                                onIntent(
+                                    SortIntent.ClickAnime(
+                                        id = animeInfo.id,
+                                        idMal = animeInfo.idMal
                                     )
-                                }
+                                )
                             }
                         }
 
@@ -257,17 +233,12 @@ fun SortedListScreen(
     if (state.isShowDialog) {
         ModalBottomSheet(
             sheetState = sheetState,
-            onDismissRequest = {
-                onEvent(SortEvent.OnChangeDialogState)
-            }
+            onDismissRequest = { onIntent(SortIntent.DismissFilterDialog) }
         ) {
             SortFilterDialog(
-                selectedSortFilter = state.sortFilter,
-                sortOptions = state.sortOptions
-            ) {
-                coroutineScope.launch { listState.scrollToItem(0) }
-                onEvent(SortEvent.ChangeSortOption(it))
-            }
+                state = state,
+                onIntent = onIntent,
+            )
         }
     }
 }
@@ -316,6 +287,6 @@ private fun LazyGridState.isScrollingUp(): Boolean {
 private fun PreviewSortedListScreen() {
     SortedListScreen(
         state = SortState(),
-        onEvent = {}
+        onIntent = {}
     )
 }

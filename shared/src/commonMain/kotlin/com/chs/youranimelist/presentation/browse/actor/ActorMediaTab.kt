@@ -21,6 +21,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.domain.model.SortType
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.ItemActorMedia
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
@@ -32,10 +33,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun ActorMediaTab(
     info: Flow<PagingData<Pair<CharacterInfo, AnimeInfo>>>?,
-    sortOptionName: String,
+    sortOptionName: SortType,
     onAnimeClick: (id: Int, idMal: Int) -> Unit,
     onCharaClick: (id: Int) -> Unit,
-    onChangeSortEvent: (String) -> Unit
+    onChangeSortEvent: (SortType) -> Unit
 ) {
     val listState = rememberLazyGridState()
     val pagingData = info?.collectAsLazyPagingItems()
@@ -61,14 +62,15 @@ fun ActorMediaTab(
             ) {
                 ItemExpandSingleBox(
                     title = "Sort",
-                    list = UiConst.sortTypeList2,
+                    list = SortType.entries.toList()
+                        .filterNot { it == SortType.TRENDING },
                     initValue = sortOptionName,
                 ) { selectValue ->
                     if (selectValue != null) {
                         coroutineScope.launch {
                             listState.scrollToItem(0, 0)
                         }
-                        onChangeSortEvent(selectValue.second)
+                        onChangeSortEvent(selectValue)
                     }
                 }
             }

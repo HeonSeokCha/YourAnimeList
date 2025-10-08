@@ -10,6 +10,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.unit.em
+import com.chs.youranimelist.domain.model.SeasonType
+import com.chs.youranimelist.domain.model.SortType
+import com.chs.youranimelist.domain.model.StatusType
 import com.chs.youranimelist.presentation.main.Screen
 
 object UiConst {
@@ -40,27 +43,6 @@ object UiConst {
         "MEDIA",
     )
 
-    enum class Season(
-        val rawValue: String
-    ) {
-        WINTER("WINTER"),
-        SPRING("SPRING"),
-        SUMMER("SUMMER"),
-        FALL("FALL")
-    }
-
-    enum class SortType(
-        val rawValue: String
-    ) {
-        POPULARITY("POPULARITY_DESC"),
-        AVERAGE("SCORE_DESC"),
-        FAVORITE("FAVOURITES_DESC"),
-        NEWEST("START_DATE_DESC"),
-        OLDEST("START_DATE"),
-        TITLE("TITLE_ENGLISH_DESC"),
-        TRENDING("TRENDING_DESC")
-    }
-
     val GENRE_COLOR = hashMapOf(
         Pair("Action", "#24687B"),
         Pair("Adventure", "#014037"),
@@ -83,26 +65,14 @@ object UiConst {
         Pair("Thriller", "#224C80")
     )
 
-    val sortTypeList = SortType.entries.map { it.name to it.rawValue }
-
-    val sortTypeList2 = SortType.entries
-        .filterNot { it == SortType.TRENDING }
-        .map { it.name to it.rawValue }
-
     val yearSortList: List<Pair<String, String>> = (Util.getVariationYear() downTo 1980)
         .map { Pair(it.toString(), it.toString()) }
-
-    val seasonFilterList = Season.entries.map { it.name to it.rawValue }
 
     val mediaStatus = hashMapOf(
         Pair("RELEASING", "Up Releasing" to 0xFF00BCD4),
         Pair("FINISHED", "FINISHED" to 0xFF4CAF50),
         Pair("NOT_YET_RELEASED", "Up Coming" to 0xFF673AB7)
     )
-
-    val mediaStatusSortList: List<Pair<String, String>> = mediaStatus.map {
-        it.value.first to it.key
-    }
 
     val inlineContent = mapOf(
         Pair(

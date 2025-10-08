@@ -1,5 +1,7 @@
 package com.chs.youranimelist.presentation.browse.actor
 
+import com.chs.youranimelist.domain.model.SortType
+
 sealed class ActorDetailEvent {
     data object Idle : ActorDetailEvent()
 
@@ -18,7 +20,7 @@ sealed class ActorDetailEvent {
         data object Close : ActorDetailEvent()
     }
 
-    data class ChangeSortOption(val option: String) : ActorDetailEvent()
+    data class ChangeSortOption(val option: SortType) : ActorDetailEvent()
 
     data object OnError : ActorDetailEvent()
 }

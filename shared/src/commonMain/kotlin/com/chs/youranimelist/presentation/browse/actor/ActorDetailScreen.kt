@@ -148,7 +148,7 @@ fun ActorDetailScreen(
                 1 -> {
                     ActorMediaTab(
                         info = state.actorAnimeList,
-                        sortOptionName = state.selectOption.name,
+                        sortOptionName = state.selectOption,
                         onAnimeClick = { id, idMal ->
                             onEvent(
                                 ActorDetailEvent.ClickBtn.Anime(id, idMal)
