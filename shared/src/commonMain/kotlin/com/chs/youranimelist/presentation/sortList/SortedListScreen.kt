@@ -57,8 +57,16 @@ fun SortedListScreenRoot(
     viewModel: SortedViewModel,
     onClickAnime: (Int, Int) -> Unit
 ) {
-
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is SortEffect.NavigateAnimeDetail -> onClickAnime(effect.id, effect.idMal)
+                SortEffect.ShowErrorSnackBar -> TODO()
+            }
+        }
+    }
 
     SortedListScreen(
         state = state,
@@ -100,7 +108,6 @@ fun SortedListScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(it)
             ) {
                 Row(
                     modifier = Modifier

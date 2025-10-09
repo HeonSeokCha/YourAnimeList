@@ -55,6 +55,7 @@ class AnimeListViewModel(
                     _state.update {
                         it.copy(
                             isLoading = false,
+                            isEmpty = false,
                             list = animeInfo
                         )
                     }

@@ -51,6 +51,7 @@ class CharacterListViewModel(
                     _state.update {
                         it.copy(
                             isLoading = false,
+                            isEmpty = false,
                             list = charaInfo
                         )
                     }

@@ -43,41 +43,37 @@ fun AnimeListScreen(
     state: AnimeListState,
     onIntent: (AnimeListIntent) -> Unit
 ) {
-    if (!state.isLoading && state.list.isEmpty()) {
-        ItemNoResultImage()
-    } else {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            contentPadding = PaddingValues(vertical = 4.dp)
-        ) {
-            when {
-                state.isLoading -> {
-                    items(UiConst.BANNER_SIZE) {
-                        ItemAnimeLarge()
-                    }
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        contentPadding = PaddingValues(vertical = 4.dp)
+    ) {
+        when {
+            state.isLoading -> {
+                items(UiConst.BANNER_SIZE) {
+                    ItemAnimeLarge()
                 }
+            }
 
-                state.isEmpty -> {
-                    item {
-                        ItemNoResultImage(modifier = Modifier.fillParentMaxSize())
-                    }
+            state.isEmpty -> {
+                item {
+                    ItemNoResultImage(modifier = Modifier.fillParentMaxSize())
                 }
+            }
 
-                else -> {
-                    items(
-                        items = state.list,
-                        key = { it.id }
-                    ) { animeInfo ->
-                        ItemAnimeLarge(anime = animeInfo) {
-                            onIntent(
-                                AnimeListIntent.ClickAnime(
-                                    id = animeInfo.id,
-                                    idMal = animeInfo.idMal
-                                )
+            else -> {
+                items(
+                    items = state.list,
+                    key = { it.id }
+                ) { animeInfo ->
+                    ItemAnimeLarge(anime = animeInfo) {
+                        onIntent(
+                            AnimeListIntent.ClickAnime(
+                                id = animeInfo.id,
+                                idMal = animeInfo.idMal
                             )
-                        }
+                        )
                     }
                 }
             }

@@ -1,7 +1,9 @@
 package com.chs.youranimelist.presentation.main
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
@@ -38,8 +40,8 @@ fun MainNavHost(
         navController = navController,
         modifier = modifier,
         startDestination = Screen.Home,
-        enterTransition = { EnterTransition.None },
-        exitTransition = { ExitTransition.None }
+        enterTransition = { fadeIn(animationSpec = tween(300, easing = LinearEasing)) },
+        exitTransition = { fadeOut(animationSpec = tween(300, easing = LinearEasing)) }
     ) {
         composable<Screen.Home> {
             val viewModel: HomeViewModel = koinViewModel()
