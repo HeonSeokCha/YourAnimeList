@@ -4,25 +4,20 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.chs.youranimelist.domain.model.BrowseInfo
 import com.chs.youranimelist.domain.model.MediaType
-import com.chs.youranimelist.presentation.bottom.animeList.AnimeListScreen
 import com.chs.youranimelist.presentation.bottom.animeList.AnimeListScreenRoot
 import com.chs.youranimelist.presentation.bottom.animeList.AnimeListViewModel
-import com.chs.youranimelist.presentation.bottom.charaList.CharaListScreen
 import com.chs.youranimelist.presentation.bottom.charaList.CharaListScreenRoot
 import com.chs.youranimelist.presentation.bottom.charaList.CharacterListViewModel
 import com.chs.youranimelist.presentation.bottom.home.HomeScreenRoot
 import com.chs.youranimelist.presentation.bottom.home.HomeViewModel
-import com.chs.youranimelist.presentation.search.SearchEvent
+import com.chs.youranimelist.presentation.search.SearchIntent
 import com.chs.youranimelist.presentation.search.SearchViewModel
 import com.chs.youranimelist.presentation.search.SearchScreenRoot
 import com.chs.youranimelist.presentation.sortList.SortedListScreenRoot
@@ -83,7 +78,7 @@ fun MainNavHost(
                 snapshotFlow { searchQuery }
                     .distinctUntilChanged()
                     .filter { it.isNotEmpty() }
-                    .collect { viewModel.onEvent(SearchEvent.OnChangeSearchQuery(it)) }
+                    .collect { viewModel.handleIntent(SearchIntent.OnChangeSearchQuery(it)) }
             }
 
             SearchScreenRoot(

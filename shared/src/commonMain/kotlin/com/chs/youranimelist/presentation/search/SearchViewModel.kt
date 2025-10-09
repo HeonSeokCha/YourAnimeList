@@ -26,37 +26,40 @@ class SearchViewModel(
             SearchState()
         )
 
-    private val _event: Channel<SearchEvent> = Channel()
-    val event = _event.receiveAsFlow()
+    private val _effect: Channel<SearchEffect> = Channel(Channel.BUFFERED)
+    val effect = _effect.receiveAsFlow()
 
-    fun onEvent(event: SearchEvent) {
-        when (event) {
-            is SearchEvent.OnChangeSearchQuery -> {
+    fun handleIntent(intent: SearchIntent) {
+        when (intent) {
+            is SearchIntent.ClickAnime -> _effect.trySend(
+                SearchEffect.NavigateAnimeDetail(
+                    id = intent.id,
+                    idMal = intent.idMal
+                )
+            )
+
+            is SearchIntent.ClickChara -> _effect.trySend(
+                SearchEffect.NavigateCharaDetail(id = intent.id)
+            )
+
+            SearchIntent.LoadAnime -> _state.update { it.copy(isAnimeLoading = true) }
+            SearchIntent.LoadCompleteAnime -> _state.update { it.copy(isAnimeLoading = false) }
+            SearchIntent.LoadChara -> _state.update { it.copy(isCharaLoading = true) }
+            SearchIntent.LoadCompleteChara -> _state.update { it.copy(isCharaLoading = false) }
+
+            is SearchIntent.OnChangeSearchQuery -> {
                 _state.update {
                     it.copy(
-                        searchAnimeResultPaging = searchAnimeUseCase(event.query)
+                        searchAnimeResultPaging = searchAnimeUseCase(intent.query)
                             .cachedIn(viewModelScope),
-                        searchCharaResultPaging = searchCharaUseCase(event.query)
+                        searchCharaResultPaging = searchCharaUseCase(intent.query)
                             .cachedIn(viewModelScope)
                     )
                 }
             }
 
-            is SearchEvent.Click.TabIdx -> {
-                _state.update {
-                    it.copy(
-                        selectedTabIdx = event.idx
-                    )
-                }
-            }
-
-            SearchEvent.OnError -> {
-                viewModelScope.launch {
-                    _event.send(SearchEvent.OnError)
-                }
-            }
-
-            else -> Unit
+            is SearchIntent.OnChangeTabIdx -> _state.update { it.copy(selectedTabIdx = intent.idx) }
+            SearchIntent.OnError -> _effect.trySend(SearchEffect.ShowErrorSnackBar)
         }
     }
 }

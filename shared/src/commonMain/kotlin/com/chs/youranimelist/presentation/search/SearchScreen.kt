@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.ui.theme.Pink80
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchScreenRoot(
@@ -22,32 +23,20 @@ fun SearchScreenRoot(
     onCharaClick: (Int) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val searchEvent by viewModel.event.collectAsStateWithLifecycle(SearchEvent.Idle)
 
-    LaunchedEffect(searchEvent) {
-        when (searchEvent) {
-            SearchEvent.OnError -> {
+    LaunchedEffect(Unit) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is SearchEffect.NavigateAnimeDetail -> onAnimeClick(effect.id, effect.idMal)
+                is SearchEffect.NavigateCharaDetail -> onCharaClick(effect.id)
+                SearchEffect.ShowErrorSnackBar -> TODO()
             }
-
-            else -> Unit
         }
     }
 
     SearchScreen(
         state = state,
-        onEvent = { event ->
-            when (event) {
-                is SearchEvent.Click.Anime -> {
-                    onAnimeClick(event.id, event.idMal)
-                }
-
-                is SearchEvent.Click.Chara -> {
-                    onCharaClick(event.id)
-                }
-
-                else -> viewModel.onEvent(event)
-            }
-        }
+        onIntent = viewModel::handleIntent
     )
 }
 
@@ -55,16 +44,17 @@ fun SearchScreenRoot(
 @Composable
 fun SearchScreen(
     state: SearchState,
-    onEvent: (SearchEvent) -> Unit,
+    onIntent: (SearchIntent) -> Unit,
 ) {
     val pagerState = rememberPagerState { 2 }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(state.selectedTabIdx) {
         pagerState.animateScrollToPage(state.selectedTabIdx)
     }
 
     LaunchedEffect(pagerState.currentPage) {
-        onEvent(SearchEvent.Click.TabIdx(pagerState.currentPage))
+        onIntent(SearchIntent.OnChangeTabIdx(pagerState.currentPage))
     }
 
     Column(
@@ -84,7 +74,9 @@ fun SearchScreen(
                     },
                     selected = state.selectedTabIdx == index,
                     onClick = {
-                        onEvent(SearchEvent.Click.TabIdx(index))
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
                     }
                 )
             }
@@ -97,13 +89,13 @@ fun SearchScreen(
             when (page) {
                 0 -> {
                     SearchAnimeScreen(pagingItem = state.searchAnimeResultPaging) {
-                        onEvent(it)
+                        onIntent(it)
                     }
                 }
 
                 1 -> {
                     SearchCharaScreen(pagingItems = state.searchCharaResultPaging) {
-                        onEvent(it)
+                        onIntent(it)
                     }
                 }
             }

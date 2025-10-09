@@ -9,8 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
-import androidx.paging.LoadState.Error
-import androidx.paging.LoadState.Loading
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
@@ -22,7 +20,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun SearchAnimeScreen(
     pagingItem: Flow<PagingData<AnimeInfo>>?,
-    onEvent: (SearchEvent) -> Unit
+    onIntent: (SearchIntent) -> Unit
 ) {
     val lazyColScrollState = rememberLazyListState()
     val animeItems = pagingItem?.collectAsLazyPagingItems()
@@ -40,14 +38,9 @@ fun SearchAnimeScreen(
             ) { index ->
                 val item = animeItems[index]
                 ItemAnimeLarge(anime = item) {
-                    if (item != null) {
-                        onEvent(
-                            SearchEvent.Click.Anime(
-                                id = item.id,
-                                idMal = item.idMal
-                            )
-                        )
-                    }
+                    if (item == null) return@ItemAnimeLarge
+
+                    onIntent(SearchIntent.ClickAnime(id = item.id, idMal = item.idMal))
                 }
             }
 
@@ -93,6 +86,5 @@ fun SearchAnimeScreen(
                 else -> Unit
             }
         }
-
     }
 }

@@ -9,8 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
-import androidx.paging.LoadState.Error
-import androidx.paging.LoadState.Loading
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
@@ -22,7 +20,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun SearchCharaScreen(
     pagingItems: Flow<PagingData<CharacterInfo>>?,
-    onEvent: (SearchEvent) -> Unit
+    onIntent: (SearchIntent) -> Unit
 ) {
     val lazyColScrollState = rememberLazyListState()
     val charaItems = pagingItems?.collectAsLazyPagingItems()
@@ -40,11 +38,8 @@ fun SearchCharaScreen(
             ) { idx ->
                 val item = charaItems[idx]
                 ItemCharaLarge(item) { id ->
-                    if (item != null) {
-                        onEvent(
-                            SearchEvent.Click.Chara(id = id)
-                        )
-                    }
+                    if (item == null) return@ItemCharaLarge
+                    onIntent(SearchIntent.ClickChara(id = id))
                 }
             }
 

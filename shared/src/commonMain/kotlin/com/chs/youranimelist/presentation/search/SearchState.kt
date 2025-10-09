@@ -9,5 +9,6 @@ data class SearchState(
     val selectedTabIdx: Int = 0,
     val searchAnimeResultPaging: Flow<PagingData<AnimeInfo>>? = null,
     val searchCharaResultPaging: Flow<PagingData<CharacterInfo>>? = null,
-    val isLoading: Boolean = false
+    val isAnimeLoading: Boolean = false,
+    val isCharaLoading: Boolean = false
 )
