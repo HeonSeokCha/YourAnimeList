@@ -12,8 +12,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.PagingData
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.ui.theme.Pink80
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @Composable
@@ -29,13 +33,17 @@ fun SearchScreenRoot(
             when (effect) {
                 is SearchEffect.NavigateAnimeDetail -> onAnimeClick(effect.id, effect.idMal)
                 is SearchEffect.NavigateCharaDetail -> onCharaClick(effect.id)
-                SearchEffect.ShowErrorSnackBar -> TODO()
+                SearchEffect.ShowErrorSnackBar -> {
+
+                }
             }
         }
     }
 
     SearchScreen(
         state = state,
+        animePaging = viewModel.animePaging,
+        charaPaging = viewModel.charaPaging,
         onIntent = viewModel::handleIntent
     )
 }
@@ -43,6 +51,8 @@ fun SearchScreenRoot(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
+    animePaging: Flow<PagingData<AnimeInfo>>,
+    charaPaging: Flow<PagingData<CharacterInfo>>,
     state: SearchState,
     onIntent: (SearchIntent) -> Unit,
 ) {
@@ -88,15 +98,19 @@ fun SearchScreen(
         ) { page ->
             when (page) {
                 0 -> {
-                    SearchAnimeScreen(pagingItem = state.searchAnimeResultPaging) {
-                        onIntent(it)
-                    }
+                    SearchAnimeScreen(
+                        state = state,
+                        pagingItem = animePaging,
+                        onIntent = onIntent
+                    )
                 }
 
                 1 -> {
-                    SearchCharaScreen(pagingItems = state.searchCharaResultPaging) {
-                        onIntent(it)
-                    }
+                    SearchCharaScreen(
+                        state = state,
+                        pagingItem = charaPaging,
+                        onIntent = onIntent
+                    )
                 }
             }
         }

@@ -6,6 +6,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -19,11 +23,36 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun SearchAnimeScreen(
-    pagingItem: Flow<PagingData<AnimeInfo>>?,
+    state: SearchState,
+    pagingItem: Flow<PagingData<AnimeInfo>>,
     onIntent: (SearchIntent) -> Unit
 ) {
     val lazyColScrollState = rememberLazyListState()
-    val animeItems = pagingItem?.collectAsLazyPagingItems()
+    val animeItems = pagingItem.collectAsLazyPagingItems()
+
+    val isEmpty by remember {
+        derivedStateOf {
+            animeItems.loadState.refresh is LoadState.NotLoading
+                    && animeItems.loadState.append.endOfPaginationReached
+                    && animeItems.itemCount == 0
+        }
+    }
+
+    LaunchedEffect(animeItems.loadState.refresh) {
+        when (animeItems.loadState.refresh) {
+            is LoadState.Loading -> {
+                lazyColScrollState.animateScrollToItem(0)
+                onIntent(SearchIntent.LoadAnime)
+            }
+
+            is LoadState.Error -> {
+                (animeItems.loadState.refresh as LoadState.Error).error.run {
+                }
+            }
+
+            is LoadState.NotLoading -> onIntent(SearchIntent.LoadCompleteAnime)
+        }
+    }
 
     LazyColumn(
         modifier = Modifier
@@ -31,59 +60,30 @@ fun SearchAnimeScreen(
         state = lazyColScrollState,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        if (animeItems != null) {
-            items(
-                count = animeItems.itemCount,
-                key = animeItems.itemKey(key = { it.id })
-            ) { index ->
-                val item = animeItems[index]
-                ItemAnimeLarge(anime = item) {
-                    if (item == null) return@ItemAnimeLarge
-
-                    onIntent(SearchIntent.ClickAnime(id = item.id, idMal = item.idMal))
+        when {
+            state.isAnimeLoading -> {
+                items(10) {
+                    ItemAnimeLarge(anime = null) { }
+                }
+            }
+            isEmpty -> {
+                item {
+                    ItemNoResultImage(modifier = Modifier.fillParentMaxSize())
                 }
             }
 
-            when (animeItems.loadState.refresh) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemAnimeLarge(anime = null) { }
+            else -> {
+                items(
+                    count = animeItems.itemCount,
+                    key = animeItems.itemKey(key = { it.id })
+                ) { index ->
+                    val item = animeItems[index]
+                    ItemAnimeLarge(anime = item) {
+                        if (item == null) return@ItemAnimeLarge
+
+                        onIntent(SearchIntent.ClickAnime(id = item.id, idMal = item.idMal))
                     }
                 }
-
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
-                        )
-                    }
-                }
-
-                else -> {
-                    if (animeItems.itemCount == 0) {
-                        item {
-                            ItemNoResultImage()
-                        }
-                    }
-                }
-            }
-
-            when (animeItems.loadState.append) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemAnimeLarge(anime = null) { }
-                    }
-                }
-
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
-                        )
-                    }
-                }
-
-                else -> Unit
             }
         }
     }

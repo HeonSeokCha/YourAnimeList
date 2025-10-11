@@ -6,6 +6,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -19,11 +23,36 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun SearchCharaScreen(
-    pagingItems: Flow<PagingData<CharacterInfo>>?,
+    state: SearchState,
+    pagingItem: Flow<PagingData<CharacterInfo>>,
     onIntent: (SearchIntent) -> Unit
 ) {
     val lazyColScrollState = rememberLazyListState()
-    val charaItems = pagingItems?.collectAsLazyPagingItems()
+    val charaItems = pagingItem.collectAsLazyPagingItems()
+
+    val isEmpty by remember {
+        derivedStateOf {
+            charaItems.loadState.refresh is LoadState.NotLoading
+                    && charaItems.loadState.append.endOfPaginationReached
+                    && charaItems.itemCount == 0
+        }
+    }
+
+    LaunchedEffect(charaItems.loadState.refresh) {
+        when (charaItems.loadState.refresh) {
+            is LoadState.Loading -> {
+                lazyColScrollState.animateScrollToItem(0)
+                onIntent(SearchIntent.LoadChara)
+            }
+
+            is LoadState.Error -> {
+                (charaItems.loadState.refresh as LoadState.Error).error.run {
+                }
+            }
+
+            is LoadState.NotLoading -> onIntent(SearchIntent.LoadCompleteChara)
+        }
+    }
 
     LazyColumn(
         modifier = Modifier
@@ -31,58 +60,30 @@ fun SearchCharaScreen(
         state = lazyColScrollState,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        if (charaItems != null) {
-            items(
-                count = charaItems.itemCount,
-                key = charaItems.itemKey(key = { it.id })
-            ) { idx ->
-                val item = charaItems[idx]
-                ItemCharaLarge(item) { id ->
-                    if (item == null) return@ItemCharaLarge
-                    onIntent(SearchIntent.ClickChara(id = id))
+        when {
+            state.isCharaLoading -> {
+                items(10) {
+                    ItemCharaLarge(character = null) { }
                 }
             }
 
-            when (charaItems.loadState.refresh) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemCharaLarge(character = null) { }
-                    }
-                }
-
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
-                        )
-                    }
-                }
-
-                else -> {
-                    if (charaItems.itemCount == 0) {
-                        item {
-                            ItemNoResultImage()
-                        }
-                    }
+            isEmpty -> {
+                item {
+                    ItemNoResultImage(modifier = Modifier.fillParentMaxSize())
                 }
             }
 
-            when (charaItems.loadState.append) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemCharaLarge(character = null) { }
+            else -> {
+                items(
+                    count = charaItems.itemCount,
+                    key = charaItems.itemKey(key = { it.id })
+                ) { idx ->
+                    val item = charaItems[idx]
+                    ItemCharaLarge(item) { id ->
+                        if (item == null) return@ItemCharaLarge
+                        onIntent(SearchIntent.ClickChara(id = id))
                     }
                 }
-
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
-                        )
-                    }
-                }
-
-                else -> Unit
             }
         }
     }
