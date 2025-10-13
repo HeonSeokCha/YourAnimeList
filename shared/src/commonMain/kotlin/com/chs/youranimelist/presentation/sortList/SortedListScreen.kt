@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -39,18 +41,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.chs.youranimelist.domain.model.SeasonType
+import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
-import com.chs.youranimelist.presentation.common.ItemErrorImage
 import com.chs.youranimelist.presentation.common.ItemNoResultImage
 import com.chs.youranimelist.presentation.common.ItemPullToRefreshBox
+import com.chs.youranimelist.presentation.search.SearchIntent
 import com.chs.youranimelist.presentation.ui.theme.Red200
 import com.chs.youranimelist.presentation.ui.theme.Red500
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun SortedListScreenRoot(
@@ -58,6 +59,7 @@ fun SortedListScreenRoot(
     onClickAnime: (Int, Int) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val pagingItems = viewModel.pagingItem.collectAsLazyPagingItems()
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
@@ -70,6 +72,7 @@ fun SortedListScreenRoot(
 
     SortedListScreen(
         state = state,
+        pagingItems = pagingItems,
         onIntent = viewModel::handleIntent,
     )
 }
@@ -78,13 +81,53 @@ fun SortedListScreenRoot(
 @Composable
 fun SortedListScreen(
     state: SortState,
+    pagingItems: LazyPagingItems<AnimeInfo>,
     onIntent: (SortIntent) -> Unit
 ) {
-    val pagingItems = state.animeSortPaging?.collectAsLazyPagingItems()
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scrollState = rememberScrollState()
     val listState = rememberLazyGridState()
+
+
+    val isEmpty by remember {
+        derivedStateOf {
+            pagingItems.loadState.refresh is LoadState.NotLoading
+                    && pagingItems.loadState.append.endOfPaginationReached
+                    && pagingItems.itemCount == 0
+        }
+    }
+
+    LaunchedEffect(pagingItems.loadState.refresh) {
+        when (pagingItems.loadState.refresh) {
+            is LoadState.Loading -> {
+                listState.animateScrollToItem(0)
+                onIntent(SortIntent.OnLoad)
+            }
+
+            is LoadState.Error -> {
+                (pagingItems.loadState.refresh as LoadState.Error).error.run {
+                }
+            }
+
+            is LoadState.NotLoading -> onIntent(SortIntent.LoadComplete)
+        }
+    }
+
+    LaunchedEffect(pagingItems.loadState.append) {
+        when (pagingItems.loadState.append) {
+            is LoadState.Loading -> {
+                onIntent(SortIntent.OnAppendLoad)
+            }
+
+            is LoadState.Error -> {
+                (pagingItems.loadState.append as LoadState.Error).error.run {
+                }
+            }
+
+            is LoadState.NotLoading -> onIntent(SortIntent.AppendLoadComplete)
+        }
+    }
 
     Scaffold(
         modifier = Modifier
@@ -163,73 +206,47 @@ fun SortedListScreen(
                     )
                 }
 
-                LazyVerticalGrid(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    state = listState,
-                    columns = GridCells.Fixed(3),
-                    horizontalArrangement = Arrangement.spacedBy(3.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    contentPadding = PaddingValues(
-                        horizontal = 4.dp,
-                        vertical = 8.dp
-                    )
-                ) {
-                    if (pagingItems != null) {
-
-                        items(
-                            count = pagingItems.itemCount,
-                            key = pagingItems.itemKey { it.id }
-                        ) {
-                            val animeInfo = pagingItems[it]
-                            ItemAnimeSmall(item = animeInfo) {
-                                if (animeInfo == null) return@ItemAnimeSmall
-                                onIntent(
-                                    SortIntent.ClickAnime(
-                                        id = animeInfo.id,
-                                        idMal = animeInfo.idMal
+                if (isEmpty) {
+                    ItemNoResultImage(modifier = Modifier.fillMaxSize())
+                } else {
+                    LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        state = listState,
+                        columns = GridCells.Fixed(3),
+                        horizontalArrangement = Arrangement.spacedBy(3.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        contentPadding = PaddingValues(
+                            horizontal = 4.dp,
+                            vertical = 8.dp
+                        )
+                    ) {
+                        if (state.isLoading) {
+                            items(UiConst.BANNER_SIZE) {
+                                ItemAnimeSmall(item = null)
+                            }
+                        } else {
+                            items(
+                                count = pagingItems.itemCount,
+                                key = pagingItems.itemKey { it.id }
+                            ) {
+                                val animeInfo = pagingItems[it]
+                                ItemAnimeSmall(item = animeInfo) {
+                                    if (animeInfo == null) return@ItemAnimeSmall
+                                    onIntent(
+                                        SortIntent.ClickAnime(
+                                            id = animeInfo.id,
+                                            idMal = animeInfo.idMal
+                                        )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        when (pagingItems.loadState.refresh) {
-                            is LoadState.Loading -> {
-                                items(10) {
+                            if (state.isAppending) {
+                                items(UiConst.BANNER_SIZE) {
                                     ItemAnimeSmall(item = null)
                                 }
                             }
-
-                            is LoadState.Error -> {
-                                item {
-                                    ItemErrorImage(message = (pagingItems.loadState.refresh as LoadState.Error).error.message)
-                                }
-                            }
-
-                            else -> {
-                                if (pagingItems.itemCount == 0) {
-                                    item {
-                                        ItemNoResultImage()
-                                    }
-                                }
-                            }
-                        }
-
-
-                        when (pagingItems.loadState.append) {
-                            is LoadState.Loading -> {
-                                items(10) {
-                                    ItemAnimeSmall(item = null)
-                                }
-                            }
-
-                            is LoadState.Error -> {
-                                item {
-                                    ItemErrorImage(message = (pagingItems.loadState.append as LoadState.Error).error.message)
-                                }
-                            }
-
-                            else -> Unit
                         }
                     }
                 }
@@ -287,13 +304,4 @@ private fun LazyGridState.isScrollingUp(): Boolean {
             }
         }
     }.value
-}
-
-@Preview
-@Composable
-private fun PreviewSortedListScreen() {
-    SortedListScreen(
-        state = SortState(),
-        onIntent = {}
-    )
 }

@@ -33,23 +33,18 @@ class SearchViewModel(
             SearchState()
         )
 
-    private var _queryState = MutableStateFlow("")
+    private var queryState = MutableStateFlow("")
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-    val animePaging = _queryState
+    val animePaging = queryState
         .debounce(300)
         .distinctUntilChanged()
         .filterNot { it.isEmpty() }
         .flatMapLatest { searchAnimeUseCase(it) }
         .cachedIn(viewModelScope)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = PagingData.empty()
-        )
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-    val charaPaging = _queryState
+    val charaPaging = queryState
         .debounce(300)
         .distinctUntilChanged()
         .filterNot { it.isEmpty() }
@@ -82,9 +77,7 @@ class SearchViewModel(
             SearchIntent.LoadChara -> _state.update { it.copy(isCharaLoading = true) }
             SearchIntent.LoadCompleteChara -> _state.update { it.copy(isCharaLoading = false) }
 
-            is SearchIntent.OnChangeSearchQuery -> {
-                _queryState.update { intent.query }
-            }
+            is SearchIntent.OnChangeSearchQuery -> queryState.update { intent.query }
 
             is SearchIntent.OnChangeTabIdx -> _state.update { it.copy(selectedTabIdx = intent.idx) }
             SearchIntent.OnError -> _effect.trySend(SearchEffect.ShowErrorSnackBar)

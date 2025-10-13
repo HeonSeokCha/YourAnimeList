@@ -7,8 +7,11 @@ import com.chs.youranimelist.domain.model.SortType
 import com.chs.youranimelist.util.onError
 import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.domain.usecase.GetAnimeRecListUseCase
+import com.chs.youranimelist.domain.usecase.GetRecentGenresTagUseCase
 import com.chs.youranimelist.presentation.Util
 import com.chs.youranimelist.presentation.bottom.home.HomeEffect.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,17 +21,17 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel(
-    private val getHomeListUseCase: GetAnimeRecListUseCase
+    private val getHomeListUseCase: GetAnimeRecListUseCase,
+    private val getRecentGenresTagUseCase: GetRecentGenresTagUseCase
 ) : ViewModel() {
 
     private var getAnimeJob: Job? = null
     private val _state = MutableStateFlow(HomeState())
     val state = _state
-        .onStart {
-            getHomeList()
-        }
+        .onStart { getHomeList() }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
@@ -106,6 +109,11 @@ class HomeViewModel(
         getAnimeJob?.cancel()
         getAnimeJob = viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
+
+            withContext(Dispatchers.IO) {
+                getRecentGenreTag()
+            }
+
             getHomeListUseCase(
                 currentSeason = Util.getCurrentSeason(),
                 nextSeason = Util.getNextSeason(),
@@ -127,6 +135,10 @@ class HomeViewModel(
                 }
             }
         }
+    }
+
+    private suspend fun getRecentGenreTag() {
+        getRecentGenresTagUseCase()
     }
 
     override fun onCleared() {
