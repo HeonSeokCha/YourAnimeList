@@ -84,11 +84,9 @@ fun SortedListScreen(
     pagingItems: LazyPagingItems<AnimeInfo>,
     onIntent: (SortIntent) -> Unit
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scrollState = rememberScrollState()
     val listState = rememberLazyGridState()
-
 
     val isEmpty by remember {
         derivedStateOf {
@@ -143,109 +141,109 @@ fun SortedListScreen(
         },
         floatingActionButtonPosition = FabPosition.End,
     ) {
-
-        ItemPullToRefreshBox(
-            isRefreshing = state.isRefresh,
-            onRefresh = { }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
         ) {
-            Column(
+            Row(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .horizontalScroll(scrollState),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .horizontalScroll(scrollState),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    ItemSort(
-                        title = "Year",
-                        subTitle = if (state.sortFilter.selectYear == null) "Any" else state.sortFilter.selectYear.toString()
-                    )
+                ItemSort(
+                    title = "Year",
+                    subTitle = if (state.sortFilter.selectYear == null) "Any" else state.sortFilter.selectYear.toString()
+                )
 
-                    ItemSort(
-                        title = "Season",
-                        subTitle = state.sortFilter.selectSeason?.name ?: "Any"
-                    )
+                ItemSort(
+                    title = "Season",
+                    subTitle = state.sortFilter.selectSeason?.name ?: "Any"
+                )
 
-                    ItemSort(
-                        title = "Sort",
-                        subTitle = state.sortFilter.selectSort.first().name
-                    )
+                ItemSort(
+                    title = "Sort",
+                    subTitle = state.sortFilter.selectSort.first().name
+                )
 
-                    ItemSort(
-                        title = "Status",
-                        subTitle = state.sortFilter.selectStatus?.name ?: "Any"
-                    )
+                ItemSort(
+                    title = "Status",
+                    subTitle = state.sortFilter.selectStatus?.name ?: "Any"
+                )
 
-                    ItemSort(
-                        title = "Genres",
-                        subTitle = if (state.sortFilter.selectGenre.isNullOrEmpty()) {
-                            "Any"
+                ItemSort(
+                    title = "Genres",
+                    subTitle = if (state.sortFilter.selectGenre.isNullOrEmpty()) {
+                        "Any"
+                    } else {
+                        if (state.sortFilter.selectGenre.size == 1) {
+                            state.sortFilter.selectGenre.first()
                         } else {
-                            if (state.sortFilter.selectGenre.size == 1) {
-                                state.sortFilter.selectGenre.first()
-                            } else {
-                                "${state.sortFilter.selectGenre.first()} + ${state.sortFilter.selectGenre.size - 1}"
+                            "${state.sortFilter.selectGenre.first()} + ${state.sortFilter.selectGenre.size - 1}"
+                        }
+                    }
+                )
+
+                ItemSort(
+                    title = "Tags",
+                    subTitle = if (state.sortFilter.selectTags.isNullOrEmpty()) {
+                        "Any"
+                    } else {
+                        if (state.sortFilter.selectTags.size == 1) {
+                            state.sortFilter.selectTags.first()
+                        } else {
+                            "${state.sortFilter.selectTags.first()} + ${state.sortFilter.selectTags.size - 1}"
+                        }
+                    }
+                )
+            }
+
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .fillMaxSize(),
+                state = listState,
+                columns = GridCells.Fixed(3),
+                horizontalArrangement = Arrangement.spacedBy(3.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                contentPadding = PaddingValues(
+                    horizontal = 4.dp,
+                    vertical = 8.dp
+                )
+            ) {
+                when {
+                    state.isLoading -> {
+                        items(UiConst.BANNER_SIZE) {
+                            ItemAnimeSmall(item = null)
+                        }
+                    }
+
+                    isEmpty -> {
+                        item {
+                            ItemNoResultImage(modifier = Modifier.fillMaxSize())
+                        }
+                    }
+
+                    else -> {
+                        items(
+                            count = pagingItems.itemCount,
+                            key = pagingItems.itemKey { it.id }
+                        ) {
+                            val animeInfo = pagingItems[it]
+                            ItemAnimeSmall(item = animeInfo) {
+                                if (animeInfo == null) return@ItemAnimeSmall
+                                onIntent(
+                                    SortIntent.ClickAnime(
+                                        id = animeInfo.id,
+                                        idMal = animeInfo.idMal
+                                    )
+                                )
                             }
                         }
-                    )
 
-                    ItemSort(
-                        title = "Tags",
-                        subTitle = if (state.sortFilter.selectTags.isNullOrEmpty()) {
-                            "Any"
-                        } else {
-                            if (state.sortFilter.selectTags.size == 1) {
-                                state.sortFilter.selectTags.first()
-                            } else {
-                                "${state.sortFilter.selectTags.first()} + ${state.sortFilter.selectTags.size - 1}"
-                            }
-                        }
-                    )
-                }
-
-                if (isEmpty) {
-                    ItemNoResultImage(modifier = Modifier.fillMaxSize())
-                } else {
-                    LazyVerticalGrid(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        state = listState,
-                        columns = GridCells.Fixed(3),
-                        horizontalArrangement = Arrangement.spacedBy(3.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        contentPadding = PaddingValues(
-                            horizontal = 4.dp,
-                            vertical = 8.dp
-                        )
-                    ) {
-                        if (state.isLoading) {
+                        if (state.isAppending) {
                             items(UiConst.BANNER_SIZE) {
                                 ItemAnimeSmall(item = null)
-                            }
-                        } else {
-                            items(
-                                count = pagingItems.itemCount,
-                                key = pagingItems.itemKey { it.id }
-                            ) {
-                                val animeInfo = pagingItems[it]
-                                ItemAnimeSmall(item = animeInfo) {
-                                    if (animeInfo == null) return@ItemAnimeSmall
-                                    onIntent(
-                                        SortIntent.ClickAnime(
-                                            id = animeInfo.id,
-                                            idMal = animeInfo.idMal
-                                        )
-                                    )
-                                }
-                            }
-
-                            if (state.isAppending) {
-                                items(UiConst.BANNER_SIZE) {
-                                    ItemAnimeSmall(item = null)
-                                }
                             }
                         }
                     }

@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 data class SortState(
     val sortFilter: SortFilter = SortFilter(),
     val sortOptions: SortOptions = SortOptions(),
-    val isRefresh: Boolean = false,
     val isShowDialog: Boolean = false,
     val isLoading: Boolean = false,
     val isAppending: Boolean = false,

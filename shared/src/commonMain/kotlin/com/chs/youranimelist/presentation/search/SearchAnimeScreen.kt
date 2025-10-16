@@ -29,10 +29,12 @@ fun SearchAnimeScreen(
 ) {
     val lazyColScrollState = rememberLazyListState()
     val animeItems = pagingItem.collectAsLazyPagingItems()
+    val isRefresh = animeItems.loadState.refresh is LoadState.Loading
 
     val isEmpty by remember {
         derivedStateOf {
-            animeItems.loadState.refresh is LoadState.NotLoading
+            !isRefresh
+                    && animeItems.loadState.refresh is LoadState.NotLoading
                     && animeItems.loadState.append.endOfPaginationReached
                     && animeItems.itemCount == 0
         }

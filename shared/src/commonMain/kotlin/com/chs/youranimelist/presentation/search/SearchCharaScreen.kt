@@ -29,10 +29,11 @@ fun SearchCharaScreen(
 ) {
     val lazyColScrollState = rememberLazyListState()
     val charaItems = pagingItem.collectAsLazyPagingItems()
-
+    val isRefresh = charaItems.loadState.refresh is LoadState.Loading
     val isEmpty by remember {
         derivedStateOf {
-            charaItems.loadState.refresh is LoadState.NotLoading
+            !isRefresh
+                    && charaItems.loadState.refresh is LoadState.NotLoading
                     && charaItems.loadState.append.endOfPaginationReached
                     && charaItems.itemCount == 0
         }

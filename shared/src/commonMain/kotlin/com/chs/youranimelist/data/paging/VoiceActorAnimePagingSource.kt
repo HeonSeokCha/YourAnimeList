@@ -17,12 +17,7 @@ class VoiceActorAnimePagingSource(
     private val sortOptions: List<MediaSort>
 ) : PagingSource<Int, Pair<CharacterInfo, AnimeInfo>>() {
 
-    override fun getRefreshKey(state: PagingState<Int, Pair<CharacterInfo, AnimeInfo>>): Int? {
-        return state.anchorPosition?.let { position ->
-            val page = state.closestPageToPosition(position)
-            page?.prevKey?.minus(1) ?: page?.nextKey?.plus(1)
-        }
-    }
+    override fun getRefreshKey(state: PagingState<Int, Pair<CharacterInfo, AnimeInfo>>): Int? = null
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Pair<CharacterInfo, AnimeInfo>> {
         return try {

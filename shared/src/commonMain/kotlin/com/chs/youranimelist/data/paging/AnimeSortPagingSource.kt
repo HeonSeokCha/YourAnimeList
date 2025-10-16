@@ -21,12 +21,7 @@ class AnimeSortPagingSource(
     private val status: MediaStatus?
 ) : PagingSource<Int, AnimeInfo>() {
 
-    override fun getRefreshKey(state: PagingState<Int, AnimeInfo>): Int? {
-        return state.anchorPosition?.let { position ->
-            val page = state.closestPageToPosition(position)
-            page?.prevKey?.minus(1) ?: page?.nextKey?.plus(1)
-        }
-    }
+    override fun getRefreshKey(state: PagingState<Int, AnimeInfo>): Int? = null
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnimeInfo> {
         return try {
