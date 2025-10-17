@@ -9,8 +9,10 @@ import kotlinx.coroutines.flow.Flow
 data class AnimeDetailState(
     val animeDetailInfo: AnimeDetailInfo? = null,
     val animeThemes: AnimeThemeInfo = AnimeThemeInfo(),
-    val animeRecList: Flow<PagingData<AnimeInfo>>? = null,
     val selectTabIdx: Int = 0,
-    val isSave: Boolean? = null
+    val isSave: Boolean = false,
+    val animeRecListLoading: Boolean = false,
+    val animeRecListAppendLoading: Boolean = false,
+    val animeRecListisError: Boolean = false
 )
 

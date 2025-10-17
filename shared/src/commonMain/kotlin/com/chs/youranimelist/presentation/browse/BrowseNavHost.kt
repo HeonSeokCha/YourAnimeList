@@ -1,5 +1,9 @@
 package com.chs.youranimelist.presentation.browse
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -44,15 +48,15 @@ fun BrowseNavHost(
     NavHost(
         navController = navController,
         modifier = modifier,
-        startDestination = startMediaDestination
+        startDestination = startMediaDestination,
+        enterTransition = { fadeIn(animationSpec = tween(300, easing = LinearEasing)) },
+        exitTransition = { fadeOut(animationSpec = tween(300, easing = LinearEasing)) }
     ) {
         composable<BrowseScreen.AnimeDetail> {
             val viewmodel: AnimeDetailViewModel = koinViewModel()
             AnimeDetailScreenRoot(
                 viewModel = viewmodel,
-                onCloseClick = {
-                    onClose()
-                },
+                onCloseClick = { onClose() },
                 onTrailerClick = { trailerId ->
                     onLinkClick("https://youtube.com/watch?v=$trailerId")
                 },
@@ -62,32 +66,20 @@ fun BrowseNavHost(
                     )
                 },
                 onCharaClick = { id ->
-                    navController.navigate(
-                        BrowseScreen.CharacterDetail(id)
-                    )
+                    navController.navigate(BrowseScreen.CharacterDetail(id))
                 },
                 onStudioClick = { id ->
-                    navController.navigate(
-                        BrowseScreen.StudioDetail(id)
-                    )
+                    navController.navigate(BrowseScreen.StudioDetail(id))
                 },
                 onGenreClick = { genre ->
-                    navController.navigate(
-                        Screen.SortList(genre = genre)
-                    )
+                    navController.navigate(Screen.SortList(genre = genre))
                 },
-                onSeasonYearClick = { year, season ->
-                    navController.navigate(
-                        Screen.SortList(year = year, season = season)
-                    )
+                onSeasonYearClick = { season, year ->
+                    navController.navigate(Screen.SortList(season = season, year = year))
                 },
-                onLinkClick = { url ->
-                    onLinkClick(url)
-                },
+                onLinkClick = { url -> onLinkClick(url) },
                 onTagClick = { tag ->
-                    navController.navigate(
-                        Screen.SortList(tag = tag)
-                    )
+                    navController.navigate(Screen.SortList(tag = tag))
                 }
             )
         }

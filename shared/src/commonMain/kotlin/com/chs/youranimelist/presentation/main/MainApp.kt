@@ -12,7 +12,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.chs.youranimelist.domain.model.BrowseInfo
-import com.chs.youranimelist.presentation.chsLog
+import com.chs.youranimelist.presentation.bottom.BottomBar
 import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
 import org.koin.compose.viewmodel.koinViewModel
 

@@ -4,13 +4,17 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.SeasonType
 import com.chs.youranimelist.util.onError
 import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.domain.usecase.*
 import com.chs.youranimelist.presentation.browse.BrowseScreen
+import com.chs.youranimelist.presentation.browse.anime.AnimeDetailEffect.*
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -26,63 +30,111 @@ class AnimeDetailViewModel(
     private val insertAnimeUseCase: InsertAnimeInfoUseCase,
     private val deleteAnimeUseCase: DeleteAnimeInfoUseCase,
     private val getAnimeThemeUseCase: GetAnimeThemeUseCase,
-    private val getAnimeRecListUseCase: GetAnimeDetailRecListUseCase
+    getAnimeRecListUseCase: GetAnimeDetailRecListUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AnimeDetailState())
     val state = _state
-        .onStart {
-            initInfo()
-        }
+        .onStart { initInfo() }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            AnimeDetailState()
+            _state.value
         )
 
-    private val _animeDetailEvent: Channel<AnimeDetailEvent> = Channel()
-    val animeDetailEvent = _animeDetailEvent.receiveAsFlow()
+    private val _effect: Channel<AnimeDetailEffect> = Channel(Channel.BUFFERED)
+    val effect = _effect.receiveAsFlow()
 
     private val animeId: Int = savedStateHandle.toRoute<BrowseScreen.AnimeDetail>().id
     private val animeMalId: Int = savedStateHandle.toRoute<BrowseScreen.AnimeDetail>().idMal
+    val animeRecPaging: Flow<PagingData<AnimeInfo>> =
+        getAnimeRecListUseCase(animeId).cachedIn(viewModelScope)
 
-    fun changeEvent(event: AnimeDetailEvent) {
-        when (event) {
-            is AnimeDetailEvent.InsertAnimeInfo -> {
-                insertAnime(event.info)
+    fun handleIntent(intent: AnimeDetailIntent) {
+        when (intent) {
+            is AnimeDetailIntent.ClickChara -> {
+                _effect.trySend(NavigateCharaDetail(id = intent.id))
             }
 
-            is AnimeDetailEvent.DeleteAnimeInfo -> {
-                deleteAnime(event.info)
+            is AnimeDetailIntent.CLickGenre -> {
+                _effect.trySend(NavigateSortGenre(genre = intent.genre))
             }
 
-            is AnimeDetailEvent.OnTabSelected -> {
-                _state.update {
-                    it.copy(selectTabIdx = event.idx)
-                }
+            is AnimeDetailIntent.CLickLink -> {
+                _effect.trySend(NavigateBrowser(url = intent.url))
             }
 
-            else -> Unit
+            is AnimeDetailIntent.CLickSeasonYear -> {
+                _effect.trySend(
+                    NavigateSortSeasonYear(
+                        seasonType = intent.season,
+                        year = intent.year
+                    )
+                )
+            }
+
+            is AnimeDetailIntent.CLickStudio -> {
+                _effect.trySend(NavigateStudio(id = intent.id))
+            }
+
+            is AnimeDetailIntent.CLickTag -> {
+                _effect.trySend(NavigateSortTag(tag = intent.tag))
+            }
+
+            is AnimeDetailIntent.CLickTrailer -> {
+                _effect.trySend(NavigateYouTube(id = intent.id))
+            }
+
+            is AnimeDetailIntent.ClickAnime -> {
+                _effect.trySend(
+                    NavigateAnimeDetail(
+                        id = intent.id,
+                        idMal = intent.idMal
+                    )
+                )
+            }
+
+            AnimeDetailIntent.ClickClose -> _effect.trySend(AnimeDetailEffect.NavigateClose)
+
+            is AnimeDetailIntent.ClickSaved -> handleSavedAnime(intent.info)
+
+            is AnimeDetailIntent.OnTabSelected -> _state.update { it.copy(selectTabIdx = intent.idx) }
+            AnimeDetailIntent.OnAppendLoadCompleteRecList -> _state.update {
+                it.copy(
+                    animeRecListAppendLoading = false
+                )
+            }
+
+            AnimeDetailIntent.OnAppendLoadRecList -> _state.update {
+                it.copy(
+                    animeRecListAppendLoading = true
+                )
+            }
+
+            AnimeDetailIntent.OnErrorRecList -> _state.update { it.copy(animeRecListisError = true) }
+            AnimeDetailIntent.OnLoadCompleteRecList -> _state.update { it.copy(animeRecListLoading = false) }
+            AnimeDetailIntent.OnLoadRecList -> _state.update {
+                it.copy(
+                    animeRecListLoading = true,
+                    animeRecListisError = false
+                )
+            }
         }
     }
 
     private suspend fun initInfo() {
         getAnimeDetailInfo(animeId)
         getAnimeTheme(animeMalId)
-        getAnimeRecList(animeId)
         isSaveAnime(animeId)
     }
 
     private suspend fun getAnimeDetailInfo(id: Int) {
         getAnimeDetailUseCase(id)
-            .onSuccess { success ->
+            .onSuccess { info ->
                 _state.update {
-                    it.copy(
-                        animeDetailInfo = success
-                    )
+                    it.copy(animeDetailInfo = info)
                 }
             }.onError {
-                _animeDetailEvent.send(AnimeDetailEvent.OnError)
             }
     }
 
@@ -95,14 +147,7 @@ class AnimeDetailViewModel(
                     it.copy(animeThemes = success)
                 }
             }.onError { error ->
-                _animeDetailEvent.send(AnimeDetailEvent.OnError)
             }
-    }
-
-    private fun getAnimeRecList(id: Int) {
-        _state.update {
-            it.copy(animeRecList = getAnimeRecListUseCase(id).cachedIn(viewModelScope))
-        }
     }
 
     private fun isSaveAnime(animeId: Int) {
@@ -115,15 +160,13 @@ class AnimeDetailViewModel(
         }
     }
 
-    private fun insertAnime(anime: AnimeInfo) {
+    private fun handleSavedAnime(anime: AnimeInfo) {
         viewModelScope.launch {
-            insertAnimeUseCase(anime)
-        }
-    }
-
-    private fun deleteAnime(anime: AnimeInfo) {
-        viewModelScope.launch {
-            deleteAnimeUseCase(anime)
+            if (_state.value.isSave) {
+                deleteAnimeUseCase(anime)
+            } else {
+                insertAnimeUseCase(anime)
+            }
         }
     }
 }

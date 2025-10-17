@@ -1,4 +1,4 @@
-package com.chs.youranimelist.presentation.main
+package com.chs.youranimelist.presentation.bottom
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -7,6 +7,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.chs.youranimelist.presentation.main.BottomNavigation
 import com.chs.youranimelist.presentation.ui.theme.Red200
 import com.chs.youranimelist.presentation.ui.theme.Red500
 import com.chs.youranimelist.presentation.ui.theme.Red700
@@ -40,14 +41,6 @@ fun BottomBar(navController: NavHostController) {
                     label = { Text(text = navItem.label) }
                 )
             }
-
-//
-//
-//        if (BottomNavigation.entries.any { it.route::class.qualifiedName == currentRoute }) {
-//
-//
-//        }
         }
     }
-
 }

@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.chs.youranimelist.domain.model.AnimeDetailInfo
 import com.chs.youranimelist.domain.model.CharacterInfo
+import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.common.ShimmerImage
 import com.chs.youranimelist.presentation.common.shimmer
@@ -29,7 +30,7 @@ import com.chs.youranimelist.presentation.common.shimmer
 @Composable
 fun AnimeCharaScreen(
     info: AnimeDetailInfo?,
-    onClick: (Int) -> Unit
+    onIntent: (AnimeDetailIntent) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = Modifier
@@ -45,11 +46,19 @@ fun AnimeCharaScreen(
         ),
         columns = GridCells.Fixed(3)
     ) {
-
-        val charaInfoList = info?.characterList ?: emptyList()
-        items(charaInfoList) { charaInfo ->
-            CharaImageItem(charaInfo = charaInfo) {
-                onClick(charaInfo.id)
+        if (info == null) {
+            items(UiConst.BANNER_SIZE) {
+                CharaImageItem(
+                    charaInfo = null,
+                    onIntent = onIntent
+                )
+            }
+        } else {
+            items(info.characterList) { charaInfo ->
+                CharaImageItem(
+                    charaInfo = charaInfo,
+                    onIntent = onIntent
+                )
             }
         }
     }
@@ -58,24 +67,22 @@ fun AnimeCharaScreen(
 @Composable
 fun CharaImageItem(
     charaInfo: CharacterInfo?,
-    onClick: (BrowseScreen.CharacterDetail) -> Unit
+    onIntent: (AnimeDetailIntent) -> Unit
 ) {
     Column(
         modifier = Modifier
             .width(100.dp)
             .clickable {
-                if (charaInfo != null) {
-                    onClick(
-                        BrowseScreen.CharacterDetail(id = charaInfo.id)
-                    )
-                }
+                if (charaInfo == null) return@clickable
+                onIntent(AnimeDetailIntent.ClickChara(charaInfo.id))
             },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ShimmerImage(
             modifier = Modifier
                 .size(100.dp)
-                .clip(RoundedCornerShape(100)),
+                .clip(RoundedCornerShape(100))
+                .shimmer(visible = charaInfo == null),
             url = charaInfo?.imageUrl
         )
 

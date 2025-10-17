@@ -38,8 +38,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.PagingData
 import com.chs.youranimelist.domain.model.AnimeDetailInfo
 import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.SeasonType
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.CollapsingToolbarScaffold
 import com.chs.youranimelist.presentation.color
@@ -48,6 +50,7 @@ import com.chs.youranimelist.presentation.common.ShimmerImage
 import com.chs.youranimelist.presentation.common.shimmer
 import com.chs.youranimelist.presentation.isNotEmptyValue
 import com.chs.youranimelist.presentation.ui.theme.Pink80
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -59,108 +62,61 @@ fun AnimeDetailScreenRoot(
     onCharaClick: (Int) -> Unit,
     onGenreClick: (String) -> Unit,
     onTagClick: (String) -> Unit,
-    onSeasonYearClick: (Int, String) -> Unit,
+    onSeasonYearClick: (String, Int) -> Unit,
     onStudioClick: (Int) -> Unit,
     onLinkClick: (String) -> Unit,
     onCloseClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val animeDetailEvent by viewModel.animeDetailEvent.collectAsStateWithLifecycle(AnimeDetailEvent.Idle)
 
-    LaunchedEffect(animeDetailEvent) {
-        when (animeDetailEvent) {
-            AnimeDetailEvent.OnError -> {}
+    LaunchedEffect(Unit) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is AnimeDetailEffect.NavigateAnimeDetail -> onAnimeClick(effect.id, effect.idMal)
+                is AnimeDetailEffect.NavigateBrowser -> onLinkClick(effect.url)
+                is AnimeDetailEffect.NavigateCharaDetail -> onCharaClick(effect.id)
+                AnimeDetailEffect.NavigateClose -> onCloseClick()
+                is AnimeDetailEffect.NavigateSortGenre -> onGenreClick(effect.genre)
+                is AnimeDetailEffect.NavigateSortSeasonYear -> {
+                    onSeasonYearClick(effect.seasonType, effect.year)
+                }
 
-            else -> Unit
+                is AnimeDetailEffect.NavigateSortTag -> onTagClick(effect.tag)
+                is AnimeDetailEffect.NavigateStudio -> onStudioClick(effect.id)
+                is AnimeDetailEffect.NavigateYouTube -> onTrailerClick(effect.id)
+            }
         }
     }
 
-    AnimeDetailScreen(state = state) { event ->
-        when (event) {
-            AnimeDetailEvent.ClickButton.Close -> {
-                onCloseClick()
-            }
-
-            is AnimeDetailEvent.ClickButton.Anime -> {
-                onAnimeClick(
-                    event.id,
-                    event.idMal
-                )
-            }
-
-            is AnimeDetailEvent.ClickButton.Chara -> {
-                onCharaClick(event.id)
-            }
-
-            is AnimeDetailEvent.ClickButton.Trailer -> {
-                onTrailerClick(event.id)
-            }
-
-            is AnimeDetailEvent.ClickButton.Genre -> {
-                onGenreClick(event.genre)
-            }
-
-            is AnimeDetailEvent.ClickButton.SeasonYear -> {
-                onSeasonYearClick(event.year, event.season)
-            }
-
-            is AnimeDetailEvent.ClickButton.Studio -> {
-                onStudioClick(event.id)
-            }
-
-            is AnimeDetailEvent.ClickButton.Tag -> {
-                onTagClick(event.tag)
-            }
-
-            is AnimeDetailEvent.ClickButton.Link -> {
-                onLinkClick(event.url)
-            }
-
-            else -> viewModel.changeEvent(event)
-        }
-    }
+    AnimeDetailScreen(
+        state = state,
+        animeRecPaging = viewModel.animeRecPaging,
+        onIntent = viewModel::handleIntent
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimeDetailScreen(
     state: AnimeDetailState,
-    onEvent: (AnimeDetailEvent) -> Unit,
+    animeRecPaging: Flow<PagingData<AnimeInfo>>,
+    onIntent: (AnimeDetailIntent) -> Unit,
 ) {
     val pagerState = rememberPagerState { 3 }
-    val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
     LaunchedEffect(state.selectTabIdx) {
         pagerState.animateScrollToPage(state.selectTabIdx)
     }
 
-    LaunchedEffect(pagerState.currentPage) {
-        onEvent(
-            AnimeDetailEvent.OnTabSelected(pagerState.currentPage)
-        )
-    }
 
     CollapsingToolbarScaffold(
         scrollState = scrollState,
         header = {
             AnimeDetailHeadBanner(
-                animeDetailInfo = state.animeDetailInfo,
+                info = state.animeDetailInfo,
                 isAnimeSave = state.isSave,
-                trailerClick = { trailerId ->
-                    if (trailerId != null) {
-                        onEvent(AnimeDetailEvent.ClickButton.Trailer(trailerId))
-                    }
-                },
-                saveClick = {
-                    if (state.animeDetailInfo == null) return@AnimeDetailHeadBanner
-
-                    if (state.isSave!!) {
-                        onEvent(AnimeDetailEvent.DeleteAnimeInfo(state.animeDetailInfo.animeInfo))
-                    } else {
-                        onEvent(AnimeDetailEvent.InsertAnimeInfo(state.animeDetailInfo.animeInfo))
-                    }
-                }
+                onIntent = onIntent
             )
         },
         content = {
@@ -178,11 +134,7 @@ fun AnimeDetailScreen(
                             )
                         },
                         selected = state.selectTabIdx == index,
-                        onClick = {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        },
+                        onClick = { onIntent(AnimeDetailIntent.OnTabSelected(index)) },
                         selectedContentColor = Pink80,
                         unselectedContentColor = Gray
                     )
@@ -191,48 +143,45 @@ fun AnimeDetailScreen(
 
             HorizontalPager(
                 state = pagerState,
-                userScrollEnabled = false
+                userScrollEnabled = false,
+                key = { it }
             ) { page ->
                 when (page) {
                     0 -> {
                         AnimeOverViewScreen(
                             animeDetailState = state.animeDetailInfo,
                             animeThemeState = state.animeThemes,
-                            onEvent = { onEvent(it) },
+                            onIntent = onIntent,
                         )
                     }
 
                     1 -> {
-                        AnimeCharaScreen(state.animeDetailInfo) { id ->
-                            onEvent(AnimeDetailEvent.ClickButton.Chara(id))
-                        }
+                        AnimeCharaScreen(
+                            info = state.animeDetailInfo,
+                            onIntent = onIntent
+                        )
                     }
 
                     2 -> {
-                        if (state.animeRecList != null) {
-                            AnimeRecScreen(animeRecList = state.animeRecList) { id, idMal ->
-                                onEvent(
-                                    AnimeDetailEvent.ClickButton.Anime(id = id, idMal = idMal)
-                                )
-                            }
-                        }
+                        AnimeRecScreen(
+                            state = state,
+                            animeRecList = animeRecPaging,
+                            onIntent = onIntent
+                        )
                     }
                 }
             }
         },
         isShowTopBar = false,
-        onCloseClick = {
-            onEvent(AnimeDetailEvent.ClickButton.Close)
-        }
+        onCloseClick = { onIntent(AnimeDetailIntent.ClickClose) }
     )
 }
 
 @Composable
 private fun AnimeDetailHeadBanner(
-    animeDetailInfo: AnimeDetailInfo?,
-    isAnimeSave: Boolean?,
-    trailerClick: (trailerId: String?) -> Unit,
-    saveClick: () -> Unit
+    info: AnimeDetailInfo?,
+    isAnimeSave: Boolean,
+    onIntent: (AnimeDetailIntent) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -245,19 +194,17 @@ private fun AnimeDetailHeadBanner(
                     .fillMaxWidth()
                     .height(250.dp)
                     .background(
-                        color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color()
+                        color = info?.animeInfo?.imagePlaceColor?.color()
                             ?: LightGray
                     ),
-                url = animeDetailInfo?.bannerImage
+                url = info?.bannerImage
             )
 
-            if (animeDetailInfo?.trailerInfo != null) {
+            if (info?.trailerInfo != null) {
                 FloatingActionButton(
                     modifier = Modifier
                         .align(Alignment.Center),
-                    onClick = {
-                        trailerClick(animeDetailInfo.trailerInfo.id)
-                    }
+                    onClick = { onIntent(AnimeDetailIntent.CLickTrailer(info.trailerInfo.id!!)) }
                 ) {
                     Icon(Icons.Filled.PlayArrow, null)
                 }
@@ -275,10 +222,10 @@ private fun AnimeDetailHeadBanner(
                     .height(180.dp)
                     .clip(RoundedCornerShape(5.dp))
                     .background(
-                        color = animeDetailInfo?.animeInfo?.imagePlaceColor?.color()
+                        color = info?.animeInfo?.imagePlaceColor?.color()
                             ?: Gray
                     ),
-                url = animeDetailInfo?.animeInfo?.imageUrl
+                url = info?.animeInfo?.imageUrl
             )
         }
 
@@ -293,8 +240,8 @@ private fun AnimeDetailHeadBanner(
         ) {
             Text(
                 modifier = Modifier
-                    .shimmer(visible = animeDetailInfo == null),
-                text = animeDetailInfo?.animeInfo?.title ?: "title PreView Title PreView",
+                    .shimmer(visible = info == null),
+                text = info?.animeInfo?.title ?: "title PreView Title PreView",
                 fontSize = 18.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -304,30 +251,30 @@ private fun AnimeDetailHeadBanner(
 
             Text(
                 modifier = Modifier
-                    .shimmer(visible = animeDetailInfo == null)
+                    .shimmer(visible = info == null)
                     .padding(top = 8.dp),
-                text = if (animeDetailInfo?.animeInfo?.seasonYear.isNotEmptyValue
-                    && animeDetailInfo?.animeInfo?.status != null
+                text = if (info?.animeInfo?.seasonYear.isNotEmptyValue
+                    && info?.animeInfo?.status != null
                 ) {
-                    "${animeDetailInfo.animeInfo.format} ⦁ ${animeDetailInfo.animeInfo.seasonYear}"
+                    "${info.animeInfo.format} ⦁ ${info.animeInfo.seasonYear}"
                 } else {
-                    animeDetailInfo?.animeInfo?.format ?: "Title PreView"
+                    info?.animeInfo?.format ?: "Title PreView"
                 }
             )
 
             Row(
                 modifier = Modifier.padding(top = 8.dp)
             ) {
-                if (animeDetailInfo?.animeInfo?.averageScore.isNotEmptyValue) {
+                if (info?.animeInfo?.averageScore.isNotEmptyValue) {
                     Text(
                         modifier = Modifier
-                            .shimmer(visible = animeDetailInfo == null),
+                            .shimmer(visible = info == null),
                         text = buildAnnotatedString {
                             appendInlineContent(
                                 UiConst.AVERAGE_SCORE_ID,
                                 UiConst.AVERAGE_SCORE_ID
                             )
-                            append("${animeDetailInfo?.animeInfo?.averageScore ?: 0}")
+                            append("${info?.animeInfo?.averageScore ?: 0}")
                         },
                         inlineContent = UiConst.inlineContent,
                         fontWeight = FontWeight.Bold,
@@ -337,16 +284,16 @@ private fun AnimeDetailHeadBanner(
                 }
 
 
-                if (animeDetailInfo?.animeInfo?.favourites.isNotEmptyValue) {
+                if (info?.animeInfo?.favourites.isNotEmptyValue) {
                     Text(
                         modifier = Modifier
-                            .shimmer(visible = animeDetailInfo == null),
+                            .shimmer(visible = info == null),
                         text = buildAnnotatedString {
                             appendInlineContent(
                                 UiConst.FAVOURITE_ID,
                                 UiConst.FAVOURITE_ID
                             )
-                            append("${animeDetailInfo?.animeInfo?.favourites ?: 0}")
+                            append("${info?.animeInfo?.favourites ?: 0}")
 
                         },
                         inlineContent = UiConst.inlineContent,
@@ -360,10 +307,12 @@ private fun AnimeDetailHeadBanner(
         ItemSaveButton(
             modifier = Modifier
                 .align(Alignment.BottomCenter),
-            isSave = isAnimeSave
-        ) {
-            saveClick()
-        }
+            isSave = isAnimeSave,
+            saveClick = {
+                if (info == null) return@ItemSaveButton
+                onIntent(AnimeDetailIntent.ClickSaved(info.animeInfo))
+            }
+        )
     }
 }
 
@@ -385,7 +334,7 @@ private fun PreviewAnimeDetail() {
         status = "RELEASING"
     )
     AnimeDetailHeadBanner(
-        animeDetailInfo = AnimeDetailInfo(
+        info = AnimeDetailInfo(
             animeInfo = animeInfo,
             titleEnglish = "",
             titleNative = "",
@@ -408,7 +357,6 @@ private fun PreviewAnimeDetail() {
             characterList = listOf()
         ),
         isAnimeSave = false,
-        trailerClick = {},
     ) {
 
     }

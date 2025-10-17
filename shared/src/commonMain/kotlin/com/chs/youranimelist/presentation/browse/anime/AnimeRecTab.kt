@@ -7,15 +7,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
-import androidx.paging.LoadState.Error
-import androidx.paging.LoadState.Loading
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
@@ -26,73 +24,90 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun AnimeRecScreen(
+    state: AnimeDetailState,
     animeRecList: Flow<PagingData<AnimeInfo>>,
-    onNavigate: (Int, Int) -> Unit
+    onIntent: (AnimeDetailIntent) -> Unit
 ) {
     val scrollState = rememberLazyListState()
-    val lazyPagingItems = animeRecList.collectAsLazyPagingItems()
-    var isLoading by remember { mutableStateOf(false) }
-    var isEmpty by remember { mutableStateOf(false) }
-    var isAppending by remember { mutableStateOf(false) }
+    val pagingItems = animeRecList.collectAsLazyPagingItems()
 
-    when (lazyPagingItems.loadState.refresh) {
-        is LoadState.Loading -> isLoading = true
-
-        is LoadState.Error -> {
-            isLoading = false
-        }
-
-        else -> {
-            isLoading = false
-            isEmpty = lazyPagingItems.itemCount == 0
+    val isEmpty by remember {
+        derivedStateOf {
+            pagingItems.loadState.refresh is LoadState.NotLoading
+                    && pagingItems.loadState.append.endOfPaginationReached
+                    && pagingItems.itemCount == 0
         }
     }
 
-    isAppending = when (lazyPagingItems.loadState.append) {
-        is LoadState.Loading -> true
+    LaunchedEffect(pagingItems.loadState.refresh) {
+        when (pagingItems.loadState.refresh) {
+            is LoadState.Loading -> {
+                onIntent(AnimeDetailIntent.OnLoadRecList)
+            }
 
-        else -> false
+            is LoadState.Error ->  onIntent(AnimeDetailIntent.OnErrorRecList)
+
+            is LoadState.NotLoading -> onIntent(AnimeDetailIntent.OnLoadCompleteRecList)
+        }
     }
 
-    if (isEmpty) {
-        ItemNoResultImage()
-    } else {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    top = 8.dp,
-                    bottom = 8.dp
-                ),
-            state = scrollState,
-            contentPadding = PaddingValues(horizontal = 4.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
+    LaunchedEffect(pagingItems.loadState.append) {
+        when (pagingItems.loadState.append) {
+            is LoadState.Loading -> {
+                onIntent(AnimeDetailIntent.OnAppendLoadRecList)
+            }
 
-            if (isLoading) {
+            is LoadState.Error -> onIntent(AnimeDetailIntent.OnErrorRecList)
+
+            is LoadState.NotLoading -> onIntent(AnimeDetailIntent.OnAppendLoadCompleteRecList)
+        }
+    }
+
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = 8.dp,
+                bottom = 8.dp
+            ),
+        state = scrollState,
+        contentPadding = PaddingValues(horizontal = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        when {
+            state.animeRecListisError -> {
+                item {
+                }
+            }
+            state.animeRecListLoading -> {
                 items(10) {
                     ItemAnimeLarge(null) {}
                 }
             }
 
-            items(
-                count = lazyPagingItems.itemCount,
-                key = lazyPagingItems.itemKey(key = { it.id })
-            ) { index ->
-                val item = lazyPagingItems[index]
-                ItemAnimeLarge(item) {
-                    if (item != null) {
-                        onNavigate(
-                            item.id,
-                            item.idMal
-                        )
+            isEmpty -> {
+                item {
+                    ItemNoResultImage(modifier = Modifier.fillParentMaxSize())
+                }
+            }
+
+            else -> {
+                items(
+                    count = pagingItems.itemCount,
+                    key = pagingItems.itemKey(key = { it.id })
+                ) { index ->
+                    val item = pagingItems[index]
+                    ItemAnimeLarge(item) {
+                        if (item == null) return@ItemAnimeLarge
+                        onIntent(AnimeDetailIntent.ClickAnime(id = item.id, idMal = item.idMal))
                     }
                 }
-            }
 
-            if (isAppending) {
-                items(10) {
-                    ItemAnimeLarge(null) {}
+                if (state.animeRecListAppendLoading) {
+                    items(10) {
+                        ItemAnimeLarge(null) {}
+                    }
                 }
             }
         }

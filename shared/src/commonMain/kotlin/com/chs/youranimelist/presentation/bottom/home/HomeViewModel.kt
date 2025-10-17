@@ -92,13 +92,7 @@ class HomeViewModel(
                     }
 
                     CategoryType.TOP -> {
-                        _effect.trySend(
-                            NavigateSort(
-                                option = listOf(
-                                    SortType.AVERAGE.rawValue
-                                )
-                            )
-                        )
+                        _effect.trySend(NavigateSort(option = listOf(SortType.AVERAGE.rawValue)))
                     }
                 }
             }
