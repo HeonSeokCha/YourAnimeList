@@ -27,11 +27,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,16 +50,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
-import androidx.paging.LoadState.Error
-import androidx.paging.LoadState.Loading
+import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
+import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.domain.model.CharacterDetailInfo
 import com.chs.youranimelist.domain.model.VoiceActorInfo
+import com.chs.youranimelist.presentation.browse.anime.AnimeDetailIntent
 import com.chs.youranimelist.presentation.common.CollapsingToolbarScaffold
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
+import com.chs.youranimelist.presentation.common.ItemNoResultImage
 import com.chs.youranimelist.presentation.common.ItemSaveButton
 import com.chs.youranimelist.presentation.common.ItemSpoilerDialog
 import com.chs.youranimelist.presentation.common.ShimmerImage
@@ -68,6 +72,7 @@ import com.chs.youranimelist.presentation.toCommaFormat
 import org.jetbrains.compose.resources.stringResource
 import com.chs.youranimelist.res.Res
 import com.chs.youranimelist.res.lorem_ipsum
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun CharacterDetailScreenRoot(
@@ -79,78 +84,70 @@ fun CharacterDetailScreenRoot(
     onCloseClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val charaEvent by viewModel.charaDetailEvent.collectAsStateWithLifecycle(CharaDetailEvent.Idle)
 
-    LaunchedEffect(charaEvent) {
-        when (charaEvent) { CharaDetailEvent.OnError -> {
+    LaunchedEffect(Unit) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is CharacterDetailEffect.NavigateAnimeDetail -> onAnimeClick(
+                    effect.id,
+                    effect.idMal
+                )
 
+                is CharacterDetailEffect.NavigateBrowser -> onLinkClick(effect.url)
+                is CharacterDetailEffect.NavigateCharaDetail -> onCharaClick(effect.id)
+                CharacterDetailEffect.NavigateClose -> onCloseClick()
+                is CharacterDetailEffect.NavigateVoiceActor -> onVoiceActorClick(effect.id)
             }
-
-            else -> Unit
         }
     }
 
     CharacterDetailScreen(
         state = state,
-        onEvent = { sideEffect ->
-            when (sideEffect) {
-
-                is CharaDetailEvent.ClickButton.Anime -> {
-                    onAnimeClick(sideEffect.id, sideEffect.idMal)
-                }
-
-                is CharaDetailEvent.ClickButton.VoiceActor -> {
-                    onVoiceActorClick(sideEffect.id)
-                }
-
-                is CharaDetailEvent.ClickButton.Character -> {
-                    onCharaClick(sideEffect.id)
-                }
-
-                is CharaDetailEvent.ClickButton.Link -> {
-                    onLinkClick(sideEffect.url)
-                }
-
-                CharaDetailEvent.ClickButton.Close -> {
-                    onCloseClick()
-                }
-
-                else -> viewModel.changeEvent(sideEffect)
-            }
-        }
+        animeList = viewModel.pagingItem,
+        onIntent = viewModel::handleIntent
     )
 }
 
 @Composable
 fun CharacterDetailScreen(
     state: CharacterDetailState,
-    onEvent: (CharaDetailEvent) -> Unit,
+    animeList: Flow<PagingData<AnimeInfo>>,
+    onIntent: (CharaDetailIntent) -> Unit,
 ) {
-    val pagingItem = state.animeList?.collectAsLazyPagingItems()
+    val pagingItem = animeList.collectAsLazyPagingItems()
     val lazyVerticalStaggeredState = rememberLazyStaggeredGridState()
-    var descDialogShow by remember { mutableStateOf(false) }
-    var spoilerDesc by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
 
-    if (pagingItem != null) {
+    val isEmpty by remember {
+        derivedStateOf {
+            pagingItem.loadState.refresh is LoadState.NotLoading
+                    && pagingItem.loadState.append.endOfPaginationReached
+                    && pagingItem.itemCount == 0
+        }
+    }
+
+    LaunchedEffect(pagingItem.loadState.refresh) {
         when (pagingItem.loadState.refresh) {
-            is LoadState.Loading -> {
-            }
+            is LoadState.Loading -> onIntent(CharaDetailIntent.OnLoad)
 
-            is LoadState.Error -> {
-            }
+            is LoadState.Error ->  onIntent(CharaDetailIntent.OnError)
 
-            else -> {
-            }
+            is LoadState.NotLoading -> onIntent(CharaDetailIntent.OnLoadComplete)
         }
+    }
 
+    LaunchedEffect(pagingItem.loadState.append) {
         when (pagingItem.loadState.append) {
-            is LoadState.Loading -> {}
+            is LoadState.Loading -> onIntent(CharaDetailIntent.OnAppendLoad)
 
-            is LoadState.Error -> {}
+            is LoadState.Error -> onIntent(CharaDetailIntent.OnError)
 
-            else -> Unit
+            is LoadState.NotLoading -> onIntent(CharaDetailIntent.OnAppendLoadComplete)
         }
+    }
+
+    LaunchedEffect(state.characterDetailInfo) {
+        println(state.characterDetailInfo.toString())
     }
 
     CollapsingToolbarScaffold(
@@ -162,16 +159,11 @@ fun CharacterDetailScreen(
                 isSave = state.isSave,
             ) {
                 if (characterDetailInfo == null) return@CharacterBanner
-                if (state.isSave == null) return@CharacterBanner
-                if (state.isSave) {
-                    onEvent(CharaDetailEvent.DeleteCharaInfo(characterDetailInfo.characterInfo))
-                } else {
-                    onEvent(CharaDetailEvent.InsertCharaInfo(characterDetailInfo.characterInfo))
-                }
+                onIntent(CharaDetailIntent.ClickSaved(characterDetailInfo.characterInfo))
             }
         },
         isShowTopBar = true,
-        onCloseClick = { onEvent(CharaDetailEvent.ClickButton.Close) }
+        onCloseClick = { onIntent(CharaDetailIntent.ClickClose) }
     ) {
         LazyVerticalStaggeredGrid(
             modifier = Modifier
@@ -189,65 +181,58 @@ fun CharacterDetailScreen(
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
                 ) {
-                    if (characterDetailInfo != null) {
-                        CharacterProfile(characterDetailInfo = characterDetailInfo)
+                    CharacterProfile(characterDetailInfo = characterDetailInfo)
 
-                        CharacterDescription(
-                            description = characterDetailInfo.spoilerDesc,
+                    CharacterDescription(
+                        expanded = state.isDescExpand,
+                        description = state.characterDetailInfo?.spoilerDesc,
+                        onIntent = onIntent
+                    )
+
+                    if (!characterDetailInfo?.voiceActorInfo.isNullOrEmpty()) {
+                        LazyRow(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            if (isHrefContent(it)) {
-                                getIdFromLink(
-                                    link = it,
-                                    onAnime = {
-                                        onEvent(CharaDetailEvent.ClickButton.Anime(it, it))
-                                    },
-                                    onChara = {
-                                        onEvent(CharaDetailEvent.ClickButton.Character(it))
-                                    },
-                                    onBrowser = {
-                                        onEvent(CharaDetailEvent.ClickButton.Link(it))
-                                    }
-                                )
-                                return@CharacterDescription
-                            }
-                            spoilerDesc = it
-                            descDialogShow = true
-                        }
-
-                        if (!characterDetailInfo.voiceActorInfo.isNullOrEmpty()) {
-                            LazyRow(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(16.dp)
-                            ) {
-                                items(characterDetailInfo.voiceActorInfo) { actorInfo ->
-                                    if (actorInfo != null) {
-                                        CharacterVoiceActorInfo(actorInfo) { id ->
-                                            onEvent(
-                                                CharaDetailEvent.ClickButton.VoiceActor(id)
-                                            )
-                                        }
+                            items(characterDetailInfo.voiceActorInfo) { actorInfo ->
+                                if (actorInfo != null) {
+                                    CharacterVoiceActorInfo(actorInfo) { id ->
+                                        onIntent(CharaDetailIntent.ClickVoiceActor(id))
                                     }
                                 }
                             }
-                            Spacer(modifier = Modifier.height(16.dp))
                         }
+                        Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
             }
 
-            if (pagingItem != null) {
-                items(
-                    count = pagingItem.itemCount,
-                    key = pagingItem.itemKey { it.id }
-                ) {
-                    val anime = pagingItem[it]
-                    if (anime != null) {
+            when {
+                state.isAnimeListLoading -> {
+                    items(UiConst.BANNER_SIZE) {
+                        ItemAnimeSmall {  }
+                    }
+                }
+
+                isEmpty -> {
+                    item(span = StaggeredGridItemSpan.FullLine) {
+                        ItemNoResultImage(modifier = Modifier.fillMaxSize())
+                    }
+                }
+
+                else -> {
+                    items(
+                        count = pagingItem.itemCount,
+                        key = pagingItem.itemKey { it.id }
+                    ) {
+                        val anime = pagingItem[it]
+                        if (anime == null) return@items
                         ItemAnimeSmall(
                             item = anime,
                             onClick = {
-                                onEvent(
-                                    CharaDetailEvent.ClickButton.Anime(
+                                onIntent(
+                                    CharaDetailIntent.ClickAnime(
                                         id = anime.id,
                                         idMal = anime.idMal
                                     )
@@ -255,21 +240,24 @@ fun CharacterDetailScreen(
                             }
                         )
                     }
+
+                    if (state.isAnimeListAppendLoading) {
+                        items(UiConst.BANNER_SIZE) {
+                            ItemAnimeSmall { }
+                        }
+                    }
                 }
             }
         }
     }
 
-    if (descDialogShow) {
+    if (state.isShowDialog) {
         ItemSpoilerDialog(
-            message = spoilerDesc
-        ) {
-            spoilerDesc = ""
-            descDialogShow = false
-        }
+            message = state.spoilerDesc,
+            onDismiss = { onIntent(CharaDetailIntent.ClickDialogConfirm) }
+        )
     }
 }
-
 
 @Composable
 private fun CharacterBanner(
@@ -400,11 +388,10 @@ fun ProfileText(
 
 @Composable
 private fun CharacterDescription(
+    expanded: Boolean,
     description: String?,
-    onHrefClick: (String) -> Unit
+    onIntent: (CharaDetailIntent) -> Unit
 ) {
-    var expandedDescButton by remember { mutableStateOf(false) }
-
     Column(
         modifier = Modifier
             .padding(bottom = 16.dp)
@@ -422,14 +409,24 @@ private fun CharacterDescription(
                 desc,
                 linkInteractionListener = { link ->
                     if (link is LinkAnnotation.Url) {
-                        onHrefClick(link.url)
+                        if (isHrefContent(link.url)) {
+                            getIdFromLink(
+                                link = link.url,
+                                onAnime = { onIntent(CharaDetailIntent.ClickAnime(it, it)) },
+                                onChara = { onIntent(CharaDetailIntent.ClickChara(it)) },
+                                onBrowser = { onIntent(CharaDetailIntent.ClickLink(it)) }
+                            )
+                            return@htmlToAnnotatedString
+                        }
+
+                        onIntent(CharaDetailIntent.ClickSpoiler(link.url))
                     }
                 }
             )
         }
-        if (expandedDescButton) {
-            Text(text = convertedText)
 
+        if (expanded) {
+            Text(text = convertedText)
         } else {
             Text(
                 modifier = Modifier
@@ -440,16 +437,18 @@ private fun CharacterDescription(
             )
         }
 
-        if (!expandedDescButton) {
-            Button(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(
-                        top = 8.dp,
-                        bottom = 8.dp
-                    ),
-                onClick = { expandedDescButton = !expandedDescButton }
-            ) {
+        Button(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(vertical = 8.dp),
+            onClick = { onIntent(CharaDetailIntent.ClickExpand) }
+        ) {
+            if (expanded) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowUpward,
+                    contentDescription = null
+                )
+            } else {
                 Icon(
                     imageVector = Icons.Filled.ArrowDownward,
                     contentDescription = null

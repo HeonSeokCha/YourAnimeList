@@ -34,11 +34,11 @@ fun Int.pxToDp(): Dp {
 }
 
 fun isHrefContent(desc: String): Boolean {
-    if (desc.startsWith("https://anilist.co/")) {
+    if (desc.startsWith("https://")) {
         return true
     }
 
-    if (desc.startsWith("https://")) {
+    if (desc.startsWith("anilist.co/")) {
         return true
     }
 
@@ -51,9 +51,9 @@ fun getIdFromLink(
     onChara: (id: Int) -> Unit,
     onBrowser: (String) -> Unit
 ) {
-    if (!link.startsWith("https://anilist.co/")) return onBrowser(link)
+    if (!link.startsWith("anilist.co/")) return onBrowser(link)
 
-    val type = link.split("https://anilist.co/")[1]
+    val type = link.split("anilist.co/")[1]
 
     if (type.startsWith("character")) {
         onChara(type.split("character/")[1].split("/")[0].toInt())

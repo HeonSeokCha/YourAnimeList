@@ -1,12 +1,14 @@
 package com.chs.youranimelist.presentation.browse.character
 
-import androidx.paging.PagingData
-import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.CharacterDetailInfo
-import kotlinx.coroutines.flow.Flow
 
 data class CharacterDetailState(
     val characterDetailInfo: CharacterDetailInfo? = null,
-    val animeList: Flow<PagingData<AnimeInfo>>? = null,
-    val isSave: Boolean? = null,
+    val isShowDialog: Boolean = false,
+    val charaDesc: String? = null,
+    val spoilerDesc: String = "",
+    val isDescExpand: Boolean = false,
+    val isSave: Boolean = false,
+    val isAnimeListLoading: Boolean = false,
+    val isAnimeListAppendLoading: Boolean = false
 )

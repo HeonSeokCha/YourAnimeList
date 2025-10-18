@@ -1,7 +1,5 @@
 package com.chs.youranimelist.presentation.browse.anime
 
-import com.chs.youranimelist.domain.model.SeasonType
-
 sealed interface AnimeDetailEffect {
     data class NavigateAnimeDetail(val id: Int, val idMal: Int) : AnimeDetailEffect
     data class NavigateCharaDetail(val id: Int) : AnimeDetailEffect
