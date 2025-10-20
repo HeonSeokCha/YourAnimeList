@@ -56,15 +56,15 @@ class AnimeDetailViewModel(
                 _effect.trySend(NavigateCharaDetail(id = intent.id))
             }
 
-            is AnimeDetailIntent.CLickGenre -> {
+            is AnimeDetailIntent.ClickGenre -> {
                 _effect.trySend(NavigateSortGenre(genre = intent.genre))
             }
 
-            is AnimeDetailIntent.CLickLink -> {
+            is AnimeDetailIntent.ClickLink -> {
                 _effect.trySend(NavigateBrowser(url = intent.url))
             }
 
-            is AnimeDetailIntent.CLickSeasonYear -> {
+            is AnimeDetailIntent.ClickSeasonYear -> {
                 _effect.trySend(
                     NavigateSortSeasonYear(
                         seasonType = intent.season,
@@ -73,15 +73,15 @@ class AnimeDetailViewModel(
                 )
             }
 
-            is AnimeDetailIntent.CLickStudio -> {
+            is AnimeDetailIntent.ClickStudio -> {
                 _effect.trySend(NavigateStudio(id = intent.id))
             }
 
-            is AnimeDetailIntent.CLickTag -> {
+            is AnimeDetailIntent.ClickTag -> {
                 _effect.trySend(NavigateSortTag(tag = intent.tag))
             }
 
-            is AnimeDetailIntent.CLickTrailer -> {
+            is AnimeDetailIntent.ClickTrailer -> {
                 _effect.trySend(NavigateYouTube(id = intent.id))
             }
 
@@ -94,7 +94,7 @@ class AnimeDetailViewModel(
                 )
             }
 
-            AnimeDetailIntent.ClickClose -> _effect.trySend(AnimeDetailEffect.NavigateClose)
+            AnimeDetailIntent.ClickClose -> _effect.trySend(NavigateClose)
 
             is AnimeDetailIntent.ClickSaved -> handleSavedAnime(intent.info)
 
@@ -111,13 +111,32 @@ class AnimeDetailViewModel(
                 )
             }
 
-            AnimeDetailIntent.OnErrorRecList -> _state.update { it.copy(animeRecListisError = true) }
+            AnimeDetailIntent.OnErrorRecList -> _state.update { it.copy(animeRecListError = true) }
             AnimeDetailIntent.OnLoadCompleteRecList -> _state.update { it.copy(animeRecListLoading = false) }
             AnimeDetailIntent.OnLoadRecList -> _state.update {
                 it.copy(
                     animeRecListLoading = true,
-                    animeRecListisError = false
+                    animeRecListError = false
                 )
+            }
+
+            AnimeDetailIntent.ClickDialogConfirm -> _state.update { it.copy(isShowDialog = false) }
+            AnimeDetailIntent.ClickExpand -> _state.update { it.copy(isDescExpand = !it.isDescExpand) }
+            is AnimeDetailIntent.ClickSpoiler -> {
+                _state.update {
+                    it.copy(
+                        isShowDialog = true,
+                        dialogText = intent.desc
+                    )
+                }
+            }
+            is AnimeDetailIntent.LongClickTag -> {
+                _state.update {
+                    it.copy(
+                        isShowDialog = true,
+                        dialogText = intent.tag
+                    )
+                }
             }
         }
     }

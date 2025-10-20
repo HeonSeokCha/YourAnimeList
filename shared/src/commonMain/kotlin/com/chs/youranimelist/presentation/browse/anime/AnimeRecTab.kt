@@ -76,7 +76,7 @@ fun AnimeRecScreen(
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         when {
-            state.animeRecListisError -> {
+            state.animeRecListError -> {
                 item {
                 }
             }

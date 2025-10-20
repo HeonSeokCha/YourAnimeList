@@ -254,6 +254,9 @@ fun CharacterDetailScreen(
     if (state.isShowDialog) {
         ItemSpoilerDialog(
             message = state.spoilerDesc,
+            onAnimeClick = { id, idMal -> onIntent(CharaDetailIntent.ClickAnime(id, idMal)) },
+            onCharacterClick = { onIntent(CharaDetailIntent.ClickChara(it)) },
+            onBrowserClick = { onIntent(CharaDetailIntent.ClickLink(it)) },
             onDismiss = { onIntent(CharaDetailIntent.ClickDialogConfirm) }
         )
     }
@@ -426,7 +429,11 @@ private fun CharacterDescription(
         }
 
         if (expanded) {
-            Text(text = convertedText)
+            Text(
+                modifier = Modifier
+                    .shimmer(visible = description == null),
+                text = convertedText
+            )
         } else {
             Text(
                 modifier = Modifier

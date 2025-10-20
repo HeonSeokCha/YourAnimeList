@@ -5,7 +5,6 @@ import com.chs.youranimelist.domain.model.CharacterDetailInfo
 data class CharacterDetailState(
     val characterDetailInfo: CharacterDetailInfo? = null,
     val isShowDialog: Boolean = false,
-    val charaDesc: String? = null,
     val spoilerDesc: String = "",
     val isDescExpand: Boolean = false,
     val isSave: Boolean = false,

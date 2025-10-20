@@ -33,8 +33,8 @@ fun CharacterDetailQuery.Character.toCharacterDetailInfo(): CharacterDetailInfo 
             )
         },
         spoilerDesc = Util.convertSpoilerFromHtml(
-            desc = this.description ?: "",
-            list = Util.findSpoilerFromHtml(this.description ?: "")
+            desc = this.description?.replace("\"", "'") ?: "",
+            list = Util.findSpoilerFromHtml(this.description?.replace("\"", "'") ?: "")
         ),
         birthDay = with(this.dateOfBirth) {
             Util.convertToDateFormat(this?.year, this?.month, this?.day)

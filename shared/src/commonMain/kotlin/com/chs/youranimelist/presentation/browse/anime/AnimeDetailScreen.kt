@@ -149,8 +149,7 @@ fun AnimeDetailScreen(
                 when (page) {
                     0 -> {
                         AnimeOverViewScreen(
-                            animeDetailState = state.animeDetailInfo,
-                            animeThemeState = state.animeThemes,
+                            state = state,
                             onIntent = onIntent,
                         )
                     }
@@ -204,7 +203,7 @@ private fun AnimeDetailHeadBanner(
                 FloatingActionButton(
                     modifier = Modifier
                         .align(Alignment.Center),
-                    onClick = { onIntent(AnimeDetailIntent.CLickTrailer(info.trailerInfo.id!!)) }
+                    onClick = { onIntent(AnimeDetailIntent.ClickTrailer(info.trailerInfo.id!!)) }
                 ) {
                     Icon(Icons.Filled.PlayArrow, null)
                 }
