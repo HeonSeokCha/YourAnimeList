@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,15 +31,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
-import androidx.paging.LoadState.Error
-import androidx.paging.LoadState.Loading
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.SortType
-import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.domain.model.StudioDetailInfo
+import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.CollapsingToolbarScaffold
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemExpandSingleBox
+import com.chs.youranimelist.presentation.common.ItemNoResultImage
+import com.chs.youranimelist.presentation.common.shimmer
+import com.chs.youranimelist.presentation.sortList.SortIntent
 import com.chs.youranimelist.presentation.toCommaFormat
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -49,70 +54,73 @@ fun StudioDetailScreenRoot(
     onCloseClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val studioEvent by viewModel.event.collectAsStateWithLifecycle(StudioDetailEvent.Idle)
+    val pagingItems = viewModel.pagingData.collectAsLazyPagingItems()
 
-
-    LaunchedEffect(studioEvent) {
-        when (studioEvent) {
-            StudioDetailEvent.OnError -> {
+    LaunchedEffect(Unit) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is StudioDetailEffect.NavigateAnimeDetail -> onAnimeClick(effect.id, effect.idMal)
+                StudioDetailEffect.OnClose -> onCloseClick()
             }
-
-            else -> Unit
         }
     }
 
     StudioDetailScreen(
         state = state,
-        onEvent = { event ->
-            when (event) {
-                StudioDetailEvent.ClickBtn.Close -> {
-                    onCloseClick()
-                }
-
-                is StudioDetailEvent.ClickBtn.Anime -> {
-                    onAnimeClick(event.id, event.idMal)
-                }
-
-                else -> viewModel.changeEvent(event)
-            }
-        }
+        pagingItem = pagingItems,
+        onIntent = viewModel::handleIntent
     )
 }
 
 @Composable
 fun StudioDetailScreen(
     state: StudioDetailState,
-    onEvent: (StudioDetailEvent) -> Unit,
+    pagingItem: LazyPagingItems<AnimeInfo>,
+    onIntent: (StudioDetailIntent) -> Unit,
 ) {
     val lazyGridScrollState = rememberLazyStaggeredGridState()
-    val coroutineScope = rememberCoroutineScope()
-    val pagingItem = state.studioAnimeList?.collectAsLazyPagingItems()
-    var isAppending by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
-    if (pagingItem != null) {
-        when (pagingItem.loadState.refresh) {
 
-            is LoadState.Error -> {
-                onEvent(StudioDetailEvent.OnError)
-            }
-
-            else -> Unit
-        }
-
-        when (pagingItem.loadState.append) {
-            is LoadState.Loading -> {
-                isAppending = true
-            }
-
-            is LoadState.Error -> {
-                onEvent(StudioDetailEvent.OnError)
-                isAppending = false
-            }
-
-            else -> isAppending = false
+    val isEmpty by remember {
+        derivedStateOf {
+            pagingItem.loadState.refresh is LoadState.NotLoading
+                    && pagingItem.loadState.append.endOfPaginationReached
+                    && pagingItem.itemCount == 0
         }
     }
+
+    LaunchedEffect(pagingItem.loadState.refresh) {
+        when (pagingItem.loadState.refresh) {
+            is LoadState.Loading -> {
+                lazyGridScrollState.scrollToItem(0, 0)
+                onIntent(StudioDetailIntent.OnLoading)
+            }
+
+            is LoadState.Error -> {
+                (pagingItem.loadState.refresh as LoadState.Error).error.run {
+                }
+            }
+
+            is LoadState.NotLoading -> onIntent(StudioDetailIntent.OnLoadComplete)
+        }
+    }
+
+    LaunchedEffect(pagingItem.loadState.append) {
+        when (pagingItem.loadState.append) {
+            is LoadState.Loading -> {
+                onIntent(StudioDetailIntent.OnAppendLoading)
+            }
+
+            is LoadState.Error -> {
+                (pagingItem.loadState.append as LoadState.Error).error.run {
+                }
+            }
+
+            is LoadState.NotLoading -> onIntent(StudioDetailIntent.OnAppendLoadComplete)
+        }
+    }
+
 
     CollapsingToolbarScaffold(
         scrollState = scrollState,
@@ -120,9 +128,7 @@ fun StudioDetailScreen(
             StudioInfo(studioInfo = state.studioDetailInfo)
         },
         isShowTopBar = true,
-        onCloseClick = {
-            onEvent(StudioDetailEvent.ClickBtn.Close)
-        }
+        onCloseClick = { onIntent(StudioDetailIntent.ClickClose) }
     ) {
         LazyVerticalStaggeredGrid(
             state = lazyGridScrollState,
@@ -137,7 +143,8 @@ fun StudioDetailScreen(
             item(span = StaggeredGridItemSpan.FullLine) {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .shimmer(state.studioDetailInfo == null),
                     horizontalAlignment = Alignment.End
                 ) {
                     ItemExpandSingleBox(
@@ -145,36 +152,44 @@ fun StudioDetailScreen(
                         list = SortType.entries.toList(),
                         initValue = state.sortOption
                     ) { selectValue ->
-                        coroutineScope.launch {
-                            lazyGridScrollState.scrollToItem(0, 0)
-                        }
-                        onEvent(StudioDetailEvent.ClickBtn.SortOption(selectValue!!))
+                        if (selectValue == null) return@ItemExpandSingleBox
+                        onIntent(StudioDetailIntent.ClickSortOption(selectValue))
                     }
                 }
             }
 
-            if (state.isLoading) {
-                items(10) {
-                    ItemAnimeSmall(item = null) { }
-                }
-            } else {
-                items(count = pagingItem!!.itemCount) {
-                    val animeInfo = pagingItem[it]
-                    if (animeInfo != null) {
-                        ItemAnimeSmall(item = animeInfo) {
-                            onEvent(
-                                StudioDetailEvent.ClickBtn.Anime(
-                                    id = animeInfo.id,
-                                    idMal = animeInfo.idMal
-                                )
-                            )
-                        }
+            when {
+                isEmpty -> {
+                    item(span = StaggeredGridItemSpan.FullLine) {
+                        ItemNoResultImage(modifier = Modifier.fillMaxSize())
                     }
                 }
 
-                if (isAppending) {
-                    items(6) {
+                state.isPagingLoading -> {
+                    items(UiConst.BANNER_SIZE) {
                         ItemAnimeSmall(item = null) { }
+                    }
+                }
+
+                else -> {
+                    items(count = pagingItem.itemCount) {
+                        val animeInfo = pagingItem[it]
+                        if (animeInfo != null) {
+                            ItemAnimeSmall(item = animeInfo) {
+                                onIntent(
+                                    StudioDetailIntent.ClickAnime(
+                                        id = animeInfo.id,
+                                        idMal = animeInfo.idMal
+                                    )
+                                )
+                            }
+                        }
+                    }
+
+                    if (state.isPagingAppendLoading) {
+                        items(UiConst.BANNER_SIZE) {
+                            ItemAnimeSmall(item = null) { }
+                        }
                     }
                 }
             }
@@ -187,18 +202,16 @@ private fun StudioInfo(studioInfo: StudioDetailInfo?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
-            .padding(
-                top = 16.dp,
-                start = 16.dp,
-                end = 8.dp
-            ),
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
+            modifier = Modifier.shimmer(studioInfo == null),
             text = studioInfo?.studioBasicInfo?.name ?: "Title PreView"
         )
-        Row {
+        Row(
+            modifier = Modifier.shimmer(studioInfo == null),
+        ) {
             Icon(
                 Icons.Default.Favorite,
                 contentDescription = null,
@@ -207,10 +220,4 @@ private fun StudioInfo(studioInfo: StudioDetailInfo?) {
             Text(text = studioInfo?.favourites.toCommaFormat())
         }
     }
-}
-
-@Preview()
-@Composable
-private fun PreviewStudioScreen() {
-    StudioDetailScreen(state = StudioDetailState()) { }
 }

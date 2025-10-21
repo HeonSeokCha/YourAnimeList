@@ -50,7 +50,7 @@ class SortedViewModel(
             _state.value
         )
 
-    private var sortFilter = MutableStateFlow(SortFilter())
+    private val sortFilter = MutableStateFlow(SortFilter())
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val pagingItem = sortFilter
