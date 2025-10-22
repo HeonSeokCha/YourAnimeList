@@ -64,6 +64,7 @@ import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemNoResultImage
 import com.chs.youranimelist.presentation.common.ItemSaveButton
 import com.chs.youranimelist.presentation.common.ItemSpoilerDialog
+import com.chs.youranimelist.presentation.common.ProfileText
 import com.chs.youranimelist.presentation.common.ShimmerImage
 import com.chs.youranimelist.presentation.common.shimmer
 import com.chs.youranimelist.presentation.getIdFromLink
@@ -363,31 +364,6 @@ private fun CharacterProfile(
         }
     }
 }
-
-@Composable
-fun ProfileText(
-    title: String?,
-    values: String?
-) {
-    Row(
-        modifier = Modifier
-            .padding(bottom = 16.dp)
-    ) {
-        Text(
-            modifier = Modifier
-                .shimmer(visible = values == null),
-            text = "${title ?: UiConst.TITLE_PREVIEW}:  ",
-            fontWeight = FontWeight.SemiBold
-        )
-
-        Text(
-            modifier = Modifier
-                .shimmer(visible = values == null),
-            text = values ?: UiConst.TITLE_PREVIEW,
-        )
-    }
-}
-
 
 @Composable
 private fun CharacterDescription(

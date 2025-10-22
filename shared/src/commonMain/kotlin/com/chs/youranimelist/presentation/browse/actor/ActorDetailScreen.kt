@@ -3,10 +3,7 @@ package com.chs.youranimelist.presentation.browse.actor
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -15,7 +12,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
@@ -23,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -33,18 +28,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
+import androidx.paging.PagingData
+import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.youranimelist.domain.model.VoiceActorDetailInfo
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.CollapsingToolbarScaffold
-import com.chs.youranimelist.presentation.browse.character.ProfileText
 import com.chs.youranimelist.presentation.common.ShimmerImage
 import com.chs.youranimelist.presentation.common.shimmer
 import com.chs.youranimelist.presentation.toCommaFormat
 import com.chs.youranimelist.presentation.ui.theme.Pink80
-import com.chs.youranimelist.res.Res
-import com.chs.youranimelist.res.lorem_ipsum
-import org.jetbrains.compose.resources.stringResource
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun ActorDetailScreenRoot(
@@ -55,40 +49,22 @@ fun ActorDetailScreenRoot(
     onCloseClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val actorEvent by viewModel.actorEvent.collectAsStateWithLifecycle(ActorDetailEvent.Idle)
 
-    LaunchedEffect(actorEvent) {
-        when (actorEvent) {
-            ActorDetailEvent.OnError -> {
+    LaunchedEffect(Unit) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is ActorDetailEffect.NavigateAnimeDetail -> onAnimeClick(effect.id, effect.idMal)
+                is ActorDetailEffect.NavigateBrowser -> onLinkClick(effect.url)
+                is ActorDetailEffect.NavigateCharaDetail -> onCharaClick(effect.id)
+                ActorDetailEffect.NavigateClose -> onCloseClick()
             }
-
-            else -> Unit
         }
     }
 
     ActorDetailScreen(
         state = state,
-        onEvent = { event ->
-            when (event) {
-                is ActorDetailEvent.ClickBtn.Anime -> {
-                    onAnimeClick(event.id, event.id)
-                }
-
-                is ActorDetailEvent.ClickBtn.Chara -> {
-                    onCharaClick(event.id)
-                }
-
-                is ActorDetailEvent.ClickBtn.Link -> {
-                    onLinkClick(event.url)
-                }
-
-                ActorDetailEvent.ClickBtn.Close -> {
-                    onCloseClick()
-                }
-
-                else -> viewModel.changeEvent(event)
-            }
-        }
+        pagingData = viewModel.pagingData,
+        onIntent = viewModel::handleIntent
     )
 }
 
@@ -96,7 +72,8 @@ fun ActorDetailScreenRoot(
 @Composable
 fun ActorDetailScreen(
     state: ActorDetailState,
-    onEvent: (ActorDetailEvent) -> Unit
+    pagingData: Flow<PagingData<Pair<CharacterInfo, AnimeInfo>>>,
+    onIntent: (ActorDetailIntent) -> Unit
 ) {
     val pagerState = rememberPagerState { 2 }
     val scrollState = rememberScrollState()
@@ -105,15 +82,11 @@ fun ActorDetailScreen(
         pagerState.animateScrollToPage(state.tabIdx)
     }
 
-    LaunchedEffect(pagerState.currentPage) {
-        onEvent(ActorDetailEvent.ClickBtn.TabIdx(pagerState.currentPage))
-    }
-
     CollapsingToolbarScaffold(
         scrollState = scrollState,
         header = { ActorInfo(actorInfo = state.actorDetailInfo) },
         isShowTopBar = true,
-        onCloseClick = { onEvent(ActorDetailEvent.ClickBtn.Close) }
+        onCloseClick = { onIntent(ActorDetailIntent.ClickClose) }
     ) {
         SecondaryTabRow(state.tabIdx) {
             state.tabNames.forEachIndexed { index, title ->
@@ -126,9 +99,7 @@ fun ActorDetailScreen(
                             fontSize = 12.sp,
                         )
                     }, selected = state.tabIdx == index,
-                    onClick = {
-                        onEvent(ActorDetailEvent.ClickBtn.TabIdx(index))
-                    },
+                    onClick = { onIntent(ActorDetailIntent.ClickTab(index)) },
                     selectedContentColor = Pink80,
                     unselectedContentColor = Color.Gray
                 )
@@ -140,28 +111,17 @@ fun ActorDetailScreen(
         ) { page ->
             when (page) {
                 0 -> {
-                    VoiceActorProFile(state.actorDetailInfo) {
-                        onEvent(it)
-                    }
+                    ActorProfileTab(
+                        info = state.actorDetailInfo,
+                        onIntent = onIntent
+                    )
                 }
 
                 1 -> {
                     ActorMediaTab(
-                        info = state.actorAnimeList,
-                        sortOptionName = state.selectOption,
-                        onAnimeClick = { id, idMal ->
-                            onEvent(
-                                ActorDetailEvent.ClickBtn.Anime(id, idMal)
-                            )
-                        }, onCharaClick = { id ->
-                            onEvent(
-                                ActorDetailEvent.ClickBtn.Chara(id)
-                            )
-                        }, onChangeSortEvent = { option ->
-                            onEvent(
-                                ActorDetailEvent.ChangeSortOption(option)
-                            )
-                        }
+                        state = state,
+                        pagingData = pagingData,
+                        onIntent = onIntent
                     )
                 }
             }
@@ -231,53 +191,4 @@ private fun ActorInfo(actorInfo: VoiceActorDetailInfo?) {
     }
 }
 
-@Composable
-private fun VoiceActorProFile(
-    info: VoiceActorDetailInfo?,
-    onEvent: (ActorDetailEvent) -> Unit
-) {
-    val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(8.dp)
-    ) {
 
-        if (info != null) {
-            if (info.birthDate.isNotEmpty()) {
-                ProfileText("Birthday", info.birthDate)
-            }
-
-            if (!info.deathDate.isNullOrEmpty()) {
-                ProfileText("DeathDate", info.deathDate)
-            }
-
-            if (info.gender.isNotEmpty()) {
-                ProfileText("Gender", info.gender)
-            }
-
-            if (info.dateActive.isNotEmpty()) {
-                ProfileText("Years active", info.dateActive)
-            }
-
-            if (!info.homeTown.isNullOrEmpty()) {
-                ProfileText("Home Town", info.homeTown)
-            }
-        } else {
-            repeat(5) {
-                ProfileText(null, null)
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        val desc = info?.description ?: stringResource(Res.string.lorem_ipsum)
-
-        Text(
-            modifier = Modifier
-                .shimmer(visible = info == null),
-            text = remember(desc) { htmlToAnnotatedString(desc) }
-        )
-    }
-}

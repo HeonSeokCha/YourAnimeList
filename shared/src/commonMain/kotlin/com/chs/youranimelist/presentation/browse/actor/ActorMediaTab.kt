@@ -11,6 +11,10 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +27,7 @@ import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.youranimelist.domain.model.SortType
 import com.chs.youranimelist.presentation.UiConst
+import com.chs.youranimelist.presentation.browse.studio.StudioDetailIntent
 import com.chs.youranimelist.presentation.common.ItemActorMedia
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemExpandSingleBox
@@ -32,15 +37,51 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ActorMediaTab(
-    info: Flow<PagingData<Pair<CharacterInfo, AnimeInfo>>>?,
-    sortOptionName: SortType,
-    onAnimeClick: (id: Int, idMal: Int) -> Unit,
-    onCharaClick: (id: Int) -> Unit,
-    onChangeSortEvent: (SortType) -> Unit
+    state: ActorDetailState,
+    pagingData: Flow<PagingData<Pair<CharacterInfo, AnimeInfo>>>,
+    onIntent: (ActorDetailIntent) -> Unit
 ) {
     val listState = rememberLazyGridState()
-    val pagingData = info?.collectAsLazyPagingItems()
-    val coroutineScope = rememberCoroutineScope()
+    val pagingItems = pagingData.collectAsLazyPagingItems()
+    val isEmpty by remember {
+        derivedStateOf {
+            pagingItems.loadState.refresh is LoadState.NotLoading
+                    && pagingItems.loadState.append.endOfPaginationReached
+                    && pagingItems.itemCount == 0
+        }
+    }
+
+
+    LaunchedEffect(pagingItems.loadState.refresh) {
+        when (pagingItems.loadState.refresh) {
+            is LoadState.Loading -> {
+                listState.scrollToItem(0, 0)
+                onIntent(ActorDetailIntent.OnLoad)
+            }
+
+            is LoadState.Error -> {
+                (pagingItems.loadState.refresh as LoadState.Error).error.run {
+                }
+            }
+
+            is LoadState.NotLoading -> onIntent(ActorDetailIntent.OnLoadComplete)
+        }
+    }
+
+    LaunchedEffect(pagingItems.loadState.append) {
+        when (pagingItems.loadState.append) {
+            is LoadState.Loading -> {
+                onIntent(ActorDetailIntent.OnAppendLoad)
+            }
+
+            is LoadState.Error -> {
+                (pagingItems.loadState.append as LoadState.Error).error.run {
+                }
+            }
+
+            is LoadState.NotLoading -> onIntent(ActorDetailIntent.OnAppendLoadComplete)
+        }
+    }
 
     LazyVerticalGrid(
         modifier = Modifier
@@ -64,74 +105,56 @@ fun ActorMediaTab(
                     title = "Sort",
                     list = SortType.entries.toList()
                         .filterNot { it == SortType.TRENDING },
-                    initValue = sortOptionName,
+                    initValue = state.selectOption,
                 ) { selectValue ->
-                    if (selectValue != null) {
-                        coroutineScope.launch {
-                            listState.scrollToItem(0, 0)
-                        }
-                        onChangeSortEvent(selectValue)
-                    }
+                    if (selectValue == null) return@ItemExpandSingleBox
+                    onIntent(ActorDetailIntent.ChangeSortOption(selectValue))
                 }
             }
         }
 
-        if (pagingData != null) {
-            items(
-                count = pagingData.itemCount,
-                key = pagingData.itemKey { "${it.first.id}/${it.second.id}" }
-            ) {
-                ItemActorMedia(
-                    info = pagingData[it],
-                    onAnimeClick = { id, idMal ->
-                        onAnimeClick(id, idMal)
-                    },
-                    onCharaClick = { id ->
-                        onCharaClick(id)
-                    }
-                )
+        when {
+            state.isLoading -> {
+                items(count = UiConst.BANNER_SIZE) {
+                    ItemActorMedia(
+                        info = null,
+                        onAnimeClick = { _, _ -> },
+                        onCharaClick = { }
+                    )
+                }
             }
 
-            when (pagingData.loadState.refresh) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemAnimeSmall(null)
-                    }
+            isEmpty -> {
+                item(span = { GridItemSpan(3) }) {
+                    ItemNoResultImage(modifier = Modifier.fillMaxSize())
                 }
+            }
 
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
-                        )
-                    }
-                }
-
-                else -> {
-                    if (pagingData.itemCount == 0) {
-                        item {
-                            ItemNoResultImage()
+            else -> {
+                items(
+                    count = pagingItems.itemCount,
+                    key = pagingItems.itemKey { "${it.first.id}/${it.second.id}" }
+                ) {
+                    ItemActorMedia(
+                        info = pagingItems[it],
+                        onAnimeClick = { id, idMal ->
+                            onIntent(ActorDetailIntent.ClickAnime(id, idMal))
+                        },
+                        onCharaClick = { id ->
+                            onIntent(ActorDetailIntent.ClickChara(id))
                         }
-                    }
-                }
-            }
-
-            when (pagingData.loadState.append) {
-                is LoadState.Loading -> {
-                    items(10) {
-                        ItemAnimeSmall(null)
-                    }
+                    )
                 }
 
-                is LoadState.Error -> {
-                    item {
-                        Text(
-                            text = "Something Wrong for Loading List."
+                if (state.isAppendLoading) {
+                    items(count = UiConst.BANNER_SIZE) {
+                        ItemActorMedia(
+                            info = null,
+                            onAnimeClick = { _, _ -> },
+                            onCharaClick = { }
                         )
                     }
                 }
-
-                else -> Unit
             }
         }
     }

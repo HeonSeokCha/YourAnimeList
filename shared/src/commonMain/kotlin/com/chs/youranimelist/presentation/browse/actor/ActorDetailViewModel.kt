@@ -10,11 +10,11 @@ import com.chs.youranimelist.util.onError
 import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.domain.usecase.GetActorMediaListUseCase
 import com.chs.youranimelist.domain.usecase.GetActorDetailInfoUseCase
-import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.browse.BrowseScreen
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -24,44 +24,69 @@ import kotlinx.coroutines.launch
 class ActorDetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val getActorDetailInfoUseCase: GetActorDetailInfoUseCase,
-    private val getActorMediaListUseCase: GetActorMediaListUseCase
+    getActorMediaListUseCase: GetActorMediaListUseCase
 ) : ViewModel() {
 
+    private val actorId: Int = savedStateHandle.toRoute<BrowseScreen.ActorDetail>().id
     private val _state = MutableStateFlow(ActorDetailState())
     val state = _state
         .onStart {
             getActorDetailInfo(actorId)
-            getActorAnimeList(actorId)
         }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
             ActorDetailState()
         )
+    private val sortState = MutableStateFlow(SortType.NEWEST)
 
-    private val _actorEvent: Channel<ActorDetailEvent> = Channel()
-    val actorEvent = _actorEvent.receiveAsFlow()
+    private val _effect: Channel<ActorDetailEffect> = Channel(Channel.BUFFERED)
+    val effect = _effect.receiveAsFlow()
 
-    private val actorId: Int = savedStateHandle.toRoute<BrowseScreen.ActorDetail>().id
+    val pagingData = sortState
+        .flatMapLatest {
+            getActorMediaListUseCase(
+                actorId = actorId,
+                sortOptions = listOf(it.rawValue)
+            )
+        }
+        .cachedIn(viewModelScope)
 
-    fun changeEvent(event: ActorDetailEvent) {
-        when (event) {
-            is ActorDetailEvent.ChangeSortOption -> {
-                _state.update {
-                    it.copy(
-                        isLoading = true,
-                        selectOption = event.option
+    fun handleIntent(intent: ActorDetailIntent) {
+        when (intent) {
+            is ActorDetailIntent.ClickAnime -> {
+                _effect.trySend(
+                    ActorDetailEffect.NavigateAnimeDetail(
+                        id = intent.id,
+                        idMal = intent.idMal
                     )
-                }
-
-                getActorAnimeList(actorId)
+                )
             }
 
-            is ActorDetailEvent.ClickBtn.TabIdx -> {
-                _state.update { it.copy(tabIdx = event.idx) }
+            is ActorDetailIntent.ClickChara -> {
+                _effect.trySend(ActorDetailEffect.NavigateCharaDetail(id = intent.id))
             }
 
-            else -> Unit
+            ActorDetailIntent.ClickClose -> _effect.trySend(ActorDetailEffect.NavigateClose)
+            is ActorDetailIntent.ClickLink -> {
+                _effect.trySend(
+                    ActorDetailEffect.NavigateBrowser(
+                        intent.url
+                    )
+                )
+            }
+
+            is ActorDetailIntent.ClickTab -> _state.update { it.copy(tabIdx = intent.idx) }
+            is ActorDetailIntent.ChangeSortOption -> {
+                _state.update { it.copy(selectOption = intent.option) }
+                sortState.update { intent.option }
+            }
+
+            ActorDetailIntent.OnLoad -> _state.update { it.copy(isLoading = true) }
+            ActorDetailIntent.OnLoadComplete -> _state.update { it.copy(isLoading = false) }
+            ActorDetailIntent.OnAppendLoad -> _state.update { it.copy(isAppendLoading = true) }
+            ActorDetailIntent.OnAppendLoadComplete -> _state.update { it.copy(isAppendLoading = false) }
+            ActorDetailIntent.OnError -> Unit
         }
     }
 
@@ -69,27 +94,10 @@ class ActorDetailViewModel(
         viewModelScope.launch {
             getActorDetailInfoUseCase(actorId)
                 .onSuccess { success ->
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            actorDetailInfo = success
-                        )
-                    }
+                    _state.update { it.copy(actorDetailInfo = success) }
                 }.onError { error ->
                     _state.update { it.copy(isLoading = false) }
-                    _actorEvent.send(ActorDetailEvent.OnError)
                 }
-        }
-    }
-
-    private fun getActorAnimeList(actorId: Int) {
-        _state.update {
-            it.copy(
-                actorAnimeList = getActorMediaListUseCase(
-                    actorId = actorId,
-                    sortOptions = listOf(state.value.selectOption.rawValue)
-                ).cachedIn(viewModelScope)
-            )
         }
     }
 }
