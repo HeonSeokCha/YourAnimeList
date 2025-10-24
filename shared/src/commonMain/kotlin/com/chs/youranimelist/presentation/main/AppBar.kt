@@ -81,6 +81,7 @@ fun AppBar(
             actions = {
                 IconButton(
                     onClick = {
+                        onQueryChange("")
                         navController.navigate(Screen.Search)
                     }
                 ) {

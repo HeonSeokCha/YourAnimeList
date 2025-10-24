@@ -109,7 +109,6 @@ fun AnimeDetailScreen(
         pagerState.animateScrollToPage(state.selectTabIdx)
     }
 
-
     CollapsingToolbarScaffold(
         scrollState = scrollState,
         header = {

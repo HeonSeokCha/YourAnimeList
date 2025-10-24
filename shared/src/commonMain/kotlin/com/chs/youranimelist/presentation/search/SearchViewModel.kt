@@ -37,16 +37,17 @@ class SearchViewModel(
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val animePaging = queryState
-        .debounce(300)
-        .distinctUntilChanged()
         .filterNot { it.isEmpty() }
         .flatMapLatest { searchAnimeUseCase(it) }
         .cachedIn(viewModelScope)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = PagingData.empty()
+        )
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val charaPaging = queryState
-        .debounce(300)
-        .distinctUntilChanged()
         .filterNot { it.isEmpty() }
         .flatMapLatest { searchCharaUseCase(it) }
         .cachedIn(viewModelScope)

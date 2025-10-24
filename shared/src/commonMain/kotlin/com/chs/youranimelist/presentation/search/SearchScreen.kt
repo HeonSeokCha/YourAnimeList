@@ -63,10 +63,6 @@ fun SearchScreen(
         pagerState.animateScrollToPage(state.selectedTabIdx)
     }
 
-    LaunchedEffect(pagerState.currentPage) {
-        onIntent(SearchIntent.OnChangeTabIdx(pagerState.currentPage))
-    }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -94,7 +90,8 @@ fun SearchScreen(
 
         HorizontalPager(
             state = pagerState,
-            userScrollEnabled = false
+            userScrollEnabled = false,
+            key = { it }
         ) { page ->
             when (page) {
                 0 -> {

@@ -35,7 +35,6 @@ fun MainNavHost(
     searchQuery: String,
     browseInfo: (BrowseInfo) -> Unit
 ) {
-
     NavHost(
         navController = navController,
         modifier = modifier,

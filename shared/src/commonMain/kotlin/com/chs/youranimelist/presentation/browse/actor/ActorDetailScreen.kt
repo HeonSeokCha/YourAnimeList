@@ -107,7 +107,8 @@ fun ActorDetailScreen(
         }
         HorizontalPager(
             state = pagerState,
-            userScrollEnabled = false
+            userScrollEnabled = false,
+            key = { it }
         ) { page ->
             when (page) {
                 0 -> {

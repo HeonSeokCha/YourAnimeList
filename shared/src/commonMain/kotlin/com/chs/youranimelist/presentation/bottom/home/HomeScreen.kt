@@ -93,9 +93,10 @@ fun HomeScreen(
                 val data = state.animeRecommendList
                 item {
                     HorizontalPager(
-                        state = pagerState,
                         modifier = Modifier
                             .fillMaxWidth(),
+                        state = pagerState,
+                        userScrollEnabled = false,
                         key = { data.bannerList[it].animeInfo.id }
                     ) { idx ->
                         ItemHomeBanner(banner = data.bannerList[idx]) { id, idMal ->
