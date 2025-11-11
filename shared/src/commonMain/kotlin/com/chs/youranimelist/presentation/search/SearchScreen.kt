@@ -57,7 +57,6 @@ fun SearchScreen(
     onIntent: (SearchIntent) -> Unit,
 ) {
     val pagerState = rememberPagerState { 2 }
-    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(state.selectedTabIdx) {
         pagerState.animateScrollToPage(state.selectedTabIdx)
@@ -68,7 +67,7 @@ fun SearchScreen(
             .fillMaxSize()
     ) {
         SecondaryTabRow(state.selectedTabIdx) {
-            UiConst.SEARCH_TAB_LIST.forEachIndexed { index, title ->
+            UiConst.SEARCH_TAB_LIST.forEachIndexed { idx, title ->
                 Tab(
                     text = {
                         Text(
@@ -78,19 +77,16 @@ fun SearchScreen(
                             color = Pink80
                         )
                     },
-                    selected = state.selectedTabIdx == index,
-                    onClick = {
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(index)
-                        }
-                    }
+                    selected = state.selectedTabIdx == idx,
+                    onClick = { onIntent(SearchIntent.OnChangeTabIdx(idx)) }
                 )
             }
         }
 
         HorizontalPager(
+            modifier = Modifier
+                .fillMaxSize(),
             state = pagerState,
-            userScrollEnabled = false,
             key = { it }
         ) { page ->
             when (page) {

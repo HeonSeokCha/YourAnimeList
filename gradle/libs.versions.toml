@@ -8,18 +8,18 @@ versionCode = "1"
 versionName = "1.0"
 
 activity = "1.11.0"
-compose-ui = "1.9.3"
-room = "2.8.2"
+compose-ui = "1.9.4"
+room = "2.8.3"
 coil = "3.3.0"
-kotlin = "2.2.20"
-ksp = "2.2.20-2.0.2"
+kotlin = "2.2.21"
+ksp = "2.2.21-2.0.4"
 koin-core = "4.1.1"
 kotlin-coroutine = "1.10.2"
-ktor = "3.3.1"
+ktor = "3.3.2"
 apollo = "4.3.3"
-compose-plugin = "1.9.0"
+compose-plugin = "1.9.3"
 sqlite = "2.6.1"
-jetbrin-lifecycle = "2.9.4"
+jetbrin-lifecycle = "2.9.6"
 android-paging = "3.4.0-alpha04"
 
 [libraries]
@@ -27,11 +27,11 @@ android-paging = "3.4.0-alpha04"
 androidX-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity"}
 androidX-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-ui" }
 jetbrain-compose-material-icon-extend = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
-androidX-navigation-compose = "androidx.navigation:navigation-compose:2.9.5"
+androidX-navigation-compose = "androidx.navigation:navigation-compose:2.9.6"
 jetbrain-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrin-lifecycle" }
 jetbrain-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrin-lifecycle" }
-jetbrain-navigation-compose = "org.jetbrains.androidx.navigation:navigation-compose:2.9.0"
-jetbrain-matreial3 = "org.jetbrains.compose.material3:material3:1.9.0-beta06"
+jetbrain-navigation-compose = "org.jetbrains.androidx.navigation:navigation-compose:2.9.1"
+jetbrain-matreial3 = "org.jetbrains.compose.material3:material3:1.9.0"
 
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }

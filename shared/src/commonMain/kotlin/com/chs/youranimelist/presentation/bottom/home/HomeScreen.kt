@@ -97,7 +97,7 @@ fun HomeScreen(
                             .fillMaxWidth(),
                         state = pagerState,
                         userScrollEnabled = false,
-                        key = { data.bannerList[it].animeInfo.id }
+                        key = { it }
                     ) { idx ->
                         ItemHomeBanner(banner = data.bannerList[idx]) { id, idMal ->
                             onIntent(HomeIntent.ClickAnime(id = id, idMal = idMal))
