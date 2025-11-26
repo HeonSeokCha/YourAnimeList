@@ -9,25 +9,39 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.savedstate.serialization.SavedStateConfiguration
 import com.chs.youranimelist.domain.model.BrowseInfo
 import com.chs.youranimelist.presentation.bottom.BottomBar
 import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MainApp(onBrowse: (BrowseInfo) -> Unit) {
     val viewModel: MainViewModel = koinViewModel()
-    val navController: NavHostController = rememberNavController()
     var searchQuery: String by remember { mutableStateOf("") }
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val module = SerializersModule {
+        polymorphic(NavKey::class) {
+            subclass(Screen.Home::class, Screen.Home.serializer())
+            subclass(Screen.SortList::class, Screen.SortList.serializer())
+            subclass(Screen.Search::class, Screen.Search.serializer())
+            subclass(Screen.AnimeList::class, Screen.AnimeList.serializer())
+            subclass(Screen.CharaList::class, Screen.CharaList.serializer())
+        }
+    }
+
+    val config = SavedStateConfiguration { serializersModule = module }
+    val backStack = rememberNavBackStack(configuration = config, Screen.Home)
 
     YourAnimeListTheme {
         Scaffold(
             topBar = {
                 AppBar(
-                    navController = navController,
+                    backStack = backStack,
                     searchHistoryList = state,
                     onQueryChange = {
                         if (it.isNotEmpty()) {
@@ -40,11 +54,11 @@ fun MainApp(onBrowse: (BrowseInfo) -> Unit) {
                 )
             },
             bottomBar = {
-                BottomBar(navController)
+                BottomBar(backStack = backStack)
             },
         ) {
             MainNavHost(
-                navController = navController,
+                backStack = backStack,
                 modifier = Modifier.padding(it),
                 searchQuery = searchQuery,
                 browseInfo = onBrowse

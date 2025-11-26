@@ -1,9 +1,7 @@
 package com.chs.youranimelist.presentation.browse.anime
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.chs.youranimelist.domain.model.AnimeInfo
@@ -11,7 +9,6 @@ import com.chs.youranimelist.domain.model.SeasonType
 import com.chs.youranimelist.util.onError
 import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.domain.usecase.*
-import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.browse.anime.AnimeDetailEffect.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +21,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AnimeDetailViewModel(
-    savedStateHandle: SavedStateHandle,
+    private val animeId: Int,
+    private val animeMalId: Int,
     private val getAnimeDetailUseCase: GetAnimeDetailUseCase,
     private val checkSaveAnimeUseCase: GetSavedAnimeInfoUseCase,
     private val insertAnimeUseCase: InsertAnimeInfoUseCase,
@@ -45,8 +43,6 @@ class AnimeDetailViewModel(
     private val _effect: Channel<AnimeDetailEffect> = Channel(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
-    private val animeId: Int = savedStateHandle.toRoute<BrowseScreen.AnimeDetail>().id
-    private val animeMalId: Int = savedStateHandle.toRoute<BrowseScreen.AnimeDetail>().idMal
     val animeRecPaging: Flow<PagingData<AnimeInfo>> =
         getAnimeRecListUseCase(animeId).cachedIn(viewModelScope)
 
@@ -67,7 +63,7 @@ class AnimeDetailViewModel(
             is AnimeDetailIntent.ClickSeasonYear -> {
                 _effect.trySend(
                     NavigateSortSeasonYear(
-                        seasonType = intent.season,
+                        seasonType = SeasonType.valueOf(intent.season),
                         year = intent.year
                     )
                 )

@@ -1,16 +1,15 @@
 package com.chs.youranimelist.presentation.main
 
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
 import com.chs.youranimelist.domain.model.BrowseInfo
 import com.chs.youranimelist.domain.model.MediaType
 import com.chs.youranimelist.presentation.bottom.animeList.AnimeListScreenRoot
@@ -27,81 +26,87 @@ import com.chs.youranimelist.presentation.sortList.SortedViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun MainNavHost(
-    navController: NavHostController,
+    backStack: NavBackStack<NavKey>,
     modifier: Modifier = Modifier,
     searchQuery: String,
     browseInfo: (BrowseInfo) -> Unit
 ) {
-    NavHost(
-        navController = navController,
+    NavDisplay(
         modifier = modifier,
-        startDestination = Screen.Home,
-        enterTransition = { fadeIn(animationSpec = tween(300, easing = LinearEasing)) },
-        exitTransition = { fadeOut(animationSpec = tween(300, easing = LinearEasing)) }
-    ) {
-        composable<Screen.Home> {
-            val viewModel: HomeViewModel = koinViewModel()
+        backStack = backStack,
+        onBack = { backStack.removeLastOrNull() },
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator()
+        ),
+        entryProvider = entryProvider {
+            entry<Screen.Home> {
+                val viewModel: HomeViewModel = koinViewModel()
 
-            HomeScreenRoot(
-                viewModel = viewModel,
-                onNavigateAnimeDetail = { id, idMal ->
-                    browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = id))
-                },
-                onNavigateSort = { sortInfo ->
-                    navController.navigate(sortInfo)
-                }
-            )
-        }
-
-        composable<Screen.AnimeList> {
-            val viewModel: AnimeListViewModel = koinViewModel()
-            AnimeListScreenRoot(
-                viewModel = viewModel,
-                onNavigateAnimeDetail = browseInfo
-            )
-        }
-
-        composable<Screen.CharaList> {
-            val viewModel: CharacterListViewModel = koinViewModel()
-            CharaListScreenRoot(
-                viewModel = viewModel,
-                onNavigateCharaDetail = browseInfo
-            )
-        }
-
-        composable<Screen.Search> {
-            val viewModel: SearchViewModel = koinViewModel()
-
-            LaunchedEffect(searchQuery) {
-                snapshotFlow { searchQuery }
-                    .distinctUntilChanged()
-                    .filter { it.isNotEmpty() }
-                    .collect { viewModel.handleIntent(SearchIntent.OnChangeSearchQuery(it)) }
+                HomeScreenRoot(
+                    viewModel = viewModel,
+                    onNavigateAnimeDetail = { id, idMal ->
+                        browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = id))
+                    },
+                    onNavigateSort = { sortInfo ->
+                        backStack.add(sortInfo)
+                    }
+                )
             }
 
-            SearchScreenRoot(
-                viewModel = viewModel,
-                onAnimeClick = { id, idMal ->
-                    browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = id))
-                },
-                onCharaClick = { id ->
-                    browseInfo(BrowseInfo(type = MediaType.CHARACTER, id = id))
-                }
-            )
-        }
+            entry<Screen.AnimeList> {
+                val viewModel: AnimeListViewModel = koinViewModel()
+                AnimeListScreenRoot(
+                    viewModel = viewModel,
+                    onNavigateAnimeDetail = browseInfo
+                )
+            }
 
-        composable<Screen.SortList> {
-            val viewmodel: SortedViewModel = koinViewModel()
+            entry<Screen.CharaList> {
+                val viewModel: CharacterListViewModel = koinViewModel()
+                CharaListScreenRoot(
+                    viewModel = viewModel,
+                    onNavigateCharaDetail = browseInfo
+                )
+            }
 
-            SortedListScreenRoot(
-                viewModel = viewmodel,
-                onClickAnime = { id, idMal ->
-                    browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = id))
+            entry<Screen.Search> {
+                val viewModel: SearchViewModel = koinViewModel()
+
+                LaunchedEffect(searchQuery) {
+                    snapshotFlow { searchQuery }
+                        .distinctUntilChanged()
+                        .filter { it.isNotEmpty() }
+                        .collect { viewModel.handleIntent(SearchIntent.OnChangeSearchQuery(it)) }
                 }
-            )
+
+                SearchScreenRoot(
+                    viewModel = viewModel,
+                    onAnimeClick = { id, idMal ->
+                        browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = id))
+                    },
+                    onCharaClick = { id ->
+                        browseInfo(BrowseInfo(type = MediaType.CHARACTER, id = id))
+                    }
+                )
+            }
+
+            entry<Screen.SortList> { key ->
+                val viewmodel: SortedViewModel = koinViewModel {
+                    parametersOf(key.filter)
+                }
+
+                SortedListScreenRoot(
+                    viewModel = viewmodel,
+                    onClickAnime = { id, idMal ->
+                        browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = idMal))
+                    }
+                )
+            }
         }
-    }
+    )
 }

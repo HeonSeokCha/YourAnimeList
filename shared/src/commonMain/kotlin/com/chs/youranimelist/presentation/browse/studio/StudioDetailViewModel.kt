@@ -1,16 +1,13 @@
 package com.chs.youranimelist.presentation.browse.studio
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import androidx.paging.cachedIn
 import com.chs.youranimelist.domain.model.SortType
 import com.chs.youranimelist.util.onError
 import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.domain.usecase.GetStudioAnimeListUseCase
 import com.chs.youranimelist.domain.usecase.GetStudioDetailUseCase
-import com.chs.youranimelist.presentation.browse.BrowseScreen
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailEffect.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,12 +20,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class StudioDetailViewModel(
-    savedStateHandle: SavedStateHandle,
+    private val studioId: Int,
     private val getStudioDetailUseCase: GetStudioDetailUseCase,
     getStudioAnimeListUseCase: GetStudioAnimeListUseCase
 ) : ViewModel() {
 
-    private val studioId: Int = savedStateHandle.toRoute<BrowseScreen.StudioDetail>().id
     private val sortState = MutableStateFlow(SortType.NEWEST)
     private val _effect: Channel<StudioDetailEffect> = Channel(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()

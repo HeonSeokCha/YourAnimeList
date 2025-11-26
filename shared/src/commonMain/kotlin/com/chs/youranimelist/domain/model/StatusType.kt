@@ -1,5 +1,8 @@
 package com.chs.youranimelist.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 enum class StatusType(val rawValue: String) {
     RELEASING("Up Releasing"),
     FINISHED("FINISHED"),

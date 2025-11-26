@@ -1,12 +1,9 @@
 package com.chs.youranimelist.presentation.browse.character
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.chs.youranimelist.data.type.Character
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.youranimelist.domain.model.SortType
@@ -17,7 +14,6 @@ import com.chs.youranimelist.domain.usecase.GetCharaDetailAnimeListUseCase
 import com.chs.youranimelist.domain.usecase.GetCharaDetailUseCase
 import com.chs.youranimelist.domain.usecase.GetSavedCharaInfoUseCase
 import com.chs.youranimelist.domain.usecase.InsertCharaInfoUseCase
-import com.chs.youranimelist.presentation.browse.BrowseScreen
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,15 +25,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CharacterDetailViewModel(
-    savedStateHandle: SavedStateHandle,
+    private val charaId: Int,
     getCharaAnimeListUseCase: GetCharaDetailAnimeListUseCase,
     private val getCharaDetailUseCase: GetCharaDetailUseCase,
     private val checkSaveCharaUseCase: GetSavedCharaInfoUseCase,
     private val insertCharaUseCase: InsertCharaInfoUseCase,
     private val deleteCharaUseCase: DeleteCharaInfoUseCase
 ) : ViewModel() {
-
-    private val charaId: Int = savedStateHandle.toRoute<BrowseScreen.CharacterDetail>().id
 
     private var _state = MutableStateFlow(CharacterDetailState())
     val state = _state

@@ -1,5 +1,8 @@
 package com.chs.youranimelist.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class SortFilter(
     val selectSort: List<SortType> = listOf(
         SortType.POPULARITY,

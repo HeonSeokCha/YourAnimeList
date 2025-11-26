@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.CategoryType
+import com.chs.youranimelist.domain.model.SortFilter
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.main.Screen
@@ -45,9 +46,11 @@ fun HomeScreenRoot(
                 is HomeEffect.NavigateSort -> {
                     onNavigateSort(
                         Screen.SortList(
-                            year = effect.year,
-                            season = effect.season,
-                            sortOption = effect.option
+                            SortFilter(
+                                selectYear = effect.year,
+                                selectSeason = effect.season,
+                                selectSort = effect.option
+                            )
                         )
                     )
                 }

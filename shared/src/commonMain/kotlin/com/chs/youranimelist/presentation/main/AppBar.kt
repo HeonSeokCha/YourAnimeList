@@ -1,17 +1,13 @@
 package com.chs.youranimelist.presentation.main
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.input.delete
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
@@ -22,29 +18,23 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.chs.youranimelist.presentation.ui.theme.Red500
 import com.chs.youranimelist.res.Res
 import com.chs.youranimelist.res.app_name
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(
-    navController: NavHostController,
+    backStack: NavBackStack<NavKey>,
     searchHistoryList: List<String>,
     onQueryChange: (String) -> Unit,
     onDeleteSearchHistory: (String) -> Unit
 ) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDest = navBackStackEntry?.destination
-
-    if (currentDest?.hasRoute(Screen.SortList::class) == true) {
+    if (backStack.last() == Screen.SortList) {
         TopAppBar(
             title = {},
             colors = TopAppBarDefaults.topAppBarColors(
@@ -52,12 +42,12 @@ fun AppBar(
                 navigationIconContentColor = Color.White
             ),
             navigationIcon = {
-                IconButton(onClick = { navController.navigateUp() }) {
+                IconButton(onClick = { backStack.removeLastOrNull() }) {
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, "sort_screen_back")
                 }
             }
         )
-    } else if (currentDest?.hasRoute(Screen.Search::class) == true) {
+    } else if (backStack.last() == Screen.Search::class) {
         SearchAppBar(
             searchHistoryList = searchHistoryList,
             onSearch = {
@@ -82,7 +72,7 @@ fun AppBar(
                 IconButton(
                     onClick = {
                         onQueryChange("")
-                        navController.navigate(Screen.Search)
+                        backStack.add(Screen.Search)
                     }
                 ) {
                     Icon(

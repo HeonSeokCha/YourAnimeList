@@ -34,6 +34,7 @@ import com.chs.youranimelist.data.mapper.toAnimeEntity
 import com.chs.youranimelist.data.mapper.toAnimeInfo
 import com.chs.youranimelist.data.mapper.toAnimeRecommendList
 import com.chs.youranimelist.data.mapper.toAnimeThemeInfo
+import com.chs.youranimelist.domain.model.SeasonType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
@@ -51,8 +52,8 @@ class AnimeRepositoryImpl(
 ) : AnimeRepository {
 
     override suspend fun getAnimeRecommendList(
-        currentSeason: String,
-        nextSeason: String,
+        currentSeason: SeasonType,
+        nextSeason: SeasonType,
         currentYear: Int,
         variationYear: Int
     ): DataResult<AnimeRecommendList, DataError.RemoteError> {
@@ -60,8 +61,8 @@ class AnimeRepositoryImpl(
             val response = apolloClient
                 .query(
                     HomeAnimeListQuery(
-                        currentSeason = Optional.present(MediaSeason.valueOf(currentSeason)),
-                        nextSeason = Optional.present(MediaSeason.valueOf(nextSeason)),
+                        currentSeason = Optional.present(MediaSeason.valueOf(currentSeason.rawValue)),
+                        nextSeason = Optional.present(MediaSeason.valueOf(nextSeason.rawValue)),
                         currentYear = Optional.present(currentYear),
                         variationYear = Optional.present(variationYear)
                     )

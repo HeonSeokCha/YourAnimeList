@@ -47,11 +47,8 @@ kotlin {
 
         androidMain {
             dependencies {
-                implementation(libs.androidX.compose.ui.tooling.preview)
                 implementation(libs.androidX.activity.compose)
                 implementation(libs.ktor.client.android)
-                implementation(libs.androidX.navigation.compose)
-
                 implementation(libs.koin.android)
                 implementation(libs.koin.compose)
                 implementation(libs.room.runtime.android)
@@ -64,21 +61,16 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(compose.components.resources)
-                implementation(libs.jetbrain.matreial3)
-                implementation(libs.jetbrain.compose.material.icon.extend)
 
-                implementation(libs.jetbrain.lifecycle.runtime.compose)
-                implementation(libs.jetbrain.lifecycle.viewmodel.compose)
-                implementation(libs.jetbrain.navigation.compose)
+                implementation(libs.bundles.jetbrain)
+
                 implementation(libs.kotlin.coroutine.core)
-
                 implementation(libs.bundles.ktor)
                 implementation(libs.kotlin.serialization)
 
                 implementation(libs.bundles.apollo)
 
                 implementation(libs.koin.core)
-
                 implementation(libs.bundles.koin)
                 implementation(libs.bundles.coil)
                 implementation(libs.bundles.room)

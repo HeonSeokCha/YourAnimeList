@@ -1,9 +1,10 @@
 package com.chs.youranimelist.presentation.browse
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class BrowseScreen {
+sealed class BrowseScreen : NavKey {
 
     @Serializable
     data class AnimeDetail(

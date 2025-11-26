@@ -58,8 +58,8 @@ class HomeViewModel(
                         _effect.trySend(
                             NavigateSort(
                                 option = listOf(
-                                    SortType.TRENDING.rawValue,
-                                    SortType.POPULARITY.rawValue
+                                    SortType.TRENDING,
+                                    SortType.POPULARITY
                                 )
                             )
                         )
@@ -86,13 +86,13 @@ class HomeViewModel(
                     CategoryType.ALLTIME -> {
                         _effect.trySend(
                             NavigateSort(
-                                option = listOf(SortType.POPULARITY.rawValue)
+                                option = listOf(SortType.POPULARITY)
                             )
                         )
                     }
 
                     CategoryType.TOP -> {
-                        _effect.trySend(NavigateSort(option = listOf(SortType.AVERAGE.rawValue)))
+                        _effect.trySend(NavigateSort(option = listOf(SortType.AVERAGE)))
                     }
                 }
             }

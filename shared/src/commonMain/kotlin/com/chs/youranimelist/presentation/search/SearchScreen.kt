@@ -87,6 +87,7 @@ fun SearchScreen(
             modifier = Modifier
                 .fillMaxSize(),
             state = pagerState,
+            userScrollEnabled = false,
             key = { it }
         ) { page ->
             when (page) {

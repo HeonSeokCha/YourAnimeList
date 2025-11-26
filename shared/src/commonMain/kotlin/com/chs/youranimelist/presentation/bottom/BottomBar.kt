@@ -2,26 +2,21 @@ package com.chs.youranimelist.presentation.bottom
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.chs.youranimelist.presentation.main.BottomNavigation
 import com.chs.youranimelist.presentation.ui.theme.Red200
 import com.chs.youranimelist.presentation.ui.theme.Red500
 import com.chs.youranimelist.presentation.ui.theme.Red700
 
 @Composable
-fun BottomBar(navController: NavHostController) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination
+fun BottomBar(backStack: NavBackStack<NavKey>) {
 
-    if (BottomNavigation.entries.any { currentRoute?.hasRoute(it.route::class) == true }) {
+    if (BottomNavigation.entries.any { it.route == backStack.last() }) {
         NavigationBar(containerColor = Red200) {
             BottomNavigation.entries.forEachIndexed { index, navItem ->
                 NavigationBarItem(
-                    selected = currentRoute?.hasRoute(navItem.route::class) ?: false,
+                    selected = navItem.route == backStack.last(),
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Red700,
                         selectedTextColor = Red700,
@@ -29,13 +24,8 @@ fun BottomBar(navController: NavHostController) {
                         unselectedTextColor = Red500,
                         indicatorColor = Red200
                     ), onClick = {
-                        navController.navigate(navItem.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+                        backStack.removeLastOrNull()
+                        backStack.add(navItem.route)
                     },
                     icon = { Icon(imageVector = navItem.icon, contentDescription = null) },
                     label = { Text(text = navItem.label) }

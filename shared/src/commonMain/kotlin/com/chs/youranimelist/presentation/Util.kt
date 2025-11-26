@@ -12,29 +12,29 @@ import kotlin.time.Instant
 object Util {
 
     @OptIn(ExperimentalTime::class)
-    fun getCurrentSeason(): String {
+    fun getCurrentSeason(): SeasonType {
         val now: Instant = Clock.System.now()
         val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
 
         return when (today.month) {
-            in Month.APRIL..Month.JUNE -> SeasonType.SPRING.rawValue
-            in Month.JULY..Month.SEPTEMBER -> SeasonType.SUMMER.rawValue
-            in Month.OCTOBER..Month.DECEMBER -> SeasonType.FALL.rawValue
-            in Month.JANUARY..Month.MARCH -> SeasonType.WINTER.rawValue
-            else -> SeasonType.WINTER.rawValue
+            in Month.APRIL..Month.JUNE -> SeasonType.SPRING
+            in Month.JULY..Month.SEPTEMBER -> SeasonType.SUMMER
+            in Month.OCTOBER..Month.DECEMBER -> SeasonType.FALL
+            in Month.JANUARY..Month.MARCH -> SeasonType.WINTER
+            else -> SeasonType.WINTER
         }
     }
 
     @OptIn(ExperimentalTime::class)
-    fun getNextSeason(): String {
+    fun getNextSeason(): SeasonType {
         val now: Instant = Clock.System.now()
         val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
         return when (today.month) {
-            in Month.APRIL..Month.JUNE -> SeasonType.SUMMER.rawValue
-            in Month.JULY..Month.SEPTEMBER -> SeasonType.FALL.rawValue
-            in Month.OCTOBER..Month.DECEMBER -> SeasonType.WINTER.rawValue
-            in Month.JANUARY..Month.MARCH -> SeasonType.SPRING.rawValue
-            else -> SeasonType.WINTER.rawValue
+            in Month.APRIL..Month.JUNE -> SeasonType.SUMMER
+            in Month.JULY..Month.SEPTEMBER -> SeasonType.FALL
+            in Month.OCTOBER..Month.DECEMBER -> SeasonType.WINTER
+            in Month.JANUARY..Month.MARCH -> SeasonType.SPRING
+            else -> SeasonType.WINTER
         }
     }
 

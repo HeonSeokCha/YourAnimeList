@@ -1,16 +1,13 @@
 package com.chs.youranimelist.presentation.browse.actor
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import androidx.paging.cachedIn
 import com.chs.youranimelist.domain.model.SortType
 import com.chs.youranimelist.util.onError
 import com.chs.youranimelist.util.onSuccess
 import com.chs.youranimelist.domain.usecase.GetActorMediaListUseCase
 import com.chs.youranimelist.domain.usecase.GetActorDetailInfoUseCase
-import com.chs.youranimelist.presentation.browse.BrowseScreen
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,12 +19,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ActorDetailViewModel(
-    savedStateHandle: SavedStateHandle,
+    actorId: Int,
     private val getActorDetailInfoUseCase: GetActorDetailInfoUseCase,
     getActorMediaListUseCase: GetActorMediaListUseCase
 ) : ViewModel() {
 
-    private val actorId: Int = savedStateHandle.toRoute<BrowseScreen.ActorDetail>().id
     private val _state = MutableStateFlow(ActorDetailState())
     val state = _state
         .onStart {

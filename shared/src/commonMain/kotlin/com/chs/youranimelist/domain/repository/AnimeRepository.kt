@@ -5,6 +5,7 @@ import com.chs.youranimelist.domain.model.AnimeDetailInfo
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.AnimeRecommendList
 import com.chs.youranimelist.domain.model.AnimeThemeInfo
+import com.chs.youranimelist.domain.model.SeasonType
 import com.chs.youranimelist.util.DataError
 import com.chs.youranimelist.util.DataResult
 import com.chs.youranimelist.domain.model.SortFilter
@@ -13,8 +14,8 @@ import kotlinx.coroutines.flow.Flow
 interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
 
     suspend fun getAnimeRecommendList(
-        currentSeason: String,
-        nextSeason: String,
+        currentSeason: SeasonType,
+        nextSeason: SeasonType,
         currentYear: Int,
         variationYear: Int
     ): DataResult<AnimeRecommendList, DataError.RemoteError>

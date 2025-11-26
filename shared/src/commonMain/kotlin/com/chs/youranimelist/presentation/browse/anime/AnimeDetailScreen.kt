@@ -62,7 +62,7 @@ fun AnimeDetailScreenRoot(
     onCharaClick: (Int) -> Unit,
     onGenreClick: (String) -> Unit,
     onTagClick: (String) -> Unit,
-    onSeasonYearClick: (String, Int) -> Unit,
+    onSeasonYearClick: (SeasonType, Int) -> Unit,
     onStudioClick: (Int) -> Unit,
     onLinkClick: (String) -> Unit,
     onCloseClick: () -> Unit
