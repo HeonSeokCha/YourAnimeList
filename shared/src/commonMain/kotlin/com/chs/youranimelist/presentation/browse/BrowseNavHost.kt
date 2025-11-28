@@ -1,14 +1,14 @@
 package com.chs.youranimelist.presentation.browse
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import androidx.savedstate.serialization.SavedStateConfiguration
 import com.chs.youranimelist.domain.model.BrowseInfo
 import com.chs.youranimelist.domain.model.MediaType
 import com.chs.youranimelist.domain.model.SortFilter
@@ -20,11 +20,8 @@ import com.chs.youranimelist.presentation.browse.character.CharacterDetailScreen
 import com.chs.youranimelist.presentation.browse.character.CharacterDetailViewModel
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailScreenRoot
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailViewModel
-import com.chs.youranimelist.presentation.main.Screen
 import com.chs.youranimelist.presentation.sortList.SortedListScreenRoot
 import com.chs.youranimelist.presentation.sortList.SortedViewModel
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.polymorphic
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -35,7 +32,7 @@ fun BrowseNavHost(
     onLinkClick: (String) -> Unit,
     onClose: () -> Unit
 ) {
-    val startMediaDestination: BrowseScreen =
+    val startDestination: BrowseScreen =
         if (browseInfo.type == MediaType.MEDIA) {
             BrowseScreen.AnimeDetail(
                 id = browseInfo.id,
@@ -46,17 +43,8 @@ fun BrowseNavHost(
                 id = browseInfo.id
             )
         }
-    val module = SerializersModule {
-        polymorphic(NavKey::class) {
-            subclass(BrowseScreen.AnimeDetail::class, BrowseScreen.AnimeDetail.serializer())
-            subclass(BrowseScreen.CharacterDetail::class, BrowseScreen.CharacterDetail.serializer())
-            subclass(BrowseScreen.StudioDetail::class, BrowseScreen.StudioDetail.serializer())
-            subclass(BrowseScreen.ActorDetail::class, BrowseScreen.ActorDetail.serializer())
-        }
-    }
 
-    val config = SavedStateConfiguration { serializersModule = module }
-    val backStack = rememberNavBackStack(configuration = config, startMediaDestination)
+    val backStack: SnapshotStateList<BrowseScreen> = remember { mutableStateListOf(startDestination) }
 
     NavDisplay(
         modifier = modifier,
@@ -89,14 +77,14 @@ fun BrowseNavHost(
                         backStack.add(BrowseScreen.StudioDetail(id))
                     },
                     onGenreClick = { genre ->
-                        backStack.add(Screen.SortList(SortFilter(selectGenre = listOf(genre))))
+                        backStack.add(BrowseScreen.SortList(SortFilter(selectGenre = listOf(genre))))
                     },
                     onSeasonYearClick = { season, year ->
-                        backStack.add(Screen.SortList(SortFilter(selectSeason = season, selectYear = year)))
+                        backStack.add(BrowseScreen.SortList(SortFilter(selectSeason = season, selectYear = year)))
                     },
                     onLinkClick = { url -> onLinkClick(url) },
                     onTagClick = { tag ->
-                        backStack.add(Screen.SortList(SortFilter(selectTags = listOf(tag))))
+                        backStack.add(BrowseScreen.SortList(SortFilter(selectTags = listOf(tag))))
                     }
                 )
             }
@@ -144,7 +132,7 @@ fun BrowseNavHost(
                 )
             }
 
-            entry<Screen.SortList> { key ->
+            entry<BrowseScreen.SortList> { key ->
                 val viewmodel: SortedViewModel = koinViewModel {
                     parametersOf(key.filter)
                 }

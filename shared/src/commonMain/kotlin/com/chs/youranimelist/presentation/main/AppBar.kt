@@ -16,11 +16,10 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation3.runtime.NavBackStack
-import androidx.navigation3.runtime.NavKey
 import com.chs.youranimelist.presentation.ui.theme.Red500
 import com.chs.youranimelist.res.Res
 import com.chs.youranimelist.res.app_name
@@ -29,12 +28,12 @@ import org.jetbrains.compose.resources.stringResource
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(
-    backStack: NavBackStack<NavKey>,
+    backStack: SnapshotStateList<MainScreen>,
     searchHistoryList: List<String>,
     onQueryChange: (String) -> Unit,
     onDeleteSearchHistory: (String) -> Unit
 ) {
-    if (backStack.last() == Screen.SortList) {
+    if (backStack.last() == MainScreen.SortList) {
         TopAppBar(
             title = {},
             colors = TopAppBarDefaults.topAppBarColors(
@@ -47,7 +46,7 @@ fun AppBar(
                 }
             }
         )
-    } else if (backStack.last() == Screen.Search::class) {
+    } else if (backStack.last() == MainScreen.Search) {
         SearchAppBar(
             searchHistoryList = searchHistoryList,
             onSearch = {
@@ -72,7 +71,7 @@ fun AppBar(
                 IconButton(
                     onClick = {
                         onQueryChange("")
-                        backStack.add(Screen.Search)
+                        backStack.add(MainScreen.Search)
                     }
                 ) {
                     Icon(

@@ -10,10 +10,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.unit.em
-import com.chs.youranimelist.domain.model.SeasonType
-import com.chs.youranimelist.domain.model.SortType
-import com.chs.youranimelist.domain.model.StatusType
-import com.chs.youranimelist.presentation.main.Screen
 
 object UiConst {
     const val TARGET_MEDIA: String = "media"

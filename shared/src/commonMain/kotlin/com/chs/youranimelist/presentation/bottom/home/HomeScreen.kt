@@ -26,13 +26,13 @@ import com.chs.youranimelist.domain.model.CategoryType
 import com.chs.youranimelist.domain.model.SortFilter
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
-import com.chs.youranimelist.presentation.main.Screen
+import com.chs.youranimelist.presentation.main.MainScreen
 
 @Composable
 fun HomeScreenRoot(
     viewModel: HomeViewModel,
     onNavigateAnimeDetail: (Int, Int) -> Unit,
-    onNavigateSort: (Screen.SortList) -> Unit
+    onNavigateSort: (MainScreen.SortList) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -45,7 +45,7 @@ fun HomeScreenRoot(
 
                 is HomeEffect.NavigateSort -> {
                     onNavigateSort(
-                        Screen.SortList(
+                        MainScreen.SortList(
                             SortFilter(
                                 selectYear = effect.year,
                                 selectSeason = effect.season,

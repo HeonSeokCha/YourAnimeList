@@ -3,10 +3,9 @@ package com.chs.youranimelist.presentation.main
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.NavBackStack
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
@@ -30,7 +29,7 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun MainNavHost(
-    backStack: NavBackStack<NavKey>,
+    backStack: SnapshotStateList<MainScreen>,
     modifier: Modifier = Modifier,
     searchQuery: String,
     browseInfo: (BrowseInfo) -> Unit
@@ -44,13 +43,13 @@ fun MainNavHost(
             rememberViewModelStoreNavEntryDecorator()
         ),
         entryProvider = entryProvider {
-            entry<Screen.Home> {
+            entry<MainScreen.Home> {
                 val viewModel: HomeViewModel = koinViewModel()
 
                 HomeScreenRoot(
                     viewModel = viewModel,
                     onNavigateAnimeDetail = { id, idMal ->
-                        browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = id))
+                        browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = idMal))
                     },
                     onNavigateSort = { sortInfo ->
                         backStack.add(sortInfo)
@@ -58,7 +57,7 @@ fun MainNavHost(
                 )
             }
 
-            entry<Screen.AnimeList> {
+            entry<MainScreen.AnimeList> {
                 val viewModel: AnimeListViewModel = koinViewModel()
                 AnimeListScreenRoot(
                     viewModel = viewModel,
@@ -66,7 +65,7 @@ fun MainNavHost(
                 )
             }
 
-            entry<Screen.CharaList> {
+            entry<MainScreen.CharaList> {
                 val viewModel: CharacterListViewModel = koinViewModel()
                 CharaListScreenRoot(
                     viewModel = viewModel,
@@ -74,7 +73,7 @@ fun MainNavHost(
                 )
             }
 
-            entry<Screen.Search> {
+            entry<MainScreen.Search> {
                 val viewModel: SearchViewModel = koinViewModel()
 
                 LaunchedEffect(searchQuery) {
@@ -95,7 +94,7 @@ fun MainNavHost(
                 )
             }
 
-            entry<Screen.SortList> { key ->
+            entry< MainScreen.SortList> { key ->
                 val viewmodel: SortedViewModel = koinViewModel {
                     parametersOf(key.filter)
                 }
