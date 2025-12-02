@@ -9,14 +9,17 @@ import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDe
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import androidx.navigation3.ui.defaultTransitionSpec
 import com.chs.youranimelist.domain.model.BrowseInfo
 import com.chs.youranimelist.domain.model.MediaType
+import com.chs.youranimelist.presentation.NavigationTransitionSpec
 import com.chs.youranimelist.presentation.bottom.animeList.AnimeListScreenRoot
 import com.chs.youranimelist.presentation.bottom.animeList.AnimeListViewModel
 import com.chs.youranimelist.presentation.bottom.charaList.CharaListScreenRoot
 import com.chs.youranimelist.presentation.bottom.charaList.CharacterListViewModel
 import com.chs.youranimelist.presentation.bottom.home.HomeScreenRoot
 import com.chs.youranimelist.presentation.bottom.home.HomeViewModel
+import com.chs.youranimelist.presentation.defaultPredictivePopTransitionSpec2
 import com.chs.youranimelist.presentation.search.SearchIntent
 import com.chs.youranimelist.presentation.search.SearchViewModel
 import com.chs.youranimelist.presentation.search.SearchScreenRoot
@@ -42,6 +45,8 @@ fun MainNavHost(
             rememberSaveableStateHolderNavEntryDecorator(),
             rememberViewModelStoreNavEntryDecorator()
         ),
+        popTransitionSpec = defaultTransitionSpec(),
+        predictivePopTransitionSpec = defaultPredictivePopTransitionSpec2(),
         entryProvider = entryProvider {
             entry<MainScreen.Home> {
                 val viewModel: HomeViewModel = koinViewModel()
@@ -73,7 +78,7 @@ fun MainNavHost(
                 )
             }
 
-            entry<MainScreen.Search> {
+            entry<MainScreen.Search>(metadata = NavigationTransitionSpec) {
                 val viewModel: SearchViewModel = koinViewModel()
 
                 LaunchedEffect(searchQuery) {
@@ -86,7 +91,7 @@ fun MainNavHost(
                 SearchScreenRoot(
                     viewModel = viewModel,
                     onAnimeClick = { id, idMal ->
-                        browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = id))
+                        browseInfo(BrowseInfo(type = MediaType.MEDIA, id = id, idMal = idMal))
                     },
                     onCharaClick = { id ->
                         browseInfo(BrowseInfo(type = MediaType.CHARACTER, id = id))
@@ -94,7 +99,7 @@ fun MainNavHost(
                 )
             }
 
-            entry< MainScreen.SortList> { key ->
+            entry< MainScreen.SortList>(metadata = NavigationTransitionSpec) { key ->
                 val viewmodel: SortedViewModel = koinViewModel {
                     parametersOf(key.filter)
                 }

@@ -24,6 +24,11 @@ fun BottomBar(backStack: SnapshotStateList<MainScreen>) {
                         unselectedTextColor = Red500,
                         indicatorColor = Red200
                     ), onClick = {
+                        if (navItem.route == MainScreen.Home) {
+                            backStack.clear()
+                            backStack.add(navItem.route)
+                            return@NavigationBarItem
+                        }
                         backStack.remove(navItem.route)
                         backStack.add(navItem.route)
                     },

@@ -33,54 +33,60 @@ fun AppBar(
     onQueryChange: (String) -> Unit,
     onDeleteSearchHistory: (String) -> Unit
 ) {
-    if (backStack.last() == MainScreen.SortList) {
-        TopAppBar(
-            title = {},
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Red500,
-                navigationIconContentColor = Color.White
-            ),
-            navigationIcon = {
-                IconButton(onClick = { backStack.removeLastOrNull() }) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "sort_screen_back")
-                }
-            }
-        )
-    } else if (backStack.last() == MainScreen.Search) {
-        SearchAppBar(
-            searchHistoryList = searchHistoryList,
-            onSearch = {
-                onQueryChange(it)
-            }, onDeleteSearchHistory = {
-                onDeleteSearchHistory(it)
-            }
-        )
-    } else {
-        TopAppBar(
-            title = {
-                Text(
-                    text = stringResource(Res.string.app_name),
-                    color = Color.White
-                )
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Red500,
-                actionIconContentColor = Color.White
-            ),
-            actions = {
-                IconButton(
-                    onClick = {
-                        onQueryChange("")
-                        backStack.add(MainScreen.Search)
+    when (backStack.last()) {
+        is MainScreen.SortList -> {
+            TopAppBar(
+                title = {},
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Red500,
+                    navigationIconContentColor = Color.White
+                ),
+                navigationIcon = {
+                    IconButton(onClick = { backStack.removeLastOrNull() }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "sort_screen_back")
                     }
-                ) {
-                    Icon(
-                        imageVector = Icons.TwoTone.Search,
-                        contentDescription = "home_screen_search"
-                    )
                 }
-            }
-        )
+            )
+        }
+
+        is MainScreen.Search -> {
+            SearchAppBar(
+                searchHistoryList = searchHistoryList,
+                onSearch = {
+                    onQueryChange(it)
+                }, onDeleteSearchHistory = {
+                    onDeleteSearchHistory(it)
+                }
+            )
+        }
+
+        else -> {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(Res.string.app_name),
+                        color = Color.White
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Red500,
+                    actionIconContentColor = Color.White
+                ),
+                actions = {
+                    IconButton(
+                        onClick = {
+                            onQueryChange("")
+                            backStack.add(MainScreen.Search)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.TwoTone.Search,
+                            contentDescription = "home_screen_search"
+                        )
+                    }
+                }
+            )
+        }
     }
 }
 

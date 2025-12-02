@@ -1,10 +1,23 @@
 package com.chs.youranimelist.presentation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.scene.Scene
+import androidx.navigation3.ui.NavDisplay
+import androidx.navigationevent.NavigationEvent.SwipeEdge
+import com.chs.youranimelist.presentation.main.MainScreen
 
 fun String.color(): Color {
     val color = removePrefix("#")
@@ -64,6 +77,22 @@ fun getIdFromLink(
         onAnime(type.split("anime/")[1].split("/")[0].toInt())
         return
     }
+}
+
+val NavigationTransitionSpec = NavDisplay.transitionSpec {
+    slideInHorizontally(initialOffsetX = { it }) togetherWith slideOutHorizontally(targetOffsetX = { -it })
+} + NavDisplay.popTransitionSpec {
+    slideInHorizontally(initialOffsetX = { -it }) togetherWith slideOutHorizontally(targetOffsetX = { it })
+} + NavDisplay.predictivePopTransitionSpec {
+    slideInHorizontally(initialOffsetX = { -it }) togetherWith slideOutHorizontally(targetOffsetX = { it })
+}
+
+fun <T : Any> defaultPredictivePopTransitionSpec2():
+        AnimatedContentTransitionScope<Scene<T>>.(@SwipeEdge Int) -> ContentTransform = {
+    ContentTransform(
+        fadeIn(animationSpec = tween(700)),
+        fadeOut(animationSpec = tween(700))
+    )
 }
 
 fun chsLog(message: String?) {
