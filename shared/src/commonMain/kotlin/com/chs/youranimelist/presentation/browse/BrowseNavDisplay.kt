@@ -24,7 +24,6 @@ import com.chs.youranimelist.presentation.browse.character.CharacterDetailScreen
 import com.chs.youranimelist.presentation.browse.character.CharacterDetailViewModel
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailScreenRoot
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailViewModel
-import com.chs.youranimelist.presentation.defaultPredictivePopTransitionSpec2
 import com.chs.youranimelist.presentation.sortList.SortedListScreenRoot
 import com.chs.youranimelist.presentation.sortList.SortedViewModel
 import org.koin.compose.viewmodel.koinViewModel

@@ -19,15 +19,16 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.LightGray
@@ -45,13 +46,13 @@ import com.chs.youranimelist.domain.model.SeasonType
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.CollapsingToolbarScaffold
 import com.chs.youranimelist.presentation.color
+import com.chs.youranimelist.presentation.common.GradientTopBar
 import com.chs.youranimelist.presentation.common.ItemSaveButton
 import com.chs.youranimelist.presentation.common.ShimmerImage
 import com.chs.youranimelist.presentation.common.shimmer
 import com.chs.youranimelist.presentation.isNotEmptyValue
 import com.chs.youranimelist.presentation.ui.theme.Pink80
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -111,14 +112,14 @@ fun AnimeDetailScreen(
 
     CollapsingToolbarScaffold(
         scrollState = scrollState,
-        header = {
+        expandContent = {
             AnimeDetailHeadBanner(
                 info = state.animeDetailInfo,
                 isAnimeSave = state.isSave,
                 onIntent = onIntent
             )
         },
-        content = {
+        stickyContent = {
             SecondaryTabRow(
                 selectedTabIndex = state.selectTabIdx
             ) {
@@ -139,7 +140,20 @@ fun AnimeDetailScreen(
                     )
                 }
             }
-
+        },
+        collapsedContent = { visiblePercentage ->
+            GradientTopBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .alpha(1f - visiblePercentage)
+                    .background(MaterialTheme.colorScheme.primary),
+                onCloseClick = {
+                    if (visiblePercentage > 0.5f) return@GradientTopBar
+                    onIntent(AnimeDetailIntent.ClickClose)
+                }
+            )
+        },
+        content = {
             HorizontalPager(
                 state = pagerState,
                 userScrollEnabled = false,
@@ -170,8 +184,6 @@ fun AnimeDetailScreen(
                 }
             }
         },
-        isShowTopBar = false,
-        onCloseClick = { onIntent(AnimeDetailIntent.ClickClose) }
     )
 }
 

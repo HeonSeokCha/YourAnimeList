@@ -1,5 +1,6 @@
 package com.chs.youranimelist.presentation.browse.actor
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,13 +14,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.buildAnnotatedString
@@ -34,6 +38,7 @@ import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.youranimelist.domain.model.VoiceActorDetailInfo
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.CollapsingToolbarScaffold
+import com.chs.youranimelist.presentation.common.GradientTopBar
 import com.chs.youranimelist.presentation.common.ShimmerImage
 import com.chs.youranimelist.presentation.common.shimmer
 import com.chs.youranimelist.presentation.toCommaFormat
@@ -84,9 +89,19 @@ fun ActorDetailScreen(
 
     CollapsingToolbarScaffold(
         scrollState = scrollState,
-        header = { ActorInfo(actorInfo = state.actorDetailInfo) },
         isShowTopBar = true,
-        onCloseClick = { onIntent(ActorDetailIntent.ClickClose) }
+        collapsedContent = { visiblePercentage ->
+            GradientTopBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primary),
+                onCloseClick = {
+                    if (visiblePercentage > 0.5f) return@GradientTopBar
+                    onIntent(ActorDetailIntent.ClickClose)
+                }
+            )
+        },
+        expandContent = { ActorInfo(actorInfo = state.actorDetailInfo) }
     ) {
         SecondaryTabRow(state.tabIdx) {
             state.tabNames.forEachIndexed { index, title ->

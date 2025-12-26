@@ -3,6 +3,7 @@ package com.chs.youranimelist.presentation.browse.character
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
@@ -60,6 +63,7 @@ import com.chs.youranimelist.domain.model.CharacterDetailInfo
 import com.chs.youranimelist.domain.model.VoiceActorInfo
 import com.chs.youranimelist.presentation.browse.anime.AnimeDetailIntent
 import com.chs.youranimelist.presentation.common.CollapsingToolbarScaffold
+import com.chs.youranimelist.presentation.common.GradientTopBar
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemNoResultImage
 import com.chs.youranimelist.presentation.common.ItemSaveButton
@@ -131,7 +135,7 @@ fun CharacterDetailScreen(
         when (pagingItem.loadState.refresh) {
             is LoadState.Loading -> onIntent(CharaDetailIntent.OnLoad)
 
-            is LoadState.Error ->  onIntent(CharaDetailIntent.OnError)
+            is LoadState.Error -> onIntent(CharaDetailIntent.OnError)
 
             is LoadState.NotLoading -> onIntent(CharaDetailIntent.OnLoadComplete)
         }
@@ -153,7 +157,8 @@ fun CharacterDetailScreen(
 
     CollapsingToolbarScaffold(
         scrollState = scrollState,
-        header = {
+        isShowTopBar = true,
+        expandContent = {
             val characterDetailInfo = state.characterDetailInfo
             CharacterBanner(
                 characterInfo = characterDetailInfo,
@@ -163,8 +168,17 @@ fun CharacterDetailScreen(
                 onIntent(CharaDetailIntent.ClickSaved(characterDetailInfo.characterInfo))
             }
         },
-        isShowTopBar = true,
-        onCloseClick = { onIntent(CharaDetailIntent.ClickClose) }
+        collapsedContent = { visiblePercentage ->
+            GradientTopBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primary),
+                onCloseClick = {
+                    if (visiblePercentage > 0.5f) return@GradientTopBar
+                    onIntent(CharaDetailIntent.ClickClose)
+                }
+            )
+        }
     ) {
         LazyVerticalStaggeredGrid(
             modifier = Modifier
@@ -212,7 +226,7 @@ fun CharacterDetailScreen(
             when {
                 state.isAnimeListLoading -> {
                     items(UiConst.BANNER_SIZE) {
-                        ItemAnimeSmall {  }
+                        ItemAnimeSmall { }
                     }
                 }
 

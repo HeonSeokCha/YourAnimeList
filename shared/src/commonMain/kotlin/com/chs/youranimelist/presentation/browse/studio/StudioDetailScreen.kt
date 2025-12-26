@@ -1,5 +1,6 @@
 package com.chs.youranimelist.presentation.browse.studio
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,6 +41,7 @@ import com.chs.youranimelist.domain.model.SortType
 import com.chs.youranimelist.domain.model.StudioDetailInfo
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.CollapsingToolbarScaffold
+import com.chs.youranimelist.presentation.common.GradientTopBar
 import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemExpandSingleBox
 import com.chs.youranimelist.presentation.common.ItemNoResultImage
@@ -124,11 +128,18 @@ fun StudioDetailScreen(
 
     CollapsingToolbarScaffold(
         scrollState = scrollState,
-        header = {
-            StudioInfo(studioInfo = state.studioDetailInfo)
-        },
         isShowTopBar = true,
-        onCloseClick = { onIntent(StudioDetailIntent.ClickClose) }
+        expandContent = { StudioInfo(studioInfo = state.studioDetailInfo) },
+        collapsedContent = { visiblePercentage ->
+            GradientTopBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primary),
+                onCloseClick = {
+                    if (visiblePercentage > 0.5f) return@GradientTopBar
+                }
+            )
+        }
     ) {
         LazyVerticalStaggeredGrid(
             state = lazyGridScrollState,
