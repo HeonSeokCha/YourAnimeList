@@ -85,9 +85,7 @@ class HomeViewModel(
 
                     CategoryType.ALLTIME -> {
                         _effect.trySend(
-                            NavigateSort(
-                                option = listOf(SortType.POPULARITY)
-                            )
+                            NavigateSort(option = listOf(SortType.POPULARITY))
                         )
                     }
 

@@ -99,7 +99,6 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxWidth(),
                         state = pagerState,
-                        userScrollEnabled = false,
                         key = { it }
                     ) { idx ->
                         ItemHomeBanner(banner = data.bannerList[idx]) { id, idMal ->

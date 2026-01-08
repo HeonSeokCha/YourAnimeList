@@ -7,7 +7,10 @@ sealed interface HomeEffect {
     data class NavigateAnimeDetail(val id: Int, val idMal: Int) : HomeEffect
     data class NavigateSort(
         val year: Int? = null,
-        val option: List<SortType> = listOf(),
+        val option: List<SortType> = listOf(
+            SortType.POPULARITY,
+            SortType.AVERAGE,
+        ),
         val season: SeasonType? = null
     ) : HomeEffect
 }
