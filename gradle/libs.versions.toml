@@ -1,5 +1,5 @@
 [versions]
-androidStudioGradlePlugin = "8.13.2"
+androidStudioGradlePlugin = "9.0.0"
 
 compileSdkVersion = "36"
 minSdkVersion = "29"
@@ -7,16 +7,16 @@ targetSdkVersion = "36"
 versionCode = "1"
 versionName = "1.0"
 
-activity = "1.12.2"
+activity = "1.12.3"
 room = "2.8.4"
 coil = "3.3.0"
-kotlin = "2.3.0"
-ksp = "2.2.21-2.0.4"
-koin = "4.2.0-beta2"
+kotlin = "2.3.10"
+ksp = "2.3.2"
+koin = "4.2.0-RC1"
 kotlin-coroutine = "1.10.2"
-ktor = "3.3.3"
-apollo = "4.3.3"
-compose-plugin = "1.10.0-rc02"
+ktor = "3.4.0"
+apollo = "4.4.1"
+compose-plugin = "1.10.1"
 sqlite = "2.6.2"
 lifecycle = "2.10.0-alpha07"
 nav3Core = "1.0.0-alpha06"
@@ -50,7 +50,7 @@ koin-nav3 = { module = "io.insert-koin:koin-compose-navigation3", version.ref = 
 
 ## Kotlin
 kotlin-coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutine" }
-kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
+kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0"
 
 ## Ktor
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
