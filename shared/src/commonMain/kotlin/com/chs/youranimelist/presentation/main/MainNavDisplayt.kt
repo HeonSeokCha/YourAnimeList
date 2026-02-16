@@ -34,7 +34,6 @@ import org.koin.core.parameter.parametersOf
 fun MainNavHost(
     backStack: SnapshotStateList<MainScreen>,
     modifier: Modifier = Modifier,
-    searchQuery: String,
     browseInfo: (BrowseInfo) -> Unit
 ) {
     NavDisplay(
@@ -80,13 +79,6 @@ fun MainNavHost(
 
             entry<MainScreen.Search>(metadata = NavigationTransitionSpec) {
                 val viewModel: SearchViewModel = koinViewModel()
-
-                LaunchedEffect(searchQuery) {
-                    snapshotFlow { searchQuery }
-                        .distinctUntilChanged()
-                        .filter { it.isNotEmpty() }
-                        .collect { viewModel.handleIntent(SearchIntent.OnChangeSearchQuery(it)) }
-                }
 
                 SearchScreenRoot(
                     viewModel = viewModel,

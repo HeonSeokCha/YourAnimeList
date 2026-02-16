@@ -4,27 +4,43 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.chs.youranimelist.domain.usecase.DeleteSearchHistoryUseCase
 import com.chs.youranimelist.domain.usecase.GetAnimeSearchResultUseCase
 import com.chs.youranimelist.domain.usecase.GetCharaSearchResultUseCase
+import com.chs.youranimelist.domain.usecase.GetSearchHistoryUseCase
+import com.chs.youranimelist.domain.usecase.InsertSearchHistoryUseCase
+import com.chs.youranimelist.presentation.search.SearchEffect.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
+    private val getSearchHistoryUseCase: GetSearchHistoryUseCase,
+    private val insertSearchHistoryUseCase: InsertSearchHistoryUseCase,
+    private val deleteSearchHistoryUseCase: DeleteSearchHistoryUseCase,
     private val searchAnimeUseCase: GetAnimeSearchResultUseCase,
     private val searchCharaUseCase: GetCharaSearchResultUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SearchState())
-    val state = _state.asStateFlow()
+    val state = _state
+        .onStart { getSearchHistory() }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            _state.value
+        )
 
     private var queryState = MutableStateFlow("")
 
@@ -56,14 +72,14 @@ class SearchViewModel(
     fun handleIntent(intent: SearchIntent) {
         when (intent) {
             is SearchIntent.ClickAnime -> _effect.trySend(
-                SearchEffect.NavigateAnimeDetail(
+                NavigateAnimeDetail(
                     id = intent.id,
                     idMal = intent.idMal
                 )
             )
 
             is SearchIntent.ClickChara -> _effect.trySend(
-                SearchEffect.NavigateCharaDetail(id = intent.id)
+                NavigateCharaDetail(id = intent.id)
             )
 
             SearchIntent.LoadAnime -> _state.update { it.copy(isAnimeLoading = true) }
@@ -71,10 +87,31 @@ class SearchViewModel(
             SearchIntent.LoadChara -> _state.update { it.copy(isCharaLoading = true) }
             SearchIntent.LoadCompleteChara -> _state.update { it.copy(isCharaLoading = false) }
 
-            is SearchIntent.OnChangeSearchQuery -> queryState.update { intent.query }
-
             is SearchIntent.OnChangeTabIdx -> _state.update { it.copy(selectedTabIdx = intent.idx) }
             SearchIntent.OnError -> _effect.trySend(SearchEffect.ShowErrorSnackBar)
+            is SearchIntent.OnSearch -> {
+                queryState.update { intent.query }
+                insertSearchHistory(intent.query)
+            }
+            is SearchIntent.DeleteSearchHistory -> {
+                deleteSearchHistory(intent.query)
+            }
         }
+    }
+
+    private fun getSearchHistory() {
+        viewModelScope.launch {
+            getSearchHistoryUseCase().collectLatest { list ->
+                _state.update { it.copy(searchHistory = list) }
+            }
+        }
+    }
+
+    fun insertSearchHistory(title: String) {
+        viewModelScope.launch { insertSearchHistoryUseCase(title) }
+    }
+
+    fun deleteSearchHistory(title: String) {
+        viewModelScope.launch { deleteSearchHistoryUseCase(title) }
     }
 }

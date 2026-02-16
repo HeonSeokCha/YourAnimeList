@@ -2,9 +2,12 @@ package com.chs.youranimelist.presentation.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -62,49 +65,60 @@ fun SearchScreen(
         pagerState.animateScrollToPage(state.selectedTabIdx)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        SecondaryTabRow(state.selectedTabIdx) {
-            UiConst.SEARCH_TAB_LIST.forEachIndexed { idx, title ->
-                Tab(
-                    text = {
-                        Text(
-                            text = title,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            color = Pink80
-                        )
-                    },
-                    selected = state.selectedTabIdx == idx,
-                    onClick = { onIntent(SearchIntent.OnChangeTabIdx(idx)) }
-                )
-            }
+    Scaffold(
+        topBar = {
+            SearchAppBar(
+                searchHistoryList = state.searchHistory,
+                onSearch = { onIntent(SearchIntent.OnSearch(it)) },
+                onDeleteSearchHistory = { onIntent(SearchIntent.DeleteSearchHistory(it)) }
+            )
         }
-
-        HorizontalPager(
+    ) { paddingValues ->
+        Column(
             modifier = Modifier
-                .fillMaxSize(),
-            state = pagerState,
-            userScrollEnabled = false,
-            key = { it }
-        ) { page ->
-            when (page) {
-                0 -> {
-                    SearchAnimeScreen(
-                        state = state,
-                        pagingItem = animePaging,
-                        onIntent = onIntent
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            SecondaryTabRow(state.selectedTabIdx) {
+                UiConst.SEARCH_TAB_LIST.forEachIndexed { idx, title ->
+                    Tab(
+                        text = {
+                            Text(
+                                text = title,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                color = Pink80
+                            )
+                        },
+                        selected = state.selectedTabIdx == idx,
+                        onClick = { onIntent(SearchIntent.OnChangeTabIdx(idx)) }
                     )
                 }
+            }
 
-                1 -> {
-                    SearchCharaScreen(
-                        state = state,
-                        pagingItem = charaPaging,
-                        onIntent = onIntent
-                    )
+            HorizontalPager(
+                modifier = Modifier
+                    .fillMaxSize(),
+                state = pagerState,
+                userScrollEnabled = false,
+                key = { it }
+            ) { page ->
+                when (page) {
+                    0 -> {
+                        SearchAnimeScreen(
+                            state = state,
+                            pagingItem = animePaging,
+                            onIntent = onIntent
+                        )
+                    }
+
+                    1 -> {
+                        SearchCharaScreen(
+                            state = state,
+                            pagingItem = charaPaging,
+                            onIntent = onIntent
+                        )
+                    }
                 }
             }
         }

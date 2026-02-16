@@ -11,6 +11,8 @@ sealed interface SearchIntent {
     data object LoadCompleteChara : SearchIntent
 
     data class OnChangeTabIdx(val idx: Int) : SearchIntent
-    data class OnChangeSearchQuery(val query: String) : SearchIntent
     data object OnError : SearchIntent
+
+    data class DeleteSearchHistory(val query: String) : SearchIntent
+    data class OnSearch(val query: String) : SearchIntent
 }

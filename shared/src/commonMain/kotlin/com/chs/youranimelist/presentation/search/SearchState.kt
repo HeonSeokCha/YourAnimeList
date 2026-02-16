@@ -1,12 +1,8 @@
 package com.chs.youranimelist.presentation.search
 
-import androidx.paging.PagingData
-import com.chs.youranimelist.domain.model.AnimeInfo
-import com.chs.youranimelist.domain.model.CharacterInfo
-import kotlinx.coroutines.flow.Flow
-
 data class SearchState(
     val selectedTabIdx: Int = 0,
     val isAnimeLoading: Boolean = false,
-    val isCharaLoading: Boolean = false
+    val isCharaLoading: Boolean = false,
+    val searchHistory: List<String> = emptyList()
 )
