@@ -65,60 +65,49 @@ fun SearchScreen(
         pagerState.animateScrollToPage(state.selectedTabIdx)
     }
 
-    Scaffold(
-        topBar = {
-            SearchAppBar(
-                searchHistoryList = state.searchHistory,
-                onSearch = { onIntent(SearchIntent.OnSearch(it)) },
-                onDeleteSearchHistory = { onIntent(SearchIntent.DeleteSearchHistory(it)) }
-            )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        SecondaryTabRow(state.selectedTabIdx) {
+            UiConst.SEARCH_TAB_LIST.forEachIndexed { idx, title ->
+                Tab(
+                    text = {
+                        Text(
+                            text = title,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Pink80
+                        )
+                    },
+                    selected = state.selectedTabIdx == idx,
+                    onClick = { onIntent(SearchIntent.OnChangeTabIdx(idx)) }
+                )
+            }
         }
-    ) { paddingValues ->
-        Column(
+
+        HorizontalPager(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            SecondaryTabRow(state.selectedTabIdx) {
-                UiConst.SEARCH_TAB_LIST.forEachIndexed { idx, title ->
-                    Tab(
-                        text = {
-                            Text(
-                                text = title,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                color = Pink80
-                            )
-                        },
-                        selected = state.selectedTabIdx == idx,
-                        onClick = { onIntent(SearchIntent.OnChangeTabIdx(idx)) }
+                .fillMaxSize(),
+            state = pagerState,
+            userScrollEnabled = false,
+            key = { it }
+        ) { page ->
+            when (page) {
+                0 -> {
+                    SearchAnimeScreen(
+                        state = state,
+                        pagingItem = animePaging,
+                        onIntent = onIntent
                     )
                 }
-            }
 
-            HorizontalPager(
-                modifier = Modifier
-                    .fillMaxSize(),
-                state = pagerState,
-                userScrollEnabled = false,
-                key = { it }
-            ) { page ->
-                when (page) {
-                    0 -> {
-                        SearchAnimeScreen(
-                            state = state,
-                            pagingItem = animePaging,
-                            onIntent = onIntent
-                        )
-                    }
-
-                    1 -> {
-                        SearchCharaScreen(
-                            state = state,
-                            pagingItem = charaPaging,
-                            onIntent = onIntent
-                        )
-                    }
+                1 -> {
+                    SearchCharaScreen(
+                        state = state,
+                        pagingItem = charaPaging,
+                        onIntent = onIntent
+                    )
                 }
             }
         }

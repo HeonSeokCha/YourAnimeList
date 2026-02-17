@@ -12,7 +12,4 @@ sealed interface SearchIntent {
 
     data class OnChangeTabIdx(val idx: Int) : SearchIntent
     data object OnError : SearchIntent
-
-    data class DeleteSearchHistory(val query: String) : SearchIntent
-    data class OnSearch(val query: String) : SearchIntent
 }

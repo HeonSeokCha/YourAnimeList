@@ -14,7 +14,10 @@ import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar(backStack: SnapshotStateList<MainScreen>) {
+fun AppBar(
+    backStack: SnapshotStateList<MainScreen>,
+    onSearch: (String) -> Unit
+) {
     when (backStack.last()) {
         is MainScreen.SortList -> {
             TopAppBar(
@@ -25,13 +28,18 @@ fun AppBar(backStack: SnapshotStateList<MainScreen>) {
                 ),
                 navigationIcon = {
                     IconButton(onClick = { backStack.removeLastOrNull() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "sort_screen_back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
                     }
                 }
             )
         }
 
-        is MainScreen.Search -> Unit
+        is MainScreen.Search -> {
+            SearchAppBar(
+                onSearch = onSearch,
+                onBack = { backStack.removeLastOrNull() },
+            )
+        }
 
         else -> {
             TopAppBar(
@@ -53,7 +61,7 @@ fun AppBar(backStack: SnapshotStateList<MainScreen>) {
                     ) {
                         Icon(
                             imageVector = Icons.TwoTone.Search,
-                            contentDescription = "home_screen_search"
+                            contentDescription = null
                         )
                     }
                 }

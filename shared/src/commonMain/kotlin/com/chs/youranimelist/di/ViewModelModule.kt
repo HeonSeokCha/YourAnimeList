@@ -7,12 +7,14 @@ import com.chs.youranimelist.presentation.browse.character.CharacterDetailViewMo
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailViewModel
 import com.chs.youranimelist.presentation.bottom.charaList.CharacterListViewModel
 import com.chs.youranimelist.presentation.bottom.home.HomeViewModel
+import com.chs.youranimelist.presentation.main.SearchBarViewModel
 import com.chs.youranimelist.presentation.search.SearchViewModel
 import com.chs.youranimelist.presentation.sortList.SortedViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val viewModelModule = module {
+    viewModelOf(::SearchBarViewModel)
     viewModelOf(::HomeViewModel)
     viewModelOf(::AnimeListViewModel)
     viewModelOf(::AnimeDetailViewModel)

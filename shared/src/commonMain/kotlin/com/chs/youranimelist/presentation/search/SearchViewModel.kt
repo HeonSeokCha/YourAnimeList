@@ -26,21 +26,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
-    private val getSearchHistoryUseCase: GetSearchHistoryUseCase,
-    private val insertSearchHistoryUseCase: InsertSearchHistoryUseCase,
-    private val deleteSearchHistoryUseCase: DeleteSearchHistoryUseCase,
     private val searchAnimeUseCase: GetAnimeSearchResultUseCase,
     private val searchCharaUseCase: GetCharaSearchResultUseCase
 ) : ViewModel() {
-
     private val _state = MutableStateFlow(SearchState())
-    val state = _state
-        .onStart { getSearchHistory() }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.Eagerly,
-            _state.value
-        )
+    val state = _state.asStateFlow()
 
     private var queryState = MutableStateFlow("")
 
@@ -89,29 +79,7 @@ class SearchViewModel(
 
             is SearchIntent.OnChangeTabIdx -> _state.update { it.copy(selectedTabIdx = intent.idx) }
             SearchIntent.OnError -> _effect.trySend(SearchEffect.ShowErrorSnackBar)
-            is SearchIntent.OnSearch -> {
-                queryState.update { intent.query }
-                insertSearchHistory(intent.query)
-            }
-            is SearchIntent.DeleteSearchHistory -> {
-                deleteSearchHistory(intent.query)
-            }
         }
     }
 
-    private fun getSearchHistory() {
-        viewModelScope.launch {
-            getSearchHistoryUseCase().collectLatest { list ->
-                _state.update { it.copy(searchHistory = list) }
-            }
-        }
-    }
-
-    fun insertSearchHistory(title: String) {
-        viewModelScope.launch { insertSearchHistoryUseCase(title) }
-    }
-
-    fun deleteSearchHistory(title: String) {
-        viewModelScope.launch { deleteSearchHistoryUseCase(title) }
-    }
 }

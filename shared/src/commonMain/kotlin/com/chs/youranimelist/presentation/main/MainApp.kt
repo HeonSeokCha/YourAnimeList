@@ -24,7 +24,10 @@ fun MainApp(onBrowse: (BrowseInfo) -> Unit) {
     YourAnimeListTheme {
         Scaffold(
             topBar = {
-                AppBar(backStack = backStack)
+                AppBar(
+                    backStack = backStack,
+                    onSearch = { }
+                )
             },
             bottomBar = {
                 BottomBar(backStack = backStack)
