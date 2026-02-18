@@ -82,4 +82,7 @@ class SearchViewModel(
         }
     }
 
+    fun changeQuery(query: String) {
+        queryState.update { query }
+    }
 }
