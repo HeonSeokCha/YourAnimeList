@@ -1,5 +1,5 @@
 [versions]
-androidStudioGradlePlugin = "9.0.1"
+androidStudioGradlePlugin = "9.1.0"
 
 compileSdkVersion = "36"
 minSdkVersion = "29"
@@ -7,20 +7,20 @@ targetSdkVersion = "36"
 versionCode = "1"
 versionName = "1.0"
 
-activity = "1.12.4"
+activity = "1.13.0"
 room = "2.8.4"
-coil = "3.3.0"
-kotlin = "2.3.10"
-ksp = "2.3.2"
-koin = "4.2.0-RC1"
+coil = "3.4.0"
+kotlin = "2.3.20"
+ksp = "2.3.6"
+koin = "4.2.0"
 kotlin-coroutine = "1.10.2"
-ktor = "3.4.0"
-apollo = "4.4.1"
-compose-plugin = "1.10.1"
+ktor = "3.4.2"
+apollo = "4.4.2"
+compose-plugin = "1.10.3"
 sqlite = "2.6.2"
-lifecycle = "2.10.0-alpha07"
-nav3Core = "1.0.0-alpha06"
-android-paging = "3.4.0-beta01"
+lifecycle = "2.10.0"
+nav3Core = "1.1.0-beta01"
+android-paging = "3.4.2"
 
 [libraries]
 # AndroidX

@@ -19,8 +19,7 @@ fun BrowseViewController(
         browseInfo = info,
         onLinkClick = { url ->
             val application = UIApplication.sharedApplication
-            val nsUrl = NSURL.URLWithString(url)
-            if (nsUrl == null) return@BrowseApp
+            val nsUrl = NSURL.URLWithString(url) ?: return@BrowseApp
 
             if (!application.canOpenURL(nsUrl)) return@BrowseApp
 
