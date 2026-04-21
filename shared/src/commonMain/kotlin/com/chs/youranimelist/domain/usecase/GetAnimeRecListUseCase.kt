@@ -5,7 +5,9 @@ import com.chs.youranimelist.domain.model.SeasonType
 import com.chs.youranimelist.util.DataError
 import com.chs.youranimelist.util.DataResult
 import com.chs.youranimelist.domain.repository.AnimeRepository
+import org.koin.core.annotation.Single
 
+@Single
 class GetAnimeRecListUseCase(
     private val repository: AnimeRepository
 ) {

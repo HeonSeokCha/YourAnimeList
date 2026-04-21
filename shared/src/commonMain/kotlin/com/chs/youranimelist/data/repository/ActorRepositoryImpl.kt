@@ -17,8 +17,12 @@ import com.chs.youranimelist.util.DataResult
 import com.chs.youranimelist.domain.model.VoiceActorDetailInfo
 import com.chs.youranimelist.domain.repository.ActorRepository
 import kotlinx.coroutines.flow.Flow
+import org.koin.core.annotation.Single
 
-class ActorRepositoryImpl(private val apolloClient: ApolloClient) : ActorRepository {
+@Single(binds = [ActorRepository::class])
+class ActorRepositoryImpl(
+    private val apolloClient: ApolloClient
+) : ActorRepository {
 
     override suspend fun getActorDetailInfo(actorId: Int): DataResult<VoiceActorDetailInfo, DataError.RemoteError> {
         return try {

@@ -4,7 +4,9 @@ import com.chs.youranimelist.util.DataError
 import com.chs.youranimelist.util.DataResult
 import com.chs.youranimelist.domain.model.VoiceActorDetailInfo
 import com.chs.youranimelist.domain.repository.ActorRepository
+import org.koin.core.annotation.Single
 
+@Single
 class GetActorDetailInfoUseCase(
     private val repository: ActorRepository
 ) {

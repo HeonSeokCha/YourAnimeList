@@ -71,6 +71,7 @@ kotlin {
 
                 implementation(libs.koin.core)
                 implementation(libs.bundles.koin)
+                api(libs.koin.annotation)
                 implementation(libs.bundles.coil)
                 implementation(libs.bundles.room)
 
@@ -121,7 +122,8 @@ android {
 
 ksp {
     arg("room.schemaLocation", "${projectDir}/schemas")
-    arg("KOIN_CONFIG_CHECK", "true")
+    arg("KOIN_CONFIG_CHECK", "false")
+    arg("KOIN_USE_COMPOSE_VIEWMODEL","true")
 }
 
 room {
@@ -136,6 +138,15 @@ dependencies {
     ).forEach {
         add(it, libs.room.compiler)
     }
+
+    listOf(
+        "kspCommonMainMetadata",
+        "kspAndroid",
+        "kspIosSimulatorArm64",
+        "kspIosArm64"
+    ).forEach {
+        add(it, libs.koin.compiler)
+    }
 }
 
 compose.resources {
@@ -144,8 +155,6 @@ compose.resources {
     generateResClass = auto
 }
 
-project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
+tasks.matching { it.name.startsWith("ksp") && it.name != "kspCommonMainKotlinMetadata" }.configureEach {
+    dependsOn("kspCommonMainKotlinMetadata")
 }

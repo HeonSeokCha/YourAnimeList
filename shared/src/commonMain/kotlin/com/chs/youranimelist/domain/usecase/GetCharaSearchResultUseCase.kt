@@ -4,7 +4,9 @@ import androidx.paging.PagingData
 import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.youranimelist.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
+import org.koin.core.annotation.Single
 
+@Single
 class GetCharaSearchResultUseCase(
     private val repository: SearchRepository
 ) {

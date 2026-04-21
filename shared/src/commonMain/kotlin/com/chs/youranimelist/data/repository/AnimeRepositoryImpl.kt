@@ -42,7 +42,9 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Single
 
+@Single(binds = [AnimeRepository::class])
 class AnimeRepositoryImpl(
     private val apolloClient: ApolloClient,
     private val jikanService: JikanService,

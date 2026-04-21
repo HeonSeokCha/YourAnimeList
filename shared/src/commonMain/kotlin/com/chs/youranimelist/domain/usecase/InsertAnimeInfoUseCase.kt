@@ -2,7 +2,9 @@ package com.chs.youranimelist.domain.usecase
 
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.repository.AnimeRepository
+import org.koin.core.annotation.Single
 
+@Single
 class InsertAnimeInfoUseCase(
     private val repository: AnimeRepository
 ) {

@@ -4,7 +4,9 @@ import com.chs.youranimelist.domain.model.AnimeThemeInfo
 import com.chs.youranimelist.util.DataError
 import com.chs.youranimelist.util.DataResult
 import com.chs.youranimelist.domain.repository.AnimeRepository
+import org.koin.core.annotation.Single
 
+@Single
 class GetAnimeThemeUseCase(
     private val repository: AnimeRepository
 ) {

@@ -1,5 +1,5 @@
 [versions]
-androidStudioGradlePlugin = "9.1.0"
+androidStudioGradlePlugin = "9.1.1"
 
 compileSdkVersion = "36"
 minSdkVersion = "29"
@@ -12,19 +12,19 @@ room = "2.8.4"
 coil = "3.4.0"
 kotlin = "2.3.20"
 ksp = "2.3.6"
-koin = "4.2.0"
+koin = "4.2.1"
 kotlin-coroutine = "1.10.2"
 ktor = "3.4.2"
-apollo = "4.4.2"
+apollo = "4.4.3"
 compose-plugin = "1.10.3"
 sqlite = "2.6.2"
 lifecycle = "2.10.0"
-nav3Core = "1.1.0-beta01"
+nav3Core = "1.1.0-rc01"
 android-paging = "3.4.2"
 
 [libraries]
 # AndroidX
-androidX-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity"}
+androidX-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 jetbrain-compose-material-icon-extend = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
 jetbrain-matreial3 = "org.jetbrains.compose.material3:material3:1.10.0-alpha05"
 lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
@@ -47,22 +47,24 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 koin-nav3 = { module = "io.insert-koin:koin-compose-navigation3", version.ref = "koin" }
+koin-annotation = "io.insert-koin:koin-annotations:2.3.1"
+koin-compiler = "io.insert-koin:koin-ksp-compiler:2.3.1"
 
 ## Kotlin
 kotlin-coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutine" }
-kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0"
+kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0"
 
 ## Ktor
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
-ktor-serialization = {module = "io.ktor:ktor-serialization-kotlinx-json", version.ref="ktor"}
-ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor"}
-ktor-client-content-negotiation = {module = "io.ktor:ktor-client-content-negotiation", version.ref= "ktor"}
+ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 
 ## Apollo
-apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo"}
-apollo-api = { module = "com.apollographql.apollo:apollo-api", version.ref = "apollo"}
+apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo" }
+apollo-api = { module = "com.apollographql.apollo:apollo-api", version.ref = "apollo" }
 apollo-normal-cache = { module = "com.apollographql.apollo:apollo-normalized-cache", version.ref = "apollo" }
 apollo-ktor = "com.apollographql.ktor:apollo-engine-ktor:0.1.1"
 
@@ -117,7 +119,7 @@ room = [
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidStudioGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidStudioGradlePlugin" }
-apollo = { id = "com.apollographql.apollo", version.ref = "apollo"}
+apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

@@ -21,7 +21,9 @@ import com.chs.youranimelist.util.DataError
 import com.chs.youranimelist.util.DataResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import org.koin.core.annotation.Single
 
+@Single(binds = [CharacterRepository::class])
 class CharacterRepositoryImpl(
     private val apolloClient: ApolloClient,
     private val dao: CharaListDao

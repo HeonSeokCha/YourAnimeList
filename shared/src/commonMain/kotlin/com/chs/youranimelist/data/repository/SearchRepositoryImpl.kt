@@ -13,7 +13,9 @@ import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.youranimelist.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
+import org.koin.core.annotation.Single
 
+@Single(binds = [SearchRepository::class])
 class SearchRepositoryImpl(
     private val apolloClient: ApolloClient,
     private val dao: SearchListDao

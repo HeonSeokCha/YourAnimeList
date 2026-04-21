@@ -16,7 +16,9 @@ import com.chs.youranimelist.data.type.MediaSort
 import com.chs.youranimelist.util.DataError
 import com.chs.youranimelist.util.DataResult
 import kotlinx.coroutines.flow.Flow
+import org.koin.core.annotation.Single
 
+@Single(binds = [StudioRepository::class])
 class StudioRepositoryImpl(
     private val apolloClient: ApolloClient
 ) : StudioRepository {
