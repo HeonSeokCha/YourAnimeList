@@ -3,7 +3,7 @@ This app recommends an animation list.
 
 Anime API = "https://anilist.gitbook.io/anilist-apiv2-docs/"
 
-It's being renewed as a JetpackCompose version.
+It's being renewed as a CMP version.
 
 * Application Screens.
 <div>
