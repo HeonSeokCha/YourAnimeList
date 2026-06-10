@@ -36,6 +36,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -53,7 +54,6 @@ import com.chs.youranimelist.presentation.common.shimmer
 import com.chs.youranimelist.presentation.isNotEmptyValue
 import com.chs.youranimelist.presentation.ui.theme.Pink80
 import kotlinx.coroutines.flow.Flow
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AnimeDetailScreenRoot(

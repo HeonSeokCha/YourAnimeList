@@ -1,30 +1,35 @@
 [versions]
-androidStudioGradlePlugin = "9.1.1"
+androidStudioGradlePlugin = "9.2.1"
 
-compileSdkVersion = "36"
+compileSdkVersion = "37"
+componentsResources = "1.11.1"
+foundation = "1.11.1"
 minSdkVersion = "29"
 targetSdkVersion = "36"
+uiToolingPreview = "1.11.1"
 versionCode = "1"
 versionName = "1.0"
 
 activity = "1.13.0"
 room = "2.8.4"
 coil = "3.4.0"
-kotlin = "2.3.20"
+kotlin = "2.3.21"
 ksp = "2.3.6"
 koin = "4.2.1"
-kotlin-coroutine = "1.10.2"
-ktor = "3.4.2"
+kotlin-coroutine = "1.11.0"
+ktor = "3.5.0"
 apollo = "4.4.3"
-compose-plugin = "1.10.3"
+compose-plugin = "1.11.1"
 sqlite = "2.6.2"
 lifecycle = "2.10.0"
-nav3Core = "1.1.0-rc01"
-android-paging = "3.4.2"
+nav3Core = "1.1.1"
+android-paging = "3.5.0"
 
 [libraries]
 # AndroidX
 androidX-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
+components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "componentsResources" }
+foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "foundation" }
 jetbrain-compose-material-icon-extend = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
 jetbrain-matreial3 = "org.jetbrains.compose.material3:material3:1.10.0-alpha05"
 lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
@@ -47,8 +52,7 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 koin-nav3 = { module = "io.insert-koin:koin-compose-navigation3", version.ref = "koin" }
-koin-annotation = "io.insert-koin:koin-annotations:2.3.1"
-koin-compiler = "io.insert-koin:koin-ksp-compiler:2.3.1"
+koin-annotation = { module = "io.insert-koin:koin-annotations", version.ref = "koin" }
 
 ## Kotlin
 kotlin-coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutine" }
@@ -74,8 +78,9 @@ coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 
-htmlText = "be.digitalia.compose.htmlconverter:htmlconverter:1.1.0"
-dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1"
+htmlText = "be.digitalia.compose.htmlconverter:htmlconverter:1.1.1"
+dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.8.0"
+ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
 
 [bundles]
 jetbrain = [
@@ -126,3 +131,4 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 room = { id = "androidx.room", version.ref = "room" }
+koin-compiler = "io.insert-koin.compiler.plugin:1.0.0"

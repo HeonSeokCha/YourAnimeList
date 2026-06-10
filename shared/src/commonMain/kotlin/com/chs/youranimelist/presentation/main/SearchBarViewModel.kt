@@ -13,12 +13,14 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.core.annotation.KoinViewModel
 
+@KoinViewModel
 class SearchBarViewModel(
     private val getSearchHistoryUseCase: GetSearchHistoryUseCase,
     private val insertSearchHistoryUseCase: InsertSearchHistoryUseCase,
     private val deleteSearchHistoryUseCase: DeleteSearchHistoryUseCase,
-): ViewModel(){
+): ViewModel() {
     private val _state = MutableStateFlow(SearchBarState())
     val state = _state
         .onStart { getSearchHistory() }

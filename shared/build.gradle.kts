@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
     alias(libs.plugins.apollo)
+    alias(libs.plugins.koin.compiler)
 }
 
 apollo {
@@ -56,10 +57,10 @@ kotlin {
 
         commonMain {
             dependencies {
-                implementation(compose.foundation)
-                implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
-                implementation(compose.components.resources)
+                implementation(libs.foundation)
+                implementation(libs.components.resources)
+                implementation(libs.ui.tooling.preview)
+                implementation(libs.components.resources)
 
                 implementation(libs.bundles.jetbrain)
 
@@ -137,15 +138,6 @@ dependencies {
         "kspIosArm64"
     ).forEach {
         add(it, libs.room.compiler)
-    }
-
-    listOf(
-        "kspCommonMainMetadata",
-        "kspAndroid",
-        "kspIosSimulatorArm64",
-        "kspIosArm64"
-    ).forEach {
-        add(it, libs.koin.compiler)
     }
 }
 

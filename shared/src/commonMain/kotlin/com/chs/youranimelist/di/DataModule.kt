@@ -1,6 +1,5 @@
 package com.chs.youranimelist.di
 
-import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.cache.normalized.api.MemoryCacheFactory
 import com.apollographql.apollo.cache.normalized.normalizedCache
@@ -25,16 +24,13 @@ import io.ktor.http.ContentType
 import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
-import org.koin.dsl.module
 import kotlin.time.Duration.Companion.seconds
 
-@Module
+@Module(includes = [PlatformModule::class])
 @ComponentScan("com.chs.youranimelist.data")
 class DataModule {
 

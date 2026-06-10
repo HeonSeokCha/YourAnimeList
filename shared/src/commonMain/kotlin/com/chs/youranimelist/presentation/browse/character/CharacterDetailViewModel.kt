@@ -23,11 +23,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.InjectedParam
+import org.koin.core.annotation.KoinViewModel
 
 @KoinViewModel
 class CharacterDetailViewModel(
-    private val charaId: Int,
+    @InjectedParam private val charaId: Int,
     getCharaAnimeListUseCase: GetCharaDetailAnimeListUseCase,
     private val getCharaDetailUseCase: GetCharaDetailUseCase,
     private val checkSaveCharaUseCase: GetSavedCharaInfoUseCase,

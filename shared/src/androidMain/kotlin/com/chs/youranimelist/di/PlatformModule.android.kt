@@ -7,16 +7,13 @@ import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
-import org.koin.ksp.generated.module
 
 @Module
-class AndroidPlatformModule {
+actual class PlatformModule {
+
     @Single
     fun provideDatabase(context: Context): AnimeListDatabase = getDatabaseBuilder(context)
 
     @Single
     fun provideHttpClientEngine(): HttpClientEngine = OkHttp.create()
 }
-
-actual val platformModule : org.koin.core.module.Module
-    get() = AndroidPlatformModule().module

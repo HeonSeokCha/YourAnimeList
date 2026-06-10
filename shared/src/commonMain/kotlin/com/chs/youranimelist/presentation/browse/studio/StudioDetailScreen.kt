@@ -46,10 +46,8 @@ import com.chs.youranimelist.presentation.common.ItemAnimeSmall
 import com.chs.youranimelist.presentation.common.ItemExpandSingleBox
 import com.chs.youranimelist.presentation.common.ItemNoResultImage
 import com.chs.youranimelist.presentation.common.shimmer
-import com.chs.youranimelist.presentation.sortList.SortIntent
 import com.chs.youranimelist.presentation.toCommaFormat
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun StudioDetailScreenRoot(

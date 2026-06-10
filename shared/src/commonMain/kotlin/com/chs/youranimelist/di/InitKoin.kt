@@ -1,20 +1,24 @@
 package com.chs.youranimelist.di
 
-import org.koin.core.context.startKoin
-import org.koin.core.module.Module
+import org.koin.core.annotation.Configuration
+import org.koin.core.annotation.KoinApplication
 import org.koin.dsl.KoinAppDeclaration
-import org.koin.ksp.generated.module
+import org.koin.plugin.module.dsl.startKoin
 
-expect val platformModule: Module
+@KoinApplication(
+    modules = [
+        DomainModule::class,
+        DataModule::class,
+        PlatformModule::class,
+        PresentationModule::class
+    ]
+)
+@Configuration
+class KoinModule
+
 
 fun initKoin(config: KoinAppDeclaration? = null) {
-    startKoin {
+    startKoin<KoinModule> {
         config?.invoke(this)
-        modules(
-            platformModule,
-            DataModule().module,
-            DomainModule().module,
-            PresentationModule().module
-        )
     }
 }
