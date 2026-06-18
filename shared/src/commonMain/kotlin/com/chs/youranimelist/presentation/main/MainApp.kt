@@ -11,39 +11,44 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
+import com.chs.youranimelist.di.KoinModule
 import com.chs.youranimelist.domain.model.BrowseInfo
 import com.chs.youranimelist.presentation.bottom.BottomBar
 import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
+import org.koin.compose.KoinApplication
+import org.koin.plugin.module.dsl.koinConfiguration
 
 @Composable
 fun MainApp(onBrowse: (BrowseInfo) -> Unit) {
-    val backStack: SnapshotStateList<MainScreen> = remember { mutableStateListOf(MainScreen.Home) }
-    var currentSearchQuery by remember { mutableStateOf("") }
+    KoinApplication(koinConfiguration<KoinModule>()) {
+        val backStack: SnapshotStateList<MainScreen> = remember { mutableStateListOf(MainScreen.Home) }
+        var currentSearchQuery by remember { mutableStateOf("") }
 
-    LaunchedEffect(backStack.last()) {
-        if (backStack.last() != MainScreen.Search) {
-            currentSearchQuery = ""
+        LaunchedEffect(backStack.last()) {
+            if (backStack.last() != MainScreen.Search) {
+                currentSearchQuery = ""
+            }
         }
-    }
 
-    YourAnimeListTheme {
-        Scaffold(
-            topBar = {
-                AppBar(
+        YourAnimeListTheme {
+            Scaffold(
+                topBar = {
+                    AppBar(
+                        backStack = backStack,
+                        onSearch = { currentSearchQuery = it }
+                    )
+                },
+                bottomBar = {
+                    BottomBar(backStack = backStack)
+                },
+            ) {
+                MainNavHost(
                     backStack = backStack,
-                    onSearch = { currentSearchQuery = it }
+                    modifier = Modifier.padding(it),
+                    searchQuery = currentSearchQuery,
+                    browseInfo = onBrowse
                 )
-            },
-            bottomBar = {
-                BottomBar(backStack = backStack)
-            },
-        ) {
-            MainNavHost(
-                backStack = backStack,
-                modifier = Modifier.padding(it),
-                searchQuery = currentSearchQuery,
-                browseInfo = onBrowse
-            )
+            }
         }
     }
 }
