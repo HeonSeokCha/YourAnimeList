@@ -12,13 +12,13 @@ versionName = "1.0"
 
 activity = "1.13.0"
 room = "2.8.4"
-coil = "3.4.0"
-kotlin = "2.3.21"
+coil = "3.5.0"
+kotlin = "2.4.0"
 ksp = "2.3.6"
-koin = "4.2.1"
+koin = "4.2.2"
 kotlin-coroutine = "1.11.0"
-ktor = "3.5.0"
-apollo = "4.4.3"
+ktor = "3.5.1"
+apollo = "5.0.0"
 compose-plugin = "1.11.1"
 sqlite = "2.6.2"
 lifecycle = "2.10.0"
@@ -69,7 +69,7 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ## Apollo
 apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo" }
 apollo-api = { module = "com.apollographql.apollo:apollo-api", version.ref = "apollo" }
-apollo-normal-cache = { module = "com.apollographql.apollo:apollo-normalized-cache", version.ref = "apollo" }
+apollo-normal-cache = "com.apollographql.cache:normalized-cache:1.0.5"
 apollo-ktor = "com.apollographql.ktor:apollo-engine-ktor:0.1.1"
 
 ## Coil
@@ -131,4 +131,4 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 room = { id = "androidx.room", version.ref = "room" }
-koin-compiler = "io.insert-koin.compiler.plugin:1.0.0"
+koin-compiler = "io.insert-koin.compiler.plugin:1.0.1"

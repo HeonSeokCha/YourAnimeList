@@ -16,6 +16,8 @@ plugins {
 apollo {
     service("anilist") {
         packageName.set("com.chs.youranimelist.data")
+        plugin("com.apollographql.cache:normalized-cache-apollo-compiler-plugin:1.0.5")
+        pluginArgument("com.apollographql.cache.packageName", packageName.get())
     }
 }
 

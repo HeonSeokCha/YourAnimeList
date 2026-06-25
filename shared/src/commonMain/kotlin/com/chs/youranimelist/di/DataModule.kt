@@ -1,9 +1,9 @@
 package com.chs.youranimelist.di
 
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.cache.normalized.api.MemoryCacheFactory
-import com.apollographql.apollo.cache.normalized.normalizedCache
+import com.apollographql.cache.normalized.memory.MemoryCacheFactory
 import com.apollographql.ktor.ktorClient
+import com.chs.youranimelist.data.cache.Cache.cache
 import com.chs.youranimelist.data.source.CustomHttpLogger
 import com.chs.youranimelist.data.source.JikanService
 import com.chs.youranimelist.data.source.db.AnimeListDatabase
@@ -55,7 +55,7 @@ class DataModule {
         return ApolloClient.Builder()
             .serverUrl(Constants.ANILIST_API_URL)
             .ktorClient(httpClient)
-            .normalizedCache(cache)
+            .cache(cache)
             .build()
     }
 
