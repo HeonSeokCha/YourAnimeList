@@ -1,9 +1,9 @@
 package com.chs.youranimelist.data.source.db.dao
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Upsert
+import androidx.room3.Delete
+import androidx.room3.Insert
+import androidx.room3.OnConflictStrategy
+import androidx.room3.Upsert
 
 interface BaseDao<T> {
 

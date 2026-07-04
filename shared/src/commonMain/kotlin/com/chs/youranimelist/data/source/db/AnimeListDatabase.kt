@@ -1,8 +1,8 @@
 package com.chs.youranimelist.data.source.db
 
-import androidx.room.ConstructedBy
-import androidx.room.Database
-import androidx.room.RoomDatabase
+import androidx.room3.ConstructedBy
+import androidx.room3.Database
+import androidx.room3.RoomDatabase
 import com.chs.youranimelist.data.source.db.dao.AnimeListDao
 import com.chs.youranimelist.data.source.db.dao.CharaListDao
 import com.chs.youranimelist.data.source.db.dao.GenreDao

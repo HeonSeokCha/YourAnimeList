@@ -1,6 +1,6 @@
 package com.chs.youranimelist.di
 
-import androidx.room.Room
+import androidx.room3.Room
 import com.chs.youranimelist.data.source.db.AnimeListDatabase
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.darwin.Darwin

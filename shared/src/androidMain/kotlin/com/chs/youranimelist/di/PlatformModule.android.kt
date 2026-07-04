@@ -1,7 +1,7 @@
 package com.chs.youranimelist.di
 
 import android.content.Context
-import androidx.room.Room
+import androidx.room3.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.chs.youranimelist.data.source.db.AnimeListDatabase
 import io.ktor.client.engine.HttpClientEngine

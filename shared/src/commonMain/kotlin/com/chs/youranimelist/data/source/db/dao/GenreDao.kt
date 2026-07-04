@@ -1,7 +1,7 @@
 package com.chs.youranimelist.data.source.db.dao
 
-import androidx.room.Dao
-import androidx.room.Query
+import androidx.room3.Dao
+import androidx.room3.Query
 import com.chs.youranimelist.data.source.db.entity.GenreEntity
 
 @Dao

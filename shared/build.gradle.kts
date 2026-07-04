@@ -53,7 +53,6 @@ kotlin {
                 implementation(libs.ktor.client.android)
                 implementation(libs.koin.android)
                 implementation(libs.koin.compose)
-                implementation(libs.room.runtime.android)
             }
         }
 
@@ -129,7 +128,7 @@ ksp {
     arg("KOIN_USE_COMPOSE_VIEWMODEL","true")
 }
 
-room {
+room3 {
     schemaDirectory("$projectDir/schemas")
 }
 
