@@ -21,7 +21,7 @@ fun ShimmerImage(
     color: Color = Color.LightGray
 ) {
     val context = LocalPlatformContext.current
-    var isLoading by remember { mutableStateOf(true) }
+    var isLoading by remember { mutableStateOf(false) }
     AsyncImage(
         modifier = modifier
             .shimmer(visible = isLoading),
@@ -32,6 +32,7 @@ fun ShimmerImage(
             .build(),
         contentDescription = null,
         contentScale = ContentScale.Crop,
+        onLoading = { isLoading = true },
         onSuccess = { isLoading = false },
         onError = { isLoading = false },
         error = ColorPainter(Color.LightGray)

@@ -387,6 +387,7 @@ private fun CharacterDescription(
 ) {
     Column(
         modifier = Modifier
+            .fillMaxWidth()
             .padding(bottom = 16.dp)
             .animateContentSize(
                 animationSpec = spring(

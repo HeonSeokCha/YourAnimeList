@@ -3,6 +3,8 @@ package com.chs.youranimelist.presentation.browse
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -161,6 +163,7 @@ fun BrowseNavHost(
                     parametersOf(key.filter)
                 }
                 SortedListScreenRoot(
+                    modifier = Modifier.systemBarsPadding(),
                     viewModel = viewmodel,
                     onClickAnime = { id, idMal ->
                         backStack.add(
