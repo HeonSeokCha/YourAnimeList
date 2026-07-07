@@ -35,7 +35,7 @@ class SortedViewModel(
         .onStart { initFilterList() }
         .stateIn(
             viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
+            SharingStarted.Eagerly,
             _state.value
         )
 
@@ -48,7 +48,6 @@ class SortedViewModel(
 
     private val _effect: Channel<SortEffect> = Channel(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
-
 
     fun handleIntent(intent: SortIntent) {
         when (intent) {

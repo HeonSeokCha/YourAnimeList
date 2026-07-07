@@ -40,7 +40,7 @@ class StudioDetailViewModel(
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            StudioDetailState()
+            _state.value
         )
 
     val pagingData = sortState

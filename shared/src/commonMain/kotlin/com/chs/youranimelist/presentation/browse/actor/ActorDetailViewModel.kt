@@ -35,7 +35,7 @@ class ActorDetailViewModel(
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            ActorDetailState()
+            _state.value
         )
     private val sortState = MutableStateFlow(SortType.NEWEST)
 
