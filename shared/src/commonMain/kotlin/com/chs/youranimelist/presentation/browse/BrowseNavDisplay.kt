@@ -24,6 +24,7 @@ import com.chs.youranimelist.presentation.browse.anime.AnimeDetailScreenRoot
 import com.chs.youranimelist.presentation.browse.anime.AnimeDetailViewModel
 import com.chs.youranimelist.presentation.browse.character.CharacterDetailScreenRoot
 import com.chs.youranimelist.presentation.browse.character.CharacterDetailViewModel
+import com.chs.youranimelist.presentation.browse.sortList.BrowseSortedListScreen
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailScreenRoot
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailViewModel
 import com.chs.youranimelist.presentation.sortList.SortedListScreenRoot
@@ -108,7 +109,7 @@ fun BrowseNavHost(
                             )
                         )
                     },
-                    onLinkClick = { url -> onLinkClick(url) },
+                    onLinkClick = onLinkClick,
                     onTagClick = { tag ->
                         backStack.add(BrowseScreen.SortList(SortFilter(selectTags = listOf(tag))))
                     }
@@ -122,26 +123,16 @@ fun BrowseNavHost(
                 CharacterDetailScreenRoot(
                     viewModel = viewmodel,
                     onAnimeClick = { id: Int, idMal: Int ->
-                        backStack.add(
-                            BrowseScreen.AnimeDetail(id = id, idMal = idMal)
-                        )
+                        backStack.add(BrowseScreen.AnimeDetail(id = id, idMal = idMal))
                     },
                     onCharaClick = { id ->
-                        backStack.add(
-                            BrowseScreen.CharacterDetail(id = id)
-                        )
+                        backStack.add(BrowseScreen.CharacterDetail(id = id))
                     },
                     onVoiceActorClick = { id ->
-                        backStack.add(
-                            BrowseScreen.ActorDetail(id = id)
-                        )
+                        backStack.add(BrowseScreen.ActorDetail(id = id))
                     },
-                    onLinkClick = { url ->
-                        onLinkClick(url)
-                    },
-                    onCloseClick = {
-                        onClose()
-                    }
+                    onLinkClick = onLinkClick,
+                    onCloseClick = onClose
                 )
             }
 
@@ -154,7 +145,8 @@ fun BrowseNavHost(
                     viewModel = viewmodel,
                     onAnimeClick = { id, idMal ->
                         backStack.add(BrowseScreen.AnimeDetail(id = id, idMal = idMal))
-                    }, onCloseClick = { onClose() }
+                    },
+                    onCloseClick = onClose
                 )
             }
 
@@ -162,14 +154,14 @@ fun BrowseNavHost(
                 val viewmodel: SortedViewModel = koinViewModel {
                     parametersOf(key.filter)
                 }
-                SortedListScreenRoot(
-                    modifier = Modifier.systemBarsPadding(),
+                BrowseSortedListScreen(
                     viewModel = viewmodel,
                     onClickAnime = { id, idMal ->
                         backStack.add(
                             BrowseScreen.AnimeDetail(id = id, idMal = idMal)
                         )
-                    }
+                    },
+                    onCloseClick = onClose
                 )
             }
 
@@ -180,21 +172,13 @@ fun BrowseNavHost(
                 ActorDetailScreenRoot(
                     viewModel = viewModel,
                     onAnimeClick = { id, idMal ->
-                        backStack.add(
-                            BrowseScreen.AnimeDetail(id = id, idMal = idMal)
-                        )
+                        backStack.add(BrowseScreen.AnimeDetail(id = id, idMal = idMal))
                     },
                     onCharaClick = { id ->
-                        backStack.add(
-                            BrowseScreen.CharacterDetail(id)
-                        )
+                        backStack.add(BrowseScreen.CharacterDetail(id))
                     },
-                    onLinkClick = { url ->
-                        onLinkClick(url)
-                    },
-                    onCloseClick = {
-                        onClose()
-                    }
+                    onLinkClick = onLinkClick,
+                    onCloseClick = onClose
                 )
             }
         }

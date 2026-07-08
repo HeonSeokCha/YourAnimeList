@@ -1,6 +1,5 @@
 package com.chs.youranimelist.presentation.sortList
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,11 +9,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -57,7 +53,6 @@ import com.chs.youranimelist.presentation.ui.theme.Red500
 
 @Composable
 fun SortedListScreenRoot(
-    modifier: Modifier = Modifier,
     viewModel: SortedViewModel,
     onClickAnime: (Int, Int) -> Unit
 ) {
@@ -74,7 +69,6 @@ fun SortedListScreenRoot(
     }
 
     SortedListScreen(
-        modifier = modifier,
         state = state,
         pagingItems = pagingItems,
         onIntent = viewModel::handleIntent,
@@ -84,7 +78,6 @@ fun SortedListScreenRoot(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SortedListScreen(
-    modifier: Modifier,
     state: SortState,
     pagingItems: LazyPagingItems<AnimeInfo>,
     onIntent: (SortIntent) -> Unit
@@ -133,7 +126,7 @@ fun SortedListScreen(
     }
 
     Scaffold(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize(),
         floatingActionButton = {
             ExtendedFloatingActionButton(
