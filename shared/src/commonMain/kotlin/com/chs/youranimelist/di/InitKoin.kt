@@ -15,10 +15,3 @@ import org.koin.plugin.module.dsl.startKoin
 )
 @Configuration
 class KoinModule
-
-
-fun initKoin(config: KoinAppDeclaration? = null) {
-    startKoin<KoinModule> {
-        config?.invoke(this)
-    }
-}
