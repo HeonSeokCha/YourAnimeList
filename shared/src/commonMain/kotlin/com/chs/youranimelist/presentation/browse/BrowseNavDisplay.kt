@@ -27,6 +27,7 @@ import com.chs.youranimelist.presentation.browse.character.CharacterDetailViewMo
 import com.chs.youranimelist.presentation.browse.sortList.BrowseSortedListScreen
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailScreenRoot
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailViewModel
+import com.chs.youranimelist.presentation.common.YourNavDisplay
 import com.chs.youranimelist.presentation.sortList.SortedListScreenRoot
 import com.chs.youranimelist.presentation.sortList.SortedViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -54,26 +55,9 @@ fun BrowseNavHost(
     val backStack: SnapshotStateList<BrowseScreen> =
         remember { mutableStateListOf(startDestination) }
 
-    NavDisplay(
+    YourNavDisplay(
         modifier = modifier,
         backStack = backStack,
-        onBack = { backStack.removeLastOrNull() },
-        entryDecorators = listOf(
-            rememberSaveableStateHolderNavEntryDecorator(),
-            rememberViewModelStoreNavEntryDecorator()
-        ),
-        transitionSpec = {
-            slideInHorizontally(initialOffsetX = { it }) togetherWith slideOutHorizontally(
-                targetOffsetX = { -it })
-        },
-        popTransitionSpec = {
-            slideInHorizontally(initialOffsetX = { -it }) togetherWith slideOutHorizontally(
-                targetOffsetX = { it })
-        },
-        predictivePopTransitionSpec = {
-            slideInHorizontally(initialOffsetX = { -it }) togetherWith slideOutHorizontally(
-                targetOffsetX = { it })
-        },
         entryProvider = entryProvider {
             entry<BrowseScreen.AnimeDetail> { key ->
                 val viewmodel: AnimeDetailViewModel = koinViewModel {

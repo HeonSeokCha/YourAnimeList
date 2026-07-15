@@ -19,6 +19,7 @@ import com.chs.youranimelist.presentation.bottom.charaList.CharaListScreenRoot
 import com.chs.youranimelist.presentation.bottom.charaList.CharacterListViewModel
 import com.chs.youranimelist.presentation.bottom.home.HomeScreenRoot
 import com.chs.youranimelist.presentation.bottom.home.HomeViewModel
+import com.chs.youranimelist.presentation.common.YourNavDisplay
 import com.chs.youranimelist.presentation.defaultPredictivePopTransitionSpec2
 import com.chs.youranimelist.presentation.search.SearchIntent
 import com.chs.youranimelist.presentation.search.SearchViewModel
@@ -37,16 +38,9 @@ fun MainNavHost(
     searchQuery: String,
     browseInfo: (BrowseInfo) -> Unit
 ) {
-    NavDisplay(
+    YourNavDisplay(
         modifier = modifier,
         backStack = backStack,
-        onBack = { backStack.removeLastOrNull() },
-        entryDecorators = listOf(
-            rememberSaveableStateHolderNavEntryDecorator(),
-            rememberViewModelStoreNavEntryDecorator()
-        ),
-        popTransitionSpec = defaultTransitionSpec(),
-        predictivePopTransitionSpec = defaultPredictivePopTransitionSpec2(),
         entryProvider = entryProvider {
             entry<MainScreen.Home> {
                 val viewModel: HomeViewModel = koinViewModel()
