@@ -1,5 +1,5 @@
 [versions]
-androidStudioGradlePlugin = "9.2.1"
+androidStudioGradlePlugin = "9.3.0"
 
 compileSdkVersion = "37"
 componentsResources = "1.11.1"
@@ -21,7 +21,7 @@ ktor = "3.5.1"
 apollo = "5.0.1"
 compose-plugin = "1.11.1"
 sqlite = "2.7.0"
-lifecycle = "2.10.0"
+lifecycle = "2.11.0"
 nav3Core = "1.1.1"
 android-paging = "3.5.0"
 
@@ -68,7 +68,7 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ## Apollo
 apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo" }
 apollo-api = { module = "com.apollographql.apollo:apollo-api", version.ref = "apollo" }
-apollo-normal-cache = "com.apollographql.cache:normalized-cache:1.0.5"
+apollo-normal-cache = "com.apollographql.cache:normalized-cache:1.0.6"
 apollo-ktor = "com.apollographql.ktor:apollo-engine-ktor:0.1.1"
 
 ## Coil
@@ -130,4 +130,4 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 room = { id = "androidx.room3", version.ref = "room" }
-koin-compiler = "io.insert-koin.compiler.plugin:1.0.1"
+koin-compiler = "io.insert-koin.compiler.plugin:1.0.2"

@@ -16,7 +16,9 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun AppBar(
     backStack: SnapshotStateList<MainScreen>,
-    onSearch: (String) -> Unit
+    onSearch: (String) -> Unit,
+    onNavigateSearch: () -> Unit,
+    onBack: () -> Unit
 ) {
     when (backStack.last()) {
         is MainScreen.SortList -> {
@@ -27,7 +29,7 @@ fun AppBar(
                     navigationIconContentColor = Color.White
                 ),
                 navigationIcon = {
-                    IconButton(onClick = { backStack.removeLastOrNull() }) {
+                    IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
                     }
                 }
@@ -37,7 +39,7 @@ fun AppBar(
         is MainScreen.Search -> {
             SearchAppBar(
                 onSearch = onSearch,
-                onBack = { backStack.removeLastOrNull() },
+                onBack = onBack,
             )
         }
 
@@ -54,11 +56,7 @@ fun AppBar(
                     actionIconContentColor = Color.White
                 ),
                 actions = {
-                    IconButton(
-                        onClick = {
-                            backStack.add(MainScreen.Search)
-                        }
-                    ) {
+                    IconButton(onClick = onNavigateSearch) {
                         Icon(
                             imageVector = Icons.TwoTone.Search,
                             contentDescription = null

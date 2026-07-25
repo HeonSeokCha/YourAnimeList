@@ -10,7 +10,10 @@ import com.chs.youranimelist.presentation.ui.theme.Red500
 import com.chs.youranimelist.presentation.ui.theme.Red700
 
 @Composable
-fun BottomBar(backStack: SnapshotStateList<MainScreen>) {
+fun BottomBar(
+    backStack: SnapshotStateList<MainScreen>,
+    onClick: (MainScreen) -> Unit
+) {
 
     if (BottomNavigation.entries.any { it.route == backStack.last() }) {
         NavigationBar(containerColor = Red200) {
