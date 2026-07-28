@@ -14,7 +14,6 @@ fun BottomBar(
     backStack: SnapshotStateList<MainScreen>,
     onClick: (MainScreen) -> Unit
 ) {
-
     if (BottomNavigation.entries.any { it.route == backStack.last() }) {
         NavigationBar(containerColor = Red200) {
             BottomNavigation.entries.forEach { navItem ->
@@ -27,6 +26,30 @@ fun BottomBar(
                         unselectedTextColor = Red500,
                         indicatorColor = Red200
                     ), onClick = {
+                        when (navItem.route) {
+                            MainScreen.Home -> {
+                                backStack.clear()
+                                backStack.add(MainScreen.Home)
+                            }
+
+                            MainScreen.AnimeList -> {
+                                if (backStack.last() == MainScreen.CharaList) {
+                                    backStack.removeLast()
+                                    return@NavigationBarItem
+                                }
+                                backStack.add(MainScreen.AnimeList)
+                            }
+
+                            MainScreen.CharaList -> {
+                                if (backStack.any { it == MainScreen.AnimeList }) {
+                                    backStack.add(MainScreen.CharaList)
+                                }
+                                backStack.add(MainScreen.AnimeList)
+                                backStack.add(MainScreen.CharaList)
+                            }
+
+                            else -> Unit
+                        }
                         if (navItem.route == MainScreen.Home) {
                             backStack.clear()
                             backStack.add(navItem.route)
