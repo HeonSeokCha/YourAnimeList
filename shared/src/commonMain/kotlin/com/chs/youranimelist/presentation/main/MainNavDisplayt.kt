@@ -1,5 +1,8 @@
 package com.chs.youranimelist.presentation.main
 
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
@@ -9,19 +12,18 @@ import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDe
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import androidx.navigation3.ui.defaultTransitionSpec
 import com.chs.youranimelist.domain.model.BrowseInfo
 import com.chs.youranimelist.domain.model.MediaType
+import com.chs.youranimelist.presentation.NavDirection
 import com.chs.youranimelist.presentation.NavigationTransitionSpec
+import com.chs.youranimelist.presentation.bottom.BottomTopLevelBackStack
 import com.chs.youranimelist.presentation.bottom.animeList.AnimeListScreenRoot
 import com.chs.youranimelist.presentation.bottom.animeList.AnimeListViewModel
 import com.chs.youranimelist.presentation.bottom.charaList.CharaListScreenRoot
 import com.chs.youranimelist.presentation.bottom.charaList.CharacterListViewModel
 import com.chs.youranimelist.presentation.bottom.home.HomeScreenRoot
 import com.chs.youranimelist.presentation.bottom.home.HomeViewModel
-import com.chs.youranimelist.presentation.common.YourNavDisplay
-import com.chs.youranimelist.presentation.defaultPredictivePopTransitionSpec2
-import com.chs.youranimelist.presentation.search.SearchIntent
+import com.chs.youranimelist.presentation.directionalTransform
 import com.chs.youranimelist.presentation.search.SearchViewModel
 import com.chs.youranimelist.presentation.search.SearchScreenRoot
 import com.chs.youranimelist.presentation.sortList.SortedListScreenRoot
@@ -33,14 +35,22 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun MainNavHost(
-    backStack: SnapshotStateList<MainScreen>,
+    backStack: BottomTopLevelBackStack,
     modifier: Modifier = Modifier,
     searchQuery: String,
     browseInfo: (BrowseInfo) -> Unit
 ) {
-    YourNavDisplay(
+    NavDisplay(
         modifier = modifier,
-        backStack = backStack,
+        backStack = backStack.backStack,
+        onBack = { backStack.removeLast() },
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator()
+        ),
+        transitionSpec = { directionalTransform(backStack.direction) },
+        popTransitionSpec = { directionalTransform(backStack.direction) },
+        predictivePopTransitionSpec = { directionalTransform(NavDirection.BACKWARD) },
         entryProvider = entryProvider {
             entry<MainScreen.Home> {
                 val viewModel: HomeViewModel = koinViewModel()

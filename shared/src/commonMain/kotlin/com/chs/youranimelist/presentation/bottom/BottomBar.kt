@@ -25,39 +25,7 @@ fun BottomBar(
                         unselectedIconColor = Red500,
                         unselectedTextColor = Red500,
                         indicatorColor = Red200
-                    ), onClick = {
-                        when (navItem.route) {
-                            MainScreen.Home -> {
-                                backStack.clear()
-                                backStack.add(MainScreen.Home)
-                            }
-
-                            MainScreen.AnimeList -> {
-                                if (backStack.last() == MainScreen.CharaList) {
-                                    backStack.removeLast()
-                                    return@NavigationBarItem
-                                }
-                                backStack.add(MainScreen.AnimeList)
-                            }
-
-                            MainScreen.CharaList -> {
-                                if (backStack.any { it == MainScreen.AnimeList }) {
-                                    backStack.add(MainScreen.CharaList)
-                                }
-                                backStack.add(MainScreen.AnimeList)
-                                backStack.add(MainScreen.CharaList)
-                            }
-
-                            else -> Unit
-                        }
-                        if (navItem.route == MainScreen.Home) {
-                            backStack.clear()
-                            backStack.add(navItem.route)
-                            return@NavigationBarItem
-                        }
-                        backStack.remove(navItem.route)
-                        backStack.add(navItem.route)
-                    },
+                    ), onClick = { onClick(navItem.route) },
                     icon = { Icon(imageVector = navItem.icon, contentDescription = null) },
                     label = { Text(text = navItem.label) }
                 )

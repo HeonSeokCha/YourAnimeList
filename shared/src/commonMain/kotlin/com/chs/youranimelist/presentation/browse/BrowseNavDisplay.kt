@@ -3,8 +3,6 @@ package com.chs.youranimelist.presentation.browse
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -14,7 +12,6 @@ import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDe
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import androidx.navigation3.ui.defaultTransitionSpec
 import com.chs.youranimelist.domain.model.BrowseInfo
 import com.chs.youranimelist.domain.model.MediaType
 import com.chs.youranimelist.domain.model.SortFilter
@@ -27,8 +24,6 @@ import com.chs.youranimelist.presentation.browse.character.CharacterDetailViewMo
 import com.chs.youranimelist.presentation.browse.sortList.BrowseSortedListScreen
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailScreenRoot
 import com.chs.youranimelist.presentation.browse.studio.StudioDetailViewModel
-import com.chs.youranimelist.presentation.common.YourNavDisplay
-import com.chs.youranimelist.presentation.sortList.SortedListScreenRoot
 import com.chs.youranimelist.presentation.sortList.SortedViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -55,9 +50,26 @@ fun BrowseNavHost(
     val backStack: SnapshotStateList<BrowseScreen> =
         remember { mutableStateListOf(startDestination) }
 
-    YourNavDisplay(
+    NavDisplay(
         modifier = modifier,
         backStack = backStack,
+        onBack = { backStack.removeLastOrNull() },
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator()
+        ),
+        transitionSpec = {
+            slideInHorizontally(initialOffsetX = { it }) togetherWith slideOutHorizontally(
+                targetOffsetX = { -it })
+        },
+        popTransitionSpec = {
+            slideInHorizontally(initialOffsetX = { -it }) togetherWith slideOutHorizontally(
+                targetOffsetX = { it })
+        },
+        predictivePopTransitionSpec = {
+            slideInHorizontally(initialOffsetX = { -it }) togetherWith slideOutHorizontally(
+                targetOffsetX = { it })
+        },
         entryProvider = entryProvider {
             entry<BrowseScreen.AnimeDetail> { key ->
                 val viewmodel: AnimeDetailViewModel = koinViewModel {

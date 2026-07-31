@@ -9,12 +9,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import com.chs.youranimelist.di.KoinModule
 import com.chs.youranimelist.domain.model.BrowseInfo
 import com.chs.youranimelist.presentation.bottom.BottomBar
-import com.chs.youranimelist.presentation.bottom.TopLevelBackStack
+import com.chs.youranimelist.presentation.bottom.BottomTopLevelBackStack
 import com.chs.youranimelist.presentation.ui.theme.YourAnimeListTheme
 import org.koin.compose.KoinApplication
 import org.koin.plugin.module.dsl.koinConfiguration
@@ -22,7 +21,7 @@ import org.koin.plugin.module.dsl.koinConfiguration
 @Composable
 fun MainApp(onBrowse: (BrowseInfo) -> Unit) {
     KoinApplication(koinConfiguration<KoinModule>()) {
-        val backStack = remember { TopLevelBackStack<MainScreen>(MainScreen.Home) }
+        val backStack = remember { BottomTopLevelBackStack(MainScreen.Home) }
         var currentSearchQuery by remember { mutableStateOf("") }
 
         LaunchedEffect(backStack.backStack.last()) {
@@ -51,7 +50,7 @@ fun MainApp(onBrowse: (BrowseInfo) -> Unit) {
                 },
             ) {
                 MainNavHost(
-                    backStack = backStack.backStack,
+                    backStack = backStack,
                     modifier = Modifier.padding(it),
                     searchQuery = currentSearchQuery,
                     browseInfo = onBrowse

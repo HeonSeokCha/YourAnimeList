@@ -98,3 +98,21 @@ fun <T : Any> defaultPredictivePopTransitionSpec2():
 fun chsLog(message: String?) {
     println(message)
 }
+
+enum class NavDirection { FORWARD, BACKWARD }
+
+fun directionalTransform(direction: NavDirection): ContentTransform {
+    return if (direction == NavDirection.FORWARD) {
+        slideInHorizontally(
+            initialOffsetX = { it }, animationSpec = tween(300)
+        ) togetherWith slideOutHorizontally(
+            targetOffsetX = { -it }, animationSpec = tween(300)
+        )
+    } else {
+        slideInHorizontally(
+            initialOffsetX = { -it }, animationSpec = tween(300)
+        ) togetherWith slideOutHorizontally(
+            targetOffsetX = { it }, animationSpec = tween(300)
+        )
+    }
+}

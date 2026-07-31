@@ -1,5 +1,5 @@
 [versions]
-androidStudioGradlePlugin = "9.3.0"
+androidStudioGradlePlugin = "9.3.1"
 
 compileSdkVersion = "37"
 componentsResources = "1.11.1"
@@ -11,7 +11,7 @@ versionCode = "1"
 versionName = "1.0"
 
 activity = "1.13.0"
-room = "3.0.0"
+room = "3.0.1"
 coil = "3.5.0"
 kotlin = "2.4.0"
 ksp = "2.3.6"
@@ -130,4 +130,4 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 room = { id = "androidx.room3", version.ref = "room" }
-koin-compiler = "io.insert-koin.compiler.plugin:1.0.2"
+koin-compiler = "io.insert-koin.compiler.plugin:1.1.0"
