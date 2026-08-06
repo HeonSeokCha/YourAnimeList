@@ -119,7 +119,6 @@ android {
     buildFeatures {
         compose = true
     }
-    dependencies {}
 }
 
 ksp {
@@ -145,7 +144,7 @@ dependencies {
 compose.resources {
     publicResClass = false
     packageOfResClass = "com.chs.youranimelist.res"
-    generateResClass = auto
+    generateResClass = always
 }
 
 tasks.matching { it.name.startsWith("ksp") && it.name != "kspCommonMainKotlinMetadata" }.configureEach {
