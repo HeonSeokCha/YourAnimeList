@@ -4,13 +4,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalFlexBoxApi
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlexBox
 import androidx.compose.foundation.layout.FlexDirection
 import androidx.compose.foundation.layout.FlexWrap
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -45,7 +49,7 @@ fun ItemHomeBanner(
     banner: AnimHomeBannerInfo? = null,
     onClick: (Int, Int) -> Unit = { _, _ -> }
 ) {
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(220.dp)
@@ -58,140 +62,145 @@ fun ItemHomeBanner(
                 )
             }
     ) {
-        ShimmerImage(
-            modifier = Modifier
-                .fillMaxWidth(0.4f)
-                .height(220.dp),
-            url = banner?.animeInfo?.imageUrl,
-            color = banner?.animeInfo?.imagePlaceColor?.color() ?: Color.LightGray
-        )
-
         Box(
             modifier = Modifier
                 .fillMaxWidth(0.4f)
-                .fillMaxHeight(0.3f)
-                .align(Alignment.BottomStart)
-                .background(Color.Black.copy(alpha = 0.6f))
+        ) {
+            ShimmerImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(220.dp),
+                url = banner?.animeInfo?.imageUrl,
+                color = banner?.animeInfo?.imagePlaceColor?.color() ?: Color.LightGray
+            )
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.3f)
+                    .align(Alignment.BottomStart)
+                    .background(Color.Black.copy(alpha = 0.6f))
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.TopStart)
+                        .shimmer(visible = banner == null),
+                    text = banner?.animeInfo?.title ?: UiConst.TITLE_PREVIEW,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 11.5.sp,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
+                    lineHeight = 14.sp
+                )
+
+                Text(
+                    modifier = Modifier
+                        .padding(
+                            start = 8.dp,
+                            top = 8.dp,
+                        )
+                        .align(Alignment.BottomStart)
+                        .shimmer(visible = banner == null),
+                    text = banner?.studioTitle ?: UiConst.TITLE_PREVIEW,
+                    color = banner?.animeInfo?.imagePlaceColor?.color() ?: Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 11.sp,
+                    maxLines = 1, overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
         ) {
             Text(
                 modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.TopStart)
                     .shimmer(visible = banner == null),
-                text = banner?.animeInfo?.title ?: UiConst.TITLE_PREVIEW,
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 11.5.sp,
-                maxLines = 3,
+                text = "${banner?.episode ?: 0} Episodes aired on",
+                fontSize = 12.sp
+            )
+
+            Text(
+                modifier = Modifier
+                    .shimmer(visible = banner == null),
+                text = banner?.startDate ?: "",
+                fontSize = 12.sp
+            )
+
+            val desc = banner?.description ?: UiConst.TITLE_PREVIEW
+            Text(
+                modifier = Modifier
+                    .shimmer(visible = banner == null),
+                text = remember(desc) { htmlToAnnotatedString(desc) },
+                fontSize = 12.sp,
+                maxLines = 7,
                 overflow = TextOverflow.Ellipsis,
                 lineHeight = 14.sp
             )
 
-            Text(
-                modifier = Modifier
-                    .padding(
-                        start = 8.dp,
-                        top = 8.dp,
-                    )
-                    .align(Alignment.BottomStart)
-                    .shimmer(visible = banner == null),
-                text = banner?.studioTitle ?: UiConst.TITLE_PREVIEW,
-                color = banner?.animeInfo?.imagePlaceColor?.color() ?: Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 11.sp,
-                maxLines = 1, overflow = TextOverflow.Ellipsis
-            )
-        }
+            Spacer(modifier = Modifier.height(16.dp))
 
-
-        if (banner?.genres != null) {
-            FlowRow(
+            FlexBox(
                 modifier = Modifier
-                    .fillMaxWidth(0.6f)
-                    .height(48.dp)
-                    .padding(start = 2.dp)
-                    .align(Alignment.BottomEnd),
-                verticalArrangement = Arrangement.Center
+                    .height(48.dp),
+                config = {
+                    direction(FlexDirection.Row)
+                    wrap(FlexWrap.Wrap)
+                    gap(4.dp)
+                }
             ) {
-                banner.genres.forEach { genre ->
-                    SuggestionChip(
-                        modifier = Modifier
-                            .height(24.dp)
-                            .padding(horizontal = 2.dp),
-                        onClick = {
-                            onClick(
-                                banner.animeInfo.id,
-                                banner.animeInfo.idMal
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = genre ?: "Unknown",
-                                fontSize = 12.sp
-                            )
-                        }, colors = AssistChipDefaults.assistChipColors(
-                            containerColor = GENRE_COLOR[genre]?.color() ?: Color.Black,
-                            labelColor = Color.White
-                        ), border = AssistChipDefaults.assistChipBorder(
-                            enabled = true,
-                            borderColor = GENRE_COLOR[genre]?.color() ?: Color.Black
-                        ),
-                        shape = RoundedCornerShape(16.dp)
-                    )
+                if (banner?.genres == null) {
+                    repeat(2) {
+                        SuggestionChip(
+                            modifier = Modifier
+                                .height(24.dp)
+                                .shimmer(true)
+                                .padding(horizontal = 2.dp),
+                            onClick = {},
+                            label = {},
+                            colors = AssistChipDefaults.assistChipColors(
+                                containerColor = Color.LightGray,
+                                labelColor = Color.White
+                            ), border = AssistChipDefaults.assistChipBorder(
+                                enabled = true,
+                                borderColor = Color.LightGray
+                            ),
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                    }
+                } else {
+                    banner.genres.forEach { genre ->
+                        SuggestionChip(
+                            modifier = Modifier
+                                .height(24.dp)
+                                .padding(horizontal = 2.dp),
+                            onClick = {
+                                onClick(
+                                    banner.animeInfo.id,
+                                    banner.animeInfo.idMal
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = genre ?: "Unknown",
+                                    fontSize = 12.sp
+                                )
+                            }, colors = AssistChipDefaults.assistChipColors(
+                                containerColor = GENRE_COLOR[genre]?.color() ?: Color.Black,
+                                labelColor = Color.White
+                            ), border = AssistChipDefaults.assistChipBorder(
+                                enabled = true,
+                                borderColor = GENRE_COLOR[genre]?.color() ?: Color.Black
+                            ),
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                    }
                 }
             }
         }
-
-        if (banner?.episode != 0) {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(0.6f)
-                    .padding(
-                        start = 4.dp,
-                        end = 4.dp,
-                        top = 8.dp,
-                        bottom = 4.dp
-                    )
-                    .align(Alignment.TopEnd)
-                    .shimmer(visible = banner == null),
-                text = "${banner?.episode} Episodes aired on",
-                fontSize = 12.sp
-            )
-        }
-
-        Text(
-            modifier = Modifier
-                .fillMaxWidth(0.6f)
-                .padding(
-                    start = 4.dp,
-                    end = 4.dp,
-                    top = 32.dp,
-                    bottom = 4.dp
-                )
-                .align(Alignment.TopEnd)
-                .shimmer(visible = banner == null),
-            text = banner?.startDate ?: "",
-            fontSize = 12.sp
-        )
-
-        val desc = banner?.description ?: UiConst.TITLE_PREVIEW
-        Text(
-            modifier = Modifier
-                .fillMaxWidth(0.6f)
-                .padding(
-                    start = 4.dp,
-                    end = 4.dp,
-                    top = 64.dp,
-                    bottom = 4.dp
-                )
-                .align(Alignment.TopEnd)
-                .shimmer(visible = banner == null),
-            text = remember(desc) { htmlToAnnotatedString(desc) },
-            fontSize = 12.sp,
-            maxLines = 5,
-            overflow = TextOverflow.Ellipsis,
-            lineHeight = 14.sp
-        )
     }
 }
 
