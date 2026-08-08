@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.chs.youranimelist.data.mapper.toAnimeSavedInfo
 import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.AnimeSavedInfo
 import com.chs.youranimelist.domain.model.SeasonType
 import com.chs.youranimelist.util.onError
 import com.chs.youranimelist.util.onSuccess
@@ -181,9 +183,9 @@ class AnimeDetailViewModel(
     private fun handleSavedAnime(anime: AnimeInfo) {
         viewModelScope.launch {
             if (_state.value.isSave) {
-                deleteAnimeUseCase(anime)
+                deleteAnimeUseCase(anime.toAnimeSavedInfo())
             } else {
-                insertAnimeUseCase(anime)
+                insertAnimeUseCase(anime.toAnimeSavedInfo())
             }
         }
     }

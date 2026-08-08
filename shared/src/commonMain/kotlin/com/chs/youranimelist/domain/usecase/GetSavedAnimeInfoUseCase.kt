@@ -1,6 +1,6 @@
 package com.chs.youranimelist.domain.usecase
 
-import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.AnimeSavedInfo
 import com.chs.youranimelist.domain.repository.AnimeRepository
 import kotlinx.coroutines.flow.Flow
 import org.koin.core.annotation.Single
@@ -9,7 +9,7 @@ import org.koin.core.annotation.Single
 class GetSavedAnimeInfoUseCase(
     private val repository: AnimeRepository
 ) {
-    operator fun invoke(id: Int): Flow<AnimeInfo?> {
+    operator fun invoke(id: Int): Flow<AnimeSavedInfo?> {
         return repository.getSavedMediaInfo(id)
     }
 }

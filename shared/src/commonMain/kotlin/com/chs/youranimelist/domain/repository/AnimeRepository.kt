@@ -3,15 +3,17 @@ package com.chs.youranimelist.domain.repository
 import androidx.paging.PagingData
 import com.chs.youranimelist.domain.model.AnimeDetailInfo
 import com.chs.youranimelist.domain.model.AnimeInfo
+import com.chs.youranimelist.domain.model.AnimeSavedInfo
 import com.chs.youranimelist.domain.model.AnimeRecommendList
 import com.chs.youranimelist.domain.model.AnimeThemeInfo
+import com.chs.youranimelist.domain.model.BaseAnimeInfo
 import com.chs.youranimelist.domain.model.SeasonType
 import com.chs.youranimelist.util.DataError
 import com.chs.youranimelist.util.DataResult
 import com.chs.youranimelist.domain.model.SortFilter
 import kotlinx.coroutines.flow.Flow
 
-interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
+interface AnimeRepository : BaseMediaRepository<AnimeSavedInfo> {
 
     suspend fun getAnimeRecommendList(
         currentSeason: SeasonType,
@@ -34,11 +36,11 @@ interface AnimeRepository : BaseMediaRepository<AnimeInfo> {
 
     suspend fun getSavedTagList(): List<Pair<String, String?>>
 
-    override fun getSavedMediaInfoList(): Flow<List<AnimeInfo>>
+    override fun getSavedMediaInfoList(): Flow<List<AnimeSavedInfo>>
 
-    override suspend fun deleteMediaInfo(info: AnimeInfo)
+    override suspend fun deleteMediaInfo(info: AnimeSavedInfo)
 
-    override fun getSavedMediaInfo(id: Int): Flow<AnimeInfo?>
+    override fun getSavedMediaInfo(id: Int): Flow<AnimeSavedInfo?>
 
-    override suspend fun insertMediaInfo(info: AnimeInfo)
+    override suspend fun insertMediaInfo(info: AnimeSavedInfo)
 }

@@ -17,7 +17,7 @@ kotlin = "2.4.0"
 ksp = "2.3.6"
 koin = "4.2.2"
 kotlin-coroutine = "1.11.0"
-ktor = "3.5.1"
+ktor = "3.5.2"
 apollo = "5.0.1"
 compose-plugin = "1.11.1"
 sqlite = "2.7.0"
@@ -31,7 +31,7 @@ androidX-activity-compose = { module = "androidx.activity:activity-compose", ver
 components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "componentsResources" }
 foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "foundation" }
 jetbrain-compose-material-icon-extend = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
-jetbrain-matreial3 = "org.jetbrains.compose.material3:material3:1.11.0-alpha07"
+jetbrain-matreial3 = "org.jetbrains.compose.material3:material3:1.12.0-alpha03"
 lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
 lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 lifecycle-viewmodel-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }

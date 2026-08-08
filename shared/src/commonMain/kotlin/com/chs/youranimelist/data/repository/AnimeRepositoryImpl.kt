@@ -34,6 +34,7 @@ import com.chs.youranimelist.data.mapper.toAnimeEntity
 import com.chs.youranimelist.data.mapper.toAnimeInfo
 import com.chs.youranimelist.data.mapper.toAnimeRecommendList
 import com.chs.youranimelist.data.mapper.toAnimeThemeInfo
+import com.chs.youranimelist.domain.model.AnimeSavedInfo
 import com.chs.youranimelist.domain.model.SeasonType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -151,7 +152,7 @@ class AnimeRepositoryImpl(
     }
 
 
-    override fun getSavedMediaInfoList(): Flow<List<AnimeInfo>> {
+    override fun getSavedMediaInfoList(): Flow<List<AnimeSavedInfo>> {
         return animeDao.getAllAnimeList().map {
             it.map { animeEntity ->
                 animeEntity.toAnimeInfo()
@@ -159,17 +160,17 @@ class AnimeRepositoryImpl(
         }
     }
 
-    override fun getSavedMediaInfo(id: Int): Flow<AnimeInfo?> {
+    override fun getSavedMediaInfo(id: Int): Flow<AnimeSavedInfo?> {
         return animeDao.checkAnimeList(id).map {
             it?.toAnimeInfo()
         }
     }
 
-    override suspend fun insertMediaInfo(info: AnimeInfo) {
+    override suspend fun insertMediaInfo(info: AnimeSavedInfo) {
         animeDao.insert(info.toAnimeEntity())
     }
 
-    override suspend fun deleteMediaInfo(info: AnimeInfo) {
+    override suspend fun deleteMediaInfo(info: AnimeSavedInfo) {
         animeDao.delete(info.toAnimeEntity())
     }
 

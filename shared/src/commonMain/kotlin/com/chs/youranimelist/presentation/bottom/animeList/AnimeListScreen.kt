@@ -12,6 +12,7 @@ import com.chs.youranimelist.domain.model.MediaType
 import com.chs.youranimelist.presentation.UiConst
 import com.chs.youranimelist.presentation.common.ItemNoResultImage
 import com.chs.youranimelist.presentation.common.ItemAnimeLarge
+import com.chs.youranimelist.presentation.common.ItemAnimeSaved
 
 @Composable
 fun AnimeListScreenRoot(
@@ -67,7 +68,7 @@ fun AnimeListScreen(
                     items = state.list,
                     key = { it.id }
                 ) { animeInfo ->
-                    ItemAnimeLarge(anime = animeInfo) {
+                    ItemAnimeSaved(anime = animeInfo) {
                         onIntent(
                             AnimeListIntent.ClickAnime(
                                 id = animeInfo.id,

@@ -11,6 +11,7 @@ import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.AnimHomeBannerInfo
 import com.chs.youranimelist.domain.model.AnimeRecommendList
 import com.chs.youranimelist.domain.model.AnimeRelationInfo
+import com.chs.youranimelist.domain.model.AnimeSavedInfo
 import com.chs.youranimelist.domain.model.AnimeThemeInfo
 import com.chs.youranimelist.domain.model.CharacterInfo
 import com.chs.youranimelist.domain.model.StudioInfo
@@ -131,7 +132,19 @@ fun JikanAnimeDataDto.toAnimeThemeInfo(): AnimeThemeInfo {
     )
 }
 
-fun AnimeInfo.toAnimeEntity(): AnimeEntity {
+fun AnimeInfo.toAnimeSavedInfo(): AnimeSavedInfo {
+    return AnimeSavedInfo(
+        id = this.id,
+        idMal = this.idMal,
+        title = this.title,
+        imageUrl = this.imageUrl,
+        imagePlaceColor = this.imagePlaceColor,
+        averageScore = this.averageScore,
+        favourites = this.favourites
+    )
+}
+
+fun AnimeSavedInfo.toAnimeEntity(): AnimeEntity {
     return AnimeEntity(
         id = this.id,
         idMal = this.idMal,
@@ -139,26 +152,18 @@ fun AnimeInfo.toAnimeEntity(): AnimeEntity {
         imageUrl = this.imageUrl,
         imagePlaceColor = this.imagePlaceColor,
         averageScore = this.averageScore,
-        season = this.season,
-        seasonYear = this.seasonYear,
-        favourites = this.favourites,
-        status = this.status,
-        format = this.format
+        favourites = this.favourites
     )
 }
 
-fun AnimeEntity.toAnimeInfo(): AnimeInfo {
-    return AnimeInfo(
+fun AnimeEntity.toAnimeInfo(): AnimeSavedInfo {
+    return AnimeSavedInfo(
         id = this.id,
         idMal = this.idMal,
         title = this.title,
         imageUrl = this.imageUrl,
         imagePlaceColor = this.imagePlaceColor,
         averageScore = this.averageScore,
-        season = this.season,
-        seasonYear = this.seasonYear,
-        favourites = this.favourites,
-        status = this.status,
-        format = this.format
+        favourites = this.favourites
     )
 }

@@ -14,10 +14,6 @@ data class AnimeEntity @OptIn(ExperimentalTime::class) constructor(
     val imageUrl: String?,
     val imagePlaceColor: String?,
     val averageScore: Int,
-    val season: String,
-    val seasonYear: Int,
     val favourites: Int,
-    val format: String,
-    val status: String,
     val createDate: Long = Clock.System.now().toEpochMilliseconds()
 )
