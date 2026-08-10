@@ -190,7 +190,7 @@ fun AnimeDetailScreen(
 @Composable
 private fun AnimeDetailHeadBanner(
     info: AnimeDetailInfo?,
-    isAnimeSave: Boolean,
+    isAnimeSave: Boolean?,
     onIntent: (AnimeDetailIntent) -> Unit
 ) {
     Box(

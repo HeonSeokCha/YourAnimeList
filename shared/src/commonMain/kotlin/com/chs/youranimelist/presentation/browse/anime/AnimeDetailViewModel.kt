@@ -181,8 +181,9 @@ class AnimeDetailViewModel(
     }
 
     private fun handleSavedAnime(anime: AnimeInfo) {
+        if (_state.value.isSave == null) return
         viewModelScope.launch {
-            if (_state.value.isSave) {
+            if (_state.value.isSave!!) {
                 deleteAnimeUseCase(anime.toAnimeSavedInfo())
             } else {
                 insertAnimeUseCase(anime.toAnimeSavedInfo())

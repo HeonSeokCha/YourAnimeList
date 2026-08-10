@@ -7,7 +7,7 @@ data class AnimeDetailState(
     val animeDetailInfo: AnimeDetailInfo? = null,
     val animeThemes: AnimeThemeInfo = AnimeThemeInfo(),
     val selectTabIdx: Int = 0,
-    val isSave: Boolean = false,
+    val isSave: Boolean? = null,
     val isShowDialog: Boolean = false,
     val dialogText: String = "",
     val isDescExpand: Boolean = false,
