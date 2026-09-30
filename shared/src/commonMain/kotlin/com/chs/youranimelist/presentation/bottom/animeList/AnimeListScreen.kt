@@ -53,7 +53,7 @@ fun AnimeListScreen(
         when {
             state.isLoading -> {
                 items(UiConst.BANNER_SIZE) {
-                    ItemAnimeLarge()
+                    ItemAnimeSaved()
                 }
             }
 
