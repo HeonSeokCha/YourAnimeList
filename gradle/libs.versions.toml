@@ -2,9 +2,9 @@
 androidStudioGradlePlugin = "9.4.1"
 
 compileSdkVersion = "37"
-componentsResources = "1.12.1"
-foundation = "1.12.1"
-uiToolingPreview = "1.12.1"
+componentsResources = "1.12.2"
+foundation = "1.12.2"
+uiToolingPreview = "1.12.2"
 minSdkVersion = "29"
 targetSdkVersion = "36"
 versionCode = "1"
@@ -13,17 +13,17 @@ versionName = "1.0"
 activity = "1.13.0"
 room = "3.0.3"
 coil = "3.6.3"
-kotlin = "2.4.20"
+kotlin = "2.4.21"
 ksp = "2.3.12"
 koin = "4.2.2"
 kotlin-coroutine = "1.11.0"
 ktor = "3.6.0"
 apollo = "5.2.0"
-compose-plugin = "1.12.1"
+compose-plugin = "1.12.2"
 sqlite = "2.7.1"
 lifecycle = "2.11.0"
 nav3Core = "1.1.2"
-android-paging = "3.5.1"
+android-paging = "3.5.3"
 
 [libraries]
 # AndroidX
@@ -55,7 +55,7 @@ koin-annotation = { module = "io.insert-koin:koin-annotations", version.ref = "k
 
 ## Kotlin
 kotlin-coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutine" }
-kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0"
+kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.12.0"
 
 ## Ktor
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
@@ -69,7 +69,7 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo" }
 apollo-api = { module = "com.apollographql.apollo:apollo-api", version.ref = "apollo" }
 apollo-normal-cache = "com.apollographql.cache:normalized-cache:1.0.9"
-apollo-ktor = "com.apollographql.ktor:apollo-engine-ktor:0.1.1"
+apollo-ktor = "com.apollographql.ktor:apollo-engine-ktor:1.0.0-alpha.0"
 
 ## Coil
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
