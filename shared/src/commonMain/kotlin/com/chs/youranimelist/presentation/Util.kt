@@ -11,7 +11,6 @@ import kotlin.time.Instant
 
 object Util {
 
-    @OptIn(ExperimentalTime::class)
     fun getCurrentSeason(): SeasonType {
         val now: Instant = Clock.System.now()
         val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
@@ -25,7 +24,6 @@ object Util {
         }
     }
 
-    @OptIn(ExperimentalTime::class)
     fun getNextSeason(): SeasonType {
         val now: Instant = Clock.System.now()
         val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
@@ -38,14 +36,12 @@ object Util {
         }
     }
 
-    @OptIn(ExperimentalTime::class)
     fun getVariationYear(): Int {
         val now: Instant = Clock.System.now()
         val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
         return if (today.month in Month.OCTOBER..Month.DECEMBER) today.year + 1 else today.year
     }
 
-    @OptIn(ExperimentalTime::class)
     fun getCurrentYear(): Int {
         val now: Instant = Clock.System.now()
         val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date

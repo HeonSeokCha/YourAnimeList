@@ -144,7 +144,7 @@ class AnimeDetailViewModel(
 
     private suspend fun initInfo() {
         getAnimeDetailInfo(animeId)
-        getAnimeTheme(animeMalId)
+//        getAnimeTheme(animeMalId)
         isSaveAnime(animeId)
     }
 
@@ -155,6 +155,8 @@ class AnimeDetailViewModel(
                     it.copy(animeDetailInfo = info)
                 }
             }.onError {
+                it
+                Unit
             }
     }
 
@@ -167,6 +169,7 @@ class AnimeDetailViewModel(
                     it.copy(animeThemes = success)
                 }
             }.onError { error ->
+                error
             }
     }
 
