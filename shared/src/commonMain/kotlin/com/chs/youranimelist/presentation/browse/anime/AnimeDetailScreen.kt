@@ -96,7 +96,6 @@ fun AnimeDetailScreenRoot(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimeDetailScreen(
     state: AnimeDetailState,

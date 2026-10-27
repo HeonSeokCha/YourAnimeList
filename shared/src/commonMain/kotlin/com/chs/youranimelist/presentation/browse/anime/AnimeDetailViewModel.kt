@@ -131,6 +131,7 @@ class AnimeDetailViewModel(
                     )
                 }
             }
+
             is AnimeDetailIntent.LongClickTag -> {
                 _state.update {
                     it.copy(
@@ -144,7 +145,7 @@ class AnimeDetailViewModel(
 
     private suspend fun initInfo() {
         getAnimeDetailInfo(animeId)
-//        getAnimeTheme(animeMalId)
+        getAnimeTheme(animeMalId)
         isSaveAnime(animeId)
     }
 
@@ -156,21 +157,22 @@ class AnimeDetailViewModel(
                 }
             }.onError {
                 it
-                Unit
             }
     }
 
-    private suspend fun getAnimeTheme(idMal: Int) {
+    private fun getAnimeTheme(idMal: Int) {
         if (idMal == 0) return
 
-        getAnimeThemeUseCase(idMal)
-            .onSuccess { success ->
-                _state.update {
-                    it.copy(animeThemes = success)
+        viewModelScope.launch {
+            getAnimeThemeUseCase(idMal)
+                .onSuccess { info ->
+                    _state.update {
+                        it.copy(animeThemes = info)
+                    }
+                }.onError { error ->
+                    error
                 }
-            }.onError { error ->
-                error
-            }
+        }
     }
 
     private fun isSaveAnime(animeId: Int) {
