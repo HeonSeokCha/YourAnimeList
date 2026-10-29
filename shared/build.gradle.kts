@@ -1,5 +1,6 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -11,6 +12,7 @@ plugins {
     alias(libs.plugins.room)
     alias(libs.plugins.apollo)
     alias(libs.plugins.koin.compiler)
+    alias(libs.plugins.konfig)
 }
 
 apollo {
@@ -84,6 +86,17 @@ kotlin {
                 implementation(libs.dateTime)
             }
         }
+    }
+}
+
+fun getApiKey(propertyKey: String): String {
+    return gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
+}
+
+buildkonfig {
+    packageName = "com.chs.youranimelist"
+    defaultConfigs {
+        buildConfigField(STRING, "API_ACCESS_KEY", getApiKey("api.clientID"))
     }
 }
 

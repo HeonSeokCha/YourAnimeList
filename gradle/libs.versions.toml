@@ -1,5 +1,5 @@
 [versions]
-androidStudioGradlePlugin = "9.4.1"
+androidStudioGradlePlugin = "9.5.0"
 
 compileSdkVersion = "37"
 componentsResources = "1.12.2"
@@ -22,7 +22,7 @@ apollo = "5.2.0"
 compose-plugin = "1.12.2"
 sqlite = "2.7.1"
 lifecycle = "2.11.0"
-nav3Core = "1.1.2"
+nav3Core = "1.2.0"
 android-paging = "3.5.3"
 
 [libraries]
@@ -131,3 +131,4 @@ jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 room = { id = "androidx.room3", version.ref = "room" }
 koin-compiler = "io.insert-koin.compiler.plugin:1.2.1"
+konfig = "com.codingfeline.buildkonfig:0.23.0"
