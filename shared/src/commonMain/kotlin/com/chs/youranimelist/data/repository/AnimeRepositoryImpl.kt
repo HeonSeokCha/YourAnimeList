@@ -14,7 +14,6 @@ import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.AnimeRecommendList
 import com.chs.youranimelist.domain.model.AnimeThemeInfo
 import com.chs.youranimelist.domain.repository.AnimeRepository
-import com.chs.youranimelist.data.source.JikanService
 import com.chs.youranimelist.data.source.db.dao.AnimeListDao
 import com.chs.youranimelist.data.mapper.*
 import com.chs.youranimelist.data.paging.AnimeRecPagingSource
@@ -34,6 +33,7 @@ import com.chs.youranimelist.data.mapper.toAnimeEntity
 import com.chs.youranimelist.data.mapper.toAnimeInfo
 import com.chs.youranimelist.data.mapper.toAnimeRecommendList
 import com.chs.youranimelist.data.mapper.toAnimeThemeInfo
+import com.chs.youranimelist.data.source.MalService
 import com.chs.youranimelist.domain.model.AnimeSavedInfo
 import com.chs.youranimelist.domain.model.SeasonType
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +48,7 @@ import org.koin.core.annotation.Single
 @Single(binds = [AnimeRepository::class])
 class AnimeRepositoryImpl(
     private val apolloClient: ApolloClient,
-    private val jikanService: JikanService,
+    private val malService: MalService,
     private val animeDao: AnimeListDao,
     private val genreDao: GenreDao,
     private val tagDao: TagDao
@@ -145,7 +145,7 @@ class AnimeRepositoryImpl(
 
     override suspend fun getAnimeDetailTheme(animeId: Int): DataResult<AnimeThemeInfo, DataError.RemoteError> {
         return try {
-            DataResult.Success(jikanService.getAnimeTheme(animeId).toAnimeThemeInfo())
+            DataResult.Success(malService.getAnimeTheme(animeId).toAnimeThemeInfo())
         } catch (e: Exception) {
             DataResult.Error(DataError.RemoteError(e.message))
         }

@@ -1,11 +1,12 @@
 package com.chs.youranimelist.data.mapper
 
 import com.chs.youranimelist.data.Util
-import com.chs.youranimelist.data.model.JikanAnimeDataDto
 import com.chs.youranimelist.data.source.db.entity.AnimeEntity
 import com.chs.youranimelist.data.AnimeDetailInfoQuery
 import com.chs.youranimelist.data.HomeAnimeListQuery
 import com.chs.youranimelist.data.fragment.AnimeBasicInfo
+import com.chs.youranimelist.data.model.ResponseMalInfo
+import com.chs.youranimelist.data.model.ResponseMalThemeInfo
 import com.chs.youranimelist.domain.model.AnimeDetailInfo
 import com.chs.youranimelist.domain.model.AnimeInfo
 import com.chs.youranimelist.domain.model.AnimHomeBannerInfo
@@ -125,10 +126,10 @@ fun AnimeDetailInfoQuery.Data.toAnimeDetailInfo(): AnimeDetailInfo {
     }
 }
 
-fun JikanAnimeDataDto.toAnimeThemeInfo(): AnimeThemeInfo {
+fun ResponseMalInfo.toAnimeThemeInfo(): AnimeThemeInfo {
     return AnimeThemeInfo(
-        openingThemes = this.data.openingThemes,
-        endingThemes = this.data.endingThemes
+        openingThemes = this.openingTheme.map { it.text },
+        endingThemes = this.endingTheme.map { it.text }
     )
 }
 

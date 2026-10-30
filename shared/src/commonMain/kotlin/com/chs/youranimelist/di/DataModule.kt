@@ -5,7 +5,7 @@ import com.apollographql.cache.normalized.memory.MemoryCacheFactory
 import com.apollographql.ktor.ktorClient
 import com.chs.youranimelist.data.cache.Cache.cache
 import com.chs.youranimelist.data.source.CustomHttpLogger
-import com.chs.youranimelist.data.source.JikanService
+import com.chs.youranimelist.data.source.MalService
 import com.chs.youranimelist.data.source.db.AnimeListDatabase
 import com.chs.youranimelist.data.source.db.dao.AnimeListDao
 import com.chs.youranimelist.data.source.db.dao.CharaListDao
@@ -60,8 +60,8 @@ class DataModule {
     }
 
     @Single
-    fun provideJikanService(httpClient: HttpClient): JikanService {
-        return JikanService(
+    fun provideMalService(httpClient: HttpClient): MalService {
+        return MalService(
             httpClient.config {
 
                 install(ContentNegotiation) {
@@ -70,7 +70,7 @@ class DataModule {
                 defaultRequest {
                     url {
                         protocol = URLProtocol.HTTPS
-                        host = Constants.JIKAN_API_URL
+                        host = Constants.MAL_API_URL
                     }
                     contentType(ContentType.Application.Json)
                 }
