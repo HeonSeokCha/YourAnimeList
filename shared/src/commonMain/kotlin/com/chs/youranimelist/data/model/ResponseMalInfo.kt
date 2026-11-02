@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ResponseMalInfo(
     @SerialName("opening_themes")
-    val openingTheme: List<ResponseMalThemeInfo>,
+    val openingTheme: List<ResponseMalThemeInfo> = listOf(),
     @SerialName("ending_themes")
-    val endingTheme: List<ResponseMalThemeInfo>
+    val endingTheme: List<ResponseMalThemeInfo> = listOf()
 )
