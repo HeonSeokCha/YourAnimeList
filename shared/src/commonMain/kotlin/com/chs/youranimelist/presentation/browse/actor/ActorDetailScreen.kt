@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,7 +22,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.buildAnnotatedString
@@ -81,14 +79,12 @@ fun ActorDetailScreen(
     onIntent: (ActorDetailIntent) -> Unit
 ) {
     val pagerState = rememberPagerState { 2 }
-    val scrollState = rememberScrollState()
 
     LaunchedEffect(state.tabIdx) {
         pagerState.animateScrollToPage(state.tabIdx)
     }
 
     CollapsingToolbarScaffold(
-        scrollState = scrollState,
         isShowTopBar = true,
         collapsedContent = { visiblePercentage ->
             GradientTopBar(
@@ -96,7 +92,7 @@ fun ActorDetailScreen(
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.primary),
                 onCloseClick = {
-                    if (visiblePercentage > 0.5f) return@GradientTopBar
+                    if (visiblePercentage() < 0.5f) return@GradientTopBar
                     onIntent(ActorDetailIntent.ClickClose)
                 }
             )

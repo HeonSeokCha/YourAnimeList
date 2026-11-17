@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
@@ -29,7 +28,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -81,7 +79,6 @@ fun StudioDetailScreen(
     onIntent: (StudioDetailIntent) -> Unit,
 ) {
     val lazyGridScrollState = rememberLazyStaggeredGridState()
-    val scrollState = rememberScrollState()
 
 
     val isEmpty by remember {
@@ -125,7 +122,6 @@ fun StudioDetailScreen(
 
 
     CollapsingToolbarScaffold(
-        scrollState = scrollState,
         isShowTopBar = true,
         expandContent = { StudioInfo(studioInfo = state.studioDetailInfo) },
         collapsedContent = { visiblePercentage ->
@@ -134,7 +130,7 @@ fun StudioDetailScreen(
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.primary),
                 onCloseClick = {
-                    if (visiblePercentage > 0.5f) return@GradientTopBar
+                    if (visiblePercentage() < 0.5f) return@GradientTopBar
                 }
             )
         }

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
@@ -28,8 +27,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.text.buildAnnotatedString
@@ -103,14 +102,12 @@ fun AnimeDetailScreen(
     onIntent: (AnimeDetailIntent) -> Unit,
 ) {
     val pagerState = rememberPagerState { 3 }
-    val scrollState = rememberScrollState()
 
     LaunchedEffect(state.selectTabIdx) {
         pagerState.animateScrollToPage(state.selectTabIdx)
     }
 
     CollapsingToolbarScaffold(
-        scrollState = scrollState,
         expandContent = {
             AnimeDetailHeadBanner(
                 info = state.animeDetailInfo,
@@ -144,10 +141,10 @@ fun AnimeDetailScreen(
             GradientTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .alpha(1f - visiblePercentage)
+                    .graphicsLayer { alpha = visiblePercentage() }
                     .background(MaterialTheme.colorScheme.primary),
                 onCloseClick = {
-                    if (visiblePercentage > 0.5f) return@GradientTopBar
+                    if (visiblePercentage() < 0.5f) return@GradientTopBar
                     onIntent(AnimeDetailIntent.ClickClose)
                 }
             )
