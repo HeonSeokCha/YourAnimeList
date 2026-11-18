@@ -20,7 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,11 +37,11 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 @Stable
-class CollapsingToolbarState {
+class CollapsingToolbarState(initialHeightOffset: Float = 0f) {
 
     internal var heightOffsetLimit by mutableFloatStateOf(0f)
 
-    internal var heightOffset by mutableFloatStateOf(0f)
+    internal var heightOffset by mutableFloatStateOf(initialHeightOffset)
 
     val collapsedFraction: Float
         get() = if (heightOffsetLimit != 0f) heightOffset / heightOffsetLimit else 0f
@@ -79,11 +80,18 @@ class CollapsingToolbarState {
             return Offset(0f, consume(available.y))
         }
     }
+
+    companion object {
+        val Saver: Saver<CollapsingToolbarState, Float> = Saver(
+            save = { it.heightOffset },
+            restore = { CollapsingToolbarState(initialHeightOffset = it) }
+        )
+    }
 }
 
 @Composable
 fun rememberCollapsingToolbarState(): CollapsingToolbarState {
-    return remember { CollapsingToolbarState() }
+    return rememberSaveable(saver = CollapsingToolbarState.Saver) { CollapsingToolbarState() }
 }
 
 @Composable
