@@ -6,7 +6,9 @@ fragment animeBasicInfo on Media {
         english
     }
     coverImage {
+        extraLarge
         large
+        medium
         color
     }
     averageScore
@@ -26,6 +28,7 @@ fragment characterBasicInfo on Character {
     }
     image {
         large
+        medium
     }
     favourites
 }

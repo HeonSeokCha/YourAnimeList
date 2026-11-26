@@ -1,5 +1,5 @@
 [versions]
-androidStudioGradlePlugin = "9.5.1"
+androidStudioGradlePlugin = "9.5.2"
 
 compileSdkVersion = "37"
 componentsResources = "1.12.2"
@@ -17,13 +17,14 @@ kotlin = "2.4.21"
 ksp = "2.3.13"
 koin = "4.2.2"
 kotlin-coroutine = "1.11.0"
-ktor = "3.6.1"
+ktor = "3.6.2"
 apollo = "5.2.0"
 compose-plugin = "1.12.2"
 sqlite = "2.7.1"
 lifecycle = "2.11.0"
 nav3Core = "1.2.0"
 android-paging = "3.5.3"
+datastore = "1.3.0"
 
 [libraries]
 # AndroidX
@@ -80,6 +81,8 @@ coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 htmlText = "be.digitalia.compose.htmlconverter:htmlconverter:1.1.1"
 dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.8.0"
 ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
+datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 
 [bundles]
 jetbrain = [
@@ -119,10 +122,15 @@ room = [
     "room-runtime",
     "sqlite-bundled"
 ]
+store = [
+    "datastore",
+    "datastore-preferences"
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidStudioGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidStudioGradlePlugin" }
+android-kmp-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidStudioGradlePlugin" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
@@ -130,5 +138,5 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 room = { id = "androidx.room3", version.ref = "room" }
-koin-compiler = "io.insert-koin.compiler.plugin:1.2.1"
-konfig = "com.codingfeline.buildkonfig:0.23.0"
+koin-compiler = "io.insert-koin.compiler.plugin:1.2.3"
+konfig = "com.codingfeline.buildkonfig:0.24.1"

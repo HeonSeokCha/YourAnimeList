@@ -19,6 +19,7 @@ query CharacterDetailQuery($id: Int) {
                         userPreferred
                     }
                     image {
+                        medium
                         large
                     },
                     languageV2

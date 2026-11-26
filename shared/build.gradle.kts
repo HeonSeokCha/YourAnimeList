@@ -1,10 +1,10 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.kmp.library)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlin.serialization)
@@ -18,7 +18,7 @@ plugins {
 apollo {
     service("anilist") {
         packageName.set("com.chs.youranimelist.data")
-        plugin("com.apollographql.cache:normalized-cache-apollo-compiler-plugin:1.0.5")
+        plugin("com.apollographql.cache:normalized-cache-apollo-compiler-plugin:1.0.9")
         pluginArgument("com.apollographql.cache.packageName", packageName.get())
     }
 }
@@ -28,9 +28,17 @@ kotlin {
         kotlin.srcDir("build/generated/ksp/metadata")
     }
 
-    androidTarget {
+    android {
+        namespace = "com.chs.youranimelist.shared"
+        compileSdk = libs.versions.compileSdkVersion.get().toInt()
+        minSdk = libs.versions.minSdkVersion.get().toInt()
+
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
+        }
+
+        androidResources {
+            enable = true
         }
     }
 
@@ -51,7 +59,6 @@ kotlin {
 
         androidMain {
             dependencies {
-                implementation(libs.androidX.activity.compose)
                 implementation(libs.ktor.client.android)
                 implementation(libs.koin.android)
                 implementation(libs.koin.compose)
@@ -78,6 +85,7 @@ kotlin {
                 api(libs.koin.annotation)
                 implementation(libs.bundles.coil)
                 implementation(libs.bundles.room)
+                implementation(libs.bundles.store)
 
                 implementation(libs.android.paging.common)
                 implementation(libs.android.paging.compose)
@@ -90,47 +98,15 @@ kotlin {
 }
 
 fun getApiKey(propertyKey: String): String {
-    return gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
+    val properties = Properties()
+    rootProject.file("local.properties").inputStream().use { properties.load(it) }
+    return properties.getProperty(propertyKey)
 }
 
 buildkonfig {
     packageName = "com.chs.youranimelist"
     defaultConfigs {
         buildConfigField(STRING, "API_ACCESS_KEY", getApiKey("api.clientID"))
-    }
-}
-
-android {
-    namespace = "com.chs.youranimelist"
-    compileSdk = libs.versions.compileSdkVersion.get().toInt()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
-
-    defaultConfig {
-        applicationId = "com.chs.youranimelist"
-        minSdk = libs.versions.minSdkVersion.get().toInt()
-        targetSdk = libs.versions.targetSdkVersion.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("debug")
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    buildFeatures {
-        compose = true
     }
 }
 

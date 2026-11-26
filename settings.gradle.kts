@@ -30,3 +30,4 @@ dependencyResolutionManagement {
 rootProject.name = "YourAnimeList"
 
 include(":shared")
+include(":androidApp")
