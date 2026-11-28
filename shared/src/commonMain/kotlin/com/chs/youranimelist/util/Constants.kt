@@ -9,4 +9,5 @@ object Constants {
 
     const val PAGING_SIZE: Int = 3
     val MAL_API_CLIENT_ID: String = BuildKonfig.API_ACCESS_KEY
+    const val DATA_STORE_FILE_NAME = "prefs.preferences_pb"
 }

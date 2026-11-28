@@ -1,10 +1,13 @@
 package com.chs.youranimelist.di
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.cache.normalized.memory.MemoryCacheFactory
 import com.apollographql.ktor.ktorClient
 import com.chs.youranimelist.data.cache.Cache.cache
 import com.chs.youranimelist.data.source.CustomHttpLogger
+import com.chs.youranimelist.data.source.DataStorePrefManager
 import com.chs.youranimelist.data.source.MalService
 import com.chs.youranimelist.data.source.db.AnimeListDatabase
 import com.chs.youranimelist.data.source.db.dao.AnimeListDao
@@ -92,4 +95,7 @@ class DataModule {
 
     @Single
     fun provideTagDao(db: AnimeListDatabase): TagDao = db.tagDao
+
+    @Single
+    fun provideDataStorePrefManager(dataStore: DataStore<Preferences>) = DataStorePrefManager(dataStore)
 }
